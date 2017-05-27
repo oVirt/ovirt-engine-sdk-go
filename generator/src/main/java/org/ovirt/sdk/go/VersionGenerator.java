@@ -42,7 +42,7 @@ public class VersionGenerator implements GoGenerator {
     public void generate(Model model) throws IOException {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setModuleName(goNames.getVersionModuleName());
+        buffer.setPackageName(goNames.getVersionPackageName());
 
         // Generate the source:
         generateVersion();

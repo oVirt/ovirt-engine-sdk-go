@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import org.apache.commons.io.FileUtils;
 
 /**
- * This class is a buffer intended to simplify generation of Python source code. It stores the name of the module, the
+ * This class is a buffer intended to simplify generation of Go source code. It stores the name of the module, the
  * list of imports and the rest of the source separately, so that imports can be added on demand while generating the
  * rest of the source.
  */
@@ -44,7 +44,7 @@ public class GoBuffer {
     private String fileName;
 
     // The name of the module:
-    private String moduleName;
+    private String packageName;
 
     // The imports:
     private Set<String> imports = new HashSet<>();
@@ -65,8 +65,8 @@ public class GoBuffer {
     /**
      * Sets the module name:
      */
-    public void setModuleName(String newModuleName) {
-        moduleName = newModuleName;
+    public void setPackageName(String newPackageName) {
+        packageName = newPackageName;
     }
 
     /**
@@ -232,7 +232,7 @@ public class GoBuffer {
     public void write(File dir) throws IOException {
         // Calculate the complete file name:
         if (fileName == null) {
-            fileName = moduleName.replace('.', File.separatorChar);
+            fileName = packageName.replace('.', File.separatorChar);
         }
         File file = new File(dir, fileName + ".py");
 

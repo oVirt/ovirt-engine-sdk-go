@@ -59,7 +59,7 @@ public class ReadersGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setModuleName(goNames.getReadersModuleName());
+        buffer.setPackageName(goNames.getReadersPackageName());
 
         // Generate the code:
         generateReaders(model);
@@ -75,10 +75,10 @@ public class ReadersGenerator implements GoGenerator {
 
     private void generateReaders(Model model) {
         // Generate the imports:
-        String rootModuleName = goNames.getRootModuleName();
-        buffer.addImport("from %1$s import List", rootModuleName);
-        buffer.addImport("from %1$s import types", rootModuleName);
-        buffer.addImport("from %1$s.reader import Reader", rootModuleName);
+        String rootPackageName = goNames.getRootPackageName();
+        buffer.addImport("from %1$s import List", rootPackageName);
+        buffer.addImport("from %1$s import types", rootPackageName);
+        buffer.addImport("from %1$s.reader import Reader", rootPackageName);
 
         // Generate the classes:
         model.types()

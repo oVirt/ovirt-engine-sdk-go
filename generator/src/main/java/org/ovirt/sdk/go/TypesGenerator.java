@@ -60,7 +60,7 @@ public class TypesGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setModuleName(goNames.getTypesModuleName());
+        buffer.setPackageName(goNames.getTypesPackageName());
 
         // Generate the code:
         generateTypes(model);
@@ -76,9 +76,9 @@ public class TypesGenerator implements GoGenerator {
 
     private void generateTypes(Model model) {
         // Generate the import statements for structs that aren't generated:
-        String rootModuleName = goNames.getRootModuleName();
-        buffer.addImport("from enum import Enum, unique", rootModuleName);
-        buffer.addImport("from %1$s import Struct", rootModuleName);
+        String rootPackageName = goNames.getRootPackageName();
+        buffer.addImport("from enum import Enum, unique", rootPackageName);
+        buffer.addImport("from %1$s import Struct", rootPackageName);
 
         // The declarations of struct types need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and

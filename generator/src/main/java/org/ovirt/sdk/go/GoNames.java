@@ -45,12 +45,12 @@ public class GoNames {
     public static final Name SERVICE_NAME = NameParser.parseUsingCase("Service");
     public static final Name WRITER_NAME = NameParser.parseUsingCase("Writer");
 
-    // The relative names of the modules:
-    public static final String READERS_MODULE = "readers";
-    public static final String SERVICES_MODULE = "services";
-    public static final String TYPES_MODULE = "types";
-    public static final String WRITERS_MODULE = "writers";
-    public static final String VERSION_MODULE = "version";
+    // The relative names of the packages:
+    public static final String READERS_PACKAGE = "readers";
+    public static final String SERVICES_PACKAGE = "services";
+    public static final String TYPES_PACKAGE = "types";
+    public static final String WRITERS_PACKAGE = "writers";
+    public static final String VERSION_PACKAGE = "version";
 
     // Reference to the object used to do computations with words.
     @Inject
@@ -61,8 +61,8 @@ public class GoNames {
     @ReservedWords(language = "go")
     private Set<String> reservedWords;
 
-    // The name of the root module:
-    private String rootModuleName = "ovirtsdk4";
+    // The name of the root package:
+    private String rootPackageName = "ovirtsdk4";
 
     // The version number:
     private String version;
@@ -82,53 +82,53 @@ public class GoNames {
     }
 
     /**
-     * Get the name of the root module.
+     * Get the name of the root package.
      */
-    public String getRootModuleName() {
-        return rootModuleName;
+    public String getRootPackageName() {
+        return rootPackageName;
     }
 
     /**
-     * Get the name of the types module.
+     * Get the name of the types package.
      */
-    public String getTypesModuleName() {
-        return getModuleName(TYPES_MODULE);
+    public String getTypesPackageName() {
+        return getPackageName(TYPES_PACKAGE);
     }
 
     /**
-     * Get the name of the readers module.
+     * Get the name of the readers package.
      */
-    public String getReadersModuleName() {
-        return getModuleName(READERS_MODULE);
+    public String getReadersPackageName() {
+        return getPackageName(READERS_PACKAGE);
     }
 
     /**
-     * Get the name of the writers module.
+     * Get the name of the writers package.
      */
-    public String getWritersModuleName() {
-        return getModuleName(WRITERS_MODULE);
+    public String getWritersPackageName() {
+        return getPackageName(WRITERS_PACKAGE);
     }
 
     /**
-     * Get the name of the services module.
+     * Get the name of the services package.
      */
-    public String getServicesModuleName() {
-        return getModuleName(SERVICES_MODULE);
+    public String getServicesPackageName() {
+        return getPackageName(SERVICES_PACKAGE);
     }
 
     /**
-     * Get the name of the version module.
+     * Get the name of the version package.
      */
-    public String getVersionModuleName() {
-        return getModuleName(VERSION_MODULE);
+    public String getVersionPackageName() {
+        return getPackageName(VERSION_PACKAGE);
     }
 
     /**
-     * Get the complete name of the given module.
+     * Get the complete name of the given package.
      */
-    public String getModuleName(String... relativeNames) {
+    public String getPackageName(String... relativeNames) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append(rootModuleName);
+        buffer.append(rootPackageName);
         if (relativeNames != null || relativeNames.length > 0) {
             for (String relativeName : relativeNames) {
                 buffer.append('.');
@@ -142,7 +142,7 @@ public class GoNames {
      * Calculates the Python name that corresponds to the given type.
      */
     public GoClassName getTypeName(Type type) {
-        return buildClassName(type.getName(), null, TYPES_MODULE);
+        return buildClassName(type.getName(), null, TYPES_PACKAGE);
     }
 
     /**
@@ -160,10 +160,10 @@ public class GoNames {
                 reference.setText("int");
             }
             else if (type == model.getDecimalType()) {
-                reference.setText("float");
+                reference.setText("float64");
             }
             else if (type == model.getStringType()) {
-                reference.setText("str");
+                reference.setText("string");
             }
             else if (type == model.getDateType()) {
                 reference.addImport("import datatime");
@@ -176,8 +176,8 @@ public class GoNames {
             }
         }
         else if (type instanceof StructType || type instanceof EnumType) {
-            reference.addImport(String.format("from %1$s import %2$s", getRootModuleName(), TYPES_MODULE));
-            reference.setText(TYPES_MODULE + "." + getTypeName(type).getClassName());
+            reference.addImport(String.format("from %1$s import %2$s", getRootPackageName(), TYPES_PACKAGE));
+            reference.setText(TYPES_PACKAGE + "." + getTypeName(type).getClassName());
         }
         else if (type instanceof ListType) {
             reference.setText("list");
@@ -191,41 +191,41 @@ public class GoNames {
      * Calculates the Python name of the base class of the services.
      */
     public GoClassName getBaseServiceName() {
-        return buildClassName(SERVICE_NAME, null, SERVICES_MODULE);
+        return buildClassName(SERVICE_NAME, null, SERVICES_PACKAGE);
     }
 
     /**
      * Calculates the Python name that corresponds to the given service.
      */
     public GoClassName getServiceName(Service service) {
-        return buildClassName(service.getName(), SERVICE_NAME, SERVICES_MODULE);
+        return buildClassName(service.getName(), SERVICE_NAME, SERVICES_PACKAGE);
     }
 
     /**
      * Calculates the Python name of the reader for the given type.
      */
     public GoClassName getReaderName(Type type) {
-        return buildClassName(type.getName(), READER_NAME, READERS_MODULE);
+        return buildClassName(type.getName(), READER_NAME, READERS_PACKAGE);
     }
 
     /**
      * Calculates the Python name of the writer for the given type.
      */
     public GoClassName getWriterName(Type type) {
-        return buildClassName(type.getName(), WRITER_NAME, WRITERS_MODULE);
+        return buildClassName(type.getName(), WRITER_NAME, WRITERS_PACKAGE);
     }
 
     /**
-     * Builds a Python name from the given base name, suffix, and module.
+     * Builds a Python name from the given base name, suffix, and package.
      *
      * The suffix can be {@code null} or empty, in that case then won't be added.
      *
      * @param base the base name
      * @param suffix the suffix to add to the name
-     * @param module the module name
+     * @param package the package name
      * @return the calculated Python class name
      */
-    private GoClassName buildClassName(Name base, Name suffix, String module) {
+    private GoClassName buildClassName(Name base, Name suffix, String pkg) {
         List<String> words = base.getWords();
         if (suffix != null) {
             words.addAll(suffix.getWords());
@@ -233,7 +233,7 @@ public class GoNames {
         Name name = new Name(words);
         GoClassName result = new GoClassName();
         result.setClassName(getClassStyleName(name));
-        result.setPackageName(getModuleName(module));
+        result.setPackageName(getPackageName(pkg));
         return result;
     }
 
@@ -263,7 +263,7 @@ public class GoNames {
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Python modules.
+     * Returns a representation of the given name using the capitalization style typically used for Python packages.
      */
     public String getModuleStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));

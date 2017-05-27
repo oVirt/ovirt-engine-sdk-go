@@ -54,7 +54,7 @@ public class WritersGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setModuleName(goNames.getWritersModuleName());
+        buffer.setPackageName(goNames.getWritersPackageName());
 
         // Generate the code:
         generateWriters(model);
@@ -70,10 +70,10 @@ public class WritersGenerator implements GoGenerator {
 
     private void generateWriters(Model model) {
         // Generate the imports:
-        String rootModuleName = goNames.getRootModuleName();
-        buffer.addImport("from %1$s import List", rootModuleName);
-        buffer.addImport("from %1$s import types", rootModuleName);
-        buffer.addImport("from %1$s.writer import Writer", rootModuleName);
+        String rootPackageName = goNames.getRootPackageName();
+        buffer.addImport("from %1$s import List", rootPackageName);
+        buffer.addImport("from %1$s import types", rootPackageName);
+        buffer.addImport("from %1$s.writer import Writer", rootPackageName);
 
         // Generate the writer classes:
         model.types()

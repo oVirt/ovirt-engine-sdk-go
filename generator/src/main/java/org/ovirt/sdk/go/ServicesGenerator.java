@@ -76,7 +76,7 @@ public class ServicesGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setModuleName(goNames.getServicesModuleName());
+        buffer.setPackageName(goNames.getServicesPackageName());
 
         // Generate the code:
         generateServices(model);
@@ -92,11 +92,11 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateServices(Model model) {
         // Generate the imports:
-        String rootModuleName = goNames.getRootModuleName();
-        buffer.addImport("from %1$s import Error", rootModuleName);
-        buffer.addImport("from %1$s import types", rootModuleName);
-        buffer.addImport("from %1$s.service import Service", rootModuleName);
-        buffer.addImport("from %1$s.writer import Writer", rootModuleName);
+        String rootPackageName = goNames.getRootPackageName();
+        buffer.addImport("from %1$s import Error", rootPackageName);
+        buffer.addImport("from %1$s import types", rootPackageName);
+        buffer.addImport("from %1$s.service import Service", rootPackageName);
+        buffer.addImport("from %1$s.writer import Writer", rootPackageName);
 
         // The declarations of the services need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and
