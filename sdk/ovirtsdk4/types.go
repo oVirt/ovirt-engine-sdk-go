@@ -2861,1281 +2861,723 @@ type Snapshot struct {
 
 }
 
-@unique
-class AccessProtocol(Enum):
-    CIFS = 'cifs'
-    GLUSTER = 'gluster'
-    NFS = 'nfs'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class Architecture(Enum):
-    PPC64 = 'ppc64'
-    UNDEFINED = 'undefined'
-    X86_64 = 'x86_64'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class AutoNumaStatus(Enum):
-    DISABLE = 'disable'
-    ENABLE = 'enable'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class BootDevice(Enum):
-    CDROM = 'cdrom'
-    HD = 'hd'
-    NETWORK = 'network'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class BootProtocol(Enum):
-    AUTOCONF = 'autoconf'
-    DHCP = 'dhcp'
-    NONE = 'none'
-    STATIC = 'static'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ConfigurationType(Enum):
-    OVF = 'ovf'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class CpuMode(Enum):
-    CUSTOM = 'custom'
-    HOST_MODEL = 'host_model'
-    HOST_PASSTHROUGH = 'host_passthrough'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class CreationStatus(Enum):
-    COMPLETE = 'complete'
-    FAILED = 'failed'
-    IN_PROGRESS = 'in_progress'
-    PENDING = 'pending'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DataCenterStatus(Enum):
-    CONTEND = 'contend'
-    MAINTENANCE = 'maintenance'
-    NOT_OPERATIONAL = 'not_operational'
-    PROBLEMATIC = 'problematic'
-    UNINITIALIZED = 'uninitialized'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DiskFormat(Enum):
-    COW = 'cow'
-    RAW = 'raw'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DiskInterface(Enum):
-    IDE = 'ide'
-    SPAPR_VSCSI = 'spapr_vscsi'
-    VIRTIO = 'virtio'
-    VIRTIO_SCSI = 'virtio_scsi'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DiskStatus(Enum):
-    ILLEGAL = 'illegal'
-    LOCKED = 'locked'
-    OK = 'ok'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DiskStorageType(Enum):
-    CINDER = 'cinder'
-    IMAGE = 'image'
-    LUN = 'lun'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DiskType(Enum):
-    DATA = 'data'
-    SYSTEM = 'system'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class DisplayType(Enum):
-    SPICE = 'spice'
-    VNC = 'vnc'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class EntityExternalStatus(Enum):
-    ERROR = 'error'
-    FAILURE = 'failure'
-    INFO = 'info'
-    OK = 'ok'
-    WARNING = 'warning'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ExternalStatus(Enum):
-    ERROR = 'error'
-    FAILURE = 'failure'
-    INFO = 'info'
-    OK = 'ok'
-    WARNING = 'warning'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ExternalSystemType(Enum):
-    GLUSTER = 'gluster'
-    VDSM = 'vdsm'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ExternalVmProviderType(Enum):
-    KVM = 'kvm'
-    VMWARE = 'vmware'
-    XEN = 'xen'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class FenceType(Enum):
-    MANUAL = 'manual'
-    RESTART = 'restart'
-    START = 'start'
-    STATUS = 'status'
-    STOP = 'stop'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GlusterBrickStatus(Enum):
-    DOWN = 'down'
-    UNKNOWN = 'unknown'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GlusterHookStatus(Enum):
-    DISABLED = 'disabled'
-    ENABLED = 'enabled'
-    MISSING = 'missing'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GlusterState(Enum):
-    DOWN = 'down'
-    UNKNOWN = 'unknown'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GlusterVolumeStatus(Enum):
-    DOWN = 'down'
-    UNKNOWN = 'unknown'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GlusterVolumeType(Enum):
-    DISPERSE = 'disperse'
-    DISTRIBUTE = 'distribute'
-    DISTRIBUTED_DISPERSE = 'distributed_disperse'
-    DISTRIBUTED_REPLICATE = 'distributed_replicate'
-    DISTRIBUTED_STRIPE = 'distributed_stripe'
-    DISTRIBUTED_STRIPED_REPLICATE = 'distributed_striped_replicate'
-    REPLICATE = 'replicate'
-    STRIPE = 'stripe'
-    STRIPED_REPLICATE = 'striped_replicate'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class GraphicsType(Enum):
-    SPICE = 'spice'
-    VNC = 'vnc'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HookContentType(Enum):
-    BINARY = 'binary'
-    TEXT = 'text'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HookStage(Enum):
-    POST = 'post'
-    PRE = 'pre'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HookStatus(Enum):
-    DISABLED = 'disabled'
-    ENABLED = 'enabled'
-    MISSING = 'missing'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HostProtocol(Enum):
-    STOMP = 'stomp'
-    XML = 'xml'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HostStatus(Enum):
-    CONNECTING = 'connecting'
-    DOWN = 'down'
-    ERROR = 'error'
-    INITIALIZING = 'initializing'
-    INSTALL_FAILED = 'install_failed'
-    INSTALLING = 'installing'
-    INSTALLING_OS = 'installing_os'
-    KDUMPING = 'kdumping'
-    MAINTENANCE = 'maintenance'
-    NON_OPERATIONAL = 'non_operational'
-    NON_RESPONSIVE = 'non_responsive'
-    PENDING_APPROVAL = 'pending_approval'
-    PREPARING_FOR_MAINTENANCE = 'preparing_for_maintenance'
-    REBOOT = 'reboot'
-    UNASSIGNED = 'unassigned'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class HostType(Enum):
-    OVIRT_NODE = 'ovirt_node'
-    RHEL = 'rhel'
-    RHEV_H = 'rhev_h'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ImageTransferDirection(Enum):
-    DOWNLOAD = 'download'
-    UPLOAD = 'upload'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ImageTransferPhase(Enum):
-    CANCELLED = 'cancelled'
-    FINALIZING_FAILURE = 'finalizing_failure'
-    FINALIZING_SUCCESS = 'finalizing_success'
-    FINISHED_FAILURE = 'finished_failure'
-    FINISHED_SUCCESS = 'finished_success'
-    INITIALIZING = 'initializing'
-    PAUSED_SYSTEM = 'paused_system'
-    PAUSED_USER = 'paused_user'
-    RESUMING = 'resuming'
-    TRANSFERRING = 'transferring'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class InheritableBoolean(Enum):
-    FALSE = 'false'
-    INHERIT = 'inherit'
-    TRUE = 'true'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class IpVersion(Enum):
-    V4 = 'v4'
-    V6 = 'v6'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class JobStatus(Enum):
-    ABORTED = 'aborted'
-    FAILED = 'failed'
-    FINISHED = 'finished'
-    STARTED = 'started'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class KdumpStatus(Enum):
-    DISABLED = 'disabled'
-    ENABLED = 'enabled'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class LogSeverity(Enum):
-    ALERT = 'alert'
-    ERROR = 'error'
-    NORMAL = 'normal'
-    WARNING = 'warning'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class LunStatus(Enum):
-    FREE = 'free'
-    UNUSABLE = 'unusable'
-    USED = 'used'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class MessageBrokerType(Enum):
-    QPID = 'qpid'
-    RABBIT_MQ = 'rabbit_mq'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class MigrateOnError(Enum):
-    DO_NOT_MIGRATE = 'do_not_migrate'
-    MIGRATE = 'migrate'
-    MIGRATE_HIGHLY_AVAILABLE = 'migrate_highly_available'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class MigrationBandwidthAssignmentMethod(Enum):
-    AUTO = 'auto'
-    CUSTOM = 'custom'
-    HYPERVISOR_DEFAULT = 'hypervisor_default'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NetworkPluginType(Enum):
-    OPEN_VSWITCH = 'open_vswitch'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NetworkStatus(Enum):
-    NON_OPERATIONAL = 'non_operational'
-    OPERATIONAL = 'operational'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NetworkUsage(Enum):
-    DEFAULT_ROUTE = 'default_route'
-    DISPLAY = 'display'
-    GLUSTER = 'gluster'
-    MANAGEMENT = 'management'
-    MIGRATION = 'migration'
-    VM = 'vm'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NfsVersion(Enum):
-    AUTO = 'auto'
-    V3 = 'v3'
-    V4 = 'v4'
-    V4_1 = 'v4_1'
-    V4_2 = 'v4_2'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NicInterface(Enum):
-    E1000 = 'e1000'
-    PCI_PASSTHROUGH = 'pci_passthrough'
-    RTL8139 = 'rtl8139'
-    RTL8139_VIRTIO = 'rtl8139_virtio'
-    SPAPR_VLAN = 'spapr_vlan'
-    VIRTIO = 'virtio'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NicStatus(Enum):
-    DOWN = 'down'
-    UP = 'up'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class NumaTuneMode(Enum):
-    INTERLEAVE = 'interleave'
-    PREFERRED = 'preferred'
-    STRICT = 'strict'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class OpenStackNetworkProviderType(Enum):
-    EXTERNAL = 'external'
-    NEUTRON = 'neutron'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class OpenstackVolumeAuthenticationKeyUsageType(Enum):
-    CEPH = 'ceph'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class OsType(Enum):
-    OTHER = 'other'
-    OTHER_LINUX = 'other_linux'
-    RHEL_3 = 'rhel_3'
-    RHEL_3X64 = 'rhel_3x64'
-    RHEL_4 = 'rhel_4'
-    RHEL_4X64 = 'rhel_4x64'
-    RHEL_5 = 'rhel_5'
-    RHEL_5X64 = 'rhel_5x64'
-    RHEL_6 = 'rhel_6'
-    RHEL_6X64 = 'rhel_6x64'
-    UNASSIGNED = 'unassigned'
-    WINDOWS_2003 = 'windows_2003'
-    WINDOWS_2003X64 = 'windows_2003x64'
-    WINDOWS_2008 = 'windows_2008'
-    WINDOWS_2008R2X64 = 'windows_2008r2x64'
-    WINDOWS_2008X64 = 'windows_2008x64'
-    WINDOWS_2012X64 = 'windows_2012x64'
-    WINDOWS_7 = 'windows_7'
-    WINDOWS_7X64 = 'windows_7x64'
-    WINDOWS_8 = 'windows_8'
-    WINDOWS_8X64 = 'windows_8x64'
-    WINDOWS_XP = 'windows_xp'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class PayloadEncoding(Enum):
-    BASE64 = 'base64'
-    PLAINTEXT = 'plaintext'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class PmProxyType(Enum):
-    CLUSTER = 'cluster'
-    DC = 'dc'
-    OTHER_DC = 'other_dc'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class PolicyUnitType(Enum):
-    FILTER = 'filter'
-    LOAD_BALANCING = 'load_balancing'
-    WEIGHT = 'weight'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class PowerManagementStatus(Enum):
-    OFF = 'off'
-    ON = 'on'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class QcowVersion(Enum):
-    QCOW2_V2 = 'qcow2_v2'
-    QCOW2_V3 = 'qcow2_v3'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class QosType(Enum):
-    CPU = 'cpu'
-    HOSTNETWORK = 'hostnetwork'
-    NETWORK = 'network'
-    STORAGE = 'storage'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class QuotaModeType(Enum):
-    AUDIT = 'audit'
-    DISABLED = 'disabled'
-    ENABLED = 'enabled'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ReportedDeviceType(Enum):
-    NETWORK = 'network'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ResolutionType(Enum):
-    ADD = 'add'
-    COPY = 'copy'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class RngSource(Enum):
-    HWRNG = 'hwrng'
-    RANDOM = 'random'
-    URANDOM = 'urandom'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class RoleType(Enum):
-    ADMIN = 'admin'
-    USER = 'user'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ScsiGenericIO(Enum):
-    FILTERED = 'filtered'
-    UNFILTERED = 'unfiltered'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SeLinuxMode(Enum):
-    DISABLED = 'disabled'
-    ENFORCING = 'enforcing'
-    PERMISSIVE = 'permissive'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SerialNumberPolicy(Enum):
-    CUSTOM = 'custom'
-    HOST = 'host'
-    VM = 'vm'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SnapshotStatus(Enum):
-    IN_PREVIEW = 'in_preview'
-    LOCKED = 'locked'
-    OK = 'ok'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SnapshotType(Enum):
-    ACTIVE = 'active'
-    PREVIEW = 'preview'
-    REGULAR = 'regular'
-    STATELESS = 'stateless'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SpmStatus(Enum):
-    CONTENDING = 'contending'
-    NONE = 'none'
-    SPM = 'spm'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SshAuthenticationMethod(Enum):
-    PASSWORD = 'password'
-    PUBLICKEY = 'publickey'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SsoMethod(Enum):
-    GUEST_AGENT = 'guest_agent'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StatisticKind(Enum):
-    COUNTER = 'counter'
-    GAUGE = 'gauge'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StatisticUnit(Enum):
-    BITS_PER_SECOND = 'bits_per_second'
-    BYTES = 'bytes'
-    BYTES_PER_SECOND = 'bytes_per_second'
-    COUNT_PER_SECOND = 'count_per_second'
-    NONE = 'none'
-    PERCENT = 'percent'
-    SECONDS = 'seconds'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StepEnum(Enum):
-    EXECUTING = 'executing'
-    FINALIZING = 'finalizing'
-    REBALANCING_VOLUME = 'rebalancing_volume'
-    REMOVING_BRICKS = 'removing_bricks'
-    UNKNOWN = 'unknown'
-    VALIDATING = 'validating'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StepStatus(Enum):
-    ABORTED = 'aborted'
-    FAILED = 'failed'
-    FINISHED = 'finished'
-    STARTED = 'started'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StorageDomainStatus(Enum):
-    ACTIVATING = 'activating'
-    ACTIVE = 'active'
-    DETACHING = 'detaching'
-    INACTIVE = 'inactive'
-    LOCKED = 'locked'
-    MAINTENANCE = 'maintenance'
-    MIXED = 'mixed'
-    PREPARING_FOR_MAINTENANCE = 'preparing_for_maintenance'
-    UNATTACHED = 'unattached'
-    UNKNOWN = 'unknown'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StorageDomainType(Enum):
-    DATA = 'data'
-    EXPORT = 'export'
-    IMAGE = 'image'
-    ISO = 'iso'
-    VOLUME = 'volume'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StorageFormat(Enum):
-    V1 = 'v1'
-    V2 = 'v2'
-    V3 = 'v3'
-    V4 = 'v4'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class StorageType(Enum):
-    CINDER = 'cinder'
-    FCP = 'fcp'
-    GLANCE = 'glance'
-    GLUSTERFS = 'glusterfs'
-    ISCSI = 'iscsi'
-    LOCALFS = 'localfs'
-    NFS = 'nfs'
-    POSIXFS = 'posixfs'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class SwitchType(Enum):
-    LEGACY = 'legacy'
-    OVS = 'ovs'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class TemplateStatus(Enum):
-    ILLEGAL = 'illegal'
-    LOCKED = 'locked'
-    OK = 'ok'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class TransportType(Enum):
-    RDMA = 'rdma'
-    TCP = 'tcp'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class UsbType(Enum):
-    LEGACY = 'legacy'
-    NATIVE = 'native'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class ValueType(Enum):
-    DECIMAL = 'decimal'
-    INTEGER = 'integer'
-    STRING = 'string'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VmAffinity(Enum):
-    MIGRATABLE = 'migratable'
-    PINNED = 'pinned'
-    USER_MIGRATABLE = 'user_migratable'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VmDeviceType(Enum):
-    CDROM = 'cdrom'
-    FLOPPY = 'floppy'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VmPoolType(Enum):
-    AUTOMATIC = 'automatic'
-    MANUAL = 'manual'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VmStatus(Enum):
-    DOWN = 'down'
-    IMAGE_LOCKED = 'image_locked'
-    MIGRATING = 'migrating'
-    NOT_RESPONDING = 'not_responding'
-    PAUSED = 'paused'
-    POWERING_DOWN = 'powering_down'
-    POWERING_UP = 'powering_up'
-    REBOOT_IN_PROGRESS = 'reboot_in_progress'
-    RESTORING_STATE = 'restoring_state'
-    SAVING_STATE = 'saving_state'
-    SUSPENDED = 'suspended'
-    UNASSIGNED = 'unassigned'
-    UNKNOWN = 'unknown'
-    UP = 'up'
-    WAIT_FOR_LAUNCH = 'wait_for_launch'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VmType(Enum):
-    DESKTOP = 'desktop'
-    SERVER = 'server'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class VnicPassThroughMode(Enum):
-    DISABLED = 'disabled'
-    ENABLED = 'enabled'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class WatchdogAction(Enum):
-    DUMP = 'dump'
-    NONE = 'none'
-    PAUSE = 'pause'
-    POWEROFF = 'poweroff'
-    RESET = 'reset'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
-
-@unique
-class WatchdogModel(Enum):
-    I6300ESB = 'i6300esb'
-
-    def __init__(self, image):
-        self._image = image
-
-    def __str__(self):
-        return self._image
-
+type AccessProtocol string
+const (
+    ACCESSPROTOCOL_CIFS AccessProtocol = "cifs"
+    ACCESSPROTOCOL_GLUSTER AccessProtocol = "gluster"
+    ACCESSPROTOCOL_NFS AccessProtocol = "nfs"
+)
+
+type Architecture string
+const (
+    ARCHITECTURE_PPC64 Architecture = "ppc64"
+    ARCHITECTURE_UNDEFINED Architecture = "undefined"
+    ARCHITECTURE_X86_64 Architecture = "x86_64"
+)
+
+type AutoNumaStatus string
+const (
+    AUTONUMASTATUS_DISABLE AutoNumaStatus = "disable"
+    AUTONUMASTATUS_ENABLE AutoNumaStatus = "enable"
+    AUTONUMASTATUS_UNKNOWN AutoNumaStatus = "unknown"
+)
+
+type BootDevice string
+const (
+    BOOTDEVICE_CDROM BootDevice = "cdrom"
+    BOOTDEVICE_HD BootDevice = "hd"
+    BOOTDEVICE_NETWORK BootDevice = "network"
+)
+
+type BootProtocol string
+const (
+    BOOTPROTOCOL_AUTOCONF BootProtocol = "autoconf"
+    BOOTPROTOCOL_DHCP BootProtocol = "dhcp"
+    BOOTPROTOCOL_NONE BootProtocol = "none"
+    BOOTPROTOCOL_STATIC BootProtocol = "static"
+)
+
+type ConfigurationType string
+const (
+    CONFIGURATIONTYPE_OVF ConfigurationType = "ovf"
+)
+
+type CpuMode string
+const (
+    CPUMODE_CUSTOM CpuMode = "custom"
+    CPUMODE_HOST_MODEL CpuMode = "host_model"
+    CPUMODE_HOST_PASSTHROUGH CpuMode = "host_passthrough"
+)
+
+type CreationStatus string
+const (
+    CREATIONSTATUS_COMPLETE CreationStatus = "complete"
+    CREATIONSTATUS_FAILED CreationStatus = "failed"
+    CREATIONSTATUS_IN_PROGRESS CreationStatus = "in_progress"
+    CREATIONSTATUS_PENDING CreationStatus = "pending"
+)
+
+type DataCenterStatus string
+const (
+    DATACENTERSTATUS_CONTEND DataCenterStatus = "contend"
+    DATACENTERSTATUS_MAINTENANCE DataCenterStatus = "maintenance"
+    DATACENTERSTATUS_NOT_OPERATIONAL DataCenterStatus = "not_operational"
+    DATACENTERSTATUS_PROBLEMATIC DataCenterStatus = "problematic"
+    DATACENTERSTATUS_UNINITIALIZED DataCenterStatus = "uninitialized"
+    DATACENTERSTATUS_UP DataCenterStatus = "up"
+)
+
+type DiskFormat string
+const (
+    DISKFORMAT_COW DiskFormat = "cow"
+    DISKFORMAT_RAW DiskFormat = "raw"
+)
+
+type DiskInterface string
+const (
+    DISKINTERFACE_IDE DiskInterface = "ide"
+    DISKINTERFACE_SPAPR_VSCSI DiskInterface = "spapr_vscsi"
+    DISKINTERFACE_VIRTIO DiskInterface = "virtio"
+    DISKINTERFACE_VIRTIO_SCSI DiskInterface = "virtio_scsi"
+)
+
+type DiskStatus string
+const (
+    DISKSTATUS_ILLEGAL DiskStatus = "illegal"
+    DISKSTATUS_LOCKED DiskStatus = "locked"
+    DISKSTATUS_OK DiskStatus = "ok"
+)
+
+type DiskStorageType string
+const (
+    DISKSTORAGETYPE_CINDER DiskStorageType = "cinder"
+    DISKSTORAGETYPE_IMAGE DiskStorageType = "image"
+    DISKSTORAGETYPE_LUN DiskStorageType = "lun"
+)
+
+type DiskType string
+const (
+    DISKTYPE_DATA DiskType = "data"
+    DISKTYPE_SYSTEM DiskType = "system"
+)
+
+type DisplayType string
+const (
+    DISPLAYTYPE_SPICE DisplayType = "spice"
+    DISPLAYTYPE_VNC DisplayType = "vnc"
+)
+
+type EntityExternalStatus string
+const (
+    ENTITYEXTERNALSTATUS_ERROR EntityExternalStatus = "error"
+    ENTITYEXTERNALSTATUS_FAILURE EntityExternalStatus = "failure"
+    ENTITYEXTERNALSTATUS_INFO EntityExternalStatus = "info"
+    ENTITYEXTERNALSTATUS_OK EntityExternalStatus = "ok"
+    ENTITYEXTERNALSTATUS_WARNING EntityExternalStatus = "warning"
+)
+
+type ExternalStatus string
+const (
+    EXTERNALSTATUS_ERROR ExternalStatus = "error"
+    EXTERNALSTATUS_FAILURE ExternalStatus = "failure"
+    EXTERNALSTATUS_INFO ExternalStatus = "info"
+    EXTERNALSTATUS_OK ExternalStatus = "ok"
+    EXTERNALSTATUS_WARNING ExternalStatus = "warning"
+)
+
+type ExternalSystemType string
+const (
+    EXTERNALSYSTEMTYPE_GLUSTER ExternalSystemType = "gluster"
+    EXTERNALSYSTEMTYPE_VDSM ExternalSystemType = "vdsm"
+)
+
+type ExternalVmProviderType string
+const (
+    EXTERNALVMPROVIDERTYPE_KVM ExternalVmProviderType = "kvm"
+    EXTERNALVMPROVIDERTYPE_VMWARE ExternalVmProviderType = "vmware"
+    EXTERNALVMPROVIDERTYPE_XEN ExternalVmProviderType = "xen"
+)
+
+type FenceType string
+const (
+    FENCETYPE_MANUAL FenceType = "manual"
+    FENCETYPE_RESTART FenceType = "restart"
+    FENCETYPE_START FenceType = "start"
+    FENCETYPE_STATUS FenceType = "status"
+    FENCETYPE_STOP FenceType = "stop"
+)
+
+type GlusterBrickStatus string
+const (
+    GLUSTERBRICKSTATUS_DOWN GlusterBrickStatus = "down"
+    GLUSTERBRICKSTATUS_UNKNOWN GlusterBrickStatus = "unknown"
+    GLUSTERBRICKSTATUS_UP GlusterBrickStatus = "up"
+)
+
+type GlusterHookStatus string
+const (
+    GLUSTERHOOKSTATUS_DISABLED GlusterHookStatus = "disabled"
+    GLUSTERHOOKSTATUS_ENABLED GlusterHookStatus = "enabled"
+    GLUSTERHOOKSTATUS_MISSING GlusterHookStatus = "missing"
+)
+
+type GlusterState string
+const (
+    GLUSTERSTATE_DOWN GlusterState = "down"
+    GLUSTERSTATE_UNKNOWN GlusterState = "unknown"
+    GLUSTERSTATE_UP GlusterState = "up"
+)
+
+type GlusterVolumeStatus string
+const (
+    GLUSTERVOLUMESTATUS_DOWN GlusterVolumeStatus = "down"
+    GLUSTERVOLUMESTATUS_UNKNOWN GlusterVolumeStatus = "unknown"
+    GLUSTERVOLUMESTATUS_UP GlusterVolumeStatus = "up"
+)
+
+type GlusterVolumeType string
+const (
+    GLUSTERVOLUMETYPE_DISPERSE GlusterVolumeType = "disperse"
+    GLUSTERVOLUMETYPE_DISTRIBUTE GlusterVolumeType = "distribute"
+    GLUSTERVOLUMETYPE_DISTRIBUTED_DISPERSE GlusterVolumeType = "distributed_disperse"
+    GLUSTERVOLUMETYPE_DISTRIBUTED_REPLICATE GlusterVolumeType = "distributed_replicate"
+    GLUSTERVOLUMETYPE_DISTRIBUTED_STRIPE GlusterVolumeType = "distributed_stripe"
+    GLUSTERVOLUMETYPE_DISTRIBUTED_STRIPED_REPLICATE GlusterVolumeType = "distributed_striped_replicate"
+    GLUSTERVOLUMETYPE_REPLICATE GlusterVolumeType = "replicate"
+    GLUSTERVOLUMETYPE_STRIPE GlusterVolumeType = "stripe"
+    GLUSTERVOLUMETYPE_STRIPED_REPLICATE GlusterVolumeType = "striped_replicate"
+)
+
+type GraphicsType string
+const (
+    GRAPHICSTYPE_SPICE GraphicsType = "spice"
+    GRAPHICSTYPE_VNC GraphicsType = "vnc"
+)
+
+type HookContentType string
+const (
+    HOOKCONTENTTYPE_BINARY HookContentType = "binary"
+    HOOKCONTENTTYPE_TEXT HookContentType = "text"
+)
+
+type HookStage string
+const (
+    HOOKSTAGE_POST HookStage = "post"
+    HOOKSTAGE_PRE HookStage = "pre"
+)
+
+type HookStatus string
+const (
+    HOOKSTATUS_DISABLED HookStatus = "disabled"
+    HOOKSTATUS_ENABLED HookStatus = "enabled"
+    HOOKSTATUS_MISSING HookStatus = "missing"
+)
+
+type HostProtocol string
+const (
+    HOSTPROTOCOL_STOMP HostProtocol = "stomp"
+    HOSTPROTOCOL_XML HostProtocol = "xml"
+)
+
+type HostStatus string
+const (
+    HOSTSTATUS_CONNECTING HostStatus = "connecting"
+    HOSTSTATUS_DOWN HostStatus = "down"
+    HOSTSTATUS_ERROR HostStatus = "error"
+    HOSTSTATUS_INITIALIZING HostStatus = "initializing"
+    HOSTSTATUS_INSTALL_FAILED HostStatus = "install_failed"
+    HOSTSTATUS_INSTALLING HostStatus = "installing"
+    HOSTSTATUS_INSTALLING_OS HostStatus = "installing_os"
+    HOSTSTATUS_KDUMPING HostStatus = "kdumping"
+    HOSTSTATUS_MAINTENANCE HostStatus = "maintenance"
+    HOSTSTATUS_NON_OPERATIONAL HostStatus = "non_operational"
+    HOSTSTATUS_NON_RESPONSIVE HostStatus = "non_responsive"
+    HOSTSTATUS_PENDING_APPROVAL HostStatus = "pending_approval"
+    HOSTSTATUS_PREPARING_FOR_MAINTENANCE HostStatus = "preparing_for_maintenance"
+    HOSTSTATUS_REBOOT HostStatus = "reboot"
+    HOSTSTATUS_UNASSIGNED HostStatus = "unassigned"
+    HOSTSTATUS_UP HostStatus = "up"
+)
+
+type HostType string
+const (
+    HOSTTYPE_OVIRT_NODE HostType = "ovirt_node"
+    HOSTTYPE_RHEL HostType = "rhel"
+    HOSTTYPE_RHEV_H HostType = "rhev_h"
+)
+
+type ImageTransferDirection string
+const (
+    IMAGETRANSFERDIRECTION_DOWNLOAD ImageTransferDirection = "download"
+    IMAGETRANSFERDIRECTION_UPLOAD ImageTransferDirection = "upload"
+)
+
+type ImageTransferPhase string
+const (
+    IMAGETRANSFERPHASE_CANCELLED ImageTransferPhase = "cancelled"
+    IMAGETRANSFERPHASE_FINALIZING_FAILURE ImageTransferPhase = "finalizing_failure"
+    IMAGETRANSFERPHASE_FINALIZING_SUCCESS ImageTransferPhase = "finalizing_success"
+    IMAGETRANSFERPHASE_FINISHED_FAILURE ImageTransferPhase = "finished_failure"
+    IMAGETRANSFERPHASE_FINISHED_SUCCESS ImageTransferPhase = "finished_success"
+    IMAGETRANSFERPHASE_INITIALIZING ImageTransferPhase = "initializing"
+    IMAGETRANSFERPHASE_PAUSED_SYSTEM ImageTransferPhase = "paused_system"
+    IMAGETRANSFERPHASE_PAUSED_USER ImageTransferPhase = "paused_user"
+    IMAGETRANSFERPHASE_RESUMING ImageTransferPhase = "resuming"
+    IMAGETRANSFERPHASE_TRANSFERRING ImageTransferPhase = "transferring"
+    IMAGETRANSFERPHASE_UNKNOWN ImageTransferPhase = "unknown"
+)
+
+type InheritableBoolean string
+const (
+    INHERITABLEBOOLEAN_FALSE InheritableBoolean = "false"
+    INHERITABLEBOOLEAN_INHERIT InheritableBoolean = "inherit"
+    INHERITABLEBOOLEAN_TRUE InheritableBoolean = "true"
+)
+
+type IpVersion string
+const (
+    IPVERSION_V4 IpVersion = "v4"
+    IPVERSION_V6 IpVersion = "v6"
+)
+
+type JobStatus string
+const (
+    JOBSTATUS_ABORTED JobStatus = "aborted"
+    JOBSTATUS_FAILED JobStatus = "failed"
+    JOBSTATUS_FINISHED JobStatus = "finished"
+    JOBSTATUS_STARTED JobStatus = "started"
+    JOBSTATUS_UNKNOWN JobStatus = "unknown"
+)
+
+type KdumpStatus string
+const (
+    KDUMPSTATUS_DISABLED KdumpStatus = "disabled"
+    KDUMPSTATUS_ENABLED KdumpStatus = "enabled"
+    KDUMPSTATUS_UNKNOWN KdumpStatus = "unknown"
+)
+
+type LogSeverity string
+const (
+    LOGSEVERITY_ALERT LogSeverity = "alert"
+    LOGSEVERITY_ERROR LogSeverity = "error"
+    LOGSEVERITY_NORMAL LogSeverity = "normal"
+    LOGSEVERITY_WARNING LogSeverity = "warning"
+)
+
+type LunStatus string
+const (
+    LUNSTATUS_FREE LunStatus = "free"
+    LUNSTATUS_UNUSABLE LunStatus = "unusable"
+    LUNSTATUS_USED LunStatus = "used"
+)
+
+type MessageBrokerType string
+const (
+    MESSAGEBROKERTYPE_QPID MessageBrokerType = "qpid"
+    MESSAGEBROKERTYPE_RABBIT_MQ MessageBrokerType = "rabbit_mq"
+)
+
+type MigrateOnError string
+const (
+    MIGRATEONERROR_DO_NOT_MIGRATE MigrateOnError = "do_not_migrate"
+    MIGRATEONERROR_MIGRATE MigrateOnError = "migrate"
+    MIGRATEONERROR_MIGRATE_HIGHLY_AVAILABLE MigrateOnError = "migrate_highly_available"
+)
+
+type MigrationBandwidthAssignmentMethod string
+const (
+    MIGRATIONBANDWIDTHASSIGNMENTMETHOD_AUTO MigrationBandwidthAssignmentMethod = "auto"
+    MIGRATIONBANDWIDTHASSIGNMENTMETHOD_CUSTOM MigrationBandwidthAssignmentMethod = "custom"
+    MIGRATIONBANDWIDTHASSIGNMENTMETHOD_HYPERVISOR_DEFAULT MigrationBandwidthAssignmentMethod = "hypervisor_default"
+)
+
+type NetworkPluginType string
+const (
+    NETWORKPLUGINTYPE_OPEN_VSWITCH NetworkPluginType = "open_vswitch"
+)
+
+type NetworkStatus string
+const (
+    NETWORKSTATUS_NON_OPERATIONAL NetworkStatus = "non_operational"
+    NETWORKSTATUS_OPERATIONAL NetworkStatus = "operational"
+)
+
+type NetworkUsage string
+const (
+    NETWORKUSAGE_DEFAULT_ROUTE NetworkUsage = "default_route"
+    NETWORKUSAGE_DISPLAY NetworkUsage = "display"
+    NETWORKUSAGE_GLUSTER NetworkUsage = "gluster"
+    NETWORKUSAGE_MANAGEMENT NetworkUsage = "management"
+    NETWORKUSAGE_MIGRATION NetworkUsage = "migration"
+    NETWORKUSAGE_VM NetworkUsage = "vm"
+)
+
+type NfsVersion string
+const (
+    NFSVERSION_AUTO NfsVersion = "auto"
+    NFSVERSION_V3 NfsVersion = "v3"
+    NFSVERSION_V4 NfsVersion = "v4"
+    NFSVERSION_V4_1 NfsVersion = "v4_1"
+    NFSVERSION_V4_2 NfsVersion = "v4_2"
+)
+
+type NicInterface string
+const (
+    NICINTERFACE_E1000 NicInterface = "e1000"
+    NICINTERFACE_PCI_PASSTHROUGH NicInterface = "pci_passthrough"
+    NICINTERFACE_RTL8139 NicInterface = "rtl8139"
+    NICINTERFACE_RTL8139_VIRTIO NicInterface = "rtl8139_virtio"
+    NICINTERFACE_SPAPR_VLAN NicInterface = "spapr_vlan"
+    NICINTERFACE_VIRTIO NicInterface = "virtio"
+)
+
+type NicStatus string
+const (
+    NICSTATUS_DOWN NicStatus = "down"
+    NICSTATUS_UP NicStatus = "up"
+)
+
+type NumaTuneMode string
+const (
+    NUMATUNEMODE_INTERLEAVE NumaTuneMode = "interleave"
+    NUMATUNEMODE_PREFERRED NumaTuneMode = "preferred"
+    NUMATUNEMODE_STRICT NumaTuneMode = "strict"
+)
+
+type OpenStackNetworkProviderType string
+const (
+    OPENSTACKNETWORKPROVIDERTYPE_EXTERNAL OpenStackNetworkProviderType = "external"
+    OPENSTACKNETWORKPROVIDERTYPE_NEUTRON OpenStackNetworkProviderType = "neutron"
+)
+
+type OpenstackVolumeAuthenticationKeyUsageType string
+const (
+    OPENSTACKVOLUMEAUTHENTICATIONKEYUSAGETYPE_CEPH OpenstackVolumeAuthenticationKeyUsageType = "ceph"
+)
+
+type OsType string
+const (
+    OSTYPE_OTHER OsType = "other"
+    OSTYPE_OTHER_LINUX OsType = "other_linux"
+    OSTYPE_RHEL_3 OsType = "rhel_3"
+    OSTYPE_RHEL_3X64 OsType = "rhel_3x64"
+    OSTYPE_RHEL_4 OsType = "rhel_4"
+    OSTYPE_RHEL_4X64 OsType = "rhel_4x64"
+    OSTYPE_RHEL_5 OsType = "rhel_5"
+    OSTYPE_RHEL_5X64 OsType = "rhel_5x64"
+    OSTYPE_RHEL_6 OsType = "rhel_6"
+    OSTYPE_RHEL_6X64 OsType = "rhel_6x64"
+    OSTYPE_UNASSIGNED OsType = "unassigned"
+    OSTYPE_WINDOWS_2003 OsType = "windows_2003"
+    OSTYPE_WINDOWS_2003X64 OsType = "windows_2003x64"
+    OSTYPE_WINDOWS_2008 OsType = "windows_2008"
+    OSTYPE_WINDOWS_2008R2X64 OsType = "windows_2008r2x64"
+    OSTYPE_WINDOWS_2008X64 OsType = "windows_2008x64"
+    OSTYPE_WINDOWS_2012X64 OsType = "windows_2012x64"
+    OSTYPE_WINDOWS_7 OsType = "windows_7"
+    OSTYPE_WINDOWS_7X64 OsType = "windows_7x64"
+    OSTYPE_WINDOWS_8 OsType = "windows_8"
+    OSTYPE_WINDOWS_8X64 OsType = "windows_8x64"
+    OSTYPE_WINDOWS_XP OsType = "windows_xp"
+)
+
+type PayloadEncoding string
+const (
+    PAYLOADENCODING_BASE64 PayloadEncoding = "base64"
+    PAYLOADENCODING_PLAINTEXT PayloadEncoding = "plaintext"
+)
+
+type PmProxyType string
+const (
+    PMPROXYTYPE_CLUSTER PmProxyType = "cluster"
+    PMPROXYTYPE_DC PmProxyType = "dc"
+    PMPROXYTYPE_OTHER_DC PmProxyType = "other_dc"
+)
+
+type PolicyUnitType string
+const (
+    POLICYUNITTYPE_FILTER PolicyUnitType = "filter"
+    POLICYUNITTYPE_LOAD_BALANCING PolicyUnitType = "load_balancing"
+    POLICYUNITTYPE_WEIGHT PolicyUnitType = "weight"
+)
+
+type PowerManagementStatus string
+const (
+    POWERMANAGEMENTSTATUS_OFF PowerManagementStatus = "off"
+    POWERMANAGEMENTSTATUS_ON PowerManagementStatus = "on"
+    POWERMANAGEMENTSTATUS_UNKNOWN PowerManagementStatus = "unknown"
+)
+
+type QcowVersion string
+const (
+    QCOWVERSION_QCOW2_V2 QcowVersion = "qcow2_v2"
+    QCOWVERSION_QCOW2_V3 QcowVersion = "qcow2_v3"
+)
+
+type QosType string
+const (
+    QOSTYPE_CPU QosType = "cpu"
+    QOSTYPE_HOSTNETWORK QosType = "hostnetwork"
+    QOSTYPE_NETWORK QosType = "network"
+    QOSTYPE_STORAGE QosType = "storage"
+)
+
+type QuotaModeType string
+const (
+    QUOTAMODETYPE_AUDIT QuotaModeType = "audit"
+    QUOTAMODETYPE_DISABLED QuotaModeType = "disabled"
+    QUOTAMODETYPE_ENABLED QuotaModeType = "enabled"
+)
+
+type ReportedDeviceType string
+const (
+    REPORTEDDEVICETYPE_NETWORK ReportedDeviceType = "network"
+)
+
+type ResolutionType string
+const (
+    RESOLUTIONTYPE_ADD ResolutionType = "add"
+    RESOLUTIONTYPE_COPY ResolutionType = "copy"
+)
+
+type RngSource string
+const (
+    RNGSOURCE_HWRNG RngSource = "hwrng"
+    RNGSOURCE_RANDOM RngSource = "random"
+    RNGSOURCE_URANDOM RngSource = "urandom"
+)
+
+type RoleType string
+const (
+    ROLETYPE_ADMIN RoleType = "admin"
+    ROLETYPE_USER RoleType = "user"
+)
+
+type ScsiGenericIO string
+const (
+    SCSIGENERICIO_FILTERED ScsiGenericIO = "filtered"
+    SCSIGENERICIO_UNFILTERED ScsiGenericIO = "unfiltered"
+)
+
+type SeLinuxMode string
+const (
+    SELINUXMODE_DISABLED SeLinuxMode = "disabled"
+    SELINUXMODE_ENFORCING SeLinuxMode = "enforcing"
+    SELINUXMODE_PERMISSIVE SeLinuxMode = "permissive"
+)
+
+type SerialNumberPolicy string
+const (
+    SERIALNUMBERPOLICY_CUSTOM SerialNumberPolicy = "custom"
+    SERIALNUMBERPOLICY_HOST SerialNumberPolicy = "host"
+    SERIALNUMBERPOLICY_VM SerialNumberPolicy = "vm"
+)
+
+type SnapshotStatus string
+const (
+    SNAPSHOTSTATUS_IN_PREVIEW SnapshotStatus = "in_preview"
+    SNAPSHOTSTATUS_LOCKED SnapshotStatus = "locked"
+    SNAPSHOTSTATUS_OK SnapshotStatus = "ok"
+)
+
+type SnapshotType string
+const (
+    SNAPSHOTTYPE_ACTIVE SnapshotType = "active"
+    SNAPSHOTTYPE_PREVIEW SnapshotType = "preview"
+    SNAPSHOTTYPE_REGULAR SnapshotType = "regular"
+    SNAPSHOTTYPE_STATELESS SnapshotType = "stateless"
+)
+
+type SpmStatus string
+const (
+    SPMSTATUS_CONTENDING SpmStatus = "contending"
+    SPMSTATUS_NONE SpmStatus = "none"
+    SPMSTATUS_SPM SpmStatus = "spm"
+)
+
+type SshAuthenticationMethod string
+const (
+    SSHAUTHENTICATIONMETHOD_PASSWORD SshAuthenticationMethod = "password"
+    SSHAUTHENTICATIONMETHOD_PUBLICKEY SshAuthenticationMethod = "publickey"
+)
+
+type SsoMethod string
+const (
+    SSOMETHOD_GUEST_AGENT SsoMethod = "guest_agent"
+)
+
+type StatisticKind string
+const (
+    STATISTICKIND_COUNTER StatisticKind = "counter"
+    STATISTICKIND_GAUGE StatisticKind = "gauge"
+)
+
+type StatisticUnit string
+const (
+    STATISTICUNIT_BITS_PER_SECOND StatisticUnit = "bits_per_second"
+    STATISTICUNIT_BYTES StatisticUnit = "bytes"
+    STATISTICUNIT_BYTES_PER_SECOND StatisticUnit = "bytes_per_second"
+    STATISTICUNIT_COUNT_PER_SECOND StatisticUnit = "count_per_second"
+    STATISTICUNIT_NONE StatisticUnit = "none"
+    STATISTICUNIT_PERCENT StatisticUnit = "percent"
+    STATISTICUNIT_SECONDS StatisticUnit = "seconds"
+)
+
+type StepEnum string
+const (
+    STEPENUM_EXECUTING StepEnum = "executing"
+    STEPENUM_FINALIZING StepEnum = "finalizing"
+    STEPENUM_REBALANCING_VOLUME StepEnum = "rebalancing_volume"
+    STEPENUM_REMOVING_BRICKS StepEnum = "removing_bricks"
+    STEPENUM_UNKNOWN StepEnum = "unknown"
+    STEPENUM_VALIDATING StepEnum = "validating"
+)
+
+type StepStatus string
+const (
+    STEPSTATUS_ABORTED StepStatus = "aborted"
+    STEPSTATUS_FAILED StepStatus = "failed"
+    STEPSTATUS_FINISHED StepStatus = "finished"
+    STEPSTATUS_STARTED StepStatus = "started"
+    STEPSTATUS_UNKNOWN StepStatus = "unknown"
+)
+
+type StorageDomainStatus string
+const (
+    STORAGEDOMAINSTATUS_ACTIVATING StorageDomainStatus = "activating"
+    STORAGEDOMAINSTATUS_ACTIVE StorageDomainStatus = "active"
+    STORAGEDOMAINSTATUS_DETACHING StorageDomainStatus = "detaching"
+    STORAGEDOMAINSTATUS_INACTIVE StorageDomainStatus = "inactive"
+    STORAGEDOMAINSTATUS_LOCKED StorageDomainStatus = "locked"
+    STORAGEDOMAINSTATUS_MAINTENANCE StorageDomainStatus = "maintenance"
+    STORAGEDOMAINSTATUS_MIXED StorageDomainStatus = "mixed"
+    STORAGEDOMAINSTATUS_PREPARING_FOR_MAINTENANCE StorageDomainStatus = "preparing_for_maintenance"
+    STORAGEDOMAINSTATUS_UNATTACHED StorageDomainStatus = "unattached"
+    STORAGEDOMAINSTATUS_UNKNOWN StorageDomainStatus = "unknown"
+)
+
+type StorageDomainType string
+const (
+    STORAGEDOMAINTYPE_DATA StorageDomainType = "data"
+    STORAGEDOMAINTYPE_EXPORT StorageDomainType = "export"
+    STORAGEDOMAINTYPE_IMAGE StorageDomainType = "image"
+    STORAGEDOMAINTYPE_ISO StorageDomainType = "iso"
+    STORAGEDOMAINTYPE_VOLUME StorageDomainType = "volume"
+)
+
+type StorageFormat string
+const (
+    STORAGEFORMAT_V1 StorageFormat = "v1"
+    STORAGEFORMAT_V2 StorageFormat = "v2"
+    STORAGEFORMAT_V3 StorageFormat = "v3"
+    STORAGEFORMAT_V4 StorageFormat = "v4"
+)
+
+type StorageType string
+const (
+    STORAGETYPE_CINDER StorageType = "cinder"
+    STORAGETYPE_FCP StorageType = "fcp"
+    STORAGETYPE_GLANCE StorageType = "glance"
+    STORAGETYPE_GLUSTERFS StorageType = "glusterfs"
+    STORAGETYPE_ISCSI StorageType = "iscsi"
+    STORAGETYPE_LOCALFS StorageType = "localfs"
+    STORAGETYPE_NFS StorageType = "nfs"
+    STORAGETYPE_POSIXFS StorageType = "posixfs"
+)
+
+type SwitchType string
+const (
+    SWITCHTYPE_LEGACY SwitchType = "legacy"
+    SWITCHTYPE_OVS SwitchType = "ovs"
+)
+
+type TemplateStatus string
+const (
+    TEMPLATESTATUS_ILLEGAL TemplateStatus = "illegal"
+    TEMPLATESTATUS_LOCKED TemplateStatus = "locked"
+    TEMPLATESTATUS_OK TemplateStatus = "ok"
+)
+
+type TransportType string
+const (
+    TRANSPORTTYPE_RDMA TransportType = "rdma"
+    TRANSPORTTYPE_TCP TransportType = "tcp"
+)
+
+type UsbType string
+const (
+    USBTYPE_LEGACY UsbType = "legacy"
+    USBTYPE_NATIVE UsbType = "native"
+)
+
+type ValueType string
+const (
+    VALUETYPE_DECIMAL ValueType = "decimal"
+    VALUETYPE_INTEGER ValueType = "integer"
+    VALUETYPE_STRING ValueType = "string"
+)
+
+type VmAffinity string
+const (
+    VMAFFINITY_MIGRATABLE VmAffinity = "migratable"
+    VMAFFINITY_PINNED VmAffinity = "pinned"
+    VMAFFINITY_USER_MIGRATABLE VmAffinity = "user_migratable"
+)
+
+type VmDeviceType string
+const (
+    VMDEVICETYPE_CDROM VmDeviceType = "cdrom"
+    VMDEVICETYPE_FLOPPY VmDeviceType = "floppy"
+)
+
+type VmPoolType string
+const (
+    VMPOOLTYPE_AUTOMATIC VmPoolType = "automatic"
+    VMPOOLTYPE_MANUAL VmPoolType = "manual"
+)
+
+type VmStatus string
+const (
+    VMSTATUS_DOWN VmStatus = "down"
+    VMSTATUS_IMAGE_LOCKED VmStatus = "image_locked"
+    VMSTATUS_MIGRATING VmStatus = "migrating"
+    VMSTATUS_NOT_RESPONDING VmStatus = "not_responding"
+    VMSTATUS_PAUSED VmStatus = "paused"
+    VMSTATUS_POWERING_DOWN VmStatus = "powering_down"
+    VMSTATUS_POWERING_UP VmStatus = "powering_up"
+    VMSTATUS_REBOOT_IN_PROGRESS VmStatus = "reboot_in_progress"
+    VMSTATUS_RESTORING_STATE VmStatus = "restoring_state"
+    VMSTATUS_SAVING_STATE VmStatus = "saving_state"
+    VMSTATUS_SUSPENDED VmStatus = "suspended"
+    VMSTATUS_UNASSIGNED VmStatus = "unassigned"
+    VMSTATUS_UNKNOWN VmStatus = "unknown"
+    VMSTATUS_UP VmStatus = "up"
+    VMSTATUS_WAIT_FOR_LAUNCH VmStatus = "wait_for_launch"
+)
+
+type VmType string
+const (
+    VMTYPE_DESKTOP VmType = "desktop"
+    VMTYPE_SERVER VmType = "server"
+)
+
+type VnicPassThroughMode string
+const (
+    VNICPASSTHROUGHMODE_DISABLED VnicPassThroughMode = "disabled"
+    VNICPASSTHROUGHMODE_ENABLED VnicPassThroughMode = "enabled"
+)
+
+type WatchdogAction string
+const (
+    WATCHDOGACTION_DUMP WatchdogAction = "dump"
+    WATCHDOGACTION_NONE WatchdogAction = "none"
+    WATCHDOGACTION_PAUSE WatchdogAction = "pause"
+    WATCHDOGACTION_POWEROFF WatchdogAction = "poweroff"
+    WATCHDOGACTION_RESET WatchdogAction = "reset"
+)
+
+type WatchdogModel string
+const (
+    WATCHDOGMODEL_I6300ESB WatchdogModel = "i6300esb"
+)
 

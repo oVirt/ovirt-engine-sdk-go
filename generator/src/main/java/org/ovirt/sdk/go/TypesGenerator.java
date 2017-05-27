@@ -132,40 +132,31 @@ public class TypesGenerator implements GoGenerator {
     private void generateEnum(EnumType type) {
         // Begin class:
         GoClassName typeName = goNames.getTypeName(type);
-        buffer.addLine("@unique");
-        buffer.addLine("class %1$s(Enum):", typeName.getClassName());
 
-        // Begin body:
+        // Type declaration
+        buffer.addLine("type %1$s string", typeName.getClassName());
+
+        // Type definition
+        buffer.addLine("const (");
         buffer.startBlock();
-
-        // Values:
         type.values().sorted().forEach(this::generateEnumValue);
-        buffer.addLine();
-
-        // Constructor:
-        buffer.addLine("def __init__(self, image):");
-        buffer.startBlock();
-        buffer.addLine("self._image = image");
         buffer.endBlock();
-        buffer.addLine();
+        buffer.addLine(")");
 
-        // Method to convert to string:
-        buffer.addLine("def __str__(self):");
-        buffer.startBlock();
-        buffer.addLine("return self._image");
-        buffer.endBlock();
-        buffer.addLine();
-
-        // End body:
-        buffer.endBlock();
+        // End definition:
         buffer.addLine();
     }
 
     private void generateEnumValue(EnumValue value) {
         Name name = value.getName();
         String constantName = goNames.getConstantStyleName(name);
+        String className = goNames.getTypeName(value.getDeclaringType()).getClassName();
         String constantValue = names.getLowerJoined(name, "_");
-        buffer.addLine("%1$s = '%2$s'", constantName, constantValue);
+
+        // To avoid constant-name conflict, eg: VMSTATUS_DOWN
+        constantName = className.toUpperCase() + "_" + constantName;
+
+        buffer.addLine("%1$s %2$s = \"%3$s\"", constantName, className, constantValue);
     }
 
     private void generateMemberFormalParameter(StructMember member) {
