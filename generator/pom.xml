@@ -25,14 +25,14 @@ limitations under the License.
 
   <parent>
     <groupId>org.ovirt.engine.api</groupId>
-    <artifactId>python-sdk-parent</artifactId>
+    <artifactId>go-sdk-parent</artifactId>
     <version>4.2.0.a2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>python-sdk-generator</artifactId>
+  <artifactId>go-sdk-generator</artifactId>
   <packaging>jar</packaging>
 
-  <name>oVirt Python SDK Generator</name>
+  <name>oVirt Go SDK Generator</name>
 
   <dependencies>
 

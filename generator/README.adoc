@@ -1,5 +1,5 @@
-= oVirt Engine Pyton SDK Generator
+= oVirt Engine Go SDK Generator
 
 == Introduction
 
-This project contains the code generator for the oVirt Python SDK.
+This project contains the code generator for the oVirt Go SDK.

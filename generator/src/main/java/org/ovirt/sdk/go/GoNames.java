@@ -58,7 +58,7 @@ public class GoNames {
 
     // We need the Python reserved words in order to avoid producing names that aren't legal:
     @Inject
-    @ReservedWords(language = "python")
+    @ReservedWords(language = "go")
     private Set<String> reservedWords;
 
     // The name of the root module:
@@ -233,7 +233,7 @@ public class GoNames {
         Name name = new Name(words);
         GoClassName result = new GoClassName();
         result.setClassName(getClassStyleName(name));
-        result.setModuleName(getModuleName(module));
+        result.setPackageName(getModuleName(module));
         return result;
     }
 

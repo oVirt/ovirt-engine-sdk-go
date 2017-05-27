@@ -28,3 +28,6 @@ target/
 .settings/
 .vscode/
 .project
+
+# temp added
+sdk/ovirtsdk4/*.py

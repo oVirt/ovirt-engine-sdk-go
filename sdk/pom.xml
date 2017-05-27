@@ -25,14 +25,14 @@ limitations under the License.
 
   <parent>
     <groupId>org.ovirt.engine.api</groupId>
-    <artifactId>python-sdk-parent</artifactId>
+    <artifactId>go-sdk-parent</artifactId>
     <version>4.2.0.a2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>python-sdk</artifactId>
+  <artifactId>go-sdk</artifactId>
   <packaging>pom</packaging>
 
-  <name>oVirt Python SDK</name>
+  <name>oVirt Go SDK</name>
 
   <properties>
 
@@ -102,7 +102,7 @@ limitations under the License.
           </execution>
 
           <!-- Run code format check: -->
-          <execution>
+          <!--<execution>
             <id>format-check</id>
             <phase>package</phase>
             <goals>
@@ -111,11 +111,11 @@ limitations under the License.
             <configuration>
               <executable>flake8</executable>
               <arguments>
-                <argument>--ignore=E501</argument>
+                <argument>ignore=E501</argument>
                 <argument>ovirtsdk4</argument>
               </arguments>
             </configuration>
-          </execution>
+          </execution>-->
 
           <!-- Run the tests: -->
           <!--<execution>
@@ -156,7 +156,7 @@ limitations under the License.
         <dependencies>
           <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>python-sdk-generator</artifactId>
+            <artifactId>go-sdk-generator</artifactId>
             <version>${project.version}</version>
           </dependency>
         </dependencies>

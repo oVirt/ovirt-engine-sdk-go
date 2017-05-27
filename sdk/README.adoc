@@ -1,8 +1,8 @@
-= oVirt Engine API Python SDK
+= oVirt Engine API Go SDK
 
 == Introduction
 
-This project contains the Python SDK for the oVirt Engine API.
+This project contains the Go SDK for the oVirt Engine API.
 
 == Important
 

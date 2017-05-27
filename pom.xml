@@ -24,14 +24,14 @@ limitations under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.ovirt.engine.api</groupId>
-  <artifactId>python-sdk-parent</artifactId>
+  <artifactId>go-sdk-parent</artifactId>
   <packaging>pom</packaging>
   <version>4.2.0.a2-SNAPSHOT</version>
 
-  <name>oVirt Python SDK Parent</name>
+  <name>oVirt Go SDK Parent</name>
 
   <description>
-    Python SDK for the oVirt Engine API.
+    Go SDK for the oVirt Engine API.
   </description>
 
   <url>http://www.ovirt.org</url>
