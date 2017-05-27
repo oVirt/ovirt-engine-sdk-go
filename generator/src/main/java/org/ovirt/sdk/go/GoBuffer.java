@@ -182,13 +182,22 @@ public class GoBuffer {
         buffer.append("// limitations under the License.\n");
         buffer.append("//\n");
 
+        // Package:
+        buffer.append("package ovirtsdk4");
+        buffer.append("\n");
+        buffer.append("\n");
+
         // Add the imports:
         if (!imports.isEmpty()) {
+            buffer.append("import (\n");
             imports.stream().sorted().forEach(line -> {
-                buffer.append(line);
+                // four blanks
+                buffer.append("    ");
+                // "fmt"
+                buffer.append("\"" + line + "\"");
                 buffer.append("\n");
             });
-            buffer.append("\n");
+            buffer.append(")\n");
             buffer.append("\n");
         }
 

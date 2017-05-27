@@ -56,7 +56,7 @@ public class GoNames {
     @Inject
     private Words words;
 
-    // We need the Python reserved words in order to avoid producing names that aren't legal:
+    // We need the Go reserved words in order to avoid producing names that aren't legal:
     @Inject
     @ReservedWords(language = "go")
     private Set<String> reservedWords;
@@ -157,7 +157,7 @@ public class GoNames {
     }
 
     /**
-     * Calculates that should be used in Python to reference the given type. For example, for the boolean type it will
+     * Calculates that should be used in Go to reference the given type. For example, for the boolean type it will
      * return the {@code bool} string.
      */
     public GoTypeReference getTypeReference(Type type) {
@@ -177,8 +177,8 @@ public class GoNames {
                 reference.setText("string");
             }
             else if (type == model.getDateType()) {
-                reference.addImport("import datatime");
-                reference.setText("datetime.date");
+                reference.addImport("time");
+                reference.setText("time.Time");
             }
             else {
                 throw new IllegalArgumentException(
@@ -187,11 +187,11 @@ public class GoNames {
             }
         }
         else if (type instanceof StructType || type instanceof EnumType) {
-            reference.addImport(String.format("from %1$s import %2$s", getRootPackageName(), TYPES_PACKAGE));
-            reference.setText(TYPES_PACKAGE + "." + getTypeName(type).getClassName());
+            reference.setText(getTypeName(type).getClassName());
         }
         else if (type instanceof ListType) {
-            reference.setText("list");
+            ListType listtype = (ListType)type;
+            reference.setText("[]" + getClassStyleName(listtype.getElementType().getName()));
         }
         else {
             throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");
@@ -199,28 +199,28 @@ public class GoNames {
         return reference;
     }
     /**
-     * Calculates the Python name of the base class of the services.
+     * Calculates the Go name of the base class of the services.
      */
     public GoClassName getBaseServiceName() {
         return buildClassName(SERVICE_NAME, null, SERVICES_PACKAGE);
     }
 
     /**
-     * Calculates the Python name that corresponds to the given service.
+     * Calculates the Go name that corresponds to the given service.
      */
     public GoClassName getServiceName(Service service) {
         return buildClassName(service.getName(), SERVICE_NAME, SERVICES_PACKAGE);
     }
 
     /**
-     * Calculates the Python name of the reader for the given type.
+     * Calculates the Go name of the reader for the given type.
      */
     public GoClassName getReaderName(Type type) {
         return buildClassName(type.getName(), READER_NAME, READERS_PACKAGE);
     }
 
     /**
-     * Calculates the Python name of the writer for the given type.
+     * Calculates the Go name of the writer for the given type.
      */
     public GoClassName getWriterName(Type type) {
         return buildClassName(type.getName(), WRITER_NAME, WRITERS_PACKAGE);
@@ -234,7 +234,7 @@ public class GoNames {
      * @param base the base name
      * @param suffix the suffix to add to the name
      * @param package the package name
-     * @return the calculated Python class name
+     * @return the calculated Go class name
      */
     private GoClassName buildClassName(Name base, Name suffix, String pkg) {
         List<String> words = base.getWords();
@@ -249,32 +249,28 @@ public class GoNames {
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Python classes.
+     * Returns a representation of the given name using the capitalization style typically used for Go classes.
      */
     public String getClassStyleName(Name name) {
         return name.words().map(words::capitalize).collect(joining());
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Python members.
+     * Returns a representation of the given name using the capitalization style typically used for Go members.
      */
     public String getMemberStyleName(Name name) {
-        String result = name.words().map(String::toLowerCase).collect(joining("_"));
-        if (reservedWords.contains(result)) {
-            result += "_";
-        }
-        return result;
+        return getClassStyleName(name);
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Python constants.
+     * Returns a representation of the given name using the capitalization style typically used for Go constants.
      */
     public String getConstantStyleName(Name name) {
         return name.words().map(String::toUpperCase).collect(joining("_"));
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Python packages.
+     * Returns a representation of the given name using the capitalization style typically used for Go packages.
      */
     public String getModuleStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));

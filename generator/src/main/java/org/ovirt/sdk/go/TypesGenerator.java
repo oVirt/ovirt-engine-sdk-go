@@ -75,14 +75,6 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateTypes(Model model) {
-        // Generate the import statements for structs that aren't generated:
-        String rootPackageName = goNames.getRootPackageName();
-        buffer.addImport("from enum import Enum, unique", rootPackageName);
-        buffer.addImport("from %1$s import Struct", rootPackageName);
-
-        // The declarations of struct types need to appear in inheritance order, otherwise some symbols won't be
-        // defined and that will produce errors. To order them correctly we need first to sort them by name, and
-        // then sort again so that bases are before extensions.
         Deque<StructType> pending = model.types()
             .filter(StructType.class::isInstance)
             .map(StructType.class::cast)
@@ -114,10 +106,10 @@ public class TypesGenerator implements GoGenerator {
         // Begin class:
         GoClassName typeName = goNames.getTypeName(type);
         Type base = type.getBase();
-        String baseName = base != null? goNames.getTypeName(base).getClassName(): "Struct";
-        buffer.addLine("class %1$s(%2$s):", typeName.getClassName(), baseName);
+        String baseName = base != null? goNames.getTypeName(base).getClassName(): "OvType";
+        buffer.addLine("type %1$s struct {", typeName.getClassName());
         buffer.startBlock();
-        buffer.addLine();
+        buffer.addLine("%1$s", baseName);
 
         // Constructor with a named parameter for each attribute and link:
         Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
@@ -126,77 +118,15 @@ public class TypesGenerator implements GoGenerator {
             .collect(toSet());
         Set<StructMember> inheritedMembers = new HashSet<>(allMembers);
         inheritedMembers.removeAll(declaredMembers);
-        buffer.addLine("def __init__(");
-        buffer.startBlock();
-        buffer.addLine("self,");
         allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
-        buffer.endBlock();
-        buffer.addLine("):");
-        buffer.startBlock();
-        buffer.addLine("super(%1$s, self).__init__(", typeName.getClassName());
-        buffer.startBlock();
-        inheritedMembers.stream().sorted().forEach(this::generateMemberPropagate);
-        buffer.endBlock();
-        buffer.addLine(")");
-        if (!declaredMembers.isEmpty()) {
-            declaredMembers.stream().sorted().forEach(this::generateMemberInitialization);
-        }
-        else {
-            buffer.addLine("pass");
-        }
+
         buffer.endBlock();
         buffer.addLine();
-
-        // Generate getters and setters for attributes and links:
-        declaredMembers.forEach(this::generateMember);
 
         // End class:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
-    }
-
-    private void generateMember(StructMember member) {
-        generateGetter(member);
-        generateSetter(member);
-    }
-
-    private void generateGetter(StructMember member) {
-        Name name = member.getName();
-        String property = goNames.getMemberStyleName(name);
-        buffer.addLine("@property");
-        buffer.addLine("def %1$s(self):", property);
-        buffer.startBlock();
-        buffer.startComment();
-        buffer.addLine("Returns the value of the `%1$s` property.", property);
-        buffer.endComment();
-        buffer.addLine("return self._%1$s", property);
-        buffer.endBlock();
-        buffer.addLine();
-    }
-
-    private void generateSetter(StructMember member) {
-        Name name = member.getName();
-        String property = goNames.getMemberStyleName(name);
-        buffer.addLine("@%1$s.setter", property);
-        buffer.addLine("def %1$s(self, value):", property);
-        buffer.startBlock();
-        buffer.startComment();
-        buffer.addLine("Sets the value of the `%1$s` property.", property);
-        buffer.endComment();
-        generateCheckType(member, "value");
-        buffer.addLine("self._%1$s = value", property);
-        buffer.endBlock();
-        buffer.addLine();
-    }
-
-    private void generateCheckType(StructMember member, String value) {
-        Type type = member.getType();
-        if (type instanceof StructType || type instanceof EnumType) {
-            Name name = member.getName();
-            String property = goNames.getMemberStyleName(name);
-            GoClassName typeName = goNames.getTypeName(type);
-            buffer.addLine("Struct._check_type('%1$s', %2$s, %3$s)", property, value, typeName.getClassName());
-        }
     }
 
     private void generateEnum(EnumType type) {
@@ -239,15 +169,14 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        buffer.addLine("%1$s=None,", goNames.getMemberStyleName(member.getName()));
+        GoTypeReference goTypeReference = goNames.getTypeReference(member.getType());
+        buffer.addImports(goTypeReference.getImports());
+        buffer.addLine(
+            "%1$s    %2$s",
+            goNames.getMemberStyleName(member.getName()),
+            goTypeReference.getText()
+        );
     }
 
-    private void generateMemberInitialization(StructMember member) {
-        buffer.addLine("self.%1$s = %1$s", goNames.getMemberStyleName(member.getName()));
-    }
-
-    private void generateMemberPropagate(StructMember member) {
-        buffer.addLine("%1$s=%1$s,", goNames.getMemberStyleName(member.getName()));
-    }
 }
 

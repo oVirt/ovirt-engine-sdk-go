@@ -32,6 +32,6 @@ target/
 # generated code
 sdk/ovirtsdk4/readers.go
 sdk/ovirtsdk4/services.go
-sdk/ovirtsdk4/types.go
+# sdk/ovirtsdk4/types.go
 sdk/ovirtsdk4/version.go
 sdk/ovirtsdk4/writers.go
