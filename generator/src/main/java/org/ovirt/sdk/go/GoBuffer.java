@@ -43,7 +43,7 @@ public class GoBuffer {
     // The name of the file:
     private String fileName;
 
-    // The name of the module:
+    // The name of the package:
     private String packageName;
 
     // The imports:
@@ -165,30 +165,22 @@ public class GoBuffer {
     public String toString() {
         StringBuilder buffer = new StringBuilder();
 
-        // Encoding:
-        buffer.append("# -*- coding: utf-8 -*-\n");
-        buffer.append("\n");
-
         // License:
-        buffer.append("#\n");
-        buffer.append("# Copyright (c) 2016 Red Hat, Inc.\n");
-        buffer.append("#\n");
-        buffer.append("# Licensed under the Apache License, Version 2.0 (the \"License\");\n");
-        buffer.append("# you may not use this file except in compliance with the License.\n");
-        buffer.append("# You may obtain a copy of the License at\n");
-        buffer.append("#\n");
-        buffer.append("#   http://www.apache.org/licenses/LICENSE-2.0\n");
-        buffer.append("#\n");
-        buffer.append("# Unless required by applicable law or agreed to in writing, software\n");
-        buffer.append("# distributed under the License is distributed on an \"AS IS\" BASIS,\n");
-        buffer.append("# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n");
-        buffer.append("# See the License for the specific language governing permissions and\n");
-        buffer.append("# limitations under the License.\n");
-        buffer.append("#\n");
-
-        // Two blank lines, as required by PEP8:
-        buffer.append("\n");
-        buffer.append("\n");
+        buffer.append("//\n");
+        buffer.append("// Copyright (c) 2017 Red Hat, Inc.\n");
+        buffer.append("//\n");
+        buffer.append("// Licensed under the Apache License, Version 2.0 (the \"License\");\n");
+        buffer.append("// you may not use this file except in compliance with the License.\n");
+        buffer.append("// You may obtain a copy of the License at\n");
+        buffer.append("//\n");
+        buffer.append("//   http://www.apache.org/licenses/LICENSE-2.0\n");
+        buffer.append("//\n");
+        buffer.append("// Unless required by applicable law or agreed to in writing, software\n");
+        buffer.append("// distributed under the License is distributed on an \"AS IS\" BASIS,\n");
+        buffer.append("// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n");
+        buffer.append("// See the License for the specific language governing permissions and\n");
+        buffer.append("// limitations under the License.\n");
+        buffer.append("//\n");
 
         // Add the imports:
         if (!imports.isEmpty()) {
@@ -198,19 +190,6 @@ public class GoBuffer {
             });
             buffer.append("\n");
             buffer.append("\n");
-        }
-
-        // Remove empty lines at the end of the file, as required by PEP8:
-        for (;;) {
-            if (lines.isEmpty()) {
-                break;
-            }
-            int index = lines.size() - 1;
-            String last = lines.get(index);
-            if (!last.isEmpty()) {
-                break;
-            }
-            lines.remove(index);
         }
 
         // Body:
@@ -223,7 +202,7 @@ public class GoBuffer {
     }
 
     /**
-     * Creates a {@code .py} source file and writes the source. The required intermediate directories will be created
+     * Creates a {@code .go} source file and writes the source. The required intermediate directories will be created
      * if they don't exist.
      *
      * @param dir the base directory for the source code
@@ -232,9 +211,9 @@ public class GoBuffer {
     public void write(File dir) throws IOException {
         // Calculate the complete file name:
         if (fileName == null) {
-            fileName = packageName.replace('.', File.separatorChar);
+            fileName = packageName;
         }
-        File file = new File(dir, fileName + ".py");
+        File file = new File(dir, fileName + ".go");
 
         // Create the directory and all its parent if needed:
         File parent = file.getParentFile();

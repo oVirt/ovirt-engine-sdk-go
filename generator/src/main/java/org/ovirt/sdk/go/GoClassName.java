@@ -43,7 +43,7 @@ public class GoClassName {
     public String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append(packageName);
-        buffer.append(".");
+        buffer.append("/");
         buffer.append(className);
         return buffer.toString();
     }

@@ -36,7 +36,7 @@ import org.ovirt.api.metamodel.tool.ReservedWords;
 import org.ovirt.api.metamodel.tool.Words;
 
 /**
- * This class contains the rules used to calculate the names of generated Python concepts.
+ * This class contains the rules used to calculate the names of generated Go concepts.
  */
 @ApplicationScoped
 public class GoNames {
@@ -66,6 +66,17 @@ public class GoNames {
 
     // The version number:
     private String version;
+
+    // root package url prefix
+    private String rootPackageUrlPrefix = "github.com/imjoey/sdk";
+
+    public void setRootPackageUrlPrefix(String newRootPackageUrlPrefix) {
+        rootPackageUrlPrefix = newRootPackageUrlPrefix;
+    }
+
+    public String getRootPackageUrlPrefix() {
+        return rootPackageUrlPrefix;
+    }
 
     /**
      * Sets the version.
@@ -117,7 +128,7 @@ public class GoNames {
     }
 
     /**
-     * Get the name of the version package.
+     * Get the name of the version package
      */
     public String getVersionPackageName() {
         return getPackageName(VERSION_PACKAGE);
@@ -131,7 +142,7 @@ public class GoNames {
         buffer.append(rootPackageName);
         if (relativeNames != null || relativeNames.length > 0) {
             for (String relativeName : relativeNames) {
-                buffer.append('.');
+                buffer.append('/');
                 buffer.append(relativeName);
             }
         }
@@ -139,7 +150,7 @@ public class GoNames {
     }
 
     /**
-     * Calculates the Python name that corresponds to the given type.
+     * Calculates the Go name that corresponds to the given type.
      */
     public GoClassName getTypeName(Type type) {
         return buildClassName(type.getName(), null, TYPES_PACKAGE);
@@ -216,7 +227,7 @@ public class GoNames {
     }
 
     /**
-     * Builds a Python name from the given base name, suffix, and package.
+     * Builds a Go name from the given base name, suffix, and package.
      *
      * The suffix can be {@code null} or empty, in that case then won't be added.
      *
