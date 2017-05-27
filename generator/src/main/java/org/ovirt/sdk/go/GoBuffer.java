@@ -36,9 +36,9 @@ import org.apache.commons.io.FileUtils;
  * list of imports and the rest of the source separately, so that imports can be added on demand while generating the
  * rest of the source.
  */
-public class PythonBuffer {
+public class GoBuffer {
     // Reference to the object used to generate names:
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
 
     // The name of the file:
     private String fileName;

@@ -42,11 +42,11 @@ public class Tool {
     private static final String VERSION_OPTION = "version";
 
     // Reference to the objects used to calculate Python names:
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
 
     // References to the generators:
     @Inject @Any
-    private Instance<PythonGenerator> generators;
+    private Instance<GoGenerator> generators;
 
     // Reference to the object used to add built-in types to the model:
     @Inject private BuiltinTypes builtinTypes;
@@ -124,12 +124,12 @@ public class Tool {
         builtinTypes.addBuiltinTypes(model);
 
         // Configure the object used to generate names:
-        pythonNames.setVersion(version);
+        goNames.setVersion(version);
 
         // Run the generators:
         if (outDir != null) {
             FileUtils.forceMkdir(outDir);
-            for (PythonGenerator generator : generators) {
+            for (GoGenerator generator : generators) {
                 System.out.println("***************** Generator is " + generator);
                 generator.setOut(outDir);
                 generator.generate(model);

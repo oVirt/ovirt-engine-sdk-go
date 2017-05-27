@@ -40,7 +40,7 @@ import org.ovirt.api.metamodel.tool.Names;
 /**
  * This class is responsible for generating the classes that represent the types of the model.
  */
-public class TypesGenerator implements PythonGenerator {
+public class TypesGenerator implements GoGenerator {
     // The directory were the output will be generated:
     protected File out;
 
@@ -48,10 +48,10 @@ public class TypesGenerator implements PythonGenerator {
     @Inject
     private Names names;
     @Inject
-    private PythonNames pythonNames;
+    private GoNames goNames;
 
     // The buffer used to generate the code:
-    private PythonBuffer buffer;
+    private GoBuffer buffer;
 
     public void setOut(File newOut) {
         out = newOut;
@@ -59,8 +59,8 @@ public class TypesGenerator implements PythonGenerator {
 
     public void generate(Model model) {
         // Prepare the buffer:
-        buffer = new PythonBuffer();
-        buffer.setModuleName(pythonNames.getTypesModuleName());
+        buffer = new GoBuffer();
+        buffer.setModuleName(goNames.getTypesModuleName());
 
         // Generate the code:
         generateTypes(model);
@@ -76,7 +76,7 @@ public class TypesGenerator implements PythonGenerator {
 
     private void generateTypes(Model model) {
         // Generate the import statements for structs that aren't generated:
-        String rootModuleName = pythonNames.getRootModuleName();
+        String rootModuleName = goNames.getRootModuleName();
         buffer.addImport("from enum import Enum, unique", rootModuleName);
         buffer.addImport("from %1$s import Struct", rootModuleName);
 
@@ -112,9 +112,9 @@ public class TypesGenerator implements PythonGenerator {
 
     private void generateStruct(StructType type) {
         // Begin class:
-        PythonClassName typeName = pythonNames.getTypeName(type);
+        GoClassName typeName = goNames.getTypeName(type);
         Type base = type.getBase();
-        String baseName = base != null? pythonNames.getTypeName(base).getClassName(): "Struct";
+        String baseName = base != null? goNames.getTypeName(base).getClassName(): "Struct";
         buffer.addLine("class %1$s(%2$s):", typeName.getClassName(), baseName);
         buffer.startBlock();
         buffer.addLine();
@@ -162,7 +162,7 @@ public class TypesGenerator implements PythonGenerator {
 
     private void generateGetter(StructMember member) {
         Name name = member.getName();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         buffer.addLine("@property");
         buffer.addLine("def %1$s(self):", property);
         buffer.startBlock();
@@ -176,7 +176,7 @@ public class TypesGenerator implements PythonGenerator {
 
     private void generateSetter(StructMember member) {
         Name name = member.getName();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         buffer.addLine("@%1$s.setter", property);
         buffer.addLine("def %1$s(self, value):", property);
         buffer.startBlock();
@@ -193,15 +193,15 @@ public class TypesGenerator implements PythonGenerator {
         Type type = member.getType();
         if (type instanceof StructType || type instanceof EnumType) {
             Name name = member.getName();
-            String property = pythonNames.getMemberStyleName(name);
-            PythonClassName typeName = pythonNames.getTypeName(type);
+            String property = goNames.getMemberStyleName(name);
+            GoClassName typeName = goNames.getTypeName(type);
             buffer.addLine("Struct._check_type('%1$s', %2$s, %3$s)", property, value, typeName.getClassName());
         }
     }
 
     private void generateEnum(EnumType type) {
         // Begin class:
-        PythonClassName typeName = pythonNames.getTypeName(type);
+        GoClassName typeName = goNames.getTypeName(type);
         buffer.addLine("@unique");
         buffer.addLine("class %1$s(Enum):", typeName.getClassName());
 
@@ -233,21 +233,21 @@ public class TypesGenerator implements PythonGenerator {
 
     private void generateEnumValue(EnumValue value) {
         Name name = value.getName();
-        String constantName = pythonNames.getConstantStyleName(name);
+        String constantName = goNames.getConstantStyleName(name);
         String constantValue = names.getLowerJoined(name, "_");
         buffer.addLine("%1$s = '%2$s'", constantName, constantValue);
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        buffer.addLine("%1$s=None,", pythonNames.getMemberStyleName(member.getName()));
+        buffer.addLine("%1$s=None,", goNames.getMemberStyleName(member.getName()));
     }
 
     private void generateMemberInitialization(StructMember member) {
-        buffer.addLine("self.%1$s = %1$s", pythonNames.getMemberStyleName(member.getName()));
+        buffer.addLine("self.%1$s = %1$s", goNames.getMemberStyleName(member.getName()));
     }
 
     private void generateMemberPropagate(StructMember member) {
-        buffer.addLine("%1$s=%1$s,", pythonNames.getMemberStyleName(member.getName()));
+        buffer.addLine("%1$s=%1$s,", goNames.getMemberStyleName(member.getName()));
     }
 }
 

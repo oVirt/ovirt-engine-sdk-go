@@ -26,7 +26,7 @@ import org.ovirt.api.metamodel.concepts.Model;
  * of them it will set the output file and invoke the {@link #generate(Model)} method. No specific order will be
  * used when there are multiple generators.
  */
-public interface PythonGenerator {
+public interface GoGenerator {
     /**
      * Set the directory were the output should be generated.
      */

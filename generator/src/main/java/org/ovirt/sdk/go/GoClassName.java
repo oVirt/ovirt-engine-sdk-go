@@ -17,18 +17,18 @@ limitations under the License.
 package org.ovirt.sdk.go;
 
 /**
- * This class represents the fully qualified name of a Python class, composed by the module name and the class.
+ * This class represents the fully qualified name of a Go class, composed by the package name and the struct.
  */
-public class PythonClassName {
-    private String moduleName;
+public class GoClassName {
+    private String packageName;
     private String className;
 
-    public String getModuleName() {
-        return moduleName;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setModuleName(String newModuleName) {
-        moduleName = newModuleName;
+    public void setPackageName(String newPackageName) {
+        packageName = newPackageName;
     }
 
     public String getClassName() {
@@ -42,7 +42,7 @@ public class PythonClassName {
     @Override
     public String toString() {
         StringBuilder buffer = new StringBuilder();
-        buffer.append(moduleName);
+        buffer.append(packageName);
         buffer.append(".");
         buffer.append(className);
         return buffer.toString();

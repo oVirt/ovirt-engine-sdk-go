@@ -39,7 +39,7 @@ import org.ovirt.api.metamodel.tool.Words;
  * This class contains the rules used to calculate the names of generated Python concepts.
  */
 @ApplicationScoped
-public class PythonNames {
+public class GoNames {
     // The names of the base classes:
     public static final Name READER_NAME = NameParser.parseUsingCase("Reader");
     public static final Name SERVICE_NAME = NameParser.parseUsingCase("Service");
@@ -141,7 +141,7 @@ public class PythonNames {
     /**
      * Calculates the Python name that corresponds to the given type.
      */
-    public PythonClassName getTypeName(Type type) {
+    public GoClassName getTypeName(Type type) {
         return buildClassName(type.getName(), null, TYPES_MODULE);
     }
 
@@ -149,8 +149,8 @@ public class PythonNames {
      * Calculates that should be used in Python to reference the given type. For example, for the boolean type it will
      * return the {@code bool} string.
      */
-    public PythonTypeReference getTypeReference(Type type) {
-        PythonTypeReference reference = new PythonTypeReference();
+    public GoTypeReference getTypeReference(Type type) {
+        GoTypeReference reference = new GoTypeReference();
         if (type instanceof PrimitiveType) {
             Model model = type.getModel();
             if (type == model.getBooleanType()) {
@@ -190,28 +190,28 @@ public class PythonNames {
     /**
      * Calculates the Python name of the base class of the services.
      */
-    public PythonClassName getBaseServiceName() {
+    public GoClassName getBaseServiceName() {
         return buildClassName(SERVICE_NAME, null, SERVICES_MODULE);
     }
 
     /**
      * Calculates the Python name that corresponds to the given service.
      */
-    public PythonClassName getServiceName(Service service) {
+    public GoClassName getServiceName(Service service) {
         return buildClassName(service.getName(), SERVICE_NAME, SERVICES_MODULE);
     }
 
     /**
      * Calculates the Python name of the reader for the given type.
      */
-    public PythonClassName getReaderName(Type type) {
+    public GoClassName getReaderName(Type type) {
         return buildClassName(type.getName(), READER_NAME, READERS_MODULE);
     }
 
     /**
      * Calculates the Python name of the writer for the given type.
      */
-    public PythonClassName getWriterName(Type type) {
+    public GoClassName getWriterName(Type type) {
         return buildClassName(type.getName(), WRITER_NAME, WRITERS_MODULE);
     }
 
@@ -225,13 +225,13 @@ public class PythonNames {
      * @param module the module name
      * @return the calculated Python class name
      */
-    private PythonClassName buildClassName(Name base, Name suffix, String module) {
+    private GoClassName buildClassName(Name base, Name suffix, String module) {
         List<String> words = base.getWords();
         if (suffix != null) {
             words.addAll(suffix.getWords());
         }
         Name name = new Name(words);
-        PythonClassName result = new PythonClassName();
+        GoClassName result = new GoClassName();
         result.setClassName(getClassStyleName(name));
         result.setModuleName(getModuleName(module));
         return result;

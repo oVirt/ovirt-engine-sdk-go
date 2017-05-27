@@ -24,7 +24,7 @@ import java.util.List;
  * example, if the type reference is {@code types.Vm} and the {@code types} prefix corresponds to the package
  * {@code ovirtsdk4.types} then the list of imports will contain {@code from ovirtsdk4 import types}.
  */
-public class PythonTypeReference {
+public class GoTypeReference {
     private String text;
     private List<String> imports = new ArrayList<>(1);
 

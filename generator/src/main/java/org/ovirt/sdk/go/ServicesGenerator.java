@@ -48,7 +48,7 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
 /**
  * This class is responsible for generating the classes that represent the services of the model.
  */
-public class ServicesGenerator implements PythonGenerator {
+public class ServicesGenerator implements GoGenerator {
     // Well known method names:
     private static final Name ADD = NameParser.parseUsingCase("Add");
     private static final Name GET = NameParser.parseUsingCase("Get");
@@ -60,11 +60,11 @@ public class ServicesGenerator implements PythonGenerator {
     protected File out;
 
     // Reference to the objects used to generate the code:
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
     @Inject private SchemaNames schemaNames;
 
     // The buffer used to generate the code:
-    private PythonBuffer buffer;
+    private GoBuffer buffer;
 
     /**
      * Set the directory were the output will be generated.
@@ -75,8 +75,8 @@ public class ServicesGenerator implements PythonGenerator {
 
     public void generate(Model model) {
         // Prepare the buffer:
-        buffer = new PythonBuffer();
-        buffer.setModuleName(pythonNames.getServicesModuleName());
+        buffer = new GoBuffer();
+        buffer.setModuleName(goNames.getServicesModuleName());
 
         // Generate the code:
         generateServices(model);
@@ -92,7 +92,7 @@ public class ServicesGenerator implements PythonGenerator {
 
     private void generateServices(Model model) {
         // Generate the imports:
-        String rootModuleName = pythonNames.getRootModuleName();
+        String rootModuleName = goNames.getRootModuleName();
         buffer.addImport("from %1$s import Error", rootModuleName);
         buffer.addImport("from %1$s import types", rootModuleName);
         buffer.addImport("from %1$s.service import Service", rootModuleName);
@@ -120,9 +120,9 @@ public class ServicesGenerator implements PythonGenerator {
 
     private void generateService(Service service) {
         // Begin class:
-        PythonClassName serviceName = pythonNames.getServiceName(service);
+        GoClassName serviceName = goNames.getServiceName(service);
         Service base = service.getBase();
-        PythonClassName baseName = base != null? pythonNames.getServiceName(base): pythonNames.getBaseServiceName();
+        GoClassName baseName = base != null? goNames.getServiceName(base): goNames.getBaseServiceName();
         buffer.addLine("class %1$s(%2$s):", serviceName.getClassName(), baseName.getClassName());
         buffer.startBlock();
         generateDoc(service);
@@ -176,8 +176,8 @@ public class ServicesGenerator implements PythonGenerator {
         // Begin method:
         Name methodName = method.getName();
         Name primaryParameterName = primaryParameter.getName();
-        String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
-        buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
+        String primaryArg = goNames.getMemberStyleName(primaryParameterName);
+        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
         buffer.addLine("%1$s,", primaryArg);
@@ -228,7 +228,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Begin method:
         Name name = method.getName();
-        buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
+        buffer.addLine("def %1$s(", goNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
@@ -265,7 +265,7 @@ public class ServicesGenerator implements PythonGenerator {
             .filter(Parameter::isOut)
             .findFirst()
             .orElse(null);
-        String member = parameter == null ? null : pythonNames.getMemberStyleName(parameter.getName());
+        String member = parameter == null ? null : goNames.getMemberStyleName(parameter.getName());
 
         buffer.addLine("# Send the request and wait for the response:");
         if (member == null) {
@@ -293,7 +293,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Begin method:
         Name methodName = method.getName();
-        buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
+        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
@@ -339,8 +339,8 @@ public class ServicesGenerator implements PythonGenerator {
         // Begin method:
         Name methodName = method.getName();
         Name primaryParameterName = primaryParameter.getName();
-        String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
-        buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
+        String primaryArg = goNames.getMemberStyleName(primaryParameterName);
+        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
         buffer.addLine("%1$s,", primaryArg);
@@ -388,7 +388,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Begin method:
         Name name = method.getName();
-        buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
+        buffer.addLine("def %1$s(", goNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
@@ -427,13 +427,13 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateFormalParameter(Parameter parameter) {
-        buffer.addLine("%1$s=None,", pythonNames.getMemberStyleName(parameter.getName()));
+        buffer.addLine("%1$s=None,", goNames.getMemberStyleName(parameter.getName()));
     }
 
     private void generateUrlParameter(Parameter parameter) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        String arg = pythonNames.getMemberStyleName(name);
+        String arg = goNames.getMemberStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
         buffer.addLine("if %1$s is not None:", arg);
         buffer.startBlock();
@@ -457,7 +457,7 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateStr(Service service) {
-        PythonClassName serviceName = pythonNames.getServiceName(service);
+        GoClassName serviceName = goNames.getServiceName(service);
         buffer.addLine("def __str__(self):");
         buffer.startBlock();
         buffer.addLine("return '%1$s:%%s' %% self._path", serviceName.getClassName());
@@ -466,7 +466,7 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateLocatorMember(Locator locator) {
-        String memberName = pythonNames.getMemberStyleName(locator.getName());
+        String memberName = goNames.getMemberStyleName(locator.getName());
         buffer.addLine("self._%1$s_service = None", memberName);
     }
 
@@ -482,9 +482,9 @@ public class ServicesGenerator implements PythonGenerator {
 
     private void generateLocatorWithParameters(Locator locator) {
         Parameter parameter = locator.parameters().findFirst().get();
-        String methodName = pythonNames.getMemberStyleName(locator.getName());
-        String argName = pythonNames.getMemberStyleName(parameter.getName());
-        PythonClassName serviceName = pythonNames.getServiceName(locator.getService());
+        String methodName = goNames.getMemberStyleName(locator.getName());
+        String argName = goNames.getMemberStyleName(parameter.getName());
+        GoClassName serviceName = goNames.getServiceName(locator.getService());
         buffer.addLine("def %1$s_service(self, %2$s):", methodName, argName);
         buffer.startBlock();
         generateDoc(locator);
@@ -500,9 +500,9 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateLocatorWithoutParameters(Locator locator) {
-        String methodName = pythonNames.getMemberStyleName(locator.getName());
+        String methodName = goNames.getMemberStyleName(locator.getName());
         String urlSegment = getPath(locator.getName());
-        PythonClassName serviceName = pythonNames.getServiceName(locator.getService());
+        GoClassName serviceName = goNames.getServiceName(locator.getService());
         buffer.addLine("def %1$s_service(self):", methodName);
         buffer.startBlock();
         generateDoc(locator);
@@ -531,13 +531,13 @@ public class ServicesGenerator implements PythonGenerator {
             String segment = getPath(name);
             buffer.addLine("if path == '%1$s':", segment);
             buffer.startBlock();
-            buffer.addLine(  "return self.%1$s_service()", pythonNames.getMemberStyleName(name));
+            buffer.addLine(  "return self.%1$s_service()", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine("if path.startswith('%1$s/'):", segment);
             buffer.startBlock();
             buffer.addLine(
                 "return self.%1$s_service().service(path[%2$d:])",
-                pythonNames.getMemberStyleName(name),
+                goNames.getMemberStyleName(name),
                 segment.length() + 1
             );
             buffer.endBlock();
@@ -552,11 +552,11 @@ public class ServicesGenerator implements PythonGenerator {
             buffer.addLine("index = path.find('/')");
             buffer.addLine("if index == -1:");
             buffer.startBlock();
-            buffer.addLine("return self.%1$s_service(path)", pythonNames.getMemberStyleName(name));
+            buffer.addLine("return self.%1$s_service(path)", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine(
                 "return self.%1$s_service(path[:index]).service(path[index + 1:])",
-                pythonNames.getMemberStyleName(name)
+                goNames.getMemberStyleName(name)
             );
         }
         else {
@@ -582,7 +582,7 @@ public class ServicesGenerator implements PythonGenerator {
             List<String> lines = method.parameters()
                 .filter(predicate)
                 .filter(p -> p.getDoc() != null)
-                .map(p -> String.format("`%s`:: %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
+                .map(p -> String.format("`%s`:: %s", goNames.getMemberStyleName(p.getName()), p.getDoc()))
                 .collect(toList());
 
             if (!lines.isEmpty()) {
@@ -635,13 +635,13 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateSetActionAttribute(Parameter parameter) {
-        String name = pythonNames.getMemberStyleName(parameter.getName());
+        String name = goNames.getMemberStyleName(parameter.getName());
         buffer.addLine("%1$s=%1$s,", name);
     }
 
     private void generateCheckTypeTuple(Parameter parameter) {
-        String name = pythonNames.getMemberStyleName(parameter.getName());
-        PythonTypeReference reference = pythonNames.getTypeReference(parameter.getType());
+        String name = goNames.getMemberStyleName(parameter.getName());
+        GoTypeReference reference = goNames.getTypeReference(parameter.getType());
         buffer.addImports(reference.getImports());
         buffer.addLine("('%1$s', %1$s, %2$s),", name, reference.getText());
     }

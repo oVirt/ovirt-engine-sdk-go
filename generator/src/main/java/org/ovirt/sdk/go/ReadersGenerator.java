@@ -40,17 +40,17 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
 /**
  * This class is responsible for generating the classes that create instances of model types from XML documents.
  */
-public class ReadersGenerator implements PythonGenerator {
+public class ReadersGenerator implements GoGenerator {
     // The directory were the output will be generated:
     protected File out;
 
     // Reference to the objects used to generate the code:
     @Inject private Names names;
     @Inject private SchemaNames schemaNames;
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
 
     // The buffer used to generate the code:
-    private PythonBuffer buffer;
+    private GoBuffer buffer;
 
     public void setOut(File newOut) {
         out = newOut;
@@ -58,8 +58,8 @@ public class ReadersGenerator implements PythonGenerator {
 
     public void generate(Model model) {
         // Prepare the buffer:
-        buffer = new PythonBuffer();
-        buffer.setModuleName(pythonNames.getReadersModuleName());
+        buffer = new GoBuffer();
+        buffer.setModuleName(goNames.getReadersModuleName());
 
         // Generate the code:
         generateReaders(model);
@@ -75,7 +75,7 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReaders(Model model) {
         // Generate the imports:
-        String rootModuleName = pythonNames.getRootModuleName();
+        String rootModuleName = goNames.getRootModuleName();
         buffer.addImport("from %1$s import List", rootModuleName);
         buffer.addImport("from %1$s import types", rootModuleName);
         buffer.addImport("from %1$s.reader import Reader", rootModuleName);
@@ -96,7 +96,7 @@ public class ReadersGenerator implements PythonGenerator {
                 Name typeName = type.getName();
                 String singularTag = schemaNames.getSchemaTagName(typeName);
                 String pluralTag = schemaNames.getSchemaTagName(names.getPlural(typeName));
-                String className = pythonNames.getReaderName(type).getClassName();
+                String className = goNames.getReaderName(type).getClassName();
                 buffer.addLine("Reader.register('%1$s', %2$s.read_one)", singularTag, className);
                 buffer.addLine("Reader.register('%1$s', %2$s.read_many)", pluralTag, className);
             });
@@ -104,7 +104,7 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReader(StructType type) {
         // Begin class:
-        PythonClassName readerName = pythonNames.getReaderName(type);
+        GoClassName readerName = goNames.getReaderName(type);
         buffer.addLine("class %1$s(Reader):", readerName.getClassName());
         buffer.addLine();
 
@@ -127,8 +127,8 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateMethods(StructType type) {
-        PythonClassName typeName = pythonNames.getTypeName(type);
-        PythonClassName readerName = pythonNames.getReaderName(type);
+        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName readerName = goNames.getReaderName(type);
 
         // Generate the method that reads one instance:
         buffer.addLine("@staticmethod");
@@ -218,7 +218,7 @@ public class ReadersGenerator implements PythonGenerator {
             boolean firstLink = true;
             for (Link link : links) {
                 String keyword = firstLink ? "if" : "elif";
-                String field = pythonNames.getMemberStyleName(link.getName());
+                String field = goNames.getMemberStyleName(link.getName());
                 String rel = link.getName().words().map(String::toLowerCase).collect(joining());
                 buffer.addLine("%1$s rel == \"%2$s\":", keyword, rel);
                 buffer.startBlock();
@@ -250,8 +250,8 @@ public class ReadersGenerator implements PythonGenerator {
     private void generateAttributeRead(StructMember member) {
         Name name = member.getName();
         Type type = member.getType();
-        PythonClassName typeName = pythonNames.getTypeName(type);
-        String property = pythonNames.getMemberStyleName(name);
+        GoClassName typeName = goNames.getTypeName(type);
+        String property = goNames.getMemberStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
         buffer.addLine("value = reader.get_attribute('%s')", tag);
         buffer.addLine("if value is not None:");
@@ -311,7 +311,7 @@ public class ReadersGenerator implements PythonGenerator {
             // Process the links:
             buffer.addLine("for link in links:");
             buffer.startBlock();
-            buffer.addLine("%1$s._process_link(link, obj)", pythonNames.getReaderName(type).getClassName());
+            buffer.addLine("%1$s._process_link(link, obj)", goNames.getReaderName(type).getClassName());
             buffer.endBlock();
         }
         else {
@@ -322,7 +322,7 @@ public class ReadersGenerator implements PythonGenerator {
     private void generateElementRead(StructMember member, boolean first) {
         Name name = member.getName();
         Type type = member.getType();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
         String variable = String.format("obj.%1$s", property);
         String keyword = first? "if": "elif";
@@ -370,7 +370,7 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateReadEnum(StructMember member, String variable) {
-        PythonClassName typeName = pythonNames.getTypeName(member.getType());
+        GoClassName typeName = goNames.getTypeName(member.getType());
         buffer.addLine(
             "%1$s = Reader.read_enum(types.%2$s, reader)",
             variable,
@@ -379,7 +379,7 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateReadStruct(StructMember member, String variable) {
-        PythonClassName readerName = pythonNames.getReaderName(member.getType());
+        GoClassName readerName = goNames.getReaderName(member.getType());
         buffer.addLine("%1$s = %2$s.read_one(reader)", variable, readerName.getClassName());
     }
 
@@ -393,7 +393,7 @@ public class ReadersGenerator implements PythonGenerator {
             generateReadEnums((EnumType) elementType, variable);
         }
         else if (elementType instanceof StructType) {
-            PythonClassName readerName = pythonNames.getReaderName(elementType);
+            GoClassName readerName = goNames.getReaderName(elementType);
             buffer.addLine("%1$s = %2$s.read_many(reader)", variable, readerName.getClassName());
         }
         else {
@@ -424,7 +424,7 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateReadEnums(EnumType type, String variable) {
-        PythonClassName pythonName = pythonNames.getTypeName(type);
+        GoClassName pythonName = goNames.getTypeName(type);
         buffer.addLine(
             "%1$s = Reader.read_enums(types.%2$s, reader)",
             variable,

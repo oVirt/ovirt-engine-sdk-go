@@ -25,15 +25,15 @@ import org.ovirt.api.metamodel.concepts.Model;
 /**
  * This class is responsible for generating the file that contains the version number information.
  */
-public class VersionGenerator implements PythonGenerator {
+public class VersionGenerator implements GoGenerator {
     // The directory were the output will be generated:
     private File out;
 
     // Reference to the objects used to generate the code:
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
 
     // The buffer used to generate the Ruby code:
-    private PythonBuffer buffer;
+    private GoBuffer buffer;
 
     public void setOut(File newOut) {
         out = newOut;
@@ -41,8 +41,8 @@ public class VersionGenerator implements PythonGenerator {
 
     public void generate(Model model) throws IOException {
         // Prepare the buffer:
-        buffer = new PythonBuffer();
-        buffer.setModuleName(pythonNames.getVersionModuleName());
+        buffer = new GoBuffer();
+        buffer.setModuleName(goNames.getVersionModuleName());
 
         // Generate the source:
         generateVersion();
@@ -58,7 +58,7 @@ public class VersionGenerator implements PythonGenerator {
 
     public void generateVersion() {
         // Generate the version constant:
-        String version = pythonNames.getVersion();
+        String version = goNames.getVersion();
         buffer.addLine("# The version of the SDK:");
         buffer.addLine("VERSION = '%1$s'", version.toLowerCase());
         buffer.addLine();

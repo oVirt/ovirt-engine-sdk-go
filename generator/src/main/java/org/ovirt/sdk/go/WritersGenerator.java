@@ -35,17 +35,17 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
  * This class is responsible for generating the classes that take instances of model types and generate the
  * corresponding XML documents.
  */
-public class WritersGenerator implements PythonGenerator {
+public class WritersGenerator implements GoGenerator {
     // The directory were the output will be generated:
     protected File out;
 
     // Reference to the objects used to generate the code:
     @Inject private Names names;
     @Inject private SchemaNames schemaNames;
-    @Inject private PythonNames pythonNames;
+    @Inject private GoNames goNames;
 
     // The buffer used to generate the code:
-    private PythonBuffer buffer;
+    private GoBuffer buffer;
 
     public void setOut(File newOut) {
         out = newOut;
@@ -53,8 +53,8 @@ public class WritersGenerator implements PythonGenerator {
 
     public void generate(Model model) {
         // Prepare the buffer:
-        buffer = new PythonBuffer();
-        buffer.setModuleName(pythonNames.getWritersModuleName());
+        buffer = new GoBuffer();
+        buffer.setModuleName(goNames.getWritersModuleName());
 
         // Generate the code:
         generateWriters(model);
@@ -70,7 +70,7 @@ public class WritersGenerator implements PythonGenerator {
 
     private void generateWriters(Model model) {
         // Generate the imports:
-        String rootModuleName = pythonNames.getRootModuleName();
+        String rootModuleName = goNames.getRootModuleName();
         buffer.addImport("from %1$s import List", rootModuleName);
         buffer.addImport("from %1$s import types", rootModuleName);
         buffer.addImport("from %1$s.writer import Writer", rootModuleName);
@@ -88,8 +88,8 @@ public class WritersGenerator implements PythonGenerator {
             .map(StructType.class::cast)
             .sorted()
             .forEach(type -> {
-                PythonClassName typeName = pythonNames.getTypeName(type);
-                PythonClassName writerName = pythonNames.getWriterName(type);
+                GoClassName typeName = goNames.getTypeName(type);
+                GoClassName writerName = goNames.getWriterName(type);
                 buffer.addLine(
                     "Writer.register(types.%1$s, %2$s.write_one)",
                     typeName.getClassName(),
@@ -100,7 +100,7 @@ public class WritersGenerator implements PythonGenerator {
 
     private void generateWriter(StructType type) {
         // Begin class:
-        PythonClassName writerName = pythonNames.getWriterName(type);
+        GoClassName writerName = goNames.getWriterName(type);
         buffer.addLine("class %1$s(Writer):", writerName.getClassName());
         buffer.addLine();
 
@@ -124,7 +124,7 @@ public class WritersGenerator implements PythonGenerator {
 
     private void generateMethods(StructType type) {
         // Get the tags:
-        PythonClassName writerName = pythonNames.getWriterName(type);
+        GoClassName writerName = goNames.getWriterName(type);
         Name singularName = type.getName();
         Name pluralName = names.getPlural(singularName);
         String singularTagName = schemaNames.getSchemaTagName(singularName);
@@ -204,7 +204,7 @@ public class WritersGenerator implements PythonGenerator {
     private void generateMemberWriteAsAttribute(StructMember member) {
         Name name = member.getName();
         Type type = member.getType();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         String attribute = schemaNames.getSchemaTagName(name);
         if (type instanceof PrimitiveType) {
             generateWritePrimitivePropertyAsAttribute((PrimitiveType) type, attribute, "obj." + property);
@@ -240,7 +240,7 @@ public class WritersGenerator implements PythonGenerator {
     private void generateMemberWriteAsElement(StructMember member) {
         Name name = member.getName();
         Type type = member.getType();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
         if (type instanceof PrimitiveType) {
             generateWritePrimitivePropertyAsElement((PrimitiveType) type, tag, "obj." + property);
@@ -288,9 +288,9 @@ public class WritersGenerator implements PythonGenerator {
     private void generateWriteStructPropertyAsElement(StructMember member) {
         Name name = member.getName();
         Type type = member.getType();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
-        PythonClassName writerName = pythonNames.getWriterName(type);
+        GoClassName writerName = goNames.getWriterName(type);
         buffer.addLine("if obj.%1$s is not None:", property);
         buffer.startBlock();
         buffer.addLine("%1$s.write_one(obj.%2$s, writer, '%3$s')", writerName.getClassName(), property, tag);
@@ -302,7 +302,7 @@ public class WritersGenerator implements PythonGenerator {
         Type type = member.getType();
         ListType listType = (ListType) type;
         Type elementType = listType.getElementType();
-        String property = pythonNames.getMemberStyleName(name);
+        String property = goNames.getMemberStyleName(name);
         String pluralTag = schemaNames.getSchemaTagName(name);
         String singularTag = schemaNames.getSchemaTagName(names.getSingular(name));
         if (elementType instanceof PrimitiveType || elementType instanceof EnumType) {
@@ -322,7 +322,7 @@ public class WritersGenerator implements PythonGenerator {
             buffer.endBlock();
         }
         else if (elementType instanceof StructType) {
-            PythonClassName elementWriterName = pythonNames.getWriterName(elementType);
+            GoClassName elementWriterName = goNames.getWriterName(elementType);
             String elementTag = schemaNames.getSchemaTagName(elementType.getName());
             buffer.addLine("if obj.%1$s is not None:", property);
             buffer.startBlock();
