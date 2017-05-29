@@ -53,7 +53,8 @@ type Connection struct {
 }
 
 // Creates a new connection to the API server.
-func (c *Connection) Setup(inputRawUrl string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout uint8, compress bool) error {
+func NewConnection(inputRawUrl string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout uint8, compress bool) (*Connection, error) {
+	c := new(Connection)
 	// Get the values of the parameters and assign default values:
 	c.username = username
 	c.password = password
@@ -66,17 +67,17 @@ func (c *Connection) Setup(inputRawUrl string, username string, password string,
 
 	// Check mandatory parameters:
 	if len(inputRawUrl) == 0 {
-		return errors.New("The 'inputRawUrl' parameter is mandatory.")
+		return nil, errors.New("The 'inputRawUrl' parameter is mandatory.")
 	}
 	// TODOLATER: remove once kerberos is implemented
 	if c.kerberos == true {
-		return errors.New("Kerberos is not currently implemented.")
+		return nil, errors.New("Kerberos is not currently implemented.")
 	}
 
 	// Save the URL:
 	useUrl, err := url.Parse(inputRawUrl)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	c.url = *useUrl
 
@@ -113,7 +114,7 @@ func (c *Connection) Setup(inputRawUrl string, username string, password string,
 			c.client.TLSClientConfig.RootCAs = pool
 		}
 	}
-
+	return c, nil
 	// Debug output handled via GODEBUG env var. See https://golang.org/pkg/net/http/ for details.
 }
 
@@ -188,10 +189,10 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 // Obtains the access token from SSO to be used for bearer authentication.
 func (c *Connection) getAccessToken() (string, error) {
 	// Build the URL and parameters required for the request:
-	url, parameters := c.buildSsoAuthRequest()
+	rawUrl, parameters := c.buildSsoAuthRequest()
 
 	// Send the response and wait for the request:
-	response := c.getSsoResponse(url, parameters)
+	response := c.getSsoResponse(rawUrl, parameters)
 
 	// Top level array already handled in getSsoResponse() generically.
 
@@ -389,7 +390,7 @@ func (c *Connection) Close() {
 }
 
 // Builds a request URL from a path, and the set of query parameters.
-func (c *Connection) BuildRawUrl(path string, query map[string]string) string {
+func (c *Connection) buildRawUrl(path string, query map[string]string) string {
 	rawUrl = fmt.Sprintf("%s%s", c.url.String(), path)
 	if len(query) > 0 {
 		var values url.Values
