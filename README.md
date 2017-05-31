@@ -1,2 +1,2 @@
 # ovirt-engine-sdk-go
-Go SDK for oVirt 4.0+
+**WIP**: Go SDK for oVirt 4.0+
