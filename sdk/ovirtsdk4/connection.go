@@ -183,7 +183,7 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	for k2, v2 := range resp.Headers {
 		result.headers[k2] = v2
 	}
-	return result, nil
+	return &result, nil
 }
 
 // Obtains the access token from SSO to be used for bearer authentication.
