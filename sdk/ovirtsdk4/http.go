@@ -29,6 +29,22 @@ type OvRequest struct {
 	Body 	string
 }
 
+func NewOvRequest(method string, path string, headers, query map[string]string, body string) OvRequest {
+	var req OvRequest
+	req.Method = method
+	req.Path = path
+	if headers != nil {
+		req.Headers = headers
+	}
+	if query != nil {
+		req.Query = query
+	}
+	if Body != nil {
+		req.Body = body
+	}
+	return req
+}
+
 
 // This class represents an HTTP response.
 // This class is intended for internal use by other components of the SDK.
