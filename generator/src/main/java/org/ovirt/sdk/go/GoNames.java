@@ -168,7 +168,7 @@ public class GoNames {
                 reference.setText("bool");
             }
             else if (type == model.getIntegerType()) {
-                reference.setText("int");
+                reference.setText("int64");
             }
             else if (type == model.getDecimalType()) {
                 reference.setText("float64");
@@ -191,7 +191,7 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            reference.setText("[]" + getClassStyleName(listtype.getElementType().getName()));
+            reference.setText("[]*" + getClassStyleName(listtype.getElementType().getName()));
         }
         else {
             throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");
@@ -260,6 +260,21 @@ public class GoNames {
      */
     public String getMemberStyleName(Name name) {
         return getClassStyleName(name);
+    }
+
+    /**
+     * Returns a representation of the given name using the capitalization style typically used for Go method name.
+     */
+    public String getMethodStyleName(Name name) {
+        return getClassStyleName(name);
+    }
+
+    /**
+     * Returns a representation of the given name using the non-capitalization style typically used for Go method parameters.
+     */
+    public String getParameterStyleName(Name name) {
+        String result = getClassStyleName(name);
+        return result.substring(0, 1).toLowerCase() + result.substring(1);
     }
 
     /**
