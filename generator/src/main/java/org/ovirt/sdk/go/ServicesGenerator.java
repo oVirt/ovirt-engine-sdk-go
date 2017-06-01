@@ -91,13 +91,6 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateServices(Model model) {
-        // Generate the imports:
-        // String rootPackageName = goNames.getRootPackageName();
-        // buffer.addImport("from %1$s import Error", rootPackageName);
-        // buffer.addImport("from %1$s import types", rootPackageName);
-        // buffer.addImport("from %1$s.service import Service", rootPackageName);
-        // buffer.addImport("from %1$s.writer import Writer", rootPackageName);
-
         // The declarations of the services need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and
         // then sort again so that bases are before extensions.
@@ -219,35 +212,35 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("%1$s %2$s,", primaryArg, primaryArgTypeName);
         secondaryParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string) {");
+        buffer.addLine("query map[string]string,");
+        buffer.addLine("wait bool) {");
         //      Generate function ending
         buffer.endBlock();
  
         // Start body:
         buffer.startBlock();
-
-        // Generate the code to check the type of the parameters:
-        buffer.addLine("# Check the types of the parameters:");
-        buffer.addLine("Service._check_types([");
+        //      Generate the wait default is True
+        buffer.addLine("if wait == nil {");
         buffer.startBlock();
-        generateCheckTypeTuple(primaryParameter);
-        secondaryParameters.forEach(this::generateCheckTypeTuple);
+        buffer.addLine("wait = true");
         buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine();
-
-        // Generate the code to build the URL query:
-        buffer.addLine("# Build the URL:");
-        buffer.addLine("query = query or {}");
+        buffer.addLine("}");
+        //      Generate the code to build the URL query:
+        buffer.addLine("// Build the URL:");
+        buffer.addLine("if query == nil {");
+        buffer.startBlock();
+        buffer.addLine("query = make(map[string]string)");
+        buffer.endBlock();
+        buffer.addLine("}");
         secondaryParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
-
-        // Generate the code to send the request and wait for the response:
-        buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_add(%1$s, headers, query, wait)", primaryArg);
+        //      Generate the code to send the request
+        buffer.addLine("// Send the request");
+        buffer.addLine("return op.internalAdd(%1$s, headers, query, wait)", primaryArg);
 
         // End body:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -257,39 +250,40 @@ public class ServicesGenerator implements GoGenerator {
             .filter(Parameter::isIn)
             .sorted()
             .collect(toList());
-
+        // Get the service class name
+        GoClassName serviceName = goNames.getServiceName(service);
         // Begin method:
-        Name name = method.getName();
-        buffer.addLine("def %1$s(", goNames.getMethodStyleName(name));
+        Name methodName = method.getName();
+        //      Generate function doc
+        generateActionDoc(method, Parameter::isIn);
+        //      Generate function definition
+        buffer.addLine(
+            "func (op *%1$s) %2$s (",
+            serviceName.getClassName(),
+            goNames.getMethodStyleName(methodName));
         buffer.startBlock();
-        buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers=None,");
-        buffer.addLine("query=None,");
-        buffer.addLine("wait=True,");
+        buffer.addLine("headers map[string]string,");
+        buffer.addLine("query map[string]string,");
+        buffer.addLine("wait bool) {");
+        //      Generate function ending
         buffer.endBlock();
-        buffer.addLine("):");
 
         // Start body:
         buffer.startBlock();
-        generateActionDoc(method, Parameter::isIn);
-
-        // Generate the code to check type types of the parameters:
-        buffer.addLine("# Check the types of the parameters:");
-        buffer.addLine("Service._check_types([");
+        //      Generate the wait default is True
+        buffer.addLine("if wait == nil {");
         buffer.startBlock();
-        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.addLine("wait = true");
         buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine();
-
-        // Generate the code to populate the action:
-        buffer.addLine("# Populate the action:");
-        buffer.addLine("action = types.Action(");
+        buffer.addLine("}");
+        //      Generate the code to populate the action:
+        buffer.addLine("// Populate the action:");
+        buffer.addLine("action = Action{");
         buffer.startBlock();
         inParameters.forEach(this::generateSetActionAttribute);
         buffer.endBlock();
-        buffer.addLine(")");
+        buffer.addLine("}");
         buffer.addLine();
 
         // Generate the code to send the request and wait for the response:
@@ -297,22 +291,23 @@ public class ServicesGenerator implements GoGenerator {
             .filter(Parameter::isOut)
             .findFirst()
             .orElse(null);
-        String member = parameter == null ? null : goNames.getMemberStyleName(parameter.getName());
+        String member = parameter == null ? null : goNames.getParameterStyleName(parameter.getName());
 
-        buffer.addLine("# Send the request and wait for the response:");
+        buffer.addLine("// Send the request and wait for the response:");
         if (member == null) {
-            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query, wait)",  getPath(name));
+            buffer.addLine("return internalAction(action, '%1$s', nil, headers, query, wait)",  getPath(methodName));
         }
         else {
             buffer.addLine(
-                "return self._internal_action(action, '%1$s', '%2$s', headers, query, wait)",
-                getPath(name),
+                "return internalAction(action, '%1$s', '%2$s', headers, query, wait)",
+                getPath(methodName),
                 member
             );
         }
 
         // End body:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -322,44 +317,50 @@ public class ServicesGenerator implements GoGenerator {
             .filter(Parameter::isIn)
             .sorted()
             .collect(toList());
-
+        // Get the service class name
+        GoClassName serviceName = goNames.getServiceName(service);
         // Begin method:
         Name methodName = method.getName();
-        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
+        //      Generate function doc
+        generateActionDoc(method, Parameter::isIn);
+        //      Generate function definition
+        buffer.addLine(
+            "func (op *%1$s) %2$s (",
+            serviceName.getClassName(),
+            goNames.getMethodStyleName(methodName));
         buffer.startBlock();
-        buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers=None,");
-        buffer.addLine("query=None,");
-        buffer.addLine("wait=True,");
+        buffer.addLine("headers map[string]string,");
+        buffer.addLine("query map[string]string,");
+        buffer.addLine("wait bool) {");
+        //      Generate function ending
         buffer.endBlock();
-        buffer.addLine("):");
 
         // Start body:
         buffer.startBlock();
-        generateActionDoc(method, Parameter::isIn);
-
-        // Generate the code to check the types of the input parameters:
-        buffer.addLine("# Check the types of the parameters:");
-        buffer.addLine("Service._check_types([");
+        //      Generate the wait default is True
+        buffer.addLine("if wait == nil {");
         buffer.startBlock();
-        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.addLine("wait = true");
         buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine();
-
-        // Generate the code to build the URL query:
-        buffer.addLine("# Build the URL:");
-        buffer.addLine("query = query or {}");
+        buffer.addLine("}");
+        //      Generate the code to build the URL query:
+        buffer.addLine("// Build the URL:");
+        buffer.addLine("if query == nil {");
+        buffer.startBlock();
+        buffer.addLine("query = make(map[string]string)");
+        buffer.endBlock();
+        buffer.addLine("}");
         inParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
         // Generate the code to send the request and wait for the response:
-        buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_get(headers, query, wait)");
+        buffer.addLine("// Send the request and wait for the response:");
+        buffer.addLine("return op.internalGet(headers, query, wait)");
 
         // End body:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -367,48 +368,59 @@ public class ServicesGenerator implements GoGenerator {
         // Classify the parameters:
         Parameter primaryParameter = getFirstParameter(method);
         List<Parameter> secondaryParameters = getSecondaryParameters(method);
+        // Get the service class name
+        GoClassName serviceName = goNames.getServiceName(service);
 
         // Begin method:
         Name methodName = method.getName();
+        //      get primary parameter name
         Name primaryParameterName = primaryParameter.getName();
-        String primaryArg = goNames.getMemberStyleName(primaryParameterName);
-        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
+        String primaryArg = goNames.getParameterStyleName(primaryParameterName);
+        //      get primary parameter type name
+        GoTypeReference goTypeReference = goNames.getTypeReference(primaryParameter.getType());
+        buffer.addImports(goTypeReference.getImports());
+        String primaryArgTypeName = goTypeReference.getText();
+        //      Generate function doc
+        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
+        //      Generate function definition
+        buffer.addLine(
+            "func (op *%1$s) %2$s (",
+            serviceName.getClassName(),
+            goNames.getMethodStyleName(methodName));
+        //      Generate function parameters definition
         buffer.startBlock();
-        buffer.addLine("self,");
-        buffer.addLine("%1$s,", primaryArg);
-        getSecondaryParameters(method).forEach(this::generateFormalParameter);
-        buffer.addLine("headers=None,");
-        buffer.addLine("query=None,");
-        buffer.addLine("wait=True,");
+        buffer.addLine("%1$s %2$s,", primaryArg, primaryArgTypeName);
+        secondaryParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers map[string]string,");
+        buffer.addLine("query map[string]string,");
+        buffer.addLine("wait bool) {");
+        //      Generate function ending
         buffer.endBlock();
-        buffer.addLine("):");
 
         // Start body:
         buffer.startBlock();
-        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
-
-        // Generate the code to check the types of the input parameters:
-        buffer.addLine("# Check the types of the parameters:");
-        buffer.addLine("Service._check_types([");
+        //      Generate the wait default is True
+        buffer.addLine("if wait == nil {");
         buffer.startBlock();
-        generateCheckTypeTuple(primaryParameter);
-        secondaryParameters.forEach(this::generateCheckTypeTuple);
+        buffer.addLine("wait = true");
         buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine();
-
-        // Generate the code to build the URL query:
-        buffer.addLine("# Build the URL:");
-        buffer.addLine("query = query or {}");
+        buffer.addLine("}");
+        //      Generate the code to build the URL query:
+        buffer.addLine("// Build the URL:");
+        buffer.addLine("if query == nil {");
+        buffer.startBlock();
+        buffer.addLine("query = make(map[string]string)");
+        buffer.endBlock();
+        buffer.addLine("}");
         secondaryParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
-
-        // Generate the code to send the request and wait for the response:
-        buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_update(%1$s, headers, query, wait)", primaryArg);
+        //      Generate the code to send the request
+        buffer.addLine("// Send the request");
+        buffer.addLine("return op.internalUpdate(%1$s, headers, query, wait)", primaryArg);
 
         // End body:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -417,44 +429,50 @@ public class ServicesGenerator implements GoGenerator {
         List<Parameter> inParameters = method.parameters()
             .filter(Parameter::isIn)
             .collect(toList());
-
+        // Get the service class name
+        GoClassName serviceName = goNames.getServiceName(service);
         // Begin method:
-        Name name = method.getName();
-        buffer.addLine("def %1$s(", goNames.getMemberStyleName(name));
+        Name methodName = method.getName();
+        //      Generate function doc
+        generateActionDoc(method, Parameter::isIn);
+        //      Generate function definition
+        buffer.addLine(
+            "func (op *%1$s) %2$s (",
+            serviceName.getClassName(),
+            goNames.getMethodStyleName(methodName));
         buffer.startBlock();
-        buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers=None,");
-        buffer.addLine("query=None,");
-        buffer.addLine("wait=True,");
+        buffer.addLine("headers map[string]string,");
+        buffer.addLine("query map[string]string,");
+        buffer.addLine("wait bool) {");
+        //      Generate function ending
         buffer.endBlock();
-        buffer.addLine("):");
 
         // Begin body:
         buffer.startBlock();
-        generateActionDoc(method, Parameter::isIn);
-
-        // Generate the code to check the types of the input parameters:
-        buffer.addLine("# Check the types of the parameters:");
-        buffer.addLine("Service._check_types([");
+        //      Generate the wait default is True
+        buffer.addLine("if wait == nil {");
         buffer.startBlock();
-        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.addLine("wait = true");
         buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine();
-
-        // Generate the code to build the URL query:
-        buffer.addLine("# Build the URL:");
-        buffer.addLine("query = query or {}");
+        buffer.addLine("}");
+        //      Generate the code to build the URL query:
+        buffer.addLine("// Build the URL:");
+        buffer.addLine("if query == nil {");
+        buffer.startBlock();
+        buffer.addLine("query = make(map[string]string)");
+        buffer.endBlock();
+        buffer.addLine("}");
         inParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
         // Generate the code to send the request and wait for the response:
-        buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("self._internal_remove(headers, query, wait)");
+        buffer.addLine("// Send the request and wait for the response:");
+        buffer.addLine("op.internalRemove(headers, query, wait)");
 
         // End body:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -473,35 +491,23 @@ public class ServicesGenerator implements GoGenerator {
     private void generateUrlParameter(Parameter parameter) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        String arg = goNames.getMemberStyleName(name);
+        String arg = goNames.getParameterStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
-        buffer.addLine("if %1$s is not None:", arg);
+        buffer.addLine("if %1$s != nil {", arg);
         buffer.startBlock();
-        if (type instanceof PrimitiveType) {
-            Model model = type.getModel();
-            if (type == model.getBooleanType()) {
-                buffer.addLine("%1$s = Writer.render_boolean(%1$s)", arg);
-            }
-            else if (type == model.getIntegerType()) {
-                buffer.addLine("%1$s = Writer.render_integer(%1$s)", arg);
-            }
-            else if (type == model.getDecimalType()) {
-                buffer.addLine("%1$s = Writer.render_decimal(%1$s)", arg);
-            }
-            else if (type == model.getDateType()) {
-                buffer.addLine("%1$s = Writer.render_date(%1$s)", arg);
-            }
-        }
-        buffer.addLine("query['%1$s'] = %2$s", tag, arg);
+        buffer.addLine("query[\"%1$s\"] = %2$s", tag, arg);
         buffer.endBlock();
+        buffer.addLine("}");
     }
 
     private void generateStr(Service service) {
         GoClassName serviceName = goNames.getServiceName(service);
-        buffer.addLine("def __str__(self):");
+        buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
         buffer.startBlock();
-        buffer.addLine("return '%1$s:%%s' %% self._path", serviceName.getClassName());
+        buffer.addImport("fmt");
+        buffer.addLine("return fmt.Sprintf(\"%1$s:%%s\", op.Path)", serviceName.getClassName());
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -553,34 +559,39 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generatePathLocator(Service service) {
-        // Begin method:
-        buffer.addLine("def service(self, path):");
-        buffer.startBlock();
+        GoClassName serviceName = goNames.getServiceName(service);
+        // Generate comment
         buffer.startComment();
-        buffer.addLine("Service locator method, returns individual service on which the URI is dispatched.");
+        buffer.addLine("// Service locator method, returns individual service on which the URI is dispatched.");
         buffer.endComment();
 
-        buffer.addLine("if not path:");
+        // Begin method:
+        buffer.addLine("func (op *%1$s) Service(path string) *%1$s {", serviceName.getClassName());
         buffer.startBlock();
-        buffer.addLine("return self");
+        buffer.addLine("if path == nil {");
+        buffer.startBlock();
+        buffer.addLine("return op");
         buffer.endBlock();
+        buffer.addLine("}");
 
         // Generate the code that checks if the path corresponds to any of the locators without parameters:
         service.locators().filter(x -> x.getParameters().isEmpty()).sorted().forEach(locator -> {
             Name name = locator.getName();
             String segment = getPath(name);
-            buffer.addLine("if path == '%1$s':", segment);
+            buffer.addLine("if path == \"%1$s\" {", segment);
             buffer.startBlock();
-            buffer.addLine(  "return self.%1$s_service()", goNames.getMemberStyleName(name));
+            buffer.addLine(  "return &%1$sService{}", goNames.getMethodStyleName(name));
             buffer.endBlock();
-            buffer.addLine("if path.startswith('%1$s/'):", segment);
+            buffer.addLine("}");
+            buffer.addLine("if path.startswith('%1$s/') {", segment);
             buffer.startBlock();
             buffer.addLine(
-                "return self.%1$s_service().service(path[%2$d:])",
+                "return %1$sService().service(path[%2$d:])",
                 goNames.getMemberStyleName(name),
                 segment.length() + 1
             );
             buffer.endBlock();
+            buffer.addLine("}");
         });
 
         // If the path doesn't correspond to a locator without parameters, then it will correspond to the locator
@@ -595,7 +606,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("return self.%1$s_service(path)", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine(
-                "return self.%1$s_service(path[:index]).service(path[index + 1:])",
+                "return self.%1$s_service(path[:index]).Service(path[index + 1:])",
                 goNames.getMemberStyleName(name)
             );
         }
@@ -605,6 +616,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // End method:
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -616,7 +628,6 @@ public class ServicesGenerator implements GoGenerator {
         buffer.startComment();
         if (method.getDoc() != null) {
             generateDocText(method);
-            buffer.addLine();
         }
         if (method.parameters().filter(predicate).findFirst().orElse(null) != null) {
             List<String> lines = method.parameters()
@@ -626,14 +637,11 @@ public class ServicesGenerator implements GoGenerator {
                 .collect(toList());
 
             if (!lines.isEmpty()) {
-                buffer.addLine("This method supports the following parameters:");
-                buffer.addLine();
+                buffer.addLine("// This method supports the following parameters:");
                 lines.forEach(this::generateDocText);
-                buffer.addLine("`headers`:: Additional HTTP headers.");
-                buffer.addLine();
-                buffer.addLine("`query`:: Additional URL query parameters.");
-                buffer.addLine();
-                buffer.addLine("`wait`:: If `True` wait for the response.");
+                buffer.addLine("// `headers`:: Additional HTTP headers.");
+                buffer.addLine("// `query`:: Additional URL query parameters.");
+                buffer.addLine("// `wait`:: If `True` wait for the response.");
             }
         }
         buffer.endComment();
@@ -655,8 +663,7 @@ public class ServicesGenerator implements GoGenerator {
             Collections.addAll(lines, doc.split("\n"));
         }
         if (!lines.isEmpty()) {
-            lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addRawLine);
-            buffer.addLine();
+            lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addCommentLine);
         }
     }
 
@@ -675,8 +682,10 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateSetActionAttribute(Parameter parameter) {
-        String name = goNames.getMemberStyleName(parameter.getName());
-        buffer.addLine("%1$s=%1$s,", name);
+        String memberName = goNames.getMemberStyleName(parameter.getName());
+        String parameterName = goNames.getParameterStyleName(parameter.getName());
+
+        buffer.addLine("%1$s: %2$s,", memberName, parameterName);
     }
 
     private void generateCheckTypeTuple(Parameter parameter) {
