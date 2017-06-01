@@ -146,17 +146,24 @@ public class GoBuffer {
     }
 
     /**
+     * Adds a non-formatted comment line
+     */
+    public void addCommentLine(String line) {
+        addRawLine("// " + line);
+    }
+
+    /**
      * Starts a multi line comment.
      */
     public void startComment() {
-        addLine("\"\"\"");
+        addLine("//");
     }
 
     /**
      * Ends a multi line comment.
      */
     public void endComment() {
-        addLine("\"\"\"");
+        addLine("//");
     }
 
     /**
