@@ -33,7 +33,7 @@ type AgentConfiguration struct {
     BrokerType    MessageBrokerType
     NetworkMappings    string
     Password    string
-    Port    int
+    Port    int64
     Username    string
 
 }
@@ -58,8 +58,8 @@ type ApiSummary struct {
 
 type ApiSummaryItem struct {
     OvType
-    Active    int
-    Total    int
+    Active    int64
+    Total    int64
 
 }
 
@@ -71,7 +71,7 @@ type Bios struct {
 
 type BlockStatistic struct {
     OvType
-    Statistics    []Statistic
+    Statistics    []*Statistic
 
 }
 
@@ -79,14 +79,14 @@ type Bonding struct {
     OvType
     ActiveSlave    HostNic
     AdPartnerMac    Mac
-    Options    []Option
-    Slaves    []HostNic
+    Options    []*Option
+    Slaves    []*HostNic
 
 }
 
 type Boot struct {
     OvType
-    Devices    []BootDevice
+    Devices    []*BootDevice
 
 }
 
@@ -98,13 +98,13 @@ type BootMenu struct {
 
 type CloudInit struct {
     OvType
-    AuthorizedKeys    []AuthorizedKey
-    Files    []File
+    AuthorizedKeys    []*AuthorizedKey
+    Files    []*File
     Host    Host
     NetworkConfiguration    NetworkConfiguration
     RegenerateSshKeys    bool
     Timezone    string
-    Users    []User
+    Users    []*User
 
 }
 
@@ -123,17 +123,17 @@ type Console struct {
 
 type Core struct {
     OvType
-    Index    int
-    Socket    int
+    Index    int64
+    Socket    int64
 
 }
 
 type Cpu struct {
     OvType
     Architecture    Architecture
-    Cores    []Core
+    Cores    []*Core
     CpuTune    CpuTune
-    Level    int
+    Level    int64
     Mode    CpuMode
     Name    string
     Speed    float64
@@ -144,22 +144,22 @@ type Cpu struct {
 
 type CpuTopology struct {
     OvType
-    Cores    int
-    Sockets    int
-    Threads    int
+    Cores    int64
+    Sockets    int64
+    Threads    int64
 
 }
 
 type CpuTune struct {
     OvType
-    VcpuPins    []VcpuPin
+    VcpuPins    []*VcpuPin
 
 }
 
 type CpuType struct {
     OvType
     Architecture    Architecture
-    Level    int
+    Level    int64
     Name    string
 
 }
@@ -181,10 +181,10 @@ type Display struct {
     DisconnectAction    string
     FileTransferEnabled    bool
     KeyboardLayout    string
-    Monitors    int
-    Port    int
+    Monitors    int64
+    Port    int64
     Proxy    string
-    SecurePort    int
+    SecurePort    int64
     SingleQxlPci    bool
     SmartcardEnabled    bool
     Type    DisplayType
@@ -193,20 +193,20 @@ type Display struct {
 
 type Dns struct {
     OvType
-    SearchDomains    []Host
-    Servers    []Host
+    SearchDomains    []*Host
+    Servers    []*Host
 
 }
 
 type DnsResolverConfiguration struct {
     OvType
-    NameServers    []String
+    NameServers    []*String
 
 }
 
 type EntityProfileDetail struct {
     OvType
-    ProfileDetails    []ProfileDetail
+    ProfileDetails    []*ProfileDetail
 
 }
 
@@ -254,28 +254,28 @@ type FencingPolicy struct {
 type FopStatistic struct {
     OvType
     Name    string
-    Statistics    []Statistic
+    Statistics    []*Statistic
 
 }
 
 type GlusterBrickMemoryInfo struct {
     OvType
-    MemoryPools    []GlusterMemoryPool
+    MemoryPools    []*GlusterMemoryPool
 
 }
 
 type GlusterClient struct {
     OvType
-    BytesRead    int
-    BytesWritten    int
-    ClientPort    int
+    BytesRead    int64
+    BytesWritten    int64
+    ClientPort    int64
     HostName    string
 
 }
 
 type GracePeriod struct {
     OvType
-    Expiry    int
+    Expiry    int64
 
 }
 
@@ -296,7 +296,7 @@ type HardwareInformation struct {
     Manufacturer    string
     ProductName    string
     SerialNumber    string
-    SupportedRngSources    []RngSource
+    SupportedRngSources    []*RngSource
     Uuid    string
     Version    string
 
@@ -305,7 +305,7 @@ type HardwareInformation struct {
 type HighAvailability struct {
     OvType
     Enabled    bool
-    Priority    int
+    Priority    int64
 
 }
 
@@ -318,8 +318,8 @@ type HostDevicePassthrough struct {
 type HostNicVirtualFunctionsConfiguration struct {
     OvType
     AllNetworksAllowed    bool
-    MaxNumberOfVirtualFunctions    int
-    NumberOfVirtualFunctions    int
+    MaxNumberOfVirtualFunctions    int64
+    NumberOfVirtualFunctions    int64
 
 }
 
@@ -329,7 +329,7 @@ type HostedEngine struct {
     Configured    bool
     GlobalMaintenance    bool
     LocalMaintenance    bool
-    Score    int
+    Score    int64
 
 }
 
@@ -379,7 +379,7 @@ type Initialization struct {
     Domain    string
     HostName    string
     InputLocale    string
-    NicConfigurations    []NicConfiguration
+    NicConfigurations    []*NicConfiguration
     OrgName    string
     RegenerateIds    bool
     RegenerateSshKeys    bool
@@ -395,7 +395,7 @@ type Initialization struct {
 
 type Io struct {
     OvType
-    Threads    int
+    Threads    int64
 
 }
 
@@ -422,8 +422,8 @@ type IscsiBond struct {
     Description    string
     Id    string
     Name    string
-    Networks    []Network
-    StorageConnections    []StorageConnection
+    Networks    []*Network
+    StorageConnections    []*StorageConnection
 
 }
 
@@ -432,14 +432,14 @@ type IscsiDetails struct {
     Address    string
     DiskId    string
     Initiator    string
-    LunMapping    int
+    LunMapping    int64
     Password    string
-    Paths    int
-    Port    int
+    Paths    int64
+    Port    int64
     Portal    string
     ProductId    string
     Serial    string
-    Size    int
+    Size    int64
     Status    string
     StorageDomainId    string
     Target    string
@@ -462,7 +462,7 @@ type Job struct {
     Owner    User
     StartTime    time.Time
     Status    JobStatus
-    Steps    []Step
+    Steps    []*Step
 
 }
 
@@ -474,7 +474,7 @@ type KatelloErratum struct {
     Id    string
     Issued    time.Time
     Name    string
-    Packages    []Package
+    Packages    []*Package
     Severity    string
     Solution    string
     Summary    string
@@ -500,18 +500,18 @@ type Ksm struct {
 type LogicalUnit struct {
     OvType
     Address    string
-    DiscardMaxSize    int
+    DiscardMaxSize    int64
     DiscardZeroesData    bool
     DiskId    string
     Id    string
-    LunMapping    int
+    LunMapping    int64
     Password    string
-    Paths    int
-    Port    int
+    Paths    int64
+    Port    int64
     Portal    string
     ProductId    string
     Serial    string
-    Size    int
+    Size    int64
     Status    LunStatus
     StorageDomainId    string
     Target    string
@@ -535,21 +535,21 @@ type MacPool struct {
     Description    string
     Id    string
     Name    string
-    Ranges    []Range
+    Ranges    []*Range
 
 }
 
 type MemoryOverCommit struct {
     OvType
-    Percent    int
+    Percent    int64
 
 }
 
 type MemoryPolicy struct {
     OvType
     Ballooning    bool
-    Guaranteed    int
-    Max    int
+    Guaranteed    int64
+    Max    int64
     OverCommit    MemoryOverCommit
     TransparentHugePages    TransparentHugePages
 
@@ -564,7 +564,7 @@ type Method struct {
 type MigrationBandwidth struct {
     OvType
     AssignmentMethod    MigrationBandwidthAssignmentMethod
-    CustomValue    int
+    CustomValue    int64
 
 }
 
@@ -596,18 +596,18 @@ type Network struct {
     DnsResolverConfiguration    DnsResolverConfiguration
     Id    string
     Ip    Ip
-    Mtu    int
+    Mtu    int64
     Name    string
-    NetworkLabels    []NetworkLabel
-    Permissions    []Permission
+    NetworkLabels    []*NetworkLabel
+    Permissions    []*Permission
     ProfileRequired    bool
     Qos    Qos
     Required    bool
     Status    NetworkStatus
     Stp    bool
-    Usages    []NetworkUsage
+    Usages    []*NetworkUsage
     Vlan    Vlan
-    VnicProfiles    []VnicProfile
+    VnicProfiles    []*VnicProfile
 
 }
 
@@ -620,19 +620,19 @@ type NetworkAttachment struct {
     HostNic    HostNic
     Id    string
     InSync    bool
-    IpAddressAssignments    []IpAddressAssignment
+    IpAddressAssignments    []*IpAddressAssignment
     Name    string
     Network    Network
-    Properties    []Property
+    Properties    []*Property
     Qos    Qos
-    ReportedConfigurations    []ReportedConfiguration
+    ReportedConfigurations    []*ReportedConfiguration
 
 }
 
 type NetworkConfiguration struct {
     OvType
     Dns    Dns
-    Nics    []Nic
+    Nics    []*Nic
 
 }
 
@@ -670,7 +670,7 @@ type NetworkLabel struct {
 type NfsProfileDetail struct {
     EntityProfileDetail
     NfsServerIp    string
-    ProfileDetails    []ProfileDetail
+    ProfileDetails    []*ProfileDetail
 
 }
 
@@ -692,18 +692,18 @@ type NumaNode struct {
     Description    string
     Host    Host
     Id    string
-    Index    int
-    Memory    int
+    Index    int64
+    Memory    int64
     Name    string
     NodeDistance    string
-    Statistics    []Statistic
+    Statistics    []*Statistic
 
 }
 
 type NumaNodePin struct {
     OvType
     HostNumaNode    NumaNode
-    Index    int
+    Index    int64
     Pinned    bool
 
 }
@@ -733,7 +733,7 @@ type OpenStackSubnet struct {
     Cidr    string
     Comment    string
     Description    string
-    DnsServers    []String
+    DnsServers    []*String
     Gateway    string
     Id    string
     IpVersion    string
@@ -749,7 +749,7 @@ type OpenStackVolumeType struct {
     Id    string
     Name    string
     OpenstackVolumeProvider    OpenStackVolumeProvider
-    Properties    []Property
+    Properties    []*Property
 
 }
 
@@ -807,7 +807,7 @@ type Package struct {
 
 type Payload struct {
     OvType
-    Files    []File
+    Files    []*File
     Type    VmDeviceType
     VolumeId    string
 
@@ -858,13 +858,13 @@ type PortMirroring struct {
 type PowerManagement struct {
     OvType
     Address    string
-    Agents    []Agent
+    Agents    []*Agent
     AutomaticPmEnabled    bool
     Enabled    bool
     KdumpDetection    bool
-    Options    []Option
+    Options    []*Option
     Password    string
-    PmProxies    []PmProxy
+    PmProxies    []*PmProxy
     Status    PowerManagementStatus
     Type    string
     Username    string
@@ -890,11 +890,11 @@ type ProductInfo struct {
 
 type ProfileDetail struct {
     OvType
-    BlockStatistics    []BlockStatistic
-    Duration    int
-    FopStatistics    []FopStatistic
+    BlockStatistics    []*BlockStatistic
+    Duration    int64
+    FopStatistics    []*FopStatistic
     ProfileType    string
-    Statistics    []Statistic
+    Statistics    []*Statistic
 
 }
 
@@ -914,47 +914,47 @@ type ProxyTicket struct {
 type Qos struct {
     Identified
     Comment    string
-    CpuLimit    int
+    CpuLimit    int64
     DataCenter    DataCenter
     Description    string
     Id    string
-    InboundAverage    int
-    InboundBurst    int
-    InboundPeak    int
-    MaxIops    int
-    MaxReadIops    int
-    MaxReadThroughput    int
-    MaxThroughput    int
-    MaxWriteIops    int
-    MaxWriteThroughput    int
+    InboundAverage    int64
+    InboundBurst    int64
+    InboundPeak    int64
+    MaxIops    int64
+    MaxReadIops    int64
+    MaxReadThroughput    int64
+    MaxThroughput    int64
+    MaxWriteIops    int64
+    MaxWriteThroughput    int64
     Name    string
-    OutboundAverage    int
-    OutboundAverageLinkshare    int
-    OutboundAverageRealtime    int
-    OutboundAverageUpperlimit    int
-    OutboundBurst    int
-    OutboundPeak    int
+    OutboundAverage    int64
+    OutboundAverageLinkshare    int64
+    OutboundAverageRealtime    int64
+    OutboundAverageUpperlimit    int64
+    OutboundBurst    int64
+    OutboundPeak    int64
     Type    QosType
 
 }
 
 type Quota struct {
     Identified
-    ClusterHardLimitPct    int
-    ClusterSoftLimitPct    int
+    ClusterHardLimitPct    int64
+    ClusterSoftLimitPct    int64
     Comment    string
     DataCenter    DataCenter
     Description    string
-    Disks    []Disk
+    Disks    []*Disk
     Id    string
     Name    string
-    Permissions    []Permission
-    QuotaClusterLimits    []QuotaClusterLimit
-    QuotaStorageLimits    []QuotaStorageLimit
-    StorageHardLimitPct    int
-    StorageSoftLimitPct    int
-    Users    []User
-    Vms    []Vm
+    Permissions    []*Permission
+    QuotaClusterLimits    []*QuotaClusterLimit
+    QuotaStorageLimits    []*QuotaStorageLimit
+    StorageHardLimitPct    int64
+    StorageSoftLimitPct    int64
+    Users    []*User
+    Vms    []*Vm
 
 }
 
@@ -968,8 +968,8 @@ type QuotaClusterLimit struct {
     MemoryUsage    float64
     Name    string
     Quota    Quota
-    VcpuLimit    int
-    VcpuUsage    int
+    VcpuLimit    int64
+    VcpuUsage    int64
 
 }
 
@@ -978,7 +978,7 @@ type QuotaStorageLimit struct {
     Comment    string
     Description    string
     Id    string
-    Limit    int
+    Limit    int64
     Name    string
     Quota    Quota
     StorageDomain    StorageDomain
@@ -995,8 +995,8 @@ type Range struct {
 
 type Rate struct {
     OvType
-    Bytes    int
-    Period    int
+    Bytes    int64
+    Period    int64
 
 }
 
@@ -1014,7 +1014,7 @@ type ReportedDevice struct {
     Comment    string
     Description    string
     Id    string
-    Ips    []Ip
+    Ips    []*Ip
     Mac    Mac
     Name    string
     Type    ReportedDeviceType
@@ -1037,23 +1037,23 @@ type Role struct {
     Id    string
     Mutable    bool
     Name    string
-    Permits    []Permit
+    Permits    []*Permit
     User    User
 
 }
 
 type SchedulingPolicy struct {
     Identified
-    Balances    []Balance
+    Balances    []*Balance
     Comment    string
     DefaultPolicy    bool
     Description    string
-    Filters    []Filter
+    Filters    []*Filter
     Id    string
     Locked    bool
     Name    string
-    Properties    []Property
-    Weight    []Weight
+    Properties    []*Property
+    Weight    []*Weight
 
 }
 
@@ -1065,7 +1065,7 @@ type SchedulingPolicyUnit struct {
     Id    string
     Internal    bool
     Name    string
-    Properties    []Property
+    Properties    []*Property
     Type    PolicyUnitType
 
 }
@@ -1100,7 +1100,7 @@ type Session struct {
 type SkipIfConnectivityBroken struct {
     OvType
     Enabled    bool
-    Threshold    int
+    Threshold    int64
 
 }
 
@@ -1119,7 +1119,7 @@ type SpecialObjects struct {
 
 type Spm struct {
     OvType
-    Priority    int
+    Priority    int64
     Status    SpmStatus
 
 }
@@ -1132,7 +1132,7 @@ type Ssh struct {
     Fingerprint    string
     Id    string
     Name    string
-    Port    int
+    Port    int64
     User    User
 
 }
@@ -1150,7 +1150,7 @@ type SshPublicKey struct {
 
 type Sso struct {
     OvType
-    Methods    []Method
+    Methods    []*Method
 
 }
 
@@ -1171,7 +1171,7 @@ type Statistic struct {
     Step    Step
     Type    ValueType
     Unit    StatisticUnit
-    Values    []Value
+    Values    []*Value
     Vm    Vm
 
 }
@@ -1187,11 +1187,11 @@ type Step struct {
     Id    string
     Job    Job
     Name    string
-    Number    int
+    Number    int64
     ParentStep    Step
-    Progress    int
+    Progress    int64
     StartTime    time.Time
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    StepStatus
     Type    StepEnum
 
@@ -1206,12 +1206,12 @@ type StorageConnection struct {
     Id    string
     MountOptions    string
     Name    string
-    NfsRetrans    int
-    NfsTimeo    int
+    NfsRetrans    int64
+    NfsTimeo    int64
     NfsVersion    NfsVersion
     Password    string
     Path    string
-    Port    int
+    Port    int64
     Portal    string
     Target    string
     Type    StorageType
@@ -1235,37 +1235,37 @@ type StorageConnectionExtension struct {
 
 type StorageDomain struct {
     Identified
-    Available    int
+    Available    int64
     Comment    string
-    Committed    int
-    CriticalSpaceActionBlocker    int
+    Committed    int64
+    CriticalSpaceActionBlocker    int64
     DataCenter    DataCenter
-    DataCenters    []DataCenter
+    DataCenters    []*DataCenter
     Description    string
     DiscardAfterDelete    bool
-    DiskProfiles    []DiskProfile
-    DiskSnapshots    []DiskSnapshot
-    Disks    []Disk
+    DiskProfiles    []*DiskProfile
+    DiskSnapshots    []*DiskSnapshot
+    Disks    []*Disk
     ExternalStatus    ExternalStatus
-    Files    []File
+    Files    []*File
     Host    Host
     Id    string
-    Images    []Image
+    Images    []*Image
     Import    bool
     Master    bool
     Name    string
-    Permissions    []Permission
+    Permissions    []*Permission
     Status    StorageDomainStatus
     Storage    HostStorage
-    StorageConnections    []StorageConnection
+    StorageConnections    []*StorageConnection
     StorageFormat    StorageFormat
     SupportsDiscard    bool
     SupportsDiscardZeroesData    bool
-    Templates    []Template
+    Templates    []*Template
     Type    StorageDomainType
-    Used    int
-    Vms    []Vm
-    WarningLowSpaceIndicator    int
+    Used    int64
+    Vms    []*Vm
+    WarningLowSpaceIndicator    int64
     WipeAfterDelete    bool
 
 }
@@ -1295,13 +1295,13 @@ type TemplateVersion struct {
     OvType
     BaseTemplate    Template
     VersionName    string
-    VersionNumber    int
+    VersionNumber    int64
 
 }
 
 type Ticket struct {
     OvType
-    Expiry    int
+    Expiry    int64
     Value    string
 
 }
@@ -1345,18 +1345,18 @@ type User struct {
     Domain    Domain
     DomainEntryId    string
     Email    string
-    Groups    []Group
+    Groups    []*Group
     Id    string
     LastName    string
     LoggedIn    bool
     Name    string
     Namespace    string
     Password    string
-    Permissions    []Permission
+    Permissions    []*Permission
     Principal    string
-    Roles    []Role
-    SshPublicKeys    []SshPublicKey
-    Tags    []Tag
+    Roles    []*Role
+    SshPublicKeys    []*SshPublicKey
+    Tags    []*Tag
     UserName    string
 
 }
@@ -1371,7 +1371,7 @@ type Value struct {
 type VcpuPin struct {
     OvType
     CpuSet    string
-    Vcpu    int
+    Vcpu    int64
 
 }
 
@@ -1386,15 +1386,15 @@ type Vendor struct {
 
 type Version struct {
     Identified
-    Build    int
+    Build    int64
     Comment    string
     Description    string
     FullVersion    string
     Id    string
-    Major    int
-    Minor    int
+    Major    int64
+    Minor    int64
     Name    string
-    Revision    int
+    Revision    int64
 
 }
 
@@ -1411,19 +1411,19 @@ type VirtualNumaNode struct {
     Description    string
     Host    Host
     Id    string
-    Index    int
-    Memory    int
+    Index    int64
+    Memory    int64
     Name    string
     NodeDistance    string
-    NumaNodePins    []NumaNodePin
-    Statistics    []Statistic
+    NumaNodePins    []*NumaNodePin
+    Statistics    []*Statistic
     Vm    Vm
 
 }
 
 type Vlan struct {
     OvType
-    Id    int
+    Id    int64
 
 }
 
@@ -1435,12 +1435,12 @@ type VmBase struct {
     Console    Console
     Cpu    Cpu
     CpuProfile    CpuProfile
-    CpuShares    int
+    CpuShares    int64
     CreationTime    time.Time
     CustomCompatibilityVersion    Version
     CustomCpuModel    string
     CustomEmulatedMachine    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     DeleteProtected    bool
     Description    string
     Display    Display
@@ -1451,10 +1451,10 @@ type VmBase struct {
     Io    Io
     LargeIcon    Icon
     Lease    StorageDomainLease
-    Memory    int
+    Memory    int64
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
-    MigrationDowntime    int
+    MigrationDowntime    int64
     Name    string
     Origin    string
     Os    OperatingSystem
@@ -1478,7 +1478,7 @@ type VmBase struct {
 type VmPlacementPolicy struct {
     OvType
     Affinity    VmAffinity
-    Hosts    []Host
+    Hosts    []*Host
 
 }
 
@@ -1491,12 +1491,12 @@ type VmPool struct {
     Display    Display
     Id    string
     InstanceType    InstanceType
-    MaxUserVms    int
+    MaxUserVms    int64
     Name    string
-    Permissions    []Permission
-    PrestartedVms    int
+    Permissions    []*Permission
+    PrestartedVms    int64
     RngDevice    RngDevice
-    Size    int
+    Size    int64
     SoundcardEnabled    bool
     Stateful    bool
     Template    Template
@@ -1508,9 +1508,9 @@ type VmPool struct {
 
 type VmSummary struct {
     OvType
-    Active    int
-    Migrating    int
-    Total    int
+    Active    int64
+    Migrating    int64
+    Total    int64
 
 }
 
@@ -1523,7 +1523,7 @@ type VnicPassThrough struct {
 type VnicProfile struct {
     Identified
     Comment    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     Description    string
     Id    string
     Migratable    bool
@@ -1531,7 +1531,7 @@ type VnicProfile struct {
     Network    Network
     NetworkFilter    NetworkFilter
     PassThrough    VnicPassThrough
-    Permissions    []Permission
+    Permissions    []*Permission
     PortMirroring    bool
     Qos    Qos
 
@@ -1548,7 +1548,7 @@ type VnicProfileMapping struct {
 type VolumeGroup struct {
     OvType
     Id    string
-    LogicalUnits    []LogicalUnit
+    LogicalUnits    []*LogicalUnit
     Name    string
 
 }
@@ -1557,7 +1557,7 @@ type Weight struct {
     Identified
     Comment    string
     Description    string
-    Factor    int
+    Factor    int64
     Id    string
     Name    string
     SchedulingPolicy    SchedulingPolicy
@@ -1569,21 +1569,21 @@ type Action struct {
     Identified
     AllowPartialImport    bool
     Async    bool
-    Bricks    []GlusterBrick
-    Certificates    []Certificate
+    Bricks    []*GlusterBrick
+    Certificates    []*Certificate
     CheckConnectivity    bool
     Clone    bool
     Cluster    Cluster
     CollapseSnapshots    bool
     Comment    string
-    ConnectivityTimeout    int
+    ConnectivityTimeout    int64
     DataCenter    DataCenter
     DeployHostedEngine    bool
     Description    string
     Details    GlusterVolumeProfileDetails
     DiscardSnapshots    bool
     Disk    Disk
-    Disks    []Disk
+    Disks    []*Disk
     Exclusive    bool
     Fault    Fault
     FenceType    string
@@ -1597,13 +1597,13 @@ type Action struct {
     ImportAsTemplate    bool
     IsAttached    bool
     Iscsi    IscsiDetails
-    IscsiTargets    []String
+    IscsiTargets    []*String
     Job    Job
-    LogicalUnits    []LogicalUnit
+    LogicalUnits    []*LogicalUnit
     MaintenanceEnabled    bool
-    ModifiedBonds    []HostNic
-    ModifiedLabels    []NetworkLabel
-    ModifiedNetworkAttachments    []NetworkAttachment
+    ModifiedBonds    []*HostNic
+    ModifiedLabels    []*NetworkLabel
+    ModifiedNetworkAttachments    []*NetworkAttachment
     Name    string
     Option    Option
     Pause    bool
@@ -1612,9 +1612,9 @@ type Action struct {
     Reason    string
     ReassignBadMacs    bool
     RemoteViewerConnectionFile    string
-    RemovedBonds    []HostNic
-    RemovedLabels    []NetworkLabel
-    RemovedNetworkAttachments    []NetworkAttachment
+    RemovedBonds    []*HostNic
+    RemovedLabels    []*NetworkLabel
+    RemovedNetworkAttachments    []*NetworkAttachment
     ResolutionType    string
     RestoreMemory    bool
     RootPassword    string
@@ -1623,9 +1623,9 @@ type Action struct {
     Status    string
     StopGlusterService    bool
     StorageDomain    StorageDomain
-    StorageDomains    []StorageDomain
+    StorageDomains    []*StorageDomain
     Succeeded    bool
-    SynchronizedNetworkAttachments    []NetworkAttachment
+    SynchronizedNetworkAttachments    []*NetworkAttachment
     Template    Template
     Ticket    Ticket
     UndeployHostedEngine    bool
@@ -1633,7 +1633,7 @@ type Action struct {
     UseSysprep    bool
     VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration
     Vm    Vm
-    VnicProfileMappings    []VnicProfileMapping
+    VnicProfileMappings    []*VnicProfileMapping
 
 }
 
@@ -1643,12 +1643,12 @@ type AffinityGroup struct {
     Comment    string
     Description    string
     Enforcing    bool
-    Hosts    []Host
+    Hosts    []*Host
     HostsRule    AffinityRule
     Id    string
     Name    string
     Positive    bool
-    Vms    []Vm
+    Vms    []*Vm
     VmsRule    AffinityRule
 
 }
@@ -1657,11 +1657,11 @@ type AffinityLabel struct {
     Identified
     Comment    string
     Description    string
-    Hosts    []Host
+    Hosts    []*Host
     Id    string
     Name    string
     ReadOnly    bool
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
@@ -1675,10 +1675,10 @@ type Agent struct {
     Host    Host
     Id    string
     Name    string
-    Options    []Option
-    Order    int
+    Options    []*Option
+    Order    int64
     Password    string
-    Port    int
+    Port    int64
     Type    string
     Username    string
 
@@ -1729,7 +1729,7 @@ type Bookmark struct {
 type BrickProfileDetail struct {
     EntityProfileDetail
     Brick    GlusterBrick
-    ProfileDetails    []ProfileDetail
+    ProfileDetails    []*ProfileDetail
 
 }
 
@@ -1747,21 +1747,21 @@ type Certificate struct {
 
 type Cluster struct {
     Identified
-    AffinityGroups    []AffinityGroup
+    AffinityGroups    []*AffinityGroup
     BallooningEnabled    bool
     Comment    string
     Cpu    Cpu
-    CpuProfiles    []CpuProfile
-    CustomSchedulingPolicyProperties    []Property
+    CpuProfiles    []*CpuProfile
+    CustomSchedulingPolicyProperties    []*Property
     DataCenter    DataCenter
     Description    string
     Display    Display
     ErrorHandling    ErrorHandling
     FencingPolicy    FencingPolicy
-    GlusterHooks    []GlusterHook
+    GlusterHooks    []*GlusterHook
     GlusterService    bool
     GlusterTunedProfile    string
-    GlusterVolumes    []GlusterVolume
+    GlusterVolumes    []*GlusterVolume
     HaReservation    bool
     Id    string
     Ksm    Ksm
@@ -1771,14 +1771,14 @@ type Cluster struct {
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
     Name    string
-    NetworkFilters    []NetworkFilter
-    Networks    []Network
+    NetworkFilters    []*NetworkFilter
+    Networks    []*Network
     OptionalReason    bool
-    Permissions    []Permission
-    RequiredRngSources    []RngSource
+    Permissions    []*Permission
+    RequiredRngSources    []*RngSource
     SchedulingPolicy    SchedulingPolicy
     SerialNumber    SerialNumber
-    SupportedVersions    []Version
+    SupportedVersions    []*Version
     SwitchType    SwitchType
     ThreadsAsCores    bool
     TrustedService    bool
@@ -1791,11 +1791,11 @@ type Cluster struct {
 type ClusterLevel struct {
     Identified
     Comment    string
-    CpuTypes    []CpuType
+    CpuTypes    []*CpuType
     Description    string
     Id    string
     Name    string
-    Permits    []Permit
+    Permits    []*Permit
 
 }
 
@@ -1806,30 +1806,30 @@ type CpuProfile struct {
     Description    string
     Id    string
     Name    string
-    Permissions    []Permission
+    Permissions    []*Permission
     Qos    Qos
 
 }
 
 type DataCenter struct {
     Identified
-    Clusters    []Cluster
+    Clusters    []*Cluster
     Comment    string
     Description    string
     Id    string
-    IscsiBonds    []IscsiBond
+    IscsiBonds    []*IscsiBond
     Local    bool
     MacPool    MacPool
     Name    string
-    Networks    []Network
-    Permissions    []Permission
-    Qoss    []Qos
+    Networks    []*Network
+    Permissions    []*Permission
+    Qoss    []*Qos
     QuotaMode    QuotaModeType
-    Quotas    []Quota
+    Quotas    []*Quota
     Status    DataCenterStatus
-    StorageDomains    []StorageDomain
+    StorageDomains    []*StorageDomain
     StorageFormat    StorageFormat
-    SupportedVersions    []Version
+    SupportedVersions    []*Version
     Version    Version
 
 }
@@ -1843,14 +1843,14 @@ type Device struct {
     Name    string
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
 type Disk struct {
     Device
     Active    bool
-    ActualSize    int
+    ActualSize    int64
     Alias    string
     Bootable    bool
     Comment    string
@@ -1859,16 +1859,16 @@ type Disk struct {
     Format    DiskFormat
     Id    string
     ImageId    string
-    InitialSize    int
+    InitialSize    int64
     InstanceType    InstanceType
     Interface    DiskInterface
     LogicalName    string
     LunStorage    HostStorage
     Name    string
     OpenstackVolumeType    OpenStackVolumeType
-    Permissions    []Permission
+    Permissions    []*Permission
     PropagateErrors    bool
-    ProvisionedSize    int
+    ProvisionedSize    int64
     QcowVersion    QcowVersion
     Quota    Quota
     ReadOnly    bool
@@ -1876,15 +1876,15 @@ type Disk struct {
     Shareable    bool
     Snapshot    Snapshot
     Sparse    bool
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    DiskStatus
     StorageDomain    StorageDomain
-    StorageDomains    []StorageDomain
+    StorageDomains    []*StorageDomain
     StorageType    DiskStorageType
     Template    Template
     UsesScsiReservation    bool
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
     WipeAfterDelete    bool
 
 }
@@ -1913,7 +1913,7 @@ type DiskProfile struct {
     Description    string
     Id    string
     Name    string
-    Permissions    []Permission
+    Permissions    []*Permission
     Qos    Qos
     StorageDomain    StorageDomain
 
@@ -1922,7 +1922,7 @@ type DiskProfile struct {
 type DiskSnapshot struct {
     Disk
     Active    bool
-    ActualSize    int
+    ActualSize    int64
     Alias    string
     Bootable    bool
     Comment    string
@@ -1932,16 +1932,16 @@ type DiskSnapshot struct {
     Format    DiskFormat
     Id    string
     ImageId    string
-    InitialSize    int
+    InitialSize    int64
     InstanceType    InstanceType
     Interface    DiskInterface
     LogicalName    string
     LunStorage    HostStorage
     Name    string
     OpenstackVolumeType    OpenStackVolumeType
-    Permissions    []Permission
+    Permissions    []*Permission
     PropagateErrors    bool
-    ProvisionedSize    int
+    ProvisionedSize    int64
     QcowVersion    QcowVersion
     Quota    Quota
     ReadOnly    bool
@@ -1949,15 +1949,15 @@ type DiskSnapshot struct {
     Shareable    bool
     Snapshot    Snapshot
     Sparse    bool
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    DiskStatus
     StorageDomain    StorageDomain
-    StorageDomains    []StorageDomain
+    StorageDomains    []*StorageDomain
     StorageType    DiskStorageType
     Template    Template
     UsesScsiReservation    bool
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
     WipeAfterDelete    bool
 
 }
@@ -1966,25 +1966,25 @@ type Domain struct {
     Identified
     Comment    string
     Description    string
-    Groups    []Group
+    Groups    []*Group
     Id    string
     Name    string
     User    User
-    Users    []User
+    Users    []*User
 
 }
 
 type Event struct {
     Identified
     Cluster    Cluster
-    Code    int
+    Code    int64
     Comment    string
     CorrelationId    string
     CustomData    string
-    CustomId    int
+    CustomId    int64
     DataCenter    DataCenter
     Description    string
-    FloodRate    int
+    FloodRate    int64
     Host    Host
     Id    string
     Name    string
@@ -2058,7 +2058,7 @@ type ExternalProvider struct {
     Id    string
     Name    string
     Password    string
-    Properties    []Property
+    Properties    []*Property
     RequiresAuthentication    bool
     Url    string
     Username    string
@@ -2083,7 +2083,7 @@ type Filter struct {
     Description    string
     Id    string
     Name    string
-    Position    int
+    Position    int64
     SchedulingPolicyUnit    SchedulingPolicyUnit
 
 }
@@ -2098,7 +2098,7 @@ type Floppy struct {
     Name    string
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
@@ -2108,17 +2108,17 @@ type GlusterBrickAdvancedDetails struct {
     Description    string
     Device    string
     FsName    string
-    GlusterClients    []GlusterClient
+    GlusterClients    []*GlusterClient
     Id    string
     InstanceType    InstanceType
-    MemoryPools    []GlusterMemoryPool
+    MemoryPools    []*GlusterMemoryPool
     MntOptions    string
     Name    string
-    Pid    int
-    Port    int
+    Pid    int64
+    Port    int64
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
@@ -2127,7 +2127,7 @@ type GlusterHook struct {
     Checksum    string
     Cluster    Cluster
     Comment    string
-    ConflictStatus    int
+    ConflictStatus    int64
     Conflicts    string
     Content    string
     ContentType    HookContentType
@@ -2135,7 +2135,7 @@ type GlusterHook struct {
     GlusterCommand    string
     Id    string
     Name    string
-    ServerHooks    []GlusterServerHook
+    ServerHooks    []*GlusterServerHook
     Stage    HookStage
     Status    GlusterHookStatus
 
@@ -2143,17 +2143,17 @@ type GlusterHook struct {
 
 type GlusterMemoryPool struct {
     Identified
-    AllocCount    int
-    ColdCount    int
+    AllocCount    int64
+    ColdCount    int64
     Comment    string
     Description    string
-    HotCount    int
+    HotCount    int64
     Id    string
-    MaxAlloc    int
-    MaxStdalloc    int
+    MaxAlloc    int64
+    MaxStdalloc    int64
     Name    string
-    PaddedSize    int
-    PoolMisses    int
+    PaddedSize    int64
+    PoolMisses    int64
     Type    string
 
 }
@@ -2173,32 +2173,32 @@ type GlusterServerHook struct {
 
 type GlusterVolume struct {
     Identified
-    Bricks    []GlusterBrick
+    Bricks    []*GlusterBrick
     Cluster    Cluster
     Comment    string
     Description    string
-    DisperseCount    int
+    DisperseCount    int64
     Id    string
     Name    string
-    Options    []Option
-    RedundancyCount    int
-    ReplicaCount    int
-    Statistics    []Statistic
+    Options    []*Option
+    RedundancyCount    int64
+    ReplicaCount    int64
+    Statistics    []*Statistic
     Status    GlusterVolumeStatus
-    StripeCount    int
-    TransportTypes    []TransportType
+    StripeCount    int64
+    TransportTypes    []*TransportType
     VolumeType    GlusterVolumeType
 
 }
 
 type GlusterVolumeProfileDetails struct {
     Identified
-    BrickProfileDetails    []BrickProfileDetail
+    BrickProfileDetails    []*BrickProfileDetail
     Comment    string
     Description    string
     Id    string
     Name    string
-    NfsProfileDetails    []NfsProfileDetail
+    NfsProfileDetails    []*NfsProfileDetail
 
 }
 
@@ -2210,10 +2210,10 @@ type GraphicsConsole struct {
     Id    string
     InstanceType    InstanceType
     Name    string
-    Port    int
+    Port    int64
     Protocol    GraphicsType
     Template    Template
-    TlsPort    int
+    TlsPort    int64
     Vm    Vm
 
 }
@@ -2227,9 +2227,9 @@ type Group struct {
     Id    string
     Name    string
     Namespace    string
-    Permissions    []Permission
-    Roles    []Role
-    Tags    []Tag
+    Permissions    []*Permission
+    Roles    []*Role
+    Tags    []*Tag
 
 }
 
@@ -2248,8 +2248,8 @@ type Hook struct {
 type Host struct {
     Identified
     Address    string
-    AffinityLabels    []AffinityLabel
-    Agents    []Agent
+    AffinityLabels    []*AffinityLabel
+    Agents    []*Agent
     AutoNumaStatus    AutoNumaStatus
     Certificate    Certificate
     Cluster    Cluster
@@ -2257,46 +2257,46 @@ type Host struct {
     Cpu    Cpu
     Description    string
     DevicePassthrough    HostDevicePassthrough
-    Devices    []Device
+    Devices    []*Device
     Display    Display
     ExternalHostProvider    ExternalHostProvider
     ExternalStatus    ExternalStatus
     HardwareInformation    HardwareInformation
-    Hooks    []Hook
+    Hooks    []*Hook
     HostedEngine    HostedEngine
     Id    string
     Iscsi    IscsiDetails
-    KatelloErrata    []KatelloErratum
+    KatelloErrata    []*KatelloErratum
     KdumpStatus    KdumpStatus
     Ksm    Ksm
     LibvirtVersion    Version
-    MaxSchedulingMemory    int
-    Memory    int
+    MaxSchedulingMemory    int64
+    Memory    int64
     Name    string
-    NetworkAttachments    []NetworkAttachment
-    Nics    []Nic
-    NumaNodes    []NumaNode
+    NetworkAttachments    []*NetworkAttachment
+    Nics    []*Nic
+    NumaNodes    []*NumaNode
     NumaSupported    bool
     Os    OperatingSystem
     OverrideIptables    bool
-    Permissions    []Permission
-    Port    int
+    Permissions    []*Permission
+    Port    int64
     PowerManagement    PowerManagement
     Protocol    HostProtocol
     RootPassword    string
     SeLinux    SeLinux
     Spm    Spm
     Ssh    Ssh
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    HostStatus
     StatusDetail    string
-    StorageConnectionExtensions    []StorageConnectionExtension
-    Storages    []HostStorage
+    StorageConnectionExtensions    []*StorageConnectionExtension
+    Storages    []*HostStorage
     Summary    VmSummary
-    Tags    []Tag
+    Tags    []*Tag
     TransparentHugePages    TransparentHugePages
     Type    HostType
-    UnmanagedNetworks    []UnmanagedNetwork
+    UnmanagedNetworks    []*UnmanagedNetwork
     UpdateAvailable    bool
     Version    Version
 
@@ -2309,21 +2309,21 @@ type HostDevice struct {
     Description    string
     Host    Host
     Id    string
-    IommuGroup    int
+    IommuGroup    int64
     Name    string
     ParentDevice    HostDevice
     PhysicalFunction    HostDevice
     Placeholder    bool
     Product    Product
     Vendor    Vendor
-    VirtualFunctions    int
+    VirtualFunctions    int64
     Vm    Vm
 
 }
 
 type HostNic struct {
     Identified
-    AdAggregatorId    int
+    AdAggregatorId    int64
     BaseInterface    string
     Bonding    Bonding
     BootProtocol    BootProtocol
@@ -2338,16 +2338,16 @@ type HostNic struct {
     Ipv6    Ip
     Ipv6BootProtocol    BootProtocol
     Mac    Mac
-    Mtu    int
+    Mtu    int64
     Name    string
     Network    Network
-    NetworkLabels    []NetworkLabel
+    NetworkLabels    []*NetworkLabel
     OverrideConfiguration    bool
     PhysicalFunction    HostNic
-    Properties    []Property
+    Properties    []*Property
     Qos    Qos
-    Speed    int
-    Statistics    []Statistic
+    Speed    int64
+    Statistics    []*Statistic
     Status    NicStatus
     VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration
     Vlan    Vlan
@@ -2361,16 +2361,16 @@ type HostStorage struct {
     Description    string
     Host    Host
     Id    string
-    LogicalUnits    []LogicalUnit
+    LogicalUnits    []*LogicalUnit
     MountOptions    string
     Name    string
-    NfsRetrans    int
-    NfsTimeo    int
+    NfsRetrans    int64
+    NfsTimeo    int64
     NfsVersion    NfsVersion
     OverrideLuns    bool
     Password    string
     Path    string
-    Port    int
+    Port    int64
     Portal    string
     Target    string
     Type    StorageType
@@ -2403,18 +2403,18 @@ type Nic struct {
     Mac    Mac
     Name    string
     Network    Network
-    NetworkAttachments    []NetworkAttachment
-    NetworkFilterParameters    []NetworkFilterParameter
-    NetworkLabels    []NetworkLabel
+    NetworkAttachments    []*NetworkAttachment
+    NetworkFilterParameters    []*NetworkFilterParameter
+    NetworkLabels    []*NetworkLabel
     OnBoot    bool
     Plugged    bool
-    ReportedDevices    []ReportedDevice
-    Statistics    []Statistic
+    ReportedDevices    []*ReportedDevice
+    Statistics    []*Statistic
     Template    Template
-    VirtualFunctionAllowedLabels    []NetworkLabel
-    VirtualFunctionAllowedNetworks    []Network
+    VirtualFunctionAllowedLabels    []*NetworkLabel
+    VirtualFunctionAllowedNetworks    []*Network
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
     VnicProfile    VnicProfile
 
 }
@@ -2427,7 +2427,7 @@ type OpenStackProvider struct {
     Id    string
     Name    string
     Password    string
-    Properties    []Property
+    Properties    []*Property
     RequiresAuthentication    bool
     TenantName    string
     Url    string
@@ -2437,60 +2437,60 @@ type OpenStackProvider struct {
 
 type OpenStackVolumeProvider struct {
     OpenStackProvider
-    AuthenticationKeys    []OpenstackVolumeAuthenticationKey
+    AuthenticationKeys    []*OpenstackVolumeAuthenticationKey
     AuthenticationUrl    string
-    Certificates    []Certificate
+    Certificates    []*Certificate
     Comment    string
     DataCenter    DataCenter
     Description    string
     Id    string
     Name    string
     Password    string
-    Properties    []Property
+    Properties    []*Property
     RequiresAuthentication    bool
     TenantName    string
     Url    string
     Username    string
-    VolumeTypes    []OpenStackVolumeType
+    VolumeTypes    []*OpenStackVolumeType
 
 }
 
 type Template struct {
     VmBase
     Bios    Bios
-    Cdroms    []Cdrom
+    Cdroms    []*Cdrom
     Cluster    Cluster
     Comment    string
     Console    Console
     Cpu    Cpu
     CpuProfile    CpuProfile
-    CpuShares    int
+    CpuShares    int64
     CreationTime    time.Time
     CustomCompatibilityVersion    Version
     CustomCpuModel    string
     CustomEmulatedMachine    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     DeleteProtected    bool
     Description    string
-    DiskAttachments    []DiskAttachment
+    DiskAttachments    []*DiskAttachment
     Display    Display
     Domain    Domain
-    GraphicsConsoles    []GraphicsConsole
+    GraphicsConsoles    []*GraphicsConsole
     HighAvailability    HighAvailability
     Id    string
     Initialization    Initialization
     Io    Io
     LargeIcon    Icon
     Lease    StorageDomainLease
-    Memory    int
+    Memory    int64
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
-    MigrationDowntime    int
+    MigrationDowntime    int64
     Name    string
-    Nics    []Nic
+    Nics    []*Nic
     Origin    string
     Os    OperatingSystem
-    Permissions    []Permission
+    Permissions    []*Permission
     Quota    Quota
     RngDevice    RngDevice
     SerialNumber    SerialNumber
@@ -2501,7 +2501,7 @@ type Template struct {
     Stateless    bool
     Status    TemplateStatus
     StorageDomain    StorageDomain
-    Tags    []Tag
+    Tags    []*Tag
     TimeZone    TimeZone
     TunnelMigration    bool
     Type    VmType
@@ -2509,83 +2509,83 @@ type Template struct {
     Version    TemplateVersion
     VirtioScsi    VirtioScsi
     Vm    Vm
-    Watchdogs    []Watchdog
+    Watchdogs    []*Watchdog
 
 }
 
 type Vm struct {
     VmBase
-    AffinityLabels    []AffinityLabel
-    Applications    []Application
+    AffinityLabels    []*AffinityLabel
+    Applications    []*Application
     Bios    Bios
-    Cdroms    []Cdrom
+    Cdroms    []*Cdrom
     Cluster    Cluster
     Comment    string
     Console    Console
     Cpu    Cpu
     CpuProfile    CpuProfile
-    CpuShares    int
+    CpuShares    int64
     CreationTime    time.Time
     CustomCompatibilityVersion    Version
     CustomCpuModel    string
     CustomEmulatedMachine    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     DeleteProtected    bool
     Description    string
-    DiskAttachments    []DiskAttachment
+    DiskAttachments    []*DiskAttachment
     Display    Display
     Domain    Domain
     ExternalHostProvider    ExternalHostProvider
-    Floppies    []Floppy
+    Floppies    []*Floppy
     Fqdn    string
-    GraphicsConsoles    []GraphicsConsole
+    GraphicsConsoles    []*GraphicsConsole
     GuestOperatingSystem    GuestOperatingSystem
     GuestTimeZone    TimeZone
     HighAvailability    HighAvailability
     Host    Host
-    HostDevices    []HostDevice
+    HostDevices    []*HostDevice
     Id    string
     Initialization    Initialization
     InstanceType    InstanceType
     Io    Io
-    KatelloErrata    []KatelloErratum
+    KatelloErrata    []*KatelloErratum
     LargeIcon    Icon
     Lease    StorageDomainLease
-    Memory    int
+    Memory    int64
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
-    MigrationDowntime    int
+    MigrationDowntime    int64
     Name    string
     NextRunConfigurationExists    bool
-    Nics    []Nic
-    NumaNodes    []NumaNode
+    Nics    []*Nic
+    NumaNodes    []*NumaNode
     NumaTuneMode    NumaTuneMode
     Origin    string
     OriginalTemplate    Template
     Os    OperatingSystem
-    Payloads    []Payload
-    Permissions    []Permission
+    Payloads    []*Payload
+    Permissions    []*Permission
     PlacementPolicy    VmPlacementPolicy
     Quota    Quota
-    ReportedDevices    []ReportedDevice
+    ReportedDevices    []*ReportedDevice
     RngDevice    RngDevice
     RunOnce    bool
     SerialNumber    SerialNumber
-    Sessions    []Session
+    Sessions    []*Session
     SmallIcon    Icon
-    Snapshots    []Snapshot
+    Snapshots    []*Snapshot
     SoundcardEnabled    bool
     Sso    Sso
     StartPaused    bool
     StartTime    time.Time
     Stateless    bool
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    VmStatus
     StatusDetail    string
     StopReason    string
     StopTime    time.Time
     StorageDomain    StorageDomain
-    Tags    []Tag
+    Tags    []*Tag
     Template    Template
     TimeZone    TimeZone
     TunnelMigration    bool
@@ -2594,7 +2594,7 @@ type Vm struct {
     UseLatestTemplateVersion    bool
     VirtioScsi    VirtioScsi
     VmPool    VmPool
-    Watchdogs    []Watchdog
+    Watchdogs    []*Watchdog
 
 }
 
@@ -2609,7 +2609,7 @@ type Watchdog struct {
     Name    string
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
@@ -2623,24 +2623,24 @@ type Cdrom struct {
     Name    string
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
 type ExternalHostProvider struct {
     ExternalProvider
     AuthenticationUrl    string
-    Certificates    []Certificate
+    Certificates    []*Certificate
     Comment    string
-    ComputeResources    []ExternalComputeResource
+    ComputeResources    []*ExternalComputeResource
     Description    string
-    DiscoveredHosts    []ExternalDiscoveredHost
-    HostGroups    []ExternalHostGroup
-    Hosts    []Host
+    DiscoveredHosts    []*ExternalDiscoveredHost
+    HostGroups    []*ExternalHostGroup
+    Hosts    []*Host
     Id    string
     Name    string
     Password    string
-    Properties    []Property
+    Properties    []*Property
     RequiresAuthentication    bool
     Url    string
     Username    string
@@ -2654,60 +2654,60 @@ type GlusterBrick struct {
     Description    string
     Device    string
     FsName    string
-    GlusterClients    []GlusterClient
+    GlusterClients    []*GlusterClient
     GlusterVolume    GlusterVolume
     Id    string
     InstanceType    InstanceType
-    MemoryPools    []GlusterMemoryPool
+    MemoryPools    []*GlusterMemoryPool
     MntOptions    string
     Name    string
-    Pid    int
-    Port    int
+    Pid    int64
+    Port    int64
     ServerId    string
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    GlusterBrickStatus
     Template    Template
     Vm    Vm
-    Vms    []Vm
+    Vms    []*Vm
 
 }
 
 type InstanceType struct {
     Template
     Bios    Bios
-    Cdroms    []Cdrom
+    Cdroms    []*Cdrom
     Cluster    Cluster
     Comment    string
     Console    Console
     Cpu    Cpu
     CpuProfile    CpuProfile
-    CpuShares    int
+    CpuShares    int64
     CreationTime    time.Time
     CustomCompatibilityVersion    Version
     CustomCpuModel    string
     CustomEmulatedMachine    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     DeleteProtected    bool
     Description    string
-    DiskAttachments    []DiskAttachment
+    DiskAttachments    []*DiskAttachment
     Display    Display
     Domain    Domain
-    GraphicsConsoles    []GraphicsConsole
+    GraphicsConsoles    []*GraphicsConsole
     HighAvailability    HighAvailability
     Id    string
     Initialization    Initialization
     Io    Io
     LargeIcon    Icon
     Lease    StorageDomainLease
-    Memory    int
+    Memory    int64
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
-    MigrationDowntime    int
+    MigrationDowntime    int64
     Name    string
-    Nics    []Nic
+    Nics    []*Nic
     Origin    string
     Os    OperatingSystem
-    Permissions    []Permission
+    Permissions    []*Permission
     Quota    Quota
     RngDevice    RngDevice
     SerialNumber    SerialNumber
@@ -2718,7 +2718,7 @@ type InstanceType struct {
     Stateless    bool
     Status    TemplateStatus
     StorageDomain    StorageDomain
-    Tags    []Tag
+    Tags    []*Tag
     TimeZone    TimeZone
     TunnelMigration    bool
     Type    VmType
@@ -2726,21 +2726,21 @@ type InstanceType struct {
     Version    TemplateVersion
     VirtioScsi    VirtioScsi
     Vm    Vm
-    Watchdogs    []Watchdog
+    Watchdogs    []*Watchdog
 
 }
 
 type OpenStackImageProvider struct {
     OpenStackProvider
     AuthenticationUrl    string
-    Certificates    []Certificate
+    Certificates    []*Certificate
     Comment    string
     Description    string
     Id    string
-    Images    []OpenStackImage
+    Images    []*OpenStackImage
     Name    string
     Password    string
-    Properties    []Property
+    Properties    []*Property
     RequiresAuthentication    bool
     TenantName    string
     Url    string
@@ -2752,18 +2752,18 @@ type OpenStackNetworkProvider struct {
     OpenStackProvider
     AgentConfiguration    AgentConfiguration
     AuthenticationUrl    string
-    Certificates    []Certificate
+    Certificates    []*Certificate
     Comment    string
     Description    string
     Id    string
     Name    string
-    Networks    []OpenStackNetwork
+    Networks    []*OpenStackNetwork
     Password    string
     PluginType    NetworkPluginType
-    Properties    []Property
+    Properties    []*Property
     ReadOnly    bool
     RequiresAuthentication    bool
-    Subnets    []OpenStackSubnet
+    Subnets    []*OpenStackSubnet
     TenantName    string
     Type    OpenStackNetworkProviderType
     Url    string
@@ -2773,81 +2773,81 @@ type OpenStackNetworkProvider struct {
 
 type Snapshot struct {
     Vm
-    AffinityLabels    []AffinityLabel
-    Applications    []Application
+    AffinityLabels    []*AffinityLabel
+    Applications    []*Application
     Bios    Bios
-    Cdroms    []Cdrom
+    Cdroms    []*Cdrom
     Cluster    Cluster
     Comment    string
     Console    Console
     Cpu    Cpu
     CpuProfile    CpuProfile
-    CpuShares    int
+    CpuShares    int64
     CreationTime    time.Time
     CustomCompatibilityVersion    Version
     CustomCpuModel    string
     CustomEmulatedMachine    string
-    CustomProperties    []CustomProperty
+    CustomProperties    []*CustomProperty
     Date    time.Time
     DeleteProtected    bool
     Description    string
-    DiskAttachments    []DiskAttachment
+    DiskAttachments    []*DiskAttachment
     Display    Display
     Domain    Domain
     ExternalHostProvider    ExternalHostProvider
-    Floppies    []Floppy
+    Floppies    []*Floppy
     Fqdn    string
-    GraphicsConsoles    []GraphicsConsole
+    GraphicsConsoles    []*GraphicsConsole
     GuestOperatingSystem    GuestOperatingSystem
     GuestTimeZone    TimeZone
     HighAvailability    HighAvailability
     Host    Host
-    HostDevices    []HostDevice
+    HostDevices    []*HostDevice
     Id    string
     Initialization    Initialization
     InstanceType    InstanceType
     Io    Io
-    KatelloErrata    []KatelloErratum
+    KatelloErrata    []*KatelloErratum
     LargeIcon    Icon
     Lease    StorageDomainLease
-    Memory    int
+    Memory    int64
     MemoryPolicy    MemoryPolicy
     Migration    MigrationOptions
-    MigrationDowntime    int
+    MigrationDowntime    int64
     Name    string
     NextRunConfigurationExists    bool
-    Nics    []Nic
-    NumaNodes    []NumaNode
+    Nics    []*Nic
+    NumaNodes    []*NumaNode
     NumaTuneMode    NumaTuneMode
     Origin    string
     OriginalTemplate    Template
     Os    OperatingSystem
-    Payloads    []Payload
-    Permissions    []Permission
+    Payloads    []*Payload
+    Permissions    []*Permission
     PersistMemorystate    bool
     PlacementPolicy    VmPlacementPolicy
     Quota    Quota
-    ReportedDevices    []ReportedDevice
+    ReportedDevices    []*ReportedDevice
     RngDevice    RngDevice
     RunOnce    bool
     SerialNumber    SerialNumber
-    Sessions    []Session
+    Sessions    []*Session
     SmallIcon    Icon
     SnapshotStatus    SnapshotStatus
     SnapshotType    SnapshotType
-    Snapshots    []Snapshot
+    Snapshots    []*Snapshot
     SoundcardEnabled    bool
     Sso    Sso
     StartPaused    bool
     StartTime    time.Time
     Stateless    bool
-    Statistics    []Statistic
+    Statistics    []*Statistic
     Status    VmStatus
     StatusDetail    string
     StopReason    string
     StopTime    time.Time
     StorageDomain    StorageDomain
-    Tags    []Tag
+    Tags    []*Tag
     Template    Template
     TimeZone    TimeZone
     TunnelMigration    bool
@@ -2857,7 +2857,7 @@ type Snapshot struct {
     VirtioScsi    VirtioScsi
     Vm    Vm
     VmPool    VmPool
-    Watchdogs    []Watchdog
+    Watchdogs    []*Watchdog
 
 }
 

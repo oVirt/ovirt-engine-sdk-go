@@ -92,11 +92,11 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateServices(Model model) {
         // Generate the imports:
-        String rootPackageName = goNames.getRootPackageName();
-        buffer.addImport("from %1$s import Error", rootPackageName);
-        buffer.addImport("from %1$s import types", rootPackageName);
-        buffer.addImport("from %1$s.service import Service", rootPackageName);
-        buffer.addImport("from %1$s.writer import Writer", rootPackageName);
+        // String rootPackageName = goNames.getRootPackageName();
+        // buffer.addImport("from %1$s import Error", rootPackageName);
+        // buffer.addImport("from %1$s import types", rootPackageName);
+        // buffer.addImport("from %1$s.service import Service", rootPackageName);
+        // buffer.addImport("from %1$s.writer import Writer", rootPackageName);
 
         // The declarations of the services need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and
@@ -123,74 +123,106 @@ public class ServicesGenerator implements GoGenerator {
         GoClassName serviceName = goNames.getServiceName(service);
         Service base = service.getBase();
         GoClassName baseName = base != null? goNames.getServiceName(base): goNames.getBaseServiceName();
-        buffer.addLine("class %1$s(%2$s):", serviceName.getClassName(), baseName.getClassName());
-        buffer.startBlock();
+        
+        // Generate struct definition
         generateDoc(service);
-        buffer.addLine();
+        buffer.addLine("type %1$s struct {", serviceName.getClassName());
 
-        // Generate the constructor:
-        buffer.addLine("def __init__(self, connection, path):");
+        // Generate struct members definition
         buffer.startBlock();
-        buffer.addLine("super(%1$s, self).__init__(connection, path)", serviceName.getClassName());
+        //      with Service struct mixin
+        buffer.addLine(baseName.getClassName());
+        buffer.addLine();
+        //      members
         service.locators().sorted().forEach(this::generateLocatorMember);
         buffer.endBlock();
+        // Generate struct ending
+        buffer.addLine("}");
         buffer.addLine();
 
-        // Generate the methods and locators:
-        service.methods().sorted().forEach(this::generateMethod);
-        service.locators().sorted().forEach(this::generateLocatorMethod);
+        // Generate the constructor by New:
+        buffer.addLine(
+            "func New%1$s(connection *Connection, path string) *%2$s {",
+            serviceName.getClassName(), serviceName.getClassName());
+        buffer.startBlock();
+        //      inititalize struct
+        buffer.addLine("var result %1$s", serviceName.getClassName());
+        buffer.addLine("result.Connection = connection");
+        buffer.addLine("result.Path = path");
+        buffer.addLine("return &result");
+        buffer.endBlock();
+
+        // Generate constructor ending
+        buffer.addLine("}");
+        buffer.addLine();
+
+        // Generate the methods
+        List<Method>methods = service.methods().sorted().collect(toCollection(ArrayList::new));
+        for (Method method : methods) {
+            this.generateMethod(method, service);
+        }
+        
         generatePathLocator(service);
 
         // Generate other methods that don't correspond to model methods or locators:
         generateStr(service);
 
-        // End class:
-        buffer.endBlock();
         buffer.addLine();
     }
 
-    private void generateMethod(Method method) {
+    private void generateMethod(Method method, Service service) {
         Name name = method.getName();
         if (ADD.equals(name)) {
-            generateAddHttpPost(method);
+            generateAddHttpPost(method, service);
         }
         else if (GET.equals(name) || LIST.equals(name)) {
-            generateHttpGet(method);
+            generateHttpGet(method, service);
         }
         else if (REMOVE.equals(name)) {
-            generateHttpDelete(method);
+            generateHttpDelete(method, service);
         }
         else if (UPDATE.equals(name)) {
-            generateHttpPut(method);
+            generateHttpPut(method, service);
         }
         else {
-            generateActionHttpPost(method);
+            generateActionHttpPost(method, service);
         }
     }
 
-    private void generateAddHttpPost(Method method) {
+    private void generateAddHttpPost(Method method, Service service) {
+        // Get the service class name
+        GoClassName serviceName = goNames.getServiceName(service);
+
         // Get the parameters:
         Parameter primaryParameter = getFirstParameter(method);
         List<Parameter> secondaryParameters = getSecondaryParameters(method);
 
         // Begin method:
         Name methodName = method.getName();
+        //      get primary parameter name
         Name primaryParameterName = primaryParameter.getName();
-        String primaryArg = goNames.getMemberStyleName(primaryParameterName);
-        buffer.addLine("def %1$s(", goNames.getMemberStyleName(methodName));
-        buffer.startBlock();
-        buffer.addLine("self,");
-        buffer.addLine("%1$s,", primaryArg);
-        secondaryParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers=None,");
-        buffer.addLine("query=None,");
-        buffer.addLine("wait=True,");
-        buffer.endBlock();
-        buffer.addLine("):");
-        buffer.startBlock();
-        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
-        buffer.endBlock();
+        String primaryArg = goNames.getParameterStyleName(primaryParameterName);
+        //      get primary parameter type name
+        GoTypeReference goTypeReference = goNames.getTypeReference(primaryParameter.getType());
+        buffer.addImports(goTypeReference.getImports());
+        String primaryArgTypeName = goTypeReference.getText();
 
+        //      Generate function doc
+        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
+        //      Generate function definition
+        buffer.addLine(
+            "func (op *%1$s) %2$s (",
+            serviceName.getClassName(),
+            goNames.getMethodStyleName(methodName));
+        //      Generate func-codes definition
+        buffer.startBlock();
+        buffer.addLine("%1$s %2$s,", primaryArg, primaryArgTypeName);
+        secondaryParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers map[string]string,");
+        buffer.addLine("query map[string]string) {");
+        //      Generate function ending
+        buffer.endBlock();
+ 
         // Start body:
         buffer.startBlock();
 
@@ -219,7 +251,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateActionHttpPost(Method method) {
+    private void generateActionHttpPost(Method method, Service service) {
         // Get the input parameters:
         List<Parameter> inParameters = method.parameters()
             .filter(Parameter::isIn)
@@ -228,7 +260,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // Begin method:
         Name name = method.getName();
-        buffer.addLine("def %1$s(", goNames.getMemberStyleName(name));
+        buffer.addLine("def %1$s(", goNames.getMethodStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
@@ -284,7 +316,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateHttpGet(Method method) {
+    private void generateHttpGet(Method method, Service service) {
         // Get the input parameters:
         List<Parameter> inParameters = method.parameters()
             .filter(Parameter::isIn)
@@ -331,7 +363,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateHttpPut(Method method) {
+    private void generateHttpPut(Method method, Service service) {
         // Classify the parameters:
         Parameter primaryParameter = getFirstParameter(method);
         List<Parameter> secondaryParameters = getSecondaryParameters(method);
@@ -380,7 +412,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateHttpDelete(Method method) {
+    private void generateHttpDelete(Method method, Service service) {
         // Get the parameters:
         List<Parameter> inParameters = method.parameters()
             .filter(Parameter::isIn)
@@ -427,7 +459,15 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateFormalParameter(Parameter parameter) {
-        buffer.addLine("%1$s=None,", goNames.getMemberStyleName(parameter.getName()));
+        // Get parameter name
+        Name parameterName = parameter.getName();
+        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
+        buffer.addImports(goTypeReference.getImports());
+
+        String arg = goNames.getParameterStyleName(parameterName);
+        // Get parameter type name
+        buffer.addLine(
+            "%1$s %2$s,", arg, goTypeReference.getText());
     }
 
     private void generateUrlParameter(Parameter parameter) {
@@ -467,7 +507,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateLocatorMember(Locator locator) {
         String memberName = goNames.getMemberStyleName(locator.getName());
-        buffer.addLine("self._%1$s_service = None", memberName);
+        buffer.addLine("%1$sService  *%1$sService", memberName, memberName);
     }
 
     private void generateLocatorMethod(Locator locator) {
