@@ -25,7 +25,7 @@ type Service struct {
 }
 
 
-func (ser *Service) internalGet(headers, query map[string]string) *OvResponse {
+func (ser *Service) internalGet(headers, query map[string]string) (*OvResponse, error) {
 	req := NewOvRequest("GET", ser.Path, headers, query, nil)
 	res, err := ser.Connection.Send(req)
 	if err != nil {
