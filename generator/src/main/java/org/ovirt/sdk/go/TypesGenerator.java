@@ -107,6 +107,14 @@ public class TypesGenerator implements GoGenerator {
         GoClassName typeName = goNames.getTypeName(type);
         Type base = type.getBase();
         String baseName = base != null? goNames.getTypeName(base).getClassName(): "OvType";
+        // Define []Struct
+        buffer.addLine("type %1$ss struct {", typeName.getClassName());
+        buffer.startBlock();
+        buffer.addLine("%1$ss []%1$s `xml:\"%2$s\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
+        // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getClassName());
         buffer.startBlock();
         buffer.addLine("%1$s", baseName);
@@ -163,9 +171,10 @@ public class TypesGenerator implements GoGenerator {
         GoTypeReference goTypeReference = goNames.getTypeReference(member.getType());
         buffer.addImports(goTypeReference.getImports());
         buffer.addLine(
-            "%1$s    %2$s",
+            "%1$s    %2$s   `xml:\"%3$s\"` ",
             goNames.getMemberStyleName(member.getName()),
-            goTypeReference.getText()
+            goTypeReference.getText(),
+            goNames.getTagStyleName(member.getName())
         );
     }
 
