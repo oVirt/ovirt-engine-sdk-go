@@ -17,6 +17,9 @@
 package ovirtsdk4
 
 
+type IService interface {}
+
+
 // This is the base for all the services of the SDK. It contains the
 // utility methods used by all of them.
 type Service struct {

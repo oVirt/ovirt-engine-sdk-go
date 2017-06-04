@@ -19,835 +19,1167 @@ import (
     "time"
 )
 
+type AffinityRules struct {
+    AffinityRules []AffinityRule `xml:"affinity_rule"`
+}
+
 type AffinityRule struct {
     OvType
-    Enabled    bool
-    Enforcing    bool
-    Positive    bool
+    Enabled    bool   `xml:"enabled"` 
+    Enforcing    bool   `xml:"enforcing"` 
+    Positive    bool   `xml:"positive"` 
 
+}
+
+type AgentConfigurations struct {
+    AgentConfigurations []AgentConfiguration `xml:"agent_configuration"`
 }
 
 type AgentConfiguration struct {
     OvType
-    Address    string
-    BrokerType    MessageBrokerType
-    NetworkMappings    string
-    Password    string
-    Port    int64
-    Username    string
+    Address    string   `xml:"address"` 
+    BrokerType    MessageBrokerType   `xml:"broker_type"` 
+    NetworkMappings    string   `xml:"network_mappings"` 
+    Password    string   `xml:"password"` 
+    Port    int64   `xml:"port"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type Apis struct {
+    Apis []Api `xml:"api"`
 }
 
 type Api struct {
     OvType
-    ProductInfo    ProductInfo
-    SpecialObjects    SpecialObjects
-    Summary    ApiSummary
-    Time    time.Time
+    ProductInfo    ProductInfo   `xml:"product_info"` 
+    SpecialObjects    SpecialObjects   `xml:"special_objects"` 
+    Summary    ApiSummary   `xml:"summary"` 
+    Time    time.Time   `xml:"time"` 
 
+}
+
+type ApiSummarys struct {
+    ApiSummarys []ApiSummary `xml:"api_summary"`
 }
 
 type ApiSummary struct {
     OvType
-    Hosts    ApiSummaryItem
-    StorageDomains    ApiSummaryItem
-    Users    ApiSummaryItem
-    Vms    ApiSummaryItem
+    Hosts    ApiSummaryItem   `xml:"hosts"` 
+    StorageDomains    ApiSummaryItem   `xml:"storage_domains"` 
+    Users    ApiSummaryItem   `xml:"users"` 
+    Vms    ApiSummaryItem   `xml:"vms"` 
 
+}
+
+type ApiSummaryItems struct {
+    ApiSummaryItems []ApiSummaryItem `xml:"api_summary_item"`
 }
 
 type ApiSummaryItem struct {
     OvType
-    Active    int64
-    Total    int64
+    Active    int64   `xml:"active"` 
+    Total    int64   `xml:"total"` 
 
+}
+
+type Bioss struct {
+    Bioss []Bios `xml:"bios"`
 }
 
 type Bios struct {
     OvType
-    BootMenu    BootMenu
+    BootMenu    BootMenu   `xml:"boot_menu"` 
 
+}
+
+type BlockStatistics struct {
+    BlockStatistics []BlockStatistic `xml:"block_statistic"`
 }
 
 type BlockStatistic struct {
     OvType
-    Statistics    []*Statistic
+    Statistics    []*Statistic   `xml:"statistics"` 
 
+}
+
+type Bondings struct {
+    Bondings []Bonding `xml:"bonding"`
 }
 
 type Bonding struct {
     OvType
-    ActiveSlave    HostNic
-    AdPartnerMac    Mac
-    Options    []*Option
-    Slaves    []*HostNic
+    ActiveSlave    HostNic   `xml:"active_slave"` 
+    AdPartnerMac    Mac   `xml:"ad_partner_mac"` 
+    Options    []*Option   `xml:"options"` 
+    Slaves    []*HostNic   `xml:"slaves"` 
 
+}
+
+type Boots struct {
+    Boots []Boot `xml:"boot"`
 }
 
 type Boot struct {
     OvType
-    Devices    []*BootDevice
+    Devices    []*BootDevice   `xml:"devices"` 
 
+}
+
+type BootMenus struct {
+    BootMenus []BootMenu `xml:"boot_menu"`
 }
 
 type BootMenu struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type CloudInits struct {
+    CloudInits []CloudInit `xml:"cloud_init"`
 }
 
 type CloudInit struct {
     OvType
-    AuthorizedKeys    []*AuthorizedKey
-    Files    []*File
-    Host    Host
-    NetworkConfiguration    NetworkConfiguration
-    RegenerateSshKeys    bool
-    Timezone    string
-    Users    []*User
+    AuthorizedKeys    []*AuthorizedKey   `xml:"authorized_keys"` 
+    Files    []*File   `xml:"files"` 
+    Host    Host   `xml:"host"` 
+    NetworkConfiguration    NetworkConfiguration   `xml:"network_configuration"` 
+    RegenerateSshKeys    bool   `xml:"regenerate_ssh_keys"` 
+    Timezone    string   `xml:"timezone"` 
+    Users    []*User   `xml:"users"` 
 
+}
+
+type Configurations struct {
+    Configurations []Configuration `xml:"configuration"`
 }
 
 type Configuration struct {
     OvType
-    Data    string
-    Type    ConfigurationType
+    Data    string   `xml:"data"` 
+    Type    ConfigurationType   `xml:"type_"` 
 
+}
+
+type Consoles struct {
+    Consoles []Console `xml:"console"`
 }
 
 type Console struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type Cores struct {
+    Cores []Core `xml:"core"`
 }
 
 type Core struct {
     OvType
-    Index    int64
-    Socket    int64
+    Index    int64   `xml:"index"` 
+    Socket    int64   `xml:"socket"` 
 
+}
+
+type Cpus struct {
+    Cpus []Cpu `xml:"cpu"`
 }
 
 type Cpu struct {
     OvType
-    Architecture    Architecture
-    Cores    []*Core
-    CpuTune    CpuTune
-    Level    int64
-    Mode    CpuMode
-    Name    string
-    Speed    float64
-    Topology    CpuTopology
-    Type    string
+    Architecture    Architecture   `xml:"architecture"` 
+    Cores    []*Core   `xml:"cores"` 
+    CpuTune    CpuTune   `xml:"cpu_tune"` 
+    Level    int64   `xml:"level"` 
+    Mode    CpuMode   `xml:"mode"` 
+    Name    string   `xml:"name"` 
+    Speed    float64   `xml:"speed"` 
+    Topology    CpuTopology   `xml:"topology"` 
+    Type    string   `xml:"type_"` 
 
+}
+
+type CpuTopologys struct {
+    CpuTopologys []CpuTopology `xml:"cpu_topology"`
 }
 
 type CpuTopology struct {
     OvType
-    Cores    int64
-    Sockets    int64
-    Threads    int64
+    Cores    int64   `xml:"cores"` 
+    Sockets    int64   `xml:"sockets"` 
+    Threads    int64   `xml:"threads"` 
 
+}
+
+type CpuTunes struct {
+    CpuTunes []CpuTune `xml:"cpu_tune"`
 }
 
 type CpuTune struct {
     OvType
-    VcpuPins    []*VcpuPin
+    VcpuPins    []*VcpuPin   `xml:"vcpu_pins"` 
 
+}
+
+type CpuTypes struct {
+    CpuTypes []CpuType `xml:"cpu_type"`
 }
 
 type CpuType struct {
     OvType
-    Architecture    Architecture
-    Level    int64
-    Name    string
+    Architecture    Architecture   `xml:"architecture"` 
+    Level    int64   `xml:"level"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type CustomPropertys struct {
+    CustomPropertys []CustomProperty `xml:"custom_property"`
 }
 
 type CustomProperty struct {
     OvType
-    Name    string
-    Regexp    string
-    Value    string
+    Name    string   `xml:"name"` 
+    Regexp    string   `xml:"regexp"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type Displays struct {
+    Displays []Display `xml:"display"`
 }
 
 type Display struct {
     OvType
-    Address    string
-    AllowOverride    bool
-    Certificate    Certificate
-    CopyPasteEnabled    bool
-    DisconnectAction    string
-    FileTransferEnabled    bool
-    KeyboardLayout    string
-    Monitors    int64
-    Port    int64
-    Proxy    string
-    SecurePort    int64
-    SingleQxlPci    bool
-    SmartcardEnabled    bool
-    Type    DisplayType
+    Address    string   `xml:"address"` 
+    AllowOverride    bool   `xml:"allow_override"` 
+    Certificate    Certificate   `xml:"certificate"` 
+    CopyPasteEnabled    bool   `xml:"copy_paste_enabled"` 
+    DisconnectAction    string   `xml:"disconnect_action"` 
+    FileTransferEnabled    bool   `xml:"file_transfer_enabled"` 
+    KeyboardLayout    string   `xml:"keyboard_layout"` 
+    Monitors    int64   `xml:"monitors"` 
+    Port    int64   `xml:"port"` 
+    Proxy    string   `xml:"proxy"` 
+    SecurePort    int64   `xml:"secure_port"` 
+    SingleQxlPci    bool   `xml:"single_qxl_pci"` 
+    SmartcardEnabled    bool   `xml:"smartcard_enabled"` 
+    Type    DisplayType   `xml:"type_"` 
 
+}
+
+type Dnss struct {
+    Dnss []Dns `xml:"dns"`
 }
 
 type Dns struct {
     OvType
-    SearchDomains    []*Host
-    Servers    []*Host
+    SearchDomains    []*Host   `xml:"search_domains"` 
+    Servers    []*Host   `xml:"servers"` 
 
+}
+
+type DnsResolverConfigurations struct {
+    DnsResolverConfigurations []DnsResolverConfiguration `xml:"dns_resolver_configuration"`
 }
 
 type DnsResolverConfiguration struct {
     OvType
-    NameServers    []*String
+    NameServers    []*String   `xml:"name_servers"` 
 
+}
+
+type EntityProfileDetails struct {
+    EntityProfileDetails []EntityProfileDetail `xml:"entity_profile_detail"`
 }
 
 type EntityProfileDetail struct {
     OvType
-    ProfileDetails    []*ProfileDetail
+    ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
+}
+
+type ErrorHandlings struct {
+    ErrorHandlings []ErrorHandling `xml:"error_handling"`
 }
 
 type ErrorHandling struct {
     OvType
-    OnError    MigrateOnError
+    OnError    MigrateOnError   `xml:"on_error"` 
 
+}
+
+type ExternalVmImports struct {
+    ExternalVmImports []ExternalVmImport `xml:"external_vm_import"`
 }
 
 type ExternalVmImport struct {
     OvType
-    Cluster    Cluster
-    CpuProfile    CpuProfile
-    DriversIso    File
-    Host    Host
-    Name    string
-    Password    string
-    Provider    ExternalVmProviderType
-    Quota    Quota
-    Sparse    bool
-    StorageDomain    StorageDomain
-    Url    string
-    Username    string
-    Vm    Vm
+    Cluster    Cluster   `xml:"cluster"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    DriversIso    File   `xml:"drivers_iso"` 
+    Host    Host   `xml:"host"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Provider    ExternalVmProviderType   `xml:"provider"` 
+    Quota    Quota   `xml:"quota"` 
+    Sparse    bool   `xml:"sparse"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type Faults struct {
+    Faults []Fault `xml:"fault"`
 }
 
 type Fault struct {
     OvType
-    Detail    string
-    Reason    string
+    Detail    string   `xml:"detail"` 
+    Reason    string   `xml:"reason"` 
 
+}
+
+type FencingPolicys struct {
+    FencingPolicys []FencingPolicy `xml:"fencing_policy"`
 }
 
 type FencingPolicy struct {
     OvType
-    Enabled    bool
-    SkipIfConnectivityBroken    SkipIfConnectivityBroken
-    SkipIfGlusterBricksUp    bool
-    SkipIfGlusterQuorumNotMet    bool
-    SkipIfSdActive    SkipIfSdActive
+    Enabled    bool   `xml:"enabled"` 
+    SkipIfConnectivityBroken    SkipIfConnectivityBroken   `xml:"skip_if_connectivity_broken"` 
+    SkipIfGlusterBricksUp    bool   `xml:"skip_if_gluster_bricks_up"` 
+    SkipIfGlusterQuorumNotMet    bool   `xml:"skip_if_gluster_quorum_not_met"` 
+    SkipIfSdActive    SkipIfSdActive   `xml:"skip_if_sd_active"` 
 
+}
+
+type FopStatistics struct {
+    FopStatistics []FopStatistic `xml:"fop_statistic"`
 }
 
 type FopStatistic struct {
     OvType
-    Name    string
-    Statistics    []*Statistic
+    Name    string   `xml:"name"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
 
+}
+
+type GlusterBrickMemoryInfos struct {
+    GlusterBrickMemoryInfos []GlusterBrickMemoryInfo `xml:"gluster_brick_memory_info"`
 }
 
 type GlusterBrickMemoryInfo struct {
     OvType
-    MemoryPools    []*GlusterMemoryPool
+    MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
 
+}
+
+type GlusterClients struct {
+    GlusterClients []GlusterClient `xml:"gluster_client"`
 }
 
 type GlusterClient struct {
     OvType
-    BytesRead    int64
-    BytesWritten    int64
-    ClientPort    int64
-    HostName    string
+    BytesRead    int64   `xml:"bytes_read"` 
+    BytesWritten    int64   `xml:"bytes_written"` 
+    ClientPort    int64   `xml:"client_port"` 
+    HostName    string   `xml:"host_name"` 
 
+}
+
+type GracePeriods struct {
+    GracePeriods []GracePeriod `xml:"grace_period"`
 }
 
 type GracePeriod struct {
     OvType
-    Expiry    int64
+    Expiry    int64   `xml:"expiry"` 
 
+}
+
+type GuestOperatingSystems struct {
+    GuestOperatingSystems []GuestOperatingSystem `xml:"guest_operating_system"`
 }
 
 type GuestOperatingSystem struct {
     OvType
-    Architecture    string
-    Codename    string
-    Distribution    string
-    Family    string
-    Kernel    Kernel
-    Version    Version
+    Architecture    string   `xml:"architecture"` 
+    Codename    string   `xml:"codename"` 
+    Distribution    string   `xml:"distribution"` 
+    Family    string   `xml:"family"` 
+    Kernel    Kernel   `xml:"kernel"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type HardwareInformations struct {
+    HardwareInformations []HardwareInformation `xml:"hardware_information"`
 }
 
 type HardwareInformation struct {
     OvType
-    Family    string
-    Manufacturer    string
-    ProductName    string
-    SerialNumber    string
-    SupportedRngSources    []*RngSource
-    Uuid    string
-    Version    string
+    Family    string   `xml:"family"` 
+    Manufacturer    string   `xml:"manufacturer"` 
+    ProductName    string   `xml:"product_name"` 
+    SerialNumber    string   `xml:"serial_number"` 
+    SupportedRngSources    []*RngSource   `xml:"supported_rng_sources"` 
+    Uuid    string   `xml:"uuid"` 
+    Version    string   `xml:"version"` 
 
+}
+
+type HighAvailabilitys struct {
+    HighAvailabilitys []HighAvailability `xml:"high_availability"`
 }
 
 type HighAvailability struct {
     OvType
-    Enabled    bool
-    Priority    int64
+    Enabled    bool   `xml:"enabled"` 
+    Priority    int64   `xml:"priority"` 
 
+}
+
+type HostDevicePassthroughs struct {
+    HostDevicePassthroughs []HostDevicePassthrough `xml:"host_device_passthrough"`
 }
 
 type HostDevicePassthrough struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type HostNicVirtualFunctionsConfigurations struct {
+    HostNicVirtualFunctionsConfigurations []HostNicVirtualFunctionsConfiguration `xml:"host_nic_virtual_functions_configuration"`
 }
 
 type HostNicVirtualFunctionsConfiguration struct {
     OvType
-    AllNetworksAllowed    bool
-    MaxNumberOfVirtualFunctions    int64
-    NumberOfVirtualFunctions    int64
+    AllNetworksAllowed    bool   `xml:"all_networks_allowed"` 
+    MaxNumberOfVirtualFunctions    int64   `xml:"max_number_of_virtual_functions"` 
+    NumberOfVirtualFunctions    int64   `xml:"number_of_virtual_functions"` 
 
+}
+
+type HostedEngines struct {
+    HostedEngines []HostedEngine `xml:"hosted_engine"`
 }
 
 type HostedEngine struct {
     OvType
-    Active    bool
-    Configured    bool
-    GlobalMaintenance    bool
-    LocalMaintenance    bool
-    Score    int64
+    Active    bool   `xml:"active"` 
+    Configured    bool   `xml:"configured"` 
+    GlobalMaintenance    bool   `xml:"global_maintenance"` 
+    LocalMaintenance    bool   `xml:"local_maintenance"` 
+    Score    int64   `xml:"score"` 
 
+}
+
+type Identifieds struct {
+    Identifieds []Identified `xml:"identified"`
 }
 
 type Identified struct {
     OvType
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Images struct {
+    Images []Image `xml:"image"`
 }
 
 type Image struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    StorageDomain    StorageDomain
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
 
+}
+
+type ImageTransfers struct {
+    ImageTransfers []ImageTransfer `xml:"image_transfer"`
 }
 
 type ImageTransfer struct {
     Identified
-    Comment    string
-    Description    string
-    Direction    ImageTransferDirection
-    Host    Host
-    Id    string
-    Image    Image
-    Name    string
-    Phase    ImageTransferPhase
-    ProxyUrl    string
-    SignedTicket    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Direction    ImageTransferDirection   `xml:"direction"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Image    Image   `xml:"image"` 
+    Name    string   `xml:"name"` 
+    Phase    ImageTransferPhase   `xml:"phase"` 
+    ProxyUrl    string   `xml:"proxy_url"` 
+    SignedTicket    string   `xml:"signed_ticket"` 
 
+}
+
+type Initializations struct {
+    Initializations []Initialization `xml:"initialization"`
 }
 
 type Initialization struct {
     OvType
-    ActiveDirectoryOu    string
-    AuthorizedSshKeys    string
-    CloudInit    CloudInit
-    Configuration    Configuration
-    CustomScript    string
-    DnsSearch    string
-    DnsServers    string
-    Domain    string
-    HostName    string
-    InputLocale    string
-    NicConfigurations    []*NicConfiguration
-    OrgName    string
-    RegenerateIds    bool
-    RegenerateSshKeys    bool
-    RootPassword    string
-    SystemLocale    string
-    Timezone    string
-    UiLanguage    string
-    UserLocale    string
-    UserName    string
-    WindowsLicenseKey    string
+    ActiveDirectoryOu    string   `xml:"active_directory_ou"` 
+    AuthorizedSshKeys    string   `xml:"authorized_ssh_keys"` 
+    CloudInit    CloudInit   `xml:"cloud_init"` 
+    Configuration    Configuration   `xml:"configuration"` 
+    CustomScript    string   `xml:"custom_script"` 
+    DnsSearch    string   `xml:"dns_search"` 
+    DnsServers    string   `xml:"dns_servers"` 
+    Domain    string   `xml:"domain"` 
+    HostName    string   `xml:"host_name"` 
+    InputLocale    string   `xml:"input_locale"` 
+    NicConfigurations    []*NicConfiguration   `xml:"nic_configurations"` 
+    OrgName    string   `xml:"org_name"` 
+    RegenerateIds    bool   `xml:"regenerate_ids"` 
+    RegenerateSshKeys    bool   `xml:"regenerate_ssh_keys"` 
+    RootPassword    string   `xml:"root_password"` 
+    SystemLocale    string   `xml:"system_locale"` 
+    Timezone    string   `xml:"timezone"` 
+    UiLanguage    string   `xml:"ui_language"` 
+    UserLocale    string   `xml:"user_locale"` 
+    UserName    string   `xml:"user_name"` 
+    WindowsLicenseKey    string   `xml:"windows_license_key"` 
 
+}
+
+type Ios struct {
+    Ios []Io `xml:"io"`
 }
 
 type Io struct {
     OvType
-    Threads    int64
+    Threads    int64   `xml:"threads"` 
 
+}
+
+type Ips struct {
+    Ips []Ip `xml:"ip"`
 }
 
 type Ip struct {
     OvType
-    Address    string
-    Gateway    string
-    Netmask    string
-    Version    IpVersion
+    Address    string   `xml:"address"` 
+    Gateway    string   `xml:"gateway"` 
+    Netmask    string   `xml:"netmask"` 
+    Version    IpVersion   `xml:"version"` 
 
+}
+
+type IpAddressAssignments struct {
+    IpAddressAssignments []IpAddressAssignment `xml:"ip_address_assignment"`
 }
 
 type IpAddressAssignment struct {
     OvType
-    AssignmentMethod    BootProtocol
-    Ip    Ip
+    AssignmentMethod    BootProtocol   `xml:"assignment_method"` 
+    Ip    Ip   `xml:"ip"` 
 
+}
+
+type IscsiBonds struct {
+    IscsiBonds []IscsiBond `xml:"iscsi_bond"`
 }
 
 type IscsiBond struct {
     Identified
-    Comment    string
-    DataCenter    DataCenter
-    Description    string
-    Id    string
-    Name    string
-    Networks    []*Network
-    StorageConnections    []*StorageConnection
+    Comment    string   `xml:"comment"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Networks    []*Network   `xml:"networks"` 
+    StorageConnections    []*StorageConnection   `xml:"storage_connections"` 
 
+}
+
+type IscsiDetailss struct {
+    IscsiDetailss []IscsiDetails `xml:"iscsi_details"`
 }
 
 type IscsiDetails struct {
     OvType
-    Address    string
-    DiskId    string
-    Initiator    string
-    LunMapping    int64
-    Password    string
-    Paths    int64
-    Port    int64
-    Portal    string
-    ProductId    string
-    Serial    string
-    Size    int64
-    Status    string
-    StorageDomainId    string
-    Target    string
-    Username    string
-    VendorId    string
-    VolumeGroupId    string
+    Address    string   `xml:"address"` 
+    DiskId    string   `xml:"disk_id"` 
+    Initiator    string   `xml:"initiator"` 
+    LunMapping    int64   `xml:"lun_mapping"` 
+    Password    string   `xml:"password"` 
+    Paths    int64   `xml:"paths"` 
+    Port    int64   `xml:"port"` 
+    Portal    string   `xml:"portal"` 
+    ProductId    string   `xml:"product_id"` 
+    Serial    string   `xml:"serial"` 
+    Size    int64   `xml:"size"` 
+    Status    string   `xml:"status"` 
+    StorageDomainId    string   `xml:"storage_domain_id"` 
+    Target    string   `xml:"target"` 
+    Username    string   `xml:"username"` 
+    VendorId    string   `xml:"vendor_id"` 
+    VolumeGroupId    string   `xml:"volume_group_id"` 
 
+}
+
+type Jobs struct {
+    Jobs []Job `xml:"job"`
 }
 
 type Job struct {
     Identified
-    AutoCleared    bool
-    Comment    string
-    Description    string
-    EndTime    time.Time
-    External    bool
-    Id    string
-    LastUpdated    time.Time
-    Name    string
-    Owner    User
-    StartTime    time.Time
-    Status    JobStatus
-    Steps    []*Step
+    AutoCleared    bool   `xml:"auto_cleared"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    EndTime    time.Time   `xml:"end_time"` 
+    External    bool   `xml:"external"` 
+    Id    string   `xml:"id"` 
+    LastUpdated    time.Time   `xml:"last_updated"` 
+    Name    string   `xml:"name"` 
+    Owner    User   `xml:"owner"` 
+    StartTime    time.Time   `xml:"start_time"` 
+    Status    JobStatus   `xml:"status"` 
+    Steps    []*Step   `xml:"steps"` 
 
+}
+
+type KatelloErratums struct {
+    KatelloErratums []KatelloErratum `xml:"katello_erratum"`
 }
 
 type KatelloErratum struct {
     Identified
-    Comment    string
-    Description    string
-    Host    Host
-    Id    string
-    Issued    time.Time
-    Name    string
-    Packages    []*Package
-    Severity    string
-    Solution    string
-    Summary    string
-    Title    string
-    Type    string
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Issued    time.Time   `xml:"issued"` 
+    Name    string   `xml:"name"` 
+    Packages    []*Package   `xml:"packages"` 
+    Severity    string   `xml:"severity"` 
+    Solution    string   `xml:"solution"` 
+    Summary    string   `xml:"summary"` 
+    Title    string   `xml:"title"` 
+    Type    string   `xml:"type_"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type Kernels struct {
+    Kernels []Kernel `xml:"kernel"`
 }
 
 type Kernel struct {
     OvType
-    Version    Version
+    Version    Version   `xml:"version"` 
 
+}
+
+type Ksms struct {
+    Ksms []Ksm `xml:"ksm"`
 }
 
 type Ksm struct {
     OvType
-    Enabled    bool
-    MergeAcrossNodes    bool
+    Enabled    bool   `xml:"enabled"` 
+    MergeAcrossNodes    bool   `xml:"merge_across_nodes"` 
 
+}
+
+type LogicalUnits struct {
+    LogicalUnits []LogicalUnit `xml:"logical_unit"`
 }
 
 type LogicalUnit struct {
     OvType
-    Address    string
-    DiscardMaxSize    int64
-    DiscardZeroesData    bool
-    DiskId    string
-    Id    string
-    LunMapping    int64
-    Password    string
-    Paths    int64
-    Port    int64
-    Portal    string
-    ProductId    string
-    Serial    string
-    Size    int64
-    Status    LunStatus
-    StorageDomainId    string
-    Target    string
-    Username    string
-    VendorId    string
-    VolumeGroupId    string
+    Address    string   `xml:"address"` 
+    DiscardMaxSize    int64   `xml:"discard_max_size"` 
+    DiscardZeroesData    bool   `xml:"discard_zeroes_data"` 
+    DiskId    string   `xml:"disk_id"` 
+    Id    string   `xml:"id"` 
+    LunMapping    int64   `xml:"lun_mapping"` 
+    Password    string   `xml:"password"` 
+    Paths    int64   `xml:"paths"` 
+    Port    int64   `xml:"port"` 
+    Portal    string   `xml:"portal"` 
+    ProductId    string   `xml:"product_id"` 
+    Serial    string   `xml:"serial"` 
+    Size    int64   `xml:"size"` 
+    Status    LunStatus   `xml:"status"` 
+    StorageDomainId    string   `xml:"storage_domain_id"` 
+    Target    string   `xml:"target"` 
+    Username    string   `xml:"username"` 
+    VendorId    string   `xml:"vendor_id"` 
+    VolumeGroupId    string   `xml:"volume_group_id"` 
 
+}
+
+type Macs struct {
+    Macs []Mac `xml:"mac"`
 }
 
 type Mac struct {
     OvType
-    Address    string
+    Address    string   `xml:"address"` 
 
+}
+
+type MacPools struct {
+    MacPools []MacPool `xml:"mac_pool"`
 }
 
 type MacPool struct {
     Identified
-    AllowDuplicates    bool
-    Comment    string
-    DefaultPool    bool
-    Description    string
-    Id    string
-    Name    string
-    Ranges    []*Range
+    AllowDuplicates    bool   `xml:"allow_duplicates"` 
+    Comment    string   `xml:"comment"` 
+    DefaultPool    bool   `xml:"default_pool"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Ranges    []*Range   `xml:"ranges"` 
 
+}
+
+type MemoryOverCommits struct {
+    MemoryOverCommits []MemoryOverCommit `xml:"memory_over_commit"`
 }
 
 type MemoryOverCommit struct {
     OvType
-    Percent    int64
+    Percent    int64   `xml:"percent"` 
 
+}
+
+type MemoryPolicys struct {
+    MemoryPolicys []MemoryPolicy `xml:"memory_policy"`
 }
 
 type MemoryPolicy struct {
     OvType
-    Ballooning    bool
-    Guaranteed    int64
-    Max    int64
-    OverCommit    MemoryOverCommit
-    TransparentHugePages    TransparentHugePages
+    Ballooning    bool   `xml:"ballooning"` 
+    Guaranteed    int64   `xml:"guaranteed"` 
+    Max    int64   `xml:"max"` 
+    OverCommit    MemoryOverCommit   `xml:"over_commit"` 
+    TransparentHugePages    TransparentHugePages   `xml:"transparent_huge_pages"` 
 
+}
+
+type Methods struct {
+    Methods []Method `xml:"method"`
 }
 
 type Method struct {
     OvType
-    Id    SsoMethod
+    Id    SsoMethod   `xml:"id"` 
 
+}
+
+type MigrationBandwidths struct {
+    MigrationBandwidths []MigrationBandwidth `xml:"migration_bandwidth"`
 }
 
 type MigrationBandwidth struct {
     OvType
-    AssignmentMethod    MigrationBandwidthAssignmentMethod
-    CustomValue    int64
+    AssignmentMethod    MigrationBandwidthAssignmentMethod   `xml:"assignment_method"` 
+    CustomValue    int64   `xml:"custom_value"` 
 
+}
+
+type MigrationOptionss struct {
+    MigrationOptionss []MigrationOptions `xml:"migration_options"`
 }
 
 type MigrationOptions struct {
     OvType
-    AutoConverge    InheritableBoolean
-    Bandwidth    MigrationBandwidth
-    Compressed    InheritableBoolean
-    Policy    MigrationPolicy
+    AutoConverge    InheritableBoolean   `xml:"auto_converge"` 
+    Bandwidth    MigrationBandwidth   `xml:"bandwidth"` 
+    Compressed    InheritableBoolean   `xml:"compressed"` 
+    Policy    MigrationPolicy   `xml:"policy"` 
 
+}
+
+type MigrationPolicys struct {
+    MigrationPolicys []MigrationPolicy `xml:"migration_policy"`
 }
 
 type MigrationPolicy struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Networks struct {
+    Networks []Network `xml:"network"`
 }
 
 type Network struct {
     Identified
-    Cluster    Cluster
-    Comment    string
-    DataCenter    DataCenter
-    Description    string
-    Display    bool
-    DnsResolverConfiguration    DnsResolverConfiguration
-    Id    string
-    Ip    Ip
-    Mtu    int64
-    Name    string
-    NetworkLabels    []*NetworkLabel
-    Permissions    []*Permission
-    ProfileRequired    bool
-    Qos    Qos
-    Required    bool
-    Status    NetworkStatus
-    Stp    bool
-    Usages    []*NetworkUsage
-    Vlan    Vlan
-    VnicProfiles    []*VnicProfile
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Display    bool   `xml:"display"` 
+    DnsResolverConfiguration    DnsResolverConfiguration   `xml:"dns_resolver_configuration"` 
+    Id    string   `xml:"id"` 
+    Ip    Ip   `xml:"ip"` 
+    Mtu    int64   `xml:"mtu"` 
+    Name    string   `xml:"name"` 
+    NetworkLabels    []*NetworkLabel   `xml:"network_labels"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    ProfileRequired    bool   `xml:"profile_required"` 
+    Qos    Qos   `xml:"qos"` 
+    Required    bool   `xml:"required"` 
+    Status    NetworkStatus   `xml:"status"` 
+    Stp    bool   `xml:"stp"` 
+    Usages    []*NetworkUsage   `xml:"usages"` 
+    Vlan    Vlan   `xml:"vlan"` 
+    VnicProfiles    []*VnicProfile   `xml:"vnic_profiles"` 
 
+}
+
+type NetworkAttachments struct {
+    NetworkAttachments []NetworkAttachment `xml:"network_attachment"`
 }
 
 type NetworkAttachment struct {
     Identified
-    Comment    string
-    Description    string
-    DnsResolverConfiguration    DnsResolverConfiguration
-    Host    Host
-    HostNic    HostNic
-    Id    string
-    InSync    bool
-    IpAddressAssignments    []*IpAddressAssignment
-    Name    string
-    Network    Network
-    Properties    []*Property
-    Qos    Qos
-    ReportedConfigurations    []*ReportedConfiguration
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    DnsResolverConfiguration    DnsResolverConfiguration   `xml:"dns_resolver_configuration"` 
+    Host    Host   `xml:"host"` 
+    HostNic    HostNic   `xml:"host_nic"` 
+    Id    string   `xml:"id"` 
+    InSync    bool   `xml:"in_sync"` 
+    IpAddressAssignments    []*IpAddressAssignment   `xml:"ip_address_assignments"` 
+    Name    string   `xml:"name"` 
+    Network    Network   `xml:"network"` 
+    Properties    []*Property   `xml:"properties"` 
+    Qos    Qos   `xml:"qos"` 
+    ReportedConfigurations    []*ReportedConfiguration   `xml:"reported_configurations"` 
 
+}
+
+type NetworkConfigurations struct {
+    NetworkConfigurations []NetworkConfiguration `xml:"network_configuration"`
 }
 
 type NetworkConfiguration struct {
     OvType
-    Dns    Dns
-    Nics    []*Nic
+    Dns    Dns   `xml:"dns"` 
+    Nics    []*Nic   `xml:"nics"` 
 
+}
+
+type NetworkFilters struct {
+    NetworkFilters []NetworkFilter `xml:"network_filter"`
 }
 
 type NetworkFilter struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Version    Version
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type NetworkFilterParameters struct {
+    NetworkFilterParameters []NetworkFilterParameter `xml:"network_filter_parameter"`
 }
 
 type NetworkFilterParameter struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Value    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type NetworkLabels struct {
+    NetworkLabels []NetworkLabel `xml:"network_label"`
 }
 
 type NetworkLabel struct {
     Identified
-    Comment    string
-    Description    string
-    HostNic    HostNic
-    Id    string
-    Name    string
-    Network    Network
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    HostNic    HostNic   `xml:"host_nic"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Network    Network   `xml:"network"` 
 
+}
+
+type NfsProfileDetails struct {
+    NfsProfileDetails []NfsProfileDetail `xml:"nfs_profile_detail"`
 }
 
 type NfsProfileDetail struct {
     EntityProfileDetail
-    NfsServerIp    string
-    ProfileDetails    []*ProfileDetail
+    NfsServerIp    string   `xml:"nfs_server_ip"` 
+    ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
+}
+
+type NicConfigurations struct {
+    NicConfigurations []NicConfiguration `xml:"nic_configuration"`
 }
 
 type NicConfiguration struct {
     OvType
-    BootProtocol    BootProtocol
-    Ip    Ip
-    Ipv6    Ip
-    Ipv6BootProtocol    BootProtocol
-    Name    string
-    OnBoot    bool
+    BootProtocol    BootProtocol   `xml:"boot_protocol"` 
+    Ip    Ip   `xml:"ip"` 
+    Ipv6    Ip   `xml:"ipv6"` 
+    Ipv6BootProtocol    BootProtocol   `xml:"ipv6_boot_protocol"` 
+    Name    string   `xml:"name"` 
+    OnBoot    bool   `xml:"on_boot"` 
 
+}
+
+type NumaNodes struct {
+    NumaNodes []NumaNode `xml:"numa_node"`
 }
 
 type NumaNode struct {
     Identified
-    Comment    string
-    Cpu    Cpu
-    Description    string
-    Host    Host
-    Id    string
-    Index    int64
-    Memory    int64
-    Name    string
-    NodeDistance    string
-    Statistics    []*Statistic
+    Comment    string   `xml:"comment"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Index    int64   `xml:"index"` 
+    Memory    int64   `xml:"memory"` 
+    Name    string   `xml:"name"` 
+    NodeDistance    string   `xml:"node_distance"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
 
+}
+
+type NumaNodePins struct {
+    NumaNodePins []NumaNodePin `xml:"numa_node_pin"`
 }
 
 type NumaNodePin struct {
     OvType
-    HostNumaNode    NumaNode
-    Index    int64
-    Pinned    bool
+    HostNumaNode    NumaNode   `xml:"host_numa_node"` 
+    Index    int64   `xml:"index"` 
+    Pinned    bool   `xml:"pinned"` 
 
+}
+
+type OpenStackImages struct {
+    OpenStackImages []OpenStackImage `xml:"open_stack_image"`
 }
 
 type OpenStackImage struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    OpenstackImageProvider    OpenStackImageProvider
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    OpenstackImageProvider    OpenStackImageProvider   `xml:"openstack_image_provider"` 
 
+}
+
+type OpenStackNetworks struct {
+    OpenStackNetworks []OpenStackNetwork `xml:"open_stack_network"`
 }
 
 type OpenStackNetwork struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    OpenstackNetworkProvider    OpenStackNetworkProvider
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    OpenstackNetworkProvider    OpenStackNetworkProvider   `xml:"openstack_network_provider"` 
 
+}
+
+type OpenStackSubnets struct {
+    OpenStackSubnets []OpenStackSubnet `xml:"open_stack_subnet"`
 }
 
 type OpenStackSubnet struct {
     Identified
-    Cidr    string
-    Comment    string
-    Description    string
-    DnsServers    []*String
-    Gateway    string
-    Id    string
-    IpVersion    string
-    Name    string
-    OpenstackNetwork    OpenStackNetwork
+    Cidr    string   `xml:"cidr"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    DnsServers    []*String   `xml:"dns_servers"` 
+    Gateway    string   `xml:"gateway"` 
+    Id    string   `xml:"id"` 
+    IpVersion    string   `xml:"ip_version"` 
+    Name    string   `xml:"name"` 
+    OpenstackNetwork    OpenStackNetwork   `xml:"openstack_network"` 
 
+}
+
+type OpenStackVolumeTypes struct {
+    OpenStackVolumeTypes []OpenStackVolumeType `xml:"open_stack_volume_type"`
 }
 
 type OpenStackVolumeType struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    OpenstackVolumeProvider    OpenStackVolumeProvider
-    Properties    []*Property
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    OpenstackVolumeProvider    OpenStackVolumeProvider   `xml:"openstack_volume_provider"` 
+    Properties    []*Property   `xml:"properties"` 
 
+}
+
+type OpenstackVolumeAuthenticationKeys struct {
+    OpenstackVolumeAuthenticationKeys []OpenstackVolumeAuthenticationKey `xml:"openstack_volume_authentication_key"`
 }
 
 type OpenstackVolumeAuthenticationKey struct {
     Identified
-    Comment    string
-    CreationDate    time.Time
-    Description    string
-    Id    string
-    Name    string
-    OpenstackVolumeProvider    OpenStackVolumeProvider
-    UsageType    OpenstackVolumeAuthenticationKeyUsageType
-    Uuid    string
-    Value    string
+    Comment    string   `xml:"comment"` 
+    CreationDate    time.Time   `xml:"creation_date"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    OpenstackVolumeProvider    OpenStackVolumeProvider   `xml:"openstack_volume_provider"` 
+    UsageType    OpenstackVolumeAuthenticationKeyUsageType   `xml:"usage_type"` 
+    Uuid    string   `xml:"uuid"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type OperatingSystems struct {
+    OperatingSystems []OperatingSystem `xml:"operating_system"`
 }
 
 type OperatingSystem struct {
     OvType
-    Boot    Boot
-    Cmdline    string
-    CustomKernelCmdline    string
-    Initrd    string
-    Kernel    string
-    ReportedKernelCmdline    string
-    Type    string
-    Version    Version
+    Boot    Boot   `xml:"boot"` 
+    Cmdline    string   `xml:"cmdline"` 
+    CustomKernelCmdline    string   `xml:"custom_kernel_cmdline"` 
+    Initrd    string   `xml:"initrd"` 
+    Kernel    string   `xml:"kernel"` 
+    ReportedKernelCmdline    string   `xml:"reported_kernel_cmdline"` 
+    Type    string   `xml:"type_"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type OperatingSystemInfos struct {
+    OperatingSystemInfos []OperatingSystemInfo `xml:"operating_system_info"`
 }
 
 type OperatingSystemInfo struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    LargeIcon    Icon
-    Name    string
-    SmallIcon    Icon
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Name    string   `xml:"name"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
 
+}
+
+type Options struct {
+    Options []Option `xml:"option"`
 }
 
 type Option struct {
     OvType
-    Name    string
-    Type    string
-    Value    string
+    Name    string   `xml:"name"` 
+    Type    string   `xml:"type_"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type Packages struct {
+    Packages []Package `xml:"package_"`
 }
 
 type Package struct {
     OvType
-    Name    string
+    Name    string   `xml:"name"` 
 
+}
+
+type Payloads struct {
+    Payloads []Payload `xml:"payload"`
 }
 
 type Payload struct {
     OvType
-    Files    []*File
-    Type    VmDeviceType
-    VolumeId    string
+    Files    []*File   `xml:"files"` 
+    Type    VmDeviceType   `xml:"type_"` 
+    VolumeId    string   `xml:"volume_id"` 
 
+}
+
+type Permissions struct {
+    Permissions []Permission `xml:"permission"`
 }
 
 type Permission struct {
     Identified
-    Cluster    Cluster
-    Comment    string
-    DataCenter    DataCenter
-    Description    string
-    Disk    Disk
-    Group    Group
-    Host    Host
-    Id    string
-    Name    string
-    Role    Role
-    StorageDomain    StorageDomain
-    Template    Template
-    User    User
-    Vm    Vm
-    VmPool    VmPool
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Disk    Disk   `xml:"disk"` 
+    Group    Group   `xml:"group"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Role    Role   `xml:"role"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Template    Template   `xml:"template"` 
+    User    User   `xml:"user"` 
+    Vm    Vm   `xml:"vm"` 
+    VmPool    VmPool   `xml:"vm_pool"` 
 
+}
+
+type Permits struct {
+    Permits []Permit `xml:"permit"`
 }
 
 type Permit struct {
     Identified
-    Administrative    bool
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Role    Role
+    Administrative    bool   `xml:"administrative"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Role    Role   `xml:"role"` 
 
+}
+
+type PmProxys struct {
+    PmProxys []PmProxy `xml:"pm_proxy"`
 }
 
 type PmProxy struct {
     OvType
-    Type    PmProxyType
+    Type    PmProxyType   `xml:"type_"` 
 
+}
+
+type PortMirrorings struct {
+    PortMirrorings []PortMirroring `xml:"port_mirroring"`
 }
 
 type PortMirroring struct {
@@ -855,2009 +1187,2465 @@ type PortMirroring struct {
 
 }
 
+type PowerManagements struct {
+    PowerManagements []PowerManagement `xml:"power_management"`
+}
+
 type PowerManagement struct {
     OvType
-    Address    string
-    Agents    []*Agent
-    AutomaticPmEnabled    bool
-    Enabled    bool
-    KdumpDetection    bool
-    Options    []*Option
-    Password    string
-    PmProxies    []*PmProxy
-    Status    PowerManagementStatus
-    Type    string
-    Username    string
+    Address    string   `xml:"address"` 
+    Agents    []*Agent   `xml:"agents"` 
+    AutomaticPmEnabled    bool   `xml:"automatic_pm_enabled"` 
+    Enabled    bool   `xml:"enabled"` 
+    KdumpDetection    bool   `xml:"kdump_detection"` 
+    Options    []*Option   `xml:"options"` 
+    Password    string   `xml:"password"` 
+    PmProxies    []*PmProxy   `xml:"pm_proxies"` 
+    Status    PowerManagementStatus   `xml:"status"` 
+    Type    string   `xml:"type_"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type Products struct {
+    Products []Product `xml:"product"`
 }
 
 type Product struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type ProductInfos struct {
+    ProductInfos []ProductInfo `xml:"product_info"`
 }
 
 type ProductInfo struct {
     OvType
-    Name    string
-    Vendor    string
-    Version    Version
+    Name    string   `xml:"name"` 
+    Vendor    string   `xml:"vendor"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type ProfileDetails struct {
+    ProfileDetails []ProfileDetail `xml:"profile_detail"`
 }
 
 type ProfileDetail struct {
     OvType
-    BlockStatistics    []*BlockStatistic
-    Duration    int64
-    FopStatistics    []*FopStatistic
-    ProfileType    string
-    Statistics    []*Statistic
+    BlockStatistics    []*BlockStatistic   `xml:"block_statistics"` 
+    Duration    int64   `xml:"duration"` 
+    FopStatistics    []*FopStatistic   `xml:"fop_statistics"` 
+    ProfileType    string   `xml:"profile_type"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
 
+}
+
+type Propertys struct {
+    Propertys []Property `xml:"property"`
 }
 
 type Property struct {
     OvType
-    Name    string
-    Value    string
+    Name    string   `xml:"name"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type ProxyTickets struct {
+    ProxyTickets []ProxyTicket `xml:"proxy_ticket"`
 }
 
 type ProxyTicket struct {
     OvType
-    Value    string
+    Value    string   `xml:"value"` 
 
+}
+
+type Qoss struct {
+    Qoss []Qos `xml:"qos"`
 }
 
 type Qos struct {
     Identified
-    Comment    string
-    CpuLimit    int64
-    DataCenter    DataCenter
-    Description    string
-    Id    string
-    InboundAverage    int64
-    InboundBurst    int64
-    InboundPeak    int64
-    MaxIops    int64
-    MaxReadIops    int64
-    MaxReadThroughput    int64
-    MaxThroughput    int64
-    MaxWriteIops    int64
-    MaxWriteThroughput    int64
-    Name    string
-    OutboundAverage    int64
-    OutboundAverageLinkshare    int64
-    OutboundAverageRealtime    int64
-    OutboundAverageUpperlimit    int64
-    OutboundBurst    int64
-    OutboundPeak    int64
-    Type    QosType
+    Comment    string   `xml:"comment"` 
+    CpuLimit    int64   `xml:"cpu_limit"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    InboundAverage    int64   `xml:"inbound_average"` 
+    InboundBurst    int64   `xml:"inbound_burst"` 
+    InboundPeak    int64   `xml:"inbound_peak"` 
+    MaxIops    int64   `xml:"max_iops"` 
+    MaxReadIops    int64   `xml:"max_read_iops"` 
+    MaxReadThroughput    int64   `xml:"max_read_throughput"` 
+    MaxThroughput    int64   `xml:"max_throughput"` 
+    MaxWriteIops    int64   `xml:"max_write_iops"` 
+    MaxWriteThroughput    int64   `xml:"max_write_throughput"` 
+    Name    string   `xml:"name"` 
+    OutboundAverage    int64   `xml:"outbound_average"` 
+    OutboundAverageLinkshare    int64   `xml:"outbound_average_linkshare"` 
+    OutboundAverageRealtime    int64   `xml:"outbound_average_realtime"` 
+    OutboundAverageUpperlimit    int64   `xml:"outbound_average_upperlimit"` 
+    OutboundBurst    int64   `xml:"outbound_burst"` 
+    OutboundPeak    int64   `xml:"outbound_peak"` 
+    Type    QosType   `xml:"type_"` 
 
+}
+
+type Quotas struct {
+    Quotas []Quota `xml:"quota"`
 }
 
 type Quota struct {
     Identified
-    ClusterHardLimitPct    int64
-    ClusterSoftLimitPct    int64
-    Comment    string
-    DataCenter    DataCenter
-    Description    string
-    Disks    []*Disk
-    Id    string
-    Name    string
-    Permissions    []*Permission
-    QuotaClusterLimits    []*QuotaClusterLimit
-    QuotaStorageLimits    []*QuotaStorageLimit
-    StorageHardLimitPct    int64
-    StorageSoftLimitPct    int64
-    Users    []*User
-    Vms    []*Vm
+    ClusterHardLimitPct    int64   `xml:"cluster_hard_limit_pct"` 
+    ClusterSoftLimitPct    int64   `xml:"cluster_soft_limit_pct"` 
+    Comment    string   `xml:"comment"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Disks    []*Disk   `xml:"disks"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    QuotaClusterLimits    []*QuotaClusterLimit   `xml:"quota_cluster_limits"` 
+    QuotaStorageLimits    []*QuotaStorageLimit   `xml:"quota_storage_limits"` 
+    StorageHardLimitPct    int64   `xml:"storage_hard_limit_pct"` 
+    StorageSoftLimitPct    int64   `xml:"storage_soft_limit_pct"` 
+    Users    []*User   `xml:"users"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type QuotaClusterLimits struct {
+    QuotaClusterLimits []QuotaClusterLimit `xml:"quota_cluster_limit"`
 }
 
 type QuotaClusterLimit struct {
     Identified
-    Cluster    Cluster
-    Comment    string
-    Description    string
-    Id    string
-    MemoryLimit    float64
-    MemoryUsage    float64
-    Name    string
-    Quota    Quota
-    VcpuLimit    int64
-    VcpuUsage    int64
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    MemoryLimit    float64   `xml:"memory_limit"` 
+    MemoryUsage    float64   `xml:"memory_usage"` 
+    Name    string   `xml:"name"` 
+    Quota    Quota   `xml:"quota"` 
+    VcpuLimit    int64   `xml:"vcpu_limit"` 
+    VcpuUsage    int64   `xml:"vcpu_usage"` 
 
+}
+
+type QuotaStorageLimits struct {
+    QuotaStorageLimits []QuotaStorageLimit `xml:"quota_storage_limit"`
 }
 
 type QuotaStorageLimit struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Limit    int64
-    Name    string
-    Quota    Quota
-    StorageDomain    StorageDomain
-    Usage    float64
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Limit    int64   `xml:"limit"` 
+    Name    string   `xml:"name"` 
+    Quota    Quota   `xml:"quota"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Usage    float64   `xml:"usage"` 
 
+}
+
+type Ranges struct {
+    Ranges []Range `xml:"range_"`
 }
 
 type Range struct {
     OvType
-    From    string
-    To    string
+    From    string   `xml:"from"` 
+    To    string   `xml:"to"` 
 
+}
+
+type Rates struct {
+    Rates []Rate `xml:"rate"`
 }
 
 type Rate struct {
     OvType
-    Bytes    int64
-    Period    int64
+    Bytes    int64   `xml:"bytes"` 
+    Period    int64   `xml:"period"` 
 
+}
+
+type ReportedConfigurations struct {
+    ReportedConfigurations []ReportedConfiguration `xml:"reported_configuration"`
 }
 
 type ReportedConfiguration struct {
     OvType
-    ActualValue    string
-    ExpectedValue    string
-    InSync    bool
-    Name    string
+    ActualValue    string   `xml:"actual_value"` 
+    ExpectedValue    string   `xml:"expected_value"` 
+    InSync    bool   `xml:"in_sync"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type ReportedDevices struct {
+    ReportedDevices []ReportedDevice `xml:"reported_device"`
 }
 
 type ReportedDevice struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Ips    []*Ip
-    Mac    Mac
-    Name    string
-    Type    ReportedDeviceType
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Ips    []*Ip   `xml:"ips"` 
+    Mac    Mac   `xml:"mac"` 
+    Name    string   `xml:"name"` 
+    Type    ReportedDeviceType   `xml:"type_"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type RngDevices struct {
+    RngDevices []RngDevice `xml:"rng_device"`
 }
 
 type RngDevice struct {
     OvType
-    Rate    Rate
-    Source    RngSource
+    Rate    Rate   `xml:"rate"` 
+    Source    RngSource   `xml:"source"` 
 
+}
+
+type Roles struct {
+    Roles []Role `xml:"role"`
 }
 
 type Role struct {
     Identified
-    Administrative    bool
-    Comment    string
-    Description    string
-    Id    string
-    Mutable    bool
-    Name    string
-    Permits    []*Permit
-    User    User
+    Administrative    bool   `xml:"administrative"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Mutable    bool   `xml:"mutable"` 
+    Name    string   `xml:"name"` 
+    Permits    []*Permit   `xml:"permits"` 
+    User    User   `xml:"user"` 
 
+}
+
+type SchedulingPolicys struct {
+    SchedulingPolicys []SchedulingPolicy `xml:"scheduling_policy"`
 }
 
 type SchedulingPolicy struct {
     Identified
-    Balances    []*Balance
-    Comment    string
-    DefaultPolicy    bool
-    Description    string
-    Filters    []*Filter
-    Id    string
-    Locked    bool
-    Name    string
-    Properties    []*Property
-    Weight    []*Weight
+    Balances    []*Balance   `xml:"balances"` 
+    Comment    string   `xml:"comment"` 
+    DefaultPolicy    bool   `xml:"default_policy"` 
+    Description    string   `xml:"description"` 
+    Filters    []*Filter   `xml:"filters"` 
+    Id    string   `xml:"id"` 
+    Locked    bool   `xml:"locked"` 
+    Name    string   `xml:"name"` 
+    Properties    []*Property   `xml:"properties"` 
+    Weight    []*Weight   `xml:"weight"` 
 
+}
+
+type SchedulingPolicyUnits struct {
+    SchedulingPolicyUnits []SchedulingPolicyUnit `xml:"scheduling_policy_unit"`
 }
 
 type SchedulingPolicyUnit struct {
     Identified
-    Comment    string
-    Description    string
-    Enabled    bool
-    Id    string
-    Internal    bool
-    Name    string
-    Properties    []*Property
-    Type    PolicyUnitType
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Enabled    bool   `xml:"enabled"` 
+    Id    string   `xml:"id"` 
+    Internal    bool   `xml:"internal"` 
+    Name    string   `xml:"name"` 
+    Properties    []*Property   `xml:"properties"` 
+    Type    PolicyUnitType   `xml:"type_"` 
 
+}
+
+type SeLinuxs struct {
+    SeLinuxs []SeLinux `xml:"se_linux"`
 }
 
 type SeLinux struct {
     OvType
-    Mode    SeLinuxMode
+    Mode    SeLinuxMode   `xml:"mode"` 
 
+}
+
+type SerialNumbers struct {
+    SerialNumbers []SerialNumber `xml:"serial_number"`
 }
 
 type SerialNumber struct {
     OvType
-    Policy    SerialNumberPolicy
-    Value    string
+    Policy    SerialNumberPolicy   `xml:"policy"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type Sessions struct {
+    Sessions []Session `xml:"session"`
 }
 
 type Session struct {
     Identified
-    Comment    string
-    ConsoleUser    bool
-    Description    string
-    Id    string
-    Ip    Ip
-    Name    string
-    Protocol    string
-    User    User
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    ConsoleUser    bool   `xml:"console_user"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Ip    Ip   `xml:"ip"` 
+    Name    string   `xml:"name"` 
+    Protocol    string   `xml:"protocol"` 
+    User    User   `xml:"user"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type SkipIfConnectivityBrokens struct {
+    SkipIfConnectivityBrokens []SkipIfConnectivityBroken `xml:"skip_if_connectivity_broken"`
 }
 
 type SkipIfConnectivityBroken struct {
     OvType
-    Enabled    bool
-    Threshold    int64
+    Enabled    bool   `xml:"enabled"` 
+    Threshold    int64   `xml:"threshold"` 
 
+}
+
+type SkipIfSdActives struct {
+    SkipIfSdActives []SkipIfSdActive `xml:"skip_if_sd_active"`
 }
 
 type SkipIfSdActive struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type SpecialObjectss struct {
+    SpecialObjectss []SpecialObjects `xml:"special_objects"`
 }
 
 type SpecialObjects struct {
     OvType
-    BlankTemplate    Template
-    RootTag    Tag
+    BlankTemplate    Template   `xml:"blank_template"` 
+    RootTag    Tag   `xml:"root_tag"` 
 
+}
+
+type Spms struct {
+    Spms []Spm `xml:"spm"`
 }
 
 type Spm struct {
     OvType
-    Priority    int64
-    Status    SpmStatus
+    Priority    int64   `xml:"priority"` 
+    Status    SpmStatus   `xml:"status"` 
 
+}
+
+type Sshs struct {
+    Sshs []Ssh `xml:"ssh"`
 }
 
 type Ssh struct {
     Identified
-    AuthenticationMethod    SshAuthenticationMethod
-    Comment    string
-    Description    string
-    Fingerprint    string
-    Id    string
-    Name    string
-    Port    int64
-    User    User
+    AuthenticationMethod    SshAuthenticationMethod   `xml:"authentication_method"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Fingerprint    string   `xml:"fingerprint"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Port    int64   `xml:"port"` 
+    User    User   `xml:"user"` 
 
+}
+
+type SshPublicKeys struct {
+    SshPublicKeys []SshPublicKey `xml:"ssh_public_key"`
 }
 
 type SshPublicKey struct {
     Identified
-    Comment    string
-    Content    string
-    Description    string
-    Id    string
-    Name    string
-    User    User
+    Comment    string   `xml:"comment"` 
+    Content    string   `xml:"content"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    User    User   `xml:"user"` 
 
+}
+
+type Ssos struct {
+    Ssos []Sso `xml:"sso"`
 }
 
 type Sso struct {
     OvType
-    Methods    []*Method
+    Methods    []*Method   `xml:"methods"` 
 
+}
+
+type Statistics struct {
+    Statistics []Statistic `xml:"statistic"`
 }
 
 type Statistic struct {
     Identified
-    Brick    GlusterBrick
-    Comment    string
-    Description    string
-    Disk    Disk
-    GlusterVolume    GlusterVolume
-    Host    Host
-    HostNic    HostNic
-    HostNumaNode    NumaNode
-    Id    string
-    Kind    StatisticKind
-    Name    string
-    Nic    Nic
-    Step    Step
-    Type    ValueType
-    Unit    StatisticUnit
-    Values    []*Value
-    Vm    Vm
+    Brick    GlusterBrick   `xml:"brick"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Disk    Disk   `xml:"disk"` 
+    GlusterVolume    GlusterVolume   `xml:"gluster_volume"` 
+    Host    Host   `xml:"host"` 
+    HostNic    HostNic   `xml:"host_nic"` 
+    HostNumaNode    NumaNode   `xml:"host_numa_node"` 
+    Id    string   `xml:"id"` 
+    Kind    StatisticKind   `xml:"kind"` 
+    Name    string   `xml:"name"` 
+    Nic    Nic   `xml:"nic"` 
+    Step    Step   `xml:"step"` 
+    Type    ValueType   `xml:"type_"` 
+    Unit    StatisticUnit   `xml:"unit"` 
+    Values    []*Value   `xml:"values"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type Steps struct {
+    Steps []Step `xml:"step"`
 }
 
 type Step struct {
     Identified
-    Comment    string
-    Description    string
-    EndTime    time.Time
-    ExecutionHost    Host
-    External    bool
-    ExternalType    ExternalSystemType
-    Id    string
-    Job    Job
-    Name    string
-    Number    int64
-    ParentStep    Step
-    Progress    int64
-    StartTime    time.Time
-    Statistics    []*Statistic
-    Status    StepStatus
-    Type    StepEnum
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    EndTime    time.Time   `xml:"end_time"` 
+    ExecutionHost    Host   `xml:"execution_host"` 
+    External    bool   `xml:"external"` 
+    ExternalType    ExternalSystemType   `xml:"external_type"` 
+    Id    string   `xml:"id"` 
+    Job    Job   `xml:"job"` 
+    Name    string   `xml:"name"` 
+    Number    int64   `xml:"number"` 
+    ParentStep    Step   `xml:"parent_step"` 
+    Progress    int64   `xml:"progress"` 
+    StartTime    time.Time   `xml:"start_time"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    StepStatus   `xml:"status"` 
+    Type    StepEnum   `xml:"type_"` 
 
+}
+
+type StorageConnections struct {
+    StorageConnections []StorageConnection `xml:"storage_connection"`
 }
 
 type StorageConnection struct {
     Identified
-    Address    string
-    Comment    string
-    Description    string
-    Host    Host
-    Id    string
-    MountOptions    string
-    Name    string
-    NfsRetrans    int64
-    NfsTimeo    int64
-    NfsVersion    NfsVersion
-    Password    string
-    Path    string
-    Port    int64
-    Portal    string
-    Target    string
-    Type    StorageType
-    Username    string
-    VfsType    string
+    Address    string   `xml:"address"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    MountOptions    string   `xml:"mount_options"` 
+    Name    string   `xml:"name"` 
+    NfsRetrans    int64   `xml:"nfs_retrans"` 
+    NfsTimeo    int64   `xml:"nfs_timeo"` 
+    NfsVersion    NfsVersion   `xml:"nfs_version"` 
+    Password    string   `xml:"password"` 
+    Path    string   `xml:"path"` 
+    Port    int64   `xml:"port"` 
+    Portal    string   `xml:"portal"` 
+    Target    string   `xml:"target"` 
+    Type    StorageType   `xml:"type_"` 
+    Username    string   `xml:"username"` 
+    VfsType    string   `xml:"vfs_type"` 
 
+}
+
+type StorageConnectionExtensions struct {
+    StorageConnectionExtensions []StorageConnectionExtension `xml:"storage_connection_extension"`
 }
 
 type StorageConnectionExtension struct {
     Identified
-    Comment    string
-    Description    string
-    Host    Host
-    Id    string
-    Name    string
-    Password    string
-    Target    string
-    Username    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Target    string   `xml:"target"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type StorageDomains struct {
+    StorageDomains []StorageDomain `xml:"storage_domain"`
 }
 
 type StorageDomain struct {
     Identified
-    Available    int64
-    Comment    string
-    Committed    int64
-    CriticalSpaceActionBlocker    int64
-    DataCenter    DataCenter
-    DataCenters    []*DataCenter
-    Description    string
-    DiscardAfterDelete    bool
-    DiskProfiles    []*DiskProfile
-    DiskSnapshots    []*DiskSnapshot
-    Disks    []*Disk
-    ExternalStatus    ExternalStatus
-    Files    []*File
-    Host    Host
-    Id    string
-    Images    []*Image
-    Import    bool
-    Master    bool
-    Name    string
-    Permissions    []*Permission
-    Status    StorageDomainStatus
-    Storage    HostStorage
-    StorageConnections    []*StorageConnection
-    StorageFormat    StorageFormat
-    SupportsDiscard    bool
-    SupportsDiscardZeroesData    bool
-    Templates    []*Template
-    Type    StorageDomainType
-    Used    int64
-    Vms    []*Vm
-    WarningLowSpaceIndicator    int64
-    WipeAfterDelete    bool
+    Available    int64   `xml:"available"` 
+    Comment    string   `xml:"comment"` 
+    Committed    int64   `xml:"committed"` 
+    CriticalSpaceActionBlocker    int64   `xml:"critical_space_action_blocker"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    DataCenters    []*DataCenter   `xml:"data_centers"` 
+    Description    string   `xml:"description"` 
+    DiscardAfterDelete    bool   `xml:"discard_after_delete"` 
+    DiskProfiles    []*DiskProfile   `xml:"disk_profiles"` 
+    DiskSnapshots    []*DiskSnapshot   `xml:"disk_snapshots"` 
+    Disks    []*Disk   `xml:"disks"` 
+    ExternalStatus    ExternalStatus   `xml:"external_status"` 
+    Files    []*File   `xml:"files"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Images    []*Image   `xml:"images"` 
+    Import    bool   `xml:"import_"` 
+    Master    bool   `xml:"master"` 
+    Name    string   `xml:"name"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Status    StorageDomainStatus   `xml:"status"` 
+    Storage    HostStorage   `xml:"storage"` 
+    StorageConnections    []*StorageConnection   `xml:"storage_connections"` 
+    StorageFormat    StorageFormat   `xml:"storage_format"` 
+    SupportsDiscard    bool   `xml:"supports_discard"` 
+    SupportsDiscardZeroesData    bool   `xml:"supports_discard_zeroes_data"` 
+    Templates    []*Template   `xml:"templates"` 
+    Type    StorageDomainType   `xml:"type_"` 
+    Used    int64   `xml:"used"` 
+    Vms    []*Vm   `xml:"vms"` 
+    WarningLowSpaceIndicator    int64   `xml:"warning_low_space_indicator"` 
+    WipeAfterDelete    bool   `xml:"wipe_after_delete"` 
 
+}
+
+type StorageDomainLeases struct {
+    StorageDomainLeases []StorageDomainLease `xml:"storage_domain_lease"`
 }
 
 type StorageDomainLease struct {
     OvType
-    StorageDomain    StorageDomain
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
 
+}
+
+type Tags struct {
+    Tags []Tag `xml:"tag"`
 }
 
 type Tag struct {
     Identified
-    Comment    string
-    Description    string
-    Group    Group
-    Host    Host
-    Id    string
-    Name    string
-    Parent    Tag
-    Template    Template
-    User    User
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Group    Group   `xml:"group"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Parent    Tag   `xml:"parent"` 
+    Template    Template   `xml:"template"` 
+    User    User   `xml:"user"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type TemplateVersions struct {
+    TemplateVersions []TemplateVersion `xml:"template_version"`
 }
 
 type TemplateVersion struct {
     OvType
-    BaseTemplate    Template
-    VersionName    string
-    VersionNumber    int64
+    BaseTemplate    Template   `xml:"base_template"` 
+    VersionName    string   `xml:"version_name"` 
+    VersionNumber    int64   `xml:"version_number"` 
 
+}
+
+type Tickets struct {
+    Tickets []Ticket `xml:"ticket"`
 }
 
 type Ticket struct {
     OvType
-    Expiry    int64
-    Value    string
+    Expiry    int64   `xml:"expiry"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type TimeZones struct {
+    TimeZones []TimeZone `xml:"time_zone"`
 }
 
 type TimeZone struct {
     OvType
-    Name    string
-    UtcOffset    string
+    Name    string   `xml:"name"` 
+    UtcOffset    string   `xml:"utc_offset"` 
 
+}
+
+type TransparentHugePagess struct {
+    TransparentHugePagess []TransparentHugePages `xml:"transparent_huge_pages"`
 }
 
 type TransparentHugePages struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type UnmanagedNetworks struct {
+    UnmanagedNetworks []UnmanagedNetwork `xml:"unmanaged_network"`
 }
 
 type UnmanagedNetwork struct {
     Identified
-    Comment    string
-    Description    string
-    Host    Host
-    HostNic    HostNic
-    Id    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    HostNic    HostNic   `xml:"host_nic"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Usbs struct {
+    Usbs []Usb `xml:"usb"`
 }
 
 type Usb struct {
     OvType
-    Enabled    bool
-    Type    UsbType
+    Enabled    bool   `xml:"enabled"` 
+    Type    UsbType   `xml:"type_"` 
 
+}
+
+type Users struct {
+    Users []User `xml:"user"`
 }
 
 type User struct {
     Identified
-    Comment    string
-    Department    string
-    Description    string
-    Domain    Domain
-    DomainEntryId    string
-    Email    string
-    Groups    []*Group
-    Id    string
-    LastName    string
-    LoggedIn    bool
-    Name    string
-    Namespace    string
-    Password    string
-    Permissions    []*Permission
-    Principal    string
-    Roles    []*Role
-    SshPublicKeys    []*SshPublicKey
-    Tags    []*Tag
-    UserName    string
+    Comment    string   `xml:"comment"` 
+    Department    string   `xml:"department"` 
+    Description    string   `xml:"description"` 
+    Domain    Domain   `xml:"domain"` 
+    DomainEntryId    string   `xml:"domain_entry_id"` 
+    Email    string   `xml:"email"` 
+    Groups    []*Group   `xml:"groups"` 
+    Id    string   `xml:"id"` 
+    LastName    string   `xml:"last_name"` 
+    LoggedIn    bool   `xml:"logged_in"` 
+    Name    string   `xml:"name"` 
+    Namespace    string   `xml:"namespace"` 
+    Password    string   `xml:"password"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Principal    string   `xml:"principal"` 
+    Roles    []*Role   `xml:"roles"` 
+    SshPublicKeys    []*SshPublicKey   `xml:"ssh_public_keys"` 
+    Tags    []*Tag   `xml:"tags"` 
+    UserName    string   `xml:"user_name"` 
 
+}
+
+type Values struct {
+    Values []Value `xml:"value"`
 }
 
 type Value struct {
     OvType
-    Datum    float64
-    Detail    string
+    Datum    float64   `xml:"datum"` 
+    Detail    string   `xml:"detail"` 
 
+}
+
+type VcpuPins struct {
+    VcpuPins []VcpuPin `xml:"vcpu_pin"`
 }
 
 type VcpuPin struct {
     OvType
-    CpuSet    string
-    Vcpu    int64
+    CpuSet    string   `xml:"cpu_set"` 
+    Vcpu    int64   `xml:"vcpu"` 
 
+}
+
+type Vendors struct {
+    Vendors []Vendor `xml:"vendor"`
 }
 
 type Vendor struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Versions struct {
+    Versions []Version `xml:"version"`
 }
 
 type Version struct {
     Identified
-    Build    int64
-    Comment    string
-    Description    string
-    FullVersion    string
-    Id    string
-    Major    int64
-    Minor    int64
-    Name    string
-    Revision    int64
+    Build    int64   `xml:"build"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    FullVersion    string   `xml:"full_version"` 
+    Id    string   `xml:"id"` 
+    Major    int64   `xml:"major"` 
+    Minor    int64   `xml:"minor"` 
+    Name    string   `xml:"name"` 
+    Revision    int64   `xml:"revision"` 
 
+}
+
+type VirtioScsis struct {
+    VirtioScsis []VirtioScsi `xml:"virtio_scsi"`
 }
 
 type VirtioScsi struct {
     OvType
-    Enabled    bool
+    Enabled    bool   `xml:"enabled"` 
 
+}
+
+type VirtualNumaNodes struct {
+    VirtualNumaNodes []VirtualNumaNode `xml:"virtual_numa_node"`
 }
 
 type VirtualNumaNode struct {
     NumaNode
-    Comment    string
-    Cpu    Cpu
-    Description    string
-    Host    Host
-    Id    string
-    Index    int64
-    Memory    int64
-    Name    string
-    NodeDistance    string
-    NumaNodePins    []*NumaNodePin
-    Statistics    []*Statistic
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Index    int64   `xml:"index"` 
+    Memory    int64   `xml:"memory"` 
+    Name    string   `xml:"name"` 
+    NodeDistance    string   `xml:"node_distance"` 
+    NumaNodePins    []*NumaNodePin   `xml:"numa_node_pins"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type Vlans struct {
+    Vlans []Vlan `xml:"vlan"`
 }
 
 type Vlan struct {
     OvType
-    Id    int64
+    Id    int64   `xml:"id"` 
 
+}
+
+type VmBases struct {
+    VmBases []VmBase `xml:"vm_base"`
 }
 
 type VmBase struct {
     Identified
-    Bios    Bios
-    Cluster    Cluster
-    Comment    string
-    Console    Console
-    Cpu    Cpu
-    CpuProfile    CpuProfile
-    CpuShares    int64
-    CreationTime    time.Time
-    CustomCompatibilityVersion    Version
-    CustomCpuModel    string
-    CustomEmulatedMachine    string
-    CustomProperties    []*CustomProperty
-    DeleteProtected    bool
-    Description    string
-    Display    Display
-    Domain    Domain
-    HighAvailability    HighAvailability
-    Id    string
-    Initialization    Initialization
-    Io    Io
-    LargeIcon    Icon
-    Lease    StorageDomainLease
-    Memory    int64
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    MigrationDowntime    int64
-    Name    string
-    Origin    string
-    Os    OperatingSystem
-    Quota    Quota
-    RngDevice    RngDevice
-    SerialNumber    SerialNumber
-    SmallIcon    Icon
-    SoundcardEnabled    bool
-    Sso    Sso
-    StartPaused    bool
-    Stateless    bool
-    StorageDomain    StorageDomain
-    TimeZone    TimeZone
-    TunnelMigration    bool
-    Type    VmType
-    Usb    Usb
-    VirtioScsi    VirtioScsi
+    Bios    Bios   `xml:"bios"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Console    Console   `xml:"console"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    CpuShares    int64   `xml:"cpu_shares"` 
+    CreationTime    time.Time   `xml:"creation_time"` 
+    CustomCompatibilityVersion    Version   `xml:"custom_compatibility_version"` 
+    CustomCpuModel    string   `xml:"custom_cpu_model"` 
+    CustomEmulatedMachine    string   `xml:"custom_emulated_machine"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    DeleteProtected    bool   `xml:"delete_protected"` 
+    Description    string   `xml:"description"` 
+    Display    Display   `xml:"display"` 
+    Domain    Domain   `xml:"domain"` 
+    HighAvailability    HighAvailability   `xml:"high_availability"` 
+    Id    string   `xml:"id"` 
+    Initialization    Initialization   `xml:"initialization"` 
+    Io    Io   `xml:"io"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Lease    StorageDomainLease   `xml:"lease"` 
+    Memory    int64   `xml:"memory"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    MigrationDowntime    int64   `xml:"migration_downtime"` 
+    Name    string   `xml:"name"` 
+    Origin    string   `xml:"origin"` 
+    Os    OperatingSystem   `xml:"os"` 
+    Quota    Quota   `xml:"quota"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Sso    Sso   `xml:"sso"` 
+    StartPaused    bool   `xml:"start_paused"` 
+    Stateless    bool   `xml:"stateless"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    TimeZone    TimeZone   `xml:"time_zone"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Type    VmType   `xml:"type_"` 
+    Usb    Usb   `xml:"usb"` 
+    VirtioScsi    VirtioScsi   `xml:"virtio_scsi"` 
 
+}
+
+type VmPlacementPolicys struct {
+    VmPlacementPolicys []VmPlacementPolicy `xml:"vm_placement_policy"`
 }
 
 type VmPlacementPolicy struct {
     OvType
-    Affinity    VmAffinity
-    Hosts    []*Host
+    Affinity    VmAffinity   `xml:"affinity"` 
+    Hosts    []*Host   `xml:"hosts"` 
 
+}
+
+type VmPools struct {
+    VmPools []VmPool `xml:"vm_pool"`
 }
 
 type VmPool struct {
     Identified
-    AutoStorageSelect    bool
-    Cluster    Cluster
-    Comment    string
-    Description    string
-    Display    Display
-    Id    string
-    InstanceType    InstanceType
-    MaxUserVms    int64
-    Name    string
-    Permissions    []*Permission
-    PrestartedVms    int64
-    RngDevice    RngDevice
-    Size    int64
-    SoundcardEnabled    bool
-    Stateful    bool
-    Template    Template
-    Type    VmPoolType
-    UseLatestTemplateVersion    bool
-    Vm    Vm
+    AutoStorageSelect    bool   `xml:"auto_storage_select"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Display    Display   `xml:"display"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    MaxUserVms    int64   `xml:"max_user_vms"` 
+    Name    string   `xml:"name"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PrestartedVms    int64   `xml:"prestarted_vms"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    Size    int64   `xml:"size"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Stateful    bool   `xml:"stateful"` 
+    Template    Template   `xml:"template"` 
+    Type    VmPoolType   `xml:"type_"` 
+    UseLatestTemplateVersion    bool   `xml:"use_latest_template_version"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type VmSummarys struct {
+    VmSummarys []VmSummary `xml:"vm_summary"`
 }
 
 type VmSummary struct {
     OvType
-    Active    int64
-    Migrating    int64
-    Total    int64
+    Active    int64   `xml:"active"` 
+    Migrating    int64   `xml:"migrating"` 
+    Total    int64   `xml:"total"` 
 
+}
+
+type VnicPassThroughs struct {
+    VnicPassThroughs []VnicPassThrough `xml:"vnic_pass_through"`
 }
 
 type VnicPassThrough struct {
     OvType
-    Mode    VnicPassThroughMode
+    Mode    VnicPassThroughMode   `xml:"mode"` 
 
+}
+
+type VnicProfiles struct {
+    VnicProfiles []VnicProfile `xml:"vnic_profile"`
 }
 
 type VnicProfile struct {
     Identified
-    Comment    string
-    CustomProperties    []*CustomProperty
-    Description    string
-    Id    string
-    Migratable    bool
-    Name    string
-    Network    Network
-    NetworkFilter    NetworkFilter
-    PassThrough    VnicPassThrough
-    Permissions    []*Permission
-    PortMirroring    bool
-    Qos    Qos
+    Comment    string   `xml:"comment"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Migratable    bool   `xml:"migratable"` 
+    Name    string   `xml:"name"` 
+    Network    Network   `xml:"network"` 
+    NetworkFilter    NetworkFilter   `xml:"network_filter"` 
+    PassThrough    VnicPassThrough   `xml:"pass_through"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PortMirroring    bool   `xml:"port_mirroring"` 
+    Qos    Qos   `xml:"qos"` 
 
+}
+
+type VnicProfileMappings struct {
+    VnicProfileMappings []VnicProfileMapping `xml:"vnic_profile_mapping"`
 }
 
 type VnicProfileMapping struct {
     OvType
-    SourceNetworkName    string
-    SourceNetworkProfileName    string
-    TargetVnicProfile    VnicProfile
+    SourceNetworkName    string   `xml:"source_network_name"` 
+    SourceNetworkProfileName    string   `xml:"source_network_profile_name"` 
+    TargetVnicProfile    VnicProfile   `xml:"target_vnic_profile"` 
 
+}
+
+type VolumeGroups struct {
+    VolumeGroups []VolumeGroup `xml:"volume_group"`
 }
 
 type VolumeGroup struct {
     OvType
-    Id    string
-    LogicalUnits    []*LogicalUnit
-    Name    string
+    Id    string   `xml:"id"` 
+    LogicalUnits    []*LogicalUnit   `xml:"logical_units"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Weights struct {
+    Weights []Weight `xml:"weight"`
 }
 
 type Weight struct {
     Identified
-    Comment    string
-    Description    string
-    Factor    int64
-    Id    string
-    Name    string
-    SchedulingPolicy    SchedulingPolicy
-    SchedulingPolicyUnit    SchedulingPolicyUnit
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Factor    int64   `xml:"factor"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    SchedulingPolicy    SchedulingPolicy   `xml:"scheduling_policy"` 
+    SchedulingPolicyUnit    SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
 
+}
+
+type Actions struct {
+    Actions []Action `xml:"action"`
 }
 
 type Action struct {
     Identified
-    AllowPartialImport    bool
-    Async    bool
-    Bricks    []*GlusterBrick
-    Certificates    []*Certificate
-    CheckConnectivity    bool
-    Clone    bool
-    Cluster    Cluster
-    CollapseSnapshots    bool
-    Comment    string
-    ConnectivityTimeout    int64
-    DataCenter    DataCenter
-    DeployHostedEngine    bool
-    Description    string
-    Details    GlusterVolumeProfileDetails
-    DiscardSnapshots    bool
-    Disk    Disk
-    Disks    []*Disk
-    Exclusive    bool
-    Fault    Fault
-    FenceType    string
-    Filter    bool
-    FixLayout    bool
-    Force    bool
-    GracePeriod    GracePeriod
-    Host    Host
-    Id    string
-    Image    string
-    ImportAsTemplate    bool
-    IsAttached    bool
-    Iscsi    IscsiDetails
-    IscsiTargets    []*String
-    Job    Job
-    LogicalUnits    []*LogicalUnit
-    MaintenanceEnabled    bool
-    ModifiedBonds    []*HostNic
-    ModifiedLabels    []*NetworkLabel
-    ModifiedNetworkAttachments    []*NetworkAttachment
-    Name    string
-    Option    Option
-    Pause    bool
-    PowerManagement    PowerManagement
-    ProxyTicket    ProxyTicket
-    Reason    string
-    ReassignBadMacs    bool
-    RemoteViewerConnectionFile    string
-    RemovedBonds    []*HostNic
-    RemovedLabels    []*NetworkLabel
-    RemovedNetworkAttachments    []*NetworkAttachment
-    ResolutionType    string
-    RestoreMemory    bool
-    RootPassword    string
-    Snapshot    Snapshot
-    Ssh    Ssh
-    Status    string
-    StopGlusterService    bool
-    StorageDomain    StorageDomain
-    StorageDomains    []*StorageDomain
-    Succeeded    bool
-    SynchronizedNetworkAttachments    []*NetworkAttachment
-    Template    Template
-    Ticket    Ticket
-    UndeployHostedEngine    bool
-    UseCloudInit    bool
-    UseSysprep    bool
-    VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration
-    Vm    Vm
-    VnicProfileMappings    []*VnicProfileMapping
+    AllowPartialImport    bool   `xml:"allow_partial_import"` 
+    Async    bool   `xml:"async"` 
+    Bricks    []*GlusterBrick   `xml:"bricks"` 
+    Certificates    []*Certificate   `xml:"certificates"` 
+    CheckConnectivity    bool   `xml:"check_connectivity"` 
+    Clone    bool   `xml:"clone"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    CollapseSnapshots    bool   `xml:"collapse_snapshots"` 
+    Comment    string   `xml:"comment"` 
+    ConnectivityTimeout    int64   `xml:"connectivity_timeout"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    DeployHostedEngine    bool   `xml:"deploy_hosted_engine"` 
+    Description    string   `xml:"description"` 
+    Details    GlusterVolumeProfileDetails   `xml:"details"` 
+    DiscardSnapshots    bool   `xml:"discard_snapshots"` 
+    Disk    Disk   `xml:"disk"` 
+    Disks    []*Disk   `xml:"disks"` 
+    Exclusive    bool   `xml:"exclusive"` 
+    Fault    Fault   `xml:"fault"` 
+    FenceType    string   `xml:"fence_type"` 
+    Filter    bool   `xml:"filter"` 
+    FixLayout    bool   `xml:"fix_layout"` 
+    Force    bool   `xml:"force"` 
+    GracePeriod    GracePeriod   `xml:"grace_period"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Image    string   `xml:"image"` 
+    ImportAsTemplate    bool   `xml:"import_as_template"` 
+    IsAttached    bool   `xml:"is_attached"` 
+    Iscsi    IscsiDetails   `xml:"iscsi"` 
+    IscsiTargets    []*String   `xml:"iscsi_targets"` 
+    Job    Job   `xml:"job"` 
+    LogicalUnits    []*LogicalUnit   `xml:"logical_units"` 
+    MaintenanceEnabled    bool   `xml:"maintenance_enabled"` 
+    ModifiedBonds    []*HostNic   `xml:"modified_bonds"` 
+    ModifiedLabels    []*NetworkLabel   `xml:"modified_labels"` 
+    ModifiedNetworkAttachments    []*NetworkAttachment   `xml:"modified_network_attachments"` 
+    Name    string   `xml:"name"` 
+    Option    Option   `xml:"option"` 
+    Pause    bool   `xml:"pause"` 
+    PowerManagement    PowerManagement   `xml:"power_management"` 
+    ProxyTicket    ProxyTicket   `xml:"proxy_ticket"` 
+    Reason    string   `xml:"reason"` 
+    ReassignBadMacs    bool   `xml:"reassign_bad_macs"` 
+    RemoteViewerConnectionFile    string   `xml:"remote_viewer_connection_file"` 
+    RemovedBonds    []*HostNic   `xml:"removed_bonds"` 
+    RemovedLabels    []*NetworkLabel   `xml:"removed_labels"` 
+    RemovedNetworkAttachments    []*NetworkAttachment   `xml:"removed_network_attachments"` 
+    ResolutionType    string   `xml:"resolution_type"` 
+    RestoreMemory    bool   `xml:"restore_memory"` 
+    RootPassword    string   `xml:"root_password"` 
+    Snapshot    Snapshot   `xml:"snapshot"` 
+    Ssh    Ssh   `xml:"ssh"` 
+    Status    string   `xml:"status"` 
+    StopGlusterService    bool   `xml:"stop_gluster_service"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    StorageDomains    []*StorageDomain   `xml:"storage_domains"` 
+    Succeeded    bool   `xml:"succeeded"` 
+    SynchronizedNetworkAttachments    []*NetworkAttachment   `xml:"synchronized_network_attachments"` 
+    Template    Template   `xml:"template"` 
+    Ticket    Ticket   `xml:"ticket"` 
+    UndeployHostedEngine    bool   `xml:"undeploy_hosted_engine"` 
+    UseCloudInit    bool   `xml:"use_cloud_init"` 
+    UseSysprep    bool   `xml:"use_sysprep"` 
+    VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration   `xml:"virtual_functions_configuration"` 
+    Vm    Vm   `xml:"vm"` 
+    VnicProfileMappings    []*VnicProfileMapping   `xml:"vnic_profile_mappings"` 
 
+}
+
+type AffinityGroups struct {
+    AffinityGroups []AffinityGroup `xml:"affinity_group"`
 }
 
 type AffinityGroup struct {
     Identified
-    Cluster    Cluster
-    Comment    string
-    Description    string
-    Enforcing    bool
-    Hosts    []*Host
-    HostsRule    AffinityRule
-    Id    string
-    Name    string
-    Positive    bool
-    Vms    []*Vm
-    VmsRule    AffinityRule
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Enforcing    bool   `xml:"enforcing"` 
+    Hosts    []*Host   `xml:"hosts"` 
+    HostsRule    AffinityRule   `xml:"hosts_rule"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Positive    bool   `xml:"positive"` 
+    Vms    []*Vm   `xml:"vms"` 
+    VmsRule    AffinityRule   `xml:"vms_rule"` 
 
+}
+
+type AffinityLabels struct {
+    AffinityLabels []AffinityLabel `xml:"affinity_label"`
 }
 
 type AffinityLabel struct {
     Identified
-    Comment    string
-    Description    string
-    Hosts    []*Host
-    Id    string
-    Name    string
-    ReadOnly    bool
-    Vms    []*Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Hosts    []*Host   `xml:"hosts"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    ReadOnly    bool   `xml:"read_only"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type Agents struct {
+    Agents []Agent `xml:"agent"`
 }
 
 type Agent struct {
     Identified
-    Address    string
-    Comment    string
-    Concurrent    bool
-    Description    string
-    EncryptOptions    bool
-    Host    Host
-    Id    string
-    Name    string
-    Options    []*Option
-    Order    int64
-    Password    string
-    Port    int64
-    Type    string
-    Username    string
+    Address    string   `xml:"address"` 
+    Comment    string   `xml:"comment"` 
+    Concurrent    bool   `xml:"concurrent"` 
+    Description    string   `xml:"description"` 
+    EncryptOptions    bool   `xml:"encrypt_options"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Options    []*Option   `xml:"options"` 
+    Order    int64   `xml:"order"` 
+    Password    string   `xml:"password"` 
+    Port    int64   `xml:"port"` 
+    Type    string   `xml:"type_"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type Applications struct {
+    Applications []Application `xml:"application"`
 }
 
 type Application struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Vm    Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type AuthorizedKeys struct {
+    AuthorizedKeys []AuthorizedKey `xml:"authorized_key"`
 }
 
 type AuthorizedKey struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Key    string
-    Name    string
-    User    User
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Key    string   `xml:"key"` 
+    Name    string   `xml:"name"` 
+    User    User   `xml:"user"` 
 
+}
+
+type Balances struct {
+    Balances []Balance `xml:"balance"`
 }
 
 type Balance struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    SchedulingPolicy    SchedulingPolicy
-    SchedulingPolicyUnit    SchedulingPolicyUnit
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    SchedulingPolicy    SchedulingPolicy   `xml:"scheduling_policy"` 
+    SchedulingPolicyUnit    SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
 
+}
+
+type Bookmarks struct {
+    Bookmarks []Bookmark `xml:"bookmark"`
 }
 
 type Bookmark struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Value    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Value    string   `xml:"value"` 
 
+}
+
+type BrickProfileDetails struct {
+    BrickProfileDetails []BrickProfileDetail `xml:"brick_profile_detail"`
 }
 
 type BrickProfileDetail struct {
     EntityProfileDetail
-    Brick    GlusterBrick
-    ProfileDetails    []*ProfileDetail
+    Brick    GlusterBrick   `xml:"brick"` 
+    ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
+}
+
+type Certificates struct {
+    Certificates []Certificate `xml:"certificate"`
 }
 
 type Certificate struct {
     Identified
-    Comment    string
-    Content    string
-    Description    string
-    Id    string
-    Name    string
-    Organization    string
-    Subject    string
+    Comment    string   `xml:"comment"` 
+    Content    string   `xml:"content"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Organization    string   `xml:"organization"` 
+    Subject    string   `xml:"subject"` 
 
+}
+
+type Clusters struct {
+    Clusters []Cluster `xml:"cluster"`
 }
 
 type Cluster struct {
     Identified
-    AffinityGroups    []*AffinityGroup
-    BallooningEnabled    bool
-    Comment    string
-    Cpu    Cpu
-    CpuProfiles    []*CpuProfile
-    CustomSchedulingPolicyProperties    []*Property
-    DataCenter    DataCenter
-    Description    string
-    Display    Display
-    ErrorHandling    ErrorHandling
-    FencingPolicy    FencingPolicy
-    GlusterHooks    []*GlusterHook
-    GlusterService    bool
-    GlusterTunedProfile    string
-    GlusterVolumes    []*GlusterVolume
-    HaReservation    bool
-    Id    string
-    Ksm    Ksm
-    MacPool    MacPool
-    MaintenanceReasonRequired    bool
-    ManagementNetwork    Network
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    Name    string
-    NetworkFilters    []*NetworkFilter
-    Networks    []*Network
-    OptionalReason    bool
-    Permissions    []*Permission
-    RequiredRngSources    []*RngSource
-    SchedulingPolicy    SchedulingPolicy
-    SerialNumber    SerialNumber
-    SupportedVersions    []*Version
-    SwitchType    SwitchType
-    ThreadsAsCores    bool
-    TrustedService    bool
-    TunnelMigration    bool
-    Version    Version
-    VirtService    bool
+    AffinityGroups    []*AffinityGroup   `xml:"affinity_groups"` 
+    BallooningEnabled    bool   `xml:"ballooning_enabled"` 
+    Comment    string   `xml:"comment"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfiles    []*CpuProfile   `xml:"cpu_profiles"` 
+    CustomSchedulingPolicyProperties    []*Property   `xml:"custom_scheduling_policy_properties"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Display    Display   `xml:"display"` 
+    ErrorHandling    ErrorHandling   `xml:"error_handling"` 
+    FencingPolicy    FencingPolicy   `xml:"fencing_policy"` 
+    GlusterHooks    []*GlusterHook   `xml:"gluster_hooks"` 
+    GlusterService    bool   `xml:"gluster_service"` 
+    GlusterTunedProfile    string   `xml:"gluster_tuned_profile"` 
+    GlusterVolumes    []*GlusterVolume   `xml:"gluster_volumes"` 
+    HaReservation    bool   `xml:"ha_reservation"` 
+    Id    string   `xml:"id"` 
+    Ksm    Ksm   `xml:"ksm"` 
+    MacPool    MacPool   `xml:"mac_pool"` 
+    MaintenanceReasonRequired    bool   `xml:"maintenance_reason_required"` 
+    ManagementNetwork    Network   `xml:"management_network"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    Name    string   `xml:"name"` 
+    NetworkFilters    []*NetworkFilter   `xml:"network_filters"` 
+    Networks    []*Network   `xml:"networks"` 
+    OptionalReason    bool   `xml:"optional_reason"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    RequiredRngSources    []*RngSource   `xml:"required_rng_sources"` 
+    SchedulingPolicy    SchedulingPolicy   `xml:"scheduling_policy"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    SupportedVersions    []*Version   `xml:"supported_versions"` 
+    SwitchType    SwitchType   `xml:"switch_type"` 
+    ThreadsAsCores    bool   `xml:"threads_as_cores"` 
+    TrustedService    bool   `xml:"trusted_service"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Version    Version   `xml:"version"` 
+    VirtService    bool   `xml:"virt_service"` 
 
+}
+
+type ClusterLevels struct {
+    ClusterLevels []ClusterLevel `xml:"cluster_level"`
 }
 
 type ClusterLevel struct {
     Identified
-    Comment    string
-    CpuTypes    []*CpuType
-    Description    string
-    Id    string
-    Name    string
-    Permits    []*Permit
+    Comment    string   `xml:"comment"` 
+    CpuTypes    []*CpuType   `xml:"cpu_types"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Permits    []*Permit   `xml:"permits"` 
 
+}
+
+type CpuProfiles struct {
+    CpuProfiles []CpuProfile `xml:"cpu_profile"`
 }
 
 type CpuProfile struct {
     Identified
-    Cluster    Cluster
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Permissions    []*Permission
-    Qos    Qos
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Qos    Qos   `xml:"qos"` 
 
+}
+
+type DataCenters struct {
+    DataCenters []DataCenter `xml:"data_center"`
 }
 
 type DataCenter struct {
     Identified
-    Clusters    []*Cluster
-    Comment    string
-    Description    string
-    Id    string
-    IscsiBonds    []*IscsiBond
-    Local    bool
-    MacPool    MacPool
-    Name    string
-    Networks    []*Network
-    Permissions    []*Permission
-    Qoss    []*Qos
-    QuotaMode    QuotaModeType
-    Quotas    []*Quota
-    Status    DataCenterStatus
-    StorageDomains    []*StorageDomain
-    StorageFormat    StorageFormat
-    SupportedVersions    []*Version
-    Version    Version
+    Clusters    []*Cluster   `xml:"clusters"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    IscsiBonds    []*IscsiBond   `xml:"iscsi_bonds"` 
+    Local    bool   `xml:"local"` 
+    MacPool    MacPool   `xml:"mac_pool"` 
+    Name    string   `xml:"name"` 
+    Networks    []*Network   `xml:"networks"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Qoss    []*Qos   `xml:"qoss"` 
+    QuotaMode    QuotaModeType   `xml:"quota_mode"` 
+    Quotas    []*Quota   `xml:"quotas"` 
+    Status    DataCenterStatus   `xml:"status"` 
+    StorageDomains    []*StorageDomain   `xml:"storage_domains"` 
+    StorageFormat    StorageFormat   `xml:"storage_format"` 
+    SupportedVersions    []*Version   `xml:"supported_versions"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type Devices struct {
+    Devices []Device `xml:"device"`
 }
 
 type Device struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    InstanceType    InstanceType
-    Name    string
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Name    string   `xml:"name"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type Disks struct {
+    Disks []Disk `xml:"disk"`
 }
 
 type Disk struct {
     Device
-    Active    bool
-    ActualSize    int64
-    Alias    string
-    Bootable    bool
-    Comment    string
-    Description    string
-    DiskProfile    DiskProfile
-    Format    DiskFormat
-    Id    string
-    ImageId    string
-    InitialSize    int64
-    InstanceType    InstanceType
-    Interface    DiskInterface
-    LogicalName    string
-    LunStorage    HostStorage
-    Name    string
-    OpenstackVolumeType    OpenStackVolumeType
-    Permissions    []*Permission
-    PropagateErrors    bool
-    ProvisionedSize    int64
-    QcowVersion    QcowVersion
-    Quota    Quota
-    ReadOnly    bool
-    Sgio    ScsiGenericIO
-    Shareable    bool
-    Snapshot    Snapshot
-    Sparse    bool
-    Statistics    []*Statistic
-    Status    DiskStatus
-    StorageDomain    StorageDomain
-    StorageDomains    []*StorageDomain
-    StorageType    DiskStorageType
-    Template    Template
-    UsesScsiReservation    bool
-    Vm    Vm
-    Vms    []*Vm
-    WipeAfterDelete    bool
+    Active    bool   `xml:"active"` 
+    ActualSize    int64   `xml:"actual_size"` 
+    Alias    string   `xml:"alias"` 
+    Bootable    bool   `xml:"bootable"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    DiskProfile    DiskProfile   `xml:"disk_profile"` 
+    Format    DiskFormat   `xml:"format"` 
+    Id    string   `xml:"id"` 
+    ImageId    string   `xml:"image_id"` 
+    InitialSize    int64   `xml:"initial_size"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Interface    DiskInterface   `xml:"interface_"` 
+    LogicalName    string   `xml:"logical_name"` 
+    LunStorage    HostStorage   `xml:"lun_storage"` 
+    Name    string   `xml:"name"` 
+    OpenstackVolumeType    OpenStackVolumeType   `xml:"openstack_volume_type"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PropagateErrors    bool   `xml:"propagate_errors"` 
+    ProvisionedSize    int64   `xml:"provisioned_size"` 
+    QcowVersion    QcowVersion   `xml:"qcow_version"` 
+    Quota    Quota   `xml:"quota"` 
+    ReadOnly    bool   `xml:"read_only"` 
+    Sgio    ScsiGenericIO   `xml:"sgio"` 
+    Shareable    bool   `xml:"shareable"` 
+    Snapshot    Snapshot   `xml:"snapshot"` 
+    Sparse    bool   `xml:"sparse"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    DiskStatus   `xml:"status"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    StorageDomains    []*StorageDomain   `xml:"storage_domains"` 
+    StorageType    DiskStorageType   `xml:"storage_type"` 
+    Template    Template   `xml:"template"` 
+    UsesScsiReservation    bool   `xml:"uses_scsi_reservation"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
+    WipeAfterDelete    bool   `xml:"wipe_after_delete"` 
 
+}
+
+type DiskAttachments struct {
+    DiskAttachments []DiskAttachment `xml:"disk_attachment"`
 }
 
 type DiskAttachment struct {
     Identified
-    Active    bool
-    Bootable    bool
-    Comment    string
-    Description    string
-    Disk    Disk
-    Id    string
-    Interface    DiskInterface
-    LogicalName    string
-    Name    string
-    PassDiscard    bool
-    Template    Template
-    UsesScsiReservation    bool
-    Vm    Vm
+    Active    bool   `xml:"active"` 
+    Bootable    bool   `xml:"bootable"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Disk    Disk   `xml:"disk"` 
+    Id    string   `xml:"id"` 
+    Interface    DiskInterface   `xml:"interface_"` 
+    LogicalName    string   `xml:"logical_name"` 
+    Name    string   `xml:"name"` 
+    PassDiscard    bool   `xml:"pass_discard"` 
+    Template    Template   `xml:"template"` 
+    UsesScsiReservation    bool   `xml:"uses_scsi_reservation"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type DiskProfiles struct {
+    DiskProfiles []DiskProfile `xml:"disk_profile"`
 }
 
 type DiskProfile struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Permissions    []*Permission
-    Qos    Qos
-    StorageDomain    StorageDomain
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Qos    Qos   `xml:"qos"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
 
+}
+
+type DiskSnapshots struct {
+    DiskSnapshots []DiskSnapshot `xml:"disk_snapshot"`
 }
 
 type DiskSnapshot struct {
     Disk
-    Active    bool
-    ActualSize    int64
-    Alias    string
-    Bootable    bool
-    Comment    string
-    Description    string
-    Disk    Disk
-    DiskProfile    DiskProfile
-    Format    DiskFormat
-    Id    string
-    ImageId    string
-    InitialSize    int64
-    InstanceType    InstanceType
-    Interface    DiskInterface
-    LogicalName    string
-    LunStorage    HostStorage
-    Name    string
-    OpenstackVolumeType    OpenStackVolumeType
-    Permissions    []*Permission
-    PropagateErrors    bool
-    ProvisionedSize    int64
-    QcowVersion    QcowVersion
-    Quota    Quota
-    ReadOnly    bool
-    Sgio    ScsiGenericIO
-    Shareable    bool
-    Snapshot    Snapshot
-    Sparse    bool
-    Statistics    []*Statistic
-    Status    DiskStatus
-    StorageDomain    StorageDomain
-    StorageDomains    []*StorageDomain
-    StorageType    DiskStorageType
-    Template    Template
-    UsesScsiReservation    bool
-    Vm    Vm
-    Vms    []*Vm
-    WipeAfterDelete    bool
+    Active    bool   `xml:"active"` 
+    ActualSize    int64   `xml:"actual_size"` 
+    Alias    string   `xml:"alias"` 
+    Bootable    bool   `xml:"bootable"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Disk    Disk   `xml:"disk"` 
+    DiskProfile    DiskProfile   `xml:"disk_profile"` 
+    Format    DiskFormat   `xml:"format"` 
+    Id    string   `xml:"id"` 
+    ImageId    string   `xml:"image_id"` 
+    InitialSize    int64   `xml:"initial_size"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Interface    DiskInterface   `xml:"interface_"` 
+    LogicalName    string   `xml:"logical_name"` 
+    LunStorage    HostStorage   `xml:"lun_storage"` 
+    Name    string   `xml:"name"` 
+    OpenstackVolumeType    OpenStackVolumeType   `xml:"openstack_volume_type"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PropagateErrors    bool   `xml:"propagate_errors"` 
+    ProvisionedSize    int64   `xml:"provisioned_size"` 
+    QcowVersion    QcowVersion   `xml:"qcow_version"` 
+    Quota    Quota   `xml:"quota"` 
+    ReadOnly    bool   `xml:"read_only"` 
+    Sgio    ScsiGenericIO   `xml:"sgio"` 
+    Shareable    bool   `xml:"shareable"` 
+    Snapshot    Snapshot   `xml:"snapshot"` 
+    Sparse    bool   `xml:"sparse"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    DiskStatus   `xml:"status"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    StorageDomains    []*StorageDomain   `xml:"storage_domains"` 
+    StorageType    DiskStorageType   `xml:"storage_type"` 
+    Template    Template   `xml:"template"` 
+    UsesScsiReservation    bool   `xml:"uses_scsi_reservation"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
+    WipeAfterDelete    bool   `xml:"wipe_after_delete"` 
 
+}
+
+type Domains struct {
+    Domains []Domain `xml:"domain"`
 }
 
 type Domain struct {
     Identified
-    Comment    string
-    Description    string
-    Groups    []*Group
-    Id    string
-    Name    string
-    User    User
-    Users    []*User
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Groups    []*Group   `xml:"groups"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    User    User   `xml:"user"` 
+    Users    []*User   `xml:"users"` 
 
+}
+
+type Events struct {
+    Events []Event `xml:"event"`
 }
 
 type Event struct {
     Identified
-    Cluster    Cluster
-    Code    int64
-    Comment    string
-    CorrelationId    string
-    CustomData    string
-    CustomId    int64
-    DataCenter    DataCenter
-    Description    string
-    FloodRate    int64
-    Host    Host
-    Id    string
-    Name    string
-    Origin    string
-    Severity    LogSeverity
-    StorageDomain    StorageDomain
-    Template    Template
-    Time    time.Time
-    User    User
-    Vm    Vm
+    Cluster    Cluster   `xml:"cluster"` 
+    Code    int64   `xml:"code"` 
+    Comment    string   `xml:"comment"` 
+    CorrelationId    string   `xml:"correlation_id"` 
+    CustomData    string   `xml:"custom_data"` 
+    CustomId    int64   `xml:"custom_id"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    FloodRate    int64   `xml:"flood_rate"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Origin    string   `xml:"origin"` 
+    Severity    LogSeverity   `xml:"severity"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Template    Template   `xml:"template"` 
+    Time    time.Time   `xml:"time"` 
+    User    User   `xml:"user"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type ExternalComputeResources struct {
+    ExternalComputeResources []ExternalComputeResource `xml:"external_compute_resource"`
 }
 
 type ExternalComputeResource struct {
     Identified
-    Comment    string
-    Description    string
-    ExternalHostProvider    ExternalHostProvider
-    Id    string
-    Name    string
-    Provider    string
-    Url    string
-    User    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Provider    string   `xml:"provider"` 
+    Url    string   `xml:"url"` 
+    User    string   `xml:"user"` 
 
+}
+
+type ExternalDiscoveredHosts struct {
+    ExternalDiscoveredHosts []ExternalDiscoveredHost `xml:"external_discovered_host"`
 }
 
 type ExternalDiscoveredHost struct {
     Identified
-    Comment    string
-    Description    string
-    ExternalHostProvider    ExternalHostProvider
-    Id    string
-    Ip    string
-    LastReport    string
-    Mac    string
-    Name    string
-    SubnetName    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Id    string   `xml:"id"` 
+    Ip    string   `xml:"ip"` 
+    LastReport    string   `xml:"last_report"` 
+    Mac    string   `xml:"mac"` 
+    Name    string   `xml:"name"` 
+    SubnetName    string   `xml:"subnet_name"` 
 
+}
+
+type ExternalHosts struct {
+    ExternalHosts []ExternalHost `xml:"external_host"`
 }
 
 type ExternalHost struct {
     Identified
-    Address    string
-    Comment    string
-    Description    string
-    ExternalHostProvider    ExternalHostProvider
-    Id    string
-    Name    string
+    Address    string   `xml:"address"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type ExternalHostGroups struct {
+    ExternalHostGroups []ExternalHostGroup `xml:"external_host_group"`
 }
 
 type ExternalHostGroup struct {
     Identified
-    ArchitectureName    string
-    Comment    string
-    Description    string
-    DomainName    string
-    ExternalHostProvider    ExternalHostProvider
-    Id    string
-    Name    string
-    OperatingSystemName    string
-    SubnetName    string
+    ArchitectureName    string   `xml:"architecture_name"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    DomainName    string   `xml:"domain_name"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    OperatingSystemName    string   `xml:"operating_system_name"` 
+    SubnetName    string   `xml:"subnet_name"` 
 
+}
+
+type ExternalProviders struct {
+    ExternalProviders []ExternalProvider `xml:"external_provider"`
 }
 
 type ExternalProvider struct {
     Identified
-    AuthenticationUrl    string
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Password    string
-    Properties    []*Property
-    RequiresAuthentication    bool
-    Url    string
-    Username    string
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Properties    []*Property   `xml:"properties"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type Files struct {
+    Files []File `xml:"file"`
 }
 
 type File struct {
     Identified
-    Comment    string
-    Content    string
-    Description    string
-    Id    string
-    Name    string
-    StorageDomain    StorageDomain
-    Type    string
+    Comment    string   `xml:"comment"` 
+    Content    string   `xml:"content"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Type    string   `xml:"type_"` 
 
+}
+
+type Filters struct {
+    Filters []Filter `xml:"filter"`
 }
 
 type Filter struct {
     Identified
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Position    int64
-    SchedulingPolicyUnit    SchedulingPolicyUnit
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Position    int64   `xml:"position"` 
+    SchedulingPolicyUnit    SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
 
+}
+
+type Floppys struct {
+    Floppys []Floppy `xml:"floppy"`
 }
 
 type Floppy struct {
     Device
-    Comment    string
-    Description    string
-    File    File
-    Id    string
-    InstanceType    InstanceType
-    Name    string
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    File    File   `xml:"file"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Name    string   `xml:"name"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type GlusterBrickAdvancedDetailss struct {
+    GlusterBrickAdvancedDetailss []GlusterBrickAdvancedDetails `xml:"gluster_brick_advanced_details"`
 }
 
 type GlusterBrickAdvancedDetails struct {
     Device
-    Comment    string
-    Description    string
-    Device    string
-    FsName    string
-    GlusterClients    []*GlusterClient
-    Id    string
-    InstanceType    InstanceType
-    MemoryPools    []*GlusterMemoryPool
-    MntOptions    string
-    Name    string
-    Pid    int64
-    Port    int64
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Device    string   `xml:"device"` 
+    FsName    string   `xml:"fs_name"` 
+    GlusterClients    []*GlusterClient   `xml:"gluster_clients"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
+    MntOptions    string   `xml:"mnt_options"` 
+    Name    string   `xml:"name"` 
+    Pid    int64   `xml:"pid"` 
+    Port    int64   `xml:"port"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type GlusterHooks struct {
+    GlusterHooks []GlusterHook `xml:"gluster_hook"`
 }
 
 type GlusterHook struct {
     Identified
-    Checksum    string
-    Cluster    Cluster
-    Comment    string
-    ConflictStatus    int64
-    Conflicts    string
-    Content    string
-    ContentType    HookContentType
-    Description    string
-    GlusterCommand    string
-    Id    string
-    Name    string
-    ServerHooks    []*GlusterServerHook
-    Stage    HookStage
-    Status    GlusterHookStatus
+    Checksum    string   `xml:"checksum"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    ConflictStatus    int64   `xml:"conflict_status"` 
+    Conflicts    string   `xml:"conflicts"` 
+    Content    string   `xml:"content"` 
+    ContentType    HookContentType   `xml:"content_type"` 
+    Description    string   `xml:"description"` 
+    GlusterCommand    string   `xml:"gluster_command"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    ServerHooks    []*GlusterServerHook   `xml:"server_hooks"` 
+    Stage    HookStage   `xml:"stage"` 
+    Status    GlusterHookStatus   `xml:"status"` 
 
+}
+
+type GlusterMemoryPools struct {
+    GlusterMemoryPools []GlusterMemoryPool `xml:"gluster_memory_pool"`
 }
 
 type GlusterMemoryPool struct {
     Identified
-    AllocCount    int64
-    ColdCount    int64
-    Comment    string
-    Description    string
-    HotCount    int64
-    Id    string
-    MaxAlloc    int64
-    MaxStdalloc    int64
-    Name    string
-    PaddedSize    int64
-    PoolMisses    int64
-    Type    string
+    AllocCount    int64   `xml:"alloc_count"` 
+    ColdCount    int64   `xml:"cold_count"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    HotCount    int64   `xml:"hot_count"` 
+    Id    string   `xml:"id"` 
+    MaxAlloc    int64   `xml:"max_alloc"` 
+    MaxStdalloc    int64   `xml:"max_stdalloc"` 
+    Name    string   `xml:"name"` 
+    PaddedSize    int64   `xml:"padded_size"` 
+    PoolMisses    int64   `xml:"pool_misses"` 
+    Type    string   `xml:"type_"` 
 
+}
+
+type GlusterServerHooks struct {
+    GlusterServerHooks []GlusterServerHook `xml:"gluster_server_hook"`
 }
 
 type GlusterServerHook struct {
     Identified
-    Checksum    string
-    Comment    string
-    ContentType    HookContentType
-    Description    string
-    Host    Host
-    Id    string
-    Name    string
-    Status    GlusterHookStatus
+    Checksum    string   `xml:"checksum"` 
+    Comment    string   `xml:"comment"` 
+    ContentType    HookContentType   `xml:"content_type"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Status    GlusterHookStatus   `xml:"status"` 
 
+}
+
+type GlusterVolumes struct {
+    GlusterVolumes []GlusterVolume `xml:"gluster_volume"`
 }
 
 type GlusterVolume struct {
     Identified
-    Bricks    []*GlusterBrick
-    Cluster    Cluster
-    Comment    string
-    Description    string
-    DisperseCount    int64
-    Id    string
-    Name    string
-    Options    []*Option
-    RedundancyCount    int64
-    ReplicaCount    int64
-    Statistics    []*Statistic
-    Status    GlusterVolumeStatus
-    StripeCount    int64
-    TransportTypes    []*TransportType
-    VolumeType    GlusterVolumeType
+    Bricks    []*GlusterBrick   `xml:"bricks"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    DisperseCount    int64   `xml:"disperse_count"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Options    []*Option   `xml:"options"` 
+    RedundancyCount    int64   `xml:"redundancy_count"` 
+    ReplicaCount    int64   `xml:"replica_count"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    GlusterVolumeStatus   `xml:"status"` 
+    StripeCount    int64   `xml:"stripe_count"` 
+    TransportTypes    []*TransportType   `xml:"transport_types"` 
+    VolumeType    GlusterVolumeType   `xml:"volume_type"` 
 
+}
+
+type GlusterVolumeProfileDetailss struct {
+    GlusterVolumeProfileDetailss []GlusterVolumeProfileDetails `xml:"gluster_volume_profile_details"`
 }
 
 type GlusterVolumeProfileDetails struct {
     Identified
-    BrickProfileDetails    []*BrickProfileDetail
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    NfsProfileDetails    []*NfsProfileDetail
+    BrickProfileDetails    []*BrickProfileDetail   `xml:"brick_profile_details"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    NfsProfileDetails    []*NfsProfileDetail   `xml:"nfs_profile_details"` 
 
+}
+
+type GraphicsConsoles struct {
+    GraphicsConsoles []GraphicsConsole `xml:"graphics_console"`
 }
 
 type GraphicsConsole struct {
     Identified
-    Address    string
-    Comment    string
-    Description    string
-    Id    string
-    InstanceType    InstanceType
-    Name    string
-    Port    int64
-    Protocol    GraphicsType
-    Template    Template
-    TlsPort    int64
-    Vm    Vm
+    Address    string   `xml:"address"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Name    string   `xml:"name"` 
+    Port    int64   `xml:"port"` 
+    Protocol    GraphicsType   `xml:"protocol"` 
+    Template    Template   `xml:"template"` 
+    TlsPort    int64   `xml:"tls_port"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type Groups struct {
+    Groups []Group `xml:"group"`
 }
 
 type Group struct {
     Identified
-    Comment    string
-    Description    string
-    Domain    Domain
-    DomainEntryId    string
-    Id    string
-    Name    string
-    Namespace    string
-    Permissions    []*Permission
-    Roles    []*Role
-    Tags    []*Tag
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Domain    Domain   `xml:"domain"` 
+    DomainEntryId    string   `xml:"domain_entry_id"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Namespace    string   `xml:"namespace"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Roles    []*Role   `xml:"roles"` 
+    Tags    []*Tag   `xml:"tags"` 
 
+}
+
+type Hooks struct {
+    Hooks []Hook `xml:"hook"`
 }
 
 type Hook struct {
     Identified
-    Comment    string
-    Description    string
-    EventName    string
-    Host    Host
-    Id    string
-    Md5    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    EventName    string   `xml:"event_name"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Md5    string   `xml:"md5"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Hosts struct {
+    Hosts []Host `xml:"host"`
 }
 
 type Host struct {
     Identified
-    Address    string
-    AffinityLabels    []*AffinityLabel
-    Agents    []*Agent
-    AutoNumaStatus    AutoNumaStatus
-    Certificate    Certificate
-    Cluster    Cluster
-    Comment    string
-    Cpu    Cpu
-    Description    string
-    DevicePassthrough    HostDevicePassthrough
-    Devices    []*Device
-    Display    Display
-    ExternalHostProvider    ExternalHostProvider
-    ExternalStatus    ExternalStatus
-    HardwareInformation    HardwareInformation
-    Hooks    []*Hook
-    HostedEngine    HostedEngine
-    Id    string
-    Iscsi    IscsiDetails
-    KatelloErrata    []*KatelloErratum
-    KdumpStatus    KdumpStatus
-    Ksm    Ksm
-    LibvirtVersion    Version
-    MaxSchedulingMemory    int64
-    Memory    int64
-    Name    string
-    NetworkAttachments    []*NetworkAttachment
-    Nics    []*Nic
-    NumaNodes    []*NumaNode
-    NumaSupported    bool
-    Os    OperatingSystem
-    OverrideIptables    bool
-    Permissions    []*Permission
-    Port    int64
-    PowerManagement    PowerManagement
-    Protocol    HostProtocol
-    RootPassword    string
-    SeLinux    SeLinux
-    Spm    Spm
-    Ssh    Ssh
-    Statistics    []*Statistic
-    Status    HostStatus
-    StatusDetail    string
-    StorageConnectionExtensions    []*StorageConnectionExtension
-    Storages    []*HostStorage
-    Summary    VmSummary
-    Tags    []*Tag
-    TransparentHugePages    TransparentHugePages
-    Type    HostType
-    UnmanagedNetworks    []*UnmanagedNetwork
-    UpdateAvailable    bool
-    Version    Version
+    Address    string   `xml:"address"` 
+    AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
+    Agents    []*Agent   `xml:"agents"` 
+    AutoNumaStatus    AutoNumaStatus   `xml:"auto_numa_status"` 
+    Certificate    Certificate   `xml:"certificate"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    Description    string   `xml:"description"` 
+    DevicePassthrough    HostDevicePassthrough   `xml:"device_passthrough"` 
+    Devices    []*Device   `xml:"devices"` 
+    Display    Display   `xml:"display"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    ExternalStatus    ExternalStatus   `xml:"external_status"` 
+    HardwareInformation    HardwareInformation   `xml:"hardware_information"` 
+    Hooks    []*Hook   `xml:"hooks"` 
+    HostedEngine    HostedEngine   `xml:"hosted_engine"` 
+    Id    string   `xml:"id"` 
+    Iscsi    IscsiDetails   `xml:"iscsi"` 
+    KatelloErrata    []*KatelloErratum   `xml:"katello_errata"` 
+    KdumpStatus    KdumpStatus   `xml:"kdump_status"` 
+    Ksm    Ksm   `xml:"ksm"` 
+    LibvirtVersion    Version   `xml:"libvirt_version"` 
+    MaxSchedulingMemory    int64   `xml:"max_scheduling_memory"` 
+    Memory    int64   `xml:"memory"` 
+    Name    string   `xml:"name"` 
+    NetworkAttachments    []*NetworkAttachment   `xml:"network_attachments"` 
+    Nics    []*Nic   `xml:"nics"` 
+    NumaNodes    []*NumaNode   `xml:"numa_nodes"` 
+    NumaSupported    bool   `xml:"numa_supported"` 
+    Os    OperatingSystem   `xml:"os"` 
+    OverrideIptables    bool   `xml:"override_iptables"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Port    int64   `xml:"port"` 
+    PowerManagement    PowerManagement   `xml:"power_management"` 
+    Protocol    HostProtocol   `xml:"protocol"` 
+    RootPassword    string   `xml:"root_password"` 
+    SeLinux    SeLinux   `xml:"se_linux"` 
+    Spm    Spm   `xml:"spm"` 
+    Ssh    Ssh   `xml:"ssh"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    HostStatus   `xml:"status"` 
+    StatusDetail    string   `xml:"status_detail"` 
+    StorageConnectionExtensions    []*StorageConnectionExtension   `xml:"storage_connection_extensions"` 
+    Storages    []*HostStorage   `xml:"storages"` 
+    Summary    VmSummary   `xml:"summary"` 
+    Tags    []*Tag   `xml:"tags"` 
+    TransparentHugePages    TransparentHugePages   `xml:"transparent_huge_pages"` 
+    Type    HostType   `xml:"type_"` 
+    UnmanagedNetworks    []*UnmanagedNetwork   `xml:"unmanaged_networks"` 
+    UpdateAvailable    bool   `xml:"update_available"` 
+    Version    Version   `xml:"version"` 
 
+}
+
+type HostDevices struct {
+    HostDevices []HostDevice `xml:"host_device"`
 }
 
 type HostDevice struct {
     Identified
-    Capability    string
-    Comment    string
-    Description    string
-    Host    Host
-    Id    string
-    IommuGroup    int64
-    Name    string
-    ParentDevice    HostDevice
-    PhysicalFunction    HostDevice
-    Placeholder    bool
-    Product    Product
-    Vendor    Vendor
-    VirtualFunctions    int64
-    Vm    Vm
+    Capability    string   `xml:"capability"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    IommuGroup    int64   `xml:"iommu_group"` 
+    Name    string   `xml:"name"` 
+    ParentDevice    HostDevice   `xml:"parent_device"` 
+    PhysicalFunction    HostDevice   `xml:"physical_function"` 
+    Placeholder    bool   `xml:"placeholder"` 
+    Product    Product   `xml:"product"` 
+    Vendor    Vendor   `xml:"vendor"` 
+    VirtualFunctions    int64   `xml:"virtual_functions"` 
+    Vm    Vm   `xml:"vm"` 
 
+}
+
+type HostNics struct {
+    HostNics []HostNic `xml:"host_nic"`
 }
 
 type HostNic struct {
     Identified
-    AdAggregatorId    int64
-    BaseInterface    string
-    Bonding    Bonding
-    BootProtocol    BootProtocol
-    Bridged    bool
-    CheckConnectivity    bool
-    Comment    string
-    CustomConfiguration    bool
-    Description    string
-    Host    Host
-    Id    string
-    Ip    Ip
-    Ipv6    Ip
-    Ipv6BootProtocol    BootProtocol
-    Mac    Mac
-    Mtu    int64
-    Name    string
-    Network    Network
-    NetworkLabels    []*NetworkLabel
-    OverrideConfiguration    bool
-    PhysicalFunction    HostNic
-    Properties    []*Property
-    Qos    Qos
-    Speed    int64
-    Statistics    []*Statistic
-    Status    NicStatus
-    VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration
-    Vlan    Vlan
+    AdAggregatorId    int64   `xml:"ad_aggregator_id"` 
+    BaseInterface    string   `xml:"base_interface"` 
+    Bonding    Bonding   `xml:"bonding"` 
+    BootProtocol    BootProtocol   `xml:"boot_protocol"` 
+    Bridged    bool   `xml:"bridged"` 
+    CheckConnectivity    bool   `xml:"check_connectivity"` 
+    Comment    string   `xml:"comment"` 
+    CustomConfiguration    bool   `xml:"custom_configuration"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    Ip    Ip   `xml:"ip"` 
+    Ipv6    Ip   `xml:"ipv6"` 
+    Ipv6BootProtocol    BootProtocol   `xml:"ipv6_boot_protocol"` 
+    Mac    Mac   `xml:"mac"` 
+    Mtu    int64   `xml:"mtu"` 
+    Name    string   `xml:"name"` 
+    Network    Network   `xml:"network"` 
+    NetworkLabels    []*NetworkLabel   `xml:"network_labels"` 
+    OverrideConfiguration    bool   `xml:"override_configuration"` 
+    PhysicalFunction    HostNic   `xml:"physical_function"` 
+    Properties    []*Property   `xml:"properties"` 
+    Qos    Qos   `xml:"qos"` 
+    Speed    int64   `xml:"speed"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    NicStatus   `xml:"status"` 
+    VirtualFunctionsConfiguration    HostNicVirtualFunctionsConfiguration   `xml:"virtual_functions_configuration"` 
+    Vlan    Vlan   `xml:"vlan"` 
 
+}
+
+type HostStorages struct {
+    HostStorages []HostStorage `xml:"host_storage"`
 }
 
 type HostStorage struct {
     Identified
-    Address    string
-    Comment    string
-    Description    string
-    Host    Host
-    Id    string
-    LogicalUnits    []*LogicalUnit
-    MountOptions    string
-    Name    string
-    NfsRetrans    int64
-    NfsTimeo    int64
-    NfsVersion    NfsVersion
-    OverrideLuns    bool
-    Password    string
-    Path    string
-    Port    int64
-    Portal    string
-    Target    string
-    Type    StorageType
-    Username    string
-    VfsType    string
-    VolumeGroup    VolumeGroup
+    Address    string   `xml:"address"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Host    Host   `xml:"host"` 
+    Id    string   `xml:"id"` 
+    LogicalUnits    []*LogicalUnit   `xml:"logical_units"` 
+    MountOptions    string   `xml:"mount_options"` 
+    Name    string   `xml:"name"` 
+    NfsRetrans    int64   `xml:"nfs_retrans"` 
+    NfsTimeo    int64   `xml:"nfs_timeo"` 
+    NfsVersion    NfsVersion   `xml:"nfs_version"` 
+    OverrideLuns    bool   `xml:"override_luns"` 
+    Password    string   `xml:"password"` 
+    Path    string   `xml:"path"` 
+    Port    int64   `xml:"port"` 
+    Portal    string   `xml:"portal"` 
+    Target    string   `xml:"target"` 
+    Type    StorageType   `xml:"type_"` 
+    Username    string   `xml:"username"` 
+    VfsType    string   `xml:"vfs_type"` 
+    VolumeGroup    VolumeGroup   `xml:"volume_group"` 
 
+}
+
+type Icons struct {
+    Icons []Icon `xml:"icon"`
 }
 
 type Icon struct {
     Identified
-    Comment    string
-    Data    string
-    Description    string
-    Id    string
-    MediaType    string
-    Name    string
+    Comment    string   `xml:"comment"` 
+    Data    string   `xml:"data"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    MediaType    string   `xml:"media_type"` 
+    Name    string   `xml:"name"` 
 
+}
+
+type Nics struct {
+    Nics []Nic `xml:"nic"`
 }
 
 type Nic struct {
     Device
-    BootProtocol    BootProtocol
-    Comment    string
-    Description    string
-    Id    string
-    InstanceType    InstanceType
-    Interface    NicInterface
-    Linked    bool
-    Mac    Mac
-    Name    string
-    Network    Network
-    NetworkAttachments    []*NetworkAttachment
-    NetworkFilterParameters    []*NetworkFilterParameter
-    NetworkLabels    []*NetworkLabel
-    OnBoot    bool
-    Plugged    bool
-    ReportedDevices    []*ReportedDevice
-    Statistics    []*Statistic
-    Template    Template
-    VirtualFunctionAllowedLabels    []*NetworkLabel
-    VirtualFunctionAllowedNetworks    []*Network
-    Vm    Vm
-    Vms    []*Vm
-    VnicProfile    VnicProfile
+    BootProtocol    BootProtocol   `xml:"boot_protocol"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Interface    NicInterface   `xml:"interface_"` 
+    Linked    bool   `xml:"linked"` 
+    Mac    Mac   `xml:"mac"` 
+    Name    string   `xml:"name"` 
+    Network    Network   `xml:"network"` 
+    NetworkAttachments    []*NetworkAttachment   `xml:"network_attachments"` 
+    NetworkFilterParameters    []*NetworkFilterParameter   `xml:"network_filter_parameters"` 
+    NetworkLabels    []*NetworkLabel   `xml:"network_labels"` 
+    OnBoot    bool   `xml:"on_boot"` 
+    Plugged    bool   `xml:"plugged"` 
+    ReportedDevices    []*ReportedDevice   `xml:"reported_devices"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Template    Template   `xml:"template"` 
+    VirtualFunctionAllowedLabels    []*NetworkLabel   `xml:"virtual_function_allowed_labels"` 
+    VirtualFunctionAllowedNetworks    []*Network   `xml:"virtual_function_allowed_networks"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
+    VnicProfile    VnicProfile   `xml:"vnic_profile"` 
 
+}
+
+type OpenStackProviders struct {
+    OpenStackProviders []OpenStackProvider `xml:"open_stack_provider"`
 }
 
 type OpenStackProvider struct {
     ExternalProvider
-    AuthenticationUrl    string
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Password    string
-    Properties    []*Property
-    RequiresAuthentication    bool
-    TenantName    string
-    Url    string
-    Username    string
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Properties    []*Property   `xml:"properties"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    TenantName    string   `xml:"tenant_name"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type OpenStackVolumeProviders struct {
+    OpenStackVolumeProviders []OpenStackVolumeProvider `xml:"open_stack_volume_provider"`
 }
 
 type OpenStackVolumeProvider struct {
     OpenStackProvider
-    AuthenticationKeys    []*OpenstackVolumeAuthenticationKey
-    AuthenticationUrl    string
-    Certificates    []*Certificate
-    Comment    string
-    DataCenter    DataCenter
-    Description    string
-    Id    string
-    Name    string
-    Password    string
-    Properties    []*Property
-    RequiresAuthentication    bool
-    TenantName    string
-    Url    string
-    Username    string
-    VolumeTypes    []*OpenStackVolumeType
+    AuthenticationKeys    []*OpenstackVolumeAuthenticationKey   `xml:"authentication_keys"` 
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Certificates    []*Certificate   `xml:"certificates"` 
+    Comment    string   `xml:"comment"` 
+    DataCenter    DataCenter   `xml:"data_center"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Properties    []*Property   `xml:"properties"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    TenantName    string   `xml:"tenant_name"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
+    VolumeTypes    []*OpenStackVolumeType   `xml:"volume_types"` 
 
+}
+
+type Templates struct {
+    Templates []Template `xml:"template"`
 }
 
 type Template struct {
     VmBase
-    Bios    Bios
-    Cdroms    []*Cdrom
-    Cluster    Cluster
-    Comment    string
-    Console    Console
-    Cpu    Cpu
-    CpuProfile    CpuProfile
-    CpuShares    int64
-    CreationTime    time.Time
-    CustomCompatibilityVersion    Version
-    CustomCpuModel    string
-    CustomEmulatedMachine    string
-    CustomProperties    []*CustomProperty
-    DeleteProtected    bool
-    Description    string
-    DiskAttachments    []*DiskAttachment
-    Display    Display
-    Domain    Domain
-    GraphicsConsoles    []*GraphicsConsole
-    HighAvailability    HighAvailability
-    Id    string
-    Initialization    Initialization
-    Io    Io
-    LargeIcon    Icon
-    Lease    StorageDomainLease
-    Memory    int64
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    MigrationDowntime    int64
-    Name    string
-    Nics    []*Nic
-    Origin    string
-    Os    OperatingSystem
-    Permissions    []*Permission
-    Quota    Quota
-    RngDevice    RngDevice
-    SerialNumber    SerialNumber
-    SmallIcon    Icon
-    SoundcardEnabled    bool
-    Sso    Sso
-    StartPaused    bool
-    Stateless    bool
-    Status    TemplateStatus
-    StorageDomain    StorageDomain
-    Tags    []*Tag
-    TimeZone    TimeZone
-    TunnelMigration    bool
-    Type    VmType
-    Usb    Usb
-    Version    TemplateVersion
-    VirtioScsi    VirtioScsi
-    Vm    Vm
-    Watchdogs    []*Watchdog
+    Bios    Bios   `xml:"bios"` 
+    Cdroms    []*Cdrom   `xml:"cdroms"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Console    Console   `xml:"console"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    CpuShares    int64   `xml:"cpu_shares"` 
+    CreationTime    time.Time   `xml:"creation_time"` 
+    CustomCompatibilityVersion    Version   `xml:"custom_compatibility_version"` 
+    CustomCpuModel    string   `xml:"custom_cpu_model"` 
+    CustomEmulatedMachine    string   `xml:"custom_emulated_machine"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    DeleteProtected    bool   `xml:"delete_protected"` 
+    Description    string   `xml:"description"` 
+    DiskAttachments    []*DiskAttachment   `xml:"disk_attachments"` 
+    Display    Display   `xml:"display"` 
+    Domain    Domain   `xml:"domain"` 
+    GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
+    HighAvailability    HighAvailability   `xml:"high_availability"` 
+    Id    string   `xml:"id"` 
+    Initialization    Initialization   `xml:"initialization"` 
+    Io    Io   `xml:"io"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Lease    StorageDomainLease   `xml:"lease"` 
+    Memory    int64   `xml:"memory"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    MigrationDowntime    int64   `xml:"migration_downtime"` 
+    Name    string   `xml:"name"` 
+    Nics    []*Nic   `xml:"nics"` 
+    Origin    string   `xml:"origin"` 
+    Os    OperatingSystem   `xml:"os"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Quota    Quota   `xml:"quota"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Sso    Sso   `xml:"sso"` 
+    StartPaused    bool   `xml:"start_paused"` 
+    Stateless    bool   `xml:"stateless"` 
+    Status    TemplateStatus   `xml:"status"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Tags    []*Tag   `xml:"tags"` 
+    TimeZone    TimeZone   `xml:"time_zone"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Type    VmType   `xml:"type_"` 
+    Usb    Usb   `xml:"usb"` 
+    Version    TemplateVersion   `xml:"version"` 
+    VirtioScsi    VirtioScsi   `xml:"virtio_scsi"` 
+    Vm    Vm   `xml:"vm"` 
+    Watchdogs    []*Watchdog   `xml:"watchdogs"` 
 
+}
+
+type Vms struct {
+    Vms []Vm `xml:"vm"`
 }
 
 type Vm struct {
     VmBase
-    AffinityLabels    []*AffinityLabel
-    Applications    []*Application
-    Bios    Bios
-    Cdroms    []*Cdrom
-    Cluster    Cluster
-    Comment    string
-    Console    Console
-    Cpu    Cpu
-    CpuProfile    CpuProfile
-    CpuShares    int64
-    CreationTime    time.Time
-    CustomCompatibilityVersion    Version
-    CustomCpuModel    string
-    CustomEmulatedMachine    string
-    CustomProperties    []*CustomProperty
-    DeleteProtected    bool
-    Description    string
-    DiskAttachments    []*DiskAttachment
-    Display    Display
-    Domain    Domain
-    ExternalHostProvider    ExternalHostProvider
-    Floppies    []*Floppy
-    Fqdn    string
-    GraphicsConsoles    []*GraphicsConsole
-    GuestOperatingSystem    GuestOperatingSystem
-    GuestTimeZone    TimeZone
-    HighAvailability    HighAvailability
-    Host    Host
-    HostDevices    []*HostDevice
-    Id    string
-    Initialization    Initialization
-    InstanceType    InstanceType
-    Io    Io
-    KatelloErrata    []*KatelloErratum
-    LargeIcon    Icon
-    Lease    StorageDomainLease
-    Memory    int64
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    MigrationDowntime    int64
-    Name    string
-    NextRunConfigurationExists    bool
-    Nics    []*Nic
-    NumaNodes    []*NumaNode
-    NumaTuneMode    NumaTuneMode
-    Origin    string
-    OriginalTemplate    Template
-    Os    OperatingSystem
-    Payloads    []*Payload
-    Permissions    []*Permission
-    PlacementPolicy    VmPlacementPolicy
-    Quota    Quota
-    ReportedDevices    []*ReportedDevice
-    RngDevice    RngDevice
-    RunOnce    bool
-    SerialNumber    SerialNumber
-    Sessions    []*Session
-    SmallIcon    Icon
-    Snapshots    []*Snapshot
-    SoundcardEnabled    bool
-    Sso    Sso
-    StartPaused    bool
-    StartTime    time.Time
-    Stateless    bool
-    Statistics    []*Statistic
-    Status    VmStatus
-    StatusDetail    string
-    StopReason    string
-    StopTime    time.Time
-    StorageDomain    StorageDomain
-    Tags    []*Tag
-    Template    Template
-    TimeZone    TimeZone
-    TunnelMigration    bool
-    Type    VmType
-    Usb    Usb
-    UseLatestTemplateVersion    bool
-    VirtioScsi    VirtioScsi
-    VmPool    VmPool
-    Watchdogs    []*Watchdog
+    AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
+    Applications    []*Application   `xml:"applications"` 
+    Bios    Bios   `xml:"bios"` 
+    Cdroms    []*Cdrom   `xml:"cdroms"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Console    Console   `xml:"console"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    CpuShares    int64   `xml:"cpu_shares"` 
+    CreationTime    time.Time   `xml:"creation_time"` 
+    CustomCompatibilityVersion    Version   `xml:"custom_compatibility_version"` 
+    CustomCpuModel    string   `xml:"custom_cpu_model"` 
+    CustomEmulatedMachine    string   `xml:"custom_emulated_machine"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    DeleteProtected    bool   `xml:"delete_protected"` 
+    Description    string   `xml:"description"` 
+    DiskAttachments    []*DiskAttachment   `xml:"disk_attachments"` 
+    Display    Display   `xml:"display"` 
+    Domain    Domain   `xml:"domain"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Floppies    []*Floppy   `xml:"floppies"` 
+    Fqdn    string   `xml:"fqdn"` 
+    GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
+    GuestOperatingSystem    GuestOperatingSystem   `xml:"guest_operating_system"` 
+    GuestTimeZone    TimeZone   `xml:"guest_time_zone"` 
+    HighAvailability    HighAvailability   `xml:"high_availability"` 
+    Host    Host   `xml:"host"` 
+    HostDevices    []*HostDevice   `xml:"host_devices"` 
+    Id    string   `xml:"id"` 
+    Initialization    Initialization   `xml:"initialization"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Io    Io   `xml:"io"` 
+    KatelloErrata    []*KatelloErratum   `xml:"katello_errata"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Lease    StorageDomainLease   `xml:"lease"` 
+    Memory    int64   `xml:"memory"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    MigrationDowntime    int64   `xml:"migration_downtime"` 
+    Name    string   `xml:"name"` 
+    NextRunConfigurationExists    bool   `xml:"next_run_configuration_exists"` 
+    Nics    []*Nic   `xml:"nics"` 
+    NumaNodes    []*NumaNode   `xml:"numa_nodes"` 
+    NumaTuneMode    NumaTuneMode   `xml:"numa_tune_mode"` 
+    Origin    string   `xml:"origin"` 
+    OriginalTemplate    Template   `xml:"original_template"` 
+    Os    OperatingSystem   `xml:"os"` 
+    Payloads    []*Payload   `xml:"payloads"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PlacementPolicy    VmPlacementPolicy   `xml:"placement_policy"` 
+    Quota    Quota   `xml:"quota"` 
+    ReportedDevices    []*ReportedDevice   `xml:"reported_devices"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    RunOnce    bool   `xml:"run_once"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    Sessions    []*Session   `xml:"sessions"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
+    Snapshots    []*Snapshot   `xml:"snapshots"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Sso    Sso   `xml:"sso"` 
+    StartPaused    bool   `xml:"start_paused"` 
+    StartTime    time.Time   `xml:"start_time"` 
+    Stateless    bool   `xml:"stateless"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    VmStatus   `xml:"status"` 
+    StatusDetail    string   `xml:"status_detail"` 
+    StopReason    string   `xml:"stop_reason"` 
+    StopTime    time.Time   `xml:"stop_time"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Tags    []*Tag   `xml:"tags"` 
+    Template    Template   `xml:"template"` 
+    TimeZone    TimeZone   `xml:"time_zone"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Type    VmType   `xml:"type_"` 
+    Usb    Usb   `xml:"usb"` 
+    UseLatestTemplateVersion    bool   `xml:"use_latest_template_version"` 
+    VirtioScsi    VirtioScsi   `xml:"virtio_scsi"` 
+    VmPool    VmPool   `xml:"vm_pool"` 
+    Watchdogs    []*Watchdog   `xml:"watchdogs"` 
 
+}
+
+type Watchdogs struct {
+    Watchdogs []Watchdog `xml:"watchdog"`
 }
 
 type Watchdog struct {
     Device
-    Action    WatchdogAction
-    Comment    string
-    Description    string
-    Id    string
-    InstanceType    InstanceType
-    Model    WatchdogModel
-    Name    string
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    Action    WatchdogAction   `xml:"action"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Model    WatchdogModel   `xml:"model"` 
+    Name    string   `xml:"name"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type Cdroms struct {
+    Cdroms []Cdrom `xml:"cdrom"`
 }
 
 type Cdrom struct {
     Device
-    Comment    string
-    Description    string
-    File    File
-    Id    string
-    InstanceType    InstanceType
-    Name    string
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    File    File   `xml:"file"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Name    string   `xml:"name"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type ExternalHostProviders struct {
+    ExternalHostProviders []ExternalHostProvider `xml:"external_host_provider"`
 }
 
 type ExternalHostProvider struct {
     ExternalProvider
-    AuthenticationUrl    string
-    Certificates    []*Certificate
-    Comment    string
-    ComputeResources    []*ExternalComputeResource
-    Description    string
-    DiscoveredHosts    []*ExternalDiscoveredHost
-    HostGroups    []*ExternalHostGroup
-    Hosts    []*Host
-    Id    string
-    Name    string
-    Password    string
-    Properties    []*Property
-    RequiresAuthentication    bool
-    Url    string
-    Username    string
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Certificates    []*Certificate   `xml:"certificates"` 
+    Comment    string   `xml:"comment"` 
+    ComputeResources    []*ExternalComputeResource   `xml:"compute_resources"` 
+    Description    string   `xml:"description"` 
+    DiscoveredHosts    []*ExternalDiscoveredHost   `xml:"discovered_hosts"` 
+    HostGroups    []*ExternalHostGroup   `xml:"host_groups"` 
+    Hosts    []*Host   `xml:"hosts"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Properties    []*Property   `xml:"properties"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type GlusterBricks struct {
+    GlusterBricks []GlusterBrick `xml:"gluster_brick"`
 }
 
 type GlusterBrick struct {
     GlusterBrickAdvancedDetails
-    BrickDir    string
-    Comment    string
-    Description    string
-    Device    string
-    FsName    string
-    GlusterClients    []*GlusterClient
-    GlusterVolume    GlusterVolume
-    Id    string
-    InstanceType    InstanceType
-    MemoryPools    []*GlusterMemoryPool
-    MntOptions    string
-    Name    string
-    Pid    int64
-    Port    int64
-    ServerId    string
-    Statistics    []*Statistic
-    Status    GlusterBrickStatus
-    Template    Template
-    Vm    Vm
-    Vms    []*Vm
+    BrickDir    string   `xml:"brick_dir"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Device    string   `xml:"device"` 
+    FsName    string   `xml:"fs_name"` 
+    GlusterClients    []*GlusterClient   `xml:"gluster_clients"` 
+    GlusterVolume    GlusterVolume   `xml:"gluster_volume"` 
+    Id    string   `xml:"id"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
+    MntOptions    string   `xml:"mnt_options"` 
+    Name    string   `xml:"name"` 
+    Pid    int64   `xml:"pid"` 
+    Port    int64   `xml:"port"` 
+    ServerId    string   `xml:"server_id"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    GlusterBrickStatus   `xml:"status"` 
+    Template    Template   `xml:"template"` 
+    Vm    Vm   `xml:"vm"` 
+    Vms    []*Vm   `xml:"vms"` 
 
+}
+
+type InstanceTypes struct {
+    InstanceTypes []InstanceType `xml:"instance_type"`
 }
 
 type InstanceType struct {
     Template
-    Bios    Bios
-    Cdroms    []*Cdrom
-    Cluster    Cluster
-    Comment    string
-    Console    Console
-    Cpu    Cpu
-    CpuProfile    CpuProfile
-    CpuShares    int64
-    CreationTime    time.Time
-    CustomCompatibilityVersion    Version
-    CustomCpuModel    string
-    CustomEmulatedMachine    string
-    CustomProperties    []*CustomProperty
-    DeleteProtected    bool
-    Description    string
-    DiskAttachments    []*DiskAttachment
-    Display    Display
-    Domain    Domain
-    GraphicsConsoles    []*GraphicsConsole
-    HighAvailability    HighAvailability
-    Id    string
-    Initialization    Initialization
-    Io    Io
-    LargeIcon    Icon
-    Lease    StorageDomainLease
-    Memory    int64
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    MigrationDowntime    int64
-    Name    string
-    Nics    []*Nic
-    Origin    string
-    Os    OperatingSystem
-    Permissions    []*Permission
-    Quota    Quota
-    RngDevice    RngDevice
-    SerialNumber    SerialNumber
-    SmallIcon    Icon
-    SoundcardEnabled    bool
-    Sso    Sso
-    StartPaused    bool
-    Stateless    bool
-    Status    TemplateStatus
-    StorageDomain    StorageDomain
-    Tags    []*Tag
-    TimeZone    TimeZone
-    TunnelMigration    bool
-    Type    VmType
-    Usb    Usb
-    Version    TemplateVersion
-    VirtioScsi    VirtioScsi
-    Vm    Vm
-    Watchdogs    []*Watchdog
+    Bios    Bios   `xml:"bios"` 
+    Cdroms    []*Cdrom   `xml:"cdroms"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Console    Console   `xml:"console"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    CpuShares    int64   `xml:"cpu_shares"` 
+    CreationTime    time.Time   `xml:"creation_time"` 
+    CustomCompatibilityVersion    Version   `xml:"custom_compatibility_version"` 
+    CustomCpuModel    string   `xml:"custom_cpu_model"` 
+    CustomEmulatedMachine    string   `xml:"custom_emulated_machine"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    DeleteProtected    bool   `xml:"delete_protected"` 
+    Description    string   `xml:"description"` 
+    DiskAttachments    []*DiskAttachment   `xml:"disk_attachments"` 
+    Display    Display   `xml:"display"` 
+    Domain    Domain   `xml:"domain"` 
+    GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
+    HighAvailability    HighAvailability   `xml:"high_availability"` 
+    Id    string   `xml:"id"` 
+    Initialization    Initialization   `xml:"initialization"` 
+    Io    Io   `xml:"io"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Lease    StorageDomainLease   `xml:"lease"` 
+    Memory    int64   `xml:"memory"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    MigrationDowntime    int64   `xml:"migration_downtime"` 
+    Name    string   `xml:"name"` 
+    Nics    []*Nic   `xml:"nics"` 
+    Origin    string   `xml:"origin"` 
+    Os    OperatingSystem   `xml:"os"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    Quota    Quota   `xml:"quota"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Sso    Sso   `xml:"sso"` 
+    StartPaused    bool   `xml:"start_paused"` 
+    Stateless    bool   `xml:"stateless"` 
+    Status    TemplateStatus   `xml:"status"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Tags    []*Tag   `xml:"tags"` 
+    TimeZone    TimeZone   `xml:"time_zone"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Type    VmType   `xml:"type_"` 
+    Usb    Usb   `xml:"usb"` 
+    Version    TemplateVersion   `xml:"version"` 
+    VirtioScsi    VirtioScsi   `xml:"virtio_scsi"` 
+    Vm    Vm   `xml:"vm"` 
+    Watchdogs    []*Watchdog   `xml:"watchdogs"` 
 
+}
+
+type OpenStackImageProviders struct {
+    OpenStackImageProviders []OpenStackImageProvider `xml:"open_stack_image_provider"`
 }
 
 type OpenStackImageProvider struct {
     OpenStackProvider
-    AuthenticationUrl    string
-    Certificates    []*Certificate
-    Comment    string
-    Description    string
-    Id    string
-    Images    []*OpenStackImage
-    Name    string
-    Password    string
-    Properties    []*Property
-    RequiresAuthentication    bool
-    TenantName    string
-    Url    string
-    Username    string
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Certificates    []*Certificate   `xml:"certificates"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Images    []*OpenStackImage   `xml:"images"` 
+    Name    string   `xml:"name"` 
+    Password    string   `xml:"password"` 
+    Properties    []*Property   `xml:"properties"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    TenantName    string   `xml:"tenant_name"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type OpenStackNetworkProviders struct {
+    OpenStackNetworkProviders []OpenStackNetworkProvider `xml:"open_stack_network_provider"`
 }
 
 type OpenStackNetworkProvider struct {
     OpenStackProvider
-    AgentConfiguration    AgentConfiguration
-    AuthenticationUrl    string
-    Certificates    []*Certificate
-    Comment    string
-    Description    string
-    Id    string
-    Name    string
-    Networks    []*OpenStackNetwork
-    Password    string
-    PluginType    NetworkPluginType
-    Properties    []*Property
-    ReadOnly    bool
-    RequiresAuthentication    bool
-    Subnets    []*OpenStackSubnet
-    TenantName    string
-    Type    OpenStackNetworkProviderType
-    Url    string
-    Username    string
+    AgentConfiguration    AgentConfiguration   `xml:"agent_configuration"` 
+    AuthenticationUrl    string   `xml:"authentication_url"` 
+    Certificates    []*Certificate   `xml:"certificates"` 
+    Comment    string   `xml:"comment"` 
+    Description    string   `xml:"description"` 
+    Id    string   `xml:"id"` 
+    Name    string   `xml:"name"` 
+    Networks    []*OpenStackNetwork   `xml:"networks"` 
+    Password    string   `xml:"password"` 
+    PluginType    NetworkPluginType   `xml:"plugin_type"` 
+    Properties    []*Property   `xml:"properties"` 
+    ReadOnly    bool   `xml:"read_only"` 
+    RequiresAuthentication    bool   `xml:"requires_authentication"` 
+    Subnets    []*OpenStackSubnet   `xml:"subnets"` 
+    TenantName    string   `xml:"tenant_name"` 
+    Type    OpenStackNetworkProviderType   `xml:"type_"` 
+    Url    string   `xml:"url"` 
+    Username    string   `xml:"username"` 
 
+}
+
+type Snapshots struct {
+    Snapshots []Snapshot `xml:"snapshot"`
 }
 
 type Snapshot struct {
     Vm
-    AffinityLabels    []*AffinityLabel
-    Applications    []*Application
-    Bios    Bios
-    Cdroms    []*Cdrom
-    Cluster    Cluster
-    Comment    string
-    Console    Console
-    Cpu    Cpu
-    CpuProfile    CpuProfile
-    CpuShares    int64
-    CreationTime    time.Time
-    CustomCompatibilityVersion    Version
-    CustomCpuModel    string
-    CustomEmulatedMachine    string
-    CustomProperties    []*CustomProperty
-    Date    time.Time
-    DeleteProtected    bool
-    Description    string
-    DiskAttachments    []*DiskAttachment
-    Display    Display
-    Domain    Domain
-    ExternalHostProvider    ExternalHostProvider
-    Floppies    []*Floppy
-    Fqdn    string
-    GraphicsConsoles    []*GraphicsConsole
-    GuestOperatingSystem    GuestOperatingSystem
-    GuestTimeZone    TimeZone
-    HighAvailability    HighAvailability
-    Host    Host
-    HostDevices    []*HostDevice
-    Id    string
-    Initialization    Initialization
-    InstanceType    InstanceType
-    Io    Io
-    KatelloErrata    []*KatelloErratum
-    LargeIcon    Icon
-    Lease    StorageDomainLease
-    Memory    int64
-    MemoryPolicy    MemoryPolicy
-    Migration    MigrationOptions
-    MigrationDowntime    int64
-    Name    string
-    NextRunConfigurationExists    bool
-    Nics    []*Nic
-    NumaNodes    []*NumaNode
-    NumaTuneMode    NumaTuneMode
-    Origin    string
-    OriginalTemplate    Template
-    Os    OperatingSystem
-    Payloads    []*Payload
-    Permissions    []*Permission
-    PersistMemorystate    bool
-    PlacementPolicy    VmPlacementPolicy
-    Quota    Quota
-    ReportedDevices    []*ReportedDevice
-    RngDevice    RngDevice
-    RunOnce    bool
-    SerialNumber    SerialNumber
-    Sessions    []*Session
-    SmallIcon    Icon
-    SnapshotStatus    SnapshotStatus
-    SnapshotType    SnapshotType
-    Snapshots    []*Snapshot
-    SoundcardEnabled    bool
-    Sso    Sso
-    StartPaused    bool
-    StartTime    time.Time
-    Stateless    bool
-    Statistics    []*Statistic
-    Status    VmStatus
-    StatusDetail    string
-    StopReason    string
-    StopTime    time.Time
-    StorageDomain    StorageDomain
-    Tags    []*Tag
-    Template    Template
-    TimeZone    TimeZone
-    TunnelMigration    bool
-    Type    VmType
-    Usb    Usb
-    UseLatestTemplateVersion    bool
-    VirtioScsi    VirtioScsi
-    Vm    Vm
-    VmPool    VmPool
-    Watchdogs    []*Watchdog
+    AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
+    Applications    []*Application   `xml:"applications"` 
+    Bios    Bios   `xml:"bios"` 
+    Cdroms    []*Cdrom   `xml:"cdroms"` 
+    Cluster    Cluster   `xml:"cluster"` 
+    Comment    string   `xml:"comment"` 
+    Console    Console   `xml:"console"` 
+    Cpu    Cpu   `xml:"cpu"` 
+    CpuProfile    CpuProfile   `xml:"cpu_profile"` 
+    CpuShares    int64   `xml:"cpu_shares"` 
+    CreationTime    time.Time   `xml:"creation_time"` 
+    CustomCompatibilityVersion    Version   `xml:"custom_compatibility_version"` 
+    CustomCpuModel    string   `xml:"custom_cpu_model"` 
+    CustomEmulatedMachine    string   `xml:"custom_emulated_machine"` 
+    CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
+    Date    time.Time   `xml:"date"` 
+    DeleteProtected    bool   `xml:"delete_protected"` 
+    Description    string   `xml:"description"` 
+    DiskAttachments    []*DiskAttachment   `xml:"disk_attachments"` 
+    Display    Display   `xml:"display"` 
+    Domain    Domain   `xml:"domain"` 
+    ExternalHostProvider    ExternalHostProvider   `xml:"external_host_provider"` 
+    Floppies    []*Floppy   `xml:"floppies"` 
+    Fqdn    string   `xml:"fqdn"` 
+    GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
+    GuestOperatingSystem    GuestOperatingSystem   `xml:"guest_operating_system"` 
+    GuestTimeZone    TimeZone   `xml:"guest_time_zone"` 
+    HighAvailability    HighAvailability   `xml:"high_availability"` 
+    Host    Host   `xml:"host"` 
+    HostDevices    []*HostDevice   `xml:"host_devices"` 
+    Id    string   `xml:"id"` 
+    Initialization    Initialization   `xml:"initialization"` 
+    InstanceType    InstanceType   `xml:"instance_type"` 
+    Io    Io   `xml:"io"` 
+    KatelloErrata    []*KatelloErratum   `xml:"katello_errata"` 
+    LargeIcon    Icon   `xml:"large_icon"` 
+    Lease    StorageDomainLease   `xml:"lease"` 
+    Memory    int64   `xml:"memory"` 
+    MemoryPolicy    MemoryPolicy   `xml:"memory_policy"` 
+    Migration    MigrationOptions   `xml:"migration"` 
+    MigrationDowntime    int64   `xml:"migration_downtime"` 
+    Name    string   `xml:"name"` 
+    NextRunConfigurationExists    bool   `xml:"next_run_configuration_exists"` 
+    Nics    []*Nic   `xml:"nics"` 
+    NumaNodes    []*NumaNode   `xml:"numa_nodes"` 
+    NumaTuneMode    NumaTuneMode   `xml:"numa_tune_mode"` 
+    Origin    string   `xml:"origin"` 
+    OriginalTemplate    Template   `xml:"original_template"` 
+    Os    OperatingSystem   `xml:"os"` 
+    Payloads    []*Payload   `xml:"payloads"` 
+    Permissions    []*Permission   `xml:"permissions"` 
+    PersistMemorystate    bool   `xml:"persist_memorystate"` 
+    PlacementPolicy    VmPlacementPolicy   `xml:"placement_policy"` 
+    Quota    Quota   `xml:"quota"` 
+    ReportedDevices    []*ReportedDevice   `xml:"reported_devices"` 
+    RngDevice    RngDevice   `xml:"rng_device"` 
+    RunOnce    bool   `xml:"run_once"` 
+    SerialNumber    SerialNumber   `xml:"serial_number"` 
+    Sessions    []*Session   `xml:"sessions"` 
+    SmallIcon    Icon   `xml:"small_icon"` 
+    SnapshotStatus    SnapshotStatus   `xml:"snapshot_status"` 
+    SnapshotType    SnapshotType   `xml:"snapshot_type"` 
+    Snapshots    []*Snapshot   `xml:"snapshots"` 
+    SoundcardEnabled    bool   `xml:"soundcard_enabled"` 
+    Sso    Sso   `xml:"sso"` 
+    StartPaused    bool   `xml:"start_paused"` 
+    StartTime    time.Time   `xml:"start_time"` 
+    Stateless    bool   `xml:"stateless"` 
+    Statistics    []*Statistic   `xml:"statistics"` 
+    Status    VmStatus   `xml:"status"` 
+    StatusDetail    string   `xml:"status_detail"` 
+    StopReason    string   `xml:"stop_reason"` 
+    StopTime    time.Time   `xml:"stop_time"` 
+    StorageDomain    StorageDomain   `xml:"storage_domain"` 
+    Tags    []*Tag   `xml:"tags"` 
+    Template    Template   `xml:"template"` 
+    TimeZone    TimeZone   `xml:"time_zone"` 
+    TunnelMigration    bool   `xml:"tunnel_migration"` 
+    Type    VmType   `xml:"type_"` 
+    Usb    Usb   `xml:"usb"` 
+    UseLatestTemplateVersion    bool   `xml:"use_latest_template_version"` 
+    VirtioScsi    VirtioScsi   `xml:"virtio_scsi"` 
+    Vm    Vm   `xml:"vm"` 
+    VmPool    VmPool   `xml:"vm_pool"` 
+    Watchdogs    []*Watchdog   `xml:"watchdogs"` 
 
 }
 

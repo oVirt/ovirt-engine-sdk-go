@@ -529,32 +529,39 @@ public class ServicesGenerator implements GoGenerator {
     private void generateLocatorWithParameters(Locator locator) {
         Parameter parameter = locator.parameters().findFirst().get();
         String methodName = goNames.getMemberStyleName(locator.getName());
-        String argName = goNames.getMemberStyleName(parameter.getName());
+        String argName = goNames.getParameterStyleName(parameter.getName());
+        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
+        buffer.addImports(goTypeReference.getImports());
         GoClassName serviceName = goNames.getServiceName(locator.getService());
-        buffer.addLine("def %1$s_service(self, %2$s):", methodName, argName);
-        buffer.startBlock();
         generateDoc(locator);
-        buffer.addLine("Service._check_types([");
+
+        buffer.addLine(
+            "func (op *%2$s) %1$sService(%3$s %4$s) *%2$s {",
+            methodName, serviceName.getClassName(),
+            argName, goTypeReference.getText()
+            );
+
         buffer.startBlock();
-        generateCheckTypeTuple(parameter);
-        buffer.endBlock();
-        buffer.addLine("])");
-        buffer.addLine("return %1$s(self._connection, '%%s/%%s' %% (self._path, %2$s))", serviceName.getClassName(),
+        buffer.addLine("return New%1$s(op.Connection, '%%s/%%s' %% (op.Path, %2$s))", serviceName.getClassName(),
             argName);
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
     private void generateLocatorWithoutParameters(Locator locator) {
-        String methodName = goNames.getMemberStyleName(locator.getName());
+        String methodName = goNames.getMethodStyleName(locator.getName());
         String urlSegment = getPath(locator.getName());
         GoClassName serviceName = goNames.getServiceName(locator.getService());
-        buffer.addLine("def %1$s_service(self):", methodName);
-        buffer.startBlock();
         generateDoc(locator);
-        buffer.addLine("return %1$s(self._connection, '%%s/%2$s' %% self._path)", serviceName.getClassName(),
+        buffer.addLine("func (op *%2$s) %1$sService() *%2$s {", methodName, serviceName.getClassName());
+        buffer.startBlock();
+        buffer.addLine(
+            "return New%1$s(op.Connection, '%%s/%2$s' %% op.Path)",
+            serviceName.getClassName(),
             urlSegment);
         buffer.endBlock();
+        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -566,11 +573,11 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endComment();
 
         // Begin method:
-        buffer.addLine("func (op *%1$s) Service(path string) *%1$s {", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) Service(path string) IService {", serviceName.getClassName());
         buffer.startBlock();
         buffer.addLine("if path == nil {");
         buffer.startBlock();
-        buffer.addLine("return op");
+        buffer.addLine("return *op");
         buffer.endBlock();
         buffer.addLine("}");
 
@@ -580,13 +587,14 @@ public class ServicesGenerator implements GoGenerator {
             String segment = getPath(name);
             buffer.addLine("if path == \"%1$s\" {", segment);
             buffer.startBlock();
-            buffer.addLine(  "return &%1$sService{}", goNames.getMethodStyleName(name));
+            buffer.addLine(  "return %1$sService{}", goNames.getMethodStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
-            buffer.addLine("if path.startswith('%1$s/') {", segment);
+            buffer.addLine("if strings.HasPrefix(\"%1$s/\") {", segment);
+            buffer.addImport("strings");
             buffer.startBlock();
             buffer.addLine(
-                "return %1$sService().service(path[%2$d:])",
+                "return %1$sService().Service(path[%2$d:])",
                 goNames.getMemberStyleName(name),
                 segment.length() + 1
             );
@@ -603,10 +611,10 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("index = path.find('/')");
             buffer.addLine("if index == -1:");
             buffer.startBlock();
-            buffer.addLine("return self.%1$s_service(path)", goNames.getMemberStyleName(name));
+            buffer.addLine("return op.%1$sService(path)", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine(
-                "return self.%1$s_service(path[:index]).Service(path[index + 1:])",
+                "return op.%1$sService(path[:index]).Service(path[index + 1:])",
                 goNames.getMemberStyleName(name)
             );
         }

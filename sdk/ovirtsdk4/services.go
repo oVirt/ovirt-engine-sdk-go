@@ -17,6 +17,7 @@ package ovirtsdk4
 
 import (
     "fmt"
+    "strings"
 )
 
 //
@@ -127,15 +128,15 @@ func (op *AffinityGroupService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupService) Service(path string) *AffinityGroupService {
+func (op *AffinityGroupService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "vms" {
-        return &VmsService{}
+        return VmsService{}
     }
-    if path.startswith('vms/') {
-        return VmsService().service(path[4:])
+    if strings.HasPrefix("vms/") {
+        return VmsService().Service(path[4:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -191,9 +192,9 @@ func (op *AffinityGroupVmService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupVmService) Service(path string) *AffinityGroupVmService {
+func (op *AffinityGroupVmService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -281,14 +282,14 @@ func (op *AffinityGroupVmsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupVmsService) Service(path string) *AffinityGroupVmsService {
+func (op *AffinityGroupVmsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Vm_service(path)
-    return self.Vm_service(path[:index]).Service(path[index + 1:])
+        return op.VmService(path)
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityGroupVmsService) String() string {
@@ -382,14 +383,14 @@ func (op *AffinityGroupsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupsService) Service(path string) *AffinityGroupsService {
+func (op *AffinityGroupsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Group_service(path)
-    return self.Group_service(path[:index]).Service(path[index + 1:])
+        return op.GroupService(path)
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityGroupsService) String() string {
@@ -477,21 +478,21 @@ func (op *AffinityLabelService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelService) Service(path string) *AffinityLabelService {
+func (op *AffinityLabelService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "hosts" {
-        return &HostsService{}
+        return HostsService{}
     }
-    if path.startswith('hosts/') {
-        return HostsService().service(path[6:])
+    if strings.HasPrefix("hosts/") {
+        return HostsService().Service(path[6:])
     }
     if path == "vms" {
-        return &VmsService{}
+        return VmsService{}
     }
-    if path.startswith('vms/') {
-        return VmsService().service(path[4:])
+    if strings.HasPrefix("vms/") {
+        return VmsService().Service(path[4:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -559,9 +560,9 @@ func (op *AffinityLabelHostService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelHostService) Service(path string) *AffinityLabelHostService {
+func (op *AffinityLabelHostService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -631,14 +632,14 @@ func (op *AffinityLabelHostsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelHostsService) Service(path string) *AffinityLabelHostsService {
+func (op *AffinityLabelHostsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Host_service(path)
-    return self.Host_service(path[:index]).Service(path[index + 1:])
+        return op.HostService(path)
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelHostsService) String() string {
@@ -704,9 +705,9 @@ func (op *AffinityLabelVmService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelVmService) Service(path string) *AffinityLabelVmService {
+func (op *AffinityLabelVmService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -776,14 +777,14 @@ func (op *AffinityLabelVmsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelVmsService) Service(path string) *AffinityLabelVmsService {
+func (op *AffinityLabelVmsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Vm_service(path)
-    return self.Vm_service(path[:index]).Service(path[index + 1:])
+        return op.VmService(path)
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelVmsService) String() string {
@@ -859,14 +860,14 @@ func (op *AffinityLabelsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelsService) Service(path string) *AffinityLabelsService {
+func (op *AffinityLabelsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Label_service(path)
-    return self.Label_service(path[:index]).Service(path[index + 1:])
+        return op.LabelService(path)
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelsService) String() string {
@@ -901,9 +902,9 @@ func NewAreaService(connection *Connection, path string) *AreaService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AreaService) Service(path string) *AreaService {
+func (op *AreaService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -970,9 +971,9 @@ func (op *AssignedAffinityLabelService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedAffinityLabelService) Service(path string) *AssignedAffinityLabelService {
+func (op *AssignedAffinityLabelService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -1041,14 +1042,14 @@ func (op *AssignedAffinityLabelsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedAffinityLabelsService) Service(path string) *AssignedAffinityLabelsService {
+func (op *AssignedAffinityLabelsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Label_service(path)
-    return self.Label_service(path[:index]).Service(path[index + 1:])
+        return op.LabelService(path)
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedAffinityLabelsService) String() string {
@@ -1118,9 +1119,9 @@ func (op *AssignedCpuProfileService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedCpuProfileService) Service(path string) *AssignedCpuProfileService {
+func (op *AssignedCpuProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -1194,14 +1195,14 @@ func (op *AssignedCpuProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedCpuProfilesService) Service(path string) *AssignedCpuProfilesService {
+func (op *AssignedCpuProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Profile_service(path)
-    return self.Profile_service(path[:index]).Service(path[index + 1:])
+        return op.ProfileService(path)
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedCpuProfilesService) String() string {
@@ -1271,9 +1272,9 @@ func (op *AssignedDiskProfileService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedDiskProfileService) Service(path string) *AssignedDiskProfileService {
+func (op *AssignedDiskProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -1347,14 +1348,14 @@ func (op *AssignedDiskProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedDiskProfilesService) Service(path string) *AssignedDiskProfilesService {
+func (op *AssignedDiskProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Profile_service(path)
-    return self.Profile_service(path[:index]).Service(path[index + 1:])
+        return op.ProfileService(path)
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedDiskProfilesService) String() string {
@@ -1447,9 +1448,9 @@ func (op *AssignedNetworkService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedNetworkService) Service(path string) *AssignedNetworkService {
+func (op *AssignedNetworkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -1523,14 +1524,14 @@ func (op *AssignedNetworksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedNetworksService) Service(path string) *AssignedNetworksService {
+func (op *AssignedNetworksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Network_service(path)
-    return self.Network_service(path[:index]).Service(path[index + 1:])
+        return op.NetworkService(path)
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedNetworksService) String() string {
@@ -1665,14 +1666,14 @@ func (op *AssignedPermissionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedPermissionsService) Service(path string) *AssignedPermissionsService {
+func (op *AssignedPermissionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Permission_service(path)
-    return self.Permission_service(path[:index]).Service(path[index + 1:])
+        return op.PermissionService(path)
+    return op.PermissionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedPermissionsService) String() string {
@@ -1726,14 +1727,14 @@ func (op *AssignedRolesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedRolesService) Service(path string) *AssignedRolesService {
+func (op *AssignedRolesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Role_service(path)
-    return self.Role_service(path[:index]).Service(path[index + 1:])
+        return op.RoleService(path)
+    return op.RoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedRolesService) String() string {
@@ -1823,9 +1824,9 @@ func (op *AssignedTagService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedTagService) Service(path string) *AssignedTagService {
+func (op *AssignedTagService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -1932,14 +1933,14 @@ func (op *AssignedTagsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedTagsService) Service(path string) *AssignedTagsService {
+func (op *AssignedTagsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Tag_service(path)
-    return self.Tag_service(path[:index]).Service(path[index + 1:])
+        return op.TagService(path)
+    return op.TagService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedTagsService) String() string {
@@ -2010,15 +2011,15 @@ func (op *AssignedVnicProfileService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedVnicProfileService) Service(path string) *AssignedVnicProfileService {
+func (op *AssignedVnicProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -2092,14 +2093,14 @@ func (op *AssignedVnicProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedVnicProfilesService) Service(path string) *AssignedVnicProfilesService {
+func (op *AssignedVnicProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Profile_service(path)
-    return self.Profile_service(path[:index]).Service(path[index + 1:])
+        return op.ProfileService(path)
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedVnicProfilesService) String() string {
@@ -2242,15 +2243,15 @@ func (op *AttachedStorageDomainService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainService) Service(path string) *AttachedStorageDomainService {
+func (op *AttachedStorageDomainService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -2341,14 +2342,14 @@ func (op *AttachedStorageDomainDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainDisksService) Service(path string) *AttachedStorageDomainDisksService {
+func (op *AttachedStorageDomainDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AttachedStorageDomainDisksService) String() string {
@@ -2420,14 +2421,14 @@ func (op *AttachedStorageDomainsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainsService) Service(path string) *AttachedStorageDomainsService {
+func (op *AttachedStorageDomainsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.StorageDomain_service(path)
-    return self.StorageDomain_service(path[:index]).Service(path[index + 1:])
+        return op.StorageDomainService(path)
+    return op.StorageDomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AttachedStorageDomainsService) String() string {
@@ -2506,9 +2507,9 @@ func (op *BalanceService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BalanceService) Service(path string) *BalanceService {
+func (op *BalanceService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -2587,14 +2588,14 @@ func (op *BalancesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BalancesService) Service(path string) *BalancesService {
+func (op *BalancesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Balance_service(path)
-    return self.Balance_service(path[:index]).Service(path[index + 1:])
+        return op.BalanceService(path)
+    return op.BalanceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *BalancesService) String() string {
@@ -2726,9 +2727,9 @@ func (op *BookmarkService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BookmarkService) Service(path string) *BookmarkService {
+func (op *BookmarkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -2840,14 +2841,14 @@ func (op *BookmarksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BookmarksService) Service(path string) *BookmarksService {
+func (op *BookmarksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Bookmark_service(path)
-    return self.Bookmark_service(path[:index]).Service(path[index + 1:])
+        return op.BookmarkService(path)
+    return op.BookmarkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *BookmarksService) String() string {
@@ -3078,51 +3079,51 @@ func (op *ClusterService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterService) Service(path string) *ClusterService {
+func (op *ClusterService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "affinitygroups" {
-        return &AffinityGroupsService{}
+        return AffinityGroupsService{}
     }
-    if path.startswith('affinitygroups/') {
-        return AffinityGroupsService().service(path[15:])
+    if strings.HasPrefix("affinitygroups/") {
+        return AffinityGroupsService().Service(path[15:])
     }
     if path == "cpuprofiles" {
-        return &CpuProfilesService{}
+        return CpuProfilesService{}
     }
-    if path.startswith('cpuprofiles/') {
-        return CpuProfilesService().service(path[12:])
+    if strings.HasPrefix("cpuprofiles/") {
+        return CpuProfilesService().Service(path[12:])
     }
     if path == "glusterhooks" {
-        return &GlusterHooksService{}
+        return GlusterHooksService{}
     }
-    if path.startswith('glusterhooks/') {
-        return GlusterHooksService().service(path[13:])
+    if strings.HasPrefix("glusterhooks/") {
+        return GlusterHooksService().Service(path[13:])
     }
     if path == "glustervolumes" {
-        return &GlusterVolumesService{}
+        return GlusterVolumesService{}
     }
-    if path.startswith('glustervolumes/') {
-        return GlusterVolumesService().service(path[15:])
+    if strings.HasPrefix("glustervolumes/") {
+        return GlusterVolumesService().Service(path[15:])
     }
     if path == "networkfilters" {
-        return &NetworkFiltersService{}
+        return NetworkFiltersService{}
     }
-    if path.startswith('networkfilters/') {
-        return NetworkFiltersService().service(path[15:])
+    if strings.HasPrefix("networkfilters/") {
+        return NetworkFiltersService().Service(path[15:])
     }
     if path == "networks" {
-        return &NetworksService{}
+        return NetworksService{}
     }
-    if path.startswith('networks/') {
-        return NetworksService().service(path[9:])
+    if strings.HasPrefix("networks/") {
+        return NetworksService().Service(path[9:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -3197,9 +3198,9 @@ func (op *ClusterLevelService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterLevelService) Service(path string) *ClusterLevelService {
+func (op *ClusterLevelService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -3263,14 +3264,14 @@ func (op *ClusterLevelsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterLevelsService) Service(path string) *ClusterLevelsService {
+func (op *ClusterLevelsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Level_service(path)
-    return self.Level_service(path[:index]).Service(path[index + 1:])
+        return op.LevelService(path)
+    return op.LevelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ClusterLevelsService) String() string {
@@ -3378,14 +3379,14 @@ func (op *ClustersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClustersService) Service(path string) *ClustersService {
+func (op *ClustersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Cluster_service(path)
-    return self.Cluster_service(path[:index]).Service(path[index + 1:])
+        return op.ClusterService(path)
+    return op.ClusterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ClustersService) String() string {
@@ -3434,9 +3435,9 @@ func (op *CopyableService) Copy (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CopyableService) Service(path string) *CopyableService {
+func (op *CopyableService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -3532,15 +3533,15 @@ func (op *CpuProfileService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CpuProfileService) Service(path string) *CpuProfileService {
+func (op *CpuProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -3614,14 +3615,14 @@ func (op *CpuProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CpuProfilesService) Service(path string) *CpuProfilesService {
+func (op *CpuProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Profile_service(path)
-    return self.Profile_service(path[:index]).Service(path[index + 1:])
+        return op.ProfileService(path)
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *CpuProfilesService) String() string {
@@ -3804,51 +3805,51 @@ func (op *DataCenterService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DataCenterService) Service(path string) *DataCenterService {
+func (op *DataCenterService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "clusters" {
-        return &ClustersService{}
+        return ClustersService{}
     }
-    if path.startswith('clusters/') {
-        return ClustersService().service(path[9:])
+    if strings.HasPrefix("clusters/") {
+        return ClustersService().Service(path[9:])
     }
     if path == "iscsibonds" {
-        return &IscsiBondsService{}
+        return IscsiBondsService{}
     }
-    if path.startswith('iscsibonds/') {
-        return IscsiBondsService().service(path[11:])
+    if strings.HasPrefix("iscsibonds/") {
+        return IscsiBondsService().Service(path[11:])
     }
     if path == "networks" {
-        return &NetworksService{}
+        return NetworksService{}
     }
-    if path.startswith('networks/') {
-        return NetworksService().service(path[9:])
+    if strings.HasPrefix("networks/") {
+        return NetworksService().Service(path[9:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "qoss" {
-        return &QossService{}
+        return QossService{}
     }
-    if path.startswith('qoss/') {
-        return QossService().service(path[5:])
+    if strings.HasPrefix("qoss/") {
+        return QossService().Service(path[5:])
     }
     if path == "quotas" {
-        return &QuotasService{}
+        return QuotasService{}
     }
-    if path.startswith('quotas/') {
-        return QuotasService().service(path[7:])
+    if strings.HasPrefix("quotas/") {
+        return QuotasService().Service(path[7:])
     }
     if path == "storagedomains" {
-        return &StorageDomainsService{}
+        return StorageDomainsService{}
     }
-    if path.startswith('storagedomains/') {
-        return StorageDomainsService().service(path[15:])
+    if strings.HasPrefix("storagedomains/") {
+        return StorageDomainsService().Service(path[15:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4009,14 +4010,14 @@ func (op *DataCentersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DataCentersService) Service(path string) *DataCentersService {
+func (op *DataCentersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.DataCenter_service(path)
-    return self.DataCenter_service(path[:index]).Service(path[index + 1:])
+        return op.DataCenterService(path)
+    return op.DataCenterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DataCentersService) String() string {
@@ -4146,9 +4147,9 @@ func (op *DiskAttachmentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskAttachmentService) Service(path string) *DiskAttachmentService {
+func (op *DiskAttachmentService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4254,14 +4255,14 @@ func (op *DiskAttachmentsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskAttachmentsService) Service(path string) *DiskAttachmentsService {
+func (op *DiskAttachmentsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Attachment_service(path)
-    return self.Attachment_service(path[:index]).Service(path[index + 1:])
+        return op.AttachmentService(path)
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskAttachmentsService) String() string {
@@ -4355,15 +4356,15 @@ func (op *DiskProfileService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskProfileService) Service(path string) *DiskProfileService {
+func (op *DiskProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4437,14 +4438,14 @@ func (op *DiskProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskProfilesService) Service(path string) *DiskProfilesService {
+func (op *DiskProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.DiskProfile_service(path)
-    return self.DiskProfile_service(path[:index]).Service(path[index + 1:])
+        return op.DiskProfileService(path)
+    return op.DiskProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskProfilesService) String() string {
@@ -4514,9 +4515,9 @@ func (op *DiskSnapshotService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskSnapshotService) Service(path string) *DiskSnapshotService {
+func (op *DiskSnapshotService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4571,14 +4572,14 @@ func (op *DiskSnapshotsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskSnapshotsService) Service(path string) *DiskSnapshotsService {
+func (op *DiskSnapshotsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Snapshot_service(path)
-    return self.Snapshot_service(path[:index]).Service(path[index + 1:])
+        return op.SnapshotService(path)
+    return op.SnapshotService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskSnapshotsService) String() string {
@@ -4775,14 +4776,14 @@ func (op *DisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DisksService) Service(path string) *DisksService {
+func (op *DisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DisksService) String() string {
@@ -4844,21 +4845,21 @@ func (op *DomainService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainService) Service(path string) *DomainService {
+func (op *DomainService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "groups" {
-        return &GroupsService{}
+        return GroupsService{}
     }
-    if path.startswith('groups/') {
-        return GroupsService().service(path[7:])
+    if strings.HasPrefix("groups/") {
+        return GroupsService().Service(path[7:])
     }
     if path == "users" {
-        return &UsersService{}
+        return UsersService{}
     }
-    if path.startswith('users/') {
-        return UsersService().service(path[6:])
+    if strings.HasPrefix("users/") {
+        return UsersService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4903,9 +4904,9 @@ func (op *DomainGroupService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainGroupService) Service(path string) *DomainGroupService {
+func (op *DomainGroupService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -4972,14 +4973,14 @@ func (op *DomainGroupsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainGroupsService) Service(path string) *DomainGroupsService {
+func (op *DomainGroupsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Group_service(path)
-    return self.Group_service(path[:index]).Service(path[index + 1:])
+        return op.GroupService(path)
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainGroupsService) String() string {
@@ -5042,9 +5043,9 @@ func (op *DomainUserService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainUserService) Service(path string) *DomainUserService {
+func (op *DomainUserService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5133,14 +5134,14 @@ func (op *DomainUsersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainUsersService) Service(path string) *DomainUsersService {
+func (op *DomainUsersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.User_service(path)
-    return self.User_service(path[:index]).Service(path[index + 1:])
+        return op.UserService(path)
+    return op.UserService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainUsersService) String() string {
@@ -5212,14 +5213,14 @@ func (op *DomainsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainsService) Service(path string) *DomainsService {
+func (op *DomainsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Domain_service(path)
-    return self.Domain_service(path[:index]).Service(path[index + 1:])
+        return op.DomainService(path)
+    return op.DomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainsService) String() string {
@@ -5321,9 +5322,9 @@ func (op *EventService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EventService) Service(path string) *EventService {
+func (op *EventService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5565,14 +5566,14 @@ func (op *EventsService) Undelete (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EventsService) Service(path string) *EventsService {
+func (op *EventsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Event_service(path)
-    return self.Event_service(path[:index]).Service(path[index + 1:])
+        return op.EventService(path)
+    return op.EventService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *EventsService) String() string {
@@ -5615,9 +5616,9 @@ func (op *ExternalComputeResourceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalComputeResourceService) Service(path string) *ExternalComputeResourceService {
+func (op *ExternalComputeResourceService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5672,14 +5673,14 @@ func (op *ExternalComputeResourcesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalComputeResourcesService) Service(path string) *ExternalComputeResourcesService {
+func (op *ExternalComputeResourcesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Resource_service(path)
-    return self.Resource_service(path[:index]).Service(path[index + 1:])
+        return op.ResourceService(path)
+    return op.ResourceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalComputeResourcesService) String() string {
@@ -5722,9 +5723,9 @@ func (op *ExternalDiscoveredHostService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalDiscoveredHostService) Service(path string) *ExternalDiscoveredHostService {
+func (op *ExternalDiscoveredHostService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5779,14 +5780,14 @@ func (op *ExternalDiscoveredHostsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalDiscoveredHostsService) Service(path string) *ExternalDiscoveredHostsService {
+func (op *ExternalDiscoveredHostsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Host_service(path)
-    return self.Host_service(path[:index]).Service(path[index + 1:])
+        return op.HostService(path)
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalDiscoveredHostsService) String() string {
@@ -5829,9 +5830,9 @@ func (op *ExternalHostService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostService) Service(path string) *ExternalHostService {
+func (op *ExternalHostService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5876,9 +5877,9 @@ func (op *ExternalHostGroupService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostGroupService) Service(path string) *ExternalHostGroupService {
+func (op *ExternalHostGroupService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -5933,14 +5934,14 @@ func (op *ExternalHostGroupsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostGroupsService) Service(path string) *ExternalHostGroupsService {
+func (op *ExternalHostGroupsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Group_service(path)
-    return self.Group_service(path[:index]).Service(path[index + 1:])
+        return op.GroupService(path)
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostGroupsService) String() string {
@@ -6012,14 +6013,14 @@ func (op *ExternalHostProvidersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostProvidersService) Service(path string) *ExternalHostProvidersService {
+func (op *ExternalHostProvidersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Provider_service(path)
-    return self.Provider_service(path[:index]).Service(path[index + 1:])
+        return op.ProviderService(path)
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostProvidersService) String() string {
@@ -6072,14 +6073,14 @@ func (op *ExternalHostsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostsService) Service(path string) *ExternalHostsService {
+func (op *ExternalHostsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Host_service(path)
-    return self.Host_service(path[:index]).Service(path[index + 1:])
+        return op.HostService(path)
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostsService) String() string {
@@ -6148,15 +6149,15 @@ func (op *ExternalProviderService) TestConnectivity (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderService) Service(path string) *ExternalProviderService {
+func (op *ExternalProviderService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "certificates" {
-        return &CertificatesService{}
+        return CertificatesService{}
     }
-    if path.startswith('certificates/') {
-        return CertificatesService().service(path[13:])
+    if strings.HasPrefix("certificates/") {
+        return CertificatesService().Service(path[13:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6201,9 +6202,9 @@ func (op *ExternalProviderCertificateService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderCertificateService) Service(path string) *ExternalProviderCertificateService {
+func (op *ExternalProviderCertificateService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6258,14 +6259,14 @@ func (op *ExternalProviderCertificatesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderCertificatesService) Service(path string) *ExternalProviderCertificatesService {
+func (op *ExternalProviderCertificatesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Certificate_service(path)
-    return self.Certificate_service(path[:index]).Service(path[index + 1:])
+        return op.CertificateService(path)
+    return op.CertificateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalProviderCertificatesService) String() string {
@@ -6334,9 +6335,9 @@ func (op *ExternalVmImportsService) Add (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalVmImportsService) Service(path string) *ExternalVmImportsService {
+func (op *ExternalVmImportsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6431,9 +6432,9 @@ func (op *FenceAgentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FenceAgentService) Service(path string) *FenceAgentService {
+func (op *FenceAgentService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6507,14 +6508,14 @@ func (op *FenceAgentsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FenceAgentsService) Service(path string) *FenceAgentsService {
+func (op *FenceAgentsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Agent_service(path)
-    return self.Agent_service(path[:index]).Service(path[index + 1:])
+        return op.AgentService(path)
+    return op.AgentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FenceAgentsService) String() string {
@@ -6557,9 +6558,9 @@ func (op *FileService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FileService) Service(path string) *FileService {
+func (op *FileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6630,14 +6631,14 @@ func (op *FilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FilesService) Service(path string) *FilesService {
+func (op *FilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.File_service(path)
-    return self.File_service(path[:index]).Service(path[index + 1:])
+        return op.FileService(path)
+    return op.FileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FilesService) String() string {
@@ -6716,9 +6717,9 @@ func (op *FilterService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FilterService) Service(path string) *FilterService {
+func (op *FilterService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -6797,14 +6798,14 @@ func (op *FiltersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FiltersService) Service(path string) *FiltersService {
+func (op *FiltersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Filter_service(path)
-    return self.Filter_service(path[:index]).Service(path[index + 1:])
+        return op.FilterService(path)
+    return op.FilterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FiltersService) String() string {
@@ -7131,14 +7132,14 @@ func (op *GlusterBricksService) StopMigrate (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterBricksService) Service(path string) *GlusterBricksService {
+func (op *GlusterBricksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Brick_service(path)
-    return self.Brick_service(path[:index]).Service(path[index + 1:])
+        return op.BrickService(path)
+    return op.BrickService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterBricksService) String() string {
@@ -7296,9 +7297,9 @@ func (op *GlusterHookService) Resolve (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterHookService) Service(path string) *GlusterHookService {
+func (op *GlusterHookService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -7353,14 +7354,14 @@ func (op *GlusterHooksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterHooksService) Service(path string) *GlusterHooksService {
+func (op *GlusterHooksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Hook_service(path)
-    return self.Hook_service(path[:index]).Service(path[index + 1:])
+        return op.HookService(path)
+    return op.HookService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterHooksService) String() string {
@@ -7489,14 +7490,14 @@ func (op *GlusterVolumesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterVolumesService) Service(path string) *GlusterVolumesService {
+func (op *GlusterVolumesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Volume_service(path)
-    return self.Volume_service(path[:index]).Service(path[index + 1:])
+        return op.VolumeService(path)
+    return op.VolumeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterVolumesService) String() string {
@@ -7569,27 +7570,27 @@ func (op *GroupService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GroupService) Service(path string) *GroupService {
+func (op *GroupService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return &RolesService{}
+        return RolesService{}
     }
-    if path.startswith('roles/') {
-        return RolesService().service(path[6:])
+    if strings.HasPrefix("roles/") {
+        return RolesService().Service(path[6:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -7692,14 +7693,14 @@ func (op *GroupsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GroupsService) Service(path string) *GroupsService {
+func (op *GroupsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Group_service(path)
-    return self.Group_service(path[:index]).Service(path[index + 1:])
+        return op.GroupService(path)
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GroupsService) String() string {
@@ -7760,9 +7761,9 @@ func (op *HostDeviceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostDeviceService) Service(path string) *HostDeviceService {
+func (op *HostDeviceService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -7819,14 +7820,14 @@ func (op *HostDevicesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostDevicesService) Service(path string) *HostDevicesService {
+func (op *HostDevicesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Device_service(path)
-    return self.Device_service(path[:index]).Service(path[index + 1:])
+        return op.DeviceService(path)
+    return op.DeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostDevicesService) String() string {
@@ -7869,9 +7870,9 @@ func (op *HostHookService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostHookService) Service(path string) *HostHookService {
+func (op *HostHookService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -7926,14 +7927,14 @@ func (op *HostHooksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostHooksService) Service(path string) *HostHooksService {
+func (op *HostHooksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Hook_service(path)
-    return self.Hook_service(path[:index]).Service(path[index + 1:])
+        return op.HookService(path)
+    return op.HookService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostHooksService) String() string {
@@ -7987,14 +7988,14 @@ func (op *HostNicsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNicsService) Service(path string) *HostNicsService {
+func (op *HostNicsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Nic_service(path)
-    return self.Nic_service(path[:index]).Service(path[index + 1:])
+        return op.NicService(path)
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostNicsService) String() string {
@@ -8047,14 +8048,14 @@ func (op *HostNumaNodesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNumaNodesService) Service(path string) *HostNumaNodesService {
+func (op *HostNumaNodesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Node_service(path)
-    return self.Node_service(path[:index]).Service(path[index + 1:])
+        return op.NodeService(path)
+    return op.NodeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostNumaNodesService) String() string {
@@ -8166,14 +8167,14 @@ func (op *HostStorageService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostStorageService) Service(path string) *HostStorageService {
+func (op *HostStorageService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Storage_service(path)
-    return self.Storage_service(path[:index]).Service(path[index + 1:])
+        return op.StorageService(path)
+    return op.StorageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostStorageService) String() string {
@@ -8319,14 +8320,14 @@ func (op *HostsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostsService) Service(path string) *HostsService {
+func (op *HostsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Host_service(path)
-    return self.Host_service(path[:index]).Service(path[index + 1:])
+        return op.HostService(path)
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostsService) String() string {
@@ -8383,9 +8384,9 @@ func (op *IconService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IconService) Service(path string) *IconService {
+func (op *IconService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -8457,14 +8458,14 @@ func (op *IconsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IconsService) Service(path string) *IconsService {
+func (op *IconsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Icon_service(path)
-    return self.Icon_service(path[:index]).Service(path[index + 1:])
+        return op.IconService(path)
+    return op.IconService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *IconsService) String() string {
@@ -8548,9 +8549,9 @@ func (op *ImageService) Import (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageService) Service(path string) *ImageService {
+func (op *ImageService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -8827,9 +8828,9 @@ func (op *ImageTransferService) Resume (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageTransferService) Service(path string) *ImageTransferService {
+func (op *ImageTransferService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -8901,14 +8902,14 @@ func (op *ImageTransfersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageTransfersService) Service(path string) *ImageTransfersService {
+func (op *ImageTransfersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.ImageTransfer_service(path)
-    return self.ImageTransfer_service(path[:index]).Service(path[index + 1:])
+        return op.ImageTransferService(path)
+    return op.ImageTransferService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ImageTransfersService) String() string {
@@ -8961,14 +8962,14 @@ func (op *ImagesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImagesService) Service(path string) *ImagesService {
+func (op *ImagesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Image_service(path)
-    return self.Image_service(path[:index]).Service(path[index + 1:])
+        return op.ImageService(path)
+    return op.ImageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ImagesService) String() string {
@@ -9100,27 +9101,27 @@ func (op *InstanceTypeService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeService) Service(path string) *InstanceTypeService {
+func (op *InstanceTypeService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "graphicsconsoles" {
-        return &GraphicsConsolesService{}
+        return GraphicsConsolesService{}
     }
-    if path.startswith('graphicsconsoles/') {
-        return GraphicsConsolesService().service(path[17:])
+    if strings.HasPrefix("graphicsconsoles/") {
+        return GraphicsConsolesService().Service(path[17:])
     }
     if path == "nics" {
-        return &NicsService{}
+        return NicsService{}
     }
-    if path.startswith('nics/') {
-        return NicsService().service(path[5:])
+    if strings.HasPrefix("nics/") {
+        return NicsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return &WatchdogsService{}
+        return WatchdogsService{}
     }
-    if path.startswith('watchdogs/') {
-        return WatchdogsService().service(path[10:])
+    if strings.HasPrefix("watchdogs/") {
+        return WatchdogsService().Service(path[10:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -9194,9 +9195,9 @@ func (op *InstanceTypeGraphicsConsoleService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeGraphicsConsoleService) Service(path string) *InstanceTypeGraphicsConsoleService {
+func (op *InstanceTypeGraphicsConsoleService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -9272,14 +9273,14 @@ func (op *InstanceTypeGraphicsConsolesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeGraphicsConsolesService) Service(path string) *InstanceTypeGraphicsConsolesService {
+func (op *InstanceTypeGraphicsConsolesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Console_service(path)
-    return self.Console_service(path[:index]).Service(path[index + 1:])
+        return op.ConsoleService(path)
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeGraphicsConsolesService) String() string {
@@ -9375,9 +9376,9 @@ func (op *InstanceTypeNicService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeNicService) Service(path string) *InstanceTypeNicService {
+func (op *InstanceTypeNicService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -9458,14 +9459,14 @@ func (op *InstanceTypeNicsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeNicsService) Service(path string) *InstanceTypeNicsService {
+func (op *InstanceTypeNicsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Nic_service(path)
-    return self.Nic_service(path[:index]).Service(path[index + 1:])
+        return op.NicService(path)
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeNicsService) String() string {
@@ -9561,9 +9562,9 @@ func (op *InstanceTypeWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeWatchdogService) Service(path string) *InstanceTypeWatchdogService {
+func (op *InstanceTypeWatchdogService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -9645,14 +9646,14 @@ func (op *InstanceTypeWatchdogsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeWatchdogsService) Service(path string) *InstanceTypeWatchdogsService {
+func (op *InstanceTypeWatchdogsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Watchdog_service(path)
-    return self.Watchdog_service(path[:index]).Service(path[index + 1:])
+        return op.WatchdogService(path)
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeWatchdogsService) String() string {
@@ -9817,14 +9818,14 @@ func (op *InstanceTypesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypesService) Service(path string) *InstanceTypesService {
+func (op *InstanceTypesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.InstanceType_service(path)
-    return self.InstanceType_service(path[:index]).Service(path[index + 1:])
+        return op.InstanceTypeService(path)
+    return op.InstanceTypeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypesService) String() string {
@@ -9940,21 +9941,21 @@ func (op *IscsiBondService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IscsiBondService) Service(path string) *IscsiBondService {
+func (op *IscsiBondService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "networks" {
-        return &NetworksService{}
+        return NetworksService{}
     }
-    if path.startswith('networks/') {
-        return NetworksService().service(path[9:])
+    if strings.HasPrefix("networks/") {
+        return NetworksService().Service(path[9:])
     }
     if path == "storageserverconnections" {
-        return &StorageServerConnectionsService{}
+        return StorageServerConnectionsService{}
     }
-    if path.startswith('storageserverconnections/') {
-        return StorageServerConnectionsService().service(path[25:])
+    if strings.HasPrefix("storageserverconnections/") {
+        return StorageServerConnectionsService().Service(path[25:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -10049,14 +10050,14 @@ func (op *IscsiBondsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IscsiBondsService) Service(path string) *IscsiBondsService {
+func (op *IscsiBondsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.IscsiBond_service(path)
-    return self.IscsiBond_service(path[:index]).Service(path[index + 1:])
+        return op.IscsiBondService(path)
+    return op.IscsiBondService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *IscsiBondsService) String() string {
@@ -10205,15 +10206,15 @@ func (op *JobService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *JobService) Service(path string) *JobService {
+func (op *JobService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "steps" {
-        return &StepsService{}
+        return StepsService{}
     }
-    if path.startswith('steps/') {
-        return StepsService().service(path[6:])
+    if strings.HasPrefix("steps/") {
+        return StepsService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -10352,14 +10353,14 @@ func (op *JobsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *JobsService) Service(path string) *JobsService {
+func (op *JobsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Job_service(path)
-    return self.Job_service(path[:index]).Service(path[index + 1:])
+        return op.JobService(path)
+    return op.JobService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *JobsService) String() string {
@@ -10441,14 +10442,14 @@ func (op *KatelloErrataService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *KatelloErrataService) Service(path string) *KatelloErrataService {
+func (op *KatelloErrataService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.KatelloErratum_service(path)
-    return self.KatelloErratum_service(path[:index]).Service(path[index + 1:])
+        return op.KatelloErratumService(path)
+    return op.KatelloErratumService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *KatelloErrataService) String() string {
@@ -10516,9 +10517,9 @@ func (op *KatelloErratumService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *KatelloErratumService) Service(path string) *KatelloErratumService {
+func (op *KatelloErratumService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -10645,9 +10646,9 @@ func (op *MacPoolService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MacPoolService) Service(path string) *MacPoolService {
+func (op *MacPoolService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -10744,14 +10745,14 @@ func (op *MacPoolsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MacPoolsService) Service(path string) *MacPoolsService {
+func (op *MacPoolsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.MacPool_service(path)
-    return self.MacPool_service(path[:index]).Service(path[index + 1:])
+        return op.MacPoolService(path)
+    return op.MacPoolService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *MacPoolsService) String() string {
@@ -10777,15 +10778,15 @@ func NewMeasurableService(connection *Connection, path string) *MeasurableServic
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MeasurableService) Service(path string) *MeasurableService {
+func (op *MeasurableService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -10836,9 +10837,9 @@ func (op *MoveableService) Move (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MoveableService) Service(path string) *MoveableService {
+func (op *MoveableService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11002,27 +11003,27 @@ func (op *NetworkService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkService) Service(path string) *NetworkService {
+func (op *NetworkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "networklabels" {
-        return &NetworkLabelsService{}
+        return NetworkLabelsService{}
     }
-    if path.startswith('networklabels/') {
-        return NetworkLabelsService().service(path[14:])
+    if strings.HasPrefix("networklabels/") {
+        return NetworkLabelsService().Service(path[14:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "vnicprofiles" {
-        return &VnicProfilesService{}
+        return VnicProfilesService{}
     }
-    if path.startswith('vnicprofiles/') {
-        return VnicProfilesService().service(path[13:])
+    if strings.HasPrefix("vnicprofiles/") {
+        return VnicProfilesService().Service(path[13:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11117,9 +11118,9 @@ func (op *NetworkAttachmentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkAttachmentService) Service(path string) *NetworkAttachmentService {
+func (op *NetworkAttachmentService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11193,14 +11194,14 @@ func (op *NetworkAttachmentsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkAttachmentsService) Service(path string) *NetworkAttachmentsService {
+func (op *NetworkAttachmentsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Attachment_service(path)
-    return self.Attachment_service(path[:index]).Service(path[index + 1:])
+        return op.AttachmentService(path)
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkAttachmentsService) String() string {
@@ -11258,9 +11259,9 @@ func (op *NetworkFilterService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterService) Service(path string) *NetworkFilterService {
+func (op *NetworkFilterService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11371,9 +11372,9 @@ func (op *NetworkFilterParameterService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterParameterService) Service(path string) *NetworkFilterParameterService {
+func (op *NetworkFilterParameterService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11460,14 +11461,14 @@ func (op *NetworkFilterParametersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterParametersService) Service(path string) *NetworkFilterParametersService {
+func (op *NetworkFilterParametersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Parameter_service(path)
-    return self.Parameter_service(path[:index]).Service(path[index + 1:])
+        return op.ParameterService(path)
+    return op.ParameterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkFilterParametersService) String() string {
@@ -11563,14 +11564,14 @@ func (op *NetworkFiltersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFiltersService) Service(path string) *NetworkFiltersService {
+func (op *NetworkFiltersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.NetworkFilter_service(path)
-    return self.NetworkFilter_service(path[:index]).Service(path[index + 1:])
+        return op.NetworkFilterService(path)
+    return op.NetworkFilterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkFiltersService) String() string {
@@ -11646,9 +11647,9 @@ func (op *NetworkLabelService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkLabelService) Service(path string) *NetworkLabelService {
+func (op *NetworkLabelService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -11735,14 +11736,14 @@ func (op *NetworkLabelsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkLabelsService) Service(path string) *NetworkLabelsService {
+func (op *NetworkLabelsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Label_service(path)
-    return self.Label_service(path[:index]).Service(path[index + 1:])
+        return op.LabelService(path)
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkLabelsService) String() string {
@@ -11883,14 +11884,14 @@ func (op *NetworksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworksService) Service(path string) *NetworksService {
+func (op *NetworksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Network_service(path)
-    return self.Network_service(path[:index]).Service(path[index + 1:])
+        return op.NetworkService(path)
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworksService) String() string {
@@ -11989,9 +11990,9 @@ func (op *OpenstackImageService) Import (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageService) Service(path string) *OpenstackImageService {
+func (op *OpenstackImageService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -12131,21 +12132,21 @@ func (op *OpenstackImageProviderService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageProviderService) Service(path string) *OpenstackImageProviderService {
+func (op *OpenstackImageProviderService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "certificates" {
-        return &CertificatesService{}
+        return CertificatesService{}
     }
-    if path.startswith('certificates/') {
-        return CertificatesService().service(path[13:])
+    if strings.HasPrefix("certificates/") {
+        return CertificatesService().Service(path[13:])
     }
     if path == "images" {
-        return &ImagesService{}
+        return ImagesService{}
     }
-    if path.startswith('images/') {
-        return ImagesService().service(path[7:])
+    if strings.HasPrefix("images/") {
+        return ImagesService().Service(path[7:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -12219,14 +12220,14 @@ func (op *OpenstackImageProvidersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageProvidersService) Service(path string) *OpenstackImageProvidersService {
+func (op *OpenstackImageProvidersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Provider_service(path)
-    return self.Provider_service(path[:index]).Service(path[index + 1:])
+        return op.ProviderService(path)
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackImageProvidersService) String() string {
@@ -12280,14 +12281,14 @@ func (op *OpenstackImagesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImagesService) Service(path string) *OpenstackImagesService {
+func (op *OpenstackImagesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Image_service(path)
-    return self.Image_service(path[:index]).Service(path[index + 1:])
+        return op.ImageService(path)
+    return op.ImageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackImagesService) String() string {
@@ -12363,15 +12364,15 @@ func (op *OpenstackNetworkService) Import (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkService) Service(path string) *OpenstackNetworkService {
+func (op *OpenstackNetworkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "subnets" {
-        return &SubnetsService{}
+        return SubnetsService{}
     }
-    if path.startswith('subnets/') {
-        return SubnetsService().service(path[8:])
+    if strings.HasPrefix("subnets/") {
+        return SubnetsService().Service(path[8:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -12547,21 +12548,21 @@ func (op *OpenstackNetworkProviderService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkProviderService) Service(path string) *OpenstackNetworkProviderService {
+func (op *OpenstackNetworkProviderService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "certificates" {
-        return &CertificatesService{}
+        return CertificatesService{}
     }
-    if path.startswith('certificates/') {
-        return CertificatesService().service(path[13:])
+    if strings.HasPrefix("certificates/") {
+        return CertificatesService().Service(path[13:])
     }
     if path == "networks" {
-        return &NetworksService{}
+        return NetworksService{}
     }
-    if path.startswith('networks/') {
-        return NetworksService().service(path[9:])
+    if strings.HasPrefix("networks/") {
+        return NetworksService().Service(path[9:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -12638,14 +12639,14 @@ func (op *OpenstackNetworkProvidersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkProvidersService) Service(path string) *OpenstackNetworkProvidersService {
+func (op *OpenstackNetworkProvidersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Provider_service(path)
-    return self.Provider_service(path[:index]).Service(path[index + 1:])
+        return op.ProviderService(path)
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackNetworkProvidersService) String() string {
@@ -12698,14 +12699,14 @@ func (op *OpenstackNetworksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworksService) Service(path string) *OpenstackNetworksService {
+func (op *OpenstackNetworksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Network_service(path)
-    return self.Network_service(path[:index]).Service(path[index + 1:])
+        return op.NetworkService(path)
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackNetworksService) String() string {
@@ -12775,9 +12776,9 @@ func (op *OpenstackSubnetService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackSubnetService) Service(path string) *OpenstackSubnetService {
+func (op *OpenstackSubnetService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -12851,14 +12852,14 @@ func (op *OpenstackSubnetsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackSubnetsService) Service(path string) *OpenstackSubnetsService {
+func (op *OpenstackSubnetsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Subnet_service(path)
-    return self.Subnet_service(path[:index]).Service(path[index + 1:])
+        return op.SubnetService(path)
+    return op.SubnetService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackSubnetsService) String() string {
@@ -12947,9 +12948,9 @@ func (op *OpenstackVolumeAuthenticationKeyService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeAuthenticationKeyService) Service(path string) *OpenstackVolumeAuthenticationKeyService {
+func (op *OpenstackVolumeAuthenticationKeyService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13023,14 +13024,14 @@ func (op *OpenstackVolumeAuthenticationKeysService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeAuthenticationKeysService) Service(path string) *OpenstackVolumeAuthenticationKeysService {
+func (op *OpenstackVolumeAuthenticationKeysService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Key_service(path)
-    return self.Key_service(path[:index]).Service(path[index + 1:])
+        return op.KeyService(path)
+    return op.KeyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeAuthenticationKeysService) String() string {
@@ -13169,27 +13170,27 @@ func (op *OpenstackVolumeProviderService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeProviderService) Service(path string) *OpenstackVolumeProviderService {
+func (op *OpenstackVolumeProviderService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "authenticationkeys" {
-        return &AuthenticationKeysService{}
+        return AuthenticationKeysService{}
     }
-    if path.startswith('authenticationkeys/') {
-        return AuthenticationKeysService().service(path[19:])
+    if strings.HasPrefix("authenticationkeys/") {
+        return AuthenticationKeysService().Service(path[19:])
     }
     if path == "certificates" {
-        return &CertificatesService{}
+        return CertificatesService{}
     }
-    if path.startswith('certificates/') {
-        return CertificatesService().service(path[13:])
+    if strings.HasPrefix("certificates/") {
+        return CertificatesService().Service(path[13:])
     }
     if path == "volumetypes" {
-        return &VolumeTypesService{}
+        return VolumeTypesService{}
     }
-    if path.startswith('volumetypes/') {
-        return VolumeTypesService().service(path[12:])
+    if strings.HasPrefix("volumetypes/") {
+        return VolumeTypesService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13285,14 +13286,14 @@ func (op *OpenstackVolumeProvidersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeProvidersService) Service(path string) *OpenstackVolumeProvidersService {
+func (op *OpenstackVolumeProvidersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Provider_service(path)
-    return self.Provider_service(path[:index]).Service(path[index + 1:])
+        return op.ProviderService(path)
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeProvidersService) String() string {
@@ -13335,9 +13336,9 @@ func (op *OpenstackVolumeTypeService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeTypeService) Service(path string) *OpenstackVolumeTypeService {
+func (op *OpenstackVolumeTypeService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13392,14 +13393,14 @@ func (op *OpenstackVolumeTypesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeTypesService) Service(path string) *OpenstackVolumeTypesService {
+func (op *OpenstackVolumeTypesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Type_service(path)
-    return self.Type_service(path[:index]).Service(path[index + 1:])
+        return op.TypeService(path)
+    return op.TypeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeTypesService) String() string {
@@ -13442,9 +13443,9 @@ func (op *OperatingSystemService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OperatingSystemService) Service(path string) *OperatingSystemService {
+func (op *OperatingSystemService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13499,14 +13500,14 @@ func (op *OperatingSystemsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OperatingSystemsService) Service(path string) *OperatingSystemsService {
+func (op *OperatingSystemsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.OperatingSystem_service(path)
-    return self.OperatingSystem_service(path[:index]).Service(path[index + 1:])
+        return op.OperatingSystemService(path)
+    return op.OperatingSystemService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OperatingSystemsService) String() string {
@@ -13576,9 +13577,9 @@ func (op *PermissionService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermissionService) Service(path string) *PermissionService {
+func (op *PermissionService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13670,9 +13671,9 @@ func (op *PermitService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermitService) Service(path string) *PermitService {
+func (op *PermitService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13784,14 +13785,14 @@ func (op *PermitsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermitsService) Service(path string) *PermitsService {
+func (op *PermitsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Permit_service(path)
-    return self.Permit_service(path[:index]).Service(path[index + 1:])
+        return op.PermitService(path)
+    return op.PermitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *PermitsService) String() string {
@@ -13884,9 +13885,9 @@ func (op *QosService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QosService) Service(path string) *QosService {
+func (op *QosService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -13960,14 +13961,14 @@ func (op *QossService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QossService) Service(path string) *QossService {
+func (op *QossService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Qos_service(path)
-    return self.Qos_service(path[:index]).Service(path[index + 1:])
+        return op.QosService(path)
+    return op.QosService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QossService) String() string {
@@ -14104,27 +14105,27 @@ func (op *QuotaService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaService) Service(path string) *QuotaService {
+func (op *QuotaService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "quotaclusterlimits" {
-        return &QuotaClusterLimitsService{}
+        return QuotaClusterLimitsService{}
     }
-    if path.startswith('quotaclusterlimits/') {
-        return QuotaClusterLimitsService().service(path[19:])
+    if strings.HasPrefix("quotaclusterlimits/") {
+        return QuotaClusterLimitsService().Service(path[19:])
     }
     if path == "quotastoragelimits" {
-        return &QuotaStorageLimitsService{}
+        return QuotaStorageLimitsService{}
     }
-    if path.startswith('quotastoragelimits/') {
-        return QuotaStorageLimitsService().service(path[19:])
+    if strings.HasPrefix("quotastoragelimits/") {
+        return QuotaStorageLimitsService().Service(path[19:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -14196,9 +14197,9 @@ func (op *QuotaClusterLimitService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaClusterLimitService) Service(path string) *QuotaClusterLimitService {
+func (op *QuotaClusterLimitService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -14272,14 +14273,14 @@ func (op *QuotaClusterLimitsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaClusterLimitsService) Service(path string) *QuotaClusterLimitsService {
+func (op *QuotaClusterLimitsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Limit_service(path)
-    return self.Limit_service(path[:index]).Service(path[index + 1:])
+        return op.LimitService(path)
+    return op.LimitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotaClusterLimitsService) String() string {
@@ -14349,9 +14350,9 @@ func (op *QuotaStorageLimitService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaStorageLimitService) Service(path string) *QuotaStorageLimitService {
+func (op *QuotaStorageLimitService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -14425,14 +14426,14 @@ func (op *QuotaStorageLimitsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaStorageLimitsService) Service(path string) *QuotaStorageLimitsService {
+func (op *QuotaStorageLimitsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Limit_service(path)
-    return self.Limit_service(path[:index]).Service(path[index + 1:])
+        return op.LimitService(path)
+    return op.LimitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotaStorageLimitsService) String() string {
@@ -14518,14 +14519,14 @@ func (op *QuotasService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotasService) Service(path string) *QuotasService {
+func (op *QuotasService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Quota_service(path)
-    return self.Quota_service(path[:index]).Service(path[index + 1:])
+        return op.QuotaService(path)
+    return op.QuotaService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotasService) String() string {
@@ -14663,15 +14664,15 @@ func (op *RoleService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *RoleService) Service(path string) *RoleService {
+func (op *RoleService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permits" {
-        return &PermitsService{}
+        return PermitsService{}
     }
-    if path.startswith('permits/') {
-        return PermitsService().service(path[8:])
+    if strings.HasPrefix("permits/") {
+        return PermitsService().Service(path[8:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -14790,14 +14791,14 @@ func (op *RolesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *RolesService) Service(path string) *RolesService {
+func (op *RolesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Role_service(path)
-    return self.Role_service(path[:index]).Service(path[index + 1:])
+        return op.RoleService(path)
+    return op.RoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *RolesService) String() string {
@@ -14874,14 +14875,14 @@ func (op *SchedulingPoliciesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPoliciesService) Service(path string) *SchedulingPoliciesService {
+func (op *SchedulingPoliciesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Policy_service(path)
-    return self.Policy_service(path[:index]).Service(path[index + 1:])
+        return op.PolicyService(path)
+    return op.PolicyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SchedulingPoliciesService) String() string {
@@ -14986,27 +14987,27 @@ func (op *SchedulingPolicyService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyService) Service(path string) *SchedulingPolicyService {
+func (op *SchedulingPolicyService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "balances" {
-        return &BalancesService{}
+        return BalancesService{}
     }
-    if path.startswith('balances/') {
-        return BalancesService().service(path[9:])
+    if strings.HasPrefix("balances/") {
+        return BalancesService().Service(path[9:])
     }
     if path == "filters" {
-        return &FiltersService{}
+        return FiltersService{}
     }
-    if path.startswith('filters/') {
-        return FiltersService().service(path[8:])
+    if strings.HasPrefix("filters/") {
+        return FiltersService().Service(path[8:])
     }
     if path == "weights" {
-        return &WeightsService{}
+        return WeightsService{}
     }
-    if path.startswith('weights/') {
-        return WeightsService().service(path[8:])
+    if strings.HasPrefix("weights/") {
+        return WeightsService().Service(path[8:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15087,9 +15088,9 @@ func (op *SchedulingPolicyUnitService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyUnitService) Service(path string) *SchedulingPolicyUnitService {
+func (op *SchedulingPolicyUnitService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15149,14 +15150,14 @@ func (op *SchedulingPolicyUnitsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyUnitsService) Service(path string) *SchedulingPolicyUnitsService {
+func (op *SchedulingPolicyUnitsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Unit_service(path)
-    return self.Unit_service(path[:index]).Service(path[index + 1:])
+        return op.UnitService(path)
+    return op.UnitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SchedulingPolicyUnitsService) String() string {
@@ -15280,27 +15281,27 @@ func (op *SnapshotService) Restore (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotService) Service(path string) *SnapshotService {
+func (op *SnapshotService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "cdroms" {
-        return &CdromsService{}
+        return CdromsService{}
     }
-    if path.startswith('cdroms/') {
-        return CdromsService().service(path[7:])
+    if strings.HasPrefix("cdroms/") {
+        return CdromsService().Service(path[7:])
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     if path == "nics" {
-        return &NicsService{}
+        return NicsService{}
     }
-    if path.startswith('nics/') {
-        return NicsService().service(path[5:])
+    if strings.HasPrefix("nics/") {
+        return NicsService().Service(path[5:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15345,9 +15346,9 @@ func (op *SnapshotCdromService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotCdromService) Service(path string) *SnapshotCdromService {
+func (op *SnapshotCdromService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15402,14 +15403,14 @@ func (op *SnapshotCdromsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotCdromsService) Service(path string) *SnapshotCdromsService {
+func (op *SnapshotCdromsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Cdrom_service(path)
-    return self.Cdrom_service(path[:index]).Service(path[index + 1:])
+        return op.CdromService(path)
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotCdromsService) String() string {
@@ -15452,9 +15453,9 @@ func (op *SnapshotDiskService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotDiskService) Service(path string) *SnapshotDiskService {
+func (op *SnapshotDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15509,14 +15510,14 @@ func (op *SnapshotDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotDisksService) Service(path string) *SnapshotDisksService {
+func (op *SnapshotDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotDisksService) String() string {
@@ -15559,9 +15560,9 @@ func (op *SnapshotNicService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotNicService) Service(path string) *SnapshotNicService {
+func (op *SnapshotNicService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15616,14 +15617,14 @@ func (op *SnapshotNicsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotNicsService) Service(path string) *SnapshotNicsService {
+func (op *SnapshotNicsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Nic_service(path)
-    return self.Nic_service(path[:index]).Service(path[index + 1:])
+        return op.NicService(path)
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotNicsService) String() string {
@@ -15719,14 +15720,14 @@ func (op *SnapshotsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotsService) Service(path string) *SnapshotsService {
+func (op *SnapshotsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Snapshot_service(path)
-    return self.Snapshot_service(path[:index]).Service(path[index + 1:])
+        return op.SnapshotService(path)
+    return op.SnapshotService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotsService) String() string {
@@ -15819,9 +15820,9 @@ func (op *SshPublicKeyService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SshPublicKeyService) Service(path string) *SshPublicKeyService {
+func (op *SshPublicKeyService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -15895,14 +15896,14 @@ func (op *SshPublicKeysService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SshPublicKeysService) Service(path string) *SshPublicKeysService {
+func (op *SshPublicKeysService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Key_service(path)
-    return self.Key_service(path[:index]).Service(path[index + 1:])
+        return op.KeyService(path)
+    return op.KeyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SshPublicKeysService) String() string {
@@ -15949,9 +15950,9 @@ func (op *StatisticService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StatisticService) Service(path string) *StatisticService {
+func (op *StatisticService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -16055,14 +16056,14 @@ func (op *StatisticsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StatisticsService) Service(path string) *StatisticsService {
+func (op *StatisticsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Statistic_service(path)
-    return self.Statistic_service(path[:index]).Service(path[index + 1:])
+        return op.StatisticService(path)
+    return op.StatisticService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StatisticsService) String() string {
@@ -16175,15 +16176,15 @@ func (op *StepService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StepService) Service(path string) *StepService {
+func (op *StepService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -16322,14 +16323,14 @@ func (op *StepsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StepsService) Service(path string) *StepsService {
+func (op *StepsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Step_service(path)
-    return self.Step_service(path[:index]).Service(path[index + 1:])
+        return op.StepService(path)
+    return op.StepService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StepsService) String() string {
@@ -16424,9 +16425,9 @@ func (op *StorageService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageService) Service(path string) *StorageService {
+func (op *StorageService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -16751,63 +16752,63 @@ func (op *StorageDomainService) UpdateOvfStore (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainService) Service(path string) *StorageDomainService {
+func (op *StorageDomainService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "diskprofiles" {
-        return &DiskProfilesService{}
+        return DiskProfilesService{}
     }
-    if path.startswith('diskprofiles/') {
-        return DiskProfilesService().service(path[13:])
+    if strings.HasPrefix("diskprofiles/") {
+        return DiskProfilesService().Service(path[13:])
     }
     if path == "disksnapshots" {
-        return &DiskSnapshotsService{}
+        return DiskSnapshotsService{}
     }
-    if path.startswith('disksnapshots/') {
-        return DiskSnapshotsService().service(path[14:])
+    if strings.HasPrefix("disksnapshots/") {
+        return DiskSnapshotsService().Service(path[14:])
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     if path == "files" {
-        return &FilesService{}
+        return FilesService{}
     }
-    if path.startswith('files/') {
-        return FilesService().service(path[6:])
+    if strings.HasPrefix("files/") {
+        return FilesService().Service(path[6:])
     }
     if path == "images" {
-        return &ImagesService{}
+        return ImagesService{}
     }
-    if path.startswith('images/') {
-        return ImagesService().service(path[7:])
+    if strings.HasPrefix("images/") {
+        return ImagesService().Service(path[7:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "storageconnections" {
-        return &StorageConnectionsService{}
+        return StorageConnectionsService{}
     }
-    if path.startswith('storageconnections/') {
-        return StorageConnectionsService().service(path[19:])
+    if strings.HasPrefix("storageconnections/") {
+        return StorageConnectionsService().Service(path[19:])
     }
     if path == "templates" {
-        return &TemplatesService{}
+        return TemplatesService{}
     }
-    if path.startswith('templates/') {
-        return TemplatesService().service(path[10:])
+    if strings.HasPrefix("templates/") {
+        return TemplatesService().Service(path[10:])
     }
     if path == "vms" {
-        return &VmsService{}
+        return VmsService{}
     }
-    if path.startswith('vms/') {
-        return VmsService().service(path[4:])
+    if strings.HasPrefix("vms/") {
+        return VmsService().Service(path[4:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -16861,9 +16862,9 @@ func (op *StorageDomainContentDiskService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainContentDiskService) Service(path string) *StorageDomainContentDiskService {
+func (op *StorageDomainContentDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -16930,14 +16931,14 @@ func (op *StorageDomainContentDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainContentDisksService) Service(path string) *StorageDomainContentDisksService {
+func (op *StorageDomainContentDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainContentDisksService) String() string {
@@ -17152,21 +17153,21 @@ func (op *StorageDomainDiskService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainDiskService) Service(path string) *StorageDomainDiskService {
+func (op *StorageDomainDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -17257,14 +17258,14 @@ func (op *StorageDomainDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainDisksService) Service(path string) *StorageDomainDisksService {
+func (op *StorageDomainDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainDisksService) String() string {
@@ -17335,9 +17336,9 @@ func (op *StorageDomainServerConnectionService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainServerConnectionService) Service(path string) *StorageDomainServerConnectionService {
+func (op *StorageDomainServerConnectionService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -17411,14 +17412,14 @@ func (op *StorageDomainServerConnectionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainServerConnectionsService) Service(path string) *StorageDomainServerConnectionsService {
+func (op *StorageDomainServerConnectionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Connection_service(path)
-    return self.Connection_service(path[:index]).Service(path[index + 1:])
+        return op.ConnectionService(path)
+    return op.ConnectionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainServerConnectionsService) String() string {
@@ -17584,15 +17585,15 @@ func (op *StorageDomainTemplateService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainTemplateService) Service(path string) *StorageDomainTemplateService {
+func (op *StorageDomainTemplateService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -17647,14 +17648,14 @@ func (op *StorageDomainTemplatesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainTemplatesService) Service(path string) *StorageDomainTemplatesService {
+func (op *StorageDomainTemplatesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Template_service(path)
-    return self.Template_service(path[:index]).Service(path[index + 1:])
+        return op.TemplateService(path)
+    return op.TemplateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainTemplatesService) String() string {
@@ -17875,21 +17876,21 @@ func (op *StorageDomainVmService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmService) Service(path string) *StorageDomainVmService {
+func (op *StorageDomainVmService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "diskattachments" {
-        return &DiskAttachmentsService{}
+        return DiskAttachmentsService{}
     }
-    if path.startswith('diskattachments/') {
-        return DiskAttachmentsService().service(path[16:])
+    if strings.HasPrefix("diskattachments/") {
+        return DiskAttachmentsService().Service(path[16:])
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -17936,9 +17937,9 @@ func (op *StorageDomainVmDiskAttachmentService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmDiskAttachmentService) Service(path string) *StorageDomainVmDiskAttachmentService {
+func (op *StorageDomainVmDiskAttachmentService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -17986,14 +17987,14 @@ func (op *StorageDomainVmDiskAttachmentsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmDiskAttachmentsService) Service(path string) *StorageDomainVmDiskAttachmentsService {
+func (op *StorageDomainVmDiskAttachmentsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Attachment_service(path)
-    return self.Attachment_service(path[:index]).Service(path[index + 1:])
+        return op.AttachmentService(path)
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainVmDiskAttachmentsService) String() string {
@@ -18072,14 +18073,14 @@ func (op *StorageDomainVmsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmsService) Service(path string) *StorageDomainVmsService {
+func (op *StorageDomainVmsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Vm_service(path)
-    return self.Vm_service(path[:index]).Service(path[index + 1:])
+        return op.VmService(path)
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainVmsService) String() string {
@@ -18230,14 +18231,14 @@ func (op *StorageDomainsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainsService) Service(path string) *StorageDomainsService {
+func (op *StorageDomainsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.StorageDomain_service(path)
-    return self.StorageDomain_service(path[:index]).Service(path[index + 1:])
+        return op.StorageDomainService(path)
+    return op.StorageDomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainsService) String() string {
@@ -18365,9 +18366,9 @@ func (op *StorageServerConnectionService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionService) Service(path string) *StorageServerConnectionService {
+func (op *StorageServerConnectionService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -18477,9 +18478,9 @@ func (op *StorageServerConnectionExtensionService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionExtensionService) Service(path string) *StorageServerConnectionExtensionService {
+func (op *StorageServerConnectionExtensionService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -18570,14 +18571,14 @@ func (op *StorageServerConnectionExtensionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionExtensionsService) Service(path string) *StorageServerConnectionExtensionsService {
+func (op *StorageServerConnectionExtensionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.StorageConnectionExtension_service(path)
-    return self.StorageConnectionExtension_service(path[:index]).Service(path[index + 1:])
+        return op.StorageConnectionExtensionService(path)
+    return op.StorageConnectionExtensionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageServerConnectionExtensionsService) String() string {
@@ -18668,14 +18669,14 @@ func (op *StorageServerConnectionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionsService) Service(path string) *StorageServerConnectionsService {
+func (op *StorageServerConnectionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.StorageConnection_service(path)
-    return self.StorageConnection_service(path[:index]).Service(path[index + 1:])
+        return op.StorageConnectionService(path)
+    return op.StorageConnectionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageServerConnectionsService) String() string {
@@ -18854,237 +18855,237 @@ func (op *SystemService) ReloadConfigurations (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SystemService) Service(path string) *SystemService {
+func (op *SystemService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "affinitylabels" {
-        return &AffinityLabelsService{}
+        return AffinityLabelsService{}
     }
-    if path.startswith('affinitylabels/') {
-        return AffinityLabelsService().service(path[15:])
+    if strings.HasPrefix("affinitylabels/") {
+        return AffinityLabelsService().Service(path[15:])
     }
     if path == "bookmarks" {
-        return &BookmarksService{}
+        return BookmarksService{}
     }
-    if path.startswith('bookmarks/') {
-        return BookmarksService().service(path[10:])
+    if strings.HasPrefix("bookmarks/") {
+        return BookmarksService().Service(path[10:])
     }
     if path == "clusterlevels" {
-        return &ClusterLevelsService{}
+        return ClusterLevelsService{}
     }
-    if path.startswith('clusterlevels/') {
-        return ClusterLevelsService().service(path[14:])
+    if strings.HasPrefix("clusterlevels/") {
+        return ClusterLevelsService().Service(path[14:])
     }
     if path == "clusters" {
-        return &ClustersService{}
+        return ClustersService{}
     }
-    if path.startswith('clusters/') {
-        return ClustersService().service(path[9:])
+    if strings.HasPrefix("clusters/") {
+        return ClustersService().Service(path[9:])
     }
     if path == "cpuprofiles" {
-        return &CpuProfilesService{}
+        return CpuProfilesService{}
     }
-    if path.startswith('cpuprofiles/') {
-        return CpuProfilesService().service(path[12:])
+    if strings.HasPrefix("cpuprofiles/") {
+        return CpuProfilesService().Service(path[12:])
     }
     if path == "datacenters" {
-        return &DataCentersService{}
+        return DataCentersService{}
     }
-    if path.startswith('datacenters/') {
-        return DataCentersService().service(path[12:])
+    if strings.HasPrefix("datacenters/") {
+        return DataCentersService().Service(path[12:])
     }
     if path == "diskprofiles" {
-        return &DiskProfilesService{}
+        return DiskProfilesService{}
     }
-    if path.startswith('diskprofiles/') {
-        return DiskProfilesService().service(path[13:])
+    if strings.HasPrefix("diskprofiles/") {
+        return DiskProfilesService().Service(path[13:])
     }
     if path == "disks" {
-        return &DisksService{}
+        return DisksService{}
     }
-    if path.startswith('disks/') {
-        return DisksService().service(path[6:])
+    if strings.HasPrefix("disks/") {
+        return DisksService().Service(path[6:])
     }
     if path == "domains" {
-        return &DomainsService{}
+        return DomainsService{}
     }
-    if path.startswith('domains/') {
-        return DomainsService().service(path[8:])
+    if strings.HasPrefix("domains/") {
+        return DomainsService().Service(path[8:])
     }
     if path == "events" {
-        return &EventsService{}
+        return EventsService{}
     }
-    if path.startswith('events/') {
-        return EventsService().service(path[7:])
+    if strings.HasPrefix("events/") {
+        return EventsService().Service(path[7:])
     }
     if path == "externalhostproviders" {
-        return &ExternalHostProvidersService{}
+        return ExternalHostProvidersService{}
     }
-    if path.startswith('externalhostproviders/') {
-        return ExternalHostProvidersService().service(path[22:])
+    if strings.HasPrefix("externalhostproviders/") {
+        return ExternalHostProvidersService().Service(path[22:])
     }
     if path == "externalvmimports" {
-        return &ExternalVmImportsService{}
+        return ExternalVmImportsService{}
     }
-    if path.startswith('externalvmimports/') {
-        return ExternalVmImportsService().service(path[18:])
+    if strings.HasPrefix("externalvmimports/") {
+        return ExternalVmImportsService().Service(path[18:])
     }
     if path == "groups" {
-        return &GroupsService{}
+        return GroupsService{}
     }
-    if path.startswith('groups/') {
-        return GroupsService().service(path[7:])
+    if strings.HasPrefix("groups/") {
+        return GroupsService().Service(path[7:])
     }
     if path == "hosts" {
-        return &HostsService{}
+        return HostsService{}
     }
-    if path.startswith('hosts/') {
-        return HostsService().service(path[6:])
+    if strings.HasPrefix("hosts/") {
+        return HostsService().Service(path[6:])
     }
     if path == "icons" {
-        return &IconsService{}
+        return IconsService{}
     }
-    if path.startswith('icons/') {
-        return IconsService().service(path[6:])
+    if strings.HasPrefix("icons/") {
+        return IconsService().Service(path[6:])
     }
     if path == "imagetransfers" {
-        return &ImageTransfersService{}
+        return ImageTransfersService{}
     }
-    if path.startswith('imagetransfers/') {
-        return ImageTransfersService().service(path[15:])
+    if strings.HasPrefix("imagetransfers/") {
+        return ImageTransfersService().Service(path[15:])
     }
     if path == "instancetypes" {
-        return &InstanceTypesService{}
+        return InstanceTypesService{}
     }
-    if path.startswith('instancetypes/') {
-        return InstanceTypesService().service(path[14:])
+    if strings.HasPrefix("instancetypes/") {
+        return InstanceTypesService().Service(path[14:])
     }
     if path == "jobs" {
-        return &JobsService{}
+        return JobsService{}
     }
-    if path.startswith('jobs/') {
-        return JobsService().service(path[5:])
+    if strings.HasPrefix("jobs/") {
+        return JobsService().Service(path[5:])
     }
     if path == "katelloerrata" {
-        return &KatelloErrataService{}
+        return KatelloErrataService{}
     }
-    if path.startswith('katelloerrata/') {
-        return KatelloErrataService().service(path[14:])
+    if strings.HasPrefix("katelloerrata/") {
+        return KatelloErrataService().Service(path[14:])
     }
     if path == "macpools" {
-        return &MacPoolsService{}
+        return MacPoolsService{}
     }
-    if path.startswith('macpools/') {
-        return MacPoolsService().service(path[9:])
+    if strings.HasPrefix("macpools/") {
+        return MacPoolsService().Service(path[9:])
     }
     if path == "networkfilters" {
-        return &NetworkFiltersService{}
+        return NetworkFiltersService{}
     }
-    if path.startswith('networkfilters/') {
-        return NetworkFiltersService().service(path[15:])
+    if strings.HasPrefix("networkfilters/") {
+        return NetworkFiltersService().Service(path[15:])
     }
     if path == "networks" {
-        return &NetworksService{}
+        return NetworksService{}
     }
-    if path.startswith('networks/') {
-        return NetworksService().service(path[9:])
+    if strings.HasPrefix("networks/") {
+        return NetworksService().Service(path[9:])
     }
     if path == "openstackimageproviders" {
-        return &OpenstackImageProvidersService{}
+        return OpenstackImageProvidersService{}
     }
-    if path.startswith('openstackimageproviders/') {
-        return OpenstackImageProvidersService().service(path[24:])
+    if strings.HasPrefix("openstackimageproviders/") {
+        return OpenstackImageProvidersService().Service(path[24:])
     }
     if path == "openstacknetworkproviders" {
-        return &OpenstackNetworkProvidersService{}
+        return OpenstackNetworkProvidersService{}
     }
-    if path.startswith('openstacknetworkproviders/') {
-        return OpenstackNetworkProvidersService().service(path[26:])
+    if strings.HasPrefix("openstacknetworkproviders/") {
+        return OpenstackNetworkProvidersService().Service(path[26:])
     }
     if path == "openstackvolumeproviders" {
-        return &OpenstackVolumeProvidersService{}
+        return OpenstackVolumeProvidersService{}
     }
-    if path.startswith('openstackvolumeproviders/') {
-        return OpenstackVolumeProvidersService().service(path[25:])
+    if strings.HasPrefix("openstackvolumeproviders/") {
+        return OpenstackVolumeProvidersService().Service(path[25:])
     }
     if path == "operatingsystems" {
-        return &OperatingSystemsService{}
+        return OperatingSystemsService{}
     }
-    if path.startswith('operatingsystems/') {
-        return OperatingSystemsService().service(path[17:])
+    if strings.HasPrefix("operatingsystems/") {
+        return OperatingSystemsService().Service(path[17:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return &RolesService{}
+        return RolesService{}
     }
-    if path.startswith('roles/') {
-        return RolesService().service(path[6:])
+    if strings.HasPrefix("roles/") {
+        return RolesService().Service(path[6:])
     }
     if path == "schedulingpolicies" {
-        return &SchedulingPoliciesService{}
+        return SchedulingPoliciesService{}
     }
-    if path.startswith('schedulingpolicies/') {
-        return SchedulingPoliciesService().service(path[19:])
+    if strings.HasPrefix("schedulingpolicies/") {
+        return SchedulingPoliciesService().Service(path[19:])
     }
     if path == "schedulingpolicyunits" {
-        return &SchedulingPolicyUnitsService{}
+        return SchedulingPolicyUnitsService{}
     }
-    if path.startswith('schedulingpolicyunits/') {
-        return SchedulingPolicyUnitsService().service(path[22:])
+    if strings.HasPrefix("schedulingpolicyunits/") {
+        return SchedulingPolicyUnitsService().Service(path[22:])
     }
     if path == "storageconnections" {
-        return &StorageConnectionsService{}
+        return StorageConnectionsService{}
     }
-    if path.startswith('storageconnections/') {
-        return StorageConnectionsService().service(path[19:])
+    if strings.HasPrefix("storageconnections/") {
+        return StorageConnectionsService().Service(path[19:])
     }
     if path == "storagedomains" {
-        return &StorageDomainsService{}
+        return StorageDomainsService{}
     }
-    if path.startswith('storagedomains/') {
-        return StorageDomainsService().service(path[15:])
+    if strings.HasPrefix("storagedomains/") {
+        return StorageDomainsService().Service(path[15:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     if path == "templates" {
-        return &TemplatesService{}
+        return TemplatesService{}
     }
-    if path.startswith('templates/') {
-        return TemplatesService().service(path[10:])
+    if strings.HasPrefix("templates/") {
+        return TemplatesService().Service(path[10:])
     }
     if path == "users" {
-        return &UsersService{}
+        return UsersService{}
     }
-    if path.startswith('users/') {
-        return UsersService().service(path[6:])
+    if strings.HasPrefix("users/") {
+        return UsersService().Service(path[6:])
     }
     if path == "vmpools" {
-        return &VmPoolsService{}
+        return VmPoolsService{}
     }
-    if path.startswith('vmpools/') {
-        return VmPoolsService().service(path[8:])
+    if strings.HasPrefix("vmpools/") {
+        return VmPoolsService().Service(path[8:])
     }
     if path == "vms" {
-        return &VmsService{}
+        return VmsService{}
     }
-    if path.startswith('vms/') {
-        return VmsService().service(path[4:])
+    if strings.HasPrefix("vms/") {
+        return VmsService().Service(path[4:])
     }
     if path == "vnicprofiles" {
-        return &VnicProfilesService{}
+        return VnicProfilesService{}
     }
-    if path.startswith('vnicprofiles/') {
-        return VnicProfilesService().service(path[13:])
+    if strings.HasPrefix("vnicprofiles/") {
+        return VnicProfilesService().Service(path[13:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -19222,14 +19223,14 @@ func (op *SystemPermissionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SystemPermissionsService) Service(path string) *SystemPermissionsService {
+func (op *SystemPermissionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Permission_service(path)
-    return self.Permission_service(path[:index]).Service(path[index + 1:])
+        return op.PermissionService(path)
+    return op.PermissionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SystemPermissionsService) String() string {
@@ -19367,9 +19368,9 @@ func (op *TagService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TagService) Service(path string) *TagService {
+func (op *TagService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -19503,14 +19504,14 @@ func (op *TagsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TagsService) Service(path string) *TagsService {
+func (op *TagsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Tag_service(path)
-    return self.Tag_service(path[:index]).Service(path[index + 1:])
+        return op.TagService(path)
+    return op.TagService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TagsService) String() string {
@@ -19717,51 +19718,51 @@ func (op *TemplateService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateService) Service(path string) *TemplateService {
+func (op *TemplateService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "cdroms" {
-        return &CdromsService{}
+        return CdromsService{}
     }
-    if path.startswith('cdroms/') {
-        return CdromsService().service(path[7:])
+    if strings.HasPrefix("cdroms/") {
+        return CdromsService().Service(path[7:])
     }
     if path == "diskattachments" {
-        return &DiskAttachmentsService{}
+        return DiskAttachmentsService{}
     }
-    if path.startswith('diskattachments/') {
-        return DiskAttachmentsService().service(path[16:])
+    if strings.HasPrefix("diskattachments/") {
+        return DiskAttachmentsService().Service(path[16:])
     }
     if path == "graphicsconsoles" {
-        return &GraphicsConsolesService{}
+        return GraphicsConsolesService{}
     }
-    if path.startswith('graphicsconsoles/') {
-        return GraphicsConsolesService().service(path[17:])
+    if strings.HasPrefix("graphicsconsoles/") {
+        return GraphicsConsolesService().Service(path[17:])
     }
     if path == "nics" {
-        return &NicsService{}
+        return NicsService{}
     }
-    if path.startswith('nics/') {
-        return NicsService().service(path[5:])
+    if strings.HasPrefix("nics/") {
+        return NicsService().Service(path[5:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return &WatchdogsService{}
+        return WatchdogsService{}
     }
-    if path.startswith('watchdogs/') {
-        return WatchdogsService().service(path[10:])
+    if strings.HasPrefix("watchdogs/") {
+        return WatchdogsService().Service(path[10:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -19813,9 +19814,9 @@ func (op *TemplateCdromService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateCdromService) Service(path string) *TemplateCdromService {
+func (op *TemplateCdromService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -19871,14 +19872,14 @@ func (op *TemplateCdromsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateCdromsService) Service(path string) *TemplateCdromsService {
+func (op *TemplateCdromsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Cdrom_service(path)
-    return self.Cdrom_service(path[:index]).Service(path[index + 1:])
+        return op.CdromService(path)
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateCdromsService) String() string {
@@ -20002,9 +20003,9 @@ func (op *TemplateDiskService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskService) Service(path string) *TemplateDiskService {
+func (op *TemplateDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20090,9 +20091,9 @@ func (op *TemplateDiskAttachmentService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskAttachmentService) Service(path string) *TemplateDiskAttachmentService {
+func (op *TemplateDiskAttachmentService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20141,14 +20142,14 @@ func (op *TemplateDiskAttachmentsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskAttachmentsService) Service(path string) *TemplateDiskAttachmentsService {
+func (op *TemplateDiskAttachmentsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Attachment_service(path)
-    return self.Attachment_service(path[:index]).Service(path[index + 1:])
+        return op.AttachmentService(path)
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateDiskAttachmentsService) String() string {
@@ -20201,14 +20202,14 @@ func (op *TemplateDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDisksService) Service(path string) *TemplateDisksService {
+func (op *TemplateDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateDisksService) String() string {
@@ -20280,9 +20281,9 @@ func (op *TemplateGraphicsConsoleService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateGraphicsConsoleService) Service(path string) *TemplateGraphicsConsoleService {
+func (op *TemplateGraphicsConsoleService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20358,14 +20359,14 @@ func (op *TemplateGraphicsConsolesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateGraphicsConsolesService) Service(path string) *TemplateGraphicsConsolesService {
+func (op *TemplateGraphicsConsolesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Console_service(path)
-    return self.Console_service(path[:index]).Service(path[index + 1:])
+        return op.ConsoleService(path)
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateGraphicsConsolesService) String() string {
@@ -20458,9 +20459,9 @@ func (op *TemplateNicService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateNicService) Service(path string) *TemplateNicService {
+func (op *TemplateNicService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20534,14 +20535,14 @@ func (op *TemplateNicsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateNicsService) Service(path string) *TemplateNicsService {
+func (op *TemplateNicsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Nic_service(path)
-    return self.Nic_service(path[:index]).Service(path[index + 1:])
+        return op.NicService(path)
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateNicsService) String() string {
@@ -20634,9 +20635,9 @@ func (op *TemplateWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateWatchdogService) Service(path string) *TemplateWatchdogService {
+func (op *TemplateWatchdogService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20710,14 +20711,14 @@ func (op *TemplateWatchdogsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateWatchdogsService) Service(path string) *TemplateWatchdogsService {
+func (op *TemplateWatchdogsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Watchdog_service(path)
-    return self.Watchdog_service(path[:index]).Service(path[index + 1:])
+        return op.WatchdogService(path)
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateWatchdogsService) String() string {
@@ -20852,14 +20853,14 @@ func (op *TemplatesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplatesService) Service(path string) *TemplatesService {
+func (op *TemplatesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Template_service(path)
-    return self.Template_service(path[:index]).Service(path[index + 1:])
+        return op.TemplateService(path)
+    return op.TemplateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplatesService) String() string {
@@ -20929,9 +20930,9 @@ func (op *UnmanagedNetworkService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UnmanagedNetworkService) Service(path string) *UnmanagedNetworkService {
+func (op *UnmanagedNetworkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -20986,14 +20987,14 @@ func (op *UnmanagedNetworksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UnmanagedNetworksService) Service(path string) *UnmanagedNetworksService {
+func (op *UnmanagedNetworksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.UnmanagedNetwork_service(path)
-    return self.UnmanagedNetwork_service(path[:index]).Service(path[index + 1:])
+        return op.UnmanagedNetworkService(path)
+    return op.UnmanagedNetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *UnmanagedNetworksService) String() string {
@@ -21102,33 +21103,33 @@ func (op *UserService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UserService) Service(path string) *UserService {
+func (op *UserService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return &RolesService{}
+        return RolesService{}
     }
-    if path.startswith('roles/') {
-        return RolesService().service(path[6:])
+    if strings.HasPrefix("roles/") {
+        return RolesService().Service(path[6:])
     }
     if path == "sshpublickeys" {
-        return &SshPublicKeysService{}
+        return SshPublicKeysService{}
     }
-    if path.startswith('sshpublickeys/') {
-        return SshPublicKeysService().service(path[14:])
+    if strings.HasPrefix("sshpublickeys/") {
+        return SshPublicKeysService().Service(path[14:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -21272,14 +21273,14 @@ func (op *UsersService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UsersService) Service(path string) *UsersService {
+func (op *UsersService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.User_service(path)
-    return self.User_service(path[:index]).Service(path[index + 1:])
+        return op.UserService(path)
+    return op.UserService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *UsersService) String() string {
@@ -21349,9 +21350,9 @@ func (op *VirtualFunctionAllowedNetworkService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VirtualFunctionAllowedNetworkService) Service(path string) *VirtualFunctionAllowedNetworkService {
+func (op *VirtualFunctionAllowedNetworkService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -21425,14 +21426,14 @@ func (op *VirtualFunctionAllowedNetworksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VirtualFunctionAllowedNetworksService) Service(path string) *VirtualFunctionAllowedNetworksService {
+func (op *VirtualFunctionAllowedNetworksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Network_service(path)
-    return self.Network_service(path[:index]).Service(path[index + 1:])
+        return op.NetworkService(path)
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VirtualFunctionAllowedNetworksService) String() string {
@@ -22331,105 +22332,105 @@ func (op *VmService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmService) Service(path string) *VmService {
+func (op *VmService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "affinitylabels" {
-        return &AffinityLabelsService{}
+        return AffinityLabelsService{}
     }
-    if path.startswith('affinitylabels/') {
-        return AffinityLabelsService().service(path[15:])
+    if strings.HasPrefix("affinitylabels/") {
+        return AffinityLabelsService().Service(path[15:])
     }
     if path == "applications" {
-        return &ApplicationsService{}
+        return ApplicationsService{}
     }
-    if path.startswith('applications/') {
-        return ApplicationsService().service(path[13:])
+    if strings.HasPrefix("applications/") {
+        return ApplicationsService().Service(path[13:])
     }
     if path == "cdroms" {
-        return &CdromsService{}
+        return CdromsService{}
     }
-    if path.startswith('cdroms/') {
-        return CdromsService().service(path[7:])
+    if strings.HasPrefix("cdroms/") {
+        return CdromsService().Service(path[7:])
     }
     if path == "diskattachments" {
-        return &DiskAttachmentsService{}
+        return DiskAttachmentsService{}
     }
-    if path.startswith('diskattachments/') {
-        return DiskAttachmentsService().service(path[16:])
+    if strings.HasPrefix("diskattachments/") {
+        return DiskAttachmentsService().Service(path[16:])
     }
     if path == "graphicsconsoles" {
-        return &GraphicsConsolesService{}
+        return GraphicsConsolesService{}
     }
-    if path.startswith('graphicsconsoles/') {
-        return GraphicsConsolesService().service(path[17:])
+    if strings.HasPrefix("graphicsconsoles/") {
+        return GraphicsConsolesService().Service(path[17:])
     }
     if path == "hostdevices" {
-        return &HostDevicesService{}
+        return HostDevicesService{}
     }
-    if path.startswith('hostdevices/') {
-        return HostDevicesService().service(path[12:])
+    if strings.HasPrefix("hostdevices/") {
+        return HostDevicesService().Service(path[12:])
     }
     if path == "katelloerrata" {
-        return &KatelloErrataService{}
+        return KatelloErrataService{}
     }
-    if path.startswith('katelloerrata/') {
-        return KatelloErrataService().service(path[14:])
+    if strings.HasPrefix("katelloerrata/") {
+        return KatelloErrataService().Service(path[14:])
     }
     if path == "nics" {
-        return &NicsService{}
+        return NicsService{}
     }
-    if path.startswith('nics/') {
-        return NicsService().service(path[5:])
+    if strings.HasPrefix("nics/") {
+        return NicsService().Service(path[5:])
     }
     if path == "numanodes" {
-        return &NumaNodesService{}
+        return NumaNodesService{}
     }
-    if path.startswith('numanodes/') {
-        return NumaNodesService().service(path[10:])
+    if strings.HasPrefix("numanodes/") {
+        return NumaNodesService().Service(path[10:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "reporteddevices" {
-        return &ReportedDevicesService{}
+        return ReportedDevicesService{}
     }
-    if path.startswith('reporteddevices/') {
-        return ReportedDevicesService().service(path[16:])
+    if strings.HasPrefix("reporteddevices/") {
+        return ReportedDevicesService().Service(path[16:])
     }
     if path == "sessions" {
-        return &SessionsService{}
+        return SessionsService{}
     }
-    if path.startswith('sessions/') {
-        return SessionsService().service(path[9:])
+    if strings.HasPrefix("sessions/") {
+        return SessionsService().Service(path[9:])
     }
     if path == "snapshots" {
-        return &SnapshotsService{}
+        return SnapshotsService{}
     }
-    if path.startswith('snapshots/') {
-        return SnapshotsService().service(path[10:])
+    if strings.HasPrefix("snapshots/") {
+        return SnapshotsService().Service(path[10:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return &WatchdogsService{}
+        return WatchdogsService{}
     }
-    if path.startswith('watchdogs/') {
-        return WatchdogsService().service(path[10:])
+    if strings.HasPrefix("watchdogs/") {
+        return WatchdogsService().Service(path[10:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -22485,9 +22486,9 @@ func (op *VmApplicationService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmApplicationService) Service(path string) *VmApplicationService {
+func (op *VmApplicationService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -22549,14 +22550,14 @@ func (op *VmApplicationsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmApplicationsService) Service(path string) *VmApplicationsService {
+func (op *VmApplicationsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Application_service(path)
-    return self.Application_service(path[:index]).Service(path[index + 1:])
+        return op.ApplicationService(path)
+    return op.ApplicationService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmApplicationsService) String() string {
@@ -22698,9 +22699,9 @@ func (op *VmCdromService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmCdromService) Service(path string) *VmCdromService {
+func (op *VmCdromService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -22761,14 +22762,14 @@ func (op *VmCdromsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmCdromsService) Service(path string) *VmCdromsService {
+func (op *VmCdromsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Cdrom_service(path)
-    return self.Cdrom_service(path[:index]).Service(path[index + 1:])
+        return op.CdromService(path)
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmCdromsService) String() string {
@@ -22969,21 +22970,21 @@ func (op *VmDiskService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmDiskService) Service(path string) *VmDiskService {
+func (op *VmDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -23057,14 +23058,14 @@ func (op *VmDisksService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmDisksService) Service(path string) *VmDisksService {
+func (op *VmDisksService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Disk_service(path)
-    return self.Disk_service(path[:index]).Service(path[index + 1:])
+        return op.DiskService(path)
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmDisksService) String() string {
@@ -23296,9 +23297,9 @@ func (op *VmGraphicsConsoleService) Ticket (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmGraphicsConsoleService) Service(path string) *VmGraphicsConsoleService {
+func (op *VmGraphicsConsoleService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -23384,14 +23385,14 @@ func (op *VmGraphicsConsolesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmGraphicsConsolesService) Service(path string) *VmGraphicsConsolesService {
+func (op *VmGraphicsConsolesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Console_service(path)
-    return self.Console_service(path[:index]).Service(path[index + 1:])
+        return op.ConsoleService(path)
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmGraphicsConsolesService) String() string {
@@ -23497,9 +23498,9 @@ func (op *VmHostDeviceService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmHostDeviceService) Service(path string) *VmHostDeviceService {
+func (op *VmHostDeviceService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -23598,14 +23599,14 @@ func (op *VmHostDevicesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmHostDevicesService) Service(path string) *VmHostDevicesService {
+func (op *VmHostDevicesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Device_service(path)
-    return self.Device_service(path[:index]).Service(path[index + 1:])
+        return op.DeviceService(path)
+    return op.DeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmHostDevicesService) String() string {
@@ -23789,27 +23790,27 @@ func (op *VmNicService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNicService) Service(path string) *VmNicService {
+func (op *VmNicService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "networkfilterparameters" {
-        return &NetworkFilterParametersService{}
+        return NetworkFilterParametersService{}
     }
-    if path.startswith('networkfilterparameters/') {
-        return NetworkFilterParametersService().service(path[24:])
+    if strings.HasPrefix("networkfilterparameters/") {
+        return NetworkFilterParametersService().Service(path[24:])
     }
     if path == "reporteddevices" {
-        return &ReportedDevicesService{}
+        return ReportedDevicesService{}
     }
-    if path.startswith('reporteddevices/') {
-        return ReportedDevicesService().service(path[16:])
+    if strings.HasPrefix("reporteddevices/") {
+        return ReportedDevicesService().Service(path[16:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -23929,14 +23930,14 @@ func (op *VmNicsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNicsService) Service(path string) *VmNicsService {
+func (op *VmNicsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Nic_service(path)
-    return self.Nic_service(path[:index]).Service(path[index + 1:])
+        return op.NicService(path)
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmNicsService) String() string {
@@ -24052,9 +24053,9 @@ func (op *VmNumaNodeService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNumaNodeService) Service(path string) *VmNumaNodeService {
+func (op *VmNumaNodeService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -24152,14 +24153,14 @@ func (op *VmNumaNodesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNumaNodesService) Service(path string) *VmNumaNodesService {
+func (op *VmNumaNodesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Node_service(path)
-    return self.Node_service(path[:index]).Service(path[index + 1:])
+        return op.NodeService(path)
+    return op.NodeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmNumaNodesService) String() string {
@@ -24351,15 +24352,15 @@ func (op *VmPoolService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmPoolService) Service(path string) *VmPoolService {
+func (op *VmPoolService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -24487,14 +24488,14 @@ func (op *VmPoolsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmPoolsService) Service(path string) *VmPoolsService {
+func (op *VmPoolsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Pool_service(path)
-    return self.Pool_service(path[:index]).Service(path[index + 1:])
+        return op.PoolService(path)
+    return op.PoolService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmPoolsService) String() string {
@@ -24537,9 +24538,9 @@ func (op *VmReportedDeviceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmReportedDeviceService) Service(path string) *VmReportedDeviceService {
+func (op *VmReportedDeviceService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -24594,14 +24595,14 @@ func (op *VmReportedDevicesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmReportedDevicesService) Service(path string) *VmReportedDevicesService {
+func (op *VmReportedDevicesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.ReportedDevice_service(path)
-    return self.ReportedDevice_service(path[:index]).Service(path[index + 1:])
+        return op.ReportedDeviceService(path)
+    return op.ReportedDeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmReportedDevicesService) String() string {
@@ -24644,9 +24645,9 @@ func (op *VmSessionService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmSessionService) Service(path string) *VmSessionService {
+func (op *VmSessionService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -24723,14 +24724,14 @@ func (op *VmSessionsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmSessionsService) Service(path string) *VmSessionsService {
+func (op *VmSessionsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Session_service(path)
-    return self.Session_service(path[:index]).Service(path[index + 1:])
+        return op.SessionService(path)
+    return op.SessionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmSessionsService) String() string {
@@ -24858,9 +24859,9 @@ func (op *VmWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmWatchdogService) Service(path string) *VmWatchdogService {
+func (op *VmWatchdogService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -24963,14 +24964,14 @@ func (op *VmWatchdogsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmWatchdogsService) Service(path string) *VmWatchdogsService {
+func (op *VmWatchdogsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Watchdog_service(path)
-    return self.Watchdog_service(path[:index]).Service(path[index + 1:])
+        return op.WatchdogService(path)
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmWatchdogsService) String() string {
@@ -25219,14 +25220,14 @@ func (op *VmsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmsService) Service(path string) *VmsService {
+func (op *VmsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Vm_service(path)
-    return self.Vm_service(path[:index]).Service(path[index + 1:])
+        return op.VmService(path)
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmsService) String() string {
@@ -25329,15 +25330,15 @@ func (op *VnicProfileService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VnicProfileService) Service(path string) *VnicProfileService {
+func (op *VnicProfileService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -25471,14 +25472,14 @@ func (op *VnicProfilesService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VnicProfilesService) Service(path string) *VnicProfilesService {
+func (op *VnicProfilesService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Profile_service(path)
-    return self.Profile_service(path[:index]).Service(path[index + 1:])
+        return op.ProfileService(path)
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VnicProfilesService) String() string {
@@ -25557,9 +25558,9 @@ func (op *WeightService) Remove (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *WeightService) Service(path string) *WeightService {
+func (op *WeightService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -25638,14 +25639,14 @@ func (op *WeightsService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *WeightsService) Service(path string) *WeightsService {
+func (op *WeightsService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.Weight_service(path)
-    return self.Weight_service(path[:index]).Service(path[index + 1:])
+        return op.WeightService(path)
+    return op.WeightService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *WeightsService) String() string {
@@ -25878,21 +25879,21 @@ func (op *AttachedStorageDomainDiskService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainDiskService) Service(path string) *AttachedStorageDomainDiskService {
+func (op *AttachedStorageDomainDiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -26183,21 +26184,21 @@ func (op *DiskService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskService) Service(path string) *DiskService {
+func (op *DiskService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -26281,14 +26282,14 @@ func (op *EngineKatelloErrataService) List (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EngineKatelloErrataService) Service(path string) *EngineKatelloErrataService {
+func (op *EngineKatelloErrataService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     index = path.find('/')
     if index == -1:
-        return self.KatelloErratum_service(path)
-    return self.KatelloErratum_service(path[:index]).Service(path[index + 1:])
+        return op.KatelloErratumService(path)
+    return op.KatelloErratumService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *EngineKatelloErrataService) String() string {
@@ -26429,39 +26430,39 @@ func (op *ExternalHostProviderService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostProviderService) Service(path string) *ExternalHostProviderService {
+func (op *ExternalHostProviderService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "certificates" {
-        return &CertificatesService{}
+        return CertificatesService{}
     }
-    if path.startswith('certificates/') {
-        return CertificatesService().service(path[13:])
+    if strings.HasPrefix("certificates/") {
+        return CertificatesService().Service(path[13:])
     }
     if path == "computeresources" {
-        return &ComputeResourcesService{}
+        return ComputeResourcesService{}
     }
-    if path.startswith('computeresources/') {
-        return ComputeResourcesService().service(path[17:])
+    if strings.HasPrefix("computeresources/") {
+        return ComputeResourcesService().Service(path[17:])
     }
     if path == "discoveredhosts" {
-        return &DiscoveredHostsService{}
+        return DiscoveredHostsService{}
     }
-    if path.startswith('discoveredhosts/') {
-        return DiscoveredHostsService().service(path[16:])
+    if strings.HasPrefix("discoveredhosts/") {
+        return DiscoveredHostsService().Service(path[16:])
     }
     if path == "hostgroups" {
-        return &HostGroupsService{}
+        return HostGroupsService{}
     }
-    if path.startswith('hostgroups/') {
-        return HostGroupsService().service(path[11:])
+    if strings.HasPrefix("hostgroups/") {
+        return HostGroupsService().Service(path[11:])
     }
     if path == "hosts" {
-        return &HostsService{}
+        return HostsService{}
     }
-    if path.startswith('hosts/') {
-        return HostsService().service(path[6:])
+    if strings.HasPrefix("hosts/") {
+        return HostsService().Service(path[6:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -26617,15 +26618,15 @@ func (op *GlusterBrickService) Replace (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterBrickService) Service(path string) *GlusterBrickService {
+func (op *GlusterBrickService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -27084,21 +27085,21 @@ func (op *GlusterVolumeService) StopRebalance (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterVolumeService) Service(path string) *GlusterVolumeService {
+func (op *GlusterVolumeService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "glusterbricks" {
-        return &GlusterBricksService{}
+        return GlusterBricksService{}
     }
-    if path.startswith('glusterbricks/') {
-        return GlusterBricksService().service(path[14:])
+    if strings.HasPrefix("glusterbricks/") {
+        return GlusterBricksService().Service(path[14:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -27915,93 +27916,93 @@ func (op *HostService) UpgradeCheck (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostService) Service(path string) *HostService {
+func (op *HostService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "affinitylabels" {
-        return &AffinityLabelsService{}
+        return AffinityLabelsService{}
     }
-    if path.startswith('affinitylabels/') {
-        return AffinityLabelsService().service(path[15:])
+    if strings.HasPrefix("affinitylabels/") {
+        return AffinityLabelsService().Service(path[15:])
     }
     if path == "devices" {
-        return &DevicesService{}
+        return DevicesService{}
     }
-    if path.startswith('devices/') {
-        return DevicesService().service(path[8:])
+    if strings.HasPrefix("devices/") {
+        return DevicesService().Service(path[8:])
     }
     if path == "fenceagents" {
-        return &FenceAgentsService{}
+        return FenceAgentsService{}
     }
-    if path.startswith('fenceagents/') {
-        return FenceAgentsService().service(path[12:])
+    if strings.HasPrefix("fenceagents/") {
+        return FenceAgentsService().Service(path[12:])
     }
     if path == "hooks" {
-        return &HooksService{}
+        return HooksService{}
     }
-    if path.startswith('hooks/') {
-        return HooksService().service(path[6:])
+    if strings.HasPrefix("hooks/") {
+        return HooksService().Service(path[6:])
     }
     if path == "katelloerrata" {
-        return &KatelloErrataService{}
+        return KatelloErrataService{}
     }
-    if path.startswith('katelloerrata/') {
-        return KatelloErrataService().service(path[14:])
+    if strings.HasPrefix("katelloerrata/") {
+        return KatelloErrataService().Service(path[14:])
     }
     if path == "networkattachments" {
-        return &NetworkAttachmentsService{}
+        return NetworkAttachmentsService{}
     }
-    if path.startswith('networkattachments/') {
-        return NetworkAttachmentsService().service(path[19:])
+    if strings.HasPrefix("networkattachments/") {
+        return NetworkAttachmentsService().Service(path[19:])
     }
     if path == "nics" {
-        return &NicsService{}
+        return NicsService{}
     }
-    if path.startswith('nics/') {
-        return NicsService().service(path[5:])
+    if strings.HasPrefix("nics/") {
+        return NicsService().Service(path[5:])
     }
     if path == "numanodes" {
-        return &NumaNodesService{}
+        return NumaNodesService{}
     }
-    if path.startswith('numanodes/') {
-        return NumaNodesService().service(path[10:])
+    if strings.HasPrefix("numanodes/") {
+        return NumaNodesService().Service(path[10:])
     }
     if path == "permissions" {
-        return &PermissionsService{}
+        return PermissionsService{}
     }
-    if path.startswith('permissions/') {
-        return PermissionsService().service(path[12:])
+    if strings.HasPrefix("permissions/") {
+        return PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     if path == "storage" {
-        return &StorageService{}
+        return StorageService{}
     }
-    if path.startswith('storage/') {
-        return StorageService().service(path[8:])
+    if strings.HasPrefix("storage/") {
+        return StorageService().Service(path[8:])
     }
     if path == "storageconnectionextensions" {
-        return &StorageConnectionExtensionsService{}
+        return StorageConnectionExtensionsService{}
     }
-    if path.startswith('storageconnectionextensions/') {
-        return StorageConnectionExtensionsService().service(path[28:])
+    if strings.HasPrefix("storageconnectionextensions/") {
+        return StorageConnectionExtensionsService().Service(path[28:])
     }
     if path == "tags" {
-        return &TagsService{}
+        return TagsService{}
     }
-    if path.startswith('tags/') {
-        return TagsService().service(path[5:])
+    if strings.HasPrefix("tags/") {
+        return TagsService().Service(path[5:])
     }
     if path == "unmanagednetworks" {
-        return &UnmanagedNetworksService{}
+        return UnmanagedNetworksService{}
     }
-    if path.startswith('unmanagednetworks/') {
-        return UnmanagedNetworksService().service(path[18:])
+    if strings.HasPrefix("unmanagednetworks/") {
+        return UnmanagedNetworksService().Service(path[18:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -28083,39 +28084,39 @@ func (op *HostNicService) UpdateVirtualFunctionsConfiguration (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNicService) Service(path string) *HostNicService {
+func (op *HostNicService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "networkattachments" {
-        return &NetworkAttachmentsService{}
+        return NetworkAttachmentsService{}
     }
-    if path.startswith('networkattachments/') {
-        return NetworkAttachmentsService().service(path[19:])
+    if strings.HasPrefix("networkattachments/") {
+        return NetworkAttachmentsService().Service(path[19:])
     }
     if path == "networklabels" {
-        return &NetworkLabelsService{}
+        return NetworkLabelsService{}
     }
-    if path.startswith('networklabels/') {
-        return NetworkLabelsService().service(path[14:])
+    if strings.HasPrefix("networklabels/") {
+        return NetworkLabelsService().Service(path[14:])
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     if path == "virtualfunctionallowedlabels" {
-        return &VirtualFunctionAllowedLabelsService{}
+        return VirtualFunctionAllowedLabelsService{}
     }
-    if path.startswith('virtualfunctionallowedlabels/') {
-        return VirtualFunctionAllowedLabelsService().service(path[29:])
+    if strings.HasPrefix("virtualfunctionallowedlabels/") {
+        return VirtualFunctionAllowedLabelsService().Service(path[29:])
     }
     if path == "virtualfunctionallowednetworks" {
-        return &VirtualFunctionAllowedNetworksService{}
+        return VirtualFunctionAllowedNetworksService{}
     }
-    if path.startswith('virtualfunctionallowednetworks/') {
-        return VirtualFunctionAllowedNetworksService().service(path[31:])
+    if strings.HasPrefix("virtualfunctionallowednetworks/") {
+        return VirtualFunctionAllowedNetworksService().Service(path[31:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
@@ -28161,15 +28162,15 @@ func (op *HostNumaNodeService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNumaNodeService) Service(path string) *HostNumaNodeService {
+func (op *HostNumaNodeService) Service(path string) IService {
     if path == nil {
-        return op
+        return *op
     }
     if path == "statistics" {
-        return &StatisticsService{}
+        return StatisticsService{}
     }
-    if path.startswith('statistics/') {
-        return StatisticsService().service(path[11:])
+    if strings.HasPrefix("statistics/") {
+        return StatisticsService().Service(path[11:])
     }
     raise Error('The path \"%s\" doesn\'t correspond to any service' % path)
 }
