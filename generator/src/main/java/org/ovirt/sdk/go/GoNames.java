@@ -269,6 +269,14 @@ public class GoNames {
         return getClassStyleName(name);
     }
 
+    public String getTagStyleName(Name name) {
+        String result = name.words().map(String::toLowerCase).collect(joining("_"));
+        if (reservedWords.contains(result)) {
+            result += "_";
+        }
+        return result;
+    }
+
     /**
      * Returns a representation of the given name using the non-capitalization style typically used for Go method parameters.
      */
