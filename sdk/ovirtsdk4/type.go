@@ -18,5 +18,5 @@ package ovirtsdk4
 
 
 type OvType struct {
-	Href string
+	Href string	`xml:"href"`
 }

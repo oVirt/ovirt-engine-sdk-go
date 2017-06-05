@@ -119,14 +119,10 @@ public class TypesGenerator implements GoGenerator {
         buffer.startBlock();
         buffer.addLine("%1$s", baseName);
 
-        // Constructor with a named parameter for each attribute and link:
-        Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
-            .collect(toSet());
+        // Constructor with a named parameter for **Declared** each attribute and link:
         Set<StructMember> declaredMembers = Stream.concat(type.declaredAttributes(), type.declaredLinks())
             .collect(toSet());
-        Set<StructMember> inheritedMembers = new HashSet<>(allMembers);
-        inheritedMembers.removeAll(declaredMembers);
-        allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
+        declaredMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
 
         buffer.endBlock();
         buffer.addLine();
