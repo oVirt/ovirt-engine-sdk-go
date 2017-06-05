@@ -187,6 +187,9 @@ public class GoNames {
             }
         }
         else if (type instanceof StructType || type instanceof EnumType) {
+            reference.setText("*" + getTypeName(type).getClassName());
+        }
+        else if (type instanceof EnumType) {
             reference.setText(getTypeName(type).getClassName());
         }
         else if (type instanceof ListType) {
