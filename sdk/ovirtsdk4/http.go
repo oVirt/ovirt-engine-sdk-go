@@ -29,7 +29,7 @@ type OvRequest struct {
 	Body 	string
 }
 
-func NewOvRequest(method string, path string, headers, query map[string]string, body string) OvRequest {
+func NewOvRequest(method string, path string, headers, query map[string]string, body string) *OvRequest {
 	var req OvRequest
 	req.Method = method
 	req.Path = path
@@ -42,7 +42,7 @@ func NewOvRequest(method string, path string, headers, query map[string]string, 
 	if Body != nil {
 		req.Body = body
 	}
-	return req
+	return &req
 }
 
 
