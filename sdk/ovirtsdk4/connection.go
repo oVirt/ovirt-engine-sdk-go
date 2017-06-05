@@ -30,9 +30,6 @@ import (
 	"net/url"
 	"os"
 	"time"
-
-	"github.com/CpuID/ovirt-engine-sdk-go/sdk/slice"
-	"github.com/CpuID/ovirt-engine-sdk-go/sdk/version"
 )
 
 // This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
@@ -160,7 +157,7 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	for k1, v1 := range r.Headers {
 		req.Header.Add(k1, v1)
 	}
-	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", version.SdkVersion))
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
 	req.Header.Add("Version", "4")
 	req.Header.Add("Content-Type", "application/xml")
 	req.Header.Add("Accept", "application/xml")
