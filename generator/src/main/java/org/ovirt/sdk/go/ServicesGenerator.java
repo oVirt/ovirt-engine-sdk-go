@@ -573,11 +573,11 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endComment();
 
         // Begin method:
-        buffer.addLine("func (op *%1$s) Service(path string) IService {", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) Service(path string) (IService, error) {", serviceName.getClassName());
         buffer.startBlock();
         buffer.addLine("if path == nil {");
         buffer.startBlock();
-        buffer.addLine("return *op");
+        buffer.addLine("return *op, nil");
         buffer.endBlock();
         buffer.addLine("}");
 
@@ -587,14 +587,14 @@ public class ServicesGenerator implements GoGenerator {
             String segment = getPath(name);
             buffer.addLine("if path == \"%1$s\" {", segment);
             buffer.startBlock();
-            buffer.addLine(  "return %1$sService{}", goNames.getMethodStyleName(name));
+            buffer.addLine(  "return %1$sService{}, nil", goNames.getMethodStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine("if strings.HasPrefix(\"%1$s/\") {", segment);
             buffer.addImport("strings");
             buffer.startBlock();
             buffer.addLine(
-                "return %1$sService().Service(path[%2$d:])",
+                "return %1$sService().Service(path[%2$d:]), nil",
                 goNames.getMemberStyleName(name),
                 segment.length() + 1
             );
@@ -608,18 +608,20 @@ public class ServicesGenerator implements GoGenerator {
         if (optional.isPresent()) {
             Locator locator = optional.get();
             Name name = locator.getName();
-            buffer.addLine("index = path.find('/')");
+            buffer.addImport("strings");
+            buffer.addLine("index = strings.Index(path, \"/\"");
             buffer.addLine("if index == -1:");
             buffer.startBlock();
-            buffer.addLine("return op.%1$sService(path)", goNames.getMemberStyleName(name));
+            buffer.addLine("return op.%1$sService(path), nil", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine(
-                "return op.%1$sService(path[:index]).Service(path[index + 1:])",
+                "return op.%1$sService(path[:index]).Service(path[index + 1:]), nil",
                 goNames.getMemberStyleName(name)
             );
         }
         else {
-            buffer.addLine("raise Error('The path \\\"%%s\\\" doesn\\'t correspond to any service' %% path)");
+            buffer.addImport("errors");
+            buffer.addLine("return nil, errors.New(fmt.Sprintf(\"The path <%%s> doesn\\'t correspond to any service\", path))");
         }
 
         // End method:
