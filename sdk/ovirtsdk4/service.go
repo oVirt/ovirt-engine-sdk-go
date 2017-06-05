@@ -16,8 +16,12 @@
 
 package ovirtsdk4
 
+import {
+	"encoding/xml"
+}
 
-type IService interface {}
+
+type IService interface{}
 
 
 // This is the base for all the services of the SDK. It contains the
@@ -28,13 +32,61 @@ type Service struct {
 }
 
 
-func (ser *Service) internalGet(headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("GET", ser.Path, headers, query, nil)
-	res, err := ser.Connection.Send(req)
+func (service *Service) internalGet(headers, query map[string]string) (*OvResponse, error) {
+	req := NewOvRequest("GET", service.Path, headers, query, nil)
+	res, err := service.Connection.Send(req)
 	if err != nil {
 		return nil, err
 	}
 	return res, nil
 }
 
-func (ser *Service) internalPost()
+// Executes an `add` method.
+func (service *Service) internalAdd(object interface{}, headers, query map[string]string) (*OvResponse, error) {
+	req := NewOvRequest("POST", service.Path, headers, query, nil)
+	xmlBytes, err := xml.Marshal(object)
+	if err != nil {
+		return nil, err
+	}
+	req.Body = string(xmlBytes)
+	res, err := service.Connection.Send(req)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Executes a `update` method
+func (service *Service) internalUpdate(object interface{}, headers, query map[string]string) (*OvResponse, error) {
+	req := NewOvRequest("PUT", service.Path, headers, query, nil)
+	xmlBytes, err := xml.Marshal(object)
+	if err != nil {
+		return nil, err
+	}
+	req.Body = string(xmlBytes)
+	res, err := service.Connection.Send(req)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Executes a `remove` method
+func (service *Service) internalRemove(headers, query map[string]string) (*OvResponse, error) {
+	req := NewOvRequest("DELETE", service.Path, headers, query, nil)
+	res, err := service.Connection.Send(req)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Executes an `action` method
+func (service *Service) internalAction(action *Action, path string, headers, query map[string]string) (*OvResponse, error) {
+	req := NewOvRequest("POST", fmt.Sprintf("%s/%s", service.Path, path), headers, query, nil)
+	res, err := service.Connection.Send(req)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
