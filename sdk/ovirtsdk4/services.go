@@ -51,7 +51,7 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 func (op *AffinityGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityGroup {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -272,7 +272,7 @@ func (op *AffinityGroupVmsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityGroupVms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -381,7 +381,7 @@ func (op *AffinityGroupsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityGroups {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -446,7 +446,7 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 func (op *AffinityLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabel {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -564,7 +564,7 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 func (op *AffinityLabelHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabelHost {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -655,7 +655,7 @@ func (op *AffinityLabelHostsService) Add (
 func (op *AffinityLabelHostsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabelHosts {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -718,7 +718,7 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 func (op *AffinityLabelVmService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabelVm {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -809,7 +809,7 @@ func (op *AffinityLabelVmsService) Add (
 func (op *AffinityLabelVmsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabelVms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -898,7 +898,7 @@ func (op *AffinityLabelsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AffinityLabels {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1001,7 +1001,7 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 func (op *AssignedAffinityLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedAffinityLabel {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1091,7 +1091,7 @@ func (op *AssignedAffinityLabelsService) Add (
 func (op *AssignedAffinityLabelsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedAffinityLabels {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1150,7 +1150,7 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 func (op *AssignedCpuProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedCpuProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1250,7 +1250,7 @@ func (op *AssignedCpuProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedCpuProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1310,7 +1310,7 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 func (op *AssignedDiskProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedDiskProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1410,7 +1410,7 @@ func (op *AssignedDiskProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedDiskProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1470,7 +1470,7 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 func (op *AssignedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedNetwork {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1593,7 +1593,7 @@ func (op *AssignedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedNetworks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1745,7 +1745,7 @@ func (op *AssignedPermissionsService) Add (
 func (op *AssignedPermissionsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedPermissions {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1812,7 +1812,7 @@ func (op *AssignedRolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedRoles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -1888,7 +1888,7 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 func (op *AssignedTagService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedTag {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2026,7 +2026,7 @@ func (op *AssignedTagsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedTags {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2088,7 +2088,7 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 func (op *AssignedVnicProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedVnicProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2200,7 +2200,7 @@ func (op *AssignedVnicProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AssignedVnicProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2333,7 +2333,7 @@ func (op *AttachedStorageDomainService) Deactivate (
 func (op *AttachedStorageDomainService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AttachedStorageDomain {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2462,7 +2462,7 @@ func (op *AttachedStorageDomainDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AttachedStorageDomainDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2549,7 +2549,7 @@ func (op *AttachedStorageDomainsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *AttachedStorageDomains {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2615,7 +2615,7 @@ func (op *BalanceService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Balance {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2720,7 +2720,7 @@ func (op *BalancesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Balances {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2797,7 +2797,7 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 func (op *BookmarkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Bookmark {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -2983,7 +2983,7 @@ func (op *BookmarksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Bookmarks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3134,7 +3134,7 @@ func (op *ClusterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Cluster {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3400,7 +3400,7 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 func (op *ClusterLevelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ClusterLevel {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3466,7 +3466,7 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 func (op *ClusterLevelsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ClusterLevels {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3577,7 +3577,7 @@ func (op *ClustersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Clusters {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3701,7 +3701,7 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 func (op *CpuProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *CpuProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3836,7 +3836,7 @@ func (op *CpuProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *CpuProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -3945,7 +3945,7 @@ func (op *DataCenterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DataCenter {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4294,7 +4294,7 @@ func (op *DataCentersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DataCenters {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4381,7 +4381,7 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 func (op *DiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskAttachment {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4559,7 +4559,7 @@ func (op *DiskAttachmentsService) Add (
 func (op *DiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskAttachments {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4618,7 +4618,7 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 func (op *DiskProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4753,7 +4753,7 @@ func (op *DiskProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4813,7 +4813,7 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 func (op *DiskSnapshotService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskSnapshot {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -4894,7 +4894,7 @@ func (op *DiskSnapshotsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DiskSnapshots {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5099,7 +5099,7 @@ func (op *DisksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Disks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5185,7 +5185,7 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 func (op *DomainService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Domain {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5258,7 +5258,7 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 func (op *DomainGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DomainGroup {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5318,7 +5318,7 @@ func (op *DomainGroupsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DomainGroups {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5404,7 +5404,7 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 func (op *DomainUserService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *DomainUser {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5486,7 +5486,7 @@ func (op *DomainUsersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *DomainUsers {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5579,7 +5579,7 @@ func (op *DomainsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Domains {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5666,7 +5666,7 @@ func NewEventService(connection *Connection, path string) *EventService {
 func (op *EventService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Event {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -5907,7 +5907,7 @@ func (op *EventsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Events {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6001,7 +6001,7 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 func (op *ExternalComputeResourceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalComputeResource {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6055,7 +6055,7 @@ func (op *ExternalComputeResourcesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalComputeResources {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6115,7 +6115,7 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 func (op *ExternalDiscoveredHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalDiscoveredHost {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6169,7 +6169,7 @@ func (op *ExternalDiscoveredHostsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalDiscoveredHosts {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6229,7 +6229,7 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 func (op *ExternalHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHost {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6276,7 +6276,7 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 func (op *ExternalHostGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHostGroup {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6330,7 +6330,7 @@ func (op *ExternalHostGroupsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHostGroups {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6416,7 +6416,7 @@ func (op *ExternalHostProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHostProviders {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6483,7 +6483,7 @@ func (op *ExternalHostsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHosts {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6628,7 +6628,7 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 func (op *ExternalProviderCertificateService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalProviderCertificate {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6682,7 +6682,7 @@ func (op *ExternalProviderCertificatesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalProviderCertificates {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6815,7 +6815,7 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 func (op *FenceAgentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *FenceAgent {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6938,7 +6938,7 @@ func (op *FenceAgentsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *FenceAgents {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -6998,7 +6998,7 @@ func NewFileService(connection *Connection, path string) *FileService {
 func (op *FileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *File {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7062,7 +7062,7 @@ func (op *FilesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Files {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7134,7 +7134,7 @@ func (op *FilterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Filter {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7239,7 +7239,7 @@ func (op *FiltersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Filters {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7432,7 +7432,7 @@ func (op *GlusterBricksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterBricks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7696,7 +7696,7 @@ func (op *GlusterHookService) Enable (
 func (op *GlusterHookService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterHook {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7813,7 +7813,7 @@ func (op *GlusterHooksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterHooks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -7950,7 +7950,7 @@ func (op *GlusterVolumesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterVolumes {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8020,7 +8020,7 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 func (op *GroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Group {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8179,7 +8179,7 @@ func (op *GroupsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Groups {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8263,7 +8263,7 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 func (op *HostDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostDevice {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8319,7 +8319,7 @@ func (op *HostDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostDevices {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8380,7 +8380,7 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 func (op *HostHookService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostHook {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8434,7 +8434,7 @@ func (op *HostHooksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostHooks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8502,7 +8502,7 @@ func (op *HostNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostNics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8570,7 +8570,7 @@ func (op *HostNumaNodesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostNumaNodes {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8696,7 +8696,7 @@ func (op *HostStorageService) List (
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostStorage {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8848,7 +8848,7 @@ func (op *HostsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Hosts {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -8932,7 +8932,7 @@ func NewIconService(connection *Connection, path string) *IconService {
 func (op *IconService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Icon {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9003,7 +9003,7 @@ func (op *IconsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Icons {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9064,7 +9064,7 @@ func NewImageService(connection *Connection, path string) *ImageService {
 func (op *ImageService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Image {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9338,7 +9338,7 @@ func (op *ImageTransferService) Finalize (
 func (op *ImageTransferService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ImageTransfer {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9458,7 +9458,7 @@ func (op *ImageTransfersService) Add (
 func (op *ImageTransfersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ImageTransfers {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9524,7 +9524,7 @@ func (op *ImagesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Images {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9592,7 +9592,7 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 func (op *InstanceTypeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceType {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9761,7 +9761,7 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 func (op *InstanceTypeGraphicsConsoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeGraphicsConsole {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9864,7 +9864,7 @@ func (op *InstanceTypeGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeGraphicsConsoles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -9926,7 +9926,7 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 func (op *InstanceTypeNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeNic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10055,7 +10055,7 @@ func (op *InstanceTypeNicsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeNics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10119,7 +10119,7 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 func (op *InstanceTypeWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeWatchdog {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10249,7 +10249,7 @@ func (op *InstanceTypeWatchdogsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypeWatchdogs {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10425,7 +10425,7 @@ func (op *InstanceTypesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *InstanceTypes {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10493,7 +10493,7 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 func (op *IscsiBondService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *IscsiBond {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10682,7 +10682,7 @@ func (op *IscsiBondsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *IscsiBonds {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10848,7 +10848,7 @@ func (op *JobService) End (
 func (op *JobService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Job {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -10999,7 +10999,7 @@ func (op *JobsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Jobs {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11096,7 +11096,7 @@ func (op *KatelloErrataService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *KatelloErrata {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11183,7 +11183,7 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 func (op *KatelloErratumService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *KatelloErratum {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11230,7 +11230,7 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 func (op *MacPoolService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *MacPool {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11408,7 +11408,7 @@ func (op *MacPoolsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *MacPools {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11590,7 +11590,7 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 func (op *NetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Network {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11768,7 +11768,7 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 func (op *NetworkAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkAttachment {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11891,7 +11891,7 @@ func (op *NetworkAttachmentsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkAttachments {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -11966,7 +11966,7 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 func (op *NetworkFilterService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkFilter {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12015,7 +12015,7 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 func (op *NetworkFilterParameterService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkFilterParameter {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12168,7 +12168,7 @@ func (op *NetworkFilterParametersService) Add (
 func (op *NetworkFilterParametersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkFilterParameters {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12279,7 +12279,7 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 func (op *NetworkFiltersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkFilters {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12336,7 +12336,7 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 func (op *NetworkLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkLabel {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12455,7 +12455,7 @@ func (op *NetworkLabelsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *NetworkLabels {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12604,7 +12604,7 @@ func (op *NetworksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Networks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12671,7 +12671,7 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 func (op *OpenstackImageService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackImage {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12776,7 +12776,7 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 func (op *OpenstackImageProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackImageProvider {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -12966,7 +12966,7 @@ func (op *OpenstackImageProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackImageProviders {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13034,7 +13034,7 @@ func (op *OpenstackImagesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackImages {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13096,7 +13096,7 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 func (op *OpenstackNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackNetwork {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13196,7 +13196,7 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 func (op *OpenstackNetworkProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackNetworkProvider {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13419,7 +13419,7 @@ func (op *OpenstackNetworkProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackNetworkProviders {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13487,7 +13487,7 @@ func (op *OpenstackNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackNetworks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13547,7 +13547,7 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 func (op *OpenstackSubnetService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackSubnet {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13647,7 +13647,7 @@ func (op *OpenstackSubnetsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackSubnets {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13707,7 +13707,7 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 func (op *OpenstackVolumeAuthenticationKeyService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeAuthenticationKey {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13826,7 +13826,7 @@ func (op *OpenstackVolumeAuthenticationKeysService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeAuthenticationKeys {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -13889,7 +13889,7 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 func (op *OpenstackVolumeProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeProvider {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14113,7 +14113,7 @@ func (op *OpenstackVolumeProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeProviders {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14173,7 +14173,7 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 func (op *OpenstackVolumeTypeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeType {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14227,7 +14227,7 @@ func (op *OpenstackVolumeTypesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OpenstackVolumeTypes {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14287,7 +14287,7 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 func (op *OperatingSystemService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *OperatingSystem {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14341,7 +14341,7 @@ func (op *OperatingSystemsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *OperatingSystems {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14401,7 +14401,7 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 func (op *PermissionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Permission {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14490,7 +14490,7 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 func (op *PermitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Permit {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14633,7 +14633,7 @@ func (op *PermitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Permits {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14694,7 +14694,7 @@ func NewQosService(connection *Connection, path string) *QosService {
 func (op *QosService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Qos {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14817,7 +14817,7 @@ func (op *QossService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Qoss {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -14897,7 +14897,7 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 func (op *QuotaService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Quota {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15054,7 +15054,7 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 func (op *QuotaClusterLimitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *QuotaClusterLimit {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15154,7 +15154,7 @@ func (op *QuotaClusterLimitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *QuotaClusterLimits {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15214,7 +15214,7 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 func (op *QuotaStorageLimitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *QuotaStorageLimit {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15314,7 +15314,7 @@ func (op *QuotaStorageLimitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *QuotaStorageLimits {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15414,7 +15414,7 @@ func (op *QuotasService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Quotas {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15491,7 +15491,7 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 func (op *RoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Role {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15700,7 +15700,7 @@ func (op *RolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Roles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15789,7 +15789,7 @@ func (op *SchedulingPoliciesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SchedulingPolicies {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -15861,7 +15861,7 @@ func (op *SchedulingPolicyService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SchedulingPolicy {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16003,7 +16003,7 @@ func (op *SchedulingPolicyUnitService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SchedulingPolicyUnit {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16089,7 +16089,7 @@ func (op *SchedulingPolicyUnitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SchedulingPolicyUnits {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16155,7 +16155,7 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 func (op *SnapshotService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Snapshot {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16316,7 +16316,7 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 func (op *SnapshotCdromService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotCdrom {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16370,7 +16370,7 @@ func (op *SnapshotCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotCdroms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16430,7 +16430,7 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 func (op *SnapshotDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16484,7 +16484,7 @@ func (op *SnapshotDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16544,7 +16544,7 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 func (op *SnapshotNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotNic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16598,7 +16598,7 @@ func (op *SnapshotNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SnapshotNics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16705,7 +16705,7 @@ func (op *SnapshotsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Snapshots {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16768,7 +16768,7 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 func (op *SshPublicKeyService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *SshPublicKey {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16891,7 +16891,7 @@ func (op *SshPublicKeysService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *SshPublicKeys {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -16952,7 +16952,7 @@ func (op *StatisticService) Get (
     statistic *Statistic,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Statistic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17058,7 +17058,7 @@ func (op *StatisticsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Statistics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17188,7 +17188,7 @@ func (op *StepService) End (
 func (op *StepService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Step {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17338,7 +17338,7 @@ func (op *StepsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Steps {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17448,7 +17448,7 @@ func (op *StorageService) Get (
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Storage {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17513,7 +17513,7 @@ func (op *StorageDomainService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomain {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -17942,7 +17942,7 @@ func (op *StorageDomainContentDiskService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainContentDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18005,7 +18005,7 @@ func (op *StorageDomainContentDisksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainContentDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18138,7 +18138,7 @@ func (op *StorageDomainDiskService) Export (
 func (op *StorageDomainDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18358,7 +18358,7 @@ func (op *StorageDomainDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18419,7 +18419,7 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 func (op *StorageDomainServerConnectionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainServerConnection {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18520,7 +18520,7 @@ func (op *StorageDomainServerConnectionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainServerConnections {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18581,7 +18581,7 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 func (op *StorageDomainTemplateService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainTemplate {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18769,7 +18769,7 @@ func (op *StorageDomainTemplatesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainTemplates {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -18831,7 +18831,7 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 func (op *StorageDomainVmService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainVm {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19081,7 +19081,7 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 func (op *StorageDomainVmDiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainVmDiskAttachment {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19131,7 +19131,7 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 func (op *StorageDomainVmDiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainVmDiskAttachments {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19222,7 +19222,7 @@ func (op *StorageDomainVmsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomainVms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19378,7 +19378,7 @@ func (op *StorageDomainsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageDomains {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19447,7 +19447,7 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 func (op *StorageServerConnectionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageServerConnection {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19579,7 +19579,7 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 func (op *StorageServerConnectionExtensionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageServerConnectionExtension {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19734,7 +19734,7 @@ func (op *StorageServerConnectionExtensionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageServerConnectionExtensions {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -19839,7 +19839,7 @@ func (op *StorageServerConnectionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *StorageServerConnections {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -20011,7 +20011,7 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 func (op *SystemService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *System {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -20639,7 +20639,7 @@ func (op *SystemPermissionsService) Add (
 func (op *SystemPermissionsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *SystemPermissions {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -20711,7 +20711,7 @@ func NewTagService(connection *Connection, path string) *TagService {
 func (op *TagService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Tag {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -20926,7 +20926,7 @@ func (op *TagsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Tags {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21045,7 +21045,7 @@ func (op *TemplateService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Template {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21297,7 +21297,7 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 func (op *TemplateCdromService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateCdrom {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21352,7 +21352,7 @@ func (op *TemplateCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateCdroms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21467,7 +21467,7 @@ func (op *TemplateDiskService) Export (
 func (op *TemplateDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21543,7 +21543,7 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 func (op *TemplateDiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateDiskAttachment {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21633,7 +21633,7 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 func (op *TemplateDiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateDiskAttachments {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21698,7 +21698,7 @@ func (op *TemplateDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21759,7 +21759,7 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 func (op *TemplateGraphicsConsoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateGraphicsConsole {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21862,7 +21862,7 @@ func (op *TemplateGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateGraphicsConsoles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -21923,7 +21923,7 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 func (op *TemplateNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateNic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22046,7 +22046,7 @@ func (op *TemplateNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateNics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22106,7 +22106,7 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 func (op *TemplateWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateWatchdog {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22229,7 +22229,7 @@ func (op *TemplateWatchdogsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *TemplateWatchdogs {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22369,7 +22369,7 @@ func (op *TemplatesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Templates {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22439,7 +22439,7 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 func (op *UnmanagedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *UnmanagedNetwork {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22520,7 +22520,7 @@ func (op *UnmanagedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *UnmanagedNetworks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22614,7 +22614,7 @@ func NewUserService(connection *Connection, path string) *UserService {
 func (op *UserService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *User {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22831,7 +22831,7 @@ func (op *UsersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Users {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22897,7 +22897,7 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 func (op *VirtualFunctionAllowedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VirtualFunctionAllowedNetwork {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -22997,7 +22997,7 @@ func (op *VirtualFunctionAllowedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VirtualFunctionAllowedNetworks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -23317,7 +23317,7 @@ func (op *VmService) Get (
     nextRun bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Vm {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24165,7 +24165,7 @@ func (op *VmApplicationService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmApplication {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24226,7 +24226,7 @@ func (op *VmApplicationsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmApplications {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24318,7 +24318,7 @@ func (op *VmCdromService) Get (
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmCdrom {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24449,7 +24449,7 @@ func (op *VmCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmCdroms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24587,7 +24587,7 @@ func (op *VmDiskService) Export (
 func (op *VmDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24765,7 +24765,7 @@ func (op *VmDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmDisks {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -24837,7 +24837,7 @@ func (op *VmGraphicsConsoleService) Get (
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmGraphicsConsole {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25096,7 +25096,7 @@ func (op *VmGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmGraphicsConsoles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25187,7 +25187,7 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 func (op *VmHostDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmHostDevice {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25321,7 +25321,7 @@ func (op *VmHostDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmHostDevices {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25433,7 +25433,7 @@ func (op *VmNicService) Deactivate (
 func (op *VmNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmNic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25680,7 +25680,7 @@ func (op *VmNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmNics {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25740,7 +25740,7 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 func (op *VmNumaNodeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmNumaNode {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -25910,7 +25910,7 @@ func (op *VmNumaNodesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmNumaNodes {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26038,7 +26038,7 @@ func (op *VmPoolService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmPool {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26250,7 +26250,7 @@ func (op *VmPoolsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmPools {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26320,7 +26320,7 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 func (op *VmReportedDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmReportedDevice {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26374,7 +26374,7 @@ func (op *VmReportedDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmReportedDevices {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26434,7 +26434,7 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 func (op *VmSessionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmSession {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26510,7 +26510,7 @@ func (op *VmSessionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmSessions {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26573,7 +26573,7 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 func (op *VmWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmWatchdog {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -26758,7 +26758,7 @@ func (op *VmWatchdogsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VmWatchdogs {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27010,7 +27010,7 @@ func (op *VmsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Vms {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27085,7 +27085,7 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 func (op *VnicProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *VnicProfile {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27287,7 +27287,7 @@ func (op *VnicProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *VnicProfiles {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27353,7 +27353,7 @@ func (op *WeightService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Weight {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27458,7 +27458,7 @@ func (op *WeightsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Weights {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27588,7 +27588,7 @@ func (op *AttachedStorageDomainDiskService) Export (
 func (op *AttachedStorageDomainDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *AttachedStorageDomainDisk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -27895,7 +27895,7 @@ func (op *DiskService) Export (
 func (op *DiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *Disk {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -28137,7 +28137,7 @@ func (op *EngineKatelloErrataService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) *EngineKatelloErrata {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -28204,7 +28204,7 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 func (op *ExternalHostProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *ExternalHostProvider {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -28449,7 +28449,7 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 func (op *GlusterBrickService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterBrick {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -28614,7 +28614,7 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 func (op *GlusterVolumeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *GlusterVolume {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -29314,7 +29314,7 @@ func (op *HostService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) *Host {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -30073,7 +30073,7 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 func (op *HostNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostNic {
+    wait bool) {
     if wait == nil {
         wait = true
     }
@@ -30218,7 +30218,7 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 func (op *HostNumaNodeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) *HostNumaNode {
+    wait bool) {
     if wait == nil {
         wait = true
     }

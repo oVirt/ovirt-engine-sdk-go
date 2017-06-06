@@ -331,10 +331,6 @@ public class ServicesGenerator implements GoGenerator {
         Name methodName = method.getName();
         //      Generate function doc
         generateActionDoc(method, Parameter::isIn);
-        //      Generate function definition
-        //          Get returned type
-        String returnedType = "*" +  serviceName.getClassName().substring(
-            0, serviceName.getClassName().indexOf("Service"));
         //          Generate function body
         buffer.addLine(
             "func (op *%1$s) %2$s (",
@@ -344,7 +340,7 @@ public class ServicesGenerator implements GoGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) %1$s {", returnedType);
+        buffer.addLine("wait bool) {");
         //      Generate function ending
         buffer.endBlock();
 
