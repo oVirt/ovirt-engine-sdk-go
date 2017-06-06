@@ -124,7 +124,8 @@ public class ServicesGenerator implements GoGenerator {
         // Generate struct members definition
         buffer.startBlock();
         //      with Service struct mixin
-        buffer.addLine(baseName.getClassName());
+        // buffer.addLine(baseName.getClassName());
+        buffer.addLine("BaseService");
         buffer.addLine();
         //      members
         service.locators().sorted().forEach(this::generateLocatorMember);
@@ -523,8 +524,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateLocatorMember(Locator locator) {
+        GoClassName serviceName = goNames.getServiceName(locator.getService());
         String memberName = goNames.getMemberStyleName(locator.getName());
-        buffer.addLine("%1$sService  *%1$sService", memberName, memberName);
+        buffer.addLine("%1$sServ  *%2$s", memberName, serviceName.getClassName());
     }
 
     private void generateLocatorMethod(Locator locator, Service service) {
@@ -634,18 +636,18 @@ public class ServicesGenerator implements GoGenerator {
             Name name = locator.getName();
             buffer.addImport("strings");
             buffer.addLine("index = strings.Index(path, \"/\")");
-            buffer.addLine("if index == -1:");
+            buffer.addLine("if index == -1 {");
             buffer.startBlock();
             buffer.addLine("return *(op.%1$sService(path)), nil", goNames.getMemberStyleName(name));
             buffer.endBlock();
+            buffer.addLine("}");
             buffer.addLine(
                 "return op.%1$sService(path[:index]).Service(path[index + 1:]), nil",
                 goNames.getMemberStyleName(name)
             );
         }
         else {
-            buffer.addImport("errors");
-            buffer.addLine("return nil, errors.New(fmt.Sprintf(\"The path <%%s> doesn\\'t correspond to any service\", path))");
+            buffer.addLine("return nil, fmt.Errorf(\"The path <%%s> doesn't correspond to any service\", path)");
         }
 
         // End method:

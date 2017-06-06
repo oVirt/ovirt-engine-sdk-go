@@ -50,7 +50,7 @@ type Connection struct {
 }
 
 // Creates a new connection to the API server.
-func NewConnection(inputRawUrl string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout uint8, compress bool) (*Connection, error) {
+func NewConnection(inputRawUrl string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout int64, compress bool) (*Connection, error) {
 	c := new(Connection)
 	// Get the values of the parameters and assign default values:
 	c.username = username
@@ -103,7 +103,7 @@ func NewConnection(inputRawUrl string, username string, password string, token s
 			pool := x509.NewCertPool()
 			caCerts, err := ioutil.ReadFile(c.caFile)
 			if err != nil {
-				return err
+				return nil, err
 			}
 			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
 				return fmt.Errorf("Failed to parse CA Certificate in file '%s'", c.caFile)
@@ -128,7 +128,7 @@ func (c *Connection) SystemService() *SystemService {
 // Returns a reference to the service corresponding to the given path. For example, if the `path` parameter
 // is `vms/123/diskattachments` then it will return a reference to the service that manages the disk
 // attachments for the virtual machine with identifier `123`.
-func (c *Connection) Service(path string) *Service {
+func (c *Connection) Service(path string) *BaseService {
 	// TODO: implement
 }
 
@@ -276,7 +276,7 @@ func (c *Connection) getSsoResponse(inputRawUrl string, parameters map[string]st
 	}
 
 	// Add request headers:
-	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", version.SdkVersion))
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Accept", "application/json")
 

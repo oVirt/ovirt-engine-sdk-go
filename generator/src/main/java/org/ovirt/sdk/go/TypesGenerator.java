@@ -23,8 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
@@ -117,12 +117,18 @@ public class TypesGenerator implements GoGenerator {
         // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getClassName());
         buffer.startBlock();
-        buffer.addLine("%1$s", baseName);
+        // Ignore Base-class mixin, fill in all 
+        // buffer.addLine("%1$s", baseName);
 
-        // Constructor with a named parameter for **Declared** each attribute and link:
+        // Constructor with a named parameter for each attribute and link:
+        Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
+            .collect(toSet());
         Set<StructMember> declaredMembers = Stream.concat(type.declaredAttributes(), type.declaredLinks())
             .collect(toSet());
-        declaredMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
+        allMembers.addAll(declaredMembers);
+        // Set<StructMember> inheritedMembers = new HashSet<>(allMembers);
+        // inheritedMembers.removeAll(declaredMembers);
+        allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
 
         buffer.endBlock();
         buffer.addLine();
@@ -165,6 +171,9 @@ public class TypesGenerator implements GoGenerator {
 
     private void generateMemberFormalParameter(StructMember member) {
         GoTypeReference goTypeReference = goNames.getTypeReference(member.getType());
+        if (goTypeReference.getText().equals("[]*String")) {
+            System.out.println("########" + member.getType());
+        }
         buffer.addImports(goTypeReference.getImports());
         buffer.addLine(
             "%1$s    %2$s   `xml:\"%3$s\"` ",

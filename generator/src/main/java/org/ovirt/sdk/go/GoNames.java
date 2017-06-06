@@ -194,7 +194,9 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            reference.setText("[]*" + getClassStyleName(listtype.getElementType().getName()));
+            // use Recursion to resolve `[]*String` bug
+            GoTypeReference elementTypeReference = this.getTypeReference(listtype.getElementType());
+            reference.setText("[]" + elementTypeReference.getText());
         }
         else {
             throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");
@@ -255,25 +257,32 @@ public class GoNames {
      * Returns a representation of the given name using the capitalization style typically used for Go classes.
      */
     public String getClassStyleName(Name name) {
-        return name.words().map(words::capitalize).collect(joining());
+        String result = name.words().map(words::capitalize).collect(joining());
+        return renameReserved(result);
     }
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go members.
      */
     public String getMemberStyleName(Name name) {
-        return getClassStyleName(name);
+        String result = getClassStyleName(name);
+        return renameReserved(result);
     }
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go method name.
      */
     public String getMethodStyleName(Name name) {
-        return getClassStyleName(name);
+        String result = getClassStyleName(name);
+        return renameReserved(result);
     }
 
     public String getTagStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
+        return renameReserved(result);
+    }
+
+    public String renameReserved(String result) {
         if (reservedWords.contains(result)) {
             result += "_";
         }
@@ -285,7 +294,7 @@ public class GoNames {
      */
     public String getParameterStyleName(Name name) {
         String result = getClassStyleName(name);
-        return result.substring(0, 1).toLowerCase() + result.substring(1);
+        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
     }
 
     /**
@@ -300,10 +309,7 @@ public class GoNames {
      */
     public String getModuleStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
-        if (reservedWords.contains(result)) {
-            result += "_";
-        }
-        return result;
+        return renameReserved(result);
     }
 }
 

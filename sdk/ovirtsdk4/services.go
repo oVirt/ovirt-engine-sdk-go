@@ -16,7 +16,6 @@
 package ovirtsdk4
 
 import (
-    "errors"
     "fmt"
     "strings"
 )
@@ -25,9 +24,9 @@ import (
 // This service manages a single affinity group.
 //
 type AffinityGroupService struct {
-    Service
+    BaseService
 
-    VmsService  *VmsService
+    VmsServ  *AffinityGroupVmsService
 }
 
 func NewAffinityGroupService(connection *Connection, path string) *AffinityGroupService {
@@ -148,7 +147,7 @@ func (op *AffinityGroupService) Service(path string) (IService, error) {
     if strings.HasPrefix("vms/") {
         return op.VmsService().Service(path[4:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AffinityGroupService) String() string {
@@ -160,7 +159,7 @@ func (op *AffinityGroupService) String() string {
 // This service manages a single virtual machine to affinity group assignment.
 //
 type AffinityGroupVmService struct {
-    Service
+    BaseService
 
 }
 
@@ -206,7 +205,7 @@ func (op *AffinityGroupVmService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AffinityGroupVmService) String() string {
@@ -218,9 +217,9 @@ func (op *AffinityGroupVmService) String() string {
 // This service manages a collection of all the virtual machines assigned to an affinity group.
 //
 type AffinityGroupVmsService struct {
-    Service
+    BaseService
 
-    VmService  *VmService
+    VmServ  *AffinityGroupVmService
 }
 
 func NewAffinityGroupVmsService(connection *Connection, path string) *AffinityGroupVmsService {
@@ -304,8 +303,9 @@ func (op *AffinityGroupVmsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.VmService(path)), nil
+    }
     return op.VmService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -318,9 +318,9 @@ func (op *AffinityGroupVmsService) String() string {
 // The affinity groups service manages virtual machine relationships and dependencies.
 //
 type AffinityGroupsService struct {
-    Service
+    BaseService
 
-    GroupService  *GroupService
+    GroupServ  *AffinityGroupService
 }
 
 func NewAffinityGroupsService(connection *Connection, path string) *AffinityGroupsService {
@@ -412,8 +412,9 @@ func (op *AffinityGroupsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.GroupService(path)), nil
+    }
     return op.GroupService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -426,10 +427,10 @@ func (op *AffinityGroupsService) String() string {
 // The details of a single affinity label.
 //
 type AffinityLabelService struct {
-    Service
+    BaseService
 
-    HostsService  *HostsService
-    VmsService  *VmsService
+    HostsServ  *AffinityLabelHostsService
+    VmsServ  *AffinityLabelVmsService
 }
 
 func NewAffinityLabelService(connection *Connection, path string) *AffinityLabelService {
@@ -532,7 +533,7 @@ func (op *AffinityLabelService) Service(path string) (IService, error) {
     if strings.HasPrefix("vms/") {
         return op.VmsService().Service(path[4:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AffinityLabelService) String() string {
@@ -546,7 +547,7 @@ func (op *AffinityLabelService) String() string {
 // subcollection.
 //
 type AffinityLabelHostService struct {
-    Service
+    BaseService
 
 }
 
@@ -602,7 +603,7 @@ func (op *AffinityLabelHostService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AffinityLabelHostService) String() string {
@@ -616,9 +617,9 @@ func (op *AffinityLabelHostService) String() string {
 // subcollection.
 //
 type AffinityLabelHostsService struct {
-    Service
+    BaseService
 
-    HostService  *HostService
+    HostServ  *AffinityLabelHostService
 }
 
 func NewAffinityLabelHostsService(connection *Connection, path string) *AffinityLabelHostsService {
@@ -683,8 +684,9 @@ func (op *AffinityLabelHostsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HostService(path)), nil
+    }
     return op.HostService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -699,7 +701,7 @@ func (op *AffinityLabelHostsService) String() string {
 // subcollection.
 //
 type AffinityLabelVmService struct {
-    Service
+    BaseService
 
 }
 
@@ -755,7 +757,7 @@ func (op *AffinityLabelVmService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AffinityLabelVmService) String() string {
@@ -769,9 +771,9 @@ func (op *AffinityLabelVmService) String() string {
 // subcollection.
 //
 type AffinityLabelVmsService struct {
-    Service
+    BaseService
 
-    VmService  *VmService
+    VmServ  *AffinityLabelVmService
 }
 
 func NewAffinityLabelVmsService(connection *Connection, path string) *AffinityLabelVmsService {
@@ -836,8 +838,9 @@ func (op *AffinityLabelVmsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.VmService(path)), nil
+    }
     return op.VmService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -850,9 +853,9 @@ func (op *AffinityLabelVmsService) String() string {
 // Manages the affinity labels available in the system.
 //
 type AffinityLabelsService struct {
-    Service
+    BaseService
 
-    LabelService  *LabelService
+    LabelServ  *AffinityLabelService
 }
 
 func NewAffinityLabelsService(connection *Connection, path string) *AffinityLabelsService {
@@ -926,8 +929,9 @@ func (op *AffinityLabelsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LabelService(path)), nil
+    }
     return op.LabelService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -949,7 +953,7 @@ func (op *AffinityLabelsService) String() string {
 // validity of the model
 //
 type AreaService struct {
-    Service
+    BaseService
 
 }
 
@@ -967,7 +971,7 @@ func (op *AreaService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AreaService) String() string {
@@ -980,7 +984,7 @@ func (op *AreaService) String() string {
 // when accessed using the entities/affinitylabels subcollection.
 //
 type AssignedAffinityLabelService struct {
-    Service
+    BaseService
 
 }
 
@@ -1036,7 +1040,7 @@ func (op *AssignedAffinityLabelService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedAffinityLabelService) String() string {
@@ -1049,9 +1053,9 @@ func (op *AssignedAffinityLabelService) String() string {
 // assigned to supported entities when accessed using entities/affinitylabels.
 //
 type AssignedAffinityLabelsService struct {
-    Service
+    BaseService
 
-    LabelService  *LabelService
+    LabelServ  *AssignedAffinityLabelService
 }
 
 func NewAssignedAffinityLabelsService(connection *Connection, path string) *AssignedAffinityLabelsService {
@@ -1116,8 +1120,9 @@ func (op *AssignedAffinityLabelsService) Service(path string) (IService, error) 
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LabelService(path)), nil
+    }
     return op.LabelService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1129,7 +1134,7 @@ func (op *AssignedAffinityLabelsService) String() string {
 //
 //
 type AssignedCpuProfileService struct {
-    Service
+    BaseService
 
 }
 
@@ -1192,7 +1197,7 @@ func (op *AssignedCpuProfileService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedCpuProfileService) String() string {
@@ -1203,9 +1208,9 @@ func (op *AssignedCpuProfileService) String() string {
 //
 //
 type AssignedCpuProfilesService struct {
-    Service
+    BaseService
 
-    ProfileService  *ProfileService
+    ProfileServ  *AssignedCpuProfileService
 }
 
 func NewAssignedCpuProfilesService(connection *Connection, path string) *AssignedCpuProfilesService {
@@ -1275,8 +1280,9 @@ func (op *AssignedCpuProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProfileService(path)), nil
+    }
     return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1288,7 +1294,7 @@ func (op *AssignedCpuProfilesService) String() string {
 //
 //
 type AssignedDiskProfileService struct {
-    Service
+    BaseService
 
 }
 
@@ -1351,7 +1357,7 @@ func (op *AssignedDiskProfileService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedDiskProfileService) String() string {
@@ -1362,9 +1368,9 @@ func (op *AssignedDiskProfileService) String() string {
 //
 //
 type AssignedDiskProfilesService struct {
-    Service
+    BaseService
 
-    ProfileService  *ProfileService
+    ProfileServ  *AssignedDiskProfileService
 }
 
 func NewAssignedDiskProfilesService(connection *Connection, path string) *AssignedDiskProfilesService {
@@ -1434,8 +1440,9 @@ func (op *AssignedDiskProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProfileService(path)), nil
+    }
     return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1447,7 +1454,7 @@ func (op *AssignedDiskProfilesService) String() string {
 //
 //
 type AssignedNetworkService struct {
-    Service
+    BaseService
 
 }
 
@@ -1533,7 +1540,7 @@ func (op *AssignedNetworkService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedNetworkService) String() string {
@@ -1544,9 +1551,9 @@ func (op *AssignedNetworkService) String() string {
 //
 //
 type AssignedNetworksService struct {
-    Service
+    BaseService
 
-    NetworkService  *NetworkService
+    NetworkServ  *AssignedNetworkService
 }
 
 func NewAssignedNetworksService(connection *Connection, path string) *AssignedNetworksService {
@@ -1616,8 +1623,9 @@ func (op *AssignedNetworksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NetworkService(path)), nil
+    }
     return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1630,9 +1638,9 @@ func (op *AssignedNetworksService) String() string {
 // Represents a permission sub-collection, scoped by user, group or some entity type.
 //
 type AssignedPermissionsService struct {
-    Service
+    BaseService
 
-    PermissionService  *PermissionService
+    PermissionServ  *PermissionService
 }
 
 func NewAssignedPermissionsService(connection *Connection, path string) *AssignedPermissionsService {
@@ -1766,8 +1774,9 @@ func (op *AssignedPermissionsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.PermissionService(path)), nil
+    }
     return op.PermissionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1780,9 +1789,9 @@ func (op *AssignedPermissionsService) String() string {
 // Represents a roles sub-collection, for example scoped by user.
 //
 type AssignedRolesService struct {
-    Service
+    BaseService
 
-    RoleService  *RoleService
+    RoleServ  *RoleService
 }
 
 func NewAssignedRolesService(connection *Connection, path string) *AssignedRolesService {
@@ -1834,8 +1843,9 @@ func (op *AssignedRolesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.RoleService(path)), nil
+    }
     return op.RoleService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -1848,7 +1858,7 @@ func (op *AssignedRolesService) String() string {
 // A service to manage assignment of specific tag to specific entities in system.
 //
 type AssignedTagService struct {
-    Service
+    BaseService
 
 }
 
@@ -1930,7 +1940,7 @@ func (op *AssignedTagService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedTagService) String() string {
@@ -1942,9 +1952,9 @@ func (op *AssignedTagService) String() string {
 // A service to manage collection of assignment of tags to specific entities in system.
 //
 type AssignedTagsService struct {
-    Service
+    BaseService
 
-    TagService  *TagService
+    TagServ  *AssignedTagService
 }
 
 func NewAssignedTagsService(connection *Connection, path string) *AssignedTagsService {
@@ -2047,8 +2057,9 @@ func (op *AssignedTagsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.TagService(path)), nil
+    }
     return op.TagService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -2060,9 +2071,9 @@ func (op *AssignedTagsService) String() string {
 //
 //
 type AssignedVnicProfileService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewAssignedVnicProfileService(connection *Connection, path string) *AssignedVnicProfileService {
@@ -2136,7 +2147,7 @@ func (op *AssignedVnicProfileService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AssignedVnicProfileService) String() string {
@@ -2147,9 +2158,9 @@ func (op *AssignedVnicProfileService) String() string {
 //
 //
 type AssignedVnicProfilesService struct {
-    Service
+    BaseService
 
-    ProfileService  *ProfileService
+    ProfileServ  *AssignedVnicProfileService
 }
 
 func NewAssignedVnicProfilesService(connection *Connection, path string) *AssignedVnicProfilesService {
@@ -2219,8 +2230,9 @@ func (op *AssignedVnicProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProfileService(path)), nil
+    }
     return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -2232,9 +2244,9 @@ func (op *AssignedVnicProfilesService) String() string {
 //
 //
 type AttachedStorageDomainService struct {
-    Service
+    BaseService
 
-    DisksService  *DisksService
+    DisksServ  *AttachedStorageDomainDisksService
 }
 
 func NewAttachedStorageDomainService(connection *Connection, path string) *AttachedStorageDomainService {
@@ -2380,7 +2392,7 @@ func (op *AttachedStorageDomainService) Service(path string) (IService, error) {
     if strings.HasPrefix("disks/") {
         return op.DisksService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AttachedStorageDomainService) String() string {
@@ -2392,9 +2404,9 @@ func (op *AttachedStorageDomainService) String() string {
 // Manages the collection of disks available inside an storage domain that is attached to a data center.
 //
 type AttachedStorageDomainDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *AttachedStorageDomainDiskService
 }
 
 func NewAttachedStorageDomainDisksService(connection *Connection, path string) *AttachedStorageDomainDisksService {
@@ -2481,8 +2493,9 @@ func (op *AttachedStorageDomainDisksService) Service(path string) (IService, err
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -2494,9 +2507,9 @@ func (op *AttachedStorageDomainDisksService) String() string {
 //
 //
 type AttachedStorageDomainsService struct {
-    Service
+    BaseService
 
-    StorageDomainService  *StorageDomainService
+    StorageDomainServ  *AttachedStorageDomainService
 }
 
 func NewAttachedStorageDomainsService(connection *Connection, path string) *AttachedStorageDomainsService {
@@ -2566,8 +2579,9 @@ func (op *AttachedStorageDomainsService) Service(path string) (IService, error) 
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StorageDomainService(path)), nil
+    }
     return op.StorageDomainService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -2579,7 +2593,7 @@ func (op *AttachedStorageDomainsService) String() string {
 //
 //
 type BalanceService struct {
-    Service
+    BaseService
 
 }
 
@@ -2651,7 +2665,7 @@ func (op *BalanceService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *BalanceService) String() string {
@@ -2662,9 +2676,9 @@ func (op *BalanceService) String() string {
 //
 //
 type BalancesService struct {
-    Service
+    BaseService
 
-    BalanceService  *BalanceService
+    BalanceServ  *BalanceService
 }
 
 func NewBalancesService(connection *Connection, path string) *BalancesService {
@@ -2739,8 +2753,9 @@ func (op *BalancesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.BalanceService(path)), nil
+    }
     return op.BalanceService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -2753,7 +2768,7 @@ func (op *BalancesService) String() string {
 // A service to manage a bookmark.
 //
 type BookmarkService struct {
-    Service
+    BaseService
 
 }
 
@@ -2877,7 +2892,7 @@ func (op *BookmarkService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *BookmarkService) String() string {
@@ -2889,9 +2904,9 @@ func (op *BookmarkService) String() string {
 // A service to manage bookmarks.
 //
 type BookmarksService struct {
-    Service
+    BaseService
 
-    BookmarkService  *BookmarkService
+    BookmarkServ  *BookmarkService
 }
 
 func NewBookmarksService(connection *Connection, path string) *BookmarksService {
@@ -2999,8 +3014,9 @@ func (op *BookmarksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.BookmarkService(path)), nil
+    }
     return op.BookmarkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -3013,15 +3029,15 @@ func (op *BookmarksService) String() string {
 // A service to manage specific cluster.
 //
 type ClusterService struct {
-    Service
+    BaseService
 
-    AffinityGroupsService  *AffinityGroupsService
-    CpuProfilesService  *CpuProfilesService
-    GlusterHooksService  *GlusterHooksService
-    GlusterVolumesService  *GlusterVolumesService
-    NetworkFiltersService  *NetworkFiltersService
-    NetworksService  *NetworksService
-    PermissionsService  *PermissionsService
+    AffinityGroupsServ  *AffinityGroupsService
+    CpuProfilesServ  *AssignedCpuProfilesService
+    GlusterHooksServ  *GlusterHooksService
+    GlusterVolumesServ  *GlusterVolumesService
+    NetworkFiltersServ  *NetworkFiltersService
+    NetworksServ  *AssignedNetworksService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewClusterService(connection *Connection, path string) *ClusterService {
@@ -3327,7 +3343,7 @@ func (op *ClusterService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ClusterService) String() string {
@@ -3340,7 +3356,7 @@ func (op *ClusterService) String() string {
 // more information.
 //
 type ClusterLevelService struct {
-    Service
+    BaseService
 
 }
 
@@ -3404,7 +3420,7 @@ func (op *ClusterLevelService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ClusterLevelService) String() string {
@@ -3418,9 +3434,9 @@ func (op *ClusterLevelService) String() string {
 // service provides that information.
 //
 type ClusterLevelsService struct {
-    Service
+    BaseService
 
-    LevelService  *LevelService
+    LevelServ  *ClusterLevelService
 }
 
 func NewClusterLevelsService(connection *Connection, path string) *ClusterLevelsService {
@@ -3478,8 +3494,9 @@ func (op *ClusterLevelsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LevelService(path)), nil
+    }
     return op.LevelService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -3492,9 +3509,9 @@ func (op *ClusterLevelsService) String() string {
 // A service to manage clusters.
 //
 type ClustersService struct {
-    Service
+    BaseService
 
-    ClusterService  *ClusterService
+    ClusterServ  *ClusterService
 }
 
 func NewClustersService(connection *Connection, path string) *ClustersService {
@@ -3600,8 +3617,9 @@ func (op *ClustersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ClusterService(path)), nil
+    }
     return op.ClusterService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -3613,7 +3631,7 @@ func (op *ClustersService) String() string {
 //
 //
 type CopyableService struct {
-    Service
+    BaseService
 
 }
 
@@ -3655,7 +3673,7 @@ func (op *CopyableService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *CopyableService) String() string {
@@ -3666,9 +3684,9 @@ func (op *CopyableService) String() string {
 //
 //
 type CpuProfileService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewCpuProfileService(connection *Connection, path string) *CpuProfileService {
@@ -3765,7 +3783,7 @@ func (op *CpuProfileService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *CpuProfileService) String() string {
@@ -3776,9 +3794,9 @@ func (op *CpuProfileService) String() string {
 //
 //
 type CpuProfilesService struct {
-    Service
+    BaseService
 
-    ProfileService  *ProfileService
+    ProfileServ  *CpuProfileService
 }
 
 func NewCpuProfilesService(connection *Connection, path string) *CpuProfilesService {
@@ -3848,8 +3866,9 @@ func (op *CpuProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProfileService(path)), nil
+    }
     return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -3862,15 +3881,15 @@ func (op *CpuProfilesService) String() string {
 // A service to manage a data center.
 //
 type DataCenterService struct {
-    Service
+    BaseService
 
-    ClustersService  *ClustersService
-    IscsiBondsService  *IscsiBondsService
-    NetworksService  *NetworksService
-    PermissionsService  *PermissionsService
-    QossService  *QossService
-    QuotasService  *QuotasService
-    StorageDomainsService  *StorageDomainsService
+    ClustersServ  *ClustersService
+    IscsiBondsServ  *IscsiBondsService
+    NetworksServ  *NetworksService
+    PermissionsServ  *AssignedPermissionsService
+    QossServ  *QossService
+    QuotasServ  *QuotasService
+    StorageDomainsServ  *AttachedStorageDomainsService
 }
 
 func NewDataCenterService(connection *Connection, path string) *DataCenterService {
@@ -4144,7 +4163,7 @@ func (op *DataCenterService) Service(path string) (IService, error) {
     if strings.HasPrefix("storagedomains/") {
         return op.StorageDomainsService().Service(path[15:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DataCenterService) String() string {
@@ -4156,9 +4175,9 @@ func (op *DataCenterService) String() string {
 // A service to manage data centers.
 //
 type DataCentersService struct {
-    Service
+    BaseService
 
-    DataCenterService  *DataCenterService
+    DataCenterServ  *DataCenterService
 }
 
 func NewDataCentersService(connection *Connection, path string) *DataCentersService {
@@ -4315,8 +4334,9 @@ func (op *DataCentersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DataCenterService(path)), nil
+    }
     return op.DataCenterService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -4329,7 +4349,7 @@ func (op *DataCentersService) String() string {
 // This service manages the attachment of a disk to a virtual machine.
 //
 type DiskAttachmentService struct {
-    Service
+    BaseService
 
 }
 
@@ -4451,7 +4471,7 @@ func (op *DiskAttachmentService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DiskAttachmentService) String() string {
@@ -4465,9 +4485,9 @@ func (op *DiskAttachmentService) String() string {
 // the disk.
 //
 type DiskAttachmentsService struct {
-    Service
+    BaseService
 
-    AttachmentService  *AttachmentService
+    AttachmentServ  *DiskAttachmentService
 }
 
 func NewDiskAttachmentsService(connection *Connection, path string) *DiskAttachmentsService {
@@ -4567,8 +4587,9 @@ func (op *DiskAttachmentsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.AttachmentService(path)), nil
+    }
     return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -4580,9 +4601,9 @@ func (op *DiskAttachmentsService) String() string {
 //
 //
 type DiskProfileService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewDiskProfileService(connection *Connection, path string) *DiskProfileService {
@@ -4679,7 +4700,7 @@ func (op *DiskProfileService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DiskProfileService) String() string {
@@ -4690,9 +4711,9 @@ func (op *DiskProfileService) String() string {
 //
 //
 type DiskProfilesService struct {
-    Service
+    BaseService
 
-    DiskProfileService  *DiskProfileService
+    DiskProfileServ  *DiskProfileService
 }
 
 func NewDiskProfilesService(connection *Connection, path string) *DiskProfilesService {
@@ -4762,8 +4783,9 @@ func (op *DiskProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskProfileService(path)), nil
+    }
     return op.DiskProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -4775,7 +4797,7 @@ func (op *DiskProfilesService) String() string {
 //
 //
 type DiskSnapshotService struct {
-    Service
+    BaseService
 
 }
 
@@ -4838,7 +4860,7 @@ func (op *DiskSnapshotService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DiskSnapshotService) String() string {
@@ -4849,9 +4871,9 @@ func (op *DiskSnapshotService) String() string {
 //
 //
 type DiskSnapshotsService struct {
-    Service
+    BaseService
 
-    SnapshotService  *SnapshotService
+    SnapshotServ  *DiskSnapshotService
 }
 
 func NewDiskSnapshotsService(connection *Connection, path string) *DiskSnapshotsService {
@@ -4902,8 +4924,9 @@ func (op *DiskSnapshotsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.SnapshotService(path)), nil
+    }
     return op.SnapshotService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -4916,9 +4939,9 @@ func (op *DiskSnapshotsService) String() string {
 // Manages the collection of disks available in the system.
 //
 type DisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *DiskService
 }
 
 func NewDisksService(connection *Connection, path string) *DisksService {
@@ -5113,8 +5136,9 @@ func (op *DisksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -5127,10 +5151,10 @@ func (op *DisksService) String() string {
 // A service to view details of an authentication domain in the system.
 //
 type DomainService struct {
-    Service
+    BaseService
 
-    GroupsService  *GroupsService
-    UsersService  *UsersService
+    GroupsServ  *DomainGroupsService
+    UsersServ  *DomainUsersService
 }
 
 func NewDomainService(connection *Connection, path string) *DomainService {
@@ -5207,7 +5231,7 @@ func (op *DomainService) Service(path string) (IService, error) {
     if strings.HasPrefix("users/") {
         return op.UsersService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DomainService) String() string {
@@ -5218,7 +5242,7 @@ func (op *DomainService) String() string {
 //
 //
 type DomainGroupService struct {
-    Service
+    BaseService
 
 }
 
@@ -5254,7 +5278,7 @@ func (op *DomainGroupService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DomainGroupService) String() string {
@@ -5265,9 +5289,9 @@ func (op *DomainGroupService) String() string {
 //
 //
 type DomainGroupsService struct {
-    Service
+    BaseService
 
-    GroupService  *GroupService
+    GroupServ  *DomainGroupService
 }
 
 func NewDomainGroupsService(connection *Connection, path string) *DomainGroupsService {
@@ -5330,8 +5354,9 @@ func (op *DomainGroupsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.GroupService(path)), nil
+    }
     return op.GroupService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -5344,7 +5369,7 @@ func (op *DomainGroupsService) String() string {
 // A service to view a domain user in the system.
 //
 type DomainUserService struct {
-    Service
+    BaseService
 
 }
 
@@ -5399,7 +5424,7 @@ func (op *DomainUserService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DomainUserService) String() string {
@@ -5411,9 +5436,9 @@ func (op *DomainUserService) String() string {
 // A service to list all domain users in the system.
 //
 type DomainUsersService struct {
-    Service
+    BaseService
 
-    UserService  *UserService
+    UserServ  *DomainUserService
 }
 
 func NewDomainUsersService(connection *Connection, path string) *DomainUsersService {
@@ -5498,8 +5523,9 @@ func (op *DomainUsersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.UserService(path)), nil
+    }
     return op.UserService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -5512,9 +5538,9 @@ func (op *DomainUsersService) String() string {
 // A service to list all authentication domains in the system.
 //
 type DomainsService struct {
-    Service
+    BaseService
 
-    DomainService  *DomainService
+    DomainServ  *DomainService
 }
 
 func NewDomainsService(connection *Connection, path string) *DomainsService {
@@ -5584,8 +5610,9 @@ func (op *DomainsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DomainService(path)), nil
+    }
     return op.DomainService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -5598,7 +5625,7 @@ func (op *DomainsService) String() string {
 // A service to manage an event in the system.
 //
 type EventService struct {
-    Service
+    BaseService
 
 }
 
@@ -5692,7 +5719,7 @@ func (op *EventService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *EventService) String() string {
@@ -5704,9 +5731,9 @@ func (op *EventService) String() string {
 // A service to manage events in the system.
 //
 type EventsService struct {
-    Service
+    BaseService
 
-    EventService  *EventService
+    EventServ  *EventService
 }
 
 func NewEventsService(connection *Connection, path string) *EventsService {
@@ -5944,8 +5971,9 @@ func (op *EventsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.EventService(path)), nil
+    }
     return op.EventService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -5957,7 +5985,7 @@ func (op *EventsService) String() string {
 //
 //
 type ExternalComputeResourceService struct {
-    Service
+    BaseService
 
 }
 
@@ -5993,7 +6021,7 @@ func (op *ExternalComputeResourceService) Service(path string) (IService, error)
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalComputeResourceService) String() string {
@@ -6004,9 +6032,9 @@ func (op *ExternalComputeResourceService) String() string {
 //
 //
 type ExternalComputeResourcesService struct {
-    Service
+    BaseService
 
-    ResourceService  *ResourceService
+    ResourceServ  *ExternalComputeResourceService
 }
 
 func NewExternalComputeResourcesService(connection *Connection, path string) *ExternalComputeResourcesService {
@@ -6057,8 +6085,9 @@ func (op *ExternalComputeResourcesService) Service(path string) (IService, error
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ResourceService(path)), nil
+    }
     return op.ResourceService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6070,7 +6099,7 @@ func (op *ExternalComputeResourcesService) String() string {
 //
 //
 type ExternalDiscoveredHostService struct {
-    Service
+    BaseService
 
 }
 
@@ -6106,7 +6135,7 @@ func (op *ExternalDiscoveredHostService) Service(path string) (IService, error) 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalDiscoveredHostService) String() string {
@@ -6117,9 +6146,9 @@ func (op *ExternalDiscoveredHostService) String() string {
 //
 //
 type ExternalDiscoveredHostsService struct {
-    Service
+    BaseService
 
-    HostService  *HostService
+    HostServ  *ExternalDiscoveredHostService
 }
 
 func NewExternalDiscoveredHostsService(connection *Connection, path string) *ExternalDiscoveredHostsService {
@@ -6170,8 +6199,9 @@ func (op *ExternalDiscoveredHostsService) Service(path string) (IService, error)
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HostService(path)), nil
+    }
     return op.HostService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6183,7 +6213,7 @@ func (op *ExternalDiscoveredHostsService) String() string {
 //
 //
 type ExternalHostService struct {
-    Service
+    BaseService
 
 }
 
@@ -6219,7 +6249,7 @@ func (op *ExternalHostService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalHostService) String() string {
@@ -6230,7 +6260,7 @@ func (op *ExternalHostService) String() string {
 //
 //
 type ExternalHostGroupService struct {
-    Service
+    BaseService
 
 }
 
@@ -6266,7 +6296,7 @@ func (op *ExternalHostGroupService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalHostGroupService) String() string {
@@ -6277,9 +6307,9 @@ func (op *ExternalHostGroupService) String() string {
 //
 //
 type ExternalHostGroupsService struct {
-    Service
+    BaseService
 
-    GroupService  *GroupService
+    GroupServ  *ExternalHostGroupService
 }
 
 func NewExternalHostGroupsService(connection *Connection, path string) *ExternalHostGroupsService {
@@ -6330,8 +6360,9 @@ func (op *ExternalHostGroupsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.GroupService(path)), nil
+    }
     return op.GroupService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6343,9 +6374,9 @@ func (op *ExternalHostGroupsService) String() string {
 //
 //
 type ExternalHostProvidersService struct {
-    Service
+    BaseService
 
-    ProviderService  *ProviderService
+    ProviderServ  *ExternalHostProviderService
 }
 
 func NewExternalHostProvidersService(connection *Connection, path string) *ExternalHostProvidersService {
@@ -6415,8 +6446,9 @@ func (op *ExternalHostProvidersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProviderService(path)), nil
+    }
     return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6428,9 +6460,9 @@ func (op *ExternalHostProvidersService) String() string {
 //
 //
 type ExternalHostsService struct {
-    Service
+    BaseService
 
-    HostService  *HostService
+    HostServ  *ExternalHostService
 }
 
 func NewExternalHostsService(connection *Connection, path string) *ExternalHostsService {
@@ -6481,8 +6513,9 @@ func (op *ExternalHostsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HostService(path)), nil
+    }
     return op.HostService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6494,9 +6527,9 @@ func (op *ExternalHostsService) String() string {
 //
 //
 type ExternalProviderService struct {
-    Service
+    BaseService
 
-    CertificatesService  *CertificatesService
+    CertificatesServ  *ExternalProviderCertificatesService
 }
 
 func NewExternalProviderService(connection *Connection, path string) *ExternalProviderService {
@@ -6568,7 +6601,7 @@ func (op *ExternalProviderService) Service(path string) (IService, error) {
     if strings.HasPrefix("certificates/") {
         return op.CertificatesService().Service(path[13:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalProviderService) String() string {
@@ -6579,7 +6612,7 @@ func (op *ExternalProviderService) String() string {
 //
 //
 type ExternalProviderCertificateService struct {
-    Service
+    BaseService
 
 }
 
@@ -6615,7 +6648,7 @@ func (op *ExternalProviderCertificateService) Service(path string) (IService, er
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalProviderCertificateService) String() string {
@@ -6626,9 +6659,9 @@ func (op *ExternalProviderCertificateService) String() string {
 //
 //
 type ExternalProviderCertificatesService struct {
-    Service
+    BaseService
 
-    CertificateService  *CertificateService
+    CertificateServ  *ExternalProviderCertificateService
 }
 
 func NewExternalProviderCertificatesService(connection *Connection, path string) *ExternalProviderCertificatesService {
@@ -6679,8 +6712,9 @@ func (op *ExternalProviderCertificatesService) Service(path string) (IService, e
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.CertificateService(path)), nil
+    }
     return op.CertificateService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6693,7 +6727,7 @@ func (op *ExternalProviderCertificatesService) String() string {
 // Provides capability to import external virtual machines.
 //
 type ExternalVmImportsService struct {
-    Service
+    BaseService
 
 }
 
@@ -6731,7 +6765,7 @@ func NewExternalVmImportsService(connection *Connection, path string) *ExternalV
 // ----
 //
 func (op *ExternalVmImportsService) Add (
-    import *ExternalVmImport,
+    import_ *ExternalVmImport,
     headers map[string]string,
     query map[string]string,
     wait bool) {
@@ -6744,7 +6778,7 @@ func (op *ExternalVmImportsService) Add (
     }
 
     // Send the request
-    return op.internalAdd(import, headers, query, wait)
+    return op.internalAdd(import_, headers, query, wait)
 }
 
 //
@@ -6754,7 +6788,7 @@ func (op *ExternalVmImportsService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalVmImportsService) String() string {
@@ -6765,7 +6799,7 @@ func (op *ExternalVmImportsService) String() string {
 //
 //
 type FenceAgentService struct {
-    Service
+    BaseService
 
 }
 
@@ -6851,7 +6885,7 @@ func (op *FenceAgentService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *FenceAgentService) String() string {
@@ -6862,9 +6896,9 @@ func (op *FenceAgentService) String() string {
 //
 //
 type FenceAgentsService struct {
-    Service
+    BaseService
 
-    AgentService  *AgentService
+    AgentServ  *FenceAgentService
 }
 
 func NewFenceAgentsService(connection *Connection, path string) *FenceAgentsService {
@@ -6934,8 +6968,9 @@ func (op *FenceAgentsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.AgentService(path)), nil
+    }
     return op.AgentService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -6947,7 +6982,7 @@ func (op *FenceAgentsService) String() string {
 //
 //
 type FileService struct {
-    Service
+    BaseService
 
 }
 
@@ -6983,7 +7018,7 @@ func (op *FileService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *FileService) String() string {
@@ -6998,9 +7033,9 @@ func (op *FileService) String() string {
 // The addition of a CDROM device to a virtual machine requires an ISO image from the files of an ISO storage domain.
 //
 type FilesService struct {
-    Service
+    BaseService
 
-    FileService  *FileService
+    FileServ  *FileService
 }
 
 func NewFilesService(connection *Connection, path string) *FilesService {
@@ -7063,8 +7098,9 @@ func (op *FilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.FileService(path)), nil
+    }
     return op.FileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -7076,7 +7112,7 @@ func (op *FilesService) String() string {
 //
 //
 type FilterService struct {
-    Service
+    BaseService
 
 }
 
@@ -7148,7 +7184,7 @@ func (op *FilterService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *FilterService) String() string {
@@ -7159,9 +7195,9 @@ func (op *FilterService) String() string {
 //
 //
 type FiltersService struct {
-    Service
+    BaseService
 
-    FilterService  *FilterService
+    FilterServ  *FilterService
 }
 
 func NewFiltersService(connection *Connection, path string) *FiltersService {
@@ -7236,8 +7272,9 @@ func (op *FiltersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.FilterService(path)), nil
+    }
     return op.FilterService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -7250,9 +7287,9 @@ func (op *FiltersService) String() string {
 // This service manages the gluster bricks in a gluster volume
 //
 type GlusterBricksService struct {
-    Service
+    BaseService
 
-    BrickService  *BrickService
+    BrickServ  *GlusterBrickService
 }
 
 func NewGlusterBricksService(connection *Connection, path string) *GlusterBricksService {
@@ -7577,8 +7614,9 @@ func (op *GlusterBricksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.BrickService(path)), nil
+    }
     return op.BrickService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -7590,7 +7628,7 @@ func (op *GlusterBricksService) String() string {
 //
 //
 type GlusterHookService struct {
-    Service
+    BaseService
 
 }
 
@@ -7741,7 +7779,7 @@ func (op *GlusterHookService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *GlusterHookService) String() string {
@@ -7752,9 +7790,9 @@ func (op *GlusterHookService) String() string {
 //
 //
 type GlusterHooksService struct {
-    Service
+    BaseService
 
-    HookService  *HookService
+    HookServ  *GlusterHookService
 }
 
 func NewGlusterHooksService(connection *Connection, path string) *GlusterHooksService {
@@ -7805,8 +7843,9 @@ func (op *GlusterHooksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HookService(path)), nil
+    }
     return op.HookService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -7819,9 +7858,9 @@ func (op *GlusterHooksService) String() string {
 // This service manages a collection of gluster volumes available in a cluster.
 //
 type GlusterVolumesService struct {
-    Service
+    BaseService
 
-    VolumeService  *VolumeService
+    VolumeServ  *GlusterVolumeService
 }
 
 func NewGlusterVolumesService(connection *Connection, path string) *GlusterVolumesService {
@@ -7948,8 +7987,9 @@ func (op *GlusterVolumesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.VolumeService(path)), nil
+    }
     return op.VolumeService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -7961,11 +8001,11 @@ func (op *GlusterVolumesService) String() string {
 //
 //
 type GroupService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
-    RolesService  *RolesService
-    TagsService  *TagsService
+    PermissionsServ  *AssignedPermissionsService
+    RolesServ  *AssignedRolesService
+    TagsServ  *AssignedTagsService
 }
 
 func NewGroupService(connection *Connection, path string) *GroupService {
@@ -8063,7 +8103,7 @@ func (op *GroupService) Service(path string) (IService, error) {
     if strings.HasPrefix("tags/") {
         return op.TagsService().Service(path[5:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *GroupService) String() string {
@@ -8074,9 +8114,9 @@ func (op *GroupService) String() string {
 //
 //
 type GroupsService struct {
-    Service
+    BaseService
 
-    GroupService  *GroupService
+    GroupServ  *GroupService
 }
 
 func NewGroupsService(connection *Connection, path string) *GroupsService {
@@ -8175,8 +8215,9 @@ func (op *GroupsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.GroupService(path)), nil
+    }
     return op.GroupService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8189,7 +8230,7 @@ func (op *GroupsService) String() string {
 // A service to access a particular device of a host.
 //
 type HostDeviceService struct {
-    Service
+    BaseService
 
 }
 
@@ -8242,7 +8283,7 @@ func (op *HostDeviceService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *HostDeviceService) String() string {
@@ -8254,9 +8295,9 @@ func (op *HostDeviceService) String() string {
 // A service to access host devices.
 //
 type HostDevicesService struct {
-    Service
+    BaseService
 
-    DeviceService  *DeviceService
+    DeviceServ  *HostDeviceService
 }
 
 func NewHostDevicesService(connection *Connection, path string) *HostDevicesService {
@@ -8309,8 +8350,9 @@ func (op *HostDevicesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DeviceService(path)), nil
+    }
     return op.DeviceService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8322,7 +8364,7 @@ func (op *HostDevicesService) String() string {
 //
 //
 type HostHookService struct {
-    Service
+    BaseService
 
 }
 
@@ -8358,7 +8400,7 @@ func (op *HostHookService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *HostHookService) String() string {
@@ -8369,9 +8411,9 @@ func (op *HostHookService) String() string {
 //
 //
 type HostHooksService struct {
-    Service
+    BaseService
 
-    HookService  *HookService
+    HookServ  *HostHookService
 }
 
 func NewHostHooksService(connection *Connection, path string) *HostHooksService {
@@ -8422,8 +8464,9 @@ func (op *HostHooksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HookService(path)), nil
+    }
     return op.HookService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8436,9 +8479,9 @@ func (op *HostHooksService) String() string {
 // A service to manage the network interfaces of a host.
 //
 type HostNicsService struct {
-    Service
+    BaseService
 
-    NicService  *NicService
+    NicServ  *HostNicService
 }
 
 func NewHostNicsService(connection *Connection, path string) *HostNicsService {
@@ -8490,8 +8533,9 @@ func (op *HostNicsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NicService(path)), nil
+    }
     return op.NicService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8503,9 +8547,9 @@ func (op *HostNicsService) String() string {
 //
 //
 type HostNumaNodesService struct {
-    Service
+    BaseService
 
-    NodeService  *NodeService
+    NodeServ  *HostNumaNodeService
 }
 
 func NewHostNumaNodesService(connection *Connection, path string) *HostNumaNodesService {
@@ -8556,8 +8600,9 @@ func (op *HostNumaNodesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NodeService(path)), nil
+    }
     return op.NodeService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8570,9 +8615,9 @@ func (op *HostNumaNodesService) String() string {
 // A service to manage host storages.
 //
 type HostStorageService struct {
-    Service
+    BaseService
 
-    StorageService  *StorageService
+    StorageServ  *StorageService
 }
 
 func NewHostStorageService(connection *Connection, path string) *HostStorageService {
@@ -8682,8 +8727,9 @@ func (op *HostStorageService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StorageService(path)), nil
+    }
     return op.StorageService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8696,9 +8742,9 @@ func (op *HostStorageService) String() string {
 // A service that manages hosts.
 //
 type HostsService struct {
-    Service
+    BaseService
 
-    HostService  *HostService
+    HostServ  *HostService
 }
 
 func NewHostsService(connection *Connection, path string) *HostsService {
@@ -8842,8 +8888,9 @@ func (op *HostsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.HostService(path)), nil
+    }
     return op.HostService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -8856,7 +8903,7 @@ func (op *HostsService) String() string {
 // A service to manage an icon (read-only).
 //
 type IconService struct {
-    Service
+    BaseService
 
 }
 
@@ -8905,7 +8952,7 @@ func (op *IconService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *IconService) String() string {
@@ -8917,9 +8964,9 @@ func (op *IconService) String() string {
 // A service to manage icons.
 //
 type IconsService struct {
-    Service
+    BaseService
 
-    IconService  *IconService
+    IconServ  *IconService
 }
 
 func NewIconsService(connection *Connection, path string) *IconsService {
@@ -8987,8 +9034,9 @@ func (op *IconsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.IconService(path)), nil
+    }
     return op.IconService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -9000,7 +9048,7 @@ func (op *IconsService) String() string {
 //
 //
 type ImageService struct {
-    Service
+    BaseService
 
 }
 
@@ -9077,7 +9125,7 @@ func (op *ImageService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ImageService) String() string {
@@ -9233,7 +9281,7 @@ func (op *ImageService) String() string {
 // to be used. In both cases, the transfer entity will be removed shortly after.
 //
 type ImageTransferService struct {
-    Service
+    BaseService
 
 }
 
@@ -9356,7 +9404,7 @@ func (op *ImageTransferService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ImageTransferService) String() string {
@@ -9370,9 +9418,9 @@ func (op *ImageTransferService) String() string {
 // documentation.
 //
 type ImageTransfersService struct {
-    Service
+    BaseService
 
-    ImageTransferService  *ImageTransferService
+    ImageTransferServ  *ImageTransferService
 }
 
 func NewImageTransfersService(connection *Connection, path string) *ImageTransfersService {
@@ -9439,8 +9487,9 @@ func (op *ImageTransfersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ImageTransferService(path)), nil
+    }
     return op.ImageTransferService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -9452,9 +9501,9 @@ func (op *ImageTransfersService) String() string {
 //
 //
 type ImagesService struct {
-    Service
+    BaseService
 
-    ImageService  *ImageService
+    ImageServ  *ImageService
 }
 
 func NewImagesService(connection *Connection, path string) *ImagesService {
@@ -9505,8 +9554,9 @@ func (op *ImagesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ImageService(path)), nil
+    }
     return op.ImageService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -9518,11 +9568,11 @@ func (op *ImagesService) String() string {
 //
 //
 type InstanceTypeService struct {
-    Service
+    BaseService
 
-    GraphicsConsolesService  *GraphicsConsolesService
-    NicsService  *NicsService
-    WatchdogsService  *WatchdogsService
+    GraphicsConsolesServ  *InstanceTypeGraphicsConsolesService
+    NicsServ  *InstanceTypeNicsService
+    WatchdogsServ  *InstanceTypeWatchdogsService
 }
 
 func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeService {
@@ -9683,7 +9733,7 @@ func (op *InstanceTypeService) Service(path string) (IService, error) {
     if strings.HasPrefix("watchdogs/") {
         return op.WatchdogsService().Service(path[10:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *InstanceTypeService) String() string {
@@ -9694,7 +9744,7 @@ func (op *InstanceTypeService) String() string {
 //
 //
 type InstanceTypeGraphicsConsoleService struct {
-    Service
+    BaseService
 
 }
 
@@ -9759,7 +9809,7 @@ func (op *InstanceTypeGraphicsConsoleService) Service(path string) (IService, er
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *InstanceTypeGraphicsConsoleService) String() string {
@@ -9770,9 +9820,9 @@ func (op *InstanceTypeGraphicsConsoleService) String() string {
 //
 //
 type InstanceTypeGraphicsConsolesService struct {
-    Service
+    BaseService
 
-    ConsoleService  *ConsoleService
+    ConsoleServ  *InstanceTypeGraphicsConsoleService
 }
 
 func NewInstanceTypeGraphicsConsolesService(connection *Connection, path string) *InstanceTypeGraphicsConsolesService {
@@ -9845,8 +9895,9 @@ func (op *InstanceTypeGraphicsConsolesService) Service(path string) (IService, e
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ConsoleService(path)), nil
+    }
     return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -9858,7 +9909,7 @@ func (op *InstanceTypeGraphicsConsolesService) String() string {
 //
 //
 type InstanceTypeNicService struct {
-    Service
+    BaseService
 
 }
 
@@ -9947,7 +9998,7 @@ func (op *InstanceTypeNicService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *InstanceTypeNicService) String() string {
@@ -9958,9 +10009,9 @@ func (op *InstanceTypeNicService) String() string {
 //
 //
 type InstanceTypeNicsService struct {
-    Service
+    BaseService
 
-    NicService  *NicService
+    NicServ  *InstanceTypeNicService
 }
 
 func NewInstanceTypeNicsService(connection *Connection, path string) *InstanceTypeNicsService {
@@ -10037,8 +10088,9 @@ func (op *InstanceTypeNicsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NicService(path)), nil
+    }
     return op.NicService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -10050,7 +10102,7 @@ func (op *InstanceTypeNicsService) String() string {
 //
 //
 type InstanceTypeWatchdogService struct {
-    Service
+    BaseService
 
 }
 
@@ -10139,7 +10191,7 @@ func (op *InstanceTypeWatchdogService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *InstanceTypeWatchdogService) String() string {
@@ -10150,9 +10202,9 @@ func (op *InstanceTypeWatchdogService) String() string {
 //
 //
 type InstanceTypeWatchdogsService struct {
-    Service
+    BaseService
 
-    WatchdogService  *WatchdogService
+    WatchdogServ  *InstanceTypeWatchdogService
 }
 
 func NewInstanceTypeWatchdogsService(connection *Connection, path string) *InstanceTypeWatchdogsService {
@@ -10230,8 +10282,9 @@ func (op *InstanceTypeWatchdogsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.WatchdogService(path)), nil
+    }
     return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -10243,9 +10296,9 @@ func (op *InstanceTypeWatchdogsService) String() string {
 //
 //
 type InstanceTypesService struct {
-    Service
+    BaseService
 
-    InstanceTypeService  *InstanceTypeService
+    InstanceTypeServ  *InstanceTypeService
 }
 
 func NewInstanceTypesService(connection *Connection, path string) *InstanceTypesService {
@@ -10408,8 +10461,9 @@ func (op *InstanceTypesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.InstanceTypeService(path)), nil
+    }
     return op.InstanceTypeService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -10421,10 +10475,10 @@ func (op *InstanceTypesService) String() string {
 //
 //
 type IscsiBondService struct {
-    Service
+    BaseService
 
-    NetworksService  *NetworksService
-    StorageServerConnectionsService  *StorageServerConnectionsService
+    NetworksServ  *NetworksService
+    StorageServerConnectionsServ  *StorageServerConnectionsService
 }
 
 func NewIscsiBondService(connection *Connection, path string) *IscsiBondService {
@@ -10554,7 +10608,7 @@ func (op *IscsiBondService) Service(path string) (IService, error) {
     if strings.HasPrefix("storageserverconnections/") {
         return op.StorageServerConnectionsService().Service(path[25:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *IscsiBondService) String() string {
@@ -10565,9 +10619,9 @@ func (op *IscsiBondService) String() string {
 //
 //
 type IscsiBondsService struct {
-    Service
+    BaseService
 
-    IscsiBondService  *IscsiBondService
+    IscsiBondServ  *IscsiBondService
 }
 
 func NewIscsiBondsService(connection *Connection, path string) *IscsiBondsService {
@@ -10658,8 +10712,9 @@ func (op *IscsiBondsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.IscsiBondService(path)), nil
+    }
     return op.IscsiBondService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -10672,9 +10727,9 @@ func (op *IscsiBondsService) String() string {
 // A service to manage a job.
 //
 type JobService struct {
-    Service
+    BaseService
 
-    StepsService  *StepsService
+    StepsServ  *StepsService
 }
 
 func NewJobService(connection *Connection, path string) *JobService {
@@ -10826,7 +10881,7 @@ func (op *JobService) Service(path string) (IService, error) {
     if strings.HasPrefix("steps/") {
         return op.StepsService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *JobService) String() string {
@@ -10838,9 +10893,9 @@ func (op *JobService) String() string {
 // A service to manage jobs.
 //
 type JobsService struct {
-    Service
+    BaseService
 
-    JobService  *JobService
+    JobServ  *JobService
 }
 
 func NewJobsService(connection *Connection, path string) *JobsService {
@@ -10975,8 +11030,9 @@ func (op *JobsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.JobService(path)), nil
+    }
     return op.JobService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -10990,9 +11046,9 @@ func (op *JobsService) String() string {
 // The information is retrieved from Katello.
 //
 type KatelloErrataService struct {
-    Service
+    BaseService
 
-    KatelloErratumService  *KatelloErratumService
+    KatelloErratumServ  *KatelloErratumService
 }
 
 func NewKatelloErrataService(connection *Connection, path string) *KatelloErrataService {
@@ -11072,8 +11128,9 @@ func (op *KatelloErrataService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.KatelloErratumService(path)), nil
+    }
     return op.KatelloErratumService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -11086,7 +11143,7 @@ func (op *KatelloErrataService) String() string {
 // A service to manage a Katello erratum.
 //
 type KatelloErratumService struct {
-    Service
+    BaseService
 
 }
 
@@ -11146,7 +11203,7 @@ func (op *KatelloErratumService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *KatelloErratumService) String() string {
@@ -11157,7 +11214,7 @@ func (op *KatelloErratumService) String() string {
 //
 //
 type MacPoolService struct {
-    Service
+    BaseService
 
 }
 
@@ -11275,7 +11332,7 @@ func (op *MacPoolService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *MacPoolService) String() string {
@@ -11286,9 +11343,9 @@ func (op *MacPoolService) String() string {
 //
 //
 type MacPoolsService struct {
-    Service
+    BaseService
 
-    MacPoolService  *MacPoolService
+    MacPoolServ  *MacPoolService
 }
 
 func NewMacPoolsService(connection *Connection, path string) *MacPoolsService {
@@ -11381,8 +11438,9 @@ func (op *MacPoolsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.MacPoolService(path)), nil
+    }
     return op.MacPoolService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -11394,9 +11452,9 @@ func (op *MacPoolsService) String() string {
 //
 //
 type MeasurableService struct {
-    Service
+    BaseService
 
-    StatisticsService  *StatisticsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewMeasurableService(connection *Connection, path string) *MeasurableService {
@@ -11425,7 +11483,7 @@ func (op *MeasurableService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *MeasurableService) String() string {
@@ -11436,7 +11494,7 @@ func (op *MeasurableService) String() string {
 //
 //
 type MoveableService struct {
-    Service
+    BaseService
 
 }
 
@@ -11478,7 +11536,7 @@ func (op *MoveableService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *MoveableService) String() string {
@@ -11490,11 +11548,11 @@ func (op *MoveableService) String() string {
 // A service managing a network
 //
 type NetworkService struct {
-    Service
+    BaseService
 
-    NetworkLabelsService  *NetworkLabelsService
-    PermissionsService  *PermissionsService
-    VnicProfilesService  *VnicProfilesService
+    NetworkLabelsServ  *NetworkLabelsService
+    PermissionsServ  *AssignedPermissionsService
+    VnicProfilesServ  *AssignedVnicProfilesService
 }
 
 func NewNetworkService(connection *Connection, path string) *NetworkService {
@@ -11683,7 +11741,7 @@ func (op *NetworkService) Service(path string) (IService, error) {
     if strings.HasPrefix("vnicprofiles/") {
         return op.VnicProfilesService().Service(path[13:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *NetworkService) String() string {
@@ -11694,7 +11752,7 @@ func (op *NetworkService) String() string {
 //
 //
 type NetworkAttachmentService struct {
-    Service
+    BaseService
 
 }
 
@@ -11780,7 +11838,7 @@ func (op *NetworkAttachmentService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *NetworkAttachmentService) String() string {
@@ -11791,9 +11849,9 @@ func (op *NetworkAttachmentService) String() string {
 //
 //
 type NetworkAttachmentsService struct {
-    Service
+    BaseService
 
-    AttachmentService  *AttachmentService
+    AttachmentServ  *NetworkAttachmentService
 }
 
 func NewNetworkAttachmentsService(connection *Connection, path string) *NetworkAttachmentsService {
@@ -11863,8 +11921,9 @@ func (op *NetworkAttachmentsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.AttachmentService(path)), nil
+    }
     return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -11890,7 +11949,7 @@ func (op *NetworkAttachmentsService) String() string {
 // Please note that version is referring to the minimal support version for the specific filter.
 //
 type NetworkFilterService struct {
-    Service
+    BaseService
 
 }
 
@@ -11927,7 +11986,7 @@ func (op *NetworkFilterService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *NetworkFilterService) String() string {
@@ -11939,7 +11998,7 @@ func (op *NetworkFilterService) String() string {
 // This service manages a parameter for a network filter.
 //
 type NetworkFilterParameterService struct {
-    Service
+    BaseService
 
 }
 
@@ -12040,7 +12099,7 @@ func (op *NetworkFilterParameterService) Service(path string) (IService, error) 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *NetworkFilterParameterService) String() string {
@@ -12052,9 +12111,9 @@ func (op *NetworkFilterParameterService) String() string {
 // This service manages a collection of parameters for network filters.
 //
 type NetworkFilterParametersService struct {
-    Service
+    BaseService
 
-    ParameterService  *ParameterService
+    ParameterServ  *NetworkFilterParameterService
 }
 
 func NewNetworkFilterParametersService(connection *Connection, path string) *NetworkFilterParametersService {
@@ -12137,8 +12196,9 @@ func (op *NetworkFilterParametersService) Service(path string) (IService, error)
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ParameterService(path)), nil
+    }
     return op.ParameterService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -12201,9 +12261,9 @@ func (op *NetworkFilterParametersService) String() string {
 // ----
 //
 type NetworkFiltersService struct {
-    Service
+    BaseService
 
-    NetworkFilterService  *NetworkFilterService
+    NetworkFilterServ  *NetworkFilterService
 }
 
 func NewNetworkFiltersService(connection *Connection, path string) *NetworkFiltersService {
@@ -12246,8 +12306,9 @@ func (op *NetworkFiltersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NetworkFilterService(path)), nil
+    }
     return op.NetworkFilterService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -12259,7 +12320,7 @@ func (op *NetworkFiltersService) String() string {
 //
 //
 type NetworkLabelService struct {
-    Service
+    BaseService
 
 }
 
@@ -12328,7 +12389,7 @@ func (op *NetworkLabelService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *NetworkLabelService) String() string {
@@ -12339,9 +12400,9 @@ func (op *NetworkLabelService) String() string {
 //
 //
 type NetworkLabelsService struct {
-    Service
+    BaseService
 
-    LabelService  *LabelService
+    LabelServ  *NetworkLabelService
 }
 
 func NewNetworkLabelsService(connection *Connection, path string) *NetworkLabelsService {
@@ -12424,8 +12485,9 @@ func (op *NetworkLabelsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LabelService(path)), nil
+    }
     return op.LabelService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -12441,9 +12503,9 @@ func (op *NetworkLabelsService) String() string {
 // data center.
 //
 type NetworksService struct {
-    Service
+    BaseService
 
-    NetworkService  *NetworkService
+    NetworkServ  *NetworkService
 }
 
 func NewNetworksService(connection *Connection, path string) *NetworksService {
@@ -12579,8 +12641,9 @@ func (op *NetworksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NetworkService(path)), nil
+    }
     return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -12592,7 +12655,7 @@ func (op *NetworksService) String() string {
 //
 //
 type OpenstackImageService struct {
-    Service
+    BaseService
 
 }
 
@@ -12684,7 +12747,7 @@ func (op *OpenstackImageService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackImageService) String() string {
@@ -12695,10 +12758,10 @@ func (op *OpenstackImageService) String() string {
 //
 //
 type OpenstackImageProviderService struct {
-    ExternalProviderService
+    BaseService
 
-    CertificatesService  *CertificatesService
-    ImagesService  *ImagesService
+    CertificatesServ  *ExternalProviderCertificatesService
+    ImagesServ  *OpenstackImagesService
 }
 
 func NewOpenstackImageProviderService(connection *Connection, path string) *OpenstackImageProviderService {
@@ -12850,7 +12913,7 @@ func (op *OpenstackImageProviderService) Service(path string) (IService, error) 
     if strings.HasPrefix("images/") {
         return op.ImagesService().Service(path[7:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackImageProviderService) String() string {
@@ -12861,9 +12924,9 @@ func (op *OpenstackImageProviderService) String() string {
 //
 //
 type OpenstackImageProvidersService struct {
-    Service
+    BaseService
 
-    ProviderService  *ProviderService
+    ProviderServ  *OpenstackImageProviderService
 }
 
 func NewOpenstackImageProvidersService(connection *Connection, path string) *OpenstackImageProvidersService {
@@ -12933,8 +12996,9 @@ func (op *OpenstackImageProvidersService) Service(path string) (IService, error)
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProviderService(path)), nil
+    }
     return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -12946,9 +13010,9 @@ func (op *OpenstackImageProvidersService) String() string {
 //
 //
 type OpenstackImagesService struct {
-    Service
+    BaseService
 
-    ImageService  *ImageService
+    ImageServ  *OpenstackImageService
 }
 
 func NewOpenstackImagesService(connection *Connection, path string) *OpenstackImagesService {
@@ -13001,8 +13065,9 @@ func (op *OpenstackImagesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ImageService(path)), nil
+    }
     return op.ImageService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -13014,9 +13079,9 @@ func (op *OpenstackImagesService) String() string {
 //
 //
 type OpenstackNetworkService struct {
-    Service
+    BaseService
 
-    SubnetsService  *SubnetsService
+    SubnetsServ  *OpenstackSubnetsService
 }
 
 func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackNetworkService {
@@ -13095,7 +13160,7 @@ func (op *OpenstackNetworkService) Service(path string) (IService, error) {
     if strings.HasPrefix("subnets/") {
         return op.SubnetsService().Service(path[8:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackNetworkService) String() string {
@@ -13107,10 +13172,10 @@ func (op *OpenstackNetworkService) String() string {
 // This service manages OpenStack network provider.
 //
 type OpenstackNetworkProviderService struct {
-    ExternalProviderService
+    BaseService
 
-    CertificatesService  *CertificatesService
-    NetworksService  *NetworksService
+    CertificatesServ  *ExternalProviderCertificatesService
+    NetworksServ  *OpenstackNetworksService
 }
 
 func NewOpenstackNetworkProviderService(connection *Connection, path string) *OpenstackNetworkProviderService {
@@ -13298,7 +13363,7 @@ func (op *OpenstackNetworkProviderService) Service(path string) (IService, error
     if strings.HasPrefix("networks/") {
         return op.NetworksService().Service(path[9:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackNetworkProviderService) String() string {
@@ -13310,9 +13375,9 @@ func (op *OpenstackNetworkProviderService) String() string {
 // This service manages OpenStack network providers.
 //
 type OpenstackNetworkProvidersService struct {
-    Service
+    BaseService
 
-    ProviderService  *ProviderService
+    ProviderServ  *OpenstackNetworkProviderService
 }
 
 func NewOpenstackNetworkProvidersService(connection *Connection, path string) *OpenstackNetworkProvidersService {
@@ -13385,8 +13450,9 @@ func (op *OpenstackNetworkProvidersService) Service(path string) (IService, erro
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProviderService(path)), nil
+    }
     return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -13398,9 +13464,9 @@ func (op *OpenstackNetworkProvidersService) String() string {
 //
 //
 type OpenstackNetworksService struct {
-    Service
+    BaseService
 
-    NetworkService  *NetworkService
+    NetworkServ  *OpenstackNetworkService
 }
 
 func NewOpenstackNetworksService(connection *Connection, path string) *OpenstackNetworksService {
@@ -13451,8 +13517,9 @@ func (op *OpenstackNetworksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NetworkService(path)), nil
+    }
     return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -13464,7 +13531,7 @@ func (op *OpenstackNetworksService) String() string {
 //
 //
 type OpenstackSubnetService struct {
-    Service
+    BaseService
 
 }
 
@@ -13527,7 +13594,7 @@ func (op *OpenstackSubnetService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackSubnetService) String() string {
@@ -13538,9 +13605,9 @@ func (op *OpenstackSubnetService) String() string {
 //
 //
 type OpenstackSubnetsService struct {
-    Service
+    BaseService
 
-    SubnetService  *SubnetService
+    SubnetServ  *OpenstackSubnetService
 }
 
 func NewOpenstackSubnetsService(connection *Connection, path string) *OpenstackSubnetsService {
@@ -13610,8 +13677,9 @@ func (op *OpenstackSubnetsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.SubnetService(path)), nil
+    }
     return op.SubnetService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -13623,7 +13691,7 @@ func (op *OpenstackSubnetsService) String() string {
 //
 //
 type OpenstackVolumeAuthenticationKeyService struct {
-    Service
+    BaseService
 
 }
 
@@ -13705,7 +13773,7 @@ func (op *OpenstackVolumeAuthenticationKeyService) Service(path string) (IServic
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackVolumeAuthenticationKeyService) String() string {
@@ -13716,9 +13784,9 @@ func (op *OpenstackVolumeAuthenticationKeyService) String() string {
 //
 //
 type OpenstackVolumeAuthenticationKeysService struct {
-    Service
+    BaseService
 
-    KeyService  *KeyService
+    KeyServ  *OpenstackVolumeAuthenticationKeyService
 }
 
 func NewOpenstackVolumeAuthenticationKeysService(connection *Connection, path string) *OpenstackVolumeAuthenticationKeysService {
@@ -13788,8 +13856,9 @@ func (op *OpenstackVolumeAuthenticationKeysService) Service(path string) (IServi
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.KeyService(path)), nil
+    }
     return op.KeyService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -13801,11 +13870,11 @@ func (op *OpenstackVolumeAuthenticationKeysService) String() string {
 //
 //
 type OpenstackVolumeProviderService struct {
-    ExternalProviderService
+    BaseService
 
-    AuthenticationKeysService  *AuthenticationKeysService
-    CertificatesService  *CertificatesService
-    VolumeTypesService  *VolumeTypesService
+    AuthenticationKeysServ  *OpenstackVolumeAuthenticationKeysService
+    CertificatesServ  *ExternalProviderCertificatesService
+    VolumeTypesServ  *OpenstackVolumeTypesService
 }
 
 func NewOpenstackVolumeProviderService(connection *Connection, path string) *OpenstackVolumeProviderService {
@@ -13969,7 +14038,7 @@ func (op *OpenstackVolumeProviderService) Service(path string) (IService, error)
     if strings.HasPrefix("volumetypes/") {
         return op.VolumeTypesService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackVolumeProviderService) String() string {
@@ -13980,9 +14049,9 @@ func (op *OpenstackVolumeProviderService) String() string {
 //
 //
 type OpenstackVolumeProvidersService struct {
-    Service
+    BaseService
 
-    ProviderService  *ProviderService
+    ProviderServ  *OpenstackVolumeProviderService
 }
 
 func NewOpenstackVolumeProvidersService(connection *Connection, path string) *OpenstackVolumeProvidersService {
@@ -14074,8 +14143,9 @@ func (op *OpenstackVolumeProvidersService) Service(path string) (IService, error
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProviderService(path)), nil
+    }
     return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -14087,7 +14157,7 @@ func (op *OpenstackVolumeProvidersService) String() string {
 //
 //
 type OpenstackVolumeTypeService struct {
-    Service
+    BaseService
 
 }
 
@@ -14123,7 +14193,7 @@ func (op *OpenstackVolumeTypeService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OpenstackVolumeTypeService) String() string {
@@ -14134,9 +14204,9 @@ func (op *OpenstackVolumeTypeService) String() string {
 //
 //
 type OpenstackVolumeTypesService struct {
-    Service
+    BaseService
 
-    TypeService  *TypeService
+    TypeServ  *OpenstackVolumeTypeService
 }
 
 func NewOpenstackVolumeTypesService(connection *Connection, path string) *OpenstackVolumeTypesService {
@@ -14187,8 +14257,9 @@ func (op *OpenstackVolumeTypesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.TypeService(path)), nil
+    }
     return op.TypeService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -14200,7 +14271,7 @@ func (op *OpenstackVolumeTypesService) String() string {
 //
 //
 type OperatingSystemService struct {
-    Service
+    BaseService
 
 }
 
@@ -14236,7 +14307,7 @@ func (op *OperatingSystemService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *OperatingSystemService) String() string {
@@ -14247,9 +14318,9 @@ func (op *OperatingSystemService) String() string {
 //
 //
 type OperatingSystemsService struct {
-    Service
+    BaseService
 
-    OperatingSystemService  *OperatingSystemService
+    OperatingSystemServ  *OperatingSystemService
 }
 
 func NewOperatingSystemsService(connection *Connection, path string) *OperatingSystemsService {
@@ -14300,8 +14371,9 @@ func (op *OperatingSystemsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.OperatingSystemService(path)), nil
+    }
     return op.OperatingSystemService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -14313,7 +14385,7 @@ func (op *OperatingSystemsService) String() string {
 //
 //
 type PermissionService struct {
-    Service
+    BaseService
 
 }
 
@@ -14376,7 +14448,7 @@ func (op *PermissionService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *PermissionService) String() string {
@@ -14388,7 +14460,7 @@ func (op *PermissionService) String() string {
 // A service to manage a specific permit of the role.
 //
 type PermitService struct {
-    Service
+    BaseService
 
 }
 
@@ -14470,7 +14542,7 @@ func (op *PermitService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *PermitService) String() string {
@@ -14482,9 +14554,9 @@ func (op *PermitService) String() string {
 // Represents a permits sub-collection of the specific role.
 //
 type PermitsService struct {
-    Service
+    BaseService
 
-    PermitService  *PermitService
+    PermitServ  *PermitService
 }
 
 func NewPermitsService(connection *Connection, path string) *PermitsService {
@@ -14592,8 +14664,9 @@ func (op *PermitsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.PermitService(path)), nil
+    }
     return op.PermitService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -14605,7 +14678,7 @@ func (op *PermitsService) String() string {
 //
 //
 type QosService struct {
-    Service
+    BaseService
 
 }
 
@@ -14691,7 +14764,7 @@ func (op *QosService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *QosService) String() string {
@@ -14702,9 +14775,9 @@ func (op *QosService) String() string {
 //
 //
 type QossService struct {
-    Service
+    BaseService
 
-    QosService  *QosService
+    QosServ  *QosService
 }
 
 func NewQossService(connection *Connection, path string) *QossService {
@@ -14774,8 +14847,9 @@ func (op *QossService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.QosService(path)), nil
+    }
     return op.QosService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -14787,11 +14861,11 @@ func (op *QossService) String() string {
 //
 //
 type QuotaService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
-    QuotaClusterLimitsService  *QuotaClusterLimitsService
-    QuotaStorageLimitsService  *QuotaStorageLimitsService
+    PermissionsServ  *AssignedPermissionsService
+    QuotaClusterLimitsServ  *QuotaClusterLimitsService
+    QuotaStorageLimitsServ  *QuotaStorageLimitsService
 }
 
 func NewQuotaService(connection *Connection, path string) *QuotaService {
@@ -14953,7 +15027,7 @@ func (op *QuotaService) Service(path string) (IService, error) {
     if strings.HasPrefix("quotastoragelimits/") {
         return op.QuotaStorageLimitsService().Service(path[19:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *QuotaService) String() string {
@@ -14964,7 +15038,7 @@ func (op *QuotaService) String() string {
 //
 //
 type QuotaClusterLimitService struct {
-    Service
+    BaseService
 
 }
 
@@ -15027,7 +15101,7 @@ func (op *QuotaClusterLimitService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *QuotaClusterLimitService) String() string {
@@ -15038,9 +15112,9 @@ func (op *QuotaClusterLimitService) String() string {
 //
 //
 type QuotaClusterLimitsService struct {
-    Service
+    BaseService
 
-    LimitService  *LimitService
+    LimitServ  *QuotaClusterLimitService
 }
 
 func NewQuotaClusterLimitsService(connection *Connection, path string) *QuotaClusterLimitsService {
@@ -15110,8 +15184,9 @@ func (op *QuotaClusterLimitsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LimitService(path)), nil
+    }
     return op.LimitService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -15123,7 +15198,7 @@ func (op *QuotaClusterLimitsService) String() string {
 //
 //
 type QuotaStorageLimitService struct {
-    Service
+    BaseService
 
 }
 
@@ -15186,7 +15261,7 @@ func (op *QuotaStorageLimitService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *QuotaStorageLimitService) String() string {
@@ -15197,9 +15272,9 @@ func (op *QuotaStorageLimitService) String() string {
 //
 //
 type QuotaStorageLimitsService struct {
-    Service
+    BaseService
 
-    LimitService  *LimitService
+    LimitServ  *QuotaStorageLimitService
 }
 
 func NewQuotaStorageLimitsService(connection *Connection, path string) *QuotaStorageLimitsService {
@@ -15269,8 +15344,9 @@ func (op *QuotaStorageLimitsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.LimitService(path)), nil
+    }
     return op.LimitService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -15282,9 +15358,9 @@ func (op *QuotaStorageLimitsService) String() string {
 //
 //
 type QuotasService struct {
-    Service
+    BaseService
 
-    QuotaService  *QuotaService
+    QuotaServ  *QuotaService
 }
 
 func NewQuotasService(connection *Connection, path string) *QuotasService {
@@ -15368,8 +15444,9 @@ func (op *QuotasService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.QuotaService(path)), nil
+    }
     return op.QuotaService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -15381,9 +15458,9 @@ func (op *QuotasService) String() string {
 //
 //
 type RoleService struct {
-    Service
+    BaseService
 
-    PermitsService  *PermitsService
+    PermitsServ  *PermitsService
 }
 
 func NewRoleService(connection *Connection, path string) *RoleService {
@@ -15525,7 +15602,7 @@ func (op *RoleService) Service(path string) (IService, error) {
     if strings.HasPrefix("permits/") {
         return op.PermitsService().Service(path[8:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *RoleService) String() string {
@@ -15537,9 +15614,9 @@ func (op *RoleService) String() string {
 // Provides read-only access to the global set of roles
 //
 type RolesService struct {
-    Service
+    BaseService
 
-    RoleService  *RoleService
+    RoleServ  *RoleService
 }
 
 func NewRolesService(connection *Connection, path string) *RolesService {
@@ -15654,8 +15731,9 @@ func (op *RolesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.RoleService(path)), nil
+    }
     return op.RoleService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -15667,9 +15745,9 @@ func (op *RolesService) String() string {
 //
 //
 type SchedulingPoliciesService struct {
-    Service
+    BaseService
 
-    PolicyService  *PolicyService
+    PolicyServ  *SchedulingPolicyService
 }
 
 func NewSchedulingPoliciesService(connection *Connection, path string) *SchedulingPoliciesService {
@@ -15744,8 +15822,9 @@ func (op *SchedulingPoliciesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.PolicyService(path)), nil
+    }
     return op.PolicyService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -15757,11 +15836,11 @@ func (op *SchedulingPoliciesService) String() string {
 //
 //
 type SchedulingPolicyService struct {
-    Service
+    BaseService
 
-    BalancesService  *BalancesService
-    FiltersService  *FiltersService
-    WeightsService  *WeightsService
+    BalancesServ  *BalancesService
+    FiltersServ  *FiltersService
+    WeightsServ  *WeightsService
 }
 
 func NewSchedulingPolicyService(connection *Connection, path string) *SchedulingPolicyService {
@@ -15891,7 +15970,7 @@ func (op *SchedulingPolicyService) Service(path string) (IService, error) {
     if strings.HasPrefix("weights/") {
         return op.WeightsService().Service(path[8:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SchedulingPolicyService) String() string {
@@ -15902,7 +15981,7 @@ func (op *SchedulingPolicyService) String() string {
 //
 //
 type SchedulingPolicyUnitService struct {
-    Service
+    BaseService
 
 }
 
@@ -15974,7 +16053,7 @@ func (op *SchedulingPolicyUnitService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SchedulingPolicyUnitService) String() string {
@@ -15985,9 +16064,9 @@ func (op *SchedulingPolicyUnitService) String() string {
 //
 //
 type SchedulingPolicyUnitsService struct {
-    Service
+    BaseService
 
-    UnitService  *UnitService
+    UnitServ  *SchedulingPolicyUnitService
 }
 
 func NewSchedulingPolicyUnitsService(connection *Connection, path string) *SchedulingPolicyUnitsService {
@@ -16043,8 +16122,9 @@ func (op *SchedulingPolicyUnitsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.UnitService(path)), nil
+    }
     return op.UnitService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16056,11 +16136,11 @@ func (op *SchedulingPolicyUnitsService) String() string {
 //
 //
 type SnapshotService struct {
-    Service
+    BaseService
 
-    CdromsService  *CdromsService
-    DisksService  *DisksService
-    NicsService  *NicsService
+    CdromsServ  *SnapshotCdromsService
+    DisksServ  *SnapshotDisksService
+    NicsServ  *SnapshotNicsService
 }
 
 func NewSnapshotService(connection *Connection, path string) *SnapshotService {
@@ -16209,7 +16289,7 @@ func (op *SnapshotService) Service(path string) (IService, error) {
     if strings.HasPrefix("nics/") {
         return op.NicsService().Service(path[5:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SnapshotService) String() string {
@@ -16220,7 +16300,7 @@ func (op *SnapshotService) String() string {
 //
 //
 type SnapshotCdromService struct {
-    Service
+    BaseService
 
 }
 
@@ -16256,7 +16336,7 @@ func (op *SnapshotCdromService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SnapshotCdromService) String() string {
@@ -16267,9 +16347,9 @@ func (op *SnapshotCdromService) String() string {
 //
 //
 type SnapshotCdromsService struct {
-    Service
+    BaseService
 
-    CdromService  *CdromService
+    CdromServ  *SnapshotCdromService
 }
 
 func NewSnapshotCdromsService(connection *Connection, path string) *SnapshotCdromsService {
@@ -16320,8 +16400,9 @@ func (op *SnapshotCdromsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.CdromService(path)), nil
+    }
     return op.CdromService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16333,7 +16414,7 @@ func (op *SnapshotCdromsService) String() string {
 //
 //
 type SnapshotDiskService struct {
-    Service
+    BaseService
 
 }
 
@@ -16369,7 +16450,7 @@ func (op *SnapshotDiskService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SnapshotDiskService) String() string {
@@ -16380,9 +16461,9 @@ func (op *SnapshotDiskService) String() string {
 //
 //
 type SnapshotDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *SnapshotDiskService
 }
 
 func NewSnapshotDisksService(connection *Connection, path string) *SnapshotDisksService {
@@ -16433,8 +16514,9 @@ func (op *SnapshotDisksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16446,7 +16528,7 @@ func (op *SnapshotDisksService) String() string {
 //
 //
 type SnapshotNicService struct {
-    Service
+    BaseService
 
 }
 
@@ -16482,7 +16564,7 @@ func (op *SnapshotNicService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SnapshotNicService) String() string {
@@ -16493,9 +16575,9 @@ func (op *SnapshotNicService) String() string {
 //
 //
 type SnapshotNicsService struct {
-    Service
+    BaseService
 
-    NicService  *NicService
+    NicServ  *SnapshotNicService
 }
 
 func NewSnapshotNicsService(connection *Connection, path string) *SnapshotNicsService {
@@ -16546,8 +16628,9 @@ func (op *SnapshotNicsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NicService(path)), nil
+    }
     return op.NicService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16559,9 +16642,9 @@ func (op *SnapshotNicsService) String() string {
 //
 //
 type SnapshotsService struct {
-    Service
+    BaseService
 
-    SnapshotService  *SnapshotService
+    SnapshotServ  *SnapshotService
 }
 
 func NewSnapshotsService(connection *Connection, path string) *SnapshotsService {
@@ -16655,8 +16738,9 @@ func (op *SnapshotsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.SnapshotService(path)), nil
+    }
     return op.SnapshotService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16668,7 +16752,7 @@ func (op *SnapshotsService) String() string {
 //
 //
 type SshPublicKeyService struct {
-    Service
+    BaseService
 
 }
 
@@ -16754,7 +16838,7 @@ func (op *SshPublicKeyService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SshPublicKeyService) String() string {
@@ -16765,9 +16849,9 @@ func (op *SshPublicKeyService) String() string {
 //
 //
 type SshPublicKeysService struct {
-    Service
+    BaseService
 
-    KeyService  *KeyService
+    KeyServ  *SshPublicKeyService
 }
 
 func NewSshPublicKeysService(connection *Connection, path string) *SshPublicKeysService {
@@ -16837,8 +16921,9 @@ func (op *SshPublicKeysService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.KeyService(path)), nil
+    }
     return op.KeyService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -16850,7 +16935,7 @@ func (op *SshPublicKeysService) String() string {
 //
 //
 type StatisticService struct {
-    Service
+    BaseService
 
 }
 
@@ -16890,7 +16975,7 @@ func (op *StatisticService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StatisticService) String() string {
@@ -16901,9 +16986,9 @@ func (op *StatisticService) String() string {
 //
 //
 type StatisticsService struct {
-    Service
+    BaseService
 
-    StatisticService  *StatisticService
+    StatisticServ  *StatisticService
 }
 
 func NewStatisticsService(connection *Connection, path string) *StatisticsService {
@@ -17003,8 +17088,9 @@ func (op *StatisticsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StatisticService(path)), nil
+    }
     return op.StatisticService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -17017,9 +17103,9 @@ func (op *StatisticsService) String() string {
 // A service to manage a step.
 //
 type StepService struct {
-    MeasurableService
+    BaseService
 
-    StatisticsService  *StatisticsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewStepService(connection *Connection, path string) *StepService {
@@ -17134,7 +17220,7 @@ func (op *StepService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StepService) String() string {
@@ -17146,9 +17232,9 @@ func (op *StepService) String() string {
 // A service to manage steps.
 //
 type StepsService struct {
-    Service
+    BaseService
 
-    StepService  *StepService
+    StepServ  *StepService
 }
 
 func NewStepsService(connection *Connection, path string) *StepsService {
@@ -17283,8 +17369,9 @@ func (op *StepsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StepService(path)), nil
+    }
     return op.StepService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -17296,7 +17383,7 @@ func (op *StepsService) String() string {
 //
 //
 type StorageService struct {
-    Service
+    BaseService
 
 }
 
@@ -17384,7 +17471,7 @@ func (op *StorageService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageService) String() string {
@@ -17395,17 +17482,17 @@ func (op *StorageService) String() string {
 //
 //
 type StorageDomainService struct {
-    Service
+    BaseService
 
-    DiskProfilesService  *DiskProfilesService
-    DiskSnapshotsService  *DiskSnapshotsService
-    DisksService  *DisksService
-    FilesService  *FilesService
-    ImagesService  *ImagesService
-    PermissionsService  *PermissionsService
-    StorageConnectionsService  *StorageConnectionsService
-    TemplatesService  *TemplatesService
-    VmsService  *VmsService
+    DiskProfilesServ  *AssignedDiskProfilesService
+    DiskSnapshotsServ  *DiskSnapshotsService
+    DisksServ  *StorageDomainDisksService
+    FilesServ  *FilesService
+    ImagesServ  *ImagesService
+    PermissionsServ  *AssignedPermissionsService
+    StorageConnectionsServ  *StorageDomainServerConnectionsService
+    TemplatesServ  *StorageDomainTemplatesService
+    VmsServ  *StorageDomainVmsService
 }
 
 func NewStorageDomainService(connection *Connection, path string) *StorageDomainService {
@@ -17822,7 +17909,7 @@ func (op *StorageDomainService) Service(path string) (IService, error) {
     if strings.HasPrefix("vms/") {
         return op.VmsService().Service(path[4:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainService) String() string {
@@ -17833,7 +17920,7 @@ func (op *StorageDomainService) String() string {
 //
 //
 type StorageDomainContentDiskService struct {
-    Service
+    BaseService
 
 }
 
@@ -17878,7 +17965,7 @@ func (op *StorageDomainContentDiskService) Service(path string) (IService, error
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainContentDiskService) String() string {
@@ -17889,9 +17976,9 @@ func (op *StorageDomainContentDiskService) String() string {
 //
 //
 type StorageDomainContentDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *StorageDomainContentDiskService
 }
 
 func NewStorageDomainContentDisksService(connection *Connection, path string) *StorageDomainContentDisksService {
@@ -17954,8 +18041,9 @@ func (op *StorageDomainContentDisksService) Service(path string) (IService, erro
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -17972,10 +18060,10 @@ func (op *StorageDomainContentDisksService) String() string {
 // that manages all the disks of the system>>, or the <<services/disk, service that manages an specific disk>>.
 //
 type StorageDomainDiskService struct {
-    MeasurableService
+    BaseService
 
-    PermissionsService  *PermissionsService
-    StatisticsService  *StatisticsService
+    PermissionsServ  *AssignedPermissionsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewStorageDomainDiskService(connection *Connection, path string) *StorageDomainDiskService {
@@ -18200,7 +18288,7 @@ func (op *StorageDomainDiskService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainDiskService) String() string {
@@ -18212,9 +18300,9 @@ func (op *StorageDomainDiskService) String() string {
 // Manages the collection of disks available inside an specific storage domain.
 //
 type StorageDomainDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *StorageDomainDiskService
 }
 
 func NewStorageDomainDisksService(connection *Connection, path string) *StorageDomainDisksService {
@@ -18301,8 +18389,9 @@ func (op *StorageDomainDisksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -18314,7 +18403,7 @@ func (op *StorageDomainDisksService) String() string {
 //
 //
 type StorageDomainServerConnectionService struct {
-    Service
+    BaseService
 
 }
 
@@ -18378,7 +18467,7 @@ func (op *StorageDomainServerConnectionService) Service(path string) (IService, 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainServerConnectionService) String() string {
@@ -18389,9 +18478,9 @@ func (op *StorageDomainServerConnectionService) String() string {
 //
 //
 type StorageDomainServerConnectionsService struct {
-    Service
+    BaseService
 
-    ConnectionService  *ConnectionService
+    ConnectionServ  *StorageDomainServerConnectionService
 }
 
 func NewStorageDomainServerConnectionsService(connection *Connection, path string) *StorageDomainServerConnectionsService {
@@ -18461,8 +18550,9 @@ func (op *StorageDomainServerConnectionsService) Service(path string) (IService,
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ConnectionService(path)), nil
+    }
     return op.ConnectionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -18474,9 +18564,9 @@ func (op *StorageDomainServerConnectionsService) String() string {
 //
 //
 type StorageDomainTemplateService struct {
-    Service
+    BaseService
 
-    DisksService  *DisksService
+    DisksServ  *StorageDomainContentDisksService
 }
 
 func NewStorageDomainTemplateService(connection *Connection, path string) *StorageDomainTemplateService {
@@ -18645,7 +18735,7 @@ func (op *StorageDomainTemplateService) Service(path string) (IService, error) {
     if strings.HasPrefix("disks/") {
         return op.DisksService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainTemplateService) String() string {
@@ -18656,9 +18746,9 @@ func (op *StorageDomainTemplateService) String() string {
 //
 //
 type StorageDomainTemplatesService struct {
-    Service
+    BaseService
 
-    TemplateService  *TemplateService
+    TemplateServ  *StorageDomainTemplateService
 }
 
 func NewStorageDomainTemplatesService(connection *Connection, path string) *StorageDomainTemplatesService {
@@ -18709,8 +18799,9 @@ func (op *StorageDomainTemplatesService) Service(path string) (IService, error) 
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.TemplateService(path)), nil
+    }
     return op.TemplateService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -18722,10 +18813,10 @@ func (op *StorageDomainTemplatesService) String() string {
 //
 //
 type StorageDomainVmService struct {
-    Service
+    BaseService
 
-    DiskAttachmentsService  *DiskAttachmentsService
-    DisksService  *DisksService
+    DiskAttachmentsServ  *StorageDomainVmDiskAttachmentsService
+    DisksServ  *StorageDomainContentDisksService
 }
 
 func NewStorageDomainVmService(connection *Connection, path string) *StorageDomainVmService {
@@ -18961,7 +19052,7 @@ func (op *StorageDomainVmService) Service(path string) (IService, error) {
     if strings.HasPrefix("disks/") {
         return op.DisksService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainVmService) String() string {
@@ -18973,7 +19064,7 @@ func (op *StorageDomainVmService) String() string {
 // Returns the details of the disks attached to a virtual machine in the export domain.
 //
 type StorageDomainVmDiskAttachmentService struct {
-    Service
+    BaseService
 
 }
 
@@ -19010,7 +19101,7 @@ func (op *StorageDomainVmDiskAttachmentService) Service(path string) (IService, 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageDomainVmDiskAttachmentService) String() string {
@@ -19022,9 +19113,9 @@ func (op *StorageDomainVmDiskAttachmentService) String() string {
 // Returns the details of a disk attached to a virtual machine in the export domain.
 //
 type StorageDomainVmDiskAttachmentsService struct {
-    Service
+    BaseService
 
-    AttachmentService  *AttachmentService
+    AttachmentServ  *StorageDomainVmDiskAttachmentService
 }
 
 func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path string) *StorageDomainVmDiskAttachmentsService {
@@ -19068,8 +19159,9 @@ func (op *StorageDomainVmDiskAttachmentsService) Service(path string) (IService,
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.AttachmentService(path)), nil
+    }
     return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -19106,9 +19198,9 @@ func (op *StorageDomainVmDiskAttachmentsService) String() string {
 // action.
 //
 type StorageDomainVmsService struct {
-    Service
+    BaseService
 
-    VmService  *VmService
+    VmServ  *StorageDomainVmService
 }
 
 func NewStorageDomainVmsService(connection *Connection, path string) *StorageDomainVmsService {
@@ -19160,8 +19252,9 @@ func (op *StorageDomainVmsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.VmService(path)), nil
+    }
     return op.VmService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -19173,9 +19266,9 @@ func (op *StorageDomainVmsService) String() string {
 //
 //
 type StorageDomainsService struct {
-    Service
+    BaseService
 
-    StorageDomainService  *StorageDomainService
+    StorageDomainServ  *StorageDomainService
 }
 
 func NewStorageDomainsService(connection *Connection, path string) *StorageDomainsService {
@@ -19324,8 +19417,9 @@ func (op *StorageDomainsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StorageDomainService(path)), nil
+    }
     return op.StorageDomainService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -19337,7 +19431,7 @@ func (op *StorageDomainsService) String() string {
 //
 //
 type StorageServerConnectionService struct {
-    Service
+    BaseService
 
 }
 
@@ -19458,7 +19552,7 @@ func (op *StorageServerConnectionService) Service(path string) (IService, error)
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageServerConnectionService) String() string {
@@ -19469,7 +19563,7 @@ func (op *StorageServerConnectionService) String() string {
 //
 //
 type StorageServerConnectionExtensionService struct {
-    Service
+    BaseService
 
 }
 
@@ -19570,7 +19664,7 @@ func (op *StorageServerConnectionExtensionService) Service(path string) (IServic
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *StorageServerConnectionExtensionService) String() string {
@@ -19581,9 +19675,9 @@ func (op *StorageServerConnectionExtensionService) String() string {
 //
 //
 type StorageServerConnectionExtensionsService struct {
-    Service
+    BaseService
 
-    StorageConnectionExtensionService  *StorageConnectionExtensionService
+    StorageConnectionExtensionServ  *StorageServerConnectionExtensionService
 }
 
 func NewStorageServerConnectionExtensionsService(connection *Connection, path string) *StorageServerConnectionExtensionsService {
@@ -19670,8 +19764,9 @@ func (op *StorageServerConnectionExtensionsService) Service(path string) (IServi
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StorageConnectionExtensionService(path)), nil
+    }
     return op.StorageConnectionExtensionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -19683,9 +19778,9 @@ func (op *StorageServerConnectionExtensionsService) String() string {
 //
 //
 type StorageServerConnectionsService struct {
-    Service
+    BaseService
 
-    StorageConnectionService  *StorageConnectionService
+    StorageConnectionServ  *StorageServerConnectionService
 }
 
 func NewStorageServerConnectionsService(connection *Connection, path string) *StorageServerConnectionsService {
@@ -19774,8 +19869,9 @@ func (op *StorageServerConnectionsService) Service(path string) (IService, error
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.StorageConnectionService(path)), nil
+    }
     return op.StorageConnectionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -19787,46 +19883,46 @@ func (op *StorageServerConnectionsService) String() string {
 //
 //
 type SystemService struct {
-    Service
+    BaseService
 
-    AffinityLabelsService  *AffinityLabelsService
-    BookmarksService  *BookmarksService
-    ClusterLevelsService  *ClusterLevelsService
-    ClustersService  *ClustersService
-    CpuProfilesService  *CpuProfilesService
-    DataCentersService  *DataCentersService
-    DiskProfilesService  *DiskProfilesService
-    DisksService  *DisksService
-    DomainsService  *DomainsService
-    EventsService  *EventsService
-    ExternalHostProvidersService  *ExternalHostProvidersService
-    ExternalVmImportsService  *ExternalVmImportsService
-    GroupsService  *GroupsService
-    HostsService  *HostsService
-    IconsService  *IconsService
-    ImageTransfersService  *ImageTransfersService
-    InstanceTypesService  *InstanceTypesService
-    JobsService  *JobsService
-    KatelloErrataService  *KatelloErrataService
-    MacPoolsService  *MacPoolsService
-    NetworkFiltersService  *NetworkFiltersService
-    NetworksService  *NetworksService
-    OpenstackImageProvidersService  *OpenstackImageProvidersService
-    OpenstackNetworkProvidersService  *OpenstackNetworkProvidersService
-    OpenstackVolumeProvidersService  *OpenstackVolumeProvidersService
-    OperatingSystemsService  *OperatingSystemsService
-    PermissionsService  *PermissionsService
-    RolesService  *RolesService
-    SchedulingPoliciesService  *SchedulingPoliciesService
-    SchedulingPolicyUnitsService  *SchedulingPolicyUnitsService
-    StorageConnectionsService  *StorageConnectionsService
-    StorageDomainsService  *StorageDomainsService
-    TagsService  *TagsService
-    TemplatesService  *TemplatesService
-    UsersService  *UsersService
-    VmPoolsService  *VmPoolsService
-    VmsService  *VmsService
-    VnicProfilesService  *VnicProfilesService
+    AffinityLabelsServ  *AffinityLabelsService
+    BookmarksServ  *BookmarksService
+    ClusterLevelsServ  *ClusterLevelsService
+    ClustersServ  *ClustersService
+    CpuProfilesServ  *CpuProfilesService
+    DataCentersServ  *DataCentersService
+    DiskProfilesServ  *DiskProfilesService
+    DisksServ  *DisksService
+    DomainsServ  *DomainsService
+    EventsServ  *EventsService
+    ExternalHostProvidersServ  *ExternalHostProvidersService
+    ExternalVmImportsServ  *ExternalVmImportsService
+    GroupsServ  *GroupsService
+    HostsServ  *HostsService
+    IconsServ  *IconsService
+    ImageTransfersServ  *ImageTransfersService
+    InstanceTypesServ  *InstanceTypesService
+    JobsServ  *JobsService
+    KatelloErrataServ  *EngineKatelloErrataService
+    MacPoolsServ  *MacPoolsService
+    NetworkFiltersServ  *NetworkFiltersService
+    NetworksServ  *NetworksService
+    OpenstackImageProvidersServ  *OpenstackImageProvidersService
+    OpenstackNetworkProvidersServ  *OpenstackNetworkProvidersService
+    OpenstackVolumeProvidersServ  *OpenstackVolumeProvidersService
+    OperatingSystemsServ  *OperatingSystemsService
+    PermissionsServ  *SystemPermissionsService
+    RolesServ  *RolesService
+    SchedulingPoliciesServ  *SchedulingPoliciesService
+    SchedulingPolicyUnitsServ  *SchedulingPolicyUnitsService
+    StorageConnectionsServ  *StorageServerConnectionsService
+    StorageDomainsServ  *StorageDomainsService
+    TagsServ  *TagsService
+    TemplatesServ  *TemplatesService
+    UsersServ  *UsersService
+    VmPoolsServ  *VmPoolsService
+    VmsServ  *VmsService
+    VnicProfilesServ  *VnicProfilesService
 }
 
 func NewSystemService(connection *Connection, path string) *SystemService {
@@ -20423,7 +20519,7 @@ func (op *SystemService) Service(path string) (IService, error) {
     if strings.HasPrefix("vnicprofiles/") {
         return op.VnicProfilesService().Service(path[13:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *SystemService) String() string {
@@ -20436,9 +20532,9 @@ func (op *SystemService) String() string {
 // resource that manages the permissions assigned to the system object.
 //
 type SystemPermissionsService struct {
-    AssignedPermissionsService
+    BaseService
 
-    PermissionService  *PermissionService
+    PermissionServ  *PermissionService
 }
 
 func NewSystemPermissionsService(connection *Connection, path string) *SystemPermissionsService {
@@ -20572,8 +20668,9 @@ func (op *SystemPermissionsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.PermissionService(path)), nil
+    }
     return op.PermissionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -20586,7 +20683,7 @@ func (op *SystemPermissionsService) String() string {
 // A service to manage a specific tag in the system.
 //
 type TagService struct {
-    Service
+    BaseService
 
 }
 
@@ -20716,7 +20813,7 @@ func (op *TagService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TagService) String() string {
@@ -20728,9 +20825,9 @@ func (op *TagService) String() string {
 // Represents a service to manage collection of the tags in the system.
 //
 type TagsService struct {
-    Service
+    BaseService
 
-    TagService  *TagService
+    TagServ  *TagService
 }
 
 func NewTagsService(connection *Connection, path string) *TagsService {
@@ -20860,8 +20957,9 @@ func (op *TagsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.TagService(path)), nil
+    }
     return op.TagService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -20874,15 +20972,15 @@ func (op *TagsService) String() string {
 // Manages the virtual machine template and template versions.
 //
 type TemplateService struct {
-    Service
+    BaseService
 
-    CdromsService  *CdromsService
-    DiskAttachmentsService  *DiskAttachmentsService
-    GraphicsConsolesService  *GraphicsConsolesService
-    NicsService  *NicsService
-    PermissionsService  *PermissionsService
-    TagsService  *TagsService
-    WatchdogsService  *WatchdogsService
+    CdromsServ  *TemplateCdromsService
+    DiskAttachmentsServ  *TemplateDiskAttachmentsService
+    GraphicsConsolesServ  *TemplateGraphicsConsolesService
+    NicsServ  *TemplateNicsService
+    PermissionsServ  *AssignedPermissionsService
+    TagsServ  *AssignedTagsService
+    WatchdogsServ  *TemplateWatchdogsService
 }
 
 func NewTemplateService(connection *Connection, path string) *TemplateService {
@@ -21165,7 +21263,7 @@ func (op *TemplateService) Service(path string) (IService, error) {
     if strings.HasPrefix("watchdogs/") {
         return op.WatchdogsService().Service(path[10:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateService) String() string {
@@ -21177,7 +21275,7 @@ func (op *TemplateService) String() string {
 // A service managing a CD-ROM device on templates.
 //
 type TemplateCdromService struct {
-    Service
+    BaseService
 
 }
 
@@ -21219,7 +21317,7 @@ func (op *TemplateCdromService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateCdromService) String() string {
@@ -21231,9 +21329,9 @@ func (op *TemplateCdromService) String() string {
 // Lists the CD-ROM devices of a template.
 //
 type TemplateCdromsService struct {
-    Service
+    BaseService
 
-    CdromService  *CdromService
+    CdromServ  *TemplateCdromService
 }
 
 func NewTemplateCdromsService(connection *Connection, path string) *TemplateCdromsService {
@@ -21285,8 +21383,9 @@ func (op *TemplateCdromsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.CdromService(path)), nil
+    }
     return op.CdromService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -21298,7 +21397,7 @@ func (op *TemplateCdromsService) String() string {
 //
 //
 type TemplateDiskService struct {
-    Service
+    BaseService
 
 }
 
@@ -21415,7 +21514,7 @@ func (op *TemplateDiskService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateDiskService) String() string {
@@ -21427,7 +21526,7 @@ func (op *TemplateDiskService) String() string {
 // This service manages the attachment of a disk to a template.
 //
 type TemplateDiskAttachmentService struct {
-    Service
+    BaseService
 
 }
 
@@ -21503,7 +21602,7 @@ func (op *TemplateDiskAttachmentService) Service(path string) (IService, error) 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateDiskAttachmentService) String() string {
@@ -21516,9 +21615,9 @@ func (op *TemplateDiskAttachmentService) String() string {
 // <<types/disk_attachment,DiskAttachment>>.
 //
 type TemplateDiskAttachmentsService struct {
-    Service
+    BaseService
 
-    AttachmentService  *AttachmentService
+    AttachmentServ  *TemplateDiskAttachmentService
 }
 
 func NewTemplateDiskAttachmentsService(connection *Connection, path string) *TemplateDiskAttachmentsService {
@@ -21562,8 +21661,9 @@ func (op *TemplateDiskAttachmentsService) Service(path string) (IService, error)
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.AttachmentService(path)), nil
+    }
     return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -21575,9 +21675,9 @@ func (op *TemplateDiskAttachmentsService) String() string {
 //
 //
 type TemplateDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *TemplateDiskService
 }
 
 func NewTemplateDisksService(connection *Connection, path string) *TemplateDisksService {
@@ -21628,8 +21728,9 @@ func (op *TemplateDisksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -21641,7 +21742,7 @@ func (op *TemplateDisksService) String() string {
 //
 //
 type TemplateGraphicsConsoleService struct {
-    Service
+    BaseService
 
 }
 
@@ -21706,7 +21807,7 @@ func (op *TemplateGraphicsConsoleService) Service(path string) (IService, error)
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateGraphicsConsoleService) String() string {
@@ -21717,9 +21818,9 @@ func (op *TemplateGraphicsConsoleService) String() string {
 //
 //
 type TemplateGraphicsConsolesService struct {
-    Service
+    BaseService
 
-    ConsoleService  *ConsoleService
+    ConsoleServ  *TemplateGraphicsConsoleService
 }
 
 func NewTemplateGraphicsConsolesService(connection *Connection, path string) *TemplateGraphicsConsolesService {
@@ -21792,8 +21893,9 @@ func (op *TemplateGraphicsConsolesService) Service(path string) (IService, error
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ConsoleService(path)), nil
+    }
     return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -21805,7 +21907,7 @@ func (op *TemplateGraphicsConsolesService) String() string {
 //
 //
 type TemplateNicService struct {
-    Service
+    BaseService
 
 }
 
@@ -21891,7 +21993,7 @@ func (op *TemplateNicService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateNicService) String() string {
@@ -21902,9 +22004,9 @@ func (op *TemplateNicService) String() string {
 //
 //
 type TemplateNicsService struct {
-    Service
+    BaseService
 
-    NicService  *NicService
+    NicServ  *TemplateNicService
 }
 
 func NewTemplateNicsService(connection *Connection, path string) *TemplateNicsService {
@@ -21974,8 +22076,9 @@ func (op *TemplateNicsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NicService(path)), nil
+    }
     return op.NicService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -21987,7 +22090,7 @@ func (op *TemplateNicsService) String() string {
 //
 //
 type TemplateWatchdogService struct {
-    Service
+    BaseService
 
 }
 
@@ -22073,7 +22176,7 @@ func (op *TemplateWatchdogService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *TemplateWatchdogService) String() string {
@@ -22084,9 +22187,9 @@ func (op *TemplateWatchdogService) String() string {
 //
 //
 type TemplateWatchdogsService struct {
-    Service
+    BaseService
 
-    WatchdogService  *WatchdogService
+    WatchdogServ  *TemplateWatchdogService
 }
 
 func NewTemplateWatchdogsService(connection *Connection, path string) *TemplateWatchdogsService {
@@ -22156,8 +22259,9 @@ func (op *TemplateWatchdogsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.WatchdogService(path)), nil
+    }
     return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -22170,9 +22274,9 @@ func (op *TemplateWatchdogsService) String() string {
 // This service manages the virtual machine templates available in the system.
 //
 type TemplatesService struct {
-    Service
+    BaseService
 
-    TemplateService  *TemplateService
+    TemplateServ  *TemplateService
 }
 
 func NewTemplatesService(connection *Connection, path string) *TemplatesService {
@@ -22305,8 +22409,9 @@ func (op *TemplatesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.TemplateService(path)), nil
+    }
     return op.TemplateService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -22318,7 +22423,7 @@ func (op *TemplatesService) String() string {
 //
 //
 type UnmanagedNetworkService struct {
-    Service
+    BaseService
 
 }
 
@@ -22381,7 +22486,7 @@ func (op *UnmanagedNetworkService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *UnmanagedNetworkService) String() string {
@@ -22392,9 +22497,9 @@ func (op *UnmanagedNetworkService) String() string {
 //
 //
 type UnmanagedNetworksService struct {
-    Service
+    BaseService
 
-    UnmanagedNetworkService  *UnmanagedNetworkService
+    UnmanagedNetworkServ  *UnmanagedNetworkService
 }
 
 func NewUnmanagedNetworksService(connection *Connection, path string) *UnmanagedNetworksService {
@@ -22445,8 +22550,9 @@ func (op *UnmanagedNetworksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.UnmanagedNetworkService(path)), nil
+    }
     return op.UnmanagedNetworkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -22462,12 +22568,12 @@ func (op *UnmanagedNetworksService) String() string {
 // <<services/users>>.
 //
 type UserService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
-    RolesService  *RolesService
-    SshPublicKeysService  *SshPublicKeysService
-    TagsService  *TagsService
+    PermissionsServ  *AssignedPermissionsService
+    RolesServ  *AssignedRolesService
+    SshPublicKeysServ  *SshPublicKeysService
+    TagsServ  *AssignedTagsService
 }
 
 func NewUserService(connection *Connection, path string) *UserService {
@@ -22608,7 +22714,7 @@ func (op *UserService) Service(path string) (IService, error) {
     if strings.HasPrefix("tags/") {
         return op.TagsService().Service(path[5:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *UserService) String() string {
@@ -22620,9 +22726,9 @@ func (op *UserService) String() string {
 // A service to manage the users in the system.
 //
 type UsersService struct {
-    Service
+    BaseService
 
-    UserService  *UserService
+    UserServ  *UserService
 }
 
 func NewUsersService(connection *Connection, path string) *UsersService {
@@ -22761,8 +22867,9 @@ func (op *UsersService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.UserService(path)), nil
+    }
     return op.UserService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -22774,7 +22881,7 @@ func (op *UsersService) String() string {
 //
 //
 type VirtualFunctionAllowedNetworkService struct {
-    Service
+    BaseService
 
 }
 
@@ -22837,7 +22944,7 @@ func (op *VirtualFunctionAllowedNetworkService) Service(path string) (IService, 
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VirtualFunctionAllowedNetworkService) String() string {
@@ -22848,9 +22955,9 @@ func (op *VirtualFunctionAllowedNetworkService) String() string {
 //
 //
 type VirtualFunctionAllowedNetworksService struct {
-    Service
+    BaseService
 
-    NetworkService  *NetworkService
+    NetworkServ  *VirtualFunctionAllowedNetworkService
 }
 
 func NewVirtualFunctionAllowedNetworksService(connection *Connection, path string) *VirtualFunctionAllowedNetworksService {
@@ -22920,8 +23027,9 @@ func (op *VirtualFunctionAllowedNetworksService) Service(path string) (IService,
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NetworkService(path)), nil
+    }
     return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -22933,24 +23041,24 @@ func (op *VirtualFunctionAllowedNetworksService) String() string {
 //
 //
 type VmService struct {
-    MeasurableService
+    BaseService
 
-    AffinityLabelsService  *AffinityLabelsService
-    ApplicationsService  *ApplicationsService
-    CdromsService  *CdromsService
-    DiskAttachmentsService  *DiskAttachmentsService
-    GraphicsConsolesService  *GraphicsConsolesService
-    HostDevicesService  *HostDevicesService
-    KatelloErrataService  *KatelloErrataService
-    NicsService  *NicsService
-    NumaNodesService  *NumaNodesService
-    PermissionsService  *PermissionsService
-    ReportedDevicesService  *ReportedDevicesService
-    SessionsService  *SessionsService
-    SnapshotsService  *SnapshotsService
-    StatisticsService  *StatisticsService
-    TagsService  *TagsService
-    WatchdogsService  *WatchdogsService
+    AffinityLabelsServ  *AssignedAffinityLabelsService
+    ApplicationsServ  *VmApplicationsService
+    CdromsServ  *VmCdromsService
+    DiskAttachmentsServ  *DiskAttachmentsService
+    GraphicsConsolesServ  *VmGraphicsConsolesService
+    HostDevicesServ  *VmHostDevicesService
+    KatelloErrataServ  *KatelloErrataService
+    NicsServ  *VmNicsService
+    NumaNodesServ  *VmNumaNodesService
+    PermissionsServ  *AssignedPermissionsService
+    ReportedDevicesServ  *VmReportedDevicesService
+    SessionsServ  *VmSessionsService
+    SnapshotsServ  *SnapshotsService
+    StatisticsServ  *StatisticsService
+    TagsServ  *AssignedTagsService
+    WatchdogsServ  *VmWatchdogsService
 }
 
 func NewVmService(connection *Connection, path string) *VmService {
@@ -24022,7 +24130,7 @@ func (op *VmService) Service(path string) (IService, error) {
     if strings.HasPrefix("watchdogs/") {
         return op.WatchdogsService().Service(path[10:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmService) String() string {
@@ -24034,7 +24142,7 @@ func (op *VmService) String() string {
 // A service that provides information about an application installed in a virtual machine.
 //
 type VmApplicationService struct {
-    Service
+    BaseService
 
 }
 
@@ -24080,7 +24188,7 @@ func (op *VmApplicationService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmApplicationService) String() string {
@@ -24092,9 +24200,9 @@ func (op *VmApplicationService) String() string {
 // A service that provides information about applications installed in a virtual machine.
 //
 type VmApplicationsService struct {
-    Service
+    BaseService
 
-    ApplicationService  *ApplicationService
+    ApplicationServ  *VmApplicationService
 }
 
 func NewVmApplicationsService(connection *Connection, path string) *VmApplicationsService {
@@ -24152,8 +24260,9 @@ func (op *VmApplicationsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ApplicationService(path)), nil
+    }
     return op.ApplicationService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -24168,7 +24277,7 @@ func (op *VmApplicationsService) String() string {
 // attribute.
 //
 type VmCdromService struct {
-    Service
+    BaseService
 
 }
 
@@ -24300,7 +24409,7 @@ func (op *VmCdromService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmCdromService) String() string {
@@ -24316,9 +24425,9 @@ func (op *VmCdromService) String() string {
 // CDROM device.
 //
 type VmCdromsService struct {
-    Service
+    BaseService
 
-    CdromService  *CdromService
+    CdromServ  *VmCdromService
 }
 
 func NewVmCdromsService(connection *Connection, path string) *VmCdromsService {
@@ -24371,8 +24480,9 @@ func (op *VmCdromsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.CdromService(path)), nil
+    }
     return op.CdromService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -24384,10 +24494,10 @@ func (op *VmCdromsService) String() string {
 //
 //
 type VmDiskService struct {
-    MeasurableService
+    BaseService
 
-    PermissionsService  *PermissionsService
-    StatisticsService  *StatisticsService
+    PermissionsServ  *AssignedPermissionsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewVmDiskService(connection *Connection, path string) *VmDiskService {
@@ -24602,7 +24712,7 @@ func (op *VmDiskService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmDiskService) String() string {
@@ -24613,9 +24723,9 @@ func (op *VmDiskService) String() string {
 //
 //
 type VmDisksService struct {
-    Service
+    BaseService
 
-    DiskService  *DiskService
+    DiskServ  *VmDiskService
 }
 
 func NewVmDisksService(connection *Connection, path string) *VmDisksService {
@@ -24685,8 +24795,9 @@ func (op *VmDisksService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DiskService(path)), nil
+    }
     return op.DiskService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -24698,7 +24809,7 @@ func (op *VmDisksService) String() string {
 //
 //
 type VmGraphicsConsoleService struct {
-    Service
+    BaseService
 
 }
 
@@ -24923,7 +25034,7 @@ func (op *VmGraphicsConsoleService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmGraphicsConsoleService) String() string {
@@ -24934,9 +25045,9 @@ func (op *VmGraphicsConsoleService) String() string {
 //
 //
 type VmGraphicsConsolesService struct {
-    Service
+    BaseService
 
-    ConsoleService  *ConsoleService
+    ConsoleServ  *VmGraphicsConsoleService
 }
 
 func NewVmGraphicsConsolesService(connection *Connection, path string) *VmGraphicsConsolesService {
@@ -25019,8 +25130,9 @@ func (op *VmGraphicsConsolesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ConsoleService(path)), nil
+    }
     return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -25033,7 +25145,7 @@ func (op *VmGraphicsConsolesService) String() string {
 // A service to manage individual host device attached to a virtual machine.
 //
 type VmHostDeviceService struct {
-    Service
+    BaseService
 
 }
 
@@ -25131,7 +25243,7 @@ func (op *VmHostDeviceService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmHostDeviceService) String() string {
@@ -25143,9 +25255,9 @@ func (op *VmHostDeviceService) String() string {
 // A service to manage host devices attached to a virtual machine.
 //
 type VmHostDevicesService struct {
-    Service
+    BaseService
 
-    DeviceService  *DeviceService
+    DeviceServ  *VmHostDeviceService
 }
 
 func NewVmHostDevicesService(connection *Connection, path string) *VmHostDevicesService {
@@ -25240,8 +25352,9 @@ func (op *VmHostDevicesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.DeviceService(path)), nil
+    }
     return op.DeviceService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -25253,11 +25366,11 @@ func (op *VmHostDevicesService) String() string {
 //
 //
 type VmNicService struct {
-    MeasurableService
+    BaseService
 
-    NetworkFilterParametersService  *NetworkFilterParametersService
-    ReportedDevicesService  *ReportedDevicesService
-    StatisticsService  *StatisticsService
+    NetworkFilterParametersServ  *NetworkFilterParametersService
+    ReportedDevicesServ  *VmReportedDevicesService
+    StatisticsServ  *StatisticsService
 }
 
 func NewVmNicService(connection *Connection, path string) *VmNicService {
@@ -25468,7 +25581,7 @@ func (op *VmNicService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmNicService) String() string {
@@ -25479,9 +25592,9 @@ func (op *VmNicService) String() string {
 //
 //
 type VmNicsService struct {
-    Service
+    BaseService
 
-    NicService  *NicService
+    NicServ  *VmNicService
 }
 
 func NewVmNicsService(connection *Connection, path string) *VmNicsService {
@@ -25597,8 +25710,9 @@ func (op *VmNicsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NicService(path)), nil
+    }
     return op.NicService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -25610,7 +25724,7 @@ func (op *VmNicsService) String() string {
 //
 //
 type VmNumaNodeService struct {
-    Service
+    BaseService
 
 }
 
@@ -25719,7 +25833,7 @@ func (op *VmNumaNodeService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmNumaNodeService) String() string {
@@ -25730,9 +25844,9 @@ func (op *VmNumaNodeService) String() string {
 //
 //
 type VmNumaNodesService struct {
-    Service
+    BaseService
 
-    NodeService  *NodeService
+    NodeServ  *VmNumaNodeService
 }
 
 func NewVmNumaNodesService(connection *Connection, path string) *VmNumaNodesService {
@@ -25826,8 +25940,9 @@ func (op *VmNumaNodesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.NodeService(path)), nil
+    }
     return op.NodeService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -25840,9 +25955,9 @@ func (op *VmNumaNodesService) String() string {
 // A service to manage a virtual machines pool.
 //
 type VmPoolService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewVmPoolService(connection *Connection, path string) *VmPoolService {
@@ -26037,7 +26152,7 @@ func (op *VmPoolService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmPoolService) String() string {
@@ -26049,9 +26164,9 @@ func (op *VmPoolService) String() string {
 // Provides read-write access to virtual machines pools.
 //
 type VmPoolsService struct {
-    Service
+    BaseService
 
-    PoolService  *PoolService
+    PoolServ  *VmPoolService
 }
 
 func NewVmPoolsService(connection *Connection, path string) *VmPoolsService {
@@ -26175,8 +26290,9 @@ func (op *VmPoolsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.PoolService(path)), nil
+    }
     return op.PoolService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -26188,7 +26304,7 @@ func (op *VmPoolsService) String() string {
 //
 //
 type VmReportedDeviceService struct {
-    Service
+    BaseService
 
 }
 
@@ -26224,7 +26340,7 @@ func (op *VmReportedDeviceService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmReportedDeviceService) String() string {
@@ -26235,9 +26351,9 @@ func (op *VmReportedDeviceService) String() string {
 //
 //
 type VmReportedDevicesService struct {
-    Service
+    BaseService
 
-    ReportedDeviceService  *ReportedDeviceService
+    ReportedDeviceServ  *VmReportedDeviceService
 }
 
 func NewVmReportedDevicesService(connection *Connection, path string) *VmReportedDevicesService {
@@ -26288,8 +26404,9 @@ func (op *VmReportedDevicesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ReportedDeviceService(path)), nil
+    }
     return op.ReportedDeviceService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -26301,7 +26418,7 @@ func (op *VmReportedDevicesService) String() string {
 //
 //
 type VmSessionService struct {
-    Service
+    BaseService
 
 }
 
@@ -26337,7 +26454,7 @@ func (op *VmSessionService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmSessionService) String() string {
@@ -26349,9 +26466,9 @@ func (op *VmSessionService) String() string {
 // Provides information about virtual machine user sessions.
 //
 type VmSessionsService struct {
-    Service
+    BaseService
 
-    SessionService  *SessionService
+    SessionServ  *VmSessionService
 }
 
 func NewVmSessionsService(connection *Connection, path string) *VmSessionsService {
@@ -26424,8 +26541,9 @@ func (op *VmSessionsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.SessionService(path)), nil
+    }
     return op.SessionService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -26438,7 +26556,7 @@ func (op *VmSessionsService) String() string {
 // A service managing a watchdog on virtual machines.
 //
 type VmWatchdogService struct {
-    Service
+    BaseService
 
 }
 
@@ -26558,7 +26676,7 @@ func (op *VmWatchdogService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VmWatchdogService) String() string {
@@ -26570,9 +26688,9 @@ func (op *VmWatchdogService) String() string {
 // Lists the watchdogs of a virtual machine.
 //
 type VmWatchdogsService struct {
-    Service
+    BaseService
 
-    WatchdogService  *WatchdogService
+    WatchdogServ  *VmWatchdogService
 }
 
 func NewVmWatchdogsService(connection *Connection, path string) *VmWatchdogsService {
@@ -26671,8 +26789,9 @@ func (op *VmWatchdogsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.WatchdogService(path)), nil
+    }
     return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -26684,9 +26803,9 @@ func (op *VmWatchdogsService) String() string {
 //
 //
 type VmsService struct {
-    Service
+    BaseService
 
-    VmService  *VmService
+    VmServ  *VmService
 }
 
 func NewVmsService(connection *Connection, path string) *VmsService {
@@ -26933,8 +27052,9 @@ func (op *VmsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.VmService(path)), nil
+    }
     return op.VmService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -26947,9 +27067,9 @@ func (op *VmsService) String() string {
 // This service manages a vNIC profile.
 //
 type VnicProfileService struct {
-    Service
+    BaseService
 
-    PermissionsService  *PermissionsService
+    PermissionsServ  *AssignedPermissionsService
 }
 
 func NewVnicProfileService(connection *Connection, path string) *VnicProfileService {
@@ -27054,7 +27174,7 @@ func (op *VnicProfileService) Service(path string) (IService, error) {
     if strings.HasPrefix("permissions/") {
         return op.PermissionsService().Service(path[12:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *VnicProfileService) String() string {
@@ -27066,9 +27186,9 @@ func (op *VnicProfileService) String() string {
 // This service manages the collection of all vNIC profiles.
 //
 type VnicProfilesService struct {
-    Service
+    BaseService
 
-    ProfileService  *ProfileService
+    ProfileServ  *VnicProfileService
 }
 
 func NewVnicProfilesService(connection *Connection, path string) *VnicProfilesService {
@@ -27197,8 +27317,9 @@ func (op *VnicProfilesService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.ProfileService(path)), nil
+    }
     return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -27210,7 +27331,7 @@ func (op *VnicProfilesService) String() string {
 //
 //
 type WeightService struct {
-    Service
+    BaseService
 
 }
 
@@ -27282,7 +27403,7 @@ func (op *WeightService) Service(path string) (IService, error) {
     if path == nil {
         return *op, nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *WeightService) String() string {
@@ -27293,9 +27414,9 @@ func (op *WeightService) String() string {
 //
 //
 type WeightsService struct {
-    Service
+    BaseService
 
-    WeightService  *WeightService
+    WeightServ  *WeightService
 }
 
 func NewWeightsService(connection *Connection, path string) *WeightsService {
@@ -27370,8 +27491,9 @@ func (op *WeightsService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.WeightService(path)), nil
+    }
     return op.WeightService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -27388,10 +27510,10 @@ func (op *WeightsService) String() string {
 // that manages all the disks of the system>>, or the <<services/disk, service that manages an specific disk>>.
 //
 type AttachedStorageDomainDiskService struct {
-    MeasurableService
+    BaseService
 
-    PermissionsService  *PermissionsService
-    StatisticsService  *StatisticsService
+    PermissionsServ  *AssignedPermissionsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewAttachedStorageDomainDiskService(connection *Connection, path string) *AttachedStorageDomainDiskService {
@@ -27634,7 +27756,7 @@ func (op *AttachedStorageDomainDiskService) Service(path string) (IService, erro
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *AttachedStorageDomainDiskService) String() string {
@@ -27646,10 +27768,10 @@ func (op *AttachedStorageDomainDiskService) String() string {
 // Manages a single disk.
 //
 type DiskService struct {
-    MeasurableService
+    BaseService
 
-    PermissionsService  *PermissionsService
-    StatisticsService  *StatisticsService
+    PermissionsServ  *AssignedPermissionsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewDiskService(connection *Connection, path string) *DiskService {
@@ -27952,7 +28074,7 @@ func (op *DiskService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *DiskService) String() string {
@@ -27965,9 +28087,9 @@ func (op *DiskService) String() string {
 // The information is retrieved from Katello.
 //
 type EngineKatelloErrataService struct {
-    KatelloErrataService
+    BaseService
 
-    KatelloErratumService  *KatelloErratumService
+    KatelloErratumServ  *KatelloErratumService
 }
 
 func NewEngineKatelloErrataService(connection *Connection, path string) *EngineKatelloErrataService {
@@ -28047,8 +28169,9 @@ func (op *EngineKatelloErrataService) Service(path string) (IService, error) {
         return *op, nil
     }
     index = strings.Index(path, "/")
-    if index == -1:
+    if index == -1 {
         return *(op.KatelloErratumService(path)), nil
+    }
     return op.KatelloErratumService(path[:index]).Service(path[index + 1:]), nil
 }
 
@@ -28060,13 +28183,13 @@ func (op *EngineKatelloErrataService) String() string {
 //
 //
 type ExternalHostProviderService struct {
-    ExternalProviderService
+    BaseService
 
-    CertificatesService  *CertificatesService
-    ComputeResourcesService  *ComputeResourcesService
-    DiscoveredHostsService  *DiscoveredHostsService
-    HostGroupsService  *HostGroupsService
-    HostsService  *HostsService
+    CertificatesServ  *ExternalProviderCertificatesService
+    ComputeResourcesServ  *ExternalComputeResourcesService
+    DiscoveredHostsServ  *ExternalDiscoveredHostsService
+    HostGroupsServ  *ExternalHostGroupsService
+    HostsServ  *ExternalHostsService
 }
 
 func NewExternalHostProviderService(connection *Connection, path string) *ExternalHostProviderService {
@@ -28254,7 +28377,7 @@ func (op *ExternalHostProviderService) Service(path string) (IService, error) {
     if strings.HasPrefix("hosts/") {
         return op.HostsService().Service(path[6:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *ExternalHostProviderService) String() string {
@@ -28266,9 +28389,9 @@ func (op *ExternalHostProviderService) String() string {
 // This service manages a single gluster brick.
 //
 type GlusterBrickService struct {
-    MeasurableService
+    BaseService
 
-    StatisticsService  *StatisticsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickService {
@@ -28424,7 +28547,7 @@ func (op *GlusterBrickService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *GlusterBrickService) String() string {
@@ -28436,10 +28559,10 @@ func (op *GlusterBrickService) String() string {
 // This service manages a single gluster volume.
 //
 type GlusterVolumeService struct {
-    MeasurableService
+    BaseService
 
-    GlusterBricksService  *GlusterBricksService
-    StatisticsService  *StatisticsService
+    GlusterBricksServ  *GlusterBricksService
+    StatisticsServ  *StatisticsService
 }
 
 func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolumeService {
@@ -28910,7 +29033,7 @@ func (op *GlusterVolumeService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *GlusterVolumeService) String() string {
@@ -28922,22 +29045,22 @@ func (op *GlusterVolumeService) String() string {
 // A service to manage a host.
 //
 type HostService struct {
-    MeasurableService
+    BaseService
 
-    AffinityLabelsService  *AffinityLabelsService
-    DevicesService  *DevicesService
-    FenceAgentsService  *FenceAgentsService
-    HooksService  *HooksService
-    KatelloErrataService  *KatelloErrataService
-    NetworkAttachmentsService  *NetworkAttachmentsService
-    NicsService  *NicsService
-    NumaNodesService  *NumaNodesService
-    PermissionsService  *PermissionsService
-    StatisticsService  *StatisticsService
-    StorageService  *StorageService
-    StorageConnectionExtensionsService  *StorageConnectionExtensionsService
-    TagsService  *TagsService
-    UnmanagedNetworksService  *UnmanagedNetworksService
+    AffinityLabelsServ  *AssignedAffinityLabelsService
+    DevicesServ  *HostDevicesService
+    FenceAgentsServ  *FenceAgentsService
+    HooksServ  *HostHooksService
+    KatelloErrataServ  *KatelloErrataService
+    NetworkAttachmentsServ  *NetworkAttachmentsService
+    NicsServ  *HostNicsService
+    NumaNodesServ  *HostNumaNodesService
+    PermissionsServ  *AssignedPermissionsService
+    StatisticsServ  *StatisticsService
+    StorageServ  *HostStorageService
+    StorageConnectionExtensionsServ  *StorageServerConnectionExtensionsService
+    TagsServ  *AssignedTagsService
+    UnmanagedNetworksServ  *UnmanagedNetworksService
 }
 
 func NewHostService(connection *Connection, path string) *HostService {
@@ -29917,7 +30040,7 @@ func (op *HostService) Service(path string) (IService, error) {
     if strings.HasPrefix("unmanagednetworks/") {
         return op.UnmanagedNetworksService().Service(path[18:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *HostService) String() string {
@@ -29929,13 +30052,13 @@ func (op *HostService) String() string {
 // A service to manage a network interface of a host.
 //
 type HostNicService struct {
-    MeasurableService
+    BaseService
 
-    NetworkAttachmentsService  *NetworkAttachmentsService
-    NetworkLabelsService  *NetworkLabelsService
-    StatisticsService  *StatisticsService
-    VirtualFunctionAllowedLabelsService  *VirtualFunctionAllowedLabelsService
-    VirtualFunctionAllowedNetworksService  *VirtualFunctionAllowedNetworksService
+    NetworkAttachmentsServ  *NetworkAttachmentsService
+    NetworkLabelsServ  *NetworkLabelsService
+    StatisticsServ  *StatisticsService
+    VirtualFunctionAllowedLabelsServ  *NetworkLabelsService
+    VirtualFunctionAllowedNetworksServ  *VirtualFunctionAllowedNetworksService
 }
 
 func NewHostNicService(connection *Connection, path string) *HostNicService {
@@ -30067,7 +30190,7 @@ func (op *HostNicService) Service(path string) (IService, error) {
     if strings.HasPrefix("virtualfunctionallowednetworks/") {
         return op.VirtualFunctionAllowedNetworksService().Service(path[31:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *HostNicService) String() string {
@@ -30078,9 +30201,9 @@ func (op *HostNicService) String() string {
 //
 //
 type HostNumaNodeService struct {
-    MeasurableService
+    BaseService
 
-    StatisticsService  *StatisticsService
+    StatisticsServ  *StatisticsService
 }
 
 func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeService {
@@ -30127,7 +30250,7 @@ func (op *HostNumaNodeService) Service(path string) (IService, error) {
     if strings.HasPrefix("statistics/") {
         return op.StatisticsService().Service(path[11:]), nil
     }
-    return nil, errors.New(fmt.Sprintf("The path <%s> doesn\'t correspond to any service", path))
+    return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
 
 func (op *HostNumaNodeService) String() string {

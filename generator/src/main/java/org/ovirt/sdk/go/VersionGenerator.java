@@ -59,17 +59,9 @@ public class VersionGenerator implements GoGenerator {
     public void generateVersion() {
         // Generate the version constant:
         String version = goNames.getVersion();
-        buffer.addLine("# The version of the SDK:");
-        buffer.addLine("VERSION = '%1$s'", version.toLowerCase());
+        buffer.addLine("// The version of the SDK:");
+        buffer.addLine("var SDK_VERSION = \"%1$s\"", version.toLowerCase());
         buffer.addLine();
-
-        // Generate the main method:
-        buffer.addLine("# This module is executed as a script during the build process, and it");
-        buffer.addLine("# should print to the output the value of the version:");
-        buffer.addLine("if __name__ == '__main__':");
-        buffer.startBlock();
-        buffer.addLine("print(VERSION)");
-        buffer.endBlock();
     }
 }
 
