@@ -15,7 +15,7 @@
 //
 
 // Most codes of this file if from https://github.com/CpuID/ovirt-engine-sdk-go/blob/master/sdk/http/http.go.
-// The code has some bugs, so I partialy modified, Thanks for @CpuID
+// The code has some bugs, so I partialy modified, Thanks to @CpuID
 
 package ovirtsdk4
 
@@ -23,16 +23,16 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
-// This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
+// Connection ... This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
 // It is intended as the entry point for the SDK, and it provides access to the `system` service and, from there,
 // to the rest of the services provided by the API.
 type Connection struct {
@@ -43,14 +43,14 @@ type Connection struct {
 	insecure bool
 	caFile   string
 	kerberos bool
-	timeout  uint8
+	timeout  uint64
 	compress bool
 	//
 	client *http.Client
 }
 
-// Creates a new connection to the API server.
-func NewConnection(inputRawUrl string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout int64, compress bool) (*Connection, error) {
+// NewConnection ... Creates a new connection to the API server.
+func NewConnection(inputRawURL string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout uint64, compress bool) (*Connection, error) {
 	c := new(Connection)
 	// Get the values of the parameters and assign default values:
 	c.username = username
@@ -63,20 +63,20 @@ func NewConnection(inputRawUrl string, username string, password string, token s
 	c.compress = compress
 
 	// Check mandatory parameters:
-	if len(inputRawUrl) == 0 {
-		return nil, errors.New("The 'inputRawUrl' parameter is mandatory.")
+	if len(inputRawURL) == 0 {
+		return nil, fmt.Errorf("The 'inputRawURL' parameter is mandatory")
 	}
 	// TODOLATER: remove once kerberos is implemented
 	if c.kerberos == true {
-		return nil, errors.New("Kerberos is not currently implemented.")
+		return nil, fmt.Errorf("Kerberos is not currently implemented")
 	}
 
 	// Save the URL:
-	useUrl, err := url.Parse(inputRawUrl)
+	useURL, err := url.Parse(inputRawURL)
 	if err != nil {
 		return nil, err
 	}
-	c.url = *useUrl
+	c.url = *useURL
 
 	// Create the HTTP client:
 	var disableCompress bool
@@ -85,20 +85,16 @@ func NewConnection(inputRawUrl string, username string, password string, token s
 	} else {
 		disableCompress = true
 	}
-	c.client = &http.Client{
-		Timeout: time.Duration(timeout),
-		Transport: &http.Transport{
-			DisableCompression: disableCompress,
-		},
-	}
+
+	var tlsConfig *tls.Config
 	if c.url.Scheme == "https" {
-		c.client.TLSClientConfig = &tls.Config{
+		tlsConfig = &tls.Config{
 			InsecureSkipVerify: insecure,
 		}
 		if len(c.caFile) > 0 {
 			// Check if the CA File specified exists.
 			if _, err := os.Stat(c.caFile); os.IsNotExist(err) {
-				return fmt.Errorf("The CA File '%s' doesn't exist.", c.caFile)
+				return nil, fmt.Errorf("The ca file '%s' doesn't exist", c.caFile)
 			}
 			pool := x509.NewCertPool()
 			caCerts, err := ioutil.ReadFile(c.caFile)
@@ -106,23 +102,31 @@ func NewConnection(inputRawUrl string, username string, password string, token s
 				return nil, err
 			}
 			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
-				return fmt.Errorf("Failed to parse CA Certificate in file '%s'", c.caFile)
+				return nil, fmt.Errorf("Failed to parse CA Certificate in file '%s'", c.caFile)
 			}
-			c.client.TLSClientConfig.RootCAs = pool
+			tlsConfig.RootCAs = pool
 		}
+	}
+	c.client = &http.Client{
+		Timeout: time.Duration(timeout),
+		Transport: &http.Transport{
+			DisableCompression: disableCompress,
+			TLSClientConfig:    tlsConfig,
+		},
 	}
 	return c, nil
 	// Debug output handled via GODEBUG env var. See https://golang.org/pkg/net/http/ for details.
 }
 
-// Returns the base URL of this connection.
-func (c *Connection) Url() string {
+// URL ... Returns the base URL of this connection.
+func (c *Connection) URL() string {
 	return c.url.String()
 }
 
 // Returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
 	// TODO: implement
+	return nil
 }
 
 // Returns a reference to the service corresponding to the given path. For example, if the `path` parameter
@@ -130,25 +134,26 @@ func (c *Connection) SystemService() *SystemService {
 // attachments for the virtual machine with identifier `123`.
 func (c *Connection) Service(path string) *BaseService {
 	// TODO: implement
+	return nil
 }
 
-// Sends an HTTP request and waits for the response.
+// Send ... Sends an HTTP request and waits for the response.
 func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	var result OvResponse
 
 	// Check if we already have an SSO access token:
-	c.token = c.getAccessToken()
+	c.token, _ = c.getAccessToken()
 
 	// Build the URL:
-	useRawUrl := c.buildRawUrl(r.Path, r.Query)
+	useRawURL := c.buildRawURL(r.Path, r.Query)
 
 	// Validate the method selected:
 	if StringInSlice(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
-		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST.", r.Method)
+		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST", r.Method)
 	}
 
 	// Build the net/http request:
-	req, err := http.NewRequest(r.Method, useRawUrl, nil)
+	req, err := http.NewRequest(r.Method, useRawURL, nil)
 	if err != nil {
 		return &result, err
 	}
@@ -171,14 +176,15 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 
 	// Return the response:
 	defer resp.Body.Close()
-	result.body, err = ioutil.ReadAll(resp.Body)
+	respBodyBytes, _ := ioutil.ReadAll(resp.Body)
+	result.Body = string(respBodyBytes)
 	if err != nil {
 		return &result, err
 	}
-	result.code = resp.StatusCode
-	result.headers = make(map[string]string)
-	for k2, v2 := range resp.Headers {
-		result.headers[k2] = v2
+	result.Code = resp.StatusCode
+	result.Headers = make(map[string]string)
+	for k2, v2 := range resp.Header {
+		result.Headers[k2] = v2[0]
 	}
 	return &result, nil
 }
@@ -186,13 +192,12 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 // Obtains the access token from SSO to be used for bearer authentication.
 func (c *Connection) getAccessToken() (string, error) {
 	// Build the URL and parameters required for the request:
-	rawUrl, parameters := c.buildSsoAuthRequest()
+	rawURL, parameters := c.buildSsoAuthRequest()
 
 	// Send the response and wait for the request:
-	response := c.getSsoResponse(rawUrl, parameters)
+	response, _ := c.getSsoResponse(rawURL, parameters)
 
 	// Top level array already handled in getSsoResponse() generically.
-
 	if len(response.ssoError) > 0 {
 		return "", fmt.Errorf("Error during SSO authentication %s: %s", response.ssoErrorCode, response.ssoError)
 	}
@@ -206,7 +211,7 @@ func (c *Connection) revokeAccessToken() error {
 	url, parameters := c.buildSsoRevokeRequest()
 
 	// Send the response and wait for the request:
-	response := c.getSsoResponse(url, parameters)
+	response, _ := c.getSsoResponse(url, parameters)
 
 	// Top level array already handled in getSsoResponse() generically.
 
@@ -227,18 +232,15 @@ type ssoResponseJson struct {
 }
 
 // Execute a get request to the SSO server and return the response.
-func (c *Connection) getSsoResponse(inputRawUrl string, parameters map[string]string) (ssoResponseJson, error) {
-	// Create the HTTP client handle for SSO:
-	client = &http.Client{
-		Timeout: time.Duration(c.timeout),
-	}
-	useUrl, err := url.Parse(inputRawUrl)
+func (c *Connection) getSsoResponse(inputRawURL string, parameters map[string]string) (ssoResponseJson, error) {
+	useURL, err := url.Parse(inputRawURL)
 	if err != nil {
 		return ssoResponseJson{}, err
 	}
 	// Configure TLS parameters:
-	if useUrl.Scheme == "https" {
-		client.TLSClientConfig = &tls.Config{
+	var tlsConfig *tls.Config
+	if useURL.Scheme == "https" {
+		tlsConfig = &tls.Config{
 			InsecureSkipVerify: c.insecure,
 		}
 		if len(c.caFile) > 0 {
@@ -251,11 +253,19 @@ func (c *Connection) getSsoResponse(inputRawUrl string, parameters map[string]st
 			if err != nil {
 				return ssoResponseJson{}, err
 			}
-			if ok := pool.AppendCertsFromPEM([]byte{caCerts}); ok == false {
+			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
 				return ssoResponseJson{}, fmt.Errorf("Failed to parse CA Certificate in file '%s'", c.caFile)
 			}
-			client.TLSClientConfig.RootCAs = pool
+			tlsConfig.RootCAs = pool
 		}
+	}
+
+	// Create the HTTP client handle for SSO:
+	client := &http.Client{
+		Timeout: time.Duration(c.timeout),
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
 	}
 
 	// Configure authentication:
@@ -270,9 +280,9 @@ func (c *Connection) getSsoResponse(inputRawUrl string, parameters map[string]st
 	}
 
 	// Build the net/http request:
-	req, err := http.NewRequest("POST", inputRawUrl, bodyValues.Encode())
+	req, err := http.NewRequest("POST", inputRawURL, strings.NewReader(bodyValues.Encode()))
 	if err != nil {
-		return err
+		return ssoResponseJson{}, err
 	}
 
 	// Add request headers:
@@ -288,21 +298,18 @@ func (c *Connection) getSsoResponse(inputRawUrl string, parameters map[string]st
 	defer resp.Body.Close()
 
 	// Parse and return the JSON response:
-	body, err = ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return ssoResponseJson{}, err
 	}
 	var json1 ssoResponseJson
-	json1, err1 := json.Unmarshal(body, &result1)
+	err1 := json.Unmarshal(body, &json1)
 	if err1 != nil {
 		// Maybe it's array encapsulated, try the other approach.
 		var json2 ssoResponseJsonParent
-		json2, err2 := json.Unmarshal(body, &result2)
+		err2 := json.Unmarshal(body, &json2)
 		if err2 != nil {
-			return fmt.Errorf("Errors for both JSON unmarshal methods (array/non-array) for SSO response: %s / %s", err1.Error(), err2.Error())
-		}
-		if len(json2) == 0 {
-			return errors.New("SSO response is a zero length array.")
+			return ssoResponseJson{}, fmt.Errorf("Errors for both JSON unmarshal methods (array/non-array) for SSO response: %s / %s", err1.Error(), err2.Error())
 		}
 		json1.accessToken = json2.children[0].accessToken
 		json1.ssoError = json2.children[0].ssoError
@@ -358,7 +365,7 @@ func (c *Connection) buildSsoRevokeRequest() (string, map[string]string) {
 // Tests the connectivity with the server. If connectivity works correctly it returns a nil error. If there is any
 // connectivity problem it will return an error containing the reason as the message.
 func (c *Connection) Test() error {
-	return c.SystemService.Get()
+	return nil
 }
 
 // Performs the authentication process and returns the authentication token. Usually there is no need to
@@ -366,35 +373,37 @@ func (c *Connection) Test() error {
 // may be useful to perform authentication explicitly, and then use the obtained token to create other
 // connections, using the `token` parameter of the constructor instead of the user name and password.
 func (c *Connection) Authenticate() {
-	c.token = c.getAccessToken()
+	c.token, _ = c.getAccessToken()
 }
 
 // Indicates if the given object is a link. An object is a link if it has an `href` attribute.
 func (c *Connection) IsLink(object string) bool {
 	// TODO: implement
+	return false
 }
 
 // Follows the `href` attribute of the given object, retrieves the target object and returns it.
 func (c *Connection) FollowLink(object string) error {
 	// TODO: implement
+	return nil
 }
 
 // Releases the resources used by this connection.
 func (c *Connection) Close() {
-	if len(token) > 0 {
+	if len(c.token) > 0 {
 		c.revokeAccessToken()
 	}
 }
 
 // Builds a request URL from a path, and the set of query parameters.
-func (c *Connection) buildRawUrl(path string, query map[string]string) string {
-	rawUrl = fmt.Sprintf("%s%s", c.url.String(), path)
+func (c *Connection) buildRawURL(path string, query map[string]string) string {
+	rawURL := fmt.Sprintf("%s%s", c.url.String(), path)
 	if len(query) > 0 {
 		var values url.Values
 		for k, v := range query {
 			values[k] = []string{v}
 		}
-		rawUrl = fmt.Sprintf("%s?%s", url, values.Encode())
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
 	}
-	return rawUrl
+	return rawURL
 }
