@@ -1,6 +1,7 @@
 package ovirtsdk4
 
 import (
+	"encoding/xml"
 	"testing"
 	"time"
 )
@@ -14,7 +15,16 @@ func TestSend(t *testing.T) {
 	if err != nil {
 		t.Errorf("connection failed, reason %s", err.Error())
 	}
-	ovRequest := NewOvRequest("GET", "/clusters", nil, nil, "")
-	ovResponse, err := conn.Send(ovRequest)
-	t.Logf("response %s", string(ovResponse.Body))
+	// ovRequest := NewOvRequest("GET", "/clusters", nil, nil, "")
+	result, err := conn.SystemService().ClustersService().List(false, false, 100, "", nil, nil, false)
+	if ovResp, ok := result.(*OvResponse); ok {
+		t.Logf("response code is %d", ovResp.Code)
+		// t.Logf("response body is %s", ovResp.Body)
+		var clusters Clusters
+		xml.Unmarshal([]byte(ovResp.Body), &clusters)
+		t.Logf("clusters length is %d", len(clusters.Clusters))
+	}
+
+	// ovResponse, err := conn.Send(ovRequest)
+	// t.Logf("response %s", string(ovResponse.Body))
 }

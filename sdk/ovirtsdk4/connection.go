@@ -126,8 +126,7 @@ func (c *Connection) URL() string {
 
 // Returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
-	// TODO: implement
-	return nil
+	return NewSystemService(c, c.url.String())
 }
 
 // Returns a reference to the service corresponding to the given path. For example, if the `path` parameter
@@ -226,7 +225,7 @@ func (c *Connection) revokeAccessToken() error {
 	return nil
 }
 
-type ssoResponseJsonParent struct {
+type ssoResponseJSONParent struct {
 	children []ssoResponseJson
 }
 
@@ -311,7 +310,7 @@ func (c *Connection) getSsoResponse(inputRawURL string, parameters map[string]st
 	err1 := json.Unmarshal(body, &json1)
 	if err1 != nil {
 		// Maybe it's array encapsulated, try the other approach.
-		var json2 ssoResponseJsonParent
+		var json2 ssoResponseJSONParent
 		err2 := json.Unmarshal(body, &json2)
 		if err2 != nil {
 			return ssoResponseJson{}, fmt.Errorf("Errors for both JSON unmarshal methods (array/non-array) for SSO response: %s / %s", err1.Error(), err2.Error())

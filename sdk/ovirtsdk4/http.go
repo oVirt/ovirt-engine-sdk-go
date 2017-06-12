@@ -38,13 +38,14 @@ func NewOvRequest(method string, path string, headers, query map[string]string, 
 	}
 	return &OvRequest{
 		Method:  method,
+		Path:    path,
 		Headers: headers,
 		Query:   query,
 		Body:    body,
 	}
 }
 
-// This class represents an HTTP response.
+// OvResponse represents an HTTP response.
 // This class is intended for internal use by other components of the SDK.
 // Refrain from using it directly as there is no backwards compatibility
 // guarantee.
