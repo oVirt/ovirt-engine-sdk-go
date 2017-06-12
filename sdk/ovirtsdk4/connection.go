@@ -160,8 +160,8 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	}
 
 	// Add request headers:
-	for k1, v1 := range r.Headers {
-		req.Header.Add(k1, v1)
+	for reqHK, reqHV := range r.Headers {
+		req.Header.Add(reqHK, reqHV)
 	}
 	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
 	req.Header.Add("Version", "4")
@@ -180,15 +180,15 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 
 	// Return the response:
 	defer resp.Body.Close()
-	respBodyBytes, _ := ioutil.ReadAll(resp.Body)
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
 	result.Body = string(respBodyBytes)
 	if err != nil {
 		return &result, err
 	}
 	result.Code = resp.StatusCode
 	result.Headers = make(map[string]string)
-	for k2, v2 := range resp.Header {
-		result.Headers[k2] = v2[0]
+	for respHK, respHV := range resp.Header {
+		result.Headers[respHK] = respHV[0]
 	}
 
 	return &result, nil
