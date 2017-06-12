@@ -22,6 +22,7 @@ package ovirtsdk4
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -166,7 +167,10 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	req.Header.Add("Version", "4")
 	req.Header.Add("Content-Type", "application/xml")
 	req.Header.Add("Accept", "application/xml")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.token))
+	// Generate base64(username:password)
+	rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
+	req.Header.Add("Authorization",
+		fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
 
 	// Send the request and wait for the response:
 	resp, err := c.client.Do(req)
