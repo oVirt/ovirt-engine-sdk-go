@@ -21,8 +21,6 @@ import (
 	"fmt"
 )
 
-type IService interface{}
-
 // This is the base for all the services of the SDK. It contains the
 // utility methods used by all of them.
 type BaseService struct {
@@ -30,8 +28,8 @@ type BaseService struct {
 	Path       string
 }
 
-func (service *BaseService) internalGet(headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("GET", service.Path, headers, query, nil)
+func (service *BaseService) internalGet(headers, query map[string]string, wait bool) (*OvResponse, error) {
+	req := NewOvRequest("GET", service.Path, headers, query, "")
 	res, err := service.Connection.Send(req)
 	if err != nil {
 		return nil, err
@@ -40,8 +38,8 @@ func (service *BaseService) internalGet(headers, query map[string]string) (*OvRe
 }
 
 // Executes an `add` method.
-func (service *BaseService) internalAdd(object interface{}, headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("POST", service.Path, headers, query, nil)
+func (service *BaseService) internalAdd(object interface{}, headers, query map[string]string, wait bool) (*OvResponse, error) {
+	req := NewOvRequest("POST", service.Path, headers, query, "")
 	xmlBytes, err := xml.Marshal(object)
 	if err != nil {
 		return nil, err
@@ -55,8 +53,8 @@ func (service *BaseService) internalAdd(object interface{}, headers, query map[s
 }
 
 // Executes a `update` method
-func (service *BaseService) internalUpdate(object interface{}, headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("PUT", service.Path, headers, query, nil)
+func (service *BaseService) internalUpdate(object interface{}, headers, query map[string]string, wait bool) (*OvResponse, error) {
+	req := NewOvRequest("PUT", service.Path, headers, query, "")
 	xmlBytes, err := xml.Marshal(object)
 	if err != nil {
 		return nil, err
@@ -70,8 +68,8 @@ func (service *BaseService) internalUpdate(object interface{}, headers, query ma
 }
 
 // Executes a `remove` method
-func (service *BaseService) internalRemove(headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("DELETE", service.Path, headers, query, nil)
+func (service *BaseService) internalRemove(headers, query map[string]string, wait bool) (*OvResponse, error) {
+	req := NewOvRequest("DELETE", service.Path, headers, query, "")
 	res, err := service.Connection.Send(req)
 	if err != nil {
 		return nil, err
@@ -80,8 +78,8 @@ func (service *BaseService) internalRemove(headers, query map[string]string) (*O
 }
 
 // Executes an `action` method
-func (service *BaseService) internalAction(action *Action, path string, headers, query map[string]string) (*OvResponse, error) {
-	req := NewOvRequest("POST", fmt.Sprintf("%s/%s", service.Path, path), headers, query, nil)
+func (service *BaseService) internalAction(action *Action, path string, headers, query map[string]string, wait bool) (*OvResponse, error) {
+	req := NewOvRequest("POST", fmt.Sprintf("%s/%s", service.Path, path), headers, query, "")
 	res, err := service.Connection.Send(req)
 	if err != nil {
 		return nil, err

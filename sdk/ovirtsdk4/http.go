@@ -16,43 +16,41 @@
 
 package ovirtsdk4
 
-
-// This class represents an HTTP request.
+// OvRequest represents an HTTP request.
 // This class is intended for internal use by other components of the SDK.
 // Refrain from using it directly as there is no backwards compatibility
 // guarantee.
 type OvRequest struct {
-	Method string
-	Path 	string
-	Query 	map[string]string
+	Method  string
+	Path    string
+	Query   map[string]string
 	Headers map[string]string
-	Body 	string
+	Body    string
 }
 
+// NewOvRequest  ...
 func NewOvRequest(method string, path string, headers, query map[string]string, body string) *OvRequest {
-	var req OvRequest
-	req.Method = method
-	req.Path = path
-	if headers != nil {
-		req.Headers = headers
+	if headers == nil {
+		headers = make(map[string]string)
 	}
-	if query != nil {
-		req.Query = query
+	if query == nil {
+		query = make(map[string]string)
 	}
-	if Body != nil {
-		req.Body = body
+	return &OvRequest{
+		Method:  method,
+		Headers: headers,
+		Query:   query,
+		Body:    body,
 	}
-	return &req
 }
-
 
 // This class represents an HTTP response.
 // This class is intended for internal use by other components of the SDK.
 // Refrain from using it directly as there is no backwards compatibility
 // guarantee.
 type OvResponse struct {
-	Body 	string
-	Code 	int
+	Body    string
+	Code    int
 	Headers map[string]string
 	Message string
 }

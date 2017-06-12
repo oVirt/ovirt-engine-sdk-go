@@ -186,6 +186,7 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	for k2, v2 := range resp.Header {
 		result.Headers[k2] = v2[0]
 	}
+
 	return &result, nil
 }
 
@@ -246,7 +247,7 @@ func (c *Connection) getSsoResponse(inputRawURL string, parameters map[string]st
 		if len(c.caFile) > 0 {
 			// Check if the CA File specified exists.
 			if _, err := os.Stat(c.caFile); os.IsNotExist(err) {
-				return ssoResponseJson{}, fmt.Errorf("The CA File '%s' doesn't exist.", c.caFile)
+				return ssoResponseJson{}, fmt.Errorf("The CA File '%s' doesn't exist", c.caFile)
 			}
 			pool := x509.NewCertPool()
 			caCerts, err := ioutil.ReadFile(c.caFile)
@@ -274,7 +275,7 @@ func (c *Connection) getSsoResponse(inputRawURL string, parameters map[string]st
 	// }
 
 	// POST request body:
-	var bodyValues url.Values
+	bodyValues := make(url.Values)
 	for k1, v1 := range parameters {
 		bodyValues[k1] = []string{v1}
 	}
@@ -399,7 +400,7 @@ func (c *Connection) Close() {
 func (c *Connection) buildRawURL(path string, query map[string]string) string {
 	rawURL := fmt.Sprintf("%s%s", c.url.String(), path)
 	if len(query) > 0 {
-		var values url.Values
+		values := make(url.Values)
 		for k, v := range query {
 			values[k] = []string{v}
 		}

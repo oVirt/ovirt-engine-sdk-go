@@ -221,18 +221,13 @@ public class ServicesGenerator implements GoGenerator {
         secondaryParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) {");
+        buffer.addLine("wait bool) (interface{}, error) {");
         //      Generate function ending
         buffer.endBlock();
  
         // Start body:
         buffer.startBlock();
-        //      Generate the wait default is True
-        buffer.addLine("if wait == nil {");
-        buffer.startBlock();
-        buffer.addLine("wait = true");
-        buffer.endBlock();
-        buffer.addLine("}");
+
         //      Generate the code to build the URL query:
         buffer.addLine("// Build the URL:");
         buffer.addLine("if query == nil {");
@@ -273,21 +268,16 @@ public class ServicesGenerator implements GoGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) {");
+        buffer.addLine("wait bool) (interface{}, error) {");
         //      Generate function ending
         buffer.endBlock();
 
         // Start body:
         buffer.startBlock();
-        //      Generate the wait default is True
-        buffer.addLine("if wait == nil {");
-        buffer.startBlock();
-        buffer.addLine("wait = true");
-        buffer.endBlock();
-        buffer.addLine("}");
+
         //      Generate the code to populate the action:
         buffer.addLine("// Populate the action:");
-        buffer.addLine("action = Action{");
+        buffer.addLine("action := &Action{");
         buffer.startBlock();
         inParameters.forEach(this::generateSetActionAttribute);
         buffer.endBlock();
@@ -303,13 +293,12 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addLine("// Send the request and wait for the response:");
         if (member == null) {
-            buffer.addLine("return internalAction(action, \"%1$s\", nil, headers, query, wait)",  getPath(methodName));
+            buffer.addLine("return op.internalAction(action, \"%1$s\", headers, query, wait)",  getPath(methodName));
         }
         else {
             buffer.addLine(
-                "return internalAction(action, \"%1$s\", \"%2$s\", headers, query, wait)",
-                getPath(methodName),
-                member
+                "return op.internalAction(action, \"%1$s\", headers, query, wait)",
+                getPath(methodName)
             );
         }
 
@@ -340,18 +329,13 @@ public class ServicesGenerator implements GoGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) {");
+        buffer.addLine("wait bool) (interface{}, error) {");
         //      Generate function ending
         buffer.endBlock();
 
         // Start body:
         buffer.startBlock();
-        //      Generate the wait default is True
-        buffer.addLine("if wait == nil {");
-        buffer.startBlock();
-        buffer.addLine("wait = true");
-        buffer.endBlock();
-        buffer.addLine("}");
+
         //      Generate the code to build the URL query:
         buffer.addLine("// Build the URL:");
         buffer.addLine("if query == nil {");
@@ -401,18 +385,13 @@ public class ServicesGenerator implements GoGenerator {
         secondaryParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) {");
+        buffer.addLine("wait bool) (interface{}, error) {");
         //      Generate function ending
         buffer.endBlock();
 
         // Start body:
         buffer.startBlock();
-        //      Generate the wait default is True
-        buffer.addLine("if wait == nil {");
-        buffer.startBlock();
-        buffer.addLine("wait = true");
-        buffer.endBlock();
-        buffer.addLine("}");
+
         //      Generate the code to build the URL query:
         buffer.addLine("// Build the URL:");
         buffer.addLine("if query == nil {");
@@ -452,18 +431,13 @@ public class ServicesGenerator implements GoGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
         buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) {");
+        buffer.addLine("wait bool) (interface{}, error) {");
         //      Generate function ending
         buffer.endBlock();
 
         // Begin body:
         buffer.startBlock();
-        //      Generate the wait default is True
-        buffer.addLine("if wait == nil {");
-        buffer.startBlock();
-        buffer.addLine("wait = true");
-        buffer.endBlock();
-        buffer.addLine("}");
+
         //      Generate the code to build the URL query:
         buffer.addLine("// Build the URL:");
         buffer.addLine("if query == nil {");
@@ -476,7 +450,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("// Send the request and wait for the response:");
-        buffer.addLine("op.internalRemove(headers, query, wait)");
+        buffer.addLine("return op.internalRemove(headers, query, wait)");
 
         // End body:
         buffer.endBlock();
@@ -501,11 +475,7 @@ public class ServicesGenerator implements GoGenerator {
         Name name = parameter.getName();
         String arg = goNames.getParameterStyleName(name);
         String tag = schemaNames.getSchemaTagName(name);
-        buffer.addLine("if %1$s != nil {", arg);
-        buffer.startBlock();
-        buffer.addLine("query[\"%1$s\"] = %2$s", tag, arg);
-        buffer.endBlock();
-        buffer.addLine("}");
+        buffer.addLine("query[\"%1$s\"] = fmt.Sprintf(\"%%v\", %2$s)", tag, arg);
     }
 
     private void generateStr(Service service) {
@@ -595,11 +565,11 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endComment();
 
         // Begin method:
-        buffer.addLine("func (op *%1$s) Service(path string) (IService, error) {", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) Service(path string) (interface{}, error) {", serviceName.getClassName());
         buffer.startBlock();
-        buffer.addLine("if path == nil {");
+        buffer.addLine("if path == \"\" {");
         buffer.startBlock();
-        buffer.addLine("return *op, nil");
+        buffer.addLine("return op, nil");
         buffer.endBlock();
         buffer.addLine("}");
 
@@ -609,14 +579,14 @@ public class ServicesGenerator implements GoGenerator {
             String segment = getPath(name);
             buffer.addLine("if path == \"%1$s\" {", segment);
             buffer.startBlock();
-            buffer.addLine(  "return *(op.%1$sService()), nil", goNames.getMethodStyleName(name));
+            buffer.addLine(  "return op.%1$sService(), nil", goNames.getMethodStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
-            buffer.addLine("if strings.HasPrefix(\"%1$s/\") {", segment);
+            buffer.addLine("if strings.HasPrefix(path, \"%1$s/\") {", segment);
             buffer.addImport("strings");
             buffer.startBlock();
             buffer.addLine(
-                "return op.%1$sService().Service(path[%2$d:]), nil",
+                "return op.%1$sService().Service(path[%2$d:])",
                 goNames.getMemberStyleName(name),
                 segment.length() + 1
             );
@@ -631,14 +601,14 @@ public class ServicesGenerator implements GoGenerator {
             Locator locator = optional.get();
             Name name = locator.getName();
             buffer.addImport("strings");
-            buffer.addLine("index = strings.Index(path, \"/\")");
+            buffer.addLine("index := strings.Index(path, \"/\")");
             buffer.addLine("if index == -1 {");
             buffer.startBlock();
             buffer.addLine("return *(op.%1$sService(path)), nil", goNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine(
-                "return op.%1$sService(path[:index]).Service(path[index + 1:]), nil",
+                "return op.%1$sService(path[:index]).Service(path[index + 1:])",
                 goNames.getMemberStyleName(name)
             );
         }

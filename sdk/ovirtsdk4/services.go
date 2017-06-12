@@ -51,10 +51,7 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 func (op *AffinityGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -80,20 +77,15 @@ func (op *AffinityGroupService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -109,17 +101,12 @@ func (op *AffinityGroupService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(group, headers, query, wait)
@@ -137,15 +124,15 @@ func (op *AffinityGroupService) VmsService() *AffinityGroupVmsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityGroupService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "vms" {
-        return *(op.VmsService()), nil
+        return op.VmsService(), nil
     }
-    if strings.HasPrefix("vms/") {
-        return op.VmsService().Service(path[4:]), nil
+    if strings.HasPrefix(path, "vms/") {
+        return op.VmsService().Service(path[4:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -182,28 +169,23 @@ func (op *AffinityGroupVmService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupVmService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityGroupVmService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -246,10 +228,7 @@ func (op *AffinityGroupVmsService) Add (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -272,17 +251,12 @@ func (op *AffinityGroupVmsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -298,15 +272,15 @@ func (op *AffinityGroupVmsService) VmService(id string) *AffinityGroupVmService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupVmsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityGroupVmsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.VmService(path)), nil
     }
-    return op.VmService(path[:index]).Service(path[index + 1:]), nil
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityGroupVmsService) String() string {
@@ -356,10 +330,7 @@ func (op *AffinityGroupsService) Add (
     group *AffinityGroup,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -381,17 +352,12 @@ func (op *AffinityGroupsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -407,15 +373,15 @@ func (op *AffinityGroupsService) GroupService(id string) *AffinityGroupService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityGroupsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityGroupsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.GroupService(path)), nil
     }
-    return op.GroupService(path[:index]).Service(path[index + 1:]), nil
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityGroupsService) String() string {
@@ -446,10 +412,7 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 func (op *AffinityLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -466,17 +429,14 @@ func (op *AffinityLabelService) Get (
 func (op *AffinityLabelService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -487,10 +447,7 @@ func (op *AffinityLabelService) Update (
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -517,21 +474,21 @@ func (op *AffinityLabelService) VmsService() *AffinityLabelVmsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "hosts" {
-        return *(op.HostsService()), nil
+        return op.HostsService(), nil
     }
-    if strings.HasPrefix("hosts/") {
-        return op.HostsService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "hosts/") {
+        return op.HostsService().Service(path[6:])
     }
     if path == "vms" {
-        return *(op.VmsService()), nil
+        return op.VmsService(), nil
     }
-    if strings.HasPrefix("vms/") {
-        return op.VmsService().Service(path[4:]), nil
+    if strings.HasPrefix(path, "vms/") {
+        return op.VmsService().Service(path[4:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -564,10 +521,7 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 func (op *AffinityLabelHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -583,25 +537,22 @@ func (op *AffinityLabelHostService) Get (
 func (op *AffinityLabelHostService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelHostService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelHostService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -636,10 +587,7 @@ func (op *AffinityLabelHostsService) Add (
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -655,10 +603,7 @@ func (op *AffinityLabelHostsService) Add (
 func (op *AffinityLabelHostsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -679,15 +624,15 @@ func (op *AffinityLabelHostsService) HostService(id string) *AffinityLabelHostSe
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelHostsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelHostsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HostService(path)), nil
     }
-    return op.HostService(path[:index]).Service(path[index + 1:]), nil
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelHostsService) String() string {
@@ -718,10 +663,7 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 func (op *AffinityLabelVmService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -737,25 +679,22 @@ func (op *AffinityLabelVmService) Get (
 func (op *AffinityLabelVmService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelVmService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelVmService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -790,10 +729,7 @@ func (op *AffinityLabelVmsService) Add (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -809,10 +745,7 @@ func (op *AffinityLabelVmsService) Add (
 func (op *AffinityLabelVmsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -833,15 +766,15 @@ func (op *AffinityLabelVmsService) VmService(id string) *AffinityLabelVmService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelVmsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelVmsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.VmService(path)), nil
     }
-    return op.VmService(path[:index]).Service(path[index + 1:]), nil
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelVmsService) String() string {
@@ -873,10 +806,7 @@ func (op *AffinityLabelsService) Add (
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -898,17 +828,12 @@ func (op *AffinityLabelsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -924,15 +849,15 @@ func (op *AffinityLabelsService) LabelService(id string) *AffinityLabelService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AffinityLabelsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AffinityLabelsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LabelService(path)), nil
     }
-    return op.LabelService(path[:index]).Service(path[index + 1:]), nil
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AffinityLabelsService) String() string {
@@ -967,9 +892,9 @@ func NewAreaService(connection *Connection, path string) *AreaService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AreaService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AreaService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1001,10 +926,7 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 func (op *AssignedAffinityLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1020,25 +942,22 @@ func (op *AssignedAffinityLabelService) Get (
 func (op *AssignedAffinityLabelService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedAffinityLabelService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedAffinityLabelService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1072,10 +991,7 @@ func (op *AssignedAffinityLabelsService) Add (
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1091,10 +1007,7 @@ func (op *AssignedAffinityLabelsService) Add (
 func (op *AssignedAffinityLabelsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1115,15 +1028,15 @@ func (op *AssignedAffinityLabelsService) LabelService(id string) *AssignedAffini
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedAffinityLabelsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedAffinityLabelsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LabelService(path)), nil
     }
-    return op.LabelService(path[:index]).Service(path[index + 1:]), nil
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedAffinityLabelsService) String() string {
@@ -1150,10 +1063,7 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 func (op *AssignedCpuProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1174,28 +1084,23 @@ func (op *AssignedCpuProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedCpuProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedCpuProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1226,10 +1131,7 @@ func (op *AssignedCpuProfilesService) Add (
     profile *CpuProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1250,17 +1152,12 @@ func (op *AssignedCpuProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -1275,15 +1172,15 @@ func (op *AssignedCpuProfilesService) ProfileService(id string) *AssignedCpuProf
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedCpuProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedCpuProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProfileService(path)), nil
     }
-    return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedCpuProfilesService) String() string {
@@ -1310,10 +1207,7 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 func (op *AssignedDiskProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1334,28 +1228,23 @@ func (op *AssignedDiskProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedDiskProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedDiskProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1386,10 +1275,7 @@ func (op *AssignedDiskProfilesService) Add (
     profile *DiskProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1410,17 +1296,12 @@ func (op *AssignedDiskProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -1435,15 +1316,15 @@ func (op *AssignedDiskProfilesService) ProfileService(id string) *AssignedDiskPr
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedDiskProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedDiskProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProfileService(path)), nil
     }
-    return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedDiskProfilesService) String() string {
@@ -1470,10 +1351,7 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 func (op *AssignedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1494,20 +1372,15 @@ func (op *AssignedNetworkService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -1517,17 +1390,12 @@ func (op *AssignedNetworkService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(network, headers, query, wait)
@@ -1536,9 +1404,9 @@ func (op *AssignedNetworkService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedNetworkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedNetworkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1569,10 +1437,7 @@ func (op *AssignedNetworksService) Add (
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1593,17 +1458,12 @@ func (op *AssignedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -1618,15 +1478,15 @@ func (op *AssignedNetworksService) NetworkService(id string) *AssignedNetworkSer
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedNetworksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedNetworksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NetworkService(path)), nil
     }
-    return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedNetworksService) String() string {
@@ -1707,10 +1567,7 @@ func (op *AssignedPermissionsService) Add (
     permission *Permission,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1745,10 +1602,7 @@ func (op *AssignedPermissionsService) Add (
 func (op *AssignedPermissionsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1769,15 +1623,15 @@ func (op *AssignedPermissionsService) PermissionService(id string) *PermissionSe
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedPermissionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedPermissionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.PermissionService(path)), nil
     }
-    return op.PermissionService(path[:index]).Service(path[index + 1:]), nil
+    return op.PermissionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedPermissionsService) String() string {
@@ -1812,17 +1666,12 @@ func (op *AssignedRolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -1838,15 +1687,15 @@ func (op *AssignedRolesService) RoleService(id string) *RoleService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedRolesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedRolesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.RoleService(path)), nil
     }
-    return op.RoleService(path[:index]).Service(path[index + 1:]), nil
+    return op.RoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedRolesService) String() string {
@@ -1888,10 +1737,7 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 func (op *AssignedTagService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1917,28 +1763,23 @@ func (op *AssignedTagService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedTagService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedTagService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -1987,10 +1828,7 @@ func (op *AssignedTagsService) Add (
     tag *Tag,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2026,17 +1864,12 @@ func (op *AssignedTagsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2052,15 +1885,15 @@ func (op *AssignedTagsService) TagService(id string) *AssignedTagService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedTagsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedTagsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.TagService(path)), nil
     }
-    return op.TagService(path[:index]).Service(path[index + 1:]), nil
+    return op.TagService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedTagsService) String() string {
@@ -2088,10 +1921,7 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 func (op *AssignedVnicProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2112,20 +1942,15 @@ func (op *AssignedVnicProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -2137,15 +1962,15 @@ func (op *AssignedVnicProfileService) PermissionsService() *AssignedPermissionsS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedVnicProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedVnicProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -2176,10 +2001,7 @@ func (op *AssignedVnicProfilesService) Add (
     profile *VnicProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2200,17 +2022,12 @@ func (op *AssignedVnicProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2225,15 +2042,15 @@ func (op *AssignedVnicProfilesService) ProfileService(id string) *AssignedVnicPr
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AssignedVnicProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AssignedVnicProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProfileService(path)), nil
     }
-    return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AssignedVnicProfilesService) String() string {
@@ -2279,17 +2096,14 @@ func (op *AttachedStorageDomainService) Activate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "activate", nil, headers, query, wait)
+    return op.internalAction(action, "activate", headers, query, wait)
 }
 
 //
@@ -2315,17 +2129,14 @@ func (op *AttachedStorageDomainService) Deactivate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "deactivate", nil, headers, query, wait)
+    return op.internalAction(action, "deactivate", headers, query, wait)
 }
 
 //
@@ -2333,10 +2144,7 @@ func (op *AttachedStorageDomainService) Deactivate (
 func (op *AttachedStorageDomainService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2357,20 +2165,15 @@ func (op *AttachedStorageDomainService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -2382,15 +2185,15 @@ func (op *AttachedStorageDomainService) DisksService() *AttachedStorageDomainDis
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AttachedStorageDomainService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -2434,17 +2237,12 @@ func (op *AttachedStorageDomainDisksService) Add (
     unregistered bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if unregistered != nil {
-        query["unregistered"] = unregistered
-    }
+    query["unregistered"] = fmt.Sprintf("%v", unregistered)
 
     // Send the request
     return op.internalAdd(disk, headers, query, wait)
@@ -2462,17 +2260,12 @@ func (op *AttachedStorageDomainDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2488,15 +2281,15 @@ func (op *AttachedStorageDomainDisksService) DiskService(id string) *AttachedSto
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AttachedStorageDomainDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AttachedStorageDomainDisksService) String() string {
@@ -2525,10 +2318,7 @@ func (op *AttachedStorageDomainsService) Add (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2549,17 +2339,12 @@ func (op *AttachedStorageDomainsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2574,15 +2359,15 @@ func (op *AttachedStorageDomainsService) StorageDomainService(id string) *Attach
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AttachedStorageDomainsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StorageDomainService(path)), nil
     }
-    return op.StorageDomainService(path[:index]).Service(path[index + 1:]), nil
+    return op.StorageDomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *AttachedStorageDomainsService) String() string {
@@ -2615,17 +2400,12 @@ func (op *BalanceService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2642,28 +2422,23 @@ func (op *BalanceService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BalanceService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *BalanceService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -2694,10 +2469,7 @@ func (op *BalancesService) Add (
     balance *Balance,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2720,20 +2492,13 @@ func (op *BalancesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -2748,15 +2513,15 @@ func (op *BalancesService) BalanceService(id string) *BalanceService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BalancesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *BalancesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.BalanceService(path)), nil
     }
-    return op.BalanceService(path[:index]).Service(path[index + 1:]), nil
+    return op.BalanceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *BalancesService) String() string {
@@ -2797,10 +2562,7 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 func (op *BookmarkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2827,20 +2589,15 @@ func (op *BookmarkService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -2869,17 +2626,12 @@ func (op *BookmarkService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(bookmark, headers, query, wait)
@@ -2888,9 +2640,9 @@ func (op *BookmarkService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BookmarkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *BookmarkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -2940,10 +2692,7 @@ func (op *BookmarksService) Add (
     bookmark *Bookmark,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2983,17 +2732,12 @@ func (op *BookmarksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -3009,15 +2753,15 @@ func (op *BookmarksService) BookmarkService(id string) *BookmarkService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *BookmarksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *BookmarksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.BookmarkService(path)), nil
     }
-    return op.BookmarkService(path[:index]).Service(path[index + 1:]), nil
+    return op.BookmarkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *BookmarksService) String() string {
@@ -3134,17 +2878,12 @@ func (op *ClusterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -3166,20 +2905,15 @@ func (op *ClusterService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -3193,17 +2927,14 @@ func (op *ClusterService) ResetEmulatedMachine (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "resetemulatedmachine", nil, headers, query, wait)
+    return op.internalAction(action, "resetemulatedmachine", headers, query, wait)
 }
 
 //
@@ -3229,17 +2960,12 @@ func (op *ClusterService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(cluster, headers, query, wait)
@@ -3297,51 +3023,51 @@ func (op *ClusterService) PermissionsService() *AssignedPermissionsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ClusterService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "affinitygroups" {
-        return *(op.AffinityGroupsService()), nil
+        return op.AffinityGroupsService(), nil
     }
-    if strings.HasPrefix("affinitygroups/") {
-        return op.AffinityGroupsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "affinitygroups/") {
+        return op.AffinityGroupsService().Service(path[15:])
     }
     if path == "cpuprofiles" {
-        return *(op.CpuProfilesService()), nil
+        return op.CpuProfilesService(), nil
     }
-    if strings.HasPrefix("cpuprofiles/") {
-        return op.CpuProfilesService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "cpuprofiles/") {
+        return op.CpuProfilesService().Service(path[12:])
     }
     if path == "glusterhooks" {
-        return *(op.GlusterHooksService()), nil
+        return op.GlusterHooksService(), nil
     }
-    if strings.HasPrefix("glusterhooks/") {
-        return op.GlusterHooksService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "glusterhooks/") {
+        return op.GlusterHooksService().Service(path[13:])
     }
     if path == "glustervolumes" {
-        return *(op.GlusterVolumesService()), nil
+        return op.GlusterVolumesService(), nil
     }
-    if strings.HasPrefix("glustervolumes/") {
-        return op.GlusterVolumesService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "glustervolumes/") {
+        return op.GlusterVolumesService().Service(path[15:])
     }
     if path == "networkfilters" {
-        return *(op.NetworkFiltersService()), nil
+        return op.NetworkFiltersService(), nil
     }
-    if strings.HasPrefix("networkfilters/") {
-        return op.NetworkFiltersService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "networkfilters/") {
+        return op.NetworkFiltersService().Service(path[15:])
     }
     if path == "networks" {
-        return *(op.NetworksService()), nil
+        return op.NetworksService(), nil
     }
-    if strings.HasPrefix("networks/") {
-        return op.NetworksService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "networks/") {
+        return op.NetworksService().Service(path[9:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -3400,10 +3126,7 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 func (op *ClusterLevelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3416,9 +3139,9 @@ func (op *ClusterLevelService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterLevelService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ClusterLevelService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -3466,10 +3189,7 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 func (op *ClusterLevelsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3489,15 +3209,15 @@ func (op *ClusterLevelsService) LevelService(id string) *ClusterLevelService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClusterLevelsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ClusterLevelsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LevelService(path)), nil
     }
-    return op.LevelService(path[:index]).Service(path[index + 1:]), nil
+    return op.LevelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ClusterLevelsService) String() string {
@@ -3545,10 +3265,7 @@ func (op *ClustersService) Add (
     cluster *Cluster,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3577,26 +3294,15 @@ func (op *ClustersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -3612,15 +3318,15 @@ func (op *ClustersService) ClusterService(id string) *ClusterService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ClustersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ClustersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ClusterService(path)), nil
     }
-    return op.ClusterService(path[:index]).Service(path[index + 1:]), nil
+    return op.ClusterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ClustersService) String() string {
@@ -3653,25 +3359,22 @@ func (op *CopyableService) Copy (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "copy", nil, headers, query, wait)
+    return op.internalAction(action, "copy", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CopyableService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *CopyableService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -3701,10 +3404,7 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 func (op *CpuProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3725,20 +3425,15 @@ func (op *CpuProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -3748,17 +3443,12 @@ func (op *CpuProfileService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(profile, headers, query, wait)
@@ -3773,15 +3463,15 @@ func (op *CpuProfileService) PermissionsService() *AssignedPermissionsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CpuProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *CpuProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -3812,10 +3502,7 @@ func (op *CpuProfilesService) Add (
     profile *CpuProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3836,17 +3523,12 @@ func (op *CpuProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -3861,15 +3543,15 @@ func (op *CpuProfilesService) ProfileService(id string) *CpuProfileService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *CpuProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *CpuProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProfileService(path)), nil
     }
-    return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *CpuProfilesService) String() string {
@@ -3945,17 +3627,12 @@ func (op *DataCenterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -3987,23 +3664,16 @@ func (op *DataCenterService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if force != nil {
-        query["force"] = force
-    }
-    if async != nil {
-        query["async"] = async
-    }
+    query["force"] = fmt.Sprintf("%v", force)
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -4033,17 +3703,12 @@ func (op *DataCenterService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(dataCenter, headers, query, wait)
@@ -4117,51 +3782,51 @@ func (op *DataCenterService) StorageDomainsService() *AttachedStorageDomainsServ
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DataCenterService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DataCenterService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "clusters" {
-        return *(op.ClustersService()), nil
+        return op.ClustersService(), nil
     }
-    if strings.HasPrefix("clusters/") {
-        return op.ClustersService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "clusters/") {
+        return op.ClustersService().Service(path[9:])
     }
     if path == "iscsibonds" {
-        return *(op.IscsiBondsService()), nil
+        return op.IscsiBondsService(), nil
     }
-    if strings.HasPrefix("iscsibonds/") {
-        return op.IscsiBondsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "iscsibonds/") {
+        return op.IscsiBondsService().Service(path[11:])
     }
     if path == "networks" {
-        return *(op.NetworksService()), nil
+        return op.NetworksService(), nil
     }
-    if strings.HasPrefix("networks/") {
-        return op.NetworksService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "networks/") {
+        return op.NetworksService().Service(path[9:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "qoss" {
-        return *(op.QossService()), nil
+        return op.QossService(), nil
     }
-    if strings.HasPrefix("qoss/") {
-        return op.QossService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "qoss/") {
+        return op.QossService().Service(path[5:])
     }
     if path == "quotas" {
-        return *(op.QuotasService()), nil
+        return op.QuotasService(), nil
     }
-    if strings.HasPrefix("quotas/") {
-        return op.QuotasService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "quotas/") {
+        return op.QuotasService().Service(path[7:])
     }
     if path == "storagedomains" {
-        return *(op.StorageDomainsService()), nil
+        return op.StorageDomainsService(), nil
     }
-    if strings.HasPrefix("storagedomains/") {
-        return op.StorageDomainsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "storagedomains/") {
+        return op.StorageDomainsService().Service(path[15:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -4213,10 +3878,7 @@ func (op *DataCentersService) Add (
     dataCenter *DataCenter,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4294,26 +3956,15 @@ func (op *DataCentersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -4329,15 +3980,15 @@ func (op *DataCentersService) DataCenterService(id string) *DataCenterService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DataCentersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DataCentersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DataCenterService(path)), nil
     }
-    return op.DataCenterService(path[:index]).Service(path[index + 1:]), nil
+    return op.DataCenterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DataCentersService) String() string {
@@ -4381,10 +4032,7 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 func (op *DiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4414,20 +4062,15 @@ func (op *DiskAttachmentService) Remove (
     detachOnly bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if detachOnly != nil {
-        query["detach_only"] = detachOnly
-    }
+    query["detach_only"] = fmt.Sprintf("%v", detachOnly)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -4451,10 +4094,7 @@ func (op *DiskAttachmentService) Update (
     diskAttachment *DiskAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4467,9 +4107,9 @@ func (op *DiskAttachmentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskAttachmentService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskAttachmentService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -4540,10 +4180,7 @@ func (op *DiskAttachmentsService) Add (
     attachment *DiskAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4559,10 +4196,7 @@ func (op *DiskAttachmentsService) Add (
 func (op *DiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4582,15 +4216,15 @@ func (op *DiskAttachmentsService) AttachmentService(id string) *DiskAttachmentSe
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskAttachmentsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskAttachmentsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.AttachmentService(path)), nil
     }
-    return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskAttachmentsService) String() string {
@@ -4618,10 +4252,7 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 func (op *DiskProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4642,20 +4273,15 @@ func (op *DiskProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -4665,17 +4291,12 @@ func (op *DiskProfileService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(profile, headers, query, wait)
@@ -4690,15 +4311,15 @@ func (op *DiskProfileService) PermissionsService() *AssignedPermissionsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -4729,10 +4350,7 @@ func (op *DiskProfilesService) Add (
     profile *DiskProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4753,17 +4371,12 @@ func (op *DiskProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -4778,15 +4391,15 @@ func (op *DiskProfilesService) DiskProfileService(id string) *DiskProfileService
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskProfileService(path)), nil
     }
-    return op.DiskProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskProfilesService) String() string {
@@ -4813,10 +4426,7 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 func (op *DiskSnapshotService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4837,28 +4447,23 @@ func (op *DiskSnapshotService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskSnapshotService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskSnapshotService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -4894,17 +4499,12 @@ func (op *DiskSnapshotsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -4919,15 +4519,15 @@ func (op *DiskSnapshotsService) SnapshotService(id string) *DiskSnapshotService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskSnapshotsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskSnapshotsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.SnapshotService(path)), nil
     }
-    return op.SnapshotService(path[:index]).Service(path[index + 1:]), nil
+    return op.SnapshotService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DiskSnapshotsService) String() string {
@@ -5041,10 +4641,7 @@ func (op *DisksService) Add (
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5099,23 +4696,14 @@ func (op *DisksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -5131,15 +4719,15 @@ func (op *DisksService) DiskService(id string) *DiskService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DisksService) String() string {
@@ -5185,10 +4773,7 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 func (op *DomainService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5215,21 +4800,21 @@ func (op *DomainService) UsersService() *DomainUsersService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "groups" {
-        return *(op.GroupsService()), nil
+        return op.GroupsService(), nil
     }
-    if strings.HasPrefix("groups/") {
-        return op.GroupsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "groups/") {
+        return op.GroupsService().Service(path[7:])
     }
     if path == "users" {
-        return *(op.UsersService()), nil
+        return op.UsersService(), nil
     }
-    if strings.HasPrefix("users/") {
-        return op.UsersService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "users/") {
+        return op.UsersService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -5258,10 +4843,7 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 func (op *DomainGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5274,9 +4856,9 @@ func (op *DomainGroupService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainGroupService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainGroupService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -5318,23 +4900,14 @@ func (op *DomainGroupsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -5349,15 +4922,15 @@ func (op *DomainGroupsService) GroupService(id string) *DomainGroupService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainGroupsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainGroupsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.GroupService(path)), nil
     }
-    return op.GroupService(path[:index]).Service(path[index + 1:]), nil
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainGroupsService) String() string {
@@ -5404,10 +4977,7 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 func (op *DomainUserService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5420,9 +4990,9 @@ func (op *DomainUserService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainUserService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainUserService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -5486,23 +5056,14 @@ func (op *DomainUsersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -5518,15 +5079,15 @@ func (op *DomainUsersService) UserService(id string) *DomainUserService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainUsersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainUsersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.UserService(path)), nil
     }
-    return op.UserService(path[:index]).Service(path[index + 1:]), nil
+    return op.UserService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainUsersService) String() string {
@@ -5579,17 +5140,12 @@ func (op *DomainsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -5605,15 +5161,15 @@ func (op *DomainsService) DomainService(id string) *DomainService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DomainsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DomainsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DomainService(path)), nil
     }
-    return op.DomainService(path[:index]).Service(path[index + 1:]), nil
+    return op.DomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *DomainsService) String() string {
@@ -5666,10 +5222,7 @@ func NewEventService(connection *Connection, path string) *EventService {
 func (op *EventService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5696,28 +5249,23 @@ func (op *EventService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EventService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *EventService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -5779,10 +5327,7 @@ func (op *EventsService) Add (
     event *Event,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5907,26 +5452,15 @@ func (op *EventsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if from != nil {
-        query["from"] = from
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["from"] = fmt.Sprintf("%v", from)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -5943,17 +5477,14 @@ func (op *EventsService) Undelete (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "undelete", nil, headers, query, wait)
+    return op.internalAction(action, "undelete", headers, query, wait)
 }
 
 //
@@ -5966,15 +5497,15 @@ func (op *EventsService) EventService(id string) *EventService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EventsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *EventsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.EventService(path)), nil
     }
-    return op.EventService(path[:index]).Service(path[index + 1:]), nil
+    return op.EventService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *EventsService) String() string {
@@ -6001,10 +5532,7 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 func (op *ExternalComputeResourceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6017,9 +5545,9 @@ func (op *ExternalComputeResourceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalComputeResourceService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalComputeResourceService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6055,17 +5583,12 @@ func (op *ExternalComputeResourcesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6080,15 +5603,15 @@ func (op *ExternalComputeResourcesService) ResourceService(id string) *ExternalC
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalComputeResourcesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalComputeResourcesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ResourceService(path)), nil
     }
-    return op.ResourceService(path[:index]).Service(path[index + 1:]), nil
+    return op.ResourceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalComputeResourcesService) String() string {
@@ -6115,10 +5638,7 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 func (op *ExternalDiscoveredHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6131,9 +5651,9 @@ func (op *ExternalDiscoveredHostService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalDiscoveredHostService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalDiscoveredHostService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6169,17 +5689,12 @@ func (op *ExternalDiscoveredHostsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6194,15 +5709,15 @@ func (op *ExternalDiscoveredHostsService) HostService(id string) *ExternalDiscov
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalDiscoveredHostsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalDiscoveredHostsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HostService(path)), nil
     }
-    return op.HostService(path[:index]).Service(path[index + 1:]), nil
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalDiscoveredHostsService) String() string {
@@ -6229,10 +5744,7 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 func (op *ExternalHostService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6245,9 +5757,9 @@ func (op *ExternalHostService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6276,10 +5788,7 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 func (op *ExternalHostGroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6292,9 +5801,9 @@ func (op *ExternalHostGroupService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostGroupService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostGroupService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6330,17 +5839,12 @@ func (op *ExternalHostGroupsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6355,15 +5859,15 @@ func (op *ExternalHostGroupsService) GroupService(id string) *ExternalHostGroupS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostGroupsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostGroupsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.GroupService(path)), nil
     }
-    return op.GroupService(path[:index]).Service(path[index + 1:]), nil
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostGroupsService) String() string {
@@ -6392,10 +5896,7 @@ func (op *ExternalHostProvidersService) Add (
     provider *ExternalHostProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6416,17 +5917,12 @@ func (op *ExternalHostProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6441,15 +5937,15 @@ func (op *ExternalHostProvidersService) ProviderService(id string) *ExternalHost
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostProvidersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostProvidersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProviderService(path)), nil
     }
-    return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostProvidersService) String() string {
@@ -6483,17 +5979,12 @@ func (op *ExternalHostsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6508,15 +5999,15 @@ func (op *ExternalHostsService) HostService(id string) *ExternalHostService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HostService(path)), nil
     }
-    return op.HostService(path[:index]).Service(path[index + 1:]), nil
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalHostsService) String() string {
@@ -6545,17 +6036,14 @@ func (op *ExternalProviderService) ImportCertificates (
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "importcertificates", nil, headers, query, wait)
+    return op.internalAction(action, "importcertificates", headers, query, wait)
 }
 
 //
@@ -6569,17 +6057,14 @@ func (op *ExternalProviderService) TestConnectivity (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "testconnectivity", nil, headers, query, wait)
+    return op.internalAction(action, "testconnectivity", headers, query, wait)
 }
 
 //
@@ -6591,15 +6076,15 @@ func (op *ExternalProviderService) CertificatesService() *ExternalProviderCertif
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalProviderService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "certificates" {
-        return *(op.CertificatesService()), nil
+        return op.CertificatesService(), nil
     }
-    if strings.HasPrefix("certificates/") {
-        return op.CertificatesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "certificates/") {
+        return op.CertificatesService().Service(path[13:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6628,10 +6113,7 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 func (op *ExternalProviderCertificateService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6644,9 +6126,9 @@ func (op *ExternalProviderCertificateService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderCertificateService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalProviderCertificateService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6682,17 +6164,12 @@ func (op *ExternalProviderCertificatesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6707,15 +6184,15 @@ func (op *ExternalProviderCertificatesService) CertificateService(id string) *Ex
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalProviderCertificatesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalProviderCertificatesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.CertificateService(path)), nil
     }
-    return op.CertificateService(path[:index]).Service(path[index + 1:]), nil
+    return op.CertificateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ExternalProviderCertificatesService) String() string {
@@ -6768,10 +6245,7 @@ func (op *ExternalVmImportsService) Add (
     import_ *ExternalVmImport,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6784,9 +6258,9 @@ func (op *ExternalVmImportsService) Add (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalVmImportsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalVmImportsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6815,10 +6289,7 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 func (op *FenceAgentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6839,20 +6310,15 @@ func (op *FenceAgentService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -6862,17 +6328,12 @@ func (op *FenceAgentService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(agent, headers, query, wait)
@@ -6881,9 +6342,9 @@ func (op *FenceAgentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FenceAgentService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FenceAgentService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -6914,10 +6375,7 @@ func (op *FenceAgentsService) Add (
     agent *Agent,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6938,17 +6396,12 @@ func (op *FenceAgentsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -6963,15 +6416,15 @@ func (op *FenceAgentsService) AgentService(id string) *FenceAgentService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FenceAgentsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FenceAgentsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.AgentService(path)), nil
     }
-    return op.AgentService(path[:index]).Service(path[index + 1:]), nil
+    return op.AgentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FenceAgentsService) String() string {
@@ -6998,10 +6451,7 @@ func NewFileService(connection *Connection, path string) *FileService {
 func (op *FileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7014,9 +6464,9 @@ func (op *FileService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -7062,23 +6512,14 @@ func (op *FilesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7093,15 +6534,15 @@ func (op *FilesService) FileService(id string) *FileService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.FileService(path)), nil
     }
-    return op.FileService(path[:index]).Service(path[index + 1:]), nil
+    return op.FileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FilesService) String() string {
@@ -7134,17 +6575,12 @@ func (op *FilterService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7161,28 +6597,23 @@ func (op *FilterService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FilterService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FilterService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -7213,10 +6644,7 @@ func (op *FiltersService) Add (
     filter *Filter,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7239,20 +6667,13 @@ func (op *FiltersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7267,15 +6688,15 @@ func (op *FiltersService) FilterService(id string) *FilterService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *FiltersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *FiltersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.FilterService(path)), nil
     }
-    return op.FilterService(path[:index]).Service(path[index + 1:]), nil
+    return op.FilterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *FiltersService) String() string {
@@ -7332,18 +6753,15 @@ func (op *GlusterBricksService) Activate (
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Bricks: bricks,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "activate", nil, headers, query, wait)
+    return op.internalAction(action, "activate", headers, query, wait)
 }
 
 //
@@ -7378,20 +6796,13 @@ func (op *GlusterBricksService) Add (
     stripeCount int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if replicaCount != nil {
-        query["replica_count"] = replicaCount
-    }
-    if stripeCount != nil {
-        query["stripe_count"] = stripeCount
-    }
+    query["replica_count"] = fmt.Sprintf("%v", replicaCount)
+    query["stripe_count"] = fmt.Sprintf("%v", stripeCount)
 
     // Send the request
     return op.internalAdd(bricks, headers, query, wait)
@@ -7432,17 +6843,12 @@ func (op *GlusterBricksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7484,18 +6890,15 @@ func (op *GlusterBricksService) Migrate (
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Bricks: bricks,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "migrate", nil, headers, query, wait)
+    return op.internalAction(action, "migrate", headers, query, wait)
 }
 
 //
@@ -7531,26 +6934,17 @@ func (op *GlusterBricksService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if bricks != nil {
-        query["bricks"] = bricks
-    }
-    if replicaCount != nil {
-        query["replica_count"] = replicaCount
-    }
-    if async != nil {
-        query["async"] = async
-    }
+    query["bricks"] = fmt.Sprintf("%v", bricks)
+    query["replica_count"] = fmt.Sprintf("%v", replicaCount)
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -7585,18 +6979,15 @@ func (op *GlusterBricksService) StopMigrate (
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Bricks: bricks,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "stopmigrate", nil, headers, query, wait)
+    return op.internalAction(action, "stopmigrate", headers, query, wait)
 }
 
 //
@@ -7609,15 +7000,15 @@ func (op *GlusterBricksService) BrickService(id string) *GlusterBrickService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterBricksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterBricksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.BrickService(path)), nil
     }
-    return op.BrickService(path[:index]).Service(path[index + 1:]), nil
+    return op.BrickService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterBricksService) String() string {
@@ -7652,17 +7043,14 @@ func (op *GlusterHookService) Disable (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "disable", nil, headers, query, wait)
+    return op.internalAction(action, "disable", headers, query, wait)
 }
 
 //
@@ -7678,17 +7066,14 @@ func (op *GlusterHookService) Enable (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "enable", nil, headers, query, wait)
+    return op.internalAction(action, "enable", headers, query, wait)
 }
 
 //
@@ -7696,10 +7081,7 @@ func (op *GlusterHookService) Enable (
 func (op *GlusterHookService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7721,20 +7103,15 @@ func (op *GlusterHookService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -7757,27 +7134,24 @@ func (op *GlusterHookService) Resolve (
     resolutionType string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Host: host,
         ResolutionType: resolutionType,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "resolve", nil, headers, query, wait)
+    return op.internalAction(action, "resolve", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterHookService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterHookService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -7813,17 +7187,12 @@ func (op *GlusterHooksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7838,15 +7207,15 @@ func (op *GlusterHooksService) HookService(id string) *GlusterHookService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterHooksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterHooksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HookService(path)), nil
     }
-    return op.HookService(path[:index]).Service(path[index + 1:]), nil
+    return op.HookService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterHooksService) String() string {
@@ -7913,10 +7282,7 @@ func (op *GlusterVolumesService) Add (
     volume *GlusterVolume,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7950,23 +7316,14 @@ func (op *GlusterVolumesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -7982,15 +7339,15 @@ func (op *GlusterVolumesService) VolumeService(id string) *GlusterVolumeService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterVolumesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterVolumesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.VolumeService(path)), nil
     }
-    return op.VolumeService(path[:index]).Service(path[index + 1:]), nil
+    return op.VolumeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GlusterVolumesService) String() string {
@@ -8020,10 +7377,7 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 func (op *GroupService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8044,20 +7398,15 @@ func (op *GroupService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -8081,27 +7430,27 @@ func (op *GroupService) TagsService() *AssignedTagsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GroupService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GroupService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return *(op.RolesService()), nil
+        return op.RolesService(), nil
     }
-    if strings.HasPrefix("roles/") {
-        return op.RolesService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "roles/") {
+        return op.RolesService().Service(path[6:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -8149,10 +7498,7 @@ func (op *GroupsService) Add (
     group *Group,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8179,23 +7525,14 @@ func (op *GroupsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8210,15 +7547,15 @@ func (op *GroupsService) GroupService(id string) *GroupService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GroupsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GroupsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.GroupService(path)), nil
     }
-    return op.GroupService(path[:index]).Service(path[index + 1:]), nil
+    return op.GroupService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *GroupsService) String() string {
@@ -8263,10 +7600,7 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 func (op *HostDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8279,9 +7613,9 @@ func (op *HostDeviceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostDeviceService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostDeviceService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -8319,17 +7653,12 @@ func (op *HostDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8345,15 +7674,15 @@ func (op *HostDevicesService) DeviceService(id string) *HostDeviceService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostDevicesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostDevicesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DeviceService(path)), nil
     }
-    return op.DeviceService(path[:index]).Service(path[index + 1:]), nil
+    return op.DeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostDevicesService) String() string {
@@ -8380,10 +7709,7 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 func (op *HostHookService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8396,9 +7722,9 @@ func (op *HostHookService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostHookService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostHookService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -8434,17 +7760,12 @@ func (op *HostHooksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8459,15 +7780,15 @@ func (op *HostHooksService) HookService(id string) *HostHookService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostHooksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostHooksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HookService(path)), nil
     }
-    return op.HookService(path[:index]).Service(path[index + 1:]), nil
+    return op.HookService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostHooksService) String() string {
@@ -8502,17 +7823,12 @@ func (op *HostNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8528,15 +7844,15 @@ func (op *HostNicsService) NicService(id string) *HostNicService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNicsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostNicsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NicService(path)), nil
     }
-    return op.NicService(path[:index]).Service(path[index + 1:]), nil
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostNicsService) String() string {
@@ -8570,17 +7886,12 @@ func (op *HostNumaNodesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8595,15 +7906,15 @@ func (op *HostNumaNodesService) NodeService(id string) *HostNumaNodeService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNumaNodesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostNumaNodesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NodeService(path)), nil
     }
-    return op.NodeService(path[:index]).Service(path[index + 1:]), nil
+    return op.NodeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostNumaNodesService) String() string {
@@ -8696,17 +8007,12 @@ func (op *HostStorageService) List (
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if reportStatus != nil {
-        query["report_status"] = reportStatus
-    }
+    query["report_status"] = fmt.Sprintf("%v", reportStatus)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8722,15 +8028,15 @@ func (op *HostStorageService) StorageService(id string) *StorageService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostStorageService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostStorageService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StorageService(path)), nil
     }
-    return op.StorageService(path[:index]).Service(path[index + 1:]), nil
+    return op.StorageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostStorageService) String() string {
@@ -8792,20 +8098,13 @@ func (op *HostsService) Add (
     undeployHostedEngine bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if deployHostedEngine != nil {
-        query["deploy_hosted_engine"] = deployHostedEngine
-    }
-    if undeployHostedEngine != nil {
-        query["undeploy_hosted_engine"] = undeployHostedEngine
-    }
+    query["deploy_hosted_engine"] = fmt.Sprintf("%v", deployHostedEngine)
+    query["undeploy_hosted_engine"] = fmt.Sprintf("%v", undeployHostedEngine)
 
     // Send the request
     return op.internalAdd(host, headers, query, wait)
@@ -8848,26 +8147,15 @@ func (op *HostsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -8883,15 +8171,15 @@ func (op *HostsService) HostService(id string) *HostService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.HostService(path)), nil
     }
-    return op.HostService(path[:index]).Service(path[index + 1:]), nil
+    return op.HostService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *HostsService) String() string {
@@ -8932,10 +8220,7 @@ func NewIconService(connection *Connection, path string) *IconService {
 func (op *IconService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8948,9 +8233,9 @@ func (op *IconService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IconService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *IconService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -9003,17 +8288,12 @@ func (op *IconsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -9029,15 +8309,15 @@ func (op *IconsService) IconService(id string) *IconService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IconsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *IconsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.IconService(path)), nil
     }
-    return op.IconService(path[:index]).Service(path[index + 1:]), nil
+    return op.IconService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *IconsService) String() string {
@@ -9064,10 +8344,7 @@ func NewImageService(connection *Connection, path string) *ImageService {
 func (op *ImageService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9100,12 +8377,9 @@ func (op *ImageService) Import (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Cluster: cluster,
         Disk: disk,
@@ -9115,15 +8389,15 @@ func (op *ImageService) Import (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "import", nil, headers, query, wait)
+    return op.internalAction(action, "import", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ImageService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -9298,16 +8572,13 @@ func NewImageTransferService(connection *Connection, path string) *ImageTransfer
 func (op *ImageTransferService) Extend (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "extend", nil, headers, query, wait)
+    return op.internalAction(action, "extend", headers, query, wait)
 }
 
 //
@@ -9320,16 +8591,13 @@ func (op *ImageTransferService) Extend (
 func (op *ImageTransferService) Finalize (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "finalize", nil, headers, query, wait)
+    return op.internalAction(action, "finalize", headers, query, wait)
 }
 
 //
@@ -9338,10 +8606,7 @@ func (op *ImageTransferService) Finalize (
 func (op *ImageTransferService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9357,16 +8622,13 @@ func (op *ImageTransferService) Get (
 func (op *ImageTransferService) Pause (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "pause", nil, headers, query, wait)
+    return op.internalAction(action, "pause", headers, query, wait)
 }
 
 //
@@ -9385,24 +8647,21 @@ func (op *ImageTransferService) Pause (
 func (op *ImageTransferService) Resume (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "resume", nil, headers, query, wait)
+    return op.internalAction(action, "resume", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageTransferService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ImageTransferService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -9438,10 +8697,7 @@ func (op *ImageTransfersService) Add (
     imageTransfer *ImageTransfer,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9458,10 +8714,7 @@ func (op *ImageTransfersService) Add (
 func (op *ImageTransfersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9482,15 +8735,15 @@ func (op *ImageTransfersService) ImageTransferService(id string) *ImageTransferS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImageTransfersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ImageTransfersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ImageTransferService(path)), nil
     }
-    return op.ImageTransferService(path[:index]).Service(path[index + 1:]), nil
+    return op.ImageTransferService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ImageTransfersService) String() string {
@@ -9524,17 +8777,12 @@ func (op *ImagesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -9549,15 +8797,15 @@ func (op *ImagesService) ImageService(id string) *ImageService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ImagesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ImagesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ImageService(path)), nil
     }
-    return op.ImageService(path[:index]).Service(path[index + 1:]), nil
+    return op.ImageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *ImagesService) String() string {
@@ -9592,10 +8840,7 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 func (op *InstanceTypeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9623,20 +8868,15 @@ func (op *InstanceTypeService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -9670,17 +8910,12 @@ func (op *InstanceTypeService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(instanceType, headers, query, wait)
@@ -9711,27 +8946,27 @@ func (op *InstanceTypeService) WatchdogsService() *InstanceTypeWatchdogsService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "graphicsconsoles" {
-        return *(op.GraphicsConsolesService()), nil
+        return op.GraphicsConsolesService(), nil
     }
-    if strings.HasPrefix("graphicsconsoles/") {
-        return op.GraphicsConsolesService().Service(path[17:]), nil
+    if strings.HasPrefix(path, "graphicsconsoles/") {
+        return op.GraphicsConsolesService().Service(path[17:])
     }
     if path == "nics" {
-        return *(op.NicsService()), nil
+        return op.NicsService(), nil
     }
-    if strings.HasPrefix("nics/") {
-        return op.NicsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "nics/") {
+        return op.NicsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return *(op.WatchdogsService()), nil
+        return op.WatchdogsService(), nil
     }
-    if strings.HasPrefix("watchdogs/") {
-        return op.WatchdogsService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "watchdogs/") {
+        return op.WatchdogsService().Service(path[10:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -9761,10 +8996,7 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 func (op *InstanceTypeGraphicsConsoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9786,28 +9018,23 @@ func (op *InstanceTypeGraphicsConsoleService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeGraphicsConsoleService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeGraphicsConsoleService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -9839,10 +9066,7 @@ func (op *InstanceTypeGraphicsConsolesService) Add (
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9864,17 +9088,12 @@ func (op *InstanceTypeGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -9890,15 +9109,15 @@ func (op *InstanceTypeGraphicsConsolesService) ConsoleService(id string) *Instan
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeGraphicsConsolesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeGraphicsConsolesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ConsoleService(path)), nil
     }
-    return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeGraphicsConsolesService) String() string {
@@ -9926,10 +9145,7 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 func (op *InstanceTypeNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9951,20 +9167,15 @@ func (op *InstanceTypeNicService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -9975,17 +9186,12 @@ func (op *InstanceTypeNicService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(nic, headers, query, wait)
@@ -9994,9 +9200,9 @@ func (op *InstanceTypeNicService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeNicService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeNicService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -10028,10 +9234,7 @@ func (op *InstanceTypeNicsService) Add (
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10055,20 +9258,13 @@ func (op *InstanceTypeNicsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -10083,15 +9279,15 @@ func (op *InstanceTypeNicsService) NicService(id string) *InstanceTypeNicService
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeNicsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeNicsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NicService(path)), nil
     }
-    return op.NicService(path[:index]).Service(path[index + 1:]), nil
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeNicsService) String() string {
@@ -10119,10 +9315,7 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 func (op *InstanceTypeWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10144,20 +9337,15 @@ func (op *InstanceTypeWatchdogService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -10168,17 +9356,12 @@ func (op *InstanceTypeWatchdogService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(watchdog, headers, query, wait)
@@ -10187,9 +9370,9 @@ func (op *InstanceTypeWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeWatchdogService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeWatchdogService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -10221,10 +9404,7 @@ func (op *InstanceTypeWatchdogsService) Add (
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10249,20 +9429,13 @@ func (op *InstanceTypeWatchdogsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -10277,15 +9450,15 @@ func (op *InstanceTypeWatchdogsService) WatchdogService(id string) *InstanceType
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypeWatchdogsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypeWatchdogsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.WatchdogService(path)), nil
     }
-    return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypeWatchdogsService) String() string {
@@ -10393,10 +9566,7 @@ func (op *InstanceTypesService) Add (
     instanceType *InstanceType,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10425,23 +9595,14 @@ func (op *InstanceTypesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -10456,15 +9617,15 @@ func (op *InstanceTypesService) InstanceTypeService(id string) *InstanceTypeServ
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *InstanceTypesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *InstanceTypesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.InstanceTypeService(path)), nil
     }
-    return op.InstanceTypeService(path[:index]).Service(path[index + 1:]), nil
+    return op.InstanceTypeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *InstanceTypesService) String() string {
@@ -10493,10 +9654,7 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 func (op *IscsiBondService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10523,20 +9681,15 @@ func (op *IscsiBondService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -10561,17 +9714,12 @@ func (op *IscsiBondService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(bond, headers, query, wait)
@@ -10592,21 +9740,21 @@ func (op *IscsiBondService) StorageServerConnectionsService() *StorageServerConn
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IscsiBondService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *IscsiBondService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "networks" {
-        return *(op.NetworksService()), nil
+        return op.NetworksService(), nil
     }
-    if strings.HasPrefix("networks/") {
-        return op.NetworksService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "networks/") {
+        return op.NetworksService().Service(path[9:])
     }
     if path == "storageserverconnections" {
-        return *(op.StorageServerConnectionsService()), nil
+        return op.StorageServerConnectionsService(), nil
     }
-    if strings.HasPrefix("storageserverconnections/") {
-        return op.StorageServerConnectionsService().Service(path[25:]), nil
+    if strings.HasPrefix(path, "storageserverconnections/") {
+        return op.StorageServerConnectionsService().Service(path[25:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -10658,10 +9806,7 @@ func (op *IscsiBondsService) Add (
     bond *IscsiBond,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10682,17 +9827,12 @@ func (op *IscsiBondsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -10707,15 +9847,15 @@ func (op *IscsiBondsService) IscsiBondService(id string) *IscsiBondService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *IscsiBondsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *IscsiBondsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.IscsiBondService(path)), nil
     }
-    return op.IscsiBondService(path[:index]).Service(path[index + 1:]), nil
+    return op.IscsiBondService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *IscsiBondsService) String() string {
@@ -10761,17 +9901,14 @@ func (op *JobService) Clear (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "clear", nil, headers, query, wait)
+    return op.internalAction(action, "clear", headers, query, wait)
 }
 
 //
@@ -10804,19 +9941,16 @@ func (op *JobService) End (
     succeeded bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
         Succeeded: succeeded,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "end", nil, headers, query, wait)
+    return op.internalAction(action, "end", headers, query, wait)
 }
 
 //
@@ -10848,10 +9982,7 @@ func (op *JobService) End (
 func (op *JobService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10871,15 +10002,15 @@ func (op *JobService) StepsService() *StepsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *JobService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *JobService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "steps" {
-        return *(op.StepsService()), nil
+        return op.StepsService(), nil
     }
-    if strings.HasPrefix("steps/") {
-        return op.StepsService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "steps/") {
+        return op.StepsService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -10948,10 +10079,7 @@ func (op *JobsService) Add (
     job *Job,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10999,17 +10127,12 @@ func (op *JobsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -11025,15 +10148,15 @@ func (op *JobsService) JobService(id string) *JobService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *JobsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *JobsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.JobService(path)), nil
     }
-    return op.JobService(path[:index]).Service(path[index + 1:]), nil
+    return op.JobService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *JobsService) String() string {
@@ -11096,17 +10219,12 @@ func (op *KatelloErrataService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -11123,15 +10241,15 @@ func (op *KatelloErrataService) KatelloErratumService(id string) *KatelloErratum
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *KatelloErrataService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *KatelloErrataService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.KatelloErratumService(path)), nil
     }
-    return op.KatelloErratumService(path[:index]).Service(path[index + 1:]), nil
+    return op.KatelloErratumService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *KatelloErrataService) String() string {
@@ -11183,10 +10301,7 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 func (op *KatelloErratumService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11199,9 +10314,9 @@ func (op *KatelloErratumService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *KatelloErratumService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *KatelloErratumService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11230,10 +10345,7 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 func (op *MacPoolService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11260,20 +10372,15 @@ func (op *MacPoolService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -11309,17 +10416,12 @@ func (op *MacPoolService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(pool, headers, query, wait)
@@ -11328,9 +10430,9 @@ func (op *MacPoolService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MacPoolService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *MacPoolService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11384,10 +10486,7 @@ func (op *MacPoolsService) Add (
     pool *MacPool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11408,17 +10507,12 @@ func (op *MacPoolsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -11433,15 +10527,15 @@ func (op *MacPoolsService) MacPoolService(id string) *MacPoolService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MacPoolsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *MacPoolsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.MacPoolService(path)), nil
     }
-    return op.MacPoolService(path[:index]).Service(path[index + 1:]), nil
+    return op.MacPoolService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *MacPoolsService) String() string {
@@ -11473,15 +10567,15 @@ func (op *MeasurableService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MeasurableService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *MeasurableService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11516,25 +10610,22 @@ func (op *MoveableService) Move (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "move", nil, headers, query, wait)
+    return op.internalAction(action, "move", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *MoveableService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *MoveableService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11590,10 +10681,7 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 func (op *NetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11628,20 +10716,15 @@ func (op *NetworkService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -11679,17 +10762,12 @@ func (op *NetworkService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(network, headers, query, wait)
@@ -11719,27 +10797,27 @@ func (op *NetworkService) VnicProfilesService() *AssignedVnicProfilesService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "networklabels" {
-        return *(op.NetworkLabelsService()), nil
+        return op.NetworkLabelsService(), nil
     }
-    if strings.HasPrefix("networklabels/") {
-        return op.NetworkLabelsService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "networklabels/") {
+        return op.NetworkLabelsService().Service(path[14:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "vnicprofiles" {
-        return *(op.VnicProfilesService()), nil
+        return op.VnicProfilesService(), nil
     }
-    if strings.HasPrefix("vnicprofiles/") {
-        return op.VnicProfilesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "vnicprofiles/") {
+        return op.VnicProfilesService().Service(path[13:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11768,10 +10846,7 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 func (op *NetworkAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11792,20 +10867,15 @@ func (op *NetworkAttachmentService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -11815,17 +10885,12 @@ func (op *NetworkAttachmentService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(attachment, headers, query, wait)
@@ -11834,9 +10899,9 @@ func (op *NetworkAttachmentService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkAttachmentService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkAttachmentService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -11867,10 +10932,7 @@ func (op *NetworkAttachmentsService) Add (
     attachment *NetworkAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11891,17 +10953,12 @@ func (op *NetworkAttachmentsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -11916,15 +10973,15 @@ func (op *NetworkAttachmentsService) AttachmentService(id string) *NetworkAttach
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkAttachmentsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkAttachmentsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.AttachmentService(path)), nil
     }
-    return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkAttachmentsService) String() string {
@@ -11966,10 +11023,7 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 func (op *NetworkFilterService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11982,9 +11036,9 @@ func (op *NetworkFilterService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkFilterService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -12015,10 +11069,7 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 func (op *NetworkFilterParameterService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12040,17 +11091,14 @@ func (op *NetworkFilterParameterService) Get (
 func (op *NetworkFilterParameterService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -12079,10 +11127,7 @@ func (op *NetworkFilterParameterService) Update (
     parameter *NetworkFilterParameter,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12095,9 +11140,9 @@ func (op *NetworkFilterParameterService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterParameterService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkFilterParameterService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -12149,10 +11194,7 @@ func (op *NetworkFilterParametersService) Add (
     parameter *NetworkFilterParameter,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12168,10 +11210,7 @@ func (op *NetworkFilterParametersService) Add (
 func (op *NetworkFilterParametersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12191,15 +11230,15 @@ func (op *NetworkFilterParametersService) ParameterService(id string) *NetworkFi
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFilterParametersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkFilterParametersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ParameterService(path)), nil
     }
-    return op.ParameterService(path[:index]).Service(path[index + 1:]), nil
+    return op.ParameterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkFilterParametersService) String() string {
@@ -12279,10 +11318,7 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 func (op *NetworkFiltersService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12301,15 +11337,15 @@ func (op *NetworkFiltersService) NetworkFilterService(id string) *NetworkFilterS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkFiltersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkFiltersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NetworkFilterService(path)), nil
     }
-    return op.NetworkFilterService(path[:index]).Service(path[index + 1:]), nil
+    return op.NetworkFilterService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkFiltersService) String() string {
@@ -12336,10 +11372,7 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 func (op *NetworkLabelService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12366,28 +11399,23 @@ func (op *NetworkLabelService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkLabelService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkLabelService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -12431,10 +11459,7 @@ func (op *NetworkLabelsService) Add (
     label *NetworkLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12455,17 +11480,12 @@ func (op *NetworkLabelsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -12480,15 +11500,15 @@ func (op *NetworkLabelsService) LabelService(id string) *NetworkLabelService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworkLabelsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworkLabelsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LabelService(path)), nil
     }
-    return op.LabelService(path[:index]).Service(path[index + 1:]), nil
+    return op.LabelService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworkLabelsService) String() string {
@@ -12548,10 +11568,7 @@ func (op *NetworksService) Add (
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12604,23 +11621,14 @@ func (op *NetworksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -12636,15 +11644,15 @@ func (op *NetworksService) NetworkService(id string) *NetworkService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *NetworksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *NetworksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NetworkService(path)), nil
     }
-    return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *NetworksService) String() string {
@@ -12671,10 +11679,7 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 func (op *OpenstackImageService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12722,12 +11727,9 @@ func (op *OpenstackImageService) Import (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Cluster: cluster,
         Disk: disk,
@@ -12737,15 +11739,15 @@ func (op *OpenstackImageService) Import (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "import", nil, headers, query, wait)
+    return op.internalAction(action, "import", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackImageService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -12776,10 +11778,7 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 func (op *OpenstackImageProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12795,17 +11794,14 @@ func (op *OpenstackImageProviderService) ImportCertificates (
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "importcertificates", nil, headers, query, wait)
+    return op.internalAction(action, "importcertificates", headers, query, wait)
 }
 
 //
@@ -12819,20 +11815,15 @@ func (op *OpenstackImageProviderService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -12846,17 +11837,14 @@ func (op *OpenstackImageProviderService) TestConnectivity (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "testconnectivity", nil, headers, query, wait)
+    return op.internalAction(action, "testconnectivity", headers, query, wait)
 }
 
 //
@@ -12866,17 +11854,12 @@ func (op *OpenstackImageProviderService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(provider, headers, query, wait)
@@ -12897,21 +11880,21 @@ func (op *OpenstackImageProviderService) ImagesService() *OpenstackImagesService
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageProviderService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackImageProviderService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "certificates" {
-        return *(op.CertificatesService()), nil
+        return op.CertificatesService(), nil
     }
-    if strings.HasPrefix("certificates/") {
-        return op.CertificatesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "certificates/") {
+        return op.CertificatesService().Service(path[13:])
     }
     if path == "images" {
-        return *(op.ImagesService()), nil
+        return op.ImagesService(), nil
     }
-    if strings.HasPrefix("images/") {
-        return op.ImagesService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "images/") {
+        return op.ImagesService().Service(path[7:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -12942,10 +11925,7 @@ func (op *OpenstackImageProvidersService) Add (
     provider *OpenStackImageProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12966,17 +11946,12 @@ func (op *OpenstackImageProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -12991,15 +11966,15 @@ func (op *OpenstackImageProvidersService) ProviderService(id string) *OpenstackI
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImageProvidersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackImageProvidersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProviderService(path)), nil
     }
-    return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackImageProvidersService) String() string {
@@ -13034,17 +12009,12 @@ func (op *OpenstackImagesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -13060,15 +12030,15 @@ func (op *OpenstackImagesService) ImageService(id string) *OpenstackImageService
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackImagesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackImagesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ImageService(path)), nil
     }
-    return op.ImageService(path[:index]).Service(path[index + 1:]), nil
+    return op.ImageService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackImagesService) String() string {
@@ -13096,10 +12066,7 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 func (op *OpenstackNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13127,18 +12094,15 @@ func (op *OpenstackNetworkService) Import (
     dataCenter *DataCenter,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         DataCenter: dataCenter,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "import", nil, headers, query, wait)
+    return op.internalAction(action, "import", headers, query, wait)
 }
 
 //
@@ -13150,15 +12114,15 @@ func (op *OpenstackNetworkService) SubnetsService() *OpenstackSubnetsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackNetworkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "subnets" {
-        return *(op.SubnetsService()), nil
+        return op.SubnetsService(), nil
     }
-    if strings.HasPrefix("subnets/") {
-        return op.SubnetsService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "subnets/") {
+        return op.SubnetsService().Service(path[8:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -13196,10 +12160,7 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 func (op *OpenstackNetworkProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13215,17 +12176,14 @@ func (op *OpenstackNetworkProviderService) ImportCertificates (
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "importcertificates", nil, headers, query, wait)
+    return op.internalAction(action, "importcertificates", headers, query, wait)
 }
 
 //
@@ -13245,20 +12203,15 @@ func (op *OpenstackNetworkProviderService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -13272,17 +12225,14 @@ func (op *OpenstackNetworkProviderService) TestConnectivity (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "testconnectivity", nil, headers, query, wait)
+    return op.internalAction(action, "testconnectivity", headers, query, wait)
 }
 
 //
@@ -13315,17 +12265,12 @@ func (op *OpenstackNetworkProviderService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(provider, headers, query, wait)
@@ -13347,21 +12292,21 @@ func (op *OpenstackNetworkProviderService) NetworksService() *OpenstackNetworksS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkProviderService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackNetworkProviderService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "certificates" {
-        return *(op.CertificatesService()), nil
+        return op.CertificatesService(), nil
     }
-    if strings.HasPrefix("certificates/") {
-        return op.CertificatesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "certificates/") {
+        return op.CertificatesService().Service(path[13:])
     }
     if path == "networks" {
-        return *(op.NetworksService()), nil
+        return op.NetworksService(), nil
     }
-    if strings.HasPrefix("networks/") {
-        return op.NetworksService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "networks/") {
+        return op.NetworksService().Service(path[9:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -13395,10 +12340,7 @@ func (op *OpenstackNetworkProvidersService) Add (
     provider *OpenStackNetworkProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13419,17 +12361,12 @@ func (op *OpenstackNetworkProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -13445,15 +12382,15 @@ func (op *OpenstackNetworkProvidersService) ProviderService(id string) *Openstac
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworkProvidersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackNetworkProvidersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProviderService(path)), nil
     }
-    return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackNetworkProvidersService) String() string {
@@ -13487,17 +12424,12 @@ func (op *OpenstackNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -13512,15 +12444,15 @@ func (op *OpenstackNetworksService) NetworkService(id string) *OpenstackNetworkS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackNetworksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackNetworksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NetworkService(path)), nil
     }
-    return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackNetworksService) String() string {
@@ -13547,10 +12479,7 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 func (op *OpenstackSubnetService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13571,28 +12500,23 @@ func (op *OpenstackSubnetService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackSubnetService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackSubnetService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -13623,10 +12547,7 @@ func (op *OpenstackSubnetsService) Add (
     subnet *OpenStackSubnet,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13647,17 +12568,12 @@ func (op *OpenstackSubnetsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -13672,15 +12588,15 @@ func (op *OpenstackSubnetsService) SubnetService(id string) *OpenstackSubnetServ
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackSubnetsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackSubnetsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.SubnetService(path)), nil
     }
-    return op.SubnetService(path[:index]).Service(path[index + 1:]), nil
+    return op.SubnetService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackSubnetsService) String() string {
@@ -13707,10 +12623,7 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 func (op *OpenstackVolumeAuthenticationKeyService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13731,20 +12644,15 @@ func (op *OpenstackVolumeAuthenticationKeyService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -13753,10 +12661,7 @@ func (op *OpenstackVolumeAuthenticationKeyService) Update (
     key *OpenstackVolumeAuthenticationKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13769,9 +12674,9 @@ func (op *OpenstackVolumeAuthenticationKeyService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeAuthenticationKeyService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeAuthenticationKeyService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -13802,10 +12707,7 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add (
     key *OpenstackVolumeAuthenticationKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13826,17 +12728,12 @@ func (op *OpenstackVolumeAuthenticationKeysService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -13851,15 +12748,15 @@ func (op *OpenstackVolumeAuthenticationKeysService) KeyService(id string) *Opens
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeAuthenticationKeysService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeAuthenticationKeysService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.KeyService(path)), nil
     }
-    return op.KeyService(path[:index]).Service(path[index + 1:]), nil
+    return op.KeyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeAuthenticationKeysService) String() string {
@@ -13889,10 +12786,7 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 func (op *OpenstackVolumeProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13908,17 +12802,14 @@ func (op *OpenstackVolumeProviderService) ImportCertificates (
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "importcertificates", nil, headers, query, wait)
+    return op.internalAction(action, "importcertificates", headers, query, wait)
 }
 
 //
@@ -13932,20 +12823,15 @@ func (op *OpenstackVolumeProviderService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -13959,17 +12845,14 @@ func (op *OpenstackVolumeProviderService) TestConnectivity (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "testconnectivity", nil, headers, query, wait)
+    return op.internalAction(action, "testconnectivity", headers, query, wait)
 }
 
 //
@@ -13979,17 +12862,12 @@ func (op *OpenstackVolumeProviderService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(provider, headers, query, wait)
@@ -14016,27 +12894,27 @@ func (op *OpenstackVolumeProviderService) VolumeTypesService() *OpenstackVolumeT
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeProviderService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeProviderService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "authenticationkeys" {
-        return *(op.AuthenticationKeysService()), nil
+        return op.AuthenticationKeysService(), nil
     }
-    if strings.HasPrefix("authenticationkeys/") {
-        return op.AuthenticationKeysService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "authenticationkeys/") {
+        return op.AuthenticationKeysService().Service(path[19:])
     }
     if path == "certificates" {
-        return *(op.CertificatesService()), nil
+        return op.CertificatesService(), nil
     }
-    if strings.HasPrefix("certificates/") {
-        return op.CertificatesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "certificates/") {
+        return op.CertificatesService().Service(path[13:])
     }
     if path == "volumetypes" {
-        return *(op.VolumeTypesService()), nil
+        return op.VolumeTypesService(), nil
     }
-    if strings.HasPrefix("volumetypes/") {
-        return op.VolumeTypesService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "volumetypes/") {
+        return op.VolumeTypesService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14088,10 +12966,7 @@ func (op *OpenstackVolumeProvidersService) Add (
     provider *OpenStackVolumeProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14113,17 +12988,12 @@ func (op *OpenstackVolumeProvidersService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -14138,15 +13008,15 @@ func (op *OpenstackVolumeProvidersService) ProviderService(id string) *Openstack
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeProvidersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeProvidersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProviderService(path)), nil
     }
-    return op.ProviderService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProviderService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeProvidersService) String() string {
@@ -14173,10 +13043,7 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 func (op *OpenstackVolumeTypeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14189,9 +13056,9 @@ func (op *OpenstackVolumeTypeService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeTypeService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeTypeService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14227,17 +13094,12 @@ func (op *OpenstackVolumeTypesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -14252,15 +13114,15 @@ func (op *OpenstackVolumeTypesService) TypeService(id string) *OpenstackVolumeTy
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OpenstackVolumeTypesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OpenstackVolumeTypesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.TypeService(path)), nil
     }
-    return op.TypeService(path[:index]).Service(path[index + 1:]), nil
+    return op.TypeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OpenstackVolumeTypesService) String() string {
@@ -14287,10 +13149,7 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 func (op *OperatingSystemService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14303,9 +13162,9 @@ func (op *OperatingSystemService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OperatingSystemService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OperatingSystemService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14341,17 +13200,12 @@ func (op *OperatingSystemsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -14366,15 +13220,15 @@ func (op *OperatingSystemsService) OperatingSystemService(id string) *OperatingS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *OperatingSystemsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *OperatingSystemsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.OperatingSystemService(path)), nil
     }
-    return op.OperatingSystemService(path[:index]).Service(path[index + 1:]), nil
+    return op.OperatingSystemService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *OperatingSystemsService) String() string {
@@ -14401,10 +13255,7 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 func (op *PermissionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14425,28 +13276,23 @@ func (op *PermissionService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermissionService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *PermissionService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14490,10 +13336,7 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 func (op *PermitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14519,28 +13362,23 @@ func (op *PermitService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermitService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *PermitService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14589,10 +13427,7 @@ func (op *PermitsService) Add (
     permit *Permit,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14633,17 +13468,12 @@ func (op *PermitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -14659,15 +13489,15 @@ func (op *PermitsService) PermitService(id string) *PermitService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *PermitsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *PermitsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.PermitService(path)), nil
     }
-    return op.PermitService(path[:index]).Service(path[index + 1:]), nil
+    return op.PermitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *PermitsService) String() string {
@@ -14694,10 +13524,7 @@ func NewQosService(connection *Connection, path string) *QosService {
 func (op *QosService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14718,20 +13545,15 @@ func (op *QosService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -14741,17 +13563,12 @@ func (op *QosService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(qos, headers, query, wait)
@@ -14760,9 +13577,9 @@ func (op *QosService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QosService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QosService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -14793,10 +13610,7 @@ func (op *QossService) Add (
     qos *Qos,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14817,17 +13631,12 @@ func (op *QossService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -14842,15 +13651,15 @@ func (op *QossService) QosService(id string) *QosService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QossService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QossService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.QosService(path)), nil
     }
-    return op.QosService(path[:index]).Service(path[index + 1:]), nil
+    return op.QosService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QossService) String() string {
@@ -14897,10 +13706,7 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 func (op *QuotaService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14930,20 +13736,15 @@ func (op *QuotaService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -14968,17 +13769,12 @@ func (op *QuotaService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(quota, headers, query, wait)
@@ -15005,27 +13801,27 @@ func (op *QuotaService) QuotaStorageLimitsService() *QuotaStorageLimitsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotaService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "quotaclusterlimits" {
-        return *(op.QuotaClusterLimitsService()), nil
+        return op.QuotaClusterLimitsService(), nil
     }
-    if strings.HasPrefix("quotaclusterlimits/") {
-        return op.QuotaClusterLimitsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "quotaclusterlimits/") {
+        return op.QuotaClusterLimitsService().Service(path[19:])
     }
     if path == "quotastoragelimits" {
-        return *(op.QuotaStorageLimitsService()), nil
+        return op.QuotaStorageLimitsService(), nil
     }
-    if strings.HasPrefix("quotastoragelimits/") {
-        return op.QuotaStorageLimitsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "quotastoragelimits/") {
+        return op.QuotaStorageLimitsService().Service(path[19:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -15054,10 +13850,7 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 func (op *QuotaClusterLimitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15078,28 +13871,23 @@ func (op *QuotaClusterLimitService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaClusterLimitService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotaClusterLimitService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -15130,10 +13918,7 @@ func (op *QuotaClusterLimitsService) Add (
     limit *QuotaClusterLimit,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15154,17 +13939,12 @@ func (op *QuotaClusterLimitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15179,15 +13959,15 @@ func (op *QuotaClusterLimitsService) LimitService(id string) *QuotaClusterLimitS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaClusterLimitsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotaClusterLimitsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LimitService(path)), nil
     }
-    return op.LimitService(path[:index]).Service(path[index + 1:]), nil
+    return op.LimitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotaClusterLimitsService) String() string {
@@ -15214,10 +13994,7 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 func (op *QuotaStorageLimitService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15238,28 +14015,23 @@ func (op *QuotaStorageLimitService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaStorageLimitService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotaStorageLimitService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -15290,10 +14062,7 @@ func (op *QuotaStorageLimitsService) Add (
     limit *QuotaStorageLimit,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15314,17 +14083,12 @@ func (op *QuotaStorageLimitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15339,15 +14103,15 @@ func (op *QuotaStorageLimitsService) LimitService(id string) *QuotaStorageLimitS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotaStorageLimitsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotaStorageLimitsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.LimitService(path)), nil
     }
-    return op.LimitService(path[:index]).Service(path[index + 1:]), nil
+    return op.LimitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotaStorageLimitsService) String() string {
@@ -15389,10 +14153,7 @@ func (op *QuotasService) Add (
     quota *Quota,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15414,17 +14175,12 @@ func (op *QuotasService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15439,15 +14195,15 @@ func (op *QuotasService) QuotaService(id string) *QuotaService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *QuotasService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *QuotasService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.QuotaService(path)), nil
     }
-    return op.QuotaService(path[:index]).Service(path[index + 1:]), nil
+    return op.QuotaService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *QuotasService) String() string {
@@ -15491,10 +14247,7 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 func (op *RoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15521,20 +14274,15 @@ func (op *RoleService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -15566,17 +14314,12 @@ func (op *RoleService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(role, headers, query, wait)
@@ -15592,15 +14335,15 @@ func (op *RoleService) PermitsService() *PermitsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *RoleService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *RoleService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permits" {
-        return *(op.PermitsService()), nil
+        return op.PermitsService(), nil
     }
-    if strings.HasPrefix("permits/") {
-        return op.PermitsService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "permits/") {
+        return op.PermitsService().Service(path[8:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -15657,10 +14400,7 @@ func (op *RolesService) Add (
     role *Role,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15700,17 +14440,12 @@ func (op *RolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15726,15 +14461,15 @@ func (op *RolesService) RoleService(id string) *RoleService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *RolesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *RolesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.RoleService(path)), nil
     }
-    return op.RoleService(path[:index]).Service(path[index + 1:]), nil
+    return op.RoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *RolesService) String() string {
@@ -15763,10 +14498,7 @@ func (op *SchedulingPoliciesService) Add (
     policy *SchedulingPolicy,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15789,20 +14521,13 @@ func (op *SchedulingPoliciesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15817,15 +14542,15 @@ func (op *SchedulingPoliciesService) PolicyService(id string) *SchedulingPolicyS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPoliciesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SchedulingPoliciesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.PolicyService(path)), nil
     }
-    return op.PolicyService(path[:index]).Service(path[index + 1:]), nil
+    return op.PolicyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SchedulingPoliciesService) String() string {
@@ -15861,17 +14586,12 @@ func (op *SchedulingPolicyService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -15888,20 +14608,15 @@ func (op *SchedulingPolicyService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -15911,17 +14626,12 @@ func (op *SchedulingPolicyService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(policy, headers, query, wait)
@@ -15948,27 +14658,27 @@ func (op *SchedulingPolicyService) WeightsService() *WeightsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SchedulingPolicyService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "balances" {
-        return *(op.BalancesService()), nil
+        return op.BalancesService(), nil
     }
-    if strings.HasPrefix("balances/") {
-        return op.BalancesService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "balances/") {
+        return op.BalancesService().Service(path[9:])
     }
     if path == "filters" {
-        return *(op.FiltersService()), nil
+        return op.FiltersService(), nil
     }
-    if strings.HasPrefix("filters/") {
-        return op.FiltersService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "filters/") {
+        return op.FiltersService().Service(path[8:])
     }
     if path == "weights" {
-        return *(op.WeightsService()), nil
+        return op.WeightsService(), nil
     }
-    if strings.HasPrefix("weights/") {
-        return op.WeightsService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "weights/") {
+        return op.WeightsService().Service(path[8:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16003,17 +14713,12 @@ func (op *SchedulingPolicyUnitService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16030,28 +14735,23 @@ func (op *SchedulingPolicyUnitService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyUnitService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SchedulingPolicyUnitService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16089,20 +14789,13 @@ func (op *SchedulingPolicyUnitsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16117,15 +14810,15 @@ func (op *SchedulingPolicyUnitsService) UnitService(id string) *SchedulingPolicy
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SchedulingPolicyUnitsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SchedulingPolicyUnitsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.UnitService(path)), nil
     }
-    return op.UnitService(path[:index]).Service(path[index + 1:]), nil
+    return op.UnitService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SchedulingPolicyUnitsService) String() string {
@@ -16155,10 +14848,7 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 func (op *SnapshotService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16187,23 +14877,16 @@ func (op *SnapshotService) Remove (
     allContent bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
-    if allContent != nil {
-        query["all_content"] = allContent
-    }
+    query["async"] = fmt.Sprintf("%v", async)
+    query["all_content"] = fmt.Sprintf("%v", allContent)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -16231,19 +14914,16 @@ func (op *SnapshotService) Restore (
     restoreMemory bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Disks: disks,
         RestoreMemory: restoreMemory,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "restore", nil, headers, query, wait)
+    return op.internalAction(action, "restore", headers, query, wait)
 }
 
 //
@@ -16267,27 +14947,27 @@ func (op *SnapshotService) NicsService() *SnapshotNicsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "cdroms" {
-        return *(op.CdromsService()), nil
+        return op.CdromsService(), nil
     }
-    if strings.HasPrefix("cdroms/") {
-        return op.CdromsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "cdroms/") {
+        return op.CdromsService().Service(path[7:])
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     if path == "nics" {
-        return *(op.NicsService()), nil
+        return op.NicsService(), nil
     }
-    if strings.HasPrefix("nics/") {
-        return op.NicsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "nics/") {
+        return op.NicsService().Service(path[5:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16316,10 +14996,7 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 func (op *SnapshotCdromService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16332,9 +15009,9 @@ func (op *SnapshotCdromService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotCdromService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotCdromService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16370,17 +15047,12 @@ func (op *SnapshotCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16395,15 +15067,15 @@ func (op *SnapshotCdromsService) CdromService(id string) *SnapshotCdromService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotCdromsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotCdromsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.CdromService(path)), nil
     }
-    return op.CdromService(path[:index]).Service(path[index + 1:]), nil
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotCdromsService) String() string {
@@ -16430,10 +15102,7 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 func (op *SnapshotDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16446,9 +15115,9 @@ func (op *SnapshotDiskService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16484,17 +15153,12 @@ func (op *SnapshotDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16509,15 +15173,15 @@ func (op *SnapshotDisksService) DiskService(id string) *SnapshotDiskService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotDisksService) String() string {
@@ -16544,10 +15208,7 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 func (op *SnapshotNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16560,9 +15221,9 @@ func (op *SnapshotNicService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotNicService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotNicService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16598,17 +15259,12 @@ func (op *SnapshotNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16623,15 +15279,15 @@ func (op *SnapshotNicsService) NicService(id string) *SnapshotNicService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotNicsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotNicsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NicService(path)), nil
     }
-    return op.NicService(path[:index]).Service(path[index + 1:]), nil
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotNicsService) String() string {
@@ -16673,10 +15329,7 @@ func (op *SnapshotsService) Add (
     snapshot *Snapshot,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16705,20 +15358,13 @@ func (op *SnapshotsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if allContent != nil {
-        query["all_content"] = allContent
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["all_content"] = fmt.Sprintf("%v", allContent)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16733,15 +15379,15 @@ func (op *SnapshotsService) SnapshotService(id string) *SnapshotService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SnapshotsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SnapshotsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.SnapshotService(path)), nil
     }
-    return op.SnapshotService(path[:index]).Service(path[index + 1:]), nil
+    return op.SnapshotService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SnapshotsService) String() string {
@@ -16768,10 +15414,7 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 func (op *SshPublicKeyService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16792,20 +15435,15 @@ func (op *SshPublicKeyService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -16815,17 +15453,12 @@ func (op *SshPublicKeyService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(key, headers, query, wait)
@@ -16834,9 +15467,9 @@ func (op *SshPublicKeyService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SshPublicKeyService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SshPublicKeyService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -16867,10 +15500,7 @@ func (op *SshPublicKeysService) Add (
     key *SshPublicKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16891,17 +15521,12 @@ func (op *SshPublicKeysService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16916,15 +15541,15 @@ func (op *SshPublicKeysService) KeyService(id string) *SshPublicKeyService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SshPublicKeysService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SshPublicKeysService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.KeyService(path)), nil
     }
-    return op.KeyService(path[:index]).Service(path[index + 1:]), nil
+    return op.KeyService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SshPublicKeysService) String() string {
@@ -16952,17 +15577,12 @@ func (op *StatisticService) Get (
     statistic *Statistic,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if statistic != nil {
-        query["statistic"] = statistic
-    }
+    query["statistic"] = fmt.Sprintf("%v", statistic)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -16971,9 +15591,9 @@ func (op *StatisticService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StatisticService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StatisticService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -17058,17 +15678,12 @@ func (op *StatisticsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -17083,15 +15698,15 @@ func (op *StatisticsService) StatisticService(id string) *StatisticService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StatisticsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StatisticsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StatisticService(path)), nil
     }
-    return op.StatisticService(path[:index]).Service(path[index + 1:]), nil
+    return op.StatisticService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StatisticsService) String() string {
@@ -17146,19 +15761,16 @@ func (op *StepService) End (
     succeeded bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
         Succeeded: succeeded,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "end", nil, headers, query, wait)
+    return op.internalAction(action, "end", headers, query, wait)
 }
 
 //
@@ -17188,10 +15800,7 @@ func (op *StepService) End (
 func (op *StepService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17210,15 +15819,15 @@ func (op *StepService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StepService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StepService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -17289,10 +15898,7 @@ func (op *StepsService) Add (
     step *Step,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17338,17 +15944,12 @@ func (op *StepsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -17364,15 +15965,15 @@ func (op *StepsService) StepService(id string) *StepService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StepsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StepsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StepService(path)), nil
     }
-    return op.StepService(path[:index]).Service(path[index + 1:]), nil
+    return op.StepService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StepsService) String() string {
@@ -17448,17 +16049,12 @@ func (op *StorageService) Get (
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if reportStatus != nil {
-        query["report_status"] = reportStatus
-    }
+    query["report_status"] = fmt.Sprintf("%v", reportStatus)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -17467,9 +16063,9 @@ func (op *StorageService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -17513,17 +16109,12 @@ func (op *StorageDomainService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -17541,18 +16132,15 @@ func (op *StorageDomainService) IsAttached (
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Host: host,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "isattached", "isAttached", headers, query, wait)
+    return op.internalAction(action, "isattached", headers, query, wait)
 }
 
 //
@@ -17584,17 +16172,14 @@ func (op *StorageDomainService) ReduceLuns (
     logicalUnits []*LogicalUnit,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         LogicalUnits: logicalUnits,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "reduceluns", nil, headers, query, wait)
+    return op.internalAction(action, "reduceluns", headers, query, wait)
 }
 
 //
@@ -17630,18 +16215,15 @@ func (op *StorageDomainService) RefreshLuns (
     logicalUnits []*LogicalUnit,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         LogicalUnits: logicalUnits,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "refreshluns", nil, headers, query, wait)
+    return op.internalAction(action, "refreshluns", headers, query, wait)
 }
 
 //
@@ -17687,29 +16269,18 @@ func (op *StorageDomainService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if host != nil {
-        query["host"] = host
-    }
-    if format != nil {
-        query["format"] = format
-    }
-    if destroy != nil {
-        query["destroy"] = destroy
-    }
-    if async != nil {
-        query["async"] = async
-    }
+    query["host"] = fmt.Sprintf("%v", host)
+    query["format"] = fmt.Sprintf("%v", format)
+    query["destroy"] = fmt.Sprintf("%v", destroy)
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -17738,17 +16309,12 @@ func (op *StorageDomainService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(storageDomain, headers, query, wait)
@@ -17778,17 +16344,14 @@ func (op *StorageDomainService) UpdateOvfStore (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "updateovfstore", nil, headers, query, wait)
+    return op.internalAction(action, "updateovfstore", headers, query, wait)
 }
 
 //
@@ -17851,63 +16414,63 @@ func (op *StorageDomainService) VmsService() *StorageDomainVmsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "diskprofiles" {
-        return *(op.DiskProfilesService()), nil
+        return op.DiskProfilesService(), nil
     }
-    if strings.HasPrefix("diskprofiles/") {
-        return op.DiskProfilesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "diskprofiles/") {
+        return op.DiskProfilesService().Service(path[13:])
     }
     if path == "disksnapshots" {
-        return *(op.DiskSnapshotsService()), nil
+        return op.DiskSnapshotsService(), nil
     }
-    if strings.HasPrefix("disksnapshots/") {
-        return op.DiskSnapshotsService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "disksnapshots/") {
+        return op.DiskSnapshotsService().Service(path[14:])
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     if path == "files" {
-        return *(op.FilesService()), nil
+        return op.FilesService(), nil
     }
-    if strings.HasPrefix("files/") {
-        return op.FilesService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "files/") {
+        return op.FilesService().Service(path[6:])
     }
     if path == "images" {
-        return *(op.ImagesService()), nil
+        return op.ImagesService(), nil
     }
-    if strings.HasPrefix("images/") {
-        return op.ImagesService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "images/") {
+        return op.ImagesService().Service(path[7:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "storageconnections" {
-        return *(op.StorageConnectionsService()), nil
+        return op.StorageConnectionsService(), nil
     }
-    if strings.HasPrefix("storageconnections/") {
-        return op.StorageConnectionsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "storageconnections/") {
+        return op.StorageConnectionsService().Service(path[19:])
     }
     if path == "templates" {
-        return *(op.TemplatesService()), nil
+        return op.TemplatesService(), nil
     }
-    if strings.HasPrefix("templates/") {
-        return op.TemplatesService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "templates/") {
+        return op.TemplatesService().Service(path[10:])
     }
     if path == "vms" {
-        return *(op.VmsService()), nil
+        return op.VmsService(), nil
     }
-    if strings.HasPrefix("vms/") {
-        return op.VmsService().Service(path[4:]), nil
+    if strings.HasPrefix(path, "vms/") {
+        return op.VmsService().Service(path[4:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -17942,17 +16505,12 @@ func (op *StorageDomainContentDiskService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -17961,9 +16519,9 @@ func (op *StorageDomainContentDiskService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainContentDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainContentDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -18005,23 +16563,14 @@ func (op *StorageDomainContentDisksService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -18036,15 +16585,15 @@ func (op *StorageDomainContentDisksService) DiskService(id string) *StorageDomai
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainContentDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainContentDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainContentDisksService) String() string {
@@ -18090,18 +16639,15 @@ func (op *StorageDomainDiskService) Copy (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Disk: disk,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "copy", nil, headers, query, wait)
+    return op.internalAction(action, "copy", headers, query, wait)
 }
 
 //
@@ -18119,17 +16665,14 @@ func (op *StorageDomainDiskService) Export (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -18138,10 +16681,7 @@ func (op *StorageDomainDiskService) Export (
 func (op *StorageDomainDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18170,19 +16710,16 @@ func (op *StorageDomainDiskService) Move (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "move", nil, headers, query, wait)
+    return op.internalAction(action, "move", headers, query, wait)
 }
 
 //
@@ -18194,17 +16731,14 @@ func (op *StorageDomainDiskService) Move (
 func (op *StorageDomainDiskService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -18216,16 +16750,13 @@ func (op *StorageDomainDiskService) Remove (
 func (op *StorageDomainDiskService) Sparsify (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "sparsify", nil, headers, query, wait)
+    return op.internalAction(action, "sparsify", headers, query, wait)
 }
 
 //
@@ -18243,10 +16774,7 @@ func (op *StorageDomainDiskService) Update (
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18272,21 +16800,21 @@ func (op *StorageDomainDiskService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -18330,17 +16858,12 @@ func (op *StorageDomainDisksService) Add (
     unregistered bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if unregistered != nil {
-        query["unregistered"] = unregistered
-    }
+    query["unregistered"] = fmt.Sprintf("%v", unregistered)
 
     // Send the request
     return op.internalAdd(disk, headers, query, wait)
@@ -18358,17 +16881,12 @@ func (op *StorageDomainDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -18384,15 +16902,15 @@ func (op *StorageDomainDisksService) DiskService(id string) *StorageDomainDiskSe
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainDisksService) String() string {
@@ -18419,10 +16937,7 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 func (op *StorageDomainServerConnectionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18444,28 +16959,23 @@ func (op *StorageDomainServerConnectionService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainServerConnectionService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainServerConnectionService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -18496,10 +17006,7 @@ func (op *StorageDomainServerConnectionsService) Add (
     connection *StorageConnection,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18520,17 +17027,12 @@ func (op *StorageDomainServerConnectionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -18545,15 +17047,15 @@ func (op *StorageDomainServerConnectionsService) ConnectionService(id string) *S
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainServerConnectionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainServerConnectionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ConnectionService(path)), nil
     }
-    return op.ConnectionService(path[:index]).Service(path[index + 1:]), nil
+    return op.ConnectionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainServerConnectionsService) String() string {
@@ -18581,10 +17083,7 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 func (op *StorageDomainTemplateService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18632,12 +17131,9 @@ func (op *StorageDomainTemplateService) Import (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Clone: clone,
         Cluster: cluster,
@@ -18648,7 +17144,7 @@ func (op *StorageDomainTemplateService) Import (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "import", nil, headers, query, wait)
+    return op.internalAction(action, "import", headers, query, wait)
 }
 
 //
@@ -18671,12 +17167,9 @@ func (op *StorageDomainTemplateService) Register (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         AllowPartialImport: allowPartialImport,
         Async: async,
         Clone: clone,
@@ -18686,7 +17179,7 @@ func (op *StorageDomainTemplateService) Register (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "register", nil, headers, query, wait)
+    return op.internalAction(action, "register", headers, query, wait)
 }
 
 //
@@ -18700,20 +17193,15 @@ func (op *StorageDomainTemplateService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -18725,15 +17213,15 @@ func (op *StorageDomainTemplateService) DisksService() *StorageDomainContentDisk
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainTemplateService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainTemplateService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -18769,17 +17257,12 @@ func (op *StorageDomainTemplatesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -18794,15 +17277,15 @@ func (op *StorageDomainTemplatesService) TemplateService(id string) *StorageDoma
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainTemplatesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainTemplatesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.TemplateService(path)), nil
     }
-    return op.TemplateService(path[:index]).Service(path[index + 1:]), nil
+    return op.TemplateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainTemplatesService) String() string {
@@ -18831,10 +17314,7 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 func (op *StorageDomainVmService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18923,12 +17403,9 @@ func (op *StorageDomainVmService) Import (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Clone: clone,
         Cluster: cluster,
@@ -18938,7 +17415,7 @@ func (op *StorageDomainVmService) Import (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "import", nil, headers, query, wait)
+    return op.internalAction(action, "import", headers, query, wait)
 }
 
 //
@@ -18968,12 +17445,9 @@ func (op *StorageDomainVmService) Register (
     vnicProfileMappings []*VnicProfileMapping,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         AllowPartialImport: allowPartialImport,
         Async: async,
         Clone: clone,
@@ -18984,7 +17458,7 @@ func (op *StorageDomainVmService) Register (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "register", nil, headers, query, wait)
+    return op.internalAction(action, "register", headers, query, wait)
 }
 
 //
@@ -19004,20 +17478,15 @@ func (op *StorageDomainVmService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -19036,21 +17505,21 @@ func (op *StorageDomainVmService) DisksService() *StorageDomainContentDisksServi
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainVmService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "diskattachments" {
-        return *(op.DiskAttachmentsService()), nil
+        return op.DiskAttachmentsService(), nil
     }
-    if strings.HasPrefix("diskattachments/") {
-        return op.DiskAttachmentsService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "diskattachments/") {
+        return op.DiskAttachmentsService().Service(path[16:])
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -19081,10 +17550,7 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 func (op *StorageDomainVmDiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19097,9 +17563,9 @@ func (op *StorageDomainVmDiskAttachmentService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmDiskAttachmentService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainVmDiskAttachmentService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -19131,10 +17597,7 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 func (op *StorageDomainVmDiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19154,15 +17617,15 @@ func (op *StorageDomainVmDiskAttachmentsService) AttachmentService(id string) *S
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmDiskAttachmentsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainVmDiskAttachmentsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.AttachmentService(path)), nil
     }
-    return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainVmDiskAttachmentsService) String() string {
@@ -19222,17 +17685,12 @@ func (op *StorageDomainVmsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -19247,15 +17705,15 @@ func (op *StorageDomainVmsService) VmService(id string) *StorageDomainVmService 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainVmsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainVmsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.VmService(path)), nil
     }
-    return op.VmService(path[:index]).Service(path[index + 1:]), nil
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainVmsService) String() string {
@@ -19346,10 +17804,7 @@ func (op *StorageDomainsService) Add (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19378,26 +17833,15 @@ func (op *StorageDomainsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -19412,15 +17856,15 @@ func (op *StorageDomainsService) StorageDomainService(id string) *StorageDomainS
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageDomainsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageDomainsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StorageDomainService(path)), nil
     }
-    return op.StorageDomainService(path[:index]).Service(path[index + 1:]), nil
+    return op.StorageDomainService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageDomainsService) String() string {
@@ -19447,10 +17891,7 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 func (op *StorageServerConnectionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19483,23 +17924,16 @@ func (op *StorageServerConnectionService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if host != nil {
-        query["host"] = host
-    }
-    if async != nil {
-        query["async"] = async
-    }
+    query["host"] = fmt.Sprintf("%v", host)
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -19526,20 +17960,13 @@ func (op *StorageServerConnectionService) Update (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
-    if force != nil {
-        query["force"] = force
-    }
+    query["async"] = fmt.Sprintf("%v", async)
+    query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request
     return op.internalUpdate(connection, headers, query, wait)
@@ -19548,9 +17975,9 @@ func (op *StorageServerConnectionService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageServerConnectionService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -19579,10 +18006,7 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 func (op *StorageServerConnectionExtensionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19603,20 +18027,15 @@ func (op *StorageServerConnectionExtensionService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -19641,17 +18060,12 @@ func (op *StorageServerConnectionExtensionService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(extension, headers, query, wait)
@@ -19660,9 +18074,9 @@ func (op *StorageServerConnectionExtensionService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionExtensionService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageServerConnectionExtensionService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -19710,10 +18124,7 @@ func (op *StorageServerConnectionExtensionsService) Add (
     extension *StorageConnectionExtension,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19734,17 +18145,12 @@ func (op *StorageServerConnectionExtensionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -19759,15 +18165,15 @@ func (op *StorageServerConnectionExtensionsService) StorageConnectionExtensionSe
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionExtensionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageServerConnectionExtensionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StorageConnectionExtensionService(path)), nil
     }
-    return op.StorageConnectionExtensionService(path[:index]).Service(path[index + 1:]), nil
+    return op.StorageConnectionExtensionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageServerConnectionExtensionsService) String() string {
@@ -19815,10 +18221,7 @@ func (op *StorageServerConnectionsService) Add (
     connection *StorageConnection,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19839,17 +18242,12 @@ func (op *StorageServerConnectionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -19864,15 +18262,15 @@ func (op *StorageServerConnectionsService) StorageConnectionService(id string) *
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *StorageServerConnectionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *StorageServerConnectionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.StorageConnectionService(path)), nil
     }
-    return op.StorageConnectionService(path[:index]).Service(path[index + 1:]), nil
+    return op.StorageConnectionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *StorageServerConnectionsService) String() string {
@@ -20011,10 +18409,7 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 func (op *SystemService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20035,17 +18430,14 @@ func (op *SystemService) ReloadConfigurations (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "reloadconfigurations", nil, headers, query, wait)
+    return op.internalAction(action, "reloadconfigurations", headers, query, wait)
 }
 
 //
@@ -20287,237 +18679,237 @@ func (op *SystemService) VnicProfilesService() *VnicProfilesService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SystemService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SystemService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "affinitylabels" {
-        return *(op.AffinityLabelsService()), nil
+        return op.AffinityLabelsService(), nil
     }
-    if strings.HasPrefix("affinitylabels/") {
-        return op.AffinityLabelsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "affinitylabels/") {
+        return op.AffinityLabelsService().Service(path[15:])
     }
     if path == "bookmarks" {
-        return *(op.BookmarksService()), nil
+        return op.BookmarksService(), nil
     }
-    if strings.HasPrefix("bookmarks/") {
-        return op.BookmarksService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "bookmarks/") {
+        return op.BookmarksService().Service(path[10:])
     }
     if path == "clusterlevels" {
-        return *(op.ClusterLevelsService()), nil
+        return op.ClusterLevelsService(), nil
     }
-    if strings.HasPrefix("clusterlevels/") {
-        return op.ClusterLevelsService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "clusterlevels/") {
+        return op.ClusterLevelsService().Service(path[14:])
     }
     if path == "clusters" {
-        return *(op.ClustersService()), nil
+        return op.ClustersService(), nil
     }
-    if strings.HasPrefix("clusters/") {
-        return op.ClustersService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "clusters/") {
+        return op.ClustersService().Service(path[9:])
     }
     if path == "cpuprofiles" {
-        return *(op.CpuProfilesService()), nil
+        return op.CpuProfilesService(), nil
     }
-    if strings.HasPrefix("cpuprofiles/") {
-        return op.CpuProfilesService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "cpuprofiles/") {
+        return op.CpuProfilesService().Service(path[12:])
     }
     if path == "datacenters" {
-        return *(op.DataCentersService()), nil
+        return op.DataCentersService(), nil
     }
-    if strings.HasPrefix("datacenters/") {
-        return op.DataCentersService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "datacenters/") {
+        return op.DataCentersService().Service(path[12:])
     }
     if path == "diskprofiles" {
-        return *(op.DiskProfilesService()), nil
+        return op.DiskProfilesService(), nil
     }
-    if strings.HasPrefix("diskprofiles/") {
-        return op.DiskProfilesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "diskprofiles/") {
+        return op.DiskProfilesService().Service(path[13:])
     }
     if path == "disks" {
-        return *(op.DisksService()), nil
+        return op.DisksService(), nil
     }
-    if strings.HasPrefix("disks/") {
-        return op.DisksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "disks/") {
+        return op.DisksService().Service(path[6:])
     }
     if path == "domains" {
-        return *(op.DomainsService()), nil
+        return op.DomainsService(), nil
     }
-    if strings.HasPrefix("domains/") {
-        return op.DomainsService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "domains/") {
+        return op.DomainsService().Service(path[8:])
     }
     if path == "events" {
-        return *(op.EventsService()), nil
+        return op.EventsService(), nil
     }
-    if strings.HasPrefix("events/") {
-        return op.EventsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "events/") {
+        return op.EventsService().Service(path[7:])
     }
     if path == "externalhostproviders" {
-        return *(op.ExternalHostProvidersService()), nil
+        return op.ExternalHostProvidersService(), nil
     }
-    if strings.HasPrefix("externalhostproviders/") {
-        return op.ExternalHostProvidersService().Service(path[22:]), nil
+    if strings.HasPrefix(path, "externalhostproviders/") {
+        return op.ExternalHostProvidersService().Service(path[22:])
     }
     if path == "externalvmimports" {
-        return *(op.ExternalVmImportsService()), nil
+        return op.ExternalVmImportsService(), nil
     }
-    if strings.HasPrefix("externalvmimports/") {
-        return op.ExternalVmImportsService().Service(path[18:]), nil
+    if strings.HasPrefix(path, "externalvmimports/") {
+        return op.ExternalVmImportsService().Service(path[18:])
     }
     if path == "groups" {
-        return *(op.GroupsService()), nil
+        return op.GroupsService(), nil
     }
-    if strings.HasPrefix("groups/") {
-        return op.GroupsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "groups/") {
+        return op.GroupsService().Service(path[7:])
     }
     if path == "hosts" {
-        return *(op.HostsService()), nil
+        return op.HostsService(), nil
     }
-    if strings.HasPrefix("hosts/") {
-        return op.HostsService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "hosts/") {
+        return op.HostsService().Service(path[6:])
     }
     if path == "icons" {
-        return *(op.IconsService()), nil
+        return op.IconsService(), nil
     }
-    if strings.HasPrefix("icons/") {
-        return op.IconsService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "icons/") {
+        return op.IconsService().Service(path[6:])
     }
     if path == "imagetransfers" {
-        return *(op.ImageTransfersService()), nil
+        return op.ImageTransfersService(), nil
     }
-    if strings.HasPrefix("imagetransfers/") {
-        return op.ImageTransfersService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "imagetransfers/") {
+        return op.ImageTransfersService().Service(path[15:])
     }
     if path == "instancetypes" {
-        return *(op.InstanceTypesService()), nil
+        return op.InstanceTypesService(), nil
     }
-    if strings.HasPrefix("instancetypes/") {
-        return op.InstanceTypesService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "instancetypes/") {
+        return op.InstanceTypesService().Service(path[14:])
     }
     if path == "jobs" {
-        return *(op.JobsService()), nil
+        return op.JobsService(), nil
     }
-    if strings.HasPrefix("jobs/") {
-        return op.JobsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "jobs/") {
+        return op.JobsService().Service(path[5:])
     }
     if path == "katelloerrata" {
-        return *(op.KatelloErrataService()), nil
+        return op.KatelloErrataService(), nil
     }
-    if strings.HasPrefix("katelloerrata/") {
-        return op.KatelloErrataService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "katelloerrata/") {
+        return op.KatelloErrataService().Service(path[14:])
     }
     if path == "macpools" {
-        return *(op.MacPoolsService()), nil
+        return op.MacPoolsService(), nil
     }
-    if strings.HasPrefix("macpools/") {
-        return op.MacPoolsService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "macpools/") {
+        return op.MacPoolsService().Service(path[9:])
     }
     if path == "networkfilters" {
-        return *(op.NetworkFiltersService()), nil
+        return op.NetworkFiltersService(), nil
     }
-    if strings.HasPrefix("networkfilters/") {
-        return op.NetworkFiltersService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "networkfilters/") {
+        return op.NetworkFiltersService().Service(path[15:])
     }
     if path == "networks" {
-        return *(op.NetworksService()), nil
+        return op.NetworksService(), nil
     }
-    if strings.HasPrefix("networks/") {
-        return op.NetworksService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "networks/") {
+        return op.NetworksService().Service(path[9:])
     }
     if path == "openstackimageproviders" {
-        return *(op.OpenstackImageProvidersService()), nil
+        return op.OpenstackImageProvidersService(), nil
     }
-    if strings.HasPrefix("openstackimageproviders/") {
-        return op.OpenstackImageProvidersService().Service(path[24:]), nil
+    if strings.HasPrefix(path, "openstackimageproviders/") {
+        return op.OpenstackImageProvidersService().Service(path[24:])
     }
     if path == "openstacknetworkproviders" {
-        return *(op.OpenstackNetworkProvidersService()), nil
+        return op.OpenstackNetworkProvidersService(), nil
     }
-    if strings.HasPrefix("openstacknetworkproviders/") {
-        return op.OpenstackNetworkProvidersService().Service(path[26:]), nil
+    if strings.HasPrefix(path, "openstacknetworkproviders/") {
+        return op.OpenstackNetworkProvidersService().Service(path[26:])
     }
     if path == "openstackvolumeproviders" {
-        return *(op.OpenstackVolumeProvidersService()), nil
+        return op.OpenstackVolumeProvidersService(), nil
     }
-    if strings.HasPrefix("openstackvolumeproviders/") {
-        return op.OpenstackVolumeProvidersService().Service(path[25:]), nil
+    if strings.HasPrefix(path, "openstackvolumeproviders/") {
+        return op.OpenstackVolumeProvidersService().Service(path[25:])
     }
     if path == "operatingsystems" {
-        return *(op.OperatingSystemsService()), nil
+        return op.OperatingSystemsService(), nil
     }
-    if strings.HasPrefix("operatingsystems/") {
-        return op.OperatingSystemsService().Service(path[17:]), nil
+    if strings.HasPrefix(path, "operatingsystems/") {
+        return op.OperatingSystemsService().Service(path[17:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return *(op.RolesService()), nil
+        return op.RolesService(), nil
     }
-    if strings.HasPrefix("roles/") {
-        return op.RolesService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "roles/") {
+        return op.RolesService().Service(path[6:])
     }
     if path == "schedulingpolicies" {
-        return *(op.SchedulingPoliciesService()), nil
+        return op.SchedulingPoliciesService(), nil
     }
-    if strings.HasPrefix("schedulingpolicies/") {
-        return op.SchedulingPoliciesService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "schedulingpolicies/") {
+        return op.SchedulingPoliciesService().Service(path[19:])
     }
     if path == "schedulingpolicyunits" {
-        return *(op.SchedulingPolicyUnitsService()), nil
+        return op.SchedulingPolicyUnitsService(), nil
     }
-    if strings.HasPrefix("schedulingpolicyunits/") {
-        return op.SchedulingPolicyUnitsService().Service(path[22:]), nil
+    if strings.HasPrefix(path, "schedulingpolicyunits/") {
+        return op.SchedulingPolicyUnitsService().Service(path[22:])
     }
     if path == "storageconnections" {
-        return *(op.StorageConnectionsService()), nil
+        return op.StorageConnectionsService(), nil
     }
-    if strings.HasPrefix("storageconnections/") {
-        return op.StorageConnectionsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "storageconnections/") {
+        return op.StorageConnectionsService().Service(path[19:])
     }
     if path == "storagedomains" {
-        return *(op.StorageDomainsService()), nil
+        return op.StorageDomainsService(), nil
     }
-    if strings.HasPrefix("storagedomains/") {
-        return op.StorageDomainsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "storagedomains/") {
+        return op.StorageDomainsService().Service(path[15:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     if path == "templates" {
-        return *(op.TemplatesService()), nil
+        return op.TemplatesService(), nil
     }
-    if strings.HasPrefix("templates/") {
-        return op.TemplatesService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "templates/") {
+        return op.TemplatesService().Service(path[10:])
     }
     if path == "users" {
-        return *(op.UsersService()), nil
+        return op.UsersService(), nil
     }
-    if strings.HasPrefix("users/") {
-        return op.UsersService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "users/") {
+        return op.UsersService().Service(path[6:])
     }
     if path == "vmpools" {
-        return *(op.VmPoolsService()), nil
+        return op.VmPoolsService(), nil
     }
-    if strings.HasPrefix("vmpools/") {
-        return op.VmPoolsService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "vmpools/") {
+        return op.VmPoolsService().Service(path[8:])
     }
     if path == "vms" {
-        return *(op.VmsService()), nil
+        return op.VmsService(), nil
     }
-    if strings.HasPrefix("vms/") {
-        return op.VmsService().Service(path[4:]), nil
+    if strings.HasPrefix(path, "vms/") {
+        return op.VmsService().Service(path[4:])
     }
     if path == "vnicprofiles" {
-        return *(op.VnicProfilesService()), nil
+        return op.VnicProfilesService(), nil
     }
-    if strings.HasPrefix("vnicprofiles/") {
-        return op.VnicProfilesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "vnicprofiles/") {
+        return op.VnicProfilesService().Service(path[13:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -20601,10 +18993,7 @@ func (op *SystemPermissionsService) Add (
     permission *Permission,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20639,10 +19028,7 @@ func (op *SystemPermissionsService) Add (
 func (op *SystemPermissionsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20663,15 +19049,15 @@ func (op *SystemPermissionsService) PermissionService(id string) *PermissionServ
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *SystemPermissionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *SystemPermissionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.PermissionService(path)), nil
     }
-    return op.PermissionService(path[:index]).Service(path[index + 1:]), nil
+    return op.PermissionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *SystemPermissionsService) String() string {
@@ -20711,10 +19097,7 @@ func NewTagService(connection *Connection, path string) *TagService {
 func (op *TagService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20740,20 +19123,15 @@ func (op *TagService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -20790,17 +19168,12 @@ func (op *TagService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(tag, headers, query, wait)
@@ -20809,9 +19182,9 @@ func (op *TagService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TagService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TagService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -20872,10 +19245,7 @@ func (op *TagsService) Add (
     tag *Tag,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20926,17 +19296,12 @@ func (op *TagsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -20952,15 +19317,15 @@ func (op *TagsService) TagService(id string) *TagService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TagsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TagsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.TagService(path)), nil
     }
-    return op.TagService(path[:index]).Service(path[index + 1:]), nil
+    return op.TagService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TagsService) String() string {
@@ -21019,18 +19384,15 @@ func (op *TemplateService) Export (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Exclusive: exclusive,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -21045,17 +19407,12 @@ func (op *TemplateService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -21077,20 +19434,15 @@ func (op *TemplateService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -21104,16 +19456,13 @@ func (op *TemplateService) Remove (
 func (op *TemplateService) Seal (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "seal", nil, headers, query, wait)
+    return op.internalAction(action, "seal", headers, query, wait)
 }
 
 //
@@ -21148,17 +19497,12 @@ func (op *TemplateService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(template, headers, query, wait)
@@ -21217,51 +19561,51 @@ func (op *TemplateService) WatchdogsService() *TemplateWatchdogsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "cdroms" {
-        return *(op.CdromsService()), nil
+        return op.CdromsService(), nil
     }
-    if strings.HasPrefix("cdroms/") {
-        return op.CdromsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "cdroms/") {
+        return op.CdromsService().Service(path[7:])
     }
     if path == "diskattachments" {
-        return *(op.DiskAttachmentsService()), nil
+        return op.DiskAttachmentsService(), nil
     }
-    if strings.HasPrefix("diskattachments/") {
-        return op.DiskAttachmentsService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "diskattachments/") {
+        return op.DiskAttachmentsService().Service(path[16:])
     }
     if path == "graphicsconsoles" {
-        return *(op.GraphicsConsolesService()), nil
+        return op.GraphicsConsolesService(), nil
     }
-    if strings.HasPrefix("graphicsconsoles/") {
-        return op.GraphicsConsolesService().Service(path[17:]), nil
+    if strings.HasPrefix(path, "graphicsconsoles/") {
+        return op.GraphicsConsolesService().Service(path[17:])
     }
     if path == "nics" {
-        return *(op.NicsService()), nil
+        return op.NicsService(), nil
     }
-    if strings.HasPrefix("nics/") {
-        return op.NicsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "nics/") {
+        return op.NicsService().Service(path[5:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return *(op.WatchdogsService()), nil
+        return op.WatchdogsService(), nil
     }
-    if strings.HasPrefix("watchdogs/") {
-        return op.WatchdogsService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "watchdogs/") {
+        return op.WatchdogsService().Service(path[10:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -21297,10 +19641,7 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 func (op *TemplateCdromService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21313,9 +19654,9 @@ func (op *TemplateCdromService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateCdromService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateCdromService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -21352,17 +19693,12 @@ func (op *TemplateCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -21378,15 +19714,15 @@ func (op *TemplateCdromsService) CdromService(id string) *TemplateCdromService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateCdromsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateCdromsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.CdromService(path)), nil
     }
-    return op.CdromService(path[:index]).Service(path[index + 1:]), nil
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateCdromsService) String() string {
@@ -21421,18 +19757,15 @@ func (op *TemplateDiskService) Copy (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "copy", nil, headers, query, wait)
+    return op.internalAction(action, "copy", headers, query, wait)
 }
 
 //
@@ -21448,18 +19781,15 @@ func (op *TemplateDiskService) Export (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -21467,10 +19797,7 @@ func (op *TemplateDiskService) Export (
 func (op *TemplateDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21491,28 +19818,23 @@ func (op *TemplateDiskService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -21543,10 +19865,7 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 func (op *TemplateDiskAttachmentService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21576,31 +19895,24 @@ func (op *TemplateDiskAttachmentService) Remove (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if storageDomain != nil {
-        query["storage_domain"] = storageDomain
-    }
-    if force != nil {
-        query["force"] = force
-    }
+    query["storage_domain"] = fmt.Sprintf("%v", storageDomain)
+    query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskAttachmentService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateDiskAttachmentService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -21633,10 +19945,7 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 func (op *TemplateDiskAttachmentsService) List (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21656,15 +19965,15 @@ func (op *TemplateDiskAttachmentsService) AttachmentService(id string) *Template
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDiskAttachmentsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateDiskAttachmentsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.AttachmentService(path)), nil
     }
-    return op.AttachmentService(path[:index]).Service(path[index + 1:]), nil
+    return op.AttachmentService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateDiskAttachmentsService) String() string {
@@ -21698,17 +20007,12 @@ func (op *TemplateDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -21723,15 +20027,15 @@ func (op *TemplateDisksService) DiskService(id string) *TemplateDiskService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateDisksService) String() string {
@@ -21759,10 +20063,7 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 func (op *TemplateGraphicsConsoleService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21784,28 +20085,23 @@ func (op *TemplateGraphicsConsoleService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateGraphicsConsoleService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateGraphicsConsoleService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -21837,10 +20133,7 @@ func (op *TemplateGraphicsConsolesService) Add (
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21862,17 +20155,12 @@ func (op *TemplateGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -21888,15 +20176,15 @@ func (op *TemplateGraphicsConsolesService) ConsoleService(id string) *TemplateGr
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateGraphicsConsolesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateGraphicsConsolesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ConsoleService(path)), nil
     }
-    return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateGraphicsConsolesService) String() string {
@@ -21923,10 +20211,7 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 func (op *TemplateNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21947,20 +20232,15 @@ func (op *TemplateNicService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -21970,17 +20250,12 @@ func (op *TemplateNicService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(nic, headers, query, wait)
@@ -21989,9 +20264,9 @@ func (op *TemplateNicService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateNicService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateNicService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -22022,10 +20297,7 @@ func (op *TemplateNicsService) Add (
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22046,17 +20318,12 @@ func (op *TemplateNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -22071,15 +20338,15 @@ func (op *TemplateNicsService) NicService(id string) *TemplateNicService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateNicsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateNicsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NicService(path)), nil
     }
-    return op.NicService(path[:index]).Service(path[index + 1:]), nil
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateNicsService) String() string {
@@ -22106,10 +20373,7 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 func (op *TemplateWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22130,20 +20394,15 @@ func (op *TemplateWatchdogService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -22153,17 +20412,12 @@ func (op *TemplateWatchdogService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(watchdog, headers, query, wait)
@@ -22172,9 +20426,9 @@ func (op *TemplateWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateWatchdogService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateWatchdogService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -22205,10 +20459,7 @@ func (op *TemplateWatchdogsService) Add (
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22229,17 +20480,12 @@ func (op *TemplateWatchdogsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -22254,15 +20500,15 @@ func (op *TemplateWatchdogsService) WatchdogService(id string) *TemplateWatchdog
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplateWatchdogsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplateWatchdogsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.WatchdogService(path)), nil
     }
-    return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplateWatchdogsService) String() string {
@@ -22327,17 +20573,12 @@ func (op *TemplatesService) Add (
     clonePermissions bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if clonePermissions != nil {
-        query["clone_permissions"] = clonePermissions
-    }
+    query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
 
     // Send the request
     return op.internalAdd(template, headers, query, wait)
@@ -22369,26 +20610,15 @@ func (op *TemplatesService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -22404,15 +20634,15 @@ func (op *TemplatesService) TemplateService(id string) *TemplateService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *TemplatesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *TemplatesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.TemplateService(path)), nil
     }
-    return op.TemplateService(path[:index]).Service(path[index + 1:]), nil
+    return op.TemplateService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *TemplatesService) String() string {
@@ -22439,10 +20669,7 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 func (op *UnmanagedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22463,28 +20690,23 @@ func (op *UnmanagedNetworkService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UnmanagedNetworkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *UnmanagedNetworkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -22520,17 +20742,12 @@ func (op *UnmanagedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -22545,15 +20762,15 @@ func (op *UnmanagedNetworksService) UnmanagedNetworkService(id string) *Unmanage
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UnmanagedNetworksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *UnmanagedNetworksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.UnmanagedNetworkService(path)), nil
     }
-    return op.UnmanagedNetworkService(path[:index]).Service(path[index + 1:]), nil
+    return op.UnmanagedNetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *UnmanagedNetworksService) String() string {
@@ -22614,10 +20831,7 @@ func NewUserService(connection *Connection, path string) *UserService {
 func (op *UserService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22643,20 +20857,15 @@ func (op *UserService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -22686,33 +20895,33 @@ func (op *UserService) TagsService() *AssignedTagsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UserService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *UserService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "roles" {
-        return *(op.RolesService()), nil
+        return op.RolesService(), nil
     }
-    if strings.HasPrefix("roles/") {
-        return op.RolesService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "roles/") {
+        return op.RolesService().Service(path[6:])
     }
     if path == "sshpublickeys" {
-        return *(op.SshPublicKeysService()), nil
+        return op.SshPublicKeysService(), nil
     }
-    if strings.HasPrefix("sshpublickeys/") {
-        return op.SshPublicKeysService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "sshpublickeys/") {
+        return op.SshPublicKeysService().Service(path[14:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -22776,10 +20985,7 @@ func (op *UsersService) Add (
     user *User,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22831,23 +21037,14 @@ func (op *UsersService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -22862,15 +21059,15 @@ func (op *UsersService) UserService(id string) *UserService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *UsersService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *UsersService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.UserService(path)), nil
     }
-    return op.UserService(path[:index]).Service(path[index + 1:]), nil
+    return op.UserService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *UsersService) String() string {
@@ -22897,10 +21094,7 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 func (op *VirtualFunctionAllowedNetworkService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22921,28 +21115,23 @@ func (op *VirtualFunctionAllowedNetworkService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VirtualFunctionAllowedNetworkService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VirtualFunctionAllowedNetworkService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -22973,10 +21162,7 @@ func (op *VirtualFunctionAllowedNetworksService) Add (
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22997,17 +21183,12 @@ func (op *VirtualFunctionAllowedNetworksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -23022,15 +21203,15 @@ func (op *VirtualFunctionAllowedNetworksService) NetworkService(id string) *Virt
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VirtualFunctionAllowedNetworksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VirtualFunctionAllowedNetworksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NetworkService(path)), nil
     }
-    return op.NetworkService(path[:index]).Service(path[index + 1:]), nil
+    return op.NetworkService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VirtualFunctionAllowedNetworksService) String() string {
@@ -23090,17 +21271,14 @@ func (op *VmService) CancelMigration (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "cancelmigration", nil, headers, query, wait)
+    return op.internalAction(action, "cancelmigration", headers, query, wait)
 }
 
 //
@@ -23115,18 +21293,15 @@ func (op *VmService) Clone (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Vm: vm,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "clone", nil, headers, query, wait)
+    return op.internalAction(action, "clone", headers, query, wait)
 }
 
 //
@@ -23140,17 +21315,14 @@ func (op *VmService) CommitSnapshot (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "commitsnapshot", nil, headers, query, wait)
+    return op.internalAction(action, "commitsnapshot", headers, query, wait)
 }
 
 //
@@ -23175,17 +21347,14 @@ func (op *VmService) Detach (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "detach", nil, headers, query, wait)
+    return op.internalAction(action, "detach", headers, query, wait)
 }
 
 //
@@ -23223,12 +21392,9 @@ func (op *VmService) Export (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         DiscardSnapshots: discardSnapshots,
         Exclusive: exclusive,
@@ -23236,7 +21402,7 @@ func (op *VmService) Export (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -23263,17 +21429,14 @@ func (op *VmService) FreezeFilesystems (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "freezefilesystems", nil, headers, query, wait)
+    return op.internalAction(action, "freezefilesystems", headers, query, wait)
 }
 
 //
@@ -23317,23 +21480,14 @@ func (op *VmService) Get (
     nextRun bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if allContent != nil {
-        query["all_content"] = allContent
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if nextRun != nil {
-        query["next_run"] = nextRun
-    }
+    query["all_content"] = fmt.Sprintf("%v", allContent)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["next_run"] = fmt.Sprintf("%v", nextRun)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -23365,17 +21519,14 @@ func (op *VmService) Logon (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "logon", nil, headers, query, wait)
+    return op.internalAction(action, "logon", headers, query, wait)
 }
 
 //
@@ -23404,18 +21555,15 @@ func (op *VmService) Maintenance (
     maintenanceEnabled bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         MaintenanceEnabled: maintenanceEnabled,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "maintenance", nil, headers, query, wait)
+    return op.internalAction(action, "maintenance", headers, query, wait)
 }
 
 //
@@ -23451,12 +21599,9 @@ func (op *VmService) Migrate (
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Cluster: cluster,
         Force: force,
@@ -23464,7 +21609,7 @@ func (op *VmService) Migrate (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "migrate", nil, headers, query, wait)
+    return op.internalAction(action, "migrate", headers, query, wait)
 }
 
 //
@@ -23482,12 +21627,9 @@ func (op *VmService) PreviewSnapshot (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Disks: disks,
         RestoreMemory: restoreMemory,
@@ -23496,7 +21638,7 @@ func (op *VmService) PreviewSnapshot (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "previewsnapshot", nil, headers, query, wait)
+    return op.internalAction(action, "previewsnapshot", headers, query, wait)
 }
 
 //
@@ -23521,17 +21663,14 @@ func (op *VmService) Reboot (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "reboot", nil, headers, query, wait)
+    return op.internalAction(action, "reboot", headers, query, wait)
 }
 
 //
@@ -23557,26 +21696,17 @@ func (op *VmService) Remove (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
-    if detachOnly != nil {
-        query["detach_only"] = detachOnly
-    }
-    if force != nil {
-        query["force"] = force
-    }
+    query["async"] = fmt.Sprintf("%v", async)
+    query["detach_only"] = fmt.Sprintf("%v", detachOnly)
+    query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -23590,17 +21720,14 @@ func (op *VmService) ReorderMacAddresses (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "reordermacaddresses", nil, headers, query, wait)
+    return op.internalAction(action, "reordermacaddresses", headers, query, wait)
 }
 
 //
@@ -23625,17 +21752,14 @@ func (op *VmService) Shutdown (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "shutdown", nil, headers, query, wait)
+    return op.internalAction(action, "shutdown", headers, query, wait)
 }
 
 //
@@ -23691,12 +21815,9 @@ func (op *VmService) Start (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
         Pause: pause,
@@ -23706,7 +21827,7 @@ func (op *VmService) Start (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "start", nil, headers, query, wait)
+    return op.internalAction(action, "start", headers, query, wait)
 }
 
 //
@@ -23731,17 +21852,14 @@ func (op *VmService) Stop (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "stop", nil, headers, query, wait)
+    return op.internalAction(action, "stop", headers, query, wait)
 }
 
 //
@@ -23767,17 +21885,14 @@ func (op *VmService) Suspend (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "suspend", nil, headers, query, wait)
+    return op.internalAction(action, "suspend", headers, query, wait)
 }
 
 //
@@ -23804,17 +21919,14 @@ func (op *VmService) ThawFilesystems (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "thawfilesystems", nil, headers, query, wait)
+    return op.internalAction(action, "thawfilesystems", headers, query, wait)
 }
 
 //
@@ -23861,18 +21973,15 @@ func (op *VmService) Ticket (
     ticket *Ticket,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Ticket: ticket,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "ticket", "ticket", headers, query, wait)
+    return op.internalAction(action, "ticket", headers, query, wait)
 }
 
 //
@@ -23886,17 +21995,14 @@ func (op *VmService) UndoSnapshot (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "undosnapshot", nil, headers, query, wait)
+    return op.internalAction(action, "undosnapshot", headers, query, wait)
 }
 
 //
@@ -23907,20 +22013,13 @@ func (op *VmService) Update (
     nextRun bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
-    if nextRun != nil {
-        query["next_run"] = nextRun
-    }
+    query["async"] = fmt.Sprintf("%v", async)
+    query["next_run"] = fmt.Sprintf("%v", nextRun)
 
     // Send the request
     return op.internalUpdate(vm, headers, query, wait)
@@ -24030,105 +22129,105 @@ func (op *VmService) WatchdogsService() *VmWatchdogsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "affinitylabels" {
-        return *(op.AffinityLabelsService()), nil
+        return op.AffinityLabelsService(), nil
     }
-    if strings.HasPrefix("affinitylabels/") {
-        return op.AffinityLabelsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "affinitylabels/") {
+        return op.AffinityLabelsService().Service(path[15:])
     }
     if path == "applications" {
-        return *(op.ApplicationsService()), nil
+        return op.ApplicationsService(), nil
     }
-    if strings.HasPrefix("applications/") {
-        return op.ApplicationsService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "applications/") {
+        return op.ApplicationsService().Service(path[13:])
     }
     if path == "cdroms" {
-        return *(op.CdromsService()), nil
+        return op.CdromsService(), nil
     }
-    if strings.HasPrefix("cdroms/") {
-        return op.CdromsService().Service(path[7:]), nil
+    if strings.HasPrefix(path, "cdroms/") {
+        return op.CdromsService().Service(path[7:])
     }
     if path == "diskattachments" {
-        return *(op.DiskAttachmentsService()), nil
+        return op.DiskAttachmentsService(), nil
     }
-    if strings.HasPrefix("diskattachments/") {
-        return op.DiskAttachmentsService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "diskattachments/") {
+        return op.DiskAttachmentsService().Service(path[16:])
     }
     if path == "graphicsconsoles" {
-        return *(op.GraphicsConsolesService()), nil
+        return op.GraphicsConsolesService(), nil
     }
-    if strings.HasPrefix("graphicsconsoles/") {
-        return op.GraphicsConsolesService().Service(path[17:]), nil
+    if strings.HasPrefix(path, "graphicsconsoles/") {
+        return op.GraphicsConsolesService().Service(path[17:])
     }
     if path == "hostdevices" {
-        return *(op.HostDevicesService()), nil
+        return op.HostDevicesService(), nil
     }
-    if strings.HasPrefix("hostdevices/") {
-        return op.HostDevicesService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "hostdevices/") {
+        return op.HostDevicesService().Service(path[12:])
     }
     if path == "katelloerrata" {
-        return *(op.KatelloErrataService()), nil
+        return op.KatelloErrataService(), nil
     }
-    if strings.HasPrefix("katelloerrata/") {
-        return op.KatelloErrataService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "katelloerrata/") {
+        return op.KatelloErrataService().Service(path[14:])
     }
     if path == "nics" {
-        return *(op.NicsService()), nil
+        return op.NicsService(), nil
     }
-    if strings.HasPrefix("nics/") {
-        return op.NicsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "nics/") {
+        return op.NicsService().Service(path[5:])
     }
     if path == "numanodes" {
-        return *(op.NumaNodesService()), nil
+        return op.NumaNodesService(), nil
     }
-    if strings.HasPrefix("numanodes/") {
-        return op.NumaNodesService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "numanodes/") {
+        return op.NumaNodesService().Service(path[10:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "reporteddevices" {
-        return *(op.ReportedDevicesService()), nil
+        return op.ReportedDevicesService(), nil
     }
-    if strings.HasPrefix("reporteddevices/") {
-        return op.ReportedDevicesService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "reporteddevices/") {
+        return op.ReportedDevicesService().Service(path[16:])
     }
     if path == "sessions" {
-        return *(op.SessionsService()), nil
+        return op.SessionsService(), nil
     }
-    if strings.HasPrefix("sessions/") {
-        return op.SessionsService().Service(path[9:]), nil
+    if strings.HasPrefix(path, "sessions/") {
+        return op.SessionsService().Service(path[9:])
     }
     if path == "snapshots" {
-        return *(op.SnapshotsService()), nil
+        return op.SnapshotsService(), nil
     }
-    if strings.HasPrefix("snapshots/") {
-        return op.SnapshotsService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "snapshots/") {
+        return op.SnapshotsService().Service(path[10:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     if path == "watchdogs" {
-        return *(op.WatchdogsService()), nil
+        return op.WatchdogsService(), nil
     }
-    if strings.HasPrefix("watchdogs/") {
-        return op.WatchdogsService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "watchdogs/") {
+        return op.WatchdogsService().Service(path[10:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -24165,17 +22264,12 @@ func (op *VmApplicationService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24184,9 +22278,9 @@ func (op *VmApplicationService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmApplicationService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmApplicationService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -24226,20 +22320,13 @@ func (op *VmApplicationsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24255,15 +22342,15 @@ func (op *VmApplicationsService) ApplicationService(id string) *VmApplicationSer
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmApplicationsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmApplicationsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ApplicationService(path)), nil
     }
-    return op.ApplicationService(path[:index]).Service(path[index + 1:]), nil
+    return op.ApplicationService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmApplicationsService) String() string {
@@ -24318,17 +22405,12 @@ func (op *VmCdromService) Get (
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if current != nil {
-        query["current"] = current
-    }
+    query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24386,17 +22468,12 @@ func (op *VmCdromService) Update (
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if current != nil {
-        query["current"] = current
-    }
+    query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request
     return op.internalUpdate(cdrom, headers, query, wait)
@@ -24405,9 +22482,9 @@ func (op *VmCdromService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmCdromService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmCdromService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -24449,17 +22526,12 @@ func (op *VmCdromsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24475,15 +22547,15 @@ func (op *VmCdromsService) CdromService(id string) *VmCdromService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmCdromsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmCdromsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.CdromService(path)), nil
     }
-    return op.CdromService(path[:index]).Service(path[index + 1:]), nil
+    return op.CdromService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmCdromsService) String() string {
@@ -24518,17 +22590,14 @@ func (op *VmDiskService) Activate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "activate", nil, headers, query, wait)
+    return op.internalAction(action, "activate", headers, query, wait)
 }
 
 //
@@ -24542,17 +22611,14 @@ func (op *VmDiskService) Deactivate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "deactivate", nil, headers, query, wait)
+    return op.internalAction(action, "deactivate", headers, query, wait)
 }
 
 //
@@ -24568,18 +22634,15 @@ func (op *VmDiskService) Export (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -24587,10 +22650,7 @@ func (op *VmDiskService) Export (
 func (op *VmDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24613,18 +22673,15 @@ func (op *VmDiskService) Move (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "move", nil, headers, query, wait)
+    return op.internalAction(action, "move", headers, query, wait)
 }
 
 //
@@ -24642,20 +22699,15 @@ func (op *VmDiskService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -24665,17 +22717,12 @@ func (op *VmDiskService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(disk, headers, query, wait)
@@ -24696,21 +22743,21 @@ func (op *VmDiskService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -24741,10 +22788,7 @@ func (op *VmDisksService) Add (
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24765,17 +22809,12 @@ func (op *VmDisksService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24790,15 +22829,15 @@ func (op *VmDisksService) DiskService(id string) *VmDiskService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmDisksService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmDisksService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DiskService(path)), nil
     }
-    return op.DiskService(path[:index]).Service(path[index + 1:]), nil
+    return op.DiskService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmDisksService) String() string {
@@ -24837,17 +22876,12 @@ func (op *VmGraphicsConsoleService) Get (
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if current != nil {
-        query["current"] = current
-    }
+    query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -24864,17 +22898,14 @@ func (op *VmGraphicsConsoleService) ProxyTicket (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "proxyticket", "proxyTicket", headers, query, wait)
+    return op.internalAction(action, "proxyticket", headers, query, wait)
 }
 
 //
@@ -24947,16 +22978,13 @@ func (op *VmGraphicsConsoleService) ProxyTicket (
 func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "remoteviewerconnectionfile", "remoteViewerConnectionFile", headers, query, wait)
+    return op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
 }
 
 //
@@ -24971,20 +22999,15 @@ func (op *VmGraphicsConsoleService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -25014,25 +23037,22 @@ func (op *VmGraphicsConsoleService) Ticket (
     ticket *Ticket,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Ticket: ticket,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "ticket", "ticket", headers, query, wait)
+    return op.internalAction(action, "ticket", headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmGraphicsConsoleService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmGraphicsConsoleService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -25064,10 +23084,7 @@ func (op *VmGraphicsConsolesService) Add (
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25096,20 +23113,13 @@ func (op *VmGraphicsConsolesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if current != nil {
-        query["current"] = current
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["current"] = fmt.Sprintf("%v", current)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -25125,15 +23135,15 @@ func (op *VmGraphicsConsolesService) ConsoleService(id string) *VmGraphicsConsol
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmGraphicsConsolesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmGraphicsConsolesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ConsoleService(path)), nil
     }
-    return op.ConsoleService(path[:index]).Service(path[index + 1:]), nil
+    return op.ConsoleService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmGraphicsConsolesService) String() string {
@@ -25187,10 +23197,7 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 func (op *VmHostDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25220,28 +23227,23 @@ func (op *VmHostDeviceService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmHostDeviceService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmHostDeviceService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -25296,10 +23298,7 @@ func (op *VmHostDevicesService) Add (
     device *HostDevice,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25321,17 +23320,12 @@ func (op *VmHostDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -25347,15 +23341,15 @@ func (op *VmHostDevicesService) DeviceService(id string) *VmHostDeviceService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmHostDevicesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmHostDevicesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.DeviceService(path)), nil
     }
-    return op.DeviceService(path[:index]).Service(path[index + 1:]), nil
+    return op.DeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmHostDevicesService) String() string {
@@ -25391,17 +23385,14 @@ func (op *VmNicService) Activate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "activate", nil, headers, query, wait)
+    return op.internalAction(action, "activate", headers, query, wait)
 }
 
 //
@@ -25415,17 +23406,14 @@ func (op *VmNicService) Deactivate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "deactivate", nil, headers, query, wait)
+    return op.internalAction(action, "deactivate", headers, query, wait)
 }
 
 //
@@ -25433,10 +23421,7 @@ func (op *VmNicService) Deactivate (
 func (op *VmNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25472,20 +23457,15 @@ func (op *VmNicService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -25520,17 +23500,12 @@ func (op *VmNicService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(nic, headers, query, wait)
@@ -25559,27 +23534,27 @@ func (op *VmNicService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNicService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmNicService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "networkfilterparameters" {
-        return *(op.NetworkFilterParametersService()), nil
+        return op.NetworkFilterParametersService(), nil
     }
-    if strings.HasPrefix("networkfilterparameters/") {
-        return op.NetworkFilterParametersService().Service(path[24:]), nil
+    if strings.HasPrefix(path, "networkfilterparameters/") {
+        return op.NetworkFilterParametersService().Service(path[24:])
     }
     if path == "reporteddevices" {
-        return *(op.ReportedDevicesService()), nil
+        return op.ReportedDevicesService(), nil
     }
-    if strings.HasPrefix("reporteddevices/") {
-        return op.ReportedDevicesService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "reporteddevices/") {
+        return op.ReportedDevicesService().Service(path[16:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -25656,10 +23631,7 @@ func (op *VmNicsService) Add (
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25680,17 +23652,12 @@ func (op *VmNicsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -25705,15 +23672,15 @@ func (op *VmNicsService) NicService(id string) *VmNicService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNicsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmNicsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NicService(path)), nil
     }
-    return op.NicService(path[:index]).Service(path[index + 1:]), nil
+    return op.NicService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmNicsService) String() string {
@@ -25740,10 +23707,7 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 func (op *VmNumaNodeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25770,20 +23734,15 @@ func (op *VmNumaNodeService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -25810,17 +23769,12 @@ func (op *VmNumaNodeService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(node, headers, query, wait)
@@ -25829,9 +23783,9 @@ func (op *VmNumaNodeService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNumaNodeService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmNumaNodeService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -25885,10 +23839,7 @@ func (op *VmNumaNodesService) Add (
     node *VirtualNumaNode,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25910,17 +23861,12 @@ func (op *VmNumaNodesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -25935,15 +23881,15 @@ func (op *VmNumaNodesService) NodeService(id string) *VmNumaNodeService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmNumaNodesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmNumaNodesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.NodeService(path)), nil
     }
-    return op.NodeService(path[:index]).Service(path[index + 1:]), nil
+    return op.NodeService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmNumaNodesService) String() string {
@@ -25989,17 +23935,14 @@ func (op *VmPoolService) AllocateVm (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "allocatevm", nil, headers, query, wait)
+    return op.internalAction(action, "allocatevm", headers, query, wait)
 }
 
 //
@@ -26038,17 +23981,12 @@ func (op *VmPoolService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -26070,20 +24008,15 @@ func (op *VmPoolService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -26116,17 +24049,12 @@ func (op *VmPoolService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(pool, headers, query, wait)
@@ -26142,15 +24070,15 @@ func (op *VmPoolService) PermissionsService() *AssignedPermissionsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmPoolService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmPoolService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -26203,10 +24131,7 @@ func (op *VmPoolsService) Add (
     pool *VmPool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26250,26 +24175,15 @@ func (op *VmPoolsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -26285,15 +24199,15 @@ func (op *VmPoolsService) PoolService(id string) *VmPoolService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmPoolsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmPoolsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.PoolService(path)), nil
     }
-    return op.PoolService(path[:index]).Service(path[index + 1:]), nil
+    return op.PoolService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmPoolsService) String() string {
@@ -26320,10 +24234,7 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 func (op *VmReportedDeviceService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26336,9 +24247,9 @@ func (op *VmReportedDeviceService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmReportedDeviceService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmReportedDeviceService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -26374,17 +24285,12 @@ func (op *VmReportedDevicesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -26399,15 +24305,15 @@ func (op *VmReportedDevicesService) ReportedDeviceService(id string) *VmReported
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmReportedDevicesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmReportedDevicesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ReportedDeviceService(path)), nil
     }
-    return op.ReportedDeviceService(path[:index]).Service(path[index + 1:]), nil
+    return op.ReportedDeviceService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmReportedDevicesService) String() string {
@@ -26434,10 +24340,7 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 func (op *VmSessionService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26450,9 +24353,9 @@ func (op *VmSessionService) Get (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmSessionService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmSessionService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -26510,17 +24413,12 @@ func (op *VmSessionsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -26536,15 +24434,15 @@ func (op *VmSessionsService) SessionService(id string) *VmSessionService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmSessionsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmSessionsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.SessionService(path)), nil
     }
-    return op.SessionService(path[:index]).Service(path[index + 1:]), nil
+    return op.SessionService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmSessionsService) String() string {
@@ -26573,10 +24471,7 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 func (op *VmWatchdogService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26603,20 +24498,15 @@ func (op *VmWatchdogService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -26653,17 +24543,12 @@ func (op *VmWatchdogService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(watchdog, headers, query, wait)
@@ -26672,9 +24557,9 @@ func (op *VmWatchdogService) Update (
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmWatchdogService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmWatchdogService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -26733,10 +24618,7 @@ func (op *VmWatchdogsService) Add (
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26758,17 +24640,12 @@ func (op *VmWatchdogsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -26784,15 +24661,15 @@ func (op *VmWatchdogsService) WatchdogService(id string) *VmWatchdogService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmWatchdogsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmWatchdogsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.WatchdogService(path)), nil
     }
-    return op.WatchdogService(path[:index]).Service(path[index + 1:]), nil
+    return op.WatchdogService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmWatchdogsService) String() string {
@@ -26958,20 +24835,13 @@ func (op *VmsService) Add (
     clonePermissions bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if clone != nil {
-        query["clone"] = clone
-    }
-    if clonePermissions != nil {
-        query["clone_permissions"] = clonePermissions
-    }
+    query["clone"] = fmt.Sprintf("%v", clone)
+    query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
 
     // Send the request
     return op.internalAdd(vm, headers, query, wait)
@@ -27010,29 +24880,16 @@ func (op *VmsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if allContent != nil {
-        query["all_content"] = allContent
-    }
-    if caseSensitive != nil {
-        query["case_sensitive"] = caseSensitive
-    }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
-    if search != nil {
-        query["search"] = search
-    }
+    query["all_content"] = fmt.Sprintf("%v", allContent)
+    query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
+    query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -27047,15 +24904,15 @@ func (op *VmsService) VmService(id string) *VmService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VmsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VmsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.VmService(path)), nil
     }
-    return op.VmService(path[:index]).Service(path[index + 1:]), nil
+    return op.VmService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VmsService) String() string {
@@ -27085,10 +24942,7 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 func (op *VnicProfileService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27110,20 +24964,15 @@ func (op *VnicProfileService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -27139,17 +24988,12 @@ func (op *VnicProfileService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(profile, headers, query, wait)
@@ -27164,15 +25008,15 @@ func (op *VnicProfileService) PermissionsService() *AssignedPermissionsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VnicProfileService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VnicProfileService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -27262,10 +25106,7 @@ func (op *VnicProfilesService) Add (
     profile *VnicProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27287,17 +25128,12 @@ func (op *VnicProfilesService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -27312,15 +25148,15 @@ func (op *VnicProfilesService) ProfileService(id string) *VnicProfileService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *VnicProfilesService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *VnicProfilesService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.ProfileService(path)), nil
     }
-    return op.ProfileService(path[:index]).Service(path[index + 1:]), nil
+    return op.ProfileService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *VnicProfilesService) String() string {
@@ -27353,17 +25189,12 @@ func (op *WeightService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -27380,28 +25211,23 @@ func (op *WeightService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *WeightService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *WeightService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -27432,10 +25258,7 @@ func (op *WeightsService) Add (
     weight *Weight,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27458,20 +25281,13 @@ func (op *WeightsService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
-    if max != nil {
-        query["max"] = max
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -27486,15 +25302,15 @@ func (op *WeightsService) WeightService(id string) *WeightService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *WeightsService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *WeightsService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.WeightService(path)), nil
     }
-    return op.WeightService(path[:index]).Service(path[index + 1:]), nil
+    return op.WeightService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *WeightsService) String() string {
@@ -27540,18 +25356,15 @@ func (op *AttachedStorageDomainDiskService) Copy (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Disk: disk,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "copy", nil, headers, query, wait)
+    return op.internalAction(action, "copy", headers, query, wait)
 }
 
 //
@@ -27569,17 +25382,14 @@ func (op *AttachedStorageDomainDiskService) Export (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -27588,10 +25398,7 @@ func (op *AttachedStorageDomainDiskService) Export (
 func (op *AttachedStorageDomainDiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27620,19 +25427,16 @@ func (op *AttachedStorageDomainDiskService) Move (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "move", nil, headers, query, wait)
+    return op.internalAction(action, "move", headers, query, wait)
 }
 
 //
@@ -27641,16 +25445,13 @@ func (op *AttachedStorageDomainDiskService) Move (
 func (op *AttachedStorageDomainDiskService) Register (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "register", nil, headers, query, wait)
+    return op.internalAction(action, "register", headers, query, wait)
 }
 
 //
@@ -27662,17 +25463,14 @@ func (op *AttachedStorageDomainDiskService) Register (
 func (op *AttachedStorageDomainDiskService) Remove (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -27684,16 +25482,13 @@ func (op *AttachedStorageDomainDiskService) Remove (
 func (op *AttachedStorageDomainDiskService) Sparsify (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "sparsify", nil, headers, query, wait)
+    return op.internalAction(action, "sparsify", headers, query, wait)
 }
 
 //
@@ -27711,10 +25506,7 @@ func (op *AttachedStorageDomainDiskService) Update (
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27740,21 +25532,21 @@ func (op *AttachedStorageDomainDiskService) StatisticsService() *StatisticsServi
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *AttachedStorageDomainDiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *AttachedStorageDomainDiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -27842,12 +25634,9 @@ func (op *DiskService) Copy (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Disk: disk,
         Filter: filter,
@@ -27855,7 +25644,7 @@ func (op *DiskService) Copy (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "copy", nil, headers, query, wait)
+    return op.internalAction(action, "copy", headers, query, wait)
 }
 
 //
@@ -27874,19 +25663,16 @@ func (op *DiskService) Export (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "export", nil, headers, query, wait)
+    return op.internalAction(action, "export", headers, query, wait)
 }
 
 //
@@ -27895,10 +25681,7 @@ func (op *DiskService) Export (
 func (op *DiskService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27937,19 +25720,16 @@ func (op *DiskService) Move (
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Filter: filter,
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "move", nil, headers, query, wait)
+    return op.internalAction(action, "move", headers, query, wait)
 }
 
 //
@@ -27964,20 +25744,15 @@ func (op *DiskService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -27990,16 +25765,13 @@ func (op *DiskService) Remove (
 func (op *DiskService) Sparsify (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "sparsify", nil, headers, query, wait)
+    return op.internalAction(action, "sparsify", headers, query, wait)
 }
 
 //
@@ -28029,10 +25801,7 @@ func (op *DiskService) Update (
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -28058,21 +25827,21 @@ func (op *DiskService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *DiskService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *DiskService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -28137,17 +25906,12 @@ func (op *EngineKatelloErrataService) List (
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if max != nil {
-        query["max"] = max
-    }
+    query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -28164,15 +25928,15 @@ func (op *EngineKatelloErrataService) KatelloErratumService(id string) *KatelloE
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *EngineKatelloErrataService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *EngineKatelloErrataService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
-    index = strings.Index(path, "/")
+    index := strings.Index(path, "/")
     if index == -1 {
         return *(op.KatelloErratumService(path)), nil
     }
-    return op.KatelloErratumService(path[:index]).Service(path[index + 1:]), nil
+    return op.KatelloErratumService(path[:index]).Service(path[index + 1:])
 }
 
 func (op *EngineKatelloErrataService) String() string {
@@ -28204,10 +25968,7 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 func (op *ExternalHostProviderService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -28223,17 +25984,14 @@ func (op *ExternalHostProviderService) ImportCertificates (
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "importcertificates", nil, headers, query, wait)
+    return op.internalAction(action, "importcertificates", headers, query, wait)
 }
 
 //
@@ -28247,20 +26005,15 @@ func (op *ExternalHostProviderService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -28274,17 +26027,14 @@ func (op *ExternalHostProviderService) TestConnectivity (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "testconnectivity", nil, headers, query, wait)
+    return op.internalAction(action, "testconnectivity", headers, query, wait)
 }
 
 //
@@ -28294,17 +26044,12 @@ func (op *ExternalHostProviderService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(provider, headers, query, wait)
@@ -28343,39 +26088,39 @@ func (op *ExternalHostProviderService) HostsService() *ExternalHostsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *ExternalHostProviderService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *ExternalHostProviderService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "certificates" {
-        return *(op.CertificatesService()), nil
+        return op.CertificatesService(), nil
     }
-    if strings.HasPrefix("certificates/") {
-        return op.CertificatesService().Service(path[13:]), nil
+    if strings.HasPrefix(path, "certificates/") {
+        return op.CertificatesService().Service(path[13:])
     }
     if path == "computeresources" {
-        return *(op.ComputeResourcesService()), nil
+        return op.ComputeResourcesService(), nil
     }
-    if strings.HasPrefix("computeresources/") {
-        return op.ComputeResourcesService().Service(path[17:]), nil
+    if strings.HasPrefix(path, "computeresources/") {
+        return op.ComputeResourcesService().Service(path[17:])
     }
     if path == "discoveredhosts" {
-        return *(op.DiscoveredHostsService()), nil
+        return op.DiscoveredHostsService(), nil
     }
-    if strings.HasPrefix("discoveredhosts/") {
-        return op.DiscoveredHostsService().Service(path[16:]), nil
+    if strings.HasPrefix(path, "discoveredhosts/") {
+        return op.DiscoveredHostsService().Service(path[16:])
     }
     if path == "hostgroups" {
-        return *(op.HostGroupsService()), nil
+        return op.HostGroupsService(), nil
     }
-    if strings.HasPrefix("hostgroups/") {
-        return op.HostGroupsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "hostgroups/") {
+        return op.HostGroupsService().Service(path[11:])
     }
     if path == "hosts" {
-        return *(op.HostsService()), nil
+        return op.HostsService(), nil
     }
-    if strings.HasPrefix("hosts/") {
-        return op.HostsService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "hosts/") {
+        return op.HostsService().Service(path[6:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -28449,10 +26194,7 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 func (op *GlusterBrickService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -28482,20 +26224,15 @@ func (op *GlusterBrickService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -28514,18 +26251,15 @@ func (op *GlusterBrickService) Replace (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "replace", nil, headers, query, wait)
+    return op.internalAction(action, "replace", headers, query, wait)
 }
 
 //
@@ -28537,15 +26271,15 @@ func (op *GlusterBrickService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterBrickService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterBrickService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -28614,10 +26348,7 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 func (op *GlusterVolumeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -28639,16 +26370,13 @@ func (op *GlusterVolumeService) Get (
 func (op *GlusterVolumeService) GetProfileStatistics (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "getprofilestatistics", "details", headers, query, wait)
+    return op.internalAction(action, "getprofilestatistics", headers, query, wait)
 }
 
 //
@@ -28679,19 +26407,16 @@ func (op *GlusterVolumeService) Rebalance (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         FixLayout: fixLayout,
         Force: force,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "rebalance", nil, headers, query, wait)
+    return op.internalAction(action, "rebalance", headers, query, wait)
 }
 
 //
@@ -28711,20 +26436,15 @@ func (op *GlusterVolumeService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -28745,17 +26465,14 @@ func (op *GlusterVolumeService) ResetAllOptions (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "resetalloptions", nil, headers, query, wait)
+    return op.internalAction(action, "resetalloptions", headers, query, wait)
 }
 
 //
@@ -28786,19 +26503,16 @@ func (op *GlusterVolumeService) ResetOption (
     option *Option,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
         Option: option,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "resetoption", nil, headers, query, wait)
+    return op.internalAction(action, "resetoption", headers, query, wait)
 }
 
 //
@@ -28828,18 +26542,15 @@ func (op *GlusterVolumeService) SetOption (
     option *Option,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Option: option,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "setoption", nil, headers, query, wait)
+    return op.internalAction(action, "setoption", headers, query, wait)
 }
 
 //
@@ -28863,18 +26574,15 @@ func (op *GlusterVolumeService) Start (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "start", nil, headers, query, wait)
+    return op.internalAction(action, "start", headers, query, wait)
 }
 
 //
@@ -28894,17 +26602,14 @@ func (op *GlusterVolumeService) StartProfile (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "startprofile", nil, headers, query, wait)
+    return op.internalAction(action, "startprofile", headers, query, wait)
 }
 
 //
@@ -28926,18 +26631,15 @@ func (op *GlusterVolumeService) Stop (
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Force: force,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "stop", nil, headers, query, wait)
+    return op.internalAction(action, "stop", headers, query, wait)
 }
 
 //
@@ -28957,17 +26659,14 @@ func (op *GlusterVolumeService) StopProfile (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "stopprofile", nil, headers, query, wait)
+    return op.internalAction(action, "stopprofile", headers, query, wait)
 }
 
 //
@@ -28988,17 +26687,14 @@ func (op *GlusterVolumeService) StopRebalance (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "stoprebalance", nil, headers, query, wait)
+    return op.internalAction(action, "stoprebalance", headers, query, wait)
 }
 
 //
@@ -29017,21 +26713,21 @@ func (op *GlusterVolumeService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *GlusterVolumeService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *GlusterVolumeService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "glusterbricks" {
-        return *(op.GlusterBricksService()), nil
+        return op.GlusterBricksService(), nil
     }
-    if strings.HasPrefix("glusterbricks/") {
-        return op.GlusterBricksService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "glusterbricks/") {
+        return op.GlusterBricksService().Service(path[14:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -29082,17 +26778,14 @@ func (op *HostService) Activate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "activate", nil, headers, query, wait)
+    return op.internalAction(action, "activate", headers, query, wait)
 }
 
 //
@@ -29109,18 +26802,15 @@ func (op *HostService) Approve (
     cluster *Cluster,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Cluster: cluster,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "approve", nil, headers, query, wait)
+    return op.internalAction(action, "approve", headers, query, wait)
 }
 
 //
@@ -29150,17 +26840,14 @@ func (op *HostService) CommitNetConfig (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "commitnetconfig", nil, headers, query, wait)
+    return op.internalAction(action, "commitnetconfig", headers, query, wait)
 }
 
 //
@@ -29179,19 +26866,16 @@ func (op *HostService) Deactivate (
     stopGlusterService bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Reason: reason,
         StopGlusterService: stopGlusterService,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "deactivate", nil, headers, query, wait)
+    return op.internalAction(action, "deactivate", headers, query, wait)
 }
 
 //
@@ -29206,17 +26890,14 @@ func (op *HostService) EnrollCertificate (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "enrollcertificate", nil, headers, query, wait)
+    return op.internalAction(action, "enrollcertificate", headers, query, wait)
 }
 
 //
@@ -29254,18 +26935,15 @@ func (op *HostService) Fence (
     fenceType string,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         FenceType: fenceType,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "fence", "powerManagement", headers, query, wait)
+    return op.internalAction(action, "fence", headers, query, wait)
 }
 
 //
@@ -29289,17 +26967,14 @@ func (op *HostService) ForceSelectSpm (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "forceselectspm", nil, headers, query, wait)
+    return op.internalAction(action, "forceselectspm", headers, query, wait)
 }
 
 //
@@ -29314,17 +26989,12 @@ func (op *HostService) Get (
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if filter != nil {
-        query["filter"] = filter
-    }
+    query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
     return op.internalGet(headers, query, wait)
@@ -29399,12 +27069,9 @@ func (op *HostService) Install (
     undeployHostedEngine bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         DeployHostedEngine: deployHostedEngine,
         Host: host,
@@ -29415,7 +27082,7 @@ func (op *HostService) Install (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "install", nil, headers, query, wait)
+    return op.internalAction(action, "install", headers, query, wait)
 }
 
 //
@@ -29432,18 +27099,15 @@ func (op *HostService) IscsiDiscover (
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Iscsi: iscsi,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "iscsidiscover", "iscsiTargets", headers, query, wait)
+    return op.internalAction(action, "iscsidiscover", headers, query, wait)
 }
 
 //
@@ -29460,18 +27124,15 @@ func (op *HostService) IscsiLogin (
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Iscsi: iscsi,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "iscsilogin", nil, headers, query, wait)
+    return op.internalAction(action, "iscsilogin", headers, query, wait)
 }
 
 //
@@ -29486,17 +27147,14 @@ func (op *HostService) Refresh (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "refresh", nil, headers, query, wait)
+    return op.internalAction(action, "refresh", headers, query, wait)
 }
 
 //
@@ -29525,20 +27183,15 @@ func (op *HostService) Remove (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    op.internalRemove(headers, query, wait)
+    return op.internalRemove(headers, query, wait)
 }
 
 //
@@ -29712,12 +27365,9 @@ func (op *HostService) SetupNetworks (
     synchronizedNetworkAttachments []*NetworkAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         CheckConnectivity: checkConnectivity,
         ConnectivityTimeout: connectivityTimeout,
@@ -29731,7 +27381,7 @@ func (op *HostService) SetupNetworks (
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "setupnetworks", nil, headers, query, wait)
+    return op.internalAction(action, "setupnetworks", headers, query, wait)
 }
 
 //
@@ -29746,18 +27396,15 @@ func (op *HostService) UnregisteredStorageDomainsDiscover (
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         Iscsi: iscsi,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "unregisteredstoragedomainsdiscover", "storageDomains", headers, query, wait)
+    return op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
 }
 
 //
@@ -29782,17 +27429,12 @@ func (op *HostService) Update (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
-    if async != nil {
-        query["async"] = async
-    }
+    query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
     return op.internalUpdate(host, headers, query, wait)
@@ -29810,17 +27452,14 @@ func (op *HostService) Upgrade (
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "upgrade", nil, headers, query, wait)
+    return op.internalAction(action, "upgrade", headers, query, wait)
 }
 
 //
@@ -29833,16 +27472,13 @@ func (op *HostService) Upgrade (
 func (op *HostService) UpgradeCheck (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "upgradecheck", nil, headers, query, wait)
+    return op.internalAction(action, "upgradecheck", headers, query, wait)
 }
 
 //
@@ -29952,93 +27588,93 @@ func (op *HostService) UnmanagedNetworksService() *UnmanagedNetworksService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "affinitylabels" {
-        return *(op.AffinityLabelsService()), nil
+        return op.AffinityLabelsService(), nil
     }
-    if strings.HasPrefix("affinitylabels/") {
-        return op.AffinityLabelsService().Service(path[15:]), nil
+    if strings.HasPrefix(path, "affinitylabels/") {
+        return op.AffinityLabelsService().Service(path[15:])
     }
     if path == "devices" {
-        return *(op.DevicesService()), nil
+        return op.DevicesService(), nil
     }
-    if strings.HasPrefix("devices/") {
-        return op.DevicesService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "devices/") {
+        return op.DevicesService().Service(path[8:])
     }
     if path == "fenceagents" {
-        return *(op.FenceAgentsService()), nil
+        return op.FenceAgentsService(), nil
     }
-    if strings.HasPrefix("fenceagents/") {
-        return op.FenceAgentsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "fenceagents/") {
+        return op.FenceAgentsService().Service(path[12:])
     }
     if path == "hooks" {
-        return *(op.HooksService()), nil
+        return op.HooksService(), nil
     }
-    if strings.HasPrefix("hooks/") {
-        return op.HooksService().Service(path[6:]), nil
+    if strings.HasPrefix(path, "hooks/") {
+        return op.HooksService().Service(path[6:])
     }
     if path == "katelloerrata" {
-        return *(op.KatelloErrataService()), nil
+        return op.KatelloErrataService(), nil
     }
-    if strings.HasPrefix("katelloerrata/") {
-        return op.KatelloErrataService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "katelloerrata/") {
+        return op.KatelloErrataService().Service(path[14:])
     }
     if path == "networkattachments" {
-        return *(op.NetworkAttachmentsService()), nil
+        return op.NetworkAttachmentsService(), nil
     }
-    if strings.HasPrefix("networkattachments/") {
-        return op.NetworkAttachmentsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "networkattachments/") {
+        return op.NetworkAttachmentsService().Service(path[19:])
     }
     if path == "nics" {
-        return *(op.NicsService()), nil
+        return op.NicsService(), nil
     }
-    if strings.HasPrefix("nics/") {
-        return op.NicsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "nics/") {
+        return op.NicsService().Service(path[5:])
     }
     if path == "numanodes" {
-        return *(op.NumaNodesService()), nil
+        return op.NumaNodesService(), nil
     }
-    if strings.HasPrefix("numanodes/") {
-        return op.NumaNodesService().Service(path[10:]), nil
+    if strings.HasPrefix(path, "numanodes/") {
+        return op.NumaNodesService().Service(path[10:])
     }
     if path == "permissions" {
-        return *(op.PermissionsService()), nil
+        return op.PermissionsService(), nil
     }
-    if strings.HasPrefix("permissions/") {
-        return op.PermissionsService().Service(path[12:]), nil
+    if strings.HasPrefix(path, "permissions/") {
+        return op.PermissionsService().Service(path[12:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     if path == "storage" {
-        return *(op.StorageService()), nil
+        return op.StorageService(), nil
     }
-    if strings.HasPrefix("storage/") {
-        return op.StorageService().Service(path[8:]), nil
+    if strings.HasPrefix(path, "storage/") {
+        return op.StorageService().Service(path[8:])
     }
     if path == "storageconnectionextensions" {
-        return *(op.StorageConnectionExtensionsService()), nil
+        return op.StorageConnectionExtensionsService(), nil
     }
-    if strings.HasPrefix("storageconnectionextensions/") {
-        return op.StorageConnectionExtensionsService().Service(path[28:]), nil
+    if strings.HasPrefix(path, "storageconnectionextensions/") {
+        return op.StorageConnectionExtensionsService().Service(path[28:])
     }
     if path == "tags" {
-        return *(op.TagsService()), nil
+        return op.TagsService(), nil
     }
-    if strings.HasPrefix("tags/") {
-        return op.TagsService().Service(path[5:]), nil
+    if strings.HasPrefix(path, "tags/") {
+        return op.TagsService().Service(path[5:])
     }
     if path == "unmanagednetworks" {
-        return *(op.UnmanagedNetworksService()), nil
+        return op.UnmanagedNetworksService(), nil
     }
-    if strings.HasPrefix("unmanagednetworks/") {
-        return op.UnmanagedNetworksService().Service(path[18:]), nil
+    if strings.HasPrefix(path, "unmanagednetworks/") {
+        return op.UnmanagedNetworksService().Service(path[18:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -30073,10 +27709,7 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 func (op *HostNicService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -30103,18 +27736,15 @@ func (op *HostNicService) UpdateVirtualFunctionsConfiguration (
     virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration,
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Populate the action:
-    action = Action{
+    action := &Action{
         Async: async,
         VirtualFunctionsConfiguration: virtualFunctionsConfiguration,
     }
 
     // Send the request and wait for the response:
-    return internalAction(action, "updatevirtualfunctionsconfiguration", nil, headers, query, wait)
+    return op.internalAction(action, "updatevirtualfunctionsconfiguration", headers, query, wait)
 }
 
 //
@@ -30156,39 +27786,39 @@ func (op *HostNicService) VirtualFunctionAllowedNetworksService() *VirtualFuncti
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNicService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostNicService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "networkattachments" {
-        return *(op.NetworkAttachmentsService()), nil
+        return op.NetworkAttachmentsService(), nil
     }
-    if strings.HasPrefix("networkattachments/") {
-        return op.NetworkAttachmentsService().Service(path[19:]), nil
+    if strings.HasPrefix(path, "networkattachments/") {
+        return op.NetworkAttachmentsService().Service(path[19:])
     }
     if path == "networklabels" {
-        return *(op.NetworkLabelsService()), nil
+        return op.NetworkLabelsService(), nil
     }
-    if strings.HasPrefix("networklabels/") {
-        return op.NetworkLabelsService().Service(path[14:]), nil
+    if strings.HasPrefix(path, "networklabels/") {
+        return op.NetworkLabelsService().Service(path[14:])
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     if path == "virtualfunctionallowedlabels" {
-        return *(op.VirtualFunctionAllowedLabelsService()), nil
+        return op.VirtualFunctionAllowedLabelsService(), nil
     }
-    if strings.HasPrefix("virtualfunctionallowedlabels/") {
-        return op.VirtualFunctionAllowedLabelsService().Service(path[29:]), nil
+    if strings.HasPrefix(path, "virtualfunctionallowedlabels/") {
+        return op.VirtualFunctionAllowedLabelsService().Service(path[29:])
     }
     if path == "virtualfunctionallowednetworks" {
-        return *(op.VirtualFunctionAllowedNetworksService()), nil
+        return op.VirtualFunctionAllowedNetworksService(), nil
     }
-    if strings.HasPrefix("virtualfunctionallowednetworks/") {
-        return op.VirtualFunctionAllowedNetworksService().Service(path[31:]), nil
+    if strings.HasPrefix(path, "virtualfunctionallowednetworks/") {
+        return op.VirtualFunctionAllowedNetworksService().Service(path[31:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
@@ -30218,10 +27848,7 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 func (op *HostNumaNodeService) Get (
     headers map[string]string,
     query map[string]string,
-    wait bool) {
-    if wait == nil {
-        wait = true
-    }
+    wait bool) (interface{}, error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -30240,15 +27867,15 @@ func (op *HostNumaNodeService) StatisticsService() *StatisticsService {
 //
 // Service locator method, returns individual service on which the URI is dispatched.
 //
-func (op *HostNumaNodeService) Service(path string) (IService, error) {
-    if path == nil {
-        return *op, nil
+func (op *HostNumaNodeService) Service(path string) (interface{}, error) {
+    if path == "" {
+        return op, nil
     }
     if path == "statistics" {
-        return *(op.StatisticsService()), nil
+        return op.StatisticsService(), nil
     }
-    if strings.HasPrefix("statistics/") {
-        return op.StatisticsService().Service(path[11:]), nil
+    if strings.HasPrefix(path, "statistics/") {
+        return op.StatisticsService().Service(path[11:])
     }
     return nil, fmt.Errorf("The path <%s> doesn't correspond to any service", path)
 }
