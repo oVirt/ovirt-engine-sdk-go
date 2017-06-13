@@ -126,7 +126,7 @@ func (c *Connection) URL() string {
 
 // Returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
-	return NewSystemService(c, c.url.String())
+	return NewSystemService(c, "")
 }
 
 // Returns a reference to the service corresponding to the given path. For example, if the `path` parameter
