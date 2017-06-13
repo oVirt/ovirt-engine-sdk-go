@@ -18,6 +18,8 @@ package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.joining;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
@@ -69,6 +71,9 @@ public class GoNames {
 
     // root package url prefix
     private String rootPackageUrlPrefix = "github.com/imjoey/sdk";
+
+    // the tag name belongs to Attribute ("Buenos Aires", "Córdoba", "La Plata");
+    private List<String> tagAttributes = Arrays.asList("id", "href", "rel");
 
     public void setRootPackageUrlPrefix(String newRootPackageUrlPrefix) {
         rootPackageUrlPrefix = newRootPackageUrlPrefix;
@@ -279,9 +284,13 @@ public class GoNames {
 
     /**
      * Returns a representation of the given name using the lower style typically used for Go tag name.
+     * if name is `id` `href` `rel`, the tag is the **attribute**
      */
     public String getTagStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
+        if (tagAttributes.contains(result)) {
+            return result + ",attr";
+        }
         return result;
     }
 

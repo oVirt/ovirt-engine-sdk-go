@@ -17,12 +17,17 @@ func TestSend(t *testing.T) {
 	}
 	// ovRequest := NewOvRequest("GET", "/clusters", nil, nil, "")
 	result, err := conn.SystemService().ClustersService().List(false, false, 100, "", nil, nil, false)
+	var clusters Clusters
 	if ovResp, ok := result.(*OvResponse); ok {
 		t.Logf("response code is %d", ovResp.Code)
 		// t.Logf("response body is %s", ovResp.Body)
-		var clusters Clusters
 		xml.Unmarshal([]byte(ovResp.Body), &clusters)
 		t.Logf("clusters length is %d", len(clusters.Clusters))
+	}
+	if len(clusters.Clusters) > 0 {
+		for _, cluster := range clusters.Clusters {
+			t.Logf("cluster(%v): %+v", cluster.Id, cluster.Cpu)
+		}
 	}
 
 	// ovResponse, err := conn.Send(ovRequest)

@@ -56,6 +56,7 @@ public class GoReservedWords {
         words.add("true");
         words.add("map");
         words.add("bool");
+        words.add("float32");
         words.add("float64");
         words.add("int");
         words.add("int8");

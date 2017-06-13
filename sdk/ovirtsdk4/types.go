@@ -24,6 +24,7 @@ type AffinityRules struct {
 }
 
 type AffinityRule struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     Enforcing    bool   `xml:"enforcing"` 
     Positive    bool   `xml:"positive"` 
@@ -35,6 +36,7 @@ type AgentConfigurations struct {
 }
 
 type AgentConfiguration struct {
+    OvStruct
     Address    string   `xml:"address"` 
     BrokerType    MessageBrokerType   `xml:"broker_type"` 
     NetworkMappings    string   `xml:"network_mappings"` 
@@ -49,6 +51,7 @@ type Apis struct {
 }
 
 type Api struct {
+    OvStruct
     ProductInfo    *ProductInfo   `xml:"product_info"` 
     SpecialObjects    *SpecialObjects   `xml:"special_objects"` 
     Summary    *ApiSummary   `xml:"summary"` 
@@ -61,6 +64,7 @@ type ApiSummarys struct {
 }
 
 type ApiSummary struct {
+    OvStruct
     Hosts    *ApiSummaryItem   `xml:"hosts"` 
     StorageDomains    *ApiSummaryItem   `xml:"storage_domains"` 
     Users    *ApiSummaryItem   `xml:"users"` 
@@ -73,6 +77,7 @@ type ApiSummaryItems struct {
 }
 
 type ApiSummaryItem struct {
+    OvStruct
     Active    int64   `xml:"active"` 
     Total    int64   `xml:"total"` 
 
@@ -83,6 +88,7 @@ type Bioss struct {
 }
 
 type Bios struct {
+    OvStruct
     BootMenu    *BootMenu   `xml:"boot_menu"` 
 
 }
@@ -92,6 +98,7 @@ type BlockStatistics struct {
 }
 
 type BlockStatistic struct {
+    OvStruct
     Statistics    []*Statistic   `xml:"statistics"` 
 
 }
@@ -101,6 +108,7 @@ type Bondings struct {
 }
 
 type Bonding struct {
+    OvStruct
     ActiveSlave    *HostNic   `xml:"active_slave"` 
     AdPartnerMac    *Mac   `xml:"ad_partner_mac"` 
     Options    []*Option   `xml:"options"` 
@@ -113,6 +121,7 @@ type Boots struct {
 }
 
 type Boot struct {
+    OvStruct
     Devices    []BootDevice   `xml:"devices"` 
 
 }
@@ -122,6 +131,7 @@ type BootMenus struct {
 }
 
 type BootMenu struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -131,6 +141,7 @@ type CloudInits struct {
 }
 
 type CloudInit struct {
+    OvStruct
     AuthorizedKeys    []*AuthorizedKey   `xml:"authorized_keys"` 
     Files    []*File   `xml:"files"` 
     Host    *Host   `xml:"host"` 
@@ -146,6 +157,7 @@ type Configurations struct {
 }
 
 type Configuration struct {
+    OvStruct
     Data    string   `xml:"data"` 
     Type    ConfigurationType   `xml:"type"` 
 
@@ -156,6 +168,7 @@ type Consoles struct {
 }
 
 type Console struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -165,6 +178,7 @@ type Cores struct {
 }
 
 type Core struct {
+    OvStruct
     Index    int64   `xml:"index"` 
     Socket    int64   `xml:"socket"` 
 
@@ -175,6 +189,7 @@ type Cpus struct {
 }
 
 type Cpu struct {
+    OvStruct
     Architecture    Architecture   `xml:"architecture"` 
     Cores    []*Core   `xml:"cores"` 
     CpuTune    *CpuTune   `xml:"cpu_tune"` 
@@ -192,6 +207,7 @@ type CpuTopologys struct {
 }
 
 type CpuTopology struct {
+    OvStruct
     Cores    int64   `xml:"cores"` 
     Sockets    int64   `xml:"sockets"` 
     Threads    int64   `xml:"threads"` 
@@ -203,6 +219,7 @@ type CpuTunes struct {
 }
 
 type CpuTune struct {
+    OvStruct
     VcpuPins    []*VcpuPin   `xml:"vcpu_pins"` 
 
 }
@@ -212,6 +229,7 @@ type CpuTypes struct {
 }
 
 type CpuType struct {
+    OvStruct
     Architecture    Architecture   `xml:"architecture"` 
     Level    int64   `xml:"level"` 
     Name    string   `xml:"name"` 
@@ -223,6 +241,7 @@ type CustomPropertys struct {
 }
 
 type CustomProperty struct {
+    OvStruct
     Name    string   `xml:"name"` 
     Regexp    string   `xml:"regexp"` 
     Value    string   `xml:"value"` 
@@ -234,6 +253,7 @@ type Displays struct {
 }
 
 type Display struct {
+    OvStruct
     Address    string   `xml:"address"` 
     AllowOverride    bool   `xml:"allow_override"` 
     Certificate    *Certificate   `xml:"certificate"` 
@@ -256,6 +276,7 @@ type Dnss struct {
 }
 
 type Dns struct {
+    OvStruct
     SearchDomains    []*Host   `xml:"search_domains"` 
     Servers    []*Host   `xml:"servers"` 
 
@@ -266,6 +287,7 @@ type DnsResolverConfigurations struct {
 }
 
 type DnsResolverConfiguration struct {
+    OvStruct
     NameServers    []string   `xml:"name_servers"` 
 
 }
@@ -275,6 +297,7 @@ type EntityProfileDetails struct {
 }
 
 type EntityProfileDetail struct {
+    OvStruct
     ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
 }
@@ -284,6 +307,7 @@ type ErrorHandlings struct {
 }
 
 type ErrorHandling struct {
+    OvStruct
     OnError    MigrateOnError   `xml:"on_error"` 
 
 }
@@ -293,6 +317,7 @@ type ExternalVmImports struct {
 }
 
 type ExternalVmImport struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     CpuProfile    *CpuProfile   `xml:"cpu_profile"` 
     DriversIso    *File   `xml:"drivers_iso"` 
@@ -314,6 +339,7 @@ type Faults struct {
 }
 
 type Fault struct {
+    OvStruct
     Detail    string   `xml:"detail"` 
     Reason    string   `xml:"reason"` 
 
@@ -324,6 +350,7 @@ type FencingPolicys struct {
 }
 
 type FencingPolicy struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     SkipIfConnectivityBroken    *SkipIfConnectivityBroken   `xml:"skip_if_connectivity_broken"` 
     SkipIfGlusterBricksUp    bool   `xml:"skip_if_gluster_bricks_up"` 
@@ -337,6 +364,7 @@ type FopStatistics struct {
 }
 
 type FopStatistic struct {
+    OvStruct
     Name    string   `xml:"name"` 
     Statistics    []*Statistic   `xml:"statistics"` 
 
@@ -347,6 +375,7 @@ type GlusterBrickMemoryInfos struct {
 }
 
 type GlusterBrickMemoryInfo struct {
+    OvStruct
     MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
 
 }
@@ -356,6 +385,7 @@ type GlusterClients struct {
 }
 
 type GlusterClient struct {
+    OvStruct
     BytesRead    int64   `xml:"bytes_read"` 
     BytesWritten    int64   `xml:"bytes_written"` 
     ClientPort    int64   `xml:"client_port"` 
@@ -368,6 +398,7 @@ type GracePeriods struct {
 }
 
 type GracePeriod struct {
+    OvStruct
     Expiry    int64   `xml:"expiry"` 
 
 }
@@ -377,6 +408,7 @@ type GuestOperatingSystems struct {
 }
 
 type GuestOperatingSystem struct {
+    OvStruct
     Architecture    string   `xml:"architecture"` 
     Codename    string   `xml:"codename"` 
     Distribution    string   `xml:"distribution"` 
@@ -391,6 +423,7 @@ type HardwareInformations struct {
 }
 
 type HardwareInformation struct {
+    OvStruct
     Family    string   `xml:"family"` 
     Manufacturer    string   `xml:"manufacturer"` 
     ProductName    string   `xml:"product_name"` 
@@ -406,6 +439,7 @@ type HighAvailabilitys struct {
 }
 
 type HighAvailability struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     Priority    int64   `xml:"priority"` 
 
@@ -416,6 +450,7 @@ type HostDevicePassthroughs struct {
 }
 
 type HostDevicePassthrough struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -425,6 +460,7 @@ type HostNicVirtualFunctionsConfigurations struct {
 }
 
 type HostNicVirtualFunctionsConfiguration struct {
+    OvStruct
     AllNetworksAllowed    bool   `xml:"all_networks_allowed"` 
     MaxNumberOfVirtualFunctions    int64   `xml:"max_number_of_virtual_functions"` 
     NumberOfVirtualFunctions    int64   `xml:"number_of_virtual_functions"` 
@@ -436,6 +472,7 @@ type HostedEngines struct {
 }
 
 type HostedEngine struct {
+    OvStruct
     Active    bool   `xml:"active"` 
     Configured    bool   `xml:"configured"` 
     GlobalMaintenance    bool   `xml:"global_maintenance"` 
@@ -449,9 +486,10 @@ type Identifieds struct {
 }
 
 type Identified struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -461,9 +499,10 @@ type Images struct {
 }
 
 type Image struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     StorageDomain    *StorageDomain   `xml:"storage_domain"` 
 
@@ -474,11 +513,12 @@ type ImageTransfers struct {
 }
 
 type ImageTransfer struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Direction    ImageTransferDirection   `xml:"direction"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Image    *Image   `xml:"image"` 
     Name    string   `xml:"name"` 
     Phase    ImageTransferPhase   `xml:"phase"` 
@@ -492,6 +532,7 @@ type Initializations struct {
 }
 
 type Initialization struct {
+    OvStruct
     ActiveDirectoryOu    string   `xml:"active_directory_ou"` 
     AuthorizedSshKeys    string   `xml:"authorized_ssh_keys"` 
     CloudInit    *CloudInit   `xml:"cloud_init"` 
@@ -521,6 +562,7 @@ type Ios struct {
 }
 
 type Io struct {
+    OvStruct
     Threads    int64   `xml:"threads"` 
 
 }
@@ -530,6 +572,7 @@ type Ips struct {
 }
 
 type Ip struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Gateway    string   `xml:"gateway"` 
     Netmask    string   `xml:"netmask"` 
@@ -542,6 +585,7 @@ type IpAddressAssignments struct {
 }
 
 type IpAddressAssignment struct {
+    OvStruct
     AssignmentMethod    BootProtocol   `xml:"assignment_method"` 
     Ip    *Ip   `xml:"ip"` 
 
@@ -552,10 +596,11 @@ type IscsiBonds struct {
 }
 
 type IscsiBond struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Networks    []*Network   `xml:"networks"` 
     StorageConnections    []*StorageConnection   `xml:"storage_connections"` 
@@ -567,6 +612,7 @@ type IscsiDetailss struct {
 }
 
 type IscsiDetails struct {
+    OvStruct
     Address    string   `xml:"address"` 
     DiskId    string   `xml:"disk_id"` 
     Initiator    string   `xml:"initiator"` 
@@ -592,12 +638,13 @@ type Jobs struct {
 }
 
 type Job struct {
+    OvStruct
     AutoCleared    bool   `xml:"auto_cleared"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     EndTime    time.Time   `xml:"end_time"` 
     External    bool   `xml:"external"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     LastUpdated    time.Time   `xml:"last_updated"` 
     Name    string   `xml:"name"` 
     Owner    *User   `xml:"owner"` 
@@ -612,10 +659,11 @@ type KatelloErratums struct {
 }
 
 type KatelloErratum struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Issued    time.Time   `xml:"issued"` 
     Name    string   `xml:"name"` 
     Packages    []*Package   `xml:"packages"` 
@@ -633,6 +681,7 @@ type Kernels struct {
 }
 
 type Kernel struct {
+    OvStruct
     Version    *Version   `xml:"version"` 
 
 }
@@ -642,6 +691,7 @@ type Ksms struct {
 }
 
 type Ksm struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     MergeAcrossNodes    bool   `xml:"merge_across_nodes"` 
 
@@ -652,11 +702,12 @@ type LogicalUnits struct {
 }
 
 type LogicalUnit struct {
+    OvStruct
     Address    string   `xml:"address"` 
     DiscardMaxSize    int64   `xml:"discard_max_size"` 
     DiscardZeroesData    bool   `xml:"discard_zeroes_data"` 
     DiskId    string   `xml:"disk_id"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     LunMapping    int64   `xml:"lun_mapping"` 
     Password    string   `xml:"password"` 
     Paths    int64   `xml:"paths"` 
@@ -679,6 +730,7 @@ type Macs struct {
 }
 
 type Mac struct {
+    OvStruct
     Address    string   `xml:"address"` 
 
 }
@@ -688,11 +740,12 @@ type MacPools struct {
 }
 
 type MacPool struct {
+    OvStruct
     AllowDuplicates    bool   `xml:"allow_duplicates"` 
     Comment    string   `xml:"comment"` 
     DefaultPool    bool   `xml:"default_pool"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Ranges    []*Range   `xml:"ranges"` 
 
@@ -703,6 +756,7 @@ type MemoryOverCommits struct {
 }
 
 type MemoryOverCommit struct {
+    OvStruct
     Percent    int64   `xml:"percent"` 
 
 }
@@ -712,6 +766,7 @@ type MemoryPolicys struct {
 }
 
 type MemoryPolicy struct {
+    OvStruct
     Ballooning    bool   `xml:"ballooning"` 
     Guaranteed    int64   `xml:"guaranteed"` 
     Max    int64   `xml:"max"` 
@@ -725,7 +780,8 @@ type Methods struct {
 }
 
 type Method struct {
-    Id    SsoMethod   `xml:"id"` 
+    OvStruct
+    Id    SsoMethod   `xml:"id,attr"` 
 
 }
 
@@ -734,6 +790,7 @@ type MigrationBandwidths struct {
 }
 
 type MigrationBandwidth struct {
+    OvStruct
     AssignmentMethod    MigrationBandwidthAssignmentMethod   `xml:"assignment_method"` 
     CustomValue    int64   `xml:"custom_value"` 
 
@@ -744,6 +801,7 @@ type MigrationOptionss struct {
 }
 
 type MigrationOptions struct {
+    OvStruct
     AutoConverge    InheritableBoolean   `xml:"auto_converge"` 
     Bandwidth    *MigrationBandwidth   `xml:"bandwidth"` 
     Compressed    InheritableBoolean   `xml:"compressed"` 
@@ -756,9 +814,10 @@ type MigrationPolicys struct {
 }
 
 type MigrationPolicy struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -768,13 +827,14 @@ type Networks struct {
 }
 
 type Network struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
     Description    string   `xml:"description"` 
     Display    bool   `xml:"display"` 
     DnsResolverConfiguration    *DnsResolverConfiguration   `xml:"dns_resolver_configuration"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ip    *Ip   `xml:"ip"` 
     Mtu    int64   `xml:"mtu"` 
     Name    string   `xml:"name"` 
@@ -796,12 +856,13 @@ type NetworkAttachments struct {
 }
 
 type NetworkAttachment struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     DnsResolverConfiguration    *DnsResolverConfiguration   `xml:"dns_resolver_configuration"` 
     Host    *Host   `xml:"host"` 
     HostNic    *HostNic   `xml:"host_nic"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InSync    bool   `xml:"in_sync"` 
     IpAddressAssignments    []*IpAddressAssignment   `xml:"ip_address_assignments"` 
     Name    string   `xml:"name"` 
@@ -817,6 +878,7 @@ type NetworkConfigurations struct {
 }
 
 type NetworkConfiguration struct {
+    OvStruct
     Dns    *Dns   `xml:"dns"` 
     Nics    []*Nic   `xml:"nics"` 
 
@@ -827,9 +889,10 @@ type NetworkFilters struct {
 }
 
 type NetworkFilter struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Version    *Version   `xml:"version"` 
 
@@ -840,9 +903,10 @@ type NetworkFilterParameters struct {
 }
 
 type NetworkFilterParameter struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Value    string   `xml:"value"` 
 
@@ -853,10 +917,11 @@ type NetworkLabels struct {
 }
 
 type NetworkLabel struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     HostNic    *HostNic   `xml:"host_nic"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Network    *Network   `xml:"network"` 
 
@@ -867,6 +932,7 @@ type NfsProfileDetails struct {
 }
 
 type NfsProfileDetail struct {
+    OvStruct
     NfsServerIp    string   `xml:"nfs_server_ip"` 
     ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
@@ -877,6 +943,7 @@ type NicConfigurations struct {
 }
 
 type NicConfiguration struct {
+    OvStruct
     BootProtocol    BootProtocol   `xml:"boot_protocol"` 
     Ip    *Ip   `xml:"ip"` 
     Ipv6    *Ip   `xml:"ipv6"` 
@@ -891,11 +958,12 @@ type NumaNodes struct {
 }
 
 type NumaNode struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Cpu    *Cpu   `xml:"cpu"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Index    int64   `xml:"index"` 
     Memory    int64   `xml:"memory"` 
     Name    string   `xml:"name"` 
@@ -909,6 +977,7 @@ type NumaNodePins struct {
 }
 
 type NumaNodePin struct {
+    OvStruct
     HostNumaNode    *NumaNode   `xml:"host_numa_node"` 
     Index    int64   `xml:"index"` 
     Pinned    bool   `xml:"pinned"` 
@@ -920,9 +989,10 @@ type OpenStackImages struct {
 }
 
 type OpenStackImage struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     OpenstackImageProvider    *OpenStackImageProvider   `xml:"openstack_image_provider"` 
 
@@ -933,9 +1003,10 @@ type OpenStackNetworks struct {
 }
 
 type OpenStackNetwork struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     OpenstackNetworkProvider    *OpenStackNetworkProvider   `xml:"openstack_network_provider"` 
 
@@ -946,12 +1017,13 @@ type OpenStackSubnets struct {
 }
 
 type OpenStackSubnet struct {
+    OvStruct
     Cidr    string   `xml:"cidr"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     DnsServers    []string   `xml:"dns_servers"` 
     Gateway    string   `xml:"gateway"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     IpVersion    string   `xml:"ip_version"` 
     Name    string   `xml:"name"` 
     OpenstackNetwork    *OpenStackNetwork   `xml:"openstack_network"` 
@@ -963,9 +1035,10 @@ type OpenStackVolumeTypes struct {
 }
 
 type OpenStackVolumeType struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     OpenstackVolumeProvider    *OpenStackVolumeProvider   `xml:"openstack_volume_provider"` 
     Properties    []*Property   `xml:"properties"` 
@@ -977,10 +1050,11 @@ type OpenstackVolumeAuthenticationKeys struct {
 }
 
 type OpenstackVolumeAuthenticationKey struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     CreationDate    time.Time   `xml:"creation_date"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     OpenstackVolumeProvider    *OpenStackVolumeProvider   `xml:"openstack_volume_provider"` 
     UsageType    OpenstackVolumeAuthenticationKeyUsageType   `xml:"usage_type"` 
@@ -994,6 +1068,7 @@ type OperatingSystems struct {
 }
 
 type OperatingSystem struct {
+    OvStruct
     Boot    *Boot   `xml:"boot"` 
     Cmdline    string   `xml:"cmdline"` 
     CustomKernelCmdline    string   `xml:"custom_kernel_cmdline"` 
@@ -1010,9 +1085,10 @@ type OperatingSystemInfos struct {
 }
 
 type OperatingSystemInfo struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     LargeIcon    *Icon   `xml:"large_icon"` 
     Name    string   `xml:"name"` 
     SmallIcon    *Icon   `xml:"small_icon"` 
@@ -1024,6 +1100,7 @@ type Options struct {
 }
 
 type Option struct {
+    OvStruct
     Name    string   `xml:"name"` 
     Type    string   `xml:"type"` 
     Value    string   `xml:"value"` 
@@ -1035,6 +1112,7 @@ type Packages struct {
 }
 
 type Package struct {
+    OvStruct
     Name    string   `xml:"name"` 
 
 }
@@ -1044,6 +1122,7 @@ type Payloads struct {
 }
 
 type Payload struct {
+    OvStruct
     Files    []*File   `xml:"files"` 
     Type    VmDeviceType   `xml:"type"` 
     VolumeId    string   `xml:"volume_id"` 
@@ -1055,6 +1134,7 @@ type Permissions struct {
 }
 
 type Permission struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
@@ -1062,7 +1142,7 @@ type Permission struct {
     Disk    *Disk   `xml:"disk"` 
     Group    *Group   `xml:"group"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Role    *Role   `xml:"role"` 
     StorageDomain    *StorageDomain   `xml:"storage_domain"` 
@@ -1078,10 +1158,11 @@ type Permits struct {
 }
 
 type Permit struct {
+    OvStruct
     Administrative    bool   `xml:"administrative"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Role    *Role   `xml:"role"` 
 
@@ -1092,6 +1173,7 @@ type PmProxys struct {
 }
 
 type PmProxy struct {
+    OvStruct
     Type    PmProxyType   `xml:"type"` 
 
 }
@@ -1101,6 +1183,7 @@ type PortMirrorings struct {
 }
 
 type PortMirroring struct {
+    OvStruct
 
 }
 
@@ -1109,6 +1192,7 @@ type PowerManagements struct {
 }
 
 type PowerManagement struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Agents    []*Agent   `xml:"agents"` 
     AutomaticPmEnabled    bool   `xml:"automatic_pm_enabled"` 
@@ -1128,9 +1212,10 @@ type Products struct {
 }
 
 type Product struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -1140,6 +1225,7 @@ type ProductInfos struct {
 }
 
 type ProductInfo struct {
+    OvStruct
     Name    string   `xml:"name"` 
     Vendor    string   `xml:"vendor"` 
     Version    *Version   `xml:"version"` 
@@ -1151,6 +1237,7 @@ type ProfileDetails struct {
 }
 
 type ProfileDetail struct {
+    OvStruct
     BlockStatistics    []*BlockStatistic   `xml:"block_statistics"` 
     Duration    int64   `xml:"duration"` 
     FopStatistics    []*FopStatistic   `xml:"fop_statistics"` 
@@ -1164,6 +1251,7 @@ type Propertys struct {
 }
 
 type Property struct {
+    OvStruct
     Name    string   `xml:"name"` 
     Value    string   `xml:"value"` 
 
@@ -1174,6 +1262,7 @@ type ProxyTickets struct {
 }
 
 type ProxyTicket struct {
+    OvStruct
     Value    string   `xml:"value"` 
 
 }
@@ -1183,11 +1272,12 @@ type Qoss struct {
 }
 
 type Qos struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     CpuLimit    int64   `xml:"cpu_limit"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InboundAverage    int64   `xml:"inbound_average"` 
     InboundBurst    int64   `xml:"inbound_burst"` 
     InboundPeak    int64   `xml:"inbound_peak"` 
@@ -1213,13 +1303,14 @@ type Quotas struct {
 }
 
 type Quota struct {
+    OvStruct
     ClusterHardLimitPct    int64   `xml:"cluster_hard_limit_pct"` 
     ClusterSoftLimitPct    int64   `xml:"cluster_soft_limit_pct"` 
     Comment    string   `xml:"comment"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
     Description    string   `xml:"description"` 
     Disks    []*Disk   `xml:"disks"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Permissions    []*Permission   `xml:"permissions"` 
     QuotaClusterLimits    []*QuotaClusterLimit   `xml:"quota_cluster_limits"` 
@@ -1236,10 +1327,11 @@ type QuotaClusterLimits struct {
 }
 
 type QuotaClusterLimit struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     MemoryLimit    float64   `xml:"memory_limit"` 
     MemoryUsage    float64   `xml:"memory_usage"` 
     Name    string   `xml:"name"` 
@@ -1254,9 +1346,10 @@ type QuotaStorageLimits struct {
 }
 
 type QuotaStorageLimit struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Limit    int64   `xml:"limit"` 
     Name    string   `xml:"name"` 
     Quota    *Quota   `xml:"quota"` 
@@ -1270,6 +1363,7 @@ type Ranges struct {
 }
 
 type Range struct {
+    OvStruct
     From    string   `xml:"from"` 
     To    string   `xml:"to"` 
 
@@ -1280,6 +1374,7 @@ type Rates struct {
 }
 
 type Rate struct {
+    OvStruct
     Bytes    int64   `xml:"bytes"` 
     Period    int64   `xml:"period"` 
 
@@ -1290,6 +1385,7 @@ type ReportedConfigurations struct {
 }
 
 type ReportedConfiguration struct {
+    OvStruct
     ActualValue    string   `xml:"actual_value"` 
     ExpectedValue    string   `xml:"expected_value"` 
     InSync    bool   `xml:"in_sync"` 
@@ -1302,9 +1398,10 @@ type ReportedDevices struct {
 }
 
 type ReportedDevice struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ips    []*Ip   `xml:"ips"` 
     Mac    *Mac   `xml:"mac"` 
     Name    string   `xml:"name"` 
@@ -1318,6 +1415,7 @@ type RngDevices struct {
 }
 
 type RngDevice struct {
+    OvStruct
     Rate    *Rate   `xml:"rate"` 
     Source    RngSource   `xml:"source"` 
 
@@ -1328,10 +1426,11 @@ type Roles struct {
 }
 
 type Role struct {
+    OvStruct
     Administrative    bool   `xml:"administrative"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Mutable    bool   `xml:"mutable"` 
     Name    string   `xml:"name"` 
     Permits    []*Permit   `xml:"permits"` 
@@ -1344,12 +1443,13 @@ type SchedulingPolicys struct {
 }
 
 type SchedulingPolicy struct {
+    OvStruct
     Balances    []*Balance   `xml:"balances"` 
     Comment    string   `xml:"comment"` 
     DefaultPolicy    bool   `xml:"default_policy"` 
     Description    string   `xml:"description"` 
     Filters    []*Filter   `xml:"filters"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Locked    bool   `xml:"locked"` 
     Name    string   `xml:"name"` 
     Properties    []*Property   `xml:"properties"` 
@@ -1362,10 +1462,11 @@ type SchedulingPolicyUnits struct {
 }
 
 type SchedulingPolicyUnit struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Enabled    bool   `xml:"enabled"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Internal    bool   `xml:"internal"` 
     Name    string   `xml:"name"` 
     Properties    []*Property   `xml:"properties"` 
@@ -1378,6 +1479,7 @@ type SeLinuxs struct {
 }
 
 type SeLinux struct {
+    OvStruct
     Mode    SeLinuxMode   `xml:"mode"` 
 
 }
@@ -1387,6 +1489,7 @@ type SerialNumbers struct {
 }
 
 type SerialNumber struct {
+    OvStruct
     Policy    SerialNumberPolicy   `xml:"policy"` 
     Value    string   `xml:"value"` 
 
@@ -1397,10 +1500,11 @@ type Sessions struct {
 }
 
 type Session struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     ConsoleUser    bool   `xml:"console_user"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ip    *Ip   `xml:"ip"` 
     Name    string   `xml:"name"` 
     Protocol    string   `xml:"protocol"` 
@@ -1414,6 +1518,7 @@ type SkipIfConnectivityBrokens struct {
 }
 
 type SkipIfConnectivityBroken struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     Threshold    int64   `xml:"threshold"` 
 
@@ -1424,6 +1529,7 @@ type SkipIfSdActives struct {
 }
 
 type SkipIfSdActive struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -1433,6 +1539,7 @@ type SpecialObjectss struct {
 }
 
 type SpecialObjects struct {
+    OvStruct
     BlankTemplate    *Template   `xml:"blank_template"` 
     RootTag    *Tag   `xml:"root_tag"` 
 
@@ -1443,6 +1550,7 @@ type Spms struct {
 }
 
 type Spm struct {
+    OvStruct
     Priority    int64   `xml:"priority"` 
     Status    SpmStatus   `xml:"status"` 
 
@@ -1453,11 +1561,12 @@ type Sshs struct {
 }
 
 type Ssh struct {
+    OvStruct
     AuthenticationMethod    SshAuthenticationMethod   `xml:"authentication_method"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Fingerprint    string   `xml:"fingerprint"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Port    int64   `xml:"port"` 
     User    *User   `xml:"user"` 
@@ -1469,10 +1578,11 @@ type SshPublicKeys struct {
 }
 
 type SshPublicKey struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Content    string   `xml:"content"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     User    *User   `xml:"user"` 
 
@@ -1483,6 +1593,7 @@ type Ssos struct {
 }
 
 type Sso struct {
+    OvStruct
     Methods    []*Method   `xml:"methods"` 
 
 }
@@ -1492,6 +1603,7 @@ type Statistics struct {
 }
 
 type Statistic struct {
+    OvStruct
     Brick    *GlusterBrick   `xml:"brick"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
@@ -1500,7 +1612,7 @@ type Statistic struct {
     Host    *Host   `xml:"host"` 
     HostNic    *HostNic   `xml:"host_nic"` 
     HostNumaNode    *NumaNode   `xml:"host_numa_node"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Kind    StatisticKind   `xml:"kind"` 
     Name    string   `xml:"name"` 
     Nic    *Nic   `xml:"nic"` 
@@ -1517,13 +1629,14 @@ type Steps struct {
 }
 
 type Step struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     EndTime    time.Time   `xml:"end_time"` 
     ExecutionHost    *Host   `xml:"execution_host"` 
     External    bool   `xml:"external"` 
     ExternalType    ExternalSystemType   `xml:"external_type"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Job    *Job   `xml:"job"` 
     Name    string   `xml:"name"` 
     Number    int64   `xml:"number"` 
@@ -1541,11 +1654,12 @@ type StorageConnections struct {
 }
 
 type StorageConnection struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     MountOptions    string   `xml:"mount_options"` 
     Name    string   `xml:"name"` 
     NfsRetrans    int64   `xml:"nfs_retrans"` 
@@ -1567,10 +1681,11 @@ type StorageConnectionExtensions struct {
 }
 
 type StorageConnectionExtension struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
     Target    string   `xml:"target"` 
@@ -1583,6 +1698,7 @@ type StorageDomains struct {
 }
 
 type StorageDomain struct {
+    OvStruct
     Available    int64   `xml:"available"` 
     Comment    string   `xml:"comment"` 
     Committed    int64   `xml:"committed"` 
@@ -1597,7 +1713,7 @@ type StorageDomain struct {
     ExternalStatus    ExternalStatus   `xml:"external_status"` 
     Files    []*File   `xml:"files"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Images    []*Image   `xml:"images"` 
     Import    bool   `xml:"import"` 
     Master    bool   `xml:"master"` 
@@ -1623,6 +1739,7 @@ type StorageDomainLeases struct {
 }
 
 type StorageDomainLease struct {
+    OvStruct
     StorageDomain    *StorageDomain   `xml:"storage_domain"` 
 
 }
@@ -1632,11 +1749,12 @@ type Tags struct {
 }
 
 type Tag struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Group    *Group   `xml:"group"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Parent    *Tag   `xml:"parent"` 
     Template    *Template   `xml:"template"` 
@@ -1650,6 +1768,7 @@ type TemplateVersions struct {
 }
 
 type TemplateVersion struct {
+    OvStruct
     BaseTemplate    *Template   `xml:"base_template"` 
     VersionName    string   `xml:"version_name"` 
     VersionNumber    int64   `xml:"version_number"` 
@@ -1661,6 +1780,7 @@ type Tickets struct {
 }
 
 type Ticket struct {
+    OvStruct
     Expiry    int64   `xml:"expiry"` 
     Value    string   `xml:"value"` 
 
@@ -1671,6 +1791,7 @@ type TimeZones struct {
 }
 
 type TimeZone struct {
+    OvStruct
     Name    string   `xml:"name"` 
     UtcOffset    string   `xml:"utc_offset"` 
 
@@ -1681,6 +1802,7 @@ type TransparentHugePagess struct {
 }
 
 type TransparentHugePages struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -1690,11 +1812,12 @@ type UnmanagedNetworks struct {
 }
 
 type UnmanagedNetwork struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
     HostNic    *HostNic   `xml:"host_nic"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -1704,6 +1827,7 @@ type Usbs struct {
 }
 
 type Usb struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
     Type    UsbType   `xml:"type"` 
 
@@ -1714,6 +1838,7 @@ type Users struct {
 }
 
 type User struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Department    string   `xml:"department"` 
     Description    string   `xml:"description"` 
@@ -1721,7 +1846,7 @@ type User struct {
     DomainEntryId    string   `xml:"domain_entry_id"` 
     Email    string   `xml:"email"` 
     Groups    []*Group   `xml:"groups"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     LastName    string   `xml:"last_name"` 
     LoggedIn    bool   `xml:"logged_in"` 
     Name    string   `xml:"name"` 
@@ -1741,6 +1866,7 @@ type Values struct {
 }
 
 type Value struct {
+    OvStruct
     Datum    float64   `xml:"datum"` 
     Detail    string   `xml:"detail"` 
 
@@ -1751,6 +1877,7 @@ type VcpuPins struct {
 }
 
 type VcpuPin struct {
+    OvStruct
     CpuSet    string   `xml:"cpu_set"` 
     Vcpu    int64   `xml:"vcpu"` 
 
@@ -1761,9 +1888,10 @@ type Vendors struct {
 }
 
 type Vendor struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -1773,11 +1901,12 @@ type Versions struct {
 }
 
 type Version struct {
+    OvStruct
     Build    int64   `xml:"build"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     FullVersion    string   `xml:"full_version"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Major    int64   `xml:"major"` 
     Minor    int64   `xml:"minor"` 
     Name    string   `xml:"name"` 
@@ -1790,6 +1919,7 @@ type VirtioScsis struct {
 }
 
 type VirtioScsi struct {
+    OvStruct
     Enabled    bool   `xml:"enabled"` 
 
 }
@@ -1799,11 +1929,12 @@ type VirtualNumaNodes struct {
 }
 
 type VirtualNumaNode struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Cpu    *Cpu   `xml:"cpu"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Index    int64   `xml:"index"` 
     Memory    int64   `xml:"memory"` 
     Name    string   `xml:"name"` 
@@ -1819,7 +1950,8 @@ type Vlans struct {
 }
 
 type Vlan struct {
-    Id    int64   `xml:"id"` 
+    OvStruct
+    Id    int64   `xml:"id,attr"` 
 
 }
 
@@ -1828,6 +1960,7 @@ type VmBases struct {
 }
 
 type VmBase struct {
+    OvStruct
     Bios    *Bios   `xml:"bios"` 
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
@@ -1845,7 +1978,7 @@ type VmBase struct {
     Display    *Display   `xml:"display"` 
     Domain    *Domain   `xml:"domain"` 
     HighAvailability    *HighAvailability   `xml:"high_availability"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Initialization    *Initialization   `xml:"initialization"` 
     Io    *Io   `xml:"io"` 
     LargeIcon    *Icon   `xml:"large_icon"` 
@@ -1879,6 +2012,7 @@ type VmPlacementPolicys struct {
 }
 
 type VmPlacementPolicy struct {
+    OvStruct
     Affinity    VmAffinity   `xml:"affinity"` 
     Hosts    []*Host   `xml:"hosts"` 
 
@@ -1889,12 +2023,13 @@ type VmPools struct {
 }
 
 type VmPool struct {
+    OvStruct
     AutoStorageSelect    bool   `xml:"auto_storage_select"` 
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Display    *Display   `xml:"display"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     MaxUserVms    int64   `xml:"max_user_vms"` 
     Name    string   `xml:"name"` 
@@ -1916,6 +2051,7 @@ type VmSummarys struct {
 }
 
 type VmSummary struct {
+    OvStruct
     Active    int64   `xml:"active"` 
     Migrating    int64   `xml:"migrating"` 
     Total    int64   `xml:"total"` 
@@ -1927,6 +2063,7 @@ type VnicPassThroughs struct {
 }
 
 type VnicPassThrough struct {
+    OvStruct
     Mode    VnicPassThroughMode   `xml:"mode"` 
 
 }
@@ -1936,10 +2073,11 @@ type VnicProfiles struct {
 }
 
 type VnicProfile struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     CustomProperties    []*CustomProperty   `xml:"custom_properties"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Migratable    bool   `xml:"migratable"` 
     Name    string   `xml:"name"` 
     Network    *Network   `xml:"network"` 
@@ -1956,6 +2094,7 @@ type VnicProfileMappings struct {
 }
 
 type VnicProfileMapping struct {
+    OvStruct
     SourceNetworkName    string   `xml:"source_network_name"` 
     SourceNetworkProfileName    string   `xml:"source_network_profile_name"` 
     TargetVnicProfile    *VnicProfile   `xml:"target_vnic_profile"` 
@@ -1967,7 +2106,8 @@ type VolumeGroups struct {
 }
 
 type VolumeGroup struct {
-    Id    string   `xml:"id"` 
+    OvStruct
+    Id    string   `xml:"id,attr"` 
     LogicalUnits    []*LogicalUnit   `xml:"logical_units"` 
     Name    string   `xml:"name"` 
 
@@ -1978,10 +2118,11 @@ type Weights struct {
 }
 
 type Weight struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Factor    int64   `xml:"factor"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     SchedulingPolicy    *SchedulingPolicy   `xml:"scheduling_policy"` 
     SchedulingPolicyUnit    *SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
@@ -1993,6 +2134,7 @@ type Actions struct {
 }
 
 type Action struct {
+    OvStruct
     AllowPartialImport    bool   `xml:"allow_partial_import"` 
     Async    bool   `xml:"async"` 
     Bricks    []*GlusterBrick   `xml:"bricks"` 
@@ -2018,7 +2160,7 @@ type Action struct {
     Force    bool   `xml:"force"` 
     GracePeriod    *GracePeriod   `xml:"grace_period"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Image    string   `xml:"image"` 
     ImportAsTemplate    bool   `xml:"import_as_template"` 
     IsAttached    bool   `xml:"is_attached"` 
@@ -2068,13 +2210,14 @@ type AffinityGroups struct {
 }
 
 type AffinityGroup struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Enforcing    bool   `xml:"enforcing"` 
     Hosts    []*Host   `xml:"hosts"` 
     HostsRule    *AffinityRule   `xml:"hosts_rule"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Positive    bool   `xml:"positive"` 
     Vms    []*Vm   `xml:"vms"` 
@@ -2087,10 +2230,11 @@ type AffinityLabels struct {
 }
 
 type AffinityLabel struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Hosts    []*Host   `xml:"hosts"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     ReadOnly    bool   `xml:"read_only"` 
     Vms    []*Vm   `xml:"vms"` 
@@ -2102,13 +2246,14 @@ type Agents struct {
 }
 
 type Agent struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Comment    string   `xml:"comment"` 
     Concurrent    bool   `xml:"concurrent"` 
     Description    string   `xml:"description"` 
     EncryptOptions    bool   `xml:"encrypt_options"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Options    []*Option   `xml:"options"` 
     Order    int64   `xml:"order"` 
@@ -2124,9 +2269,10 @@ type Applications struct {
 }
 
 type Application struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Vm    *Vm   `xml:"vm"` 
 
@@ -2137,9 +2283,10 @@ type AuthorizedKeys struct {
 }
 
 type AuthorizedKey struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Key    string   `xml:"key"` 
     Name    string   `xml:"name"` 
     User    *User   `xml:"user"` 
@@ -2151,9 +2298,10 @@ type Balances struct {
 }
 
 type Balance struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     SchedulingPolicy    *SchedulingPolicy   `xml:"scheduling_policy"` 
     SchedulingPolicyUnit    *SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
@@ -2165,9 +2313,10 @@ type Bookmarks struct {
 }
 
 type Bookmark struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Value    string   `xml:"value"` 
 
@@ -2178,6 +2327,7 @@ type BrickProfileDetails struct {
 }
 
 type BrickProfileDetail struct {
+    OvStruct
     Brick    *GlusterBrick   `xml:"brick"` 
     ProfileDetails    []*ProfileDetail   `xml:"profile_details"` 
 
@@ -2188,10 +2338,11 @@ type Certificates struct {
 }
 
 type Certificate struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Content    string   `xml:"content"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Organization    string   `xml:"organization"` 
     Subject    string   `xml:"subject"` 
@@ -2203,6 +2354,7 @@ type Clusters struct {
 }
 
 type Cluster struct {
+    OvStruct
     AffinityGroups    []*AffinityGroup   `xml:"affinity_groups"` 
     BallooningEnabled    bool   `xml:"ballooning_enabled"` 
     Comment    string   `xml:"comment"` 
@@ -2219,7 +2371,7 @@ type Cluster struct {
     GlusterTunedProfile    string   `xml:"gluster_tuned_profile"` 
     GlusterVolumes    []*GlusterVolume   `xml:"gluster_volumes"` 
     HaReservation    bool   `xml:"ha_reservation"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ksm    *Ksm   `xml:"ksm"` 
     MacPool    *MacPool   `xml:"mac_pool"` 
     MaintenanceReasonRequired    bool   `xml:"maintenance_reason_required"` 
@@ -2249,10 +2401,11 @@ type ClusterLevels struct {
 }
 
 type ClusterLevel struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     CpuTypes    []*CpuType   `xml:"cpu_types"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Permits    []*Permit   `xml:"permits"` 
 
@@ -2263,10 +2416,11 @@ type CpuProfiles struct {
 }
 
 type CpuProfile struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Permissions    []*Permission   `xml:"permissions"` 
     Qos    *Qos   `xml:"qos"` 
@@ -2278,10 +2432,11 @@ type DataCenters struct {
 }
 
 type DataCenter struct {
+    OvStruct
     Clusters    []*Cluster   `xml:"clusters"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     IscsiBonds    []*IscsiBond   `xml:"iscsi_bonds"` 
     Local    bool   `xml:"local"` 
     MacPool    *MacPool   `xml:"mac_pool"` 
@@ -2304,9 +2459,10 @@ type Devices struct {
 }
 
 type Device struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Name    string   `xml:"name"` 
     Template    *Template   `xml:"template"` 
@@ -2320,6 +2476,7 @@ type Disks struct {
 }
 
 type Disk struct {
+    OvStruct
     Active    bool   `xml:"active"` 
     ActualSize    int64   `xml:"actual_size"` 
     Alias    string   `xml:"alias"` 
@@ -2328,7 +2485,7 @@ type Disk struct {
     Description    string   `xml:"description"` 
     DiskProfile    *DiskProfile   `xml:"disk_profile"` 
     Format    DiskFormat   `xml:"format"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     ImageId    string   `xml:"image_id"` 
     InitialSize    int64   `xml:"initial_size"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
@@ -2365,12 +2522,13 @@ type DiskAttachments struct {
 }
 
 type DiskAttachment struct {
+    OvStruct
     Active    bool   `xml:"active"` 
     Bootable    bool   `xml:"bootable"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Disk    *Disk   `xml:"disk"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Interface    DiskInterface   `xml:"interface"` 
     LogicalName    string   `xml:"logical_name"` 
     Name    string   `xml:"name"` 
@@ -2386,9 +2544,10 @@ type DiskProfiles struct {
 }
 
 type DiskProfile struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Permissions    []*Permission   `xml:"permissions"` 
     Qos    *Qos   `xml:"qos"` 
@@ -2401,6 +2560,7 @@ type DiskSnapshots struct {
 }
 
 type DiskSnapshot struct {
+    OvStruct
     Active    bool   `xml:"active"` 
     ActualSize    int64   `xml:"actual_size"` 
     Alias    string   `xml:"alias"` 
@@ -2410,7 +2570,7 @@ type DiskSnapshot struct {
     Disk    *Disk   `xml:"disk"` 
     DiskProfile    *DiskProfile   `xml:"disk_profile"` 
     Format    DiskFormat   `xml:"format"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     ImageId    string   `xml:"image_id"` 
     InitialSize    int64   `xml:"initial_size"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
@@ -2447,10 +2607,11 @@ type Domains struct {
 }
 
 type Domain struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Groups    []*Group   `xml:"groups"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     User    *User   `xml:"user"` 
     Users    []*User   `xml:"users"` 
@@ -2462,6 +2623,7 @@ type Events struct {
 }
 
 type Event struct {
+    OvStruct
     Cluster    *Cluster   `xml:"cluster"` 
     Code    int64   `xml:"code"` 
     Comment    string   `xml:"comment"` 
@@ -2472,7 +2634,7 @@ type Event struct {
     Description    string   `xml:"description"` 
     FloodRate    int64   `xml:"flood_rate"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Origin    string   `xml:"origin"` 
     Severity    LogSeverity   `xml:"severity"` 
@@ -2489,10 +2651,11 @@ type ExternalComputeResources struct {
 }
 
 type ExternalComputeResource struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     ExternalHostProvider    *ExternalHostProvider   `xml:"external_host_provider"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Provider    string   `xml:"provider"` 
     Url    string   `xml:"url"` 
@@ -2505,10 +2668,11 @@ type ExternalDiscoveredHosts struct {
 }
 
 type ExternalDiscoveredHost struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     ExternalHostProvider    *ExternalHostProvider   `xml:"external_host_provider"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ip    string   `xml:"ip"` 
     LastReport    string   `xml:"last_report"` 
     Mac    string   `xml:"mac"` 
@@ -2522,11 +2686,12 @@ type ExternalHosts struct {
 }
 
 type ExternalHost struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     ExternalHostProvider    *ExternalHostProvider   `xml:"external_host_provider"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
 
 }
@@ -2536,12 +2701,13 @@ type ExternalHostGroups struct {
 }
 
 type ExternalHostGroup struct {
+    OvStruct
     ArchitectureName    string   `xml:"architecture_name"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     DomainName    string   `xml:"domain_name"` 
     ExternalHostProvider    *ExternalHostProvider   `xml:"external_host_provider"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     OperatingSystemName    string   `xml:"operating_system_name"` 
     SubnetName    string   `xml:"subnet_name"` 
@@ -2553,10 +2719,11 @@ type ExternalProviders struct {
 }
 
 type ExternalProvider struct {
+    OvStruct
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
     Properties    []*Property   `xml:"properties"` 
@@ -2571,10 +2738,11 @@ type Files struct {
 }
 
 type File struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Content    string   `xml:"content"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     StorageDomain    *StorageDomain   `xml:"storage_domain"` 
     Type    string   `xml:"type"` 
@@ -2586,9 +2754,10 @@ type Filters struct {
 }
 
 type Filter struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Position    int64   `xml:"position"` 
     SchedulingPolicyUnit    *SchedulingPolicyUnit   `xml:"scheduling_policy_unit"` 
@@ -2600,10 +2769,11 @@ type Floppys struct {
 }
 
 type Floppy struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     File    *File   `xml:"file"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Name    string   `xml:"name"` 
     Template    *Template   `xml:"template"` 
@@ -2617,12 +2787,13 @@ type GlusterBrickAdvancedDetailss struct {
 }
 
 type GlusterBrickAdvancedDetails struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Device    string   `xml:"device"` 
     FsName    string   `xml:"fs_name"` 
     GlusterClients    []*GlusterClient   `xml:"gluster_clients"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
     MntOptions    string   `xml:"mnt_options"` 
@@ -2640,6 +2811,7 @@ type GlusterHooks struct {
 }
 
 type GlusterHook struct {
+    OvStruct
     Checksum    string   `xml:"checksum"` 
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
@@ -2649,7 +2821,7 @@ type GlusterHook struct {
     ContentType    HookContentType   `xml:"content_type"` 
     Description    string   `xml:"description"` 
     GlusterCommand    string   `xml:"gluster_command"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     ServerHooks    []*GlusterServerHook   `xml:"server_hooks"` 
     Stage    HookStage   `xml:"stage"` 
@@ -2662,12 +2834,13 @@ type GlusterMemoryPools struct {
 }
 
 type GlusterMemoryPool struct {
+    OvStruct
     AllocCount    int64   `xml:"alloc_count"` 
     ColdCount    int64   `xml:"cold_count"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     HotCount    int64   `xml:"hot_count"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     MaxAlloc    int64   `xml:"max_alloc"` 
     MaxStdalloc    int64   `xml:"max_stdalloc"` 
     Name    string   `xml:"name"` 
@@ -2682,12 +2855,13 @@ type GlusterServerHooks struct {
 }
 
 type GlusterServerHook struct {
+    OvStruct
     Checksum    string   `xml:"checksum"` 
     Comment    string   `xml:"comment"` 
     ContentType    HookContentType   `xml:"content_type"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Status    GlusterHookStatus   `xml:"status"` 
 
@@ -2698,12 +2872,13 @@ type GlusterVolumes struct {
 }
 
 type GlusterVolume struct {
+    OvStruct
     Bricks    []*GlusterBrick   `xml:"bricks"` 
     Cluster    *Cluster   `xml:"cluster"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     DisperseCount    int64   `xml:"disperse_count"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Options    []*Option   `xml:"options"` 
     RedundancyCount    int64   `xml:"redundancy_count"` 
@@ -2721,10 +2896,11 @@ type GlusterVolumeProfileDetailss struct {
 }
 
 type GlusterVolumeProfileDetails struct {
+    OvStruct
     BrickProfileDetails    []*BrickProfileDetail   `xml:"brick_profile_details"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     NfsProfileDetails    []*NfsProfileDetail   `xml:"nfs_profile_details"` 
 
@@ -2735,10 +2911,11 @@ type GraphicsConsoles struct {
 }
 
 type GraphicsConsole struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Name    string   `xml:"name"` 
     Port    int64   `xml:"port"` 
@@ -2754,11 +2931,12 @@ type Groups struct {
 }
 
 type Group struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Domain    *Domain   `xml:"domain"` 
     DomainEntryId    string   `xml:"domain_entry_id"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Namespace    string   `xml:"namespace"` 
     Permissions    []*Permission   `xml:"permissions"` 
@@ -2772,11 +2950,12 @@ type Hooks struct {
 }
 
 type Hook struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     EventName    string   `xml:"event_name"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Md5    string   `xml:"md5"` 
     Name    string   `xml:"name"` 
 
@@ -2787,6 +2966,7 @@ type Hosts struct {
 }
 
 type Host struct {
+    OvStruct
     Address    string   `xml:"address"` 
     AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
     Agents    []*Agent   `xml:"agents"` 
@@ -2804,7 +2984,7 @@ type Host struct {
     HardwareInformation    *HardwareInformation   `xml:"hardware_information"` 
     Hooks    []*Hook   `xml:"hooks"` 
     HostedEngine    *HostedEngine   `xml:"hosted_engine"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Iscsi    *IscsiDetails   `xml:"iscsi"` 
     KatelloErrata    []*KatelloErratum   `xml:"katello_errata"` 
     KdumpStatus    KdumpStatus   `xml:"kdump_status"` 
@@ -2847,11 +3027,12 @@ type HostDevices struct {
 }
 
 type HostDevice struct {
+    OvStruct
     Capability    string   `xml:"capability"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     IommuGroup    int64   `xml:"iommu_group"` 
     Name    string   `xml:"name"` 
     ParentDevice    *HostDevice   `xml:"parent_device"` 
@@ -2869,6 +3050,7 @@ type HostNics struct {
 }
 
 type HostNic struct {
+    OvStruct
     AdAggregatorId    int64   `xml:"ad_aggregator_id"` 
     BaseInterface    string   `xml:"base_interface"` 
     Bonding    *Bonding   `xml:"bonding"` 
@@ -2879,7 +3061,7 @@ type HostNic struct {
     CustomConfiguration    bool   `xml:"custom_configuration"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Ip    *Ip   `xml:"ip"` 
     Ipv6    *Ip   `xml:"ipv6"` 
     Ipv6BootProtocol    BootProtocol   `xml:"ipv6_boot_protocol"` 
@@ -2905,11 +3087,12 @@ type HostStorages struct {
 }
 
 type HostStorage struct {
+    OvStruct
     Address    string   `xml:"address"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     Host    *Host   `xml:"host"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     LogicalUnits    []*LogicalUnit   `xml:"logical_units"` 
     MountOptions    string   `xml:"mount_options"` 
     Name    string   `xml:"name"` 
@@ -2934,10 +3117,11 @@ type Icons struct {
 }
 
 type Icon struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Data    string   `xml:"data"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     MediaType    string   `xml:"media_type"` 
     Name    string   `xml:"name"` 
 
@@ -2948,10 +3132,11 @@ type Nics struct {
 }
 
 type Nic struct {
+    OvStruct
     BootProtocol    BootProtocol   `xml:"boot_protocol"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Interface    NicInterface   `xml:"interface"` 
     Linked    bool   `xml:"linked"` 
@@ -2979,10 +3164,11 @@ type OpenStackProviders struct {
 }
 
 type OpenStackProvider struct {
+    OvStruct
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
     Properties    []*Property   `xml:"properties"` 
@@ -2998,13 +3184,14 @@ type OpenStackVolumeProviders struct {
 }
 
 type OpenStackVolumeProvider struct {
+    OvStruct
     AuthenticationKeys    []*OpenstackVolumeAuthenticationKey   `xml:"authentication_keys"` 
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Certificates    []*Certificate   `xml:"certificates"` 
     Comment    string   `xml:"comment"` 
     DataCenter    *DataCenter   `xml:"data_center"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
     Properties    []*Property   `xml:"properties"` 
@@ -3021,6 +3208,7 @@ type Templates struct {
 }
 
 type Template struct {
+    OvStruct
     Bios    *Bios   `xml:"bios"` 
     Cdroms    []*Cdrom   `xml:"cdroms"` 
     Cluster    *Cluster   `xml:"cluster"` 
@@ -3041,7 +3229,7 @@ type Template struct {
     Domain    *Domain   `xml:"domain"` 
     GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
     HighAvailability    *HighAvailability   `xml:"high_availability"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Initialization    *Initialization   `xml:"initialization"` 
     Io    *Io   `xml:"io"` 
     LargeIcon    *Icon   `xml:"large_icon"` 
@@ -3082,6 +3270,7 @@ type Vms struct {
 }
 
 type Vm struct {
+    OvStruct
     AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
     Applications    []*Application   `xml:"applications"` 
     Bios    *Bios   `xml:"bios"` 
@@ -3111,7 +3300,7 @@ type Vm struct {
     HighAvailability    *HighAvailability   `xml:"high_availability"` 
     Host    *Host   `xml:"host"` 
     HostDevices    []*HostDevice   `xml:"host_devices"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Initialization    *Initialization   `xml:"initialization"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Io    *Io   `xml:"io"` 
@@ -3170,10 +3359,11 @@ type Watchdogs struct {
 }
 
 type Watchdog struct {
+    OvStruct
     Action    WatchdogAction   `xml:"action"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Model    WatchdogModel   `xml:"model"` 
     Name    string   `xml:"name"` 
@@ -3188,10 +3378,11 @@ type Cdroms struct {
 }
 
 type Cdrom struct {
+    OvStruct
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
     File    *File   `xml:"file"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Name    string   `xml:"name"` 
     Template    *Template   `xml:"template"` 
@@ -3205,6 +3396,7 @@ type ExternalHostProviders struct {
 }
 
 type ExternalHostProvider struct {
+    OvStruct
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Certificates    []*Certificate   `xml:"certificates"` 
     Comment    string   `xml:"comment"` 
@@ -3213,7 +3405,7 @@ type ExternalHostProvider struct {
     DiscoveredHosts    []*ExternalDiscoveredHost   `xml:"discovered_hosts"` 
     HostGroups    []*ExternalHostGroup   `xml:"host_groups"` 
     Hosts    []*Host   `xml:"hosts"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
     Properties    []*Property   `xml:"properties"` 
@@ -3228,6 +3420,7 @@ type GlusterBricks struct {
 }
 
 type GlusterBrick struct {
+    OvStruct
     BrickDir    string   `xml:"brick_dir"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
@@ -3235,7 +3428,7 @@ type GlusterBrick struct {
     FsName    string   `xml:"fs_name"` 
     GlusterClients    []*GlusterClient   `xml:"gluster_clients"` 
     GlusterVolume    *GlusterVolume   `xml:"gluster_volume"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     MemoryPools    []*GlusterMemoryPool   `xml:"memory_pools"` 
     MntOptions    string   `xml:"mnt_options"` 
@@ -3256,6 +3449,7 @@ type InstanceTypes struct {
 }
 
 type InstanceType struct {
+    OvStruct
     Bios    *Bios   `xml:"bios"` 
     Cdroms    []*Cdrom   `xml:"cdroms"` 
     Cluster    *Cluster   `xml:"cluster"` 
@@ -3276,7 +3470,7 @@ type InstanceType struct {
     Domain    *Domain   `xml:"domain"` 
     GraphicsConsoles    []*GraphicsConsole   `xml:"graphics_consoles"` 
     HighAvailability    *HighAvailability   `xml:"high_availability"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Initialization    *Initialization   `xml:"initialization"` 
     Io    *Io   `xml:"io"` 
     LargeIcon    *Icon   `xml:"large_icon"` 
@@ -3317,11 +3511,12 @@ type OpenStackImageProviders struct {
 }
 
 type OpenStackImageProvider struct {
+    OvStruct
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Certificates    []*Certificate   `xml:"certificates"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Images    []*OpenStackImage   `xml:"images"` 
     Name    string   `xml:"name"` 
     Password    string   `xml:"password"` 
@@ -3338,12 +3533,13 @@ type OpenStackNetworkProviders struct {
 }
 
 type OpenStackNetworkProvider struct {
+    OvStruct
     AgentConfiguration    *AgentConfiguration   `xml:"agent_configuration"` 
     AuthenticationUrl    string   `xml:"authentication_url"` 
     Certificates    []*Certificate   `xml:"certificates"` 
     Comment    string   `xml:"comment"` 
     Description    string   `xml:"description"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Name    string   `xml:"name"` 
     Networks    []*OpenStackNetwork   `xml:"networks"` 
     Password    string   `xml:"password"` 
@@ -3364,6 +3560,7 @@ type Snapshots struct {
 }
 
 type Snapshot struct {
+    OvStruct
     AffinityLabels    []*AffinityLabel   `xml:"affinity_labels"` 
     Applications    []*Application   `xml:"applications"` 
     Bios    *Bios   `xml:"bios"` 
@@ -3394,7 +3591,7 @@ type Snapshot struct {
     HighAvailability    *HighAvailability   `xml:"high_availability"` 
     Host    *Host   `xml:"host"` 
     HostDevices    []*HostDevice   `xml:"host_devices"` 
-    Id    string   `xml:"id"` 
+    Id    string   `xml:"id,attr"` 
     Initialization    *Initialization   `xml:"initialization"` 
     InstanceType    *InstanceType   `xml:"instance_type"` 
     Io    *Io   `xml:"io"` 

@@ -16,7 +16,7 @@
 
 package ovirtsdk4
 
-
-type OvType struct {
-	Href string	`xml:"href"`
+// OvStruct : Base for all struts defined in types.go
+type OvStruct struct {
+	Href string `xml:"href, attr"`
 }

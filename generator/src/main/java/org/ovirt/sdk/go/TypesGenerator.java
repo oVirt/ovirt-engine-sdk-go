@@ -106,7 +106,6 @@ public class TypesGenerator implements GoGenerator {
         // Begin class:
         GoClassName typeName = goNames.getTypeName(type);
         Type base = type.getBase();
-        String baseName = base != null? goNames.getTypeName(base).getClassName(): "OvType";
         // Define []Struct
         buffer.addLine("type %1$ss struct {", typeName.getClassName());
         buffer.startBlock();
@@ -118,7 +117,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine("type %1$s struct {", typeName.getClassName());
         buffer.startBlock();
         // Ignore Base-class mixin, fill in all 
-        // buffer.addLine("%1$s", baseName);
+        buffer.addLine("OvStruct");
 
         // Constructor with a named parameter for each attribute and link:
         Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
@@ -126,8 +125,6 @@ public class TypesGenerator implements GoGenerator {
         Set<StructMember> declaredMembers = Stream.concat(type.declaredAttributes(), type.declaredLinks())
             .collect(toSet());
         allMembers.addAll(declaredMembers);
-        // Set<StructMember> inheritedMembers = new HashSet<>(allMembers);
-        // inheritedMembers.removeAll(declaredMembers);
         allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
 
         buffer.endBlock();
@@ -171,7 +168,6 @@ public class TypesGenerator implements GoGenerator {
 
     private void generateMemberFormalParameter(StructMember member) {
         GoTypeReference goTypeReference = goNames.getTypeReference(member.getType());
-
         buffer.addImports(goTypeReference.getImports());
         buffer.addLine(
             "%1$s    %2$s   `xml:\"%3$s\"` ",
