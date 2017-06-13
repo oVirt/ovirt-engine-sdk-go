@@ -186,7 +186,7 @@ public class GoNames {
                 );
             }
         }
-        else if (type instanceof StructType || type instanceof EnumType) {
+        else if (type instanceof StructType) {
             reference.setText("*" + getTypeName(type).getClassName());
         }
         else if (type instanceof EnumType) {
@@ -277,9 +277,12 @@ public class GoNames {
         return renameReserved(result);
     }
 
+    /**
+     * Returns a representation of the given name using the lower style typically used for Go tag name.
+     */
     public String getTagStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
-        return renameReserved(result);
+        return result;
     }
 
     public String renameReserved(String result) {
