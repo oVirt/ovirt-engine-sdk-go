@@ -64,9 +64,12 @@ func (op *AffinityGroupService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupVar *AffinityGroup
-    xml.Unmarshal([]byte(ovResp.Body), groupVar)
-    return groupVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *AffinityGroup")
+    }
+    var groupVar AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), &groupVar)
+    return &groupVar, nil
 }
 
 //
@@ -122,9 +125,12 @@ func (op *AffinityGroupService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(group, headers, query, wait)
-    var groupVar *AffinityGroup
-    xml.Unmarshal([]byte(ovResp.Body), groupVar)
-    return groupVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *AffinityGroup")
+    }
+    var groupVar AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), &groupVar)
+    return &groupVar, nil
 }
 
 //
@@ -258,9 +264,9 @@ func (op *AffinityGroupVmsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Vm")
     }
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -287,8 +293,11 @@ func (op *AffinityGroupVmsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmsVar *Vms
-    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Vm")
+    }
+    var vmsVar Vms
+    xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
     return vmsVar.Vms, nil
 }
 
@@ -373,9 +382,9 @@ func (op *AffinityGroupsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *AffinityGroup")
     }
-    var groupVar *AffinityGroup
-    xml.Unmarshal([]byte(ovResp.Body), groupVar)
-    return groupVar, nil
+    var groupVar AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), &groupVar)
+    return &groupVar, nil
 }
 
 //
@@ -401,8 +410,11 @@ func (op *AffinityGroupsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupsVar *AffinityGroups
-    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*AffinityGroup")
+    }
+    var groupsVar AffinityGroups
+    xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
     return groupsVar.AffinityGroups, nil
 }
 
@@ -465,9 +477,12 @@ func (op *AffinityLabelService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelVar *AffinityLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *AffinityLabel")
+    }
+    var labelVar AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -507,9 +522,12 @@ func (op *AffinityLabelService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(label, headers, query, wait)
-    var labelVar *AffinityLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *AffinityLabel")
+    }
+    var labelVar AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -586,9 +604,12 @@ func (op *AffinityLabelHostService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostVar *Host
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Host")
+    }
+    var hostVar Host
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -662,9 +683,9 @@ func (op *AffinityLabelHostsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Host")
     }
-    var hostVar *Host
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    var hostVar Host
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -683,8 +704,11 @@ func (op *AffinityLabelHostsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostsVar *Hosts
-    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Host")
+    }
+    var hostsVar Hosts
+    xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
     return hostsVar.Hosts, nil
 }
 
@@ -748,9 +772,12 @@ func (op *AffinityLabelVmService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Vm")
+    }
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -824,9 +851,9 @@ func (op *AffinityLabelVmsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Vm")
     }
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -845,8 +872,11 @@ func (op *AffinityLabelVmsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmsVar *Vms
-    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Vm")
+    }
+    var vmsVar Vms
+    xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
     return vmsVar.Vms, nil
 }
 
@@ -914,9 +944,9 @@ func (op *AffinityLabelsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *AffinityLabel")
     }
-    var labelVar *AffinityLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    var labelVar AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -942,8 +972,11 @@ func (op *AffinityLabelsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelsVar *AffinityLabels
-    xml.Unmarshal([]byte(ovResp.Body), labelsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*AffinityLabel")
+    }
+    var labelsVar AffinityLabels
+    xml.Unmarshal([]byte(ovResp.Body), &labelsVar)
     return labelsVar.AffinityLabels, nil
 }
 
@@ -1044,9 +1077,12 @@ func (op *AssignedAffinityLabelService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelVar *AffinityLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *AffinityLabel")
+    }
+    var labelVar AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -1119,9 +1155,9 @@ func (op *AssignedAffinityLabelsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *AffinityLabel")
     }
-    var labelVar *AffinityLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    var labelVar AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -1140,8 +1176,11 @@ func (op *AssignedAffinityLabelsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelVar *AffinityLabels
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*AffinityLabel")
+    }
+    var labelVar AffinityLabels
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
     return labelVar.AffinityLabels, nil
 }
 
@@ -1201,9 +1240,12 @@ func (op *AssignedCpuProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *CpuProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *CpuProfile")
+    }
+    var profileVar CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -1279,9 +1321,9 @@ func (op *AssignedCpuProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *CpuProfile")
     }
-    var profileVar *CpuProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -1306,8 +1348,11 @@ func (op *AssignedCpuProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profilesVar *CpuProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*CpuProfile")
+    }
+    var profilesVar CpuProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
     return profilesVar.CpuProfiles, nil
 }
 
@@ -1365,9 +1410,12 @@ func (op *AssignedDiskProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskProfileVar *DiskProfile
-    xml.Unmarshal([]byte(ovResp.Body), diskProfileVar)
-    return diskProfileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskProfile")
+    }
+    var diskProfileVar DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), &diskProfileVar)
+    return &diskProfileVar, nil
 }
 
 //
@@ -1443,9 +1491,9 @@ func (op *AssignedDiskProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *DiskProfile")
     }
-    var profileVar *DiskProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -1470,8 +1518,11 @@ func (op *AssignedDiskProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profilesVar *DiskProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskProfile")
+    }
+    var profilesVar DiskProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
     return profilesVar.DiskProfiles, nil
 }
 
@@ -1529,9 +1580,12 @@ func (op *AssignedNetworkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Network")
+    }
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -1576,9 +1630,12 @@ func (op *AssignedNetworkService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(network, headers, query, wait)
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Network")
+    }
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -1630,9 +1687,9 @@ func (op *AssignedNetworksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Network")
     }
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -1657,8 +1714,11 @@ func (op *AssignedNetworksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networksVar *Networks
-    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Network")
+    }
+    var networksVar Networks
+    xml.Unmarshal([]byte(ovResp.Body), &networksVar)
     return networksVar.Networks, nil
 }
 
@@ -1773,9 +1833,9 @@ func (op *AssignedPermissionsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Permission")
     }
-    var permissionVar *Permission
-    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
-    return permissionVar, nil
+    var permissionVar Permission
+    xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
+    return &permissionVar, nil
 }
 
 //
@@ -1813,8 +1873,11 @@ func (op *AssignedPermissionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var permissionsVar *Permissions
-    xml.Unmarshal([]byte(ovResp.Body), permissionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Permission")
+    }
+    var permissionsVar Permissions
+    xml.Unmarshal([]byte(ovResp.Body), &permissionsVar)
     return permissionsVar.Permissions, nil
 }
 
@@ -1883,8 +1946,11 @@ func (op *AssignedRolesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var rolesVar *Roles
-    xml.Unmarshal([]byte(ovResp.Body), rolesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Role")
+    }
+    var rolesVar Roles
+    xml.Unmarshal([]byte(ovResp.Body), &rolesVar)
     return rolesVar.Roles, nil
 }
 
@@ -1958,9 +2024,12 @@ func (op *AssignedTagService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var tagVar *Tag
-    xml.Unmarshal([]byte(ovResp.Body), tagVar)
-    return tagVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Tag")
+    }
+    var tagVar Tag
+    xml.Unmarshal([]byte(ovResp.Body), &tagVar)
+    return &tagVar, nil
 }
 
 //
@@ -2059,9 +2128,9 @@ func (op *AssignedTagsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Tag")
     }
-    var tagVar *Tag
-    xml.Unmarshal([]byte(ovResp.Body), tagVar)
-    return tagVar, nil
+    var tagVar Tag
+    xml.Unmarshal([]byte(ovResp.Body), &tagVar)
+    return &tagVar, nil
 }
 
 //
@@ -2101,8 +2170,11 @@ func (op *AssignedTagsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var tagsVar *Tags
-    xml.Unmarshal([]byte(ovResp.Body), tagsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Tag")
+    }
+    var tagsVar Tags
+    xml.Unmarshal([]byte(ovResp.Body), &tagsVar)
     return tagsVar.Tags, nil
 }
 
@@ -2162,9 +2234,12 @@ func (op *AssignedVnicProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *VnicProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *VnicProfile")
+    }
+    var profileVar VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -2252,9 +2327,9 @@ func (op *AssignedVnicProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *VnicProfile")
     }
-    var profileVar *VnicProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -2279,8 +2354,11 @@ func (op *AssignedVnicProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profilesVar *VnicProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*VnicProfile")
+    }
+    var profilesVar VnicProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
     return profilesVar.VnicProfiles, nil
 }
 
@@ -2409,9 +2487,12 @@ func (op *AttachedStorageDomainService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storageDomainVar *StorageDomain
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
-    return storageDomainVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *StorageDomain")
+    }
+    var storageDomainVar StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
+    return &storageDomainVar, nil
 }
 
 //
@@ -2513,9 +2594,9 @@ func (op *AttachedStorageDomainDisksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Disk")
     }
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -2541,8 +2622,11 @@ func (op *AttachedStorageDomainDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -2606,9 +2690,9 @@ func (op *AttachedStorageDomainsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *StorageDomain")
     }
-    var storageDomainVar *StorageDomain
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
-    return storageDomainVar, nil
+    var storageDomainVar StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
+    return &storageDomainVar, nil
 }
 
 //
@@ -2633,8 +2717,11 @@ func (op *AttachedStorageDomainsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storageDomainsVar *StorageDomains
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*StorageDomain")
+    }
+    var storageDomainsVar StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
     return storageDomainsVar.StorageDomains, nil
 }
 
@@ -2699,9 +2786,12 @@ func (op *BalanceService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var balanceVar *Balance
-    xml.Unmarshal([]byte(ovResp.Body), balanceVar)
-    return balanceVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Balance")
+    }
+    var balanceVar Balance
+    xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
+    return &balanceVar, nil
 }
 
 //
@@ -2777,9 +2867,9 @@ func (op *BalancesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Balance")
     }
-    var balanceVar *Balance
-    xml.Unmarshal([]byte(ovResp.Body), balanceVar)
-    return balanceVar, nil
+    var balanceVar Balance
+    xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
+    return &balanceVar, nil
 }
 
 //
@@ -2807,8 +2897,11 @@ func (op *BalancesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var balancesVar *Balances
-    xml.Unmarshal([]byte(ovResp.Body), balancesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Balance")
+    }
+    var balancesVar Balances
+    xml.Unmarshal([]byte(ovResp.Body), &balancesVar)
     return balancesVar.Balances, nil
 }
 
@@ -2880,9 +2973,12 @@ func (op *BookmarkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var bookmarkVar *Bookmark
-    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
-    return bookmarkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Bookmark")
+    }
+    var bookmarkVar Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
+    return &bookmarkVar, nil
 }
 
 //
@@ -2952,9 +3048,12 @@ func (op *BookmarkService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(bookmark, headers, query, wait)
-    var bookmarkVar *Bookmark
-    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
-    return bookmarkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Bookmark")
+    }
+    var bookmarkVar Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
+    return &bookmarkVar, nil
 }
 
 //
@@ -3025,9 +3124,9 @@ func (op *BookmarksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Bookmark")
     }
-    var bookmarkVar *Bookmark
-    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
-    return bookmarkVar, nil
+    var bookmarkVar Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
+    return &bookmarkVar, nil
 }
 
 //
@@ -3071,8 +3170,11 @@ func (op *BookmarksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var bookmarksVar *Bookmarks
-    xml.Unmarshal([]byte(ovResp.Body), bookmarksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Bookmark")
+    }
+    var bookmarksVar Bookmarks
+    xml.Unmarshal([]byte(ovResp.Body), &bookmarksVar)
     return bookmarksVar.Bookmarks, nil
 }
 
@@ -3222,9 +3324,12 @@ func (op *ClusterService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var clusterVar *Cluster
-    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
-    return clusterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Cluster")
+    }
+    var clusterVar Cluster
+    xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
+    return &clusterVar, nil
 }
 
 //
@@ -3313,9 +3418,12 @@ func (op *ClusterService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(cluster, headers, query, wait)
-    var clusterVar *Cluster
-    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
-    return clusterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Cluster")
+    }
+    var clusterVar Cluster
+    xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
+    return &clusterVar, nil
 }
 
 //
@@ -3483,9 +3591,12 @@ func (op *ClusterLevelService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var levelVar *ClusterLevel
-    xml.Unmarshal([]byte(ovResp.Body), levelVar)
-    return levelVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ClusterLevel")
+    }
+    var levelVar ClusterLevel
+    xml.Unmarshal([]byte(ovResp.Body), &levelVar)
+    return &levelVar, nil
 }
 
 //
@@ -3551,8 +3662,11 @@ func (op *ClusterLevelsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var levelsVar *ClusterLevels
-    xml.Unmarshal([]byte(ovResp.Body), levelsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ClusterLevel")
+    }
+    var levelsVar ClusterLevels
+    xml.Unmarshal([]byte(ovResp.Body), &levelsVar)
     return levelsVar.ClusterLevels, nil
 }
 
@@ -3635,9 +3749,9 @@ func (op *ClustersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Cluster")
     }
-    var clusterVar *Cluster
-    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
-    return clusterVar, nil
+    var clusterVar Cluster
+    xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
+    return &clusterVar, nil
 }
 
 //
@@ -3673,8 +3787,11 @@ func (op *ClustersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var clustersVar *Clusters
-    xml.Unmarshal([]byte(ovResp.Body), clustersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Cluster")
+    }
+    var clustersVar Clusters
+    xml.Unmarshal([]byte(ovResp.Body), &clustersVar)
     return clustersVar.Clusters, nil
 }
 
@@ -3786,9 +3903,12 @@ func (op *CpuProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *CpuProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *CpuProfile")
+    }
+    var profileVar CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -3833,9 +3953,12 @@ func (op *CpuProfileService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(profile, headers, query, wait)
-    var profileVar *CpuProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *CpuProfile")
+    }
+    var profileVar CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -3899,9 +4022,9 @@ func (op *CpuProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *CpuProfile")
     }
-    var profileVar *CpuProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -3926,8 +4049,11 @@ func (op *CpuProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *CpuProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*CpuProfile")
+    }
+    var profileVar CpuProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
     return profileVar.CpuProfiles, nil
 }
 
@@ -4035,9 +4161,12 @@ func (op *DataCenterService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var dataCenterVar *DataCenter
-    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
-    return dataCenterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DataCenter")
+    }
+    var dataCenterVar DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
+    return &dataCenterVar, nil
 }
 
 //
@@ -4118,9 +4247,12 @@ func (op *DataCenterService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(dataCenter, headers, query, wait)
-    var dataCenterVar *DataCenter
-    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
-    return dataCenterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *DataCenter")
+    }
+    var dataCenterVar DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
+    return &dataCenterVar, nil
 }
 
 //
@@ -4300,9 +4432,9 @@ func (op *DataCentersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *DataCenter")
     }
-    var dataCenterVar *DataCenter
-    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
-    return dataCenterVar, nil
+    var dataCenterVar DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
+    return &dataCenterVar, nil
 }
 
 //
@@ -4387,8 +4519,11 @@ func (op *DataCentersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var dataCentersVar *DataCenters
-    xml.Unmarshal([]byte(ovResp.Body), dataCentersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DataCenter")
+    }
+    var dataCentersVar DataCenters
+    xml.Unmarshal([]byte(ovResp.Body), &dataCentersVar)
     return dataCentersVar.DataCenters, nil
 }
 
@@ -4464,9 +4599,12 @@ func (op *DiskAttachmentService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentVar *DiskAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskAttachment")
+    }
+    var attachmentVar DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -4533,9 +4671,12 @@ func (op *DiskAttachmentService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(diskAttachment, headers, query, wait)
-    var diskAttachmentVar *DiskAttachment
-    xml.Unmarshal([]byte(ovResp.Body), diskAttachmentVar)
-    return diskAttachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *DiskAttachment")
+    }
+    var diskAttachmentVar DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &diskAttachmentVar)
+    return &diskAttachmentVar, nil
 }
 
 //
@@ -4627,9 +4768,9 @@ func (op *DiskAttachmentsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *DiskAttachment")
     }
-    var attachmentVar *DiskAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    var attachmentVar DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -4648,8 +4789,11 @@ func (op *DiskAttachmentsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentsVar *DiskAttachments
-    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskAttachment")
+    }
+    var attachmentsVar DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
     return attachmentsVar.DiskAttachments, nil
 }
 
@@ -4709,9 +4853,12 @@ func (op *DiskProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *DiskProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskProfile")
+    }
+    var profileVar DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -4756,9 +4903,12 @@ func (op *DiskProfileService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(profile, headers, query, wait)
-    var profileVar *DiskProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *DiskProfile")
+    }
+    var profileVar DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -4822,9 +4972,9 @@ func (op *DiskProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *DiskProfile")
     }
-    var profileVar *DiskProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -4849,8 +4999,11 @@ func (op *DiskProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *DiskProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskProfile")
+    }
+    var profileVar DiskProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
     return profileVar.DiskProfiles, nil
 }
 
@@ -4908,9 +5061,12 @@ func (op *DiskSnapshotService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var snapshotVar *DiskSnapshot
-    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
-    return snapshotVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskSnapshot")
+    }
+    var snapshotVar DiskSnapshot
+    xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
+    return &snapshotVar, nil
 }
 
 //
@@ -4989,8 +5145,11 @@ func (op *DiskSnapshotsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var snapshotsVar *DiskSnapshots
-    xml.Unmarshal([]byte(ovResp.Body), snapshotsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskSnapshot")
+    }
+    var snapshotsVar DiskSnapshots
+    xml.Unmarshal([]byte(ovResp.Body), &snapshotsVar)
     return snapshotsVar.DiskSnapshots, nil
 }
 
@@ -5138,9 +5297,9 @@ func (op *DisksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Disk")
     }
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -5201,8 +5360,11 @@ func (op *DisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -5280,9 +5442,12 @@ func (op *DomainService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var domainVar *Domain
-    xml.Unmarshal([]byte(ovResp.Body), domainVar)
-    return domainVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Domain")
+    }
+    var domainVar Domain
+    xml.Unmarshal([]byte(ovResp.Body), &domainVar)
+    return &domainVar, nil
 }
 
 //
@@ -5355,9 +5520,12 @@ func (op *DomainGroupService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var getVar *Group
-    xml.Unmarshal([]byte(ovResp.Body), getVar)
-    return getVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Group")
+    }
+    var getVar Group
+    xml.Unmarshal([]byte(ovResp.Body), &getVar)
+    return &getVar, nil
 }
 
 //
@@ -5420,8 +5588,11 @@ func (op *DomainGroupsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupsVar *Groups
-    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Group")
+    }
+    var groupsVar Groups
+    xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
     return groupsVar.Groups, nil
 }
 
@@ -5499,9 +5670,12 @@ func (op *DomainUserService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var userVar *User
-    xml.Unmarshal([]byte(ovResp.Body), userVar)
-    return userVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *User")
+    }
+    var userVar User
+    xml.Unmarshal([]byte(ovResp.Body), &userVar)
+    return &userVar, nil
 }
 
 //
@@ -5586,8 +5760,11 @@ func (op *DomainUsersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var usersVar *Users
-    xml.Unmarshal([]byte(ovResp.Body), usersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*User")
+    }
+    var usersVar Users
+    xml.Unmarshal([]byte(ovResp.Body), &usersVar)
     return usersVar.Users, nil
 }
 
@@ -5673,8 +5850,11 @@ func (op *DomainsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var domainsVar *Domains
-    xml.Unmarshal([]byte(ovResp.Body), domainsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Domain")
+    }
+    var domainsVar Domains
+    xml.Unmarshal([]byte(ovResp.Body), &domainsVar)
     return domainsVar.Domains, nil
 }
 
@@ -5759,9 +5939,12 @@ func (op *EventService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var eventVar *Event
-    xml.Unmarshal([]byte(ovResp.Body), eventVar)
-    return eventVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Event")
+    }
+    var eventVar Event
+    xml.Unmarshal([]byte(ovResp.Body), &eventVar)
+    return &eventVar, nil
 }
 
 //
@@ -5874,9 +6057,9 @@ func (op *EventsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Event")
     }
-    var eventVar *Event
-    xml.Unmarshal([]byte(ovResp.Body), eventVar)
-    return eventVar, nil
+    var eventVar Event
+    xml.Unmarshal([]byte(ovResp.Body), &eventVar)
+    return &eventVar, nil
 }
 
 //
@@ -6008,8 +6191,11 @@ func (op *EventsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var eventsVar *Events
-    xml.Unmarshal([]byte(ovResp.Body), eventsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Event")
+    }
+    var eventsVar Events
+    xml.Unmarshal([]byte(ovResp.Body), &eventsVar)
     return eventsVar.Events, nil
 }
 
@@ -6091,9 +6277,12 @@ func (op *ExternalComputeResourceService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var resourceVar *ExternalComputeResource
-    xml.Unmarshal([]byte(ovResp.Body), resourceVar)
-    return resourceVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ExternalComputeResource")
+    }
+    var resourceVar ExternalComputeResource
+    xml.Unmarshal([]byte(ovResp.Body), &resourceVar)
+    return &resourceVar, nil
 }
 
 //
@@ -6148,8 +6337,11 @@ func (op *ExternalComputeResourcesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var resourcesVar *ExternalComputeResources
-    xml.Unmarshal([]byte(ovResp.Body), resourcesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ExternalComputeResource")
+    }
+    var resourcesVar ExternalComputeResources
+    xml.Unmarshal([]byte(ovResp.Body), &resourcesVar)
     return resourcesVar.ExternalComputeResources, nil
 }
 
@@ -6207,9 +6399,12 @@ func (op *ExternalDiscoveredHostService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostVar *ExternalDiscoveredHost
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ExternalDiscoveredHost")
+    }
+    var hostVar ExternalDiscoveredHost
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -6264,8 +6459,11 @@ func (op *ExternalDiscoveredHostsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostsVar *ExternalDiscoveredHosts
-    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ExternalDiscoveredHost")
+    }
+    var hostsVar ExternalDiscoveredHosts
+    xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
     return hostsVar.ExternalDiscoveredHosts, nil
 }
 
@@ -6323,9 +6521,12 @@ func (op *ExternalHostService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostVar *ExternalHost
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ExternalHost")
+    }
+    var hostVar ExternalHost
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -6372,9 +6573,12 @@ func (op *ExternalHostGroupService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupVar *ExternalHostGroup
-    xml.Unmarshal([]byte(ovResp.Body), groupVar)
-    return groupVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ExternalHostGroup")
+    }
+    var groupVar ExternalHostGroup
+    xml.Unmarshal([]byte(ovResp.Body), &groupVar)
+    return &groupVar, nil
 }
 
 //
@@ -6429,8 +6633,11 @@ func (op *ExternalHostGroupsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupsVar *ExternalHostGroups
-    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ExternalHostGroup")
+    }
+    var groupsVar ExternalHostGroups
+    xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
     return groupsVar.ExternalHostGroups, nil
 }
 
@@ -6493,9 +6700,9 @@ func (op *ExternalHostProvidersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *ExternalHostProvider")
     }
-    var providerVar *ExternalHostProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    var providerVar ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -6520,8 +6727,11 @@ func (op *ExternalHostProvidersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providersVar *ExternalHostProviders
-    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ExternalHostProvider")
+    }
+    var providersVar ExternalHostProviders
+    xml.Unmarshal([]byte(ovResp.Body), &providersVar)
     return providersVar.ExternalHostProviders, nil
 }
 
@@ -6587,8 +6797,11 @@ func (op *ExternalHostsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostsVar *ExternalHosts
-    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ExternalHost")
+    }
+    var hostsVar ExternalHosts
+    xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
     return hostsVar.ExternalHosts, nil
 }
 
@@ -6729,9 +6942,12 @@ func (op *ExternalProviderCertificateService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var certificateVar *Certificate
-    xml.Unmarshal([]byte(ovResp.Body), certificateVar)
-    return certificateVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Certificate")
+    }
+    var certificateVar Certificate
+    xml.Unmarshal([]byte(ovResp.Body), &certificateVar)
+    return &certificateVar, nil
 }
 
 //
@@ -6786,8 +7002,11 @@ func (op *ExternalProviderCertificatesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var certificatesVar *Certificates
-    xml.Unmarshal([]byte(ovResp.Body), certificatesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Certificate")
+    }
+    var certificatesVar Certificates
+    xml.Unmarshal([]byte(ovResp.Body), &certificatesVar)
     return certificatesVar.Certificates, nil
 }
 
@@ -6874,9 +7093,9 @@ func (op *ExternalVmImportsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *ExternalVmImport")
     }
-    var import_Var *ExternalVmImport
-    xml.Unmarshal([]byte(ovResp.Body), import_Var)
-    return import_Var, nil
+    var import_Var ExternalVmImport
+    xml.Unmarshal([]byte(ovResp.Body), &import_Var)
+    return &import_Var, nil
 }
 
 //
@@ -6923,9 +7142,12 @@ func (op *FenceAgentService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var agentVar *Agent
-    xml.Unmarshal([]byte(ovResp.Body), agentVar)
-    return agentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Agent")
+    }
+    var agentVar Agent
+    xml.Unmarshal([]byte(ovResp.Body), &agentVar)
+    return &agentVar, nil
 }
 
 //
@@ -6970,9 +7192,12 @@ func (op *FenceAgentService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(agent, headers, query, wait)
-    var agentVar *Agent
-    xml.Unmarshal([]byte(ovResp.Body), agentVar)
-    return agentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Agent")
+    }
+    var agentVar Agent
+    xml.Unmarshal([]byte(ovResp.Body), &agentVar)
+    return &agentVar, nil
 }
 
 //
@@ -7024,9 +7249,9 @@ func (op *FenceAgentsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Agent")
     }
-    var agentVar *Agent
-    xml.Unmarshal([]byte(ovResp.Body), agentVar)
-    return agentVar, nil
+    var agentVar Agent
+    xml.Unmarshal([]byte(ovResp.Body), &agentVar)
+    return &agentVar, nil
 }
 
 //
@@ -7051,8 +7276,11 @@ func (op *FenceAgentsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var agentsVar *Agents
-    xml.Unmarshal([]byte(ovResp.Body), agentsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Agent")
+    }
+    var agentsVar Agents
+    xml.Unmarshal([]byte(ovResp.Body), &agentsVar)
     return agentsVar.Agents, nil
 }
 
@@ -7110,9 +7338,12 @@ func (op *FileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var fileVar *File
-    xml.Unmarshal([]byte(ovResp.Body), fileVar)
-    return fileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *File")
+    }
+    var fileVar File
+    xml.Unmarshal([]byte(ovResp.Body), &fileVar)
+    return &fileVar, nil
 }
 
 //
@@ -7179,8 +7410,11 @@ func (op *FilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var fileVar *Files
-    xml.Unmarshal([]byte(ovResp.Body), fileVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*File")
+    }
+    var fileVar Files
+    xml.Unmarshal([]byte(ovResp.Body), &fileVar)
     return fileVar.Files, nil
 }
 
@@ -7245,9 +7479,12 @@ func (op *FilterService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var resultVar *Filter
-    xml.Unmarshal([]byte(ovResp.Body), resultVar)
-    return resultVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Filter")
+    }
+    var resultVar Filter
+    xml.Unmarshal([]byte(ovResp.Body), &resultVar)
+    return &resultVar, nil
 }
 
 //
@@ -7323,9 +7560,9 @@ func (op *FiltersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Filter")
     }
-    var filterVar *Filter
-    xml.Unmarshal([]byte(ovResp.Body), filterVar)
-    return filterVar, nil
+    var filterVar Filter
+    xml.Unmarshal([]byte(ovResp.Body), &filterVar)
+    return &filterVar, nil
 }
 
 //
@@ -7353,8 +7590,11 @@ func (op *FiltersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var filtersVar *Filters
-    xml.Unmarshal([]byte(ovResp.Body), filtersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Filter")
+    }
+    var filtersVar Filters
+    xml.Unmarshal([]byte(ovResp.Body), &filtersVar)
     return filtersVar.Filters, nil
 }
 
@@ -7492,8 +7732,8 @@ func (op *GlusterBricksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add []*GlusterBrick")
     }
-    var bricksVar *GlusterBricks
-    xml.Unmarshal([]byte(ovResp.Body), bricksVar)
+    var bricksVar GlusterBricks
+    xml.Unmarshal([]byte(ovResp.Body), &bricksVar)
     return bricksVar.GlusterBricks, nil
 }
 
@@ -7543,8 +7783,11 @@ func (op *GlusterBricksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var bricksVar *GlusterBricks
-    xml.Unmarshal([]byte(ovResp.Body), bricksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GlusterBrick")
+    }
+    var bricksVar GlusterBricks
+    xml.Unmarshal([]byte(ovResp.Body), &bricksVar)
     return bricksVar.GlusterBricks, nil
 }
 
@@ -7795,9 +8038,12 @@ func (op *GlusterHookService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hookVar *GlusterHook
-    xml.Unmarshal([]byte(ovResp.Body), hookVar)
-    return hookVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GlusterHook")
+    }
+    var hookVar GlusterHook
+    xml.Unmarshal([]byte(ovResp.Body), &hookVar)
+    return &hookVar, nil
 }
 
 //
@@ -7911,8 +8157,11 @@ func (op *GlusterHooksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hooksVar *GlusterHooks
-    xml.Unmarshal([]byte(ovResp.Body), hooksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GlusterHook")
+    }
+    var hooksVar GlusterHooks
+    xml.Unmarshal([]byte(ovResp.Body), &hooksVar)
     return hooksVar.GlusterHooks, nil
 }
 
@@ -8013,9 +8262,9 @@ func (op *GlusterVolumesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *GlusterVolume")
     }
-    var volumeVar *GlusterVolume
-    xml.Unmarshal([]byte(ovResp.Body), volumeVar)
-    return volumeVar, nil
+    var volumeVar GlusterVolume
+    xml.Unmarshal([]byte(ovResp.Body), &volumeVar)
+    return &volumeVar, nil
 }
 
 //
@@ -8055,8 +8304,11 @@ func (op *GlusterVolumesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var volumesVar *GlusterVolumes
-    xml.Unmarshal([]byte(ovResp.Body), volumesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GlusterVolume")
+    }
+    var volumesVar GlusterVolumes
+    xml.Unmarshal([]byte(ovResp.Body), &volumesVar)
     return volumesVar.GlusterVolumes, nil
 }
 
@@ -8118,9 +8370,12 @@ func (op *GroupService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var getVar *Group
-    xml.Unmarshal([]byte(ovResp.Body), getVar)
-    return getVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Group")
+    }
+    var getVar Group
+    xml.Unmarshal([]byte(ovResp.Body), &getVar)
+    return &getVar, nil
 }
 
 //
@@ -8249,9 +8504,9 @@ func (op *GroupsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Group")
     }
-    var groupVar *Group
-    xml.Unmarshal([]byte(ovResp.Body), groupVar)
-    return groupVar, nil
+    var groupVar Group
+    xml.Unmarshal([]byte(ovResp.Body), &groupVar)
+    return &groupVar, nil
 }
 
 //
@@ -8284,8 +8539,11 @@ func (op *GroupsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var groupsVar *Groups
-    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Group")
+    }
+    var groupsVar Groups
+    xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
     return groupsVar.Groups, nil
 }
 
@@ -8361,9 +8619,12 @@ func (op *HostDeviceService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var deviceVar *HostDevice
-    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
-    return deviceVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *HostDevice")
+    }
+    var deviceVar HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
+    return &deviceVar, nil
 }
 
 //
@@ -8420,8 +8681,11 @@ func (op *HostDevicesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var devicesVar *HostDevices
-    xml.Unmarshal([]byte(ovResp.Body), devicesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*HostDevice")
+    }
+    var devicesVar HostDevices
+    xml.Unmarshal([]byte(ovResp.Body), &devicesVar)
     return devicesVar.HostDevices, nil
 }
 
@@ -8480,9 +8744,12 @@ func (op *HostHookService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hookVar *Hook
-    xml.Unmarshal([]byte(ovResp.Body), hookVar)
-    return hookVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Hook")
+    }
+    var hookVar Hook
+    xml.Unmarshal([]byte(ovResp.Body), &hookVar)
+    return &hookVar, nil
 }
 
 //
@@ -8537,8 +8804,11 @@ func (op *HostHooksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hooksVar *Hooks
-    xml.Unmarshal([]byte(ovResp.Body), hooksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Hook")
+    }
+    var hooksVar Hooks
+    xml.Unmarshal([]byte(ovResp.Body), &hooksVar)
     return hooksVar.Hooks, nil
 }
 
@@ -8605,8 +8875,11 @@ func (op *HostNicsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicsVar *HostNics
-    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*HostNic")
+    }
+    var nicsVar HostNics
+    xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
     return nicsVar.HostNics, nil
 }
 
@@ -8673,8 +8946,11 @@ func (op *HostNumaNodesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nodesVar *NumaNodes
-    xml.Unmarshal([]byte(ovResp.Body), nodesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*NumaNode")
+    }
+    var nodesVar NumaNodes
+    xml.Unmarshal([]byte(ovResp.Body), &nodesVar)
     return nodesVar.NumaNodes, nil
 }
 
@@ -8799,8 +9075,11 @@ func (op *HostStorageService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storagesVar *HostStorages
-    xml.Unmarshal([]byte(ovResp.Body), storagesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*HostStorage")
+    }
+    var storagesVar HostStorages
+    xml.Unmarshal([]byte(ovResp.Body), &storagesVar)
     return storagesVar.HostStorages, nil
 }
 
@@ -8899,9 +9178,9 @@ func (op *HostsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Host")
     }
-    var hostVar *Host
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    var hostVar Host
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -8955,8 +9234,11 @@ func (op *HostsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostsVar *Hosts
-    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Host")
+    }
+    var hostsVar Hosts
+    xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
     return hostsVar.Hosts, nil
 }
 
@@ -9029,9 +9311,12 @@ func (op *IconService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var iconVar *Icon
-    xml.Unmarshal([]byte(ovResp.Body), iconVar)
-    return iconVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Icon")
+    }
+    var iconVar Icon
+    xml.Unmarshal([]byte(ovResp.Body), &iconVar)
+    return &iconVar, nil
 }
 
 //
@@ -9103,8 +9388,11 @@ func (op *IconsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var iconsVar *Icons
-    xml.Unmarshal([]byte(ovResp.Body), iconsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Icon")
+    }
+    var iconsVar Icons
+    xml.Unmarshal([]byte(ovResp.Body), &iconsVar)
     return iconsVar.Icons, nil
 }
 
@@ -9163,9 +9451,12 @@ func (op *ImageService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imageVar *Image
-    xml.Unmarshal([]byte(ovResp.Body), imageVar)
-    return imageVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Image")
+    }
+    var imageVar Image
+    xml.Unmarshal([]byte(ovResp.Body), &imageVar)
+    return &imageVar, nil
 }
 
 //
@@ -9436,9 +9727,12 @@ func (op *ImageTransferService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imageTransferVar *ImageTransfer
-    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
-    return imageTransferVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ImageTransfer")
+    }
+    var imageTransferVar ImageTransfer
+    xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
+    return &imageTransferVar, nil
 }
 
 //
@@ -9539,9 +9833,9 @@ func (op *ImageTransfersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *ImageTransfer")
     }
-    var imageTransferVar *ImageTransfer
-    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
-    return imageTransferVar, nil
+    var imageTransferVar ImageTransfer
+    xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
+    return &imageTransferVar, nil
 }
 
 //
@@ -9561,8 +9855,11 @@ func (op *ImageTransfersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imageTransferVar *ImageTransfers
-    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ImageTransfer")
+    }
+    var imageTransferVar ImageTransfers
+    xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
     return imageTransferVar.ImageTransfers, nil
 }
 
@@ -9630,8 +9927,11 @@ func (op *ImagesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imagesVar *Images
-    xml.Unmarshal([]byte(ovResp.Body), imagesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Image")
+    }
+    var imagesVar Images
+    xml.Unmarshal([]byte(ovResp.Body), &imagesVar)
     return imagesVar.Images, nil
 }
 
@@ -9697,9 +9997,12 @@ func (op *InstanceTypeService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var instanceTypeVar *InstanceType
-    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
-    return instanceTypeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *InstanceType")
+    }
+    var instanceTypeVar InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
+    return &instanceTypeVar, nil
 }
 
 //
@@ -9775,9 +10078,12 @@ func (op *InstanceTypeService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(instanceType, headers, query, wait)
-    var instanceTypeVar *InstanceType
-    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
-    return instanceTypeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *InstanceType")
+    }
+    var instanceTypeVar InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
+    return &instanceTypeVar, nil
 }
 
 //
@@ -9865,9 +10171,12 @@ func (op *InstanceTypeGraphicsConsoleService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GraphicsConsole")
+    }
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -9945,9 +10254,9 @@ func (op *InstanceTypeGraphicsConsolesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *GraphicsConsole")
     }
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -9973,8 +10282,11 @@ func (op *InstanceTypeGraphicsConsolesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consolesVar *GraphicsConsoles
-    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GraphicsConsole")
+    }
+    var consolesVar GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
     return consolesVar.GraphicsConsoles, nil
 }
 
@@ -10034,9 +10346,12 @@ func (op *InstanceTypeNicService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -10083,9 +10398,12 @@ func (op *InstanceTypeNicService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(nic, headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -10138,9 +10456,9 @@ func (op *InstanceTypeNicsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Nic")
     }
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -10169,8 +10487,11 @@ func (op *InstanceTypeNicsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicsVar *Nics
-    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Nic")
+    }
+    var nicsVar Nics
+    xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
     return nicsVar.Nics, nil
 }
 
@@ -10229,9 +10550,12 @@ func (op *InstanceTypeWatchdogService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -10278,9 +10602,12 @@ func (op *InstanceTypeWatchdogService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -10333,9 +10660,9 @@ func (op *InstanceTypeWatchdogsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Watchdog")
     }
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -10365,8 +10692,11 @@ func (op *InstanceTypeWatchdogsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogsVar *Watchdogs
-    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Watchdog")
+    }
+    var watchdogsVar Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
     return watchdogsVar.Watchdogs, nil
 }
 
@@ -10508,9 +10838,9 @@ func (op *InstanceTypesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *InstanceType")
     }
-    var instanceTypeVar *InstanceType
-    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
-    return instanceTypeVar, nil
+    var instanceTypeVar InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
+    return &instanceTypeVar, nil
 }
 
 //
@@ -10545,8 +10875,11 @@ func (op *InstanceTypesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var instanceTypeVar *InstanceTypes
-    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*InstanceType")
+    }
+    var instanceTypeVar InstanceTypes
+    xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
     return instanceTypeVar.InstanceTypes, nil
 }
 
@@ -10606,9 +10939,12 @@ func (op *IscsiBondService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var bondVar *IscsiBond
-    xml.Unmarshal([]byte(ovResp.Body), bondVar)
-    return bondVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *IscsiBond")
+    }
+    var bondVar IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), &bondVar)
+    return &bondVar, nil
 }
 
 //
@@ -10674,9 +11010,12 @@ func (op *IscsiBondService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(bond, headers, query, wait)
-    var bondVar *IscsiBond
-    xml.Unmarshal([]byte(ovResp.Body), bondVar)
-    return bondVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *IscsiBond")
+    }
+    var bondVar IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), &bondVar)
+    return &bondVar, nil
 }
 
 //
@@ -10773,9 +11112,9 @@ func (op *IscsiBondsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *IscsiBond")
     }
-    var bondVar *IscsiBond
-    xml.Unmarshal([]byte(ovResp.Body), bondVar)
-    return bondVar, nil
+    var bondVar IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), &bondVar)
+    return &bondVar, nil
 }
 
 //
@@ -10800,8 +11139,11 @@ func (op *IscsiBondsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var bondsVar *IscsiBonds
-    xml.Unmarshal([]byte(ovResp.Body), bondsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*IscsiBond")
+    }
+    var bondsVar IscsiBonds
+    xml.Unmarshal([]byte(ovResp.Body), &bondsVar)
     return bondsVar.IscsiBonds, nil
 }
 
@@ -10963,9 +11305,12 @@ func (op *JobService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var jobVar *Job
-    xml.Unmarshal([]byte(ovResp.Body), jobVar)
-    return jobVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Job")
+    }
+    var jobVar Job
+    xml.Unmarshal([]byte(ovResp.Body), &jobVar)
+    return &jobVar, nil
 }
 
 //
@@ -11068,9 +11413,9 @@ func (op *JobsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Job")
     }
-    var jobVar *Job
-    xml.Unmarshal([]byte(ovResp.Body), jobVar)
-    return jobVar, nil
+    var jobVar Job
+    xml.Unmarshal([]byte(ovResp.Body), &jobVar)
+    return &jobVar, nil
 }
 
 //
@@ -11122,8 +11467,11 @@ func (op *JobsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var jobsVar *Jobs
-    xml.Unmarshal([]byte(ovResp.Body), jobsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Job")
+    }
+    var jobsVar Jobs
+    xml.Unmarshal([]byte(ovResp.Body), &jobsVar)
     return jobsVar.Jobs, nil
 }
 
@@ -11219,8 +11567,11 @@ func (op *KatelloErrataService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var errataVar *KatelloErratums
-    xml.Unmarshal([]byte(ovResp.Body), errataVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*KatelloErratum")
+    }
+    var errataVar KatelloErratums
+    xml.Unmarshal([]byte(ovResp.Body), &errataVar)
     return errataVar.KatelloErratums, nil
 }
 
@@ -11305,9 +11656,12 @@ func (op *KatelloErratumService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var erratumVar *KatelloErratum
-    xml.Unmarshal([]byte(ovResp.Body), erratumVar)
-    return erratumVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *KatelloErratum")
+    }
+    var erratumVar KatelloErratum
+    xml.Unmarshal([]byte(ovResp.Body), &erratumVar)
+    return &erratumVar, nil
 }
 
 //
@@ -11354,9 +11708,12 @@ func (op *MacPoolService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var poolVar *MacPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *MacPool")
+    }
+    var poolVar MacPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -11433,9 +11790,12 @@ func (op *MacPoolService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(pool, headers, query, wait)
-    var poolVar *MacPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *MacPool")
+    }
+    var poolVar MacPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -11510,9 +11870,9 @@ func (op *MacPoolsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *MacPool")
     }
-    var poolVar *MacPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    var poolVar MacPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -11537,8 +11897,11 @@ func (op *MacPoolsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var poolsVar *MacPools
-    xml.Unmarshal([]byte(ovResp.Body), poolsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*MacPool")
+    }
+    var poolsVar MacPools
+    xml.Unmarshal([]byte(ovResp.Body), &poolsVar)
     return poolsVar.MacPools, nil
 }
 
@@ -11717,9 +12080,12 @@ func (op *NetworkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Network")
+    }
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -11806,9 +12172,12 @@ func (op *NetworkService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(network, headers, query, wait)
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Network")
+    }
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -11894,9 +12263,12 @@ func (op *NetworkAttachmentService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentVar *NetworkAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *NetworkAttachment")
+    }
+    var attachmentVar NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -11941,9 +12313,12 @@ func (op *NetworkAttachmentService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(attachment, headers, query, wait)
-    var attachmentVar *NetworkAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *NetworkAttachment")
+    }
+    var attachmentVar NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -11995,9 +12370,9 @@ func (op *NetworkAttachmentsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *NetworkAttachment")
     }
-    var attachmentVar *NetworkAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    var attachmentVar NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -12022,8 +12397,11 @@ func (op *NetworkAttachmentsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentsVar *NetworkAttachments
-    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*NetworkAttachment")
+    }
+    var attachmentsVar NetworkAttachments
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
     return attachmentsVar.NetworkAttachments, nil
 }
 
@@ -12096,9 +12474,12 @@ func (op *NetworkFilterService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkFilterVar *NetworkFilter
-    xml.Unmarshal([]byte(ovResp.Body), networkFilterVar)
-    return networkFilterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *NetworkFilter")
+    }
+    var networkFilterVar NetworkFilter
+    xml.Unmarshal([]byte(ovResp.Body), &networkFilterVar)
+    return &networkFilterVar, nil
 }
 
 //
@@ -12147,9 +12528,12 @@ func (op *NetworkFilterParameterService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var parameterVar *NetworkFilterParameter
-    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
-    return parameterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *NetworkFilterParameter")
+    }
+    var parameterVar NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
+    return &parameterVar, nil
 }
 
 //
@@ -12212,9 +12596,12 @@ func (op *NetworkFilterParameterService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(parameter, headers, query, wait)
-    var parameterVar *NetworkFilterParameter
-    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
-    return parameterVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *NetworkFilterParameter")
+    }
+    var parameterVar NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
+    return &parameterVar, nil
 }
 
 //
@@ -12287,9 +12674,9 @@ func (op *NetworkFilterParametersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *NetworkFilterParameter")
     }
-    var parameterVar *NetworkFilterParameter
-    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
-    return parameterVar, nil
+    var parameterVar NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
+    return &parameterVar, nil
 }
 
 //
@@ -12308,8 +12695,11 @@ func (op *NetworkFilterParametersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var parametersVar *NetworkFilterParameters
-    xml.Unmarshal([]byte(ovResp.Body), parametersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*NetworkFilterParameter")
+    }
+    var parametersVar NetworkFilterParameters
+    xml.Unmarshal([]byte(ovResp.Body), &parametersVar)
     return parametersVar.NetworkFilterParameters, nil
 }
 
@@ -12421,8 +12811,11 @@ func (op *NetworkFiltersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var filtersVar *NetworkFilters
-    xml.Unmarshal([]byte(ovResp.Body), filtersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*NetworkFilter")
+    }
+    var filtersVar NetworkFilters
+    xml.Unmarshal([]byte(ovResp.Body), &filtersVar)
     return filtersVar.NetworkFilters, nil
 }
 
@@ -12480,9 +12873,12 @@ func (op *NetworkLabelService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelVar *NetworkLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *NetworkLabel")
+    }
+    var labelVar NetworkLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -12577,9 +12973,9 @@ func (op *NetworkLabelsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *NetworkLabel")
     }
-    var labelVar *NetworkLabel
-    xml.Unmarshal([]byte(ovResp.Body), labelVar)
-    return labelVar, nil
+    var labelVar NetworkLabel
+    xml.Unmarshal([]byte(ovResp.Body), &labelVar)
+    return &labelVar, nil
 }
 
 //
@@ -12604,8 +13000,11 @@ func (op *NetworkLabelsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var labelsVar *NetworkLabels
-    xml.Unmarshal([]byte(ovResp.Body), labelsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*NetworkLabel")
+    }
+    var labelsVar NetworkLabels
+    xml.Unmarshal([]byte(ovResp.Body), &labelsVar)
     return labelsVar.NetworkLabels, nil
 }
 
@@ -12699,9 +13098,9 @@ func (op *NetworksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Network")
     }
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -12760,8 +13159,11 @@ func (op *NetworksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networksVar *Networks
-    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Network")
+    }
+    var networksVar Networks
+    xml.Unmarshal([]byte(ovResp.Body), &networksVar)
     return networksVar.Networks, nil
 }
 
@@ -12820,9 +13222,12 @@ func (op *OpenstackImageService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imageVar *OpenStackImage
-    xml.Unmarshal([]byte(ovResp.Body), imageVar)
-    return imageVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackImage")
+    }
+    var imageVar OpenStackImage
+    xml.Unmarshal([]byte(ovResp.Body), &imageVar)
+    return &imageVar, nil
 }
 
 //
@@ -12926,9 +13331,12 @@ func (op *OpenstackImageProviderService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providerVar *OpenStackImageProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackImageProvider")
+    }
+    var providerVar OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13014,9 +13422,12 @@ func (op *OpenstackImageProviderService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(provider, headers, query, wait)
-    var providerVar *OpenStackImageProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *OpenStackImageProvider")
+    }
+    var providerVar OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13092,9 +13503,9 @@ func (op *OpenstackImageProvidersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *OpenStackImageProvider")
     }
-    var providerVar *OpenStackImageProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    var providerVar OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13119,8 +13530,11 @@ func (op *OpenstackImageProvidersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providersVar *OpenStackImageProviders
-    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackImageProvider")
+    }
+    var providersVar OpenStackImageProviders
+    xml.Unmarshal([]byte(ovResp.Body), &providersVar)
     return providersVar.OpenStackImageProviders, nil
 }
 
@@ -13187,8 +13601,11 @@ func (op *OpenstackImagesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var imagesVar *OpenStackImages
-    xml.Unmarshal([]byte(ovResp.Body), imagesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackImage")
+    }
+    var imagesVar OpenStackImages
+    xml.Unmarshal([]byte(ovResp.Body), &imagesVar)
     return imagesVar.OpenStackImages, nil
 }
 
@@ -13248,9 +13665,12 @@ func (op *OpenstackNetworkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkVar *OpenStackNetwork
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackNetwork")
+    }
+    var networkVar OpenStackNetwork
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -13349,9 +13769,12 @@ func (op *OpenstackNetworkProviderService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providerVar *OpenStackNetworkProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackNetworkProvider")
+    }
+    var providerVar OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13466,9 +13889,12 @@ func (op *OpenstackNetworkProviderService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(provider, headers, query, wait)
-    var providerVar *OpenStackNetworkProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *OpenStackNetworkProvider")
+    }
+    var providerVar OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13548,9 +13974,9 @@ func (op *OpenstackNetworkProvidersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *OpenStackNetworkProvider")
     }
-    var providerVar *OpenStackNetworkProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    var providerVar OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -13575,8 +14001,11 @@ func (op *OpenstackNetworkProvidersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providersVar *OpenStackNetworkProviders
-    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackNetworkProvider")
+    }
+    var providersVar OpenStackNetworkProviders
+    xml.Unmarshal([]byte(ovResp.Body), &providersVar)
     return providersVar.OpenStackNetworkProviders, nil
 }
 
@@ -13643,8 +14072,11 @@ func (op *OpenstackNetworksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networksVar *OpenStackNetworks
-    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackNetwork")
+    }
+    var networksVar OpenStackNetworks
+    xml.Unmarshal([]byte(ovResp.Body), &networksVar)
     return networksVar.OpenStackNetworks, nil
 }
 
@@ -13702,9 +14134,12 @@ func (op *OpenstackSubnetService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var subnetVar *OpenStackSubnet
-    xml.Unmarshal([]byte(ovResp.Body), subnetVar)
-    return subnetVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackSubnet")
+    }
+    var subnetVar OpenStackSubnet
+    xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
+    return &subnetVar, nil
 }
 
 //
@@ -13780,9 +14215,9 @@ func (op *OpenstackSubnetsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *OpenStackSubnet")
     }
-    var subnetVar *OpenStackSubnet
-    xml.Unmarshal([]byte(ovResp.Body), subnetVar)
-    return subnetVar, nil
+    var subnetVar OpenStackSubnet
+    xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
+    return &subnetVar, nil
 }
 
 //
@@ -13807,8 +14242,11 @@ func (op *OpenstackSubnetsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var subnetsVar *OpenStackSubnets
-    xml.Unmarshal([]byte(ovResp.Body), subnetsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackSubnet")
+    }
+    var subnetsVar OpenStackSubnets
+    xml.Unmarshal([]byte(ovResp.Body), &subnetsVar)
     return subnetsVar.OpenStackSubnets, nil
 }
 
@@ -13866,9 +14304,12 @@ func (op *OpenstackVolumeAuthenticationKeyService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var keyVar *OpenstackVolumeAuthenticationKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenstackVolumeAuthenticationKey")
+    }
+    var keyVar OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -13911,9 +14352,12 @@ func (op *OpenstackVolumeAuthenticationKeyService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(key, headers, query, wait)
-    var keyVar *OpenstackVolumeAuthenticationKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *OpenstackVolumeAuthenticationKey")
+    }
+    var keyVar OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -13965,9 +14409,9 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *OpenstackVolumeAuthenticationKey")
     }
-    var keyVar *OpenstackVolumeAuthenticationKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    var keyVar OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -13992,8 +14436,11 @@ func (op *OpenstackVolumeAuthenticationKeysService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var keysVar *OpenstackVolumeAuthenticationKeys
-    xml.Unmarshal([]byte(ovResp.Body), keysVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenstackVolumeAuthenticationKey")
+    }
+    var keysVar OpenstackVolumeAuthenticationKeys
+    xml.Unmarshal([]byte(ovResp.Body), &keysVar)
     return keysVar.OpenstackVolumeAuthenticationKeys, nil
 }
 
@@ -14054,9 +14501,12 @@ func (op *OpenstackVolumeProviderService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providerVar *OpenStackVolumeProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackVolumeProvider")
+    }
+    var providerVar OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -14142,9 +14592,12 @@ func (op *OpenstackVolumeProviderService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(provider, headers, query, wait)
-    var providerVar *OpenStackVolumeProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *OpenStackVolumeProvider")
+    }
+    var providerVar OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -14253,9 +14706,9 @@ func (op *OpenstackVolumeProvidersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *OpenStackVolumeProvider")
     }
-    var providerVar *OpenStackVolumeProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    var providerVar OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -14281,8 +14734,11 @@ func (op *OpenstackVolumeProvidersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providersVar *OpenStackVolumeProviders
-    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackVolumeProvider")
+    }
+    var providersVar OpenStackVolumeProviders
+    xml.Unmarshal([]byte(ovResp.Body), &providersVar)
     return providersVar.OpenStackVolumeProviders, nil
 }
 
@@ -14340,9 +14796,12 @@ func (op *OpenstackVolumeTypeService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var type_Var *OpenStackVolumeType
-    xml.Unmarshal([]byte(ovResp.Body), type_Var)
-    return type_Var, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OpenStackVolumeType")
+    }
+    var type_Var OpenStackVolumeType
+    xml.Unmarshal([]byte(ovResp.Body), &type_Var)
+    return &type_Var, nil
 }
 
 //
@@ -14397,8 +14856,11 @@ func (op *OpenstackVolumeTypesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var typesVar *OpenStackVolumeTypes
-    xml.Unmarshal([]byte(ovResp.Body), typesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OpenStackVolumeType")
+    }
+    var typesVar OpenStackVolumeTypes
+    xml.Unmarshal([]byte(ovResp.Body), &typesVar)
     return typesVar.OpenStackVolumeTypes, nil
 }
 
@@ -14456,9 +14918,12 @@ func (op *OperatingSystemService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var operatingSystemVar *OperatingSystemInfo
-    xml.Unmarshal([]byte(ovResp.Body), operatingSystemVar)
-    return operatingSystemVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *OperatingSystemInfo")
+    }
+    var operatingSystemVar OperatingSystemInfo
+    xml.Unmarshal([]byte(ovResp.Body), &operatingSystemVar)
+    return &operatingSystemVar, nil
 }
 
 //
@@ -14513,8 +14978,11 @@ func (op *OperatingSystemsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var operatingSystemVar *OperatingSystemInfos
-    xml.Unmarshal([]byte(ovResp.Body), operatingSystemVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*OperatingSystemInfo")
+    }
+    var operatingSystemVar OperatingSystemInfos
+    xml.Unmarshal([]byte(ovResp.Body), &operatingSystemVar)
     return operatingSystemVar.OperatingSystemInfos, nil
 }
 
@@ -14572,9 +15040,12 @@ func (op *PermissionService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var permissionVar *Permission
-    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
-    return permissionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Permission")
+    }
+    var permissionVar Permission
+    xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
+    return &permissionVar, nil
 }
 
 //
@@ -14660,9 +15131,12 @@ func (op *PermitService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var permitVar *Permit
-    xml.Unmarshal([]byte(ovResp.Body), permitVar)
-    return permitVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Permit")
+    }
+    var permitVar Permit
+    xml.Unmarshal([]byte(ovResp.Body), &permitVar)
+    return &permitVar, nil
 }
 
 //
@@ -14761,9 +15235,9 @@ func (op *PermitsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Permit")
     }
-    var permitVar *Permit
-    xml.Unmarshal([]byte(ovResp.Body), permitVar)
-    return permitVar, nil
+    var permitVar Permit
+    xml.Unmarshal([]byte(ovResp.Body), &permitVar)
+    return &permitVar, nil
 }
 
 //
@@ -14808,8 +15282,11 @@ func (op *PermitsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var permitsVar *Permits
-    xml.Unmarshal([]byte(ovResp.Body), permitsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Permit")
+    }
+    var permitsVar Permits
+    xml.Unmarshal([]byte(ovResp.Body), &permitsVar)
     return permitsVar.Permits, nil
 }
 
@@ -14868,9 +15345,12 @@ func (op *QosService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var qosVar *Qos
-    xml.Unmarshal([]byte(ovResp.Body), qosVar)
-    return qosVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Qos")
+    }
+    var qosVar Qos
+    xml.Unmarshal([]byte(ovResp.Body), &qosVar)
+    return &qosVar, nil
 }
 
 //
@@ -14915,9 +15395,12 @@ func (op *QosService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(qos, headers, query, wait)
-    var qosVar *Qos
-    xml.Unmarshal([]byte(ovResp.Body), qosVar)
-    return qosVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Qos")
+    }
+    var qosVar Qos
+    xml.Unmarshal([]byte(ovResp.Body), &qosVar)
+    return &qosVar, nil
 }
 
 //
@@ -14969,9 +15452,9 @@ func (op *QossService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Qos")
     }
-    var qosVar *Qos
-    xml.Unmarshal([]byte(ovResp.Body), qosVar)
-    return qosVar, nil
+    var qosVar Qos
+    xml.Unmarshal([]byte(ovResp.Body), &qosVar)
+    return &qosVar, nil
 }
 
 //
@@ -14996,8 +15479,11 @@ func (op *QossService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var qossVar *Qoss
-    xml.Unmarshal([]byte(ovResp.Body), qossVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Qos")
+    }
+    var qossVar Qoss
+    xml.Unmarshal([]byte(ovResp.Body), &qossVar)
     return qossVar.Qoss, nil
 }
 
@@ -15075,9 +15561,12 @@ func (op *QuotaService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var quotaVar *Quota
-    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
-    return quotaVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Quota")
+    }
+    var quotaVar Quota
+    xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
+    return &quotaVar, nil
 }
 
 //
@@ -15146,9 +15635,12 @@ func (op *QuotaService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(quota, headers, query, wait)
-    var quotaVar *Quota
-    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
-    return quotaVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Quota")
+    }
+    var quotaVar Quota
+    xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
+    return &quotaVar, nil
 }
 
 //
@@ -15231,9 +15723,12 @@ func (op *QuotaClusterLimitService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var limitVar *QuotaClusterLimit
-    xml.Unmarshal([]byte(ovResp.Body), limitVar)
-    return limitVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *QuotaClusterLimit")
+    }
+    var limitVar QuotaClusterLimit
+    xml.Unmarshal([]byte(ovResp.Body), &limitVar)
+    return &limitVar, nil
 }
 
 //
@@ -15309,9 +15804,9 @@ func (op *QuotaClusterLimitsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *QuotaClusterLimit")
     }
-    var limitVar *QuotaClusterLimit
-    xml.Unmarshal([]byte(ovResp.Body), limitVar)
-    return limitVar, nil
+    var limitVar QuotaClusterLimit
+    xml.Unmarshal([]byte(ovResp.Body), &limitVar)
+    return &limitVar, nil
 }
 
 //
@@ -15336,8 +15831,11 @@ func (op *QuotaClusterLimitsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var limitsVar *QuotaClusterLimits
-    xml.Unmarshal([]byte(ovResp.Body), limitsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*QuotaClusterLimit")
+    }
+    var limitsVar QuotaClusterLimits
+    xml.Unmarshal([]byte(ovResp.Body), &limitsVar)
     return limitsVar.QuotaClusterLimits, nil
 }
 
@@ -15395,9 +15893,12 @@ func (op *QuotaStorageLimitService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var limitVar *QuotaStorageLimit
-    xml.Unmarshal([]byte(ovResp.Body), limitVar)
-    return limitVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *QuotaStorageLimit")
+    }
+    var limitVar QuotaStorageLimit
+    xml.Unmarshal([]byte(ovResp.Body), &limitVar)
+    return &limitVar, nil
 }
 
 //
@@ -15473,9 +15974,9 @@ func (op *QuotaStorageLimitsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *QuotaStorageLimit")
     }
-    var limitVar *QuotaStorageLimit
-    xml.Unmarshal([]byte(ovResp.Body), limitVar)
-    return limitVar, nil
+    var limitVar QuotaStorageLimit
+    xml.Unmarshal([]byte(ovResp.Body), &limitVar)
+    return &limitVar, nil
 }
 
 //
@@ -15500,8 +16001,11 @@ func (op *QuotaStorageLimitsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var limitsVar *QuotaStorageLimits
-    xml.Unmarshal([]byte(ovResp.Body), limitsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*QuotaStorageLimit")
+    }
+    var limitsVar QuotaStorageLimits
+    xml.Unmarshal([]byte(ovResp.Body), &limitsVar)
     return limitsVar.QuotaStorageLimits, nil
 }
 
@@ -15577,9 +16081,9 @@ func (op *QuotasService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Quota")
     }
-    var quotaVar *Quota
-    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
-    return quotaVar, nil
+    var quotaVar Quota
+    xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
+    return &quotaVar, nil
 }
 
 //
@@ -15605,8 +16109,11 @@ func (op *QuotasService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var quotasVar *Quotas
-    xml.Unmarshal([]byte(ovResp.Body), quotasVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Quota")
+    }
+    var quotasVar Quotas
+    xml.Unmarshal([]byte(ovResp.Body), &quotasVar)
     return quotasVar.Quotas, nil
 }
 
@@ -15681,9 +16188,12 @@ func (op *RoleService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var roleVar *Role
-    xml.Unmarshal([]byte(ovResp.Body), roleVar)
-    return roleVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Role")
+    }
+    var roleVar Role
+    xml.Unmarshal([]byte(ovResp.Body), &roleVar)
+    return &roleVar, nil
 }
 
 //
@@ -15756,9 +16266,12 @@ func (op *RoleService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(role, headers, query, wait)
-    var roleVar *Role
-    xml.Unmarshal([]byte(ovResp.Body), roleVar)
-    return roleVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Role")
+    }
+    var roleVar Role
+    xml.Unmarshal([]byte(ovResp.Body), &roleVar)
+    return &roleVar, nil
 }
 
 //
@@ -15849,9 +16362,9 @@ func (op *RolesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Role")
     }
-    var roleVar *Role
-    xml.Unmarshal([]byte(ovResp.Body), roleVar)
-    return roleVar, nil
+    var roleVar Role
+    xml.Unmarshal([]byte(ovResp.Body), &roleVar)
+    return &roleVar, nil
 }
 
 //
@@ -15895,8 +16408,11 @@ func (op *RolesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var rolesVar *Roles
-    xml.Unmarshal([]byte(ovResp.Body), rolesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Role")
+    }
+    var rolesVar Roles
+    xml.Unmarshal([]byte(ovResp.Body), &rolesVar)
     return rolesVar.Roles, nil
 }
 
@@ -15960,9 +16476,9 @@ func (op *SchedulingPoliciesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *SchedulingPolicy")
     }
-    var policyVar *SchedulingPolicy
-    xml.Unmarshal([]byte(ovResp.Body), policyVar)
-    return policyVar, nil
+    var policyVar SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), &policyVar)
+    return &policyVar, nil
 }
 
 //
@@ -15990,8 +16506,11 @@ func (op *SchedulingPoliciesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var policiesVar *SchedulingPolicys
-    xml.Unmarshal([]byte(ovResp.Body), policiesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*SchedulingPolicy")
+    }
+    var policiesVar SchedulingPolicys
+    xml.Unmarshal([]byte(ovResp.Body), &policiesVar)
     return policiesVar.SchedulingPolicys, nil
 }
 
@@ -16059,9 +16578,12 @@ func (op *SchedulingPolicyService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var policyVar *SchedulingPolicy
-    xml.Unmarshal([]byte(ovResp.Body), policyVar)
-    return policyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *SchedulingPolicy")
+    }
+    var policyVar SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), &policyVar)
+    return &policyVar, nil
 }
 
 //
@@ -16106,9 +16628,12 @@ func (op *SchedulingPolicyService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(policy, headers, query, wait)
-    var policyVar *SchedulingPolicy
-    xml.Unmarshal([]byte(ovResp.Body), policyVar)
-    return policyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *SchedulingPolicy")
+    }
+    var policyVar SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), &policyVar)
+    return &policyVar, nil
 }
 
 //
@@ -16198,9 +16723,12 @@ func (op *SchedulingPolicyUnitService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var unitVar *SchedulingPolicyUnit
-    xml.Unmarshal([]byte(ovResp.Body), unitVar)
-    return unitVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *SchedulingPolicyUnit")
+    }
+    var unitVar SchedulingPolicyUnit
+    xml.Unmarshal([]byte(ovResp.Body), &unitVar)
+    return &unitVar, nil
 }
 
 //
@@ -16282,8 +16810,11 @@ func (op *SchedulingPolicyUnitsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var unitsVar *SchedulingPolicyUnits
-    xml.Unmarshal([]byte(ovResp.Body), unitsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*SchedulingPolicyUnit")
+    }
+    var unitsVar SchedulingPolicyUnits
+    xml.Unmarshal([]byte(ovResp.Body), &unitsVar)
     return unitsVar.SchedulingPolicyUnits, nil
 }
 
@@ -16344,9 +16875,12 @@ func (op *SnapshotService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var snapshotVar *Snapshot
-    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
-    return snapshotVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Snapshot")
+    }
+    var snapshotVar Snapshot
+    xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
+    return &snapshotVar, nil
 }
 
 //
@@ -16501,9 +17035,12 @@ func (op *SnapshotCdromService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromVar *Cdrom
-    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
-    return cdromVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Cdrom")
+    }
+    var cdromVar Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
+    return &cdromVar, nil
 }
 
 //
@@ -16558,8 +17095,11 @@ func (op *SnapshotCdromsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromsVar *Cdroms
-    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Cdrom")
+    }
+    var cdromsVar Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
     return cdromsVar.Cdroms, nil
 }
 
@@ -16617,9 +17157,12 @@ func (op *SnapshotDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -16674,8 +17217,11 @@ func (op *SnapshotDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -16733,9 +17279,12 @@ func (op *SnapshotNicService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -16790,8 +17339,11 @@ func (op *SnapshotNicsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicsVar *Nics
-    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Nic")
+    }
+    var nicsVar Nics
+    xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
     return nicsVar.Nics, nil
 }
 
@@ -16867,9 +17419,9 @@ func (op *SnapshotsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Snapshot")
     }
-    var snapshotVar *Snapshot
-    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
-    return snapshotVar, nil
+    var snapshotVar Snapshot
+    xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
+    return &snapshotVar, nil
 }
 
 //
@@ -16903,8 +17455,11 @@ func (op *SnapshotsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var snapshotsVar *Snapshots
-    xml.Unmarshal([]byte(ovResp.Body), snapshotsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Snapshot")
+    }
+    var snapshotsVar Snapshots
+    xml.Unmarshal([]byte(ovResp.Body), &snapshotsVar)
     return snapshotsVar.Snapshots, nil
 }
 
@@ -16962,9 +17517,12 @@ func (op *SshPublicKeyService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var keyVar *SshPublicKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *SshPublicKey")
+    }
+    var keyVar SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -17009,9 +17567,12 @@ func (op *SshPublicKeyService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(key, headers, query, wait)
-    var keyVar *SshPublicKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *SshPublicKey")
+    }
+    var keyVar SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -17063,9 +17624,9 @@ func (op *SshPublicKeysService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *SshPublicKey")
     }
-    var keyVar *SshPublicKey
-    xml.Unmarshal([]byte(ovResp.Body), keyVar)
-    return keyVar, nil
+    var keyVar SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), &keyVar)
+    return &keyVar, nil
 }
 
 //
@@ -17090,8 +17651,11 @@ func (op *SshPublicKeysService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var keysVar *SshPublicKeys
-    xml.Unmarshal([]byte(ovResp.Body), keysVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*SshPublicKey")
+    }
+    var keysVar SshPublicKeys
+    xml.Unmarshal([]byte(ovResp.Body), &keysVar)
     return keysVar.SshPublicKeys, nil
 }
 
@@ -17151,9 +17715,12 @@ func (op *StatisticService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var statisticVar *Statistic
-    xml.Unmarshal([]byte(ovResp.Body), statisticVar)
-    return statisticVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Statistic")
+    }
+    var statisticVar Statistic
+    xml.Unmarshal([]byte(ovResp.Body), &statisticVar)
+    return &statisticVar, nil
 }
 
 //
@@ -17257,8 +17824,11 @@ func (op *StatisticsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var statisticsVar *Statistics
-    xml.Unmarshal([]byte(ovResp.Body), statisticsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Statistic")
+    }
+    var statisticsVar Statistics
+    xml.Unmarshal([]byte(ovResp.Body), &statisticsVar)
     return statisticsVar.Statistics, nil
 }
 
@@ -17385,9 +17955,12 @@ func (op *StepService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var stepVar *Step
-    xml.Unmarshal([]byte(ovResp.Body), stepVar)
-    return stepVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Step")
+    }
+    var stepVar Step
+    xml.Unmarshal([]byte(ovResp.Body), &stepVar)
+    return &stepVar, nil
 }
 
 //
@@ -17491,9 +18064,9 @@ func (op *StepsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Step")
     }
-    var stepVar *Step
-    xml.Unmarshal([]byte(ovResp.Body), stepVar)
-    return stepVar, nil
+    var stepVar Step
+    xml.Unmarshal([]byte(ovResp.Body), &stepVar)
+    return &stepVar, nil
 }
 
 //
@@ -17543,8 +18116,11 @@ func (op *StepsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var stepsVar *Steps
-    xml.Unmarshal([]byte(ovResp.Body), stepsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Step")
+    }
+    var stepsVar Steps
+    xml.Unmarshal([]byte(ovResp.Body), &stepsVar)
     return stepsVar.Steps, nil
 }
 
@@ -17653,9 +18229,12 @@ func (op *StorageService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storageVar *HostStorage
-    xml.Unmarshal([]byte(ovResp.Body), storageVar)
-    return storageVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *HostStorage")
+    }
+    var storageVar HostStorage
+    xml.Unmarshal([]byte(ovResp.Body), &storageVar)
+    return &storageVar, nil
 }
 
 //
@@ -17718,9 +18297,12 @@ func (op *StorageDomainService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storageDomainVar *StorageDomain
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
-    return storageDomainVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *StorageDomain")
+    }
+    var storageDomainVar StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
+    return &storageDomainVar, nil
 }
 
 //
@@ -17745,7 +18327,7 @@ func (op *StorageDomainService) IsAttached(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "isattached", headers, query, wait)
+    ovResp, _ := op.internalAction(action, "isattached", headers, query, wait)
     return strconv.ParseBool(ovResp.Body)
 }
 
@@ -17932,9 +18514,12 @@ func (op *StorageDomainService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(storageDomain, headers, query, wait)
-    var storageDomainVar *StorageDomain
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
-    return storageDomainVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *StorageDomain")
+    }
+    var storageDomainVar StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
+    return &storageDomainVar, nil
 }
 
 //
@@ -18135,9 +18720,12 @@ func (op *StorageDomainContentDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -18200,8 +18788,11 @@ func (op *StorageDomainContentDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -18324,9 +18915,12 @@ func (op *StorageDomainDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -18428,9 +19022,12 @@ func (op *StorageDomainDiskService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(disk, headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -18521,9 +19118,9 @@ func (op *StorageDomainDisksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Disk")
     }
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -18549,8 +19146,11 @@ func (op *StorageDomainDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -18609,9 +19209,12 @@ func (op *StorageDomainServerConnectionService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var connectionVar *StorageConnection
-    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
-    return connectionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *StorageConnection")
+    }
+    var connectionVar StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
+    return &connectionVar, nil
 }
 
 //
@@ -18688,9 +19291,9 @@ func (op *StorageDomainServerConnectionsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *StorageConnection")
     }
-    var connectionVar *StorageConnection
-    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
-    return connectionVar, nil
+    var connectionVar StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
+    return &connectionVar, nil
 }
 
 //
@@ -18715,8 +19318,11 @@ func (op *StorageDomainServerConnectionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var connectionsVar *StorageConnections
-    xml.Unmarshal([]byte(ovResp.Body), connectionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*StorageConnection")
+    }
+    var connectionsVar StorageConnections
+    xml.Unmarshal([]byte(ovResp.Body), &connectionsVar)
     return connectionsVar.StorageConnections, nil
 }
 
@@ -18775,9 +19381,12 @@ func (op *StorageDomainTemplateService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var templateVar *Template
-    xml.Unmarshal([]byte(ovResp.Body), templateVar)
-    return templateVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Template")
+    }
+    var templateVar Template
+    xml.Unmarshal([]byte(ovResp.Body), &templateVar)
+    return &templateVar, nil
 }
 
 //
@@ -18961,8 +19570,11 @@ func (op *StorageDomainTemplatesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var templatesVar *Templates
-    xml.Unmarshal([]byte(ovResp.Body), templatesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Template")
+    }
+    var templatesVar Templates
+    xml.Unmarshal([]byte(ovResp.Body), &templatesVar)
     return templatesVar.Templates, nil
 }
 
@@ -19022,9 +19634,12 @@ func (op *StorageDomainVmService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Vm")
+    }
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -19269,9 +19884,12 @@ func (op *StorageDomainVmDiskAttachmentService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentVar *DiskAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskAttachment")
+    }
+    var attachmentVar DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -19321,8 +19939,11 @@ func (op *StorageDomainVmDiskAttachmentsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentsVar *DiskAttachments
-    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskAttachment")
+    }
+    var attachmentsVar DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
     return attachmentsVar.DiskAttachments, nil
 }
 
@@ -19415,8 +20036,11 @@ func (op *StorageDomainVmsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmVar *Vms
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Vm")
+    }
+    var vmVar Vms
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
     return vmVar.Vms, nil
 }
 
@@ -19541,9 +20165,9 @@ func (op *StorageDomainsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *StorageDomain")
     }
-    var storageDomainVar *StorageDomain
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
-    return storageDomainVar, nil
+    var storageDomainVar StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
+    return &storageDomainVar, nil
 }
 
 //
@@ -19579,8 +20203,11 @@ func (op *StorageDomainsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var storageDomainsVar *StorageDomains
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*StorageDomain")
+    }
+    var storageDomainsVar StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
     return storageDomainsVar.StorageDomains, nil
 }
 
@@ -19638,9 +20265,12 @@ func (op *StorageServerConnectionService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var conectionVar *StorageConnection
-    xml.Unmarshal([]byte(ovResp.Body), conectionVar)
-    return conectionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *StorageConnection")
+    }
+    var conectionVar StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), &conectionVar)
+    return &conectionVar, nil
 }
 
 //
@@ -19716,9 +20346,12 @@ func (op *StorageServerConnectionService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(connection, headers, query, wait)
-    var connectionVar *StorageConnection
-    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
-    return connectionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *StorageConnection")
+    }
+    var connectionVar StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
+    return &connectionVar, nil
 }
 
 //
@@ -19765,9 +20398,12 @@ func (op *StorageServerConnectionExtensionService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var extensionVar *StorageConnectionExtension
-    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
-    return extensionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *StorageConnectionExtension")
+    }
+    var extensionVar StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
+    return &extensionVar, nil
 }
 
 //
@@ -19827,9 +20463,12 @@ func (op *StorageServerConnectionExtensionService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(extension, headers, query, wait)
-    var extensionVar *StorageConnectionExtension
-    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
-    return extensionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *StorageConnectionExtension")
+    }
+    var extensionVar StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
+    return &extensionVar, nil
 }
 
 //
@@ -19898,9 +20537,9 @@ func (op *StorageServerConnectionExtensionsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *StorageConnectionExtension")
     }
-    var extensionVar *StorageConnectionExtension
-    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
-    return extensionVar, nil
+    var extensionVar StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
+    return &extensionVar, nil
 }
 
 //
@@ -19925,8 +20564,11 @@ func (op *StorageServerConnectionExtensionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var extensionsVar *StorageConnectionExtensions
-    xml.Unmarshal([]byte(ovResp.Body), extensionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*StorageConnectionExtension")
+    }
+    var extensionsVar StorageConnectionExtensions
+    xml.Unmarshal([]byte(ovResp.Body), &extensionsVar)
     return extensionsVar.StorageConnectionExtensions, nil
 }
 
@@ -20008,9 +20650,9 @@ func (op *StorageServerConnectionsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *StorageConnection")
     }
-    var connectionVar *StorageConnection
-    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
-    return connectionVar, nil
+    var connectionVar StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
+    return &connectionVar, nil
 }
 
 //
@@ -20035,8 +20677,11 @@ func (op *StorageServerConnectionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var connectionsVar *StorageConnections
-    xml.Unmarshal([]byte(ovResp.Body), connectionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*StorageConnection")
+    }
+    var connectionsVar StorageConnections
+    xml.Unmarshal([]byte(ovResp.Body), &connectionsVar)
     return connectionsVar.StorageConnections, nil
 }
 
@@ -20206,9 +20851,12 @@ func (op *SystemService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var apiVar *Api
-    xml.Unmarshal([]byte(ovResp.Body), apiVar)
-    return apiVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Api")
+    }
+    var apiVar Api
+    xml.Unmarshal([]byte(ovResp.Body), &apiVar)
+    return &apiVar, nil
 }
 
 //
@@ -20800,9 +21448,9 @@ func (op *SystemPermissionsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Permission")
     }
-    var permissionVar *Permission
-    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
-    return permissionVar, nil
+    var permissionVar Permission
+    xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
+    return &permissionVar, nil
 }
 
 //
@@ -20840,8 +21488,11 @@ func (op *SystemPermissionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var permissionsVar *Permissions
-    xml.Unmarshal([]byte(ovResp.Body), permissionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Permission")
+    }
+    var permissionsVar Permissions
+    xml.Unmarshal([]byte(ovResp.Body), &permissionsVar)
     return permissionsVar.Permissions, nil
 }
 
@@ -20914,9 +21565,12 @@ func (op *TagService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var tagVar *Tag
-    xml.Unmarshal([]byte(ovResp.Body), tagVar)
-    return tagVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Tag")
+    }
+    var tagVar Tag
+    xml.Unmarshal([]byte(ovResp.Body), &tagVar)
+    return &tagVar, nil
 }
 
 //
@@ -20993,9 +21647,12 @@ func (op *TagService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(tag, headers, query, wait)
-    var tagVar *Tag
-    xml.Unmarshal([]byte(ovResp.Body), tagVar)
-    return tagVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Tag")
+    }
+    var tagVar Tag
+    xml.Unmarshal([]byte(ovResp.Body), &tagVar)
+    return &tagVar, nil
 }
 
 //
@@ -21077,9 +21734,9 @@ func (op *TagsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Tag")
     }
-    var tagVar *Tag
-    xml.Unmarshal([]byte(ovResp.Body), tagVar)
-    return tagVar, nil
+    var tagVar Tag
+    xml.Unmarshal([]byte(ovResp.Body), &tagVar)
+    return &tagVar, nil
 }
 
 //
@@ -21134,8 +21791,11 @@ func (op *TagsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var tagsVar *Tags
-    xml.Unmarshal([]byte(ovResp.Body), tagsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Tag")
+    }
+    var tagsVar Tags
+    xml.Unmarshal([]byte(ovResp.Body), &tagsVar)
     return tagsVar.Tags, nil
 }
 
@@ -21252,9 +21912,12 @@ func (op *TemplateService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var templateVar *Template
-    xml.Unmarshal([]byte(ovResp.Body), templateVar)
-    return templateVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Template")
+    }
+    var templateVar Template
+    xml.Unmarshal([]byte(ovResp.Body), &templateVar)
+    return &templateVar, nil
 }
 
 //
@@ -21351,9 +22014,12 @@ func (op *TemplateService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(template, headers, query, wait)
-    var templateVar *Template
-    xml.Unmarshal([]byte(ovResp.Body), templateVar)
-    return templateVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Template")
+    }
+    var templateVar Template
+    xml.Unmarshal([]byte(ovResp.Body), &templateVar)
+    return &templateVar, nil
 }
 
 //
@@ -21499,9 +22165,12 @@ func (op *TemplateCdromService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromVar *Cdrom
-    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
-    return cdromVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Cdrom")
+    }
+    var cdromVar Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
+    return &cdromVar, nil
 }
 
 //
@@ -21557,8 +22226,11 @@ func (op *TemplateCdromsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromsVar *Cdroms
-    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Cdrom")
+    }
+    var cdromsVar Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
     return cdromsVar.Cdroms, nil
 }
 
@@ -21669,9 +22341,12 @@ func (op *TemplateDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -21744,9 +22419,12 @@ func (op *TemplateDiskAttachmentService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentVar *DiskAttachment
-    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
-    return attachmentVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *DiskAttachment")
+    }
+    var attachmentVar DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
+    return &attachmentVar, nil
 }
 
 //
@@ -21831,8 +22509,11 @@ func (op *TemplateDiskAttachmentsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var attachmentsVar *DiskAttachments
-    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*DiskAttachment")
+    }
+    var attachmentsVar DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
     return attachmentsVar.DiskAttachments, nil
 }
 
@@ -21899,8 +22580,11 @@ func (op *TemplateDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -21959,9 +22643,12 @@ func (op *TemplateGraphicsConsoleService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GraphicsConsole")
+    }
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -22039,9 +22726,9 @@ func (op *TemplateGraphicsConsolesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *GraphicsConsole")
     }
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -22067,8 +22754,11 @@ func (op *TemplateGraphicsConsolesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consolesVar *GraphicsConsoles
-    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GraphicsConsole")
+    }
+    var consolesVar GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
     return consolesVar.GraphicsConsoles, nil
 }
 
@@ -22127,9 +22817,12 @@ func (op *TemplateNicService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -22174,9 +22867,12 @@ func (op *TemplateNicService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(nic, headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -22228,9 +22924,9 @@ func (op *TemplateNicsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Nic")
     }
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -22255,8 +22951,11 @@ func (op *TemplateNicsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicsVar *Nics
-    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Nic")
+    }
+    var nicsVar Nics
+    xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
     return nicsVar.Nics, nil
 }
 
@@ -22314,9 +23013,12 @@ func (op *TemplateWatchdogService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -22361,9 +23063,12 @@ func (op *TemplateWatchdogService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -22415,9 +23120,9 @@ func (op *TemplateWatchdogsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Watchdog")
     }
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -22442,8 +23147,11 @@ func (op *TemplateWatchdogsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogsVar *Watchdogs
-    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Watchdog")
+    }
+    var watchdogsVar Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
     return watchdogsVar.Watchdogs, nil
 }
 
@@ -22543,9 +23251,9 @@ func (op *TemplatesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Template")
     }
-    var templateVar *Template
-    xml.Unmarshal([]byte(ovResp.Body), templateVar)
-    return templateVar, nil
+    var templateVar Template
+    xml.Unmarshal([]byte(ovResp.Body), &templateVar)
+    return &templateVar, nil
 }
 
 //
@@ -22588,8 +23296,11 @@ func (op *TemplatesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var templatesVar *Templates
-    xml.Unmarshal([]byte(ovResp.Body), templatesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Template")
+    }
+    var templatesVar Templates
+    xml.Unmarshal([]byte(ovResp.Body), &templatesVar)
     return templatesVar.Templates, nil
 }
 
@@ -22648,9 +23359,12 @@ func (op *UnmanagedNetworkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkVar *UnmanagedNetwork
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *UnmanagedNetwork")
+    }
+    var networkVar UnmanagedNetwork
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -22729,8 +23443,11 @@ func (op *UnmanagedNetworksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networksVar *UnmanagedNetworks
-    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*UnmanagedNetwork")
+    }
+    var networksVar UnmanagedNetworks
+    xml.Unmarshal([]byte(ovResp.Body), &networksVar)
     return networksVar.UnmanagedNetworks, nil
 }
 
@@ -22822,9 +23539,12 @@ func (op *UserService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var userVar *User
-    xml.Unmarshal([]byte(ovResp.Body), userVar)
-    return userVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *User")
+    }
+    var userVar User
+    xml.Unmarshal([]byte(ovResp.Body), &userVar)
+    return &userVar, nil
 }
 
 //
@@ -22986,9 +23706,9 @@ func (op *UsersService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *User")
     }
-    var userVar *User
-    xml.Unmarshal([]byte(ovResp.Body), userVar)
-    return userVar, nil
+    var userVar User
+    xml.Unmarshal([]byte(ovResp.Body), &userVar)
+    return &userVar, nil
 }
 
 //
@@ -23046,8 +23766,11 @@ func (op *UsersService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var usersVar *Users
-    xml.Unmarshal([]byte(ovResp.Body), usersVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*User")
+    }
+    var usersVar Users
+    xml.Unmarshal([]byte(ovResp.Body), &usersVar)
     return usersVar.Users, nil
 }
 
@@ -23105,9 +23828,12 @@ func (op *VirtualFunctionAllowedNetworkService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Network")
+    }
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -23183,9 +23909,9 @@ func (op *VirtualFunctionAllowedNetworksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Network")
     }
-    var networkVar *Network
-    xml.Unmarshal([]byte(ovResp.Body), networkVar)
-    return networkVar, nil
+    var networkVar Network
+    xml.Unmarshal([]byte(ovResp.Body), &networkVar)
+    return &networkVar, nil
 }
 
 //
@@ -23210,8 +23936,11 @@ func (op *VirtualFunctionAllowedNetworksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var networksVar *Networks
-    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Network")
+    }
+    var networksVar Networks
+    xml.Unmarshal([]byte(ovResp.Body), &networksVar)
     return networksVar.Networks, nil
 }
 
@@ -23526,9 +24255,12 @@ func (op *VmService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Vm")
+    }
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -24045,10 +24777,10 @@ func (op *VmService) Ticket(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
-    var ticketVar *Ticket
-    xml.Unmarshal([]byte(ovResp.Body), ticketVar)
-    return ticketVar, nil
+    ovResp, _ := op.internalAction(action, "ticket", headers, query, wait)
+    var ticketVar Ticket
+    xml.Unmarshal([]byte(ovResp.Body), &ticketVar)
+    return &ticketVar, nil
 }
 
 //
@@ -24094,9 +24826,12 @@ func (op *VmService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(vm, headers, query, wait)
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Vm")
+    }
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -24349,9 +25084,12 @@ func (op *VmApplicationService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var applicationVar *Application
-    xml.Unmarshal([]byte(ovResp.Body), applicationVar)
-    return applicationVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Application")
+    }
+    var applicationVar Application
+    xml.Unmarshal([]byte(ovResp.Body), &applicationVar)
+    return &applicationVar, nil
 }
 
 //
@@ -24411,8 +25149,11 @@ func (op *VmApplicationsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var applicationsVar *Applications
-    xml.Unmarshal([]byte(ovResp.Body), applicationsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Application")
+    }
+    var applicationsVar Applications
+    xml.Unmarshal([]byte(ovResp.Body), &applicationsVar)
     return applicationsVar.Applications, nil
 }
 
@@ -24500,9 +25241,12 @@ func (op *VmCdromService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromVar *Cdrom
-    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
-    return cdromVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Cdrom")
+    }
+    var cdromVar Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
+    return &cdromVar, nil
 }
 
 //
@@ -24568,9 +25312,12 @@ func (op *VmCdromService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(cdrom, headers, query, wait)
-    var cdromVar *Cdrom
-    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
-    return cdromVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Cdrom")
+    }
+    var cdromVar Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
+    return &cdromVar, nil
 }
 
 //
@@ -24631,8 +25378,11 @@ func (op *VmCdromsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var cdromsVar *Cdroms
-    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Cdrom")
+    }
+    var cdromsVar Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
     return cdromsVar.Cdroms, nil
 }
 
@@ -24765,9 +25515,12 @@ func (op *VmDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -24842,9 +25595,12 @@ func (op *VmDiskService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(disk, headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -24920,9 +25676,9 @@ func (op *VmDisksService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Disk")
     }
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -24947,8 +25703,11 @@ func (op *VmDisksService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var disksVar *Disks
-    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Disk")
+    }
+    var disksVar Disks
+    xml.Unmarshal([]byte(ovResp.Body), &disksVar)
     return disksVar.Disks, nil
 }
 
@@ -25019,9 +25778,12 @@ func (op *VmGraphicsConsoleService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GraphicsConsole")
+    }
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -25044,10 +25806,10 @@ func (op *VmGraphicsConsoleService) ProxyTicket(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "proxyticket", headers, query, wait)
-    var proxyTicketVar *ProxyTicket
-    xml.Unmarshal([]byte(ovResp.Body), proxyTicketVar)
-    return proxyTicketVar, nil
+    ovResp, _ := op.internalAction(action, "proxyticket", headers, query, wait)
+    var proxyTicketVar ProxyTicket
+    xml.Unmarshal([]byte(ovResp.Body), &proxyTicketVar)
+    return &proxyTicketVar, nil
 }
 
 //
@@ -25128,7 +25890,7 @@ func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
+    ovResp, _ := op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
     return ovResp.Body, nil
 }
 
@@ -25193,10 +25955,10 @@ func (op *VmGraphicsConsoleService) Ticket(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
-    var ticketVar *Ticket
-    xml.Unmarshal([]byte(ovResp.Body), ticketVar)
-    return ticketVar, nil
+    ovResp, _ := op.internalAction(action, "ticket", headers, query, wait)
+    var ticketVar Ticket
+    xml.Unmarshal([]byte(ovResp.Body), &ticketVar)
+    return &ticketVar, nil
 }
 
 //
@@ -25249,9 +26011,9 @@ func (op *VmGraphicsConsolesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *GraphicsConsole")
     }
-    var consoleVar *GraphicsConsole
-    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
-    return consoleVar, nil
+    var consoleVar GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
+    return &consoleVar, nil
 }
 
 //
@@ -25285,8 +26047,11 @@ func (op *VmGraphicsConsolesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var consolesVar *GraphicsConsoles
-    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*GraphicsConsole")
+    }
+    var consolesVar GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
     return consolesVar.GraphicsConsoles, nil
 }
 
@@ -25372,9 +26137,12 @@ func (op *VmHostDeviceService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var deviceVar *HostDevice
-    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
-    return deviceVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *HostDevice")
+    }
+    var deviceVar HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
+    return &deviceVar, nil
 }
 
 //
@@ -25483,9 +26251,9 @@ func (op *VmHostDevicesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *HostDevice")
     }
-    var deviceVar *HostDevice
-    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
-    return deviceVar, nil
+    var deviceVar HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
+    return &deviceVar, nil
 }
 
 //
@@ -25511,8 +26279,11 @@ func (op *VmHostDevicesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var deviceVar *HostDevices
-    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*HostDevice")
+    }
+    var deviceVar HostDevices
+    xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
     return deviceVar.HostDevices, nil
 }
 
@@ -25620,9 +26391,12 @@ func (op *VmNicService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -25707,9 +26481,12 @@ func (op *VmNicService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(nic, headers, query, wait)
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Nic")
+    }
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -25845,9 +26622,9 @@ func (op *VmNicsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Nic")
     }
-    var nicVar *Nic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    var nicVar Nic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -25872,8 +26649,11 @@ func (op *VmNicsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicsVar *Nics
-    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Nic")
+    }
+    var nicsVar Nics
+    xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
     return nicsVar.Nics, nil
 }
 
@@ -25931,9 +26711,12 @@ func (op *VmNumaNodeService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nodeVar *VirtualNumaNode
-    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
-    return nodeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *VirtualNumaNode")
+    }
+    var nodeVar VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
+    return &nodeVar, nil
 }
 
 //
@@ -26001,9 +26784,12 @@ func (op *VmNumaNodeService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(node, headers, query, wait)
-    var nodeVar *VirtualNumaNode
-    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
-    return nodeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *VirtualNumaNode")
+    }
+    var nodeVar VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
+    return &nodeVar, nil
 }
 
 //
@@ -26078,9 +26864,9 @@ func (op *VmNumaNodesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *VirtualNumaNode")
     }
-    var nodeVar *VirtualNumaNode
-    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
-    return nodeVar, nil
+    var nodeVar VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
+    return &nodeVar, nil
 }
 
 //
@@ -26106,8 +26892,11 @@ func (op *VmNumaNodesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nodesVar *VirtualNumaNodes
-    xml.Unmarshal([]byte(ovResp.Body), nodesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*VirtualNumaNode")
+    }
+    var nodesVar VirtualNumaNodes
+    xml.Unmarshal([]byte(ovResp.Body), &nodesVar)
     return nodesVar.VirtualNumaNodes, nil
 }
 
@@ -26233,9 +27022,12 @@ func (op *VmPoolService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var poolVar *VmPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *VmPool")
+    }
+    var poolVar VmPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -26308,9 +27100,12 @@ func (op *VmPoolService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(pool, headers, query, wait)
-    var poolVar *VmPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *VmPool")
+    }
+    var poolVar VmPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -26397,9 +27192,9 @@ func (op *VmPoolsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *VmPool")
     }
-    var poolVar *VmPool
-    xml.Unmarshal([]byte(ovResp.Body), poolVar)
-    return poolVar, nil
+    var poolVar VmPool
+    xml.Unmarshal([]byte(ovResp.Body), &poolVar)
+    return &poolVar, nil
 }
 
 //
@@ -26450,8 +27245,11 @@ func (op *VmPoolsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var poolsVar *VmPools
-    xml.Unmarshal([]byte(ovResp.Body), poolsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*VmPool")
+    }
+    var poolsVar VmPools
+    xml.Unmarshal([]byte(ovResp.Body), &poolsVar)
     return poolsVar.VmPools, nil
 }
 
@@ -26510,9 +27308,12 @@ func (op *VmReportedDeviceService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var reportedDeviceVar *ReportedDevice
-    xml.Unmarshal([]byte(ovResp.Body), reportedDeviceVar)
-    return reportedDeviceVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ReportedDevice")
+    }
+    var reportedDeviceVar ReportedDevice
+    xml.Unmarshal([]byte(ovResp.Body), &reportedDeviceVar)
+    return &reportedDeviceVar, nil
 }
 
 //
@@ -26567,8 +27368,11 @@ func (op *VmReportedDevicesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var reportedDeviceVar *ReportedDevices
-    xml.Unmarshal([]byte(ovResp.Body), reportedDeviceVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*ReportedDevice")
+    }
+    var reportedDeviceVar ReportedDevices
+    xml.Unmarshal([]byte(ovResp.Body), &reportedDeviceVar)
     return reportedDeviceVar.ReportedDevices, nil
 }
 
@@ -26626,9 +27430,12 @@ func (op *VmSessionService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var sessionVar *Session
-    xml.Unmarshal([]byte(ovResp.Body), sessionVar)
-    return sessionVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Session")
+    }
+    var sessionVar Session
+    xml.Unmarshal([]byte(ovResp.Body), &sessionVar)
+    return &sessionVar, nil
 }
 
 //
@@ -26705,8 +27512,11 @@ func (op *VmSessionsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var sessionsVar *Sessions
-    xml.Unmarshal([]byte(ovResp.Body), sessionsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Session")
+    }
+    var sessionsVar Sessions
+    xml.Unmarshal([]byte(ovResp.Body), &sessionsVar)
     return sessionsVar.Sessions, nil
 }
 
@@ -26767,9 +27577,12 @@ func (op *VmWatchdogService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -26847,9 +27660,12 @@ func (op *VmWatchdogService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Watchdog")
+    }
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -26929,9 +27745,9 @@ func (op *VmWatchdogsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Watchdog")
     }
-    var watchdogVar *Watchdog
-    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
-    return watchdogVar, nil
+    var watchdogVar Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
+    return &watchdogVar, nil
 }
 
 //
@@ -26957,8 +27773,11 @@ func (op *VmWatchdogsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var watchdogsVar *Watchdogs
-    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Watchdog")
+    }
+    var watchdogsVar Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
     return watchdogsVar.Watchdogs, nil
 }
 
@@ -27161,9 +27980,9 @@ func (op *VmsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Vm")
     }
-    var vmVar *Vm
-    xml.Unmarshal([]byte(ovResp.Body), vmVar)
-    return vmVar, nil
+    var vmVar Vm
+    xml.Unmarshal([]byte(ovResp.Body), &vmVar)
+    return &vmVar, nil
 }
 
 //
@@ -27214,8 +28033,11 @@ func (op *VmsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var vmsVar *Vms
-    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Vm")
+    }
+    var vmsVar Vms
+    xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
     return vmsVar.Vms, nil
 }
 
@@ -27276,9 +28098,12 @@ func (op *VnicProfileService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profileVar *VnicProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *VnicProfile")
+    }
+    var profileVar VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -27330,9 +28155,12 @@ func (op *VnicProfileService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(profile, headers, query, wait)
-    var profileVar *VnicProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *VnicProfile")
+    }
+    var profileVar VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -27455,9 +28283,9 @@ func (op *VnicProfilesService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *VnicProfile")
     }
-    var profileVar *VnicProfile
-    xml.Unmarshal([]byte(ovResp.Body), profileVar)
-    return profileVar, nil
+    var profileVar VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), &profileVar)
+    return &profileVar, nil
 }
 
 //
@@ -27483,8 +28311,11 @@ func (op *VnicProfilesService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var profilesVar *VnicProfiles
-    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*VnicProfile")
+    }
+    var profilesVar VnicProfiles
+    xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
     return profilesVar.VnicProfiles, nil
 }
 
@@ -27549,9 +28380,12 @@ func (op *WeightService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var weightVar *Weight
-    xml.Unmarshal([]byte(ovResp.Body), weightVar)
-    return weightVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Weight")
+    }
+    var weightVar Weight
+    xml.Unmarshal([]byte(ovResp.Body), &weightVar)
+    return &weightVar, nil
 }
 
 //
@@ -27627,9 +28461,9 @@ func (op *WeightsService) Add(
     if err != nil {
         return nil, errors.New("Failed to calling Add *Weight")
     }
-    var weightVar *Weight
-    xml.Unmarshal([]byte(ovResp.Body), weightVar)
-    return weightVar, nil
+    var weightVar Weight
+    xml.Unmarshal([]byte(ovResp.Body), &weightVar)
+    return &weightVar, nil
 }
 
 //
@@ -27657,8 +28491,11 @@ func (op *WeightsService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var weightsVar *Weights
-    xml.Unmarshal([]byte(ovResp.Body), weightsVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*Weight")
+    }
+    var weightsVar Weights
+    xml.Unmarshal([]byte(ovResp.Body), &weightsVar)
     return weightsVar.Weights, nil
 }
 
@@ -27781,9 +28618,12 @@ func (op *AttachedStorageDomainDiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -27902,9 +28742,12 @@ func (op *AttachedStorageDomainDiskService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(disk, headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -28086,9 +28929,12 @@ func (op *DiskService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -28217,9 +29063,12 @@ func (op *DiskService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(disk, headers, query, wait)
-    var diskVar *Disk
-    xml.Unmarshal([]byte(ovResp.Body), diskVar)
-    return diskVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Disk")
+    }
+    var diskVar Disk
+    xml.Unmarshal([]byte(ovResp.Body), &diskVar)
+    return &diskVar, nil
 }
 
 //
@@ -28328,8 +29177,11 @@ func (op *EngineKatelloErrataService) List(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var errataVar *KatelloErratums
-    xml.Unmarshal([]byte(ovResp.Body), errataVar)
+    if err != nil {
+        return nil, errors.New("Failed to calling Get []*KatelloErratum")
+    }
+    var errataVar KatelloErratums
+    xml.Unmarshal([]byte(ovResp.Body), &errataVar)
     return errataVar.KatelloErratums, nil
 }
 
@@ -28394,9 +29246,12 @@ func (op *ExternalHostProviderService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var providerVar *ExternalHostProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *ExternalHostProvider")
+    }
+    var providerVar ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -28482,9 +29337,12 @@ func (op *ExternalHostProviderService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(provider, headers, query, wait)
-    var providerVar *ExternalHostProvider
-    xml.Unmarshal([]byte(ovResp.Body), providerVar)
-    return providerVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *ExternalHostProvider")
+    }
+    var providerVar ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), &providerVar)
+    return &providerVar, nil
 }
 
 //
@@ -28636,9 +29494,12 @@ func (op *GlusterBrickService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var brickVar *GlusterBrick
-    xml.Unmarshal([]byte(ovResp.Body), brickVar)
-    return brickVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GlusterBrick")
+    }
+    var brickVar GlusterBrick
+    xml.Unmarshal([]byte(ovResp.Body), &brickVar)
+    return &brickVar, nil
 }
 
 //
@@ -28799,9 +29660,12 @@ func (op *GlusterVolumeService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var volumeVar *GlusterVolume
-    xml.Unmarshal([]byte(ovResp.Body), volumeVar)
-    return volumeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *GlusterVolume")
+    }
+    var volumeVar GlusterVolume
+    xml.Unmarshal([]byte(ovResp.Body), &volumeVar)
+    return &volumeVar, nil
 }
 
 //
@@ -28824,10 +29688,10 @@ func (op *GlusterVolumeService) GetProfileStatistics(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "getprofilestatistics", headers, query, wait)
-    var detailsVar *GlusterVolumeProfileDetails
-    xml.Unmarshal([]byte(ovResp.Body), detailsVar)
-    return detailsVar, nil
+    ovResp, _ := op.internalAction(action, "getprofilestatistics", headers, query, wait)
+    var detailsVar GlusterVolumeProfileDetails
+    xml.Unmarshal([]byte(ovResp.Body), &detailsVar)
+    return &detailsVar, nil
 }
 
 //
@@ -29426,10 +30290,10 @@ func (op *HostService) Fence(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "fence", headers, query, wait)
-    var powerManagementVar *PowerManagement
-    xml.Unmarshal([]byte(ovResp.Body), powerManagementVar)
-    return powerManagementVar, nil
+    ovResp, _ := op.internalAction(action, "fence", headers, query, wait)
+    var powerManagementVar PowerManagement
+    xml.Unmarshal([]byte(ovResp.Body), &powerManagementVar)
+    return &powerManagementVar, nil
 }
 
 //
@@ -29488,9 +30352,12 @@ func (op *HostService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var hostVar *Host
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *Host")
+    }
+    var hostVar Host
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -29604,7 +30471,7 @@ func (op *HostService) IscsiDiscover(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "iscsidiscover", headers, query, wait)
+    ovResp, _ := op.internalAction(action, "iscsidiscover", headers, query, wait)
     return []string{ovResp.Body}, nil
 }
 
@@ -29912,9 +30779,9 @@ func (op *HostService) UnregisteredStorageDomainsDiscover(
     }
 
     // Send the request and wait for the response:
-    ovResp, err := op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
-    var storageDomainsVar *StorageDomains
-    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    ovResp, _ := op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
+    var storageDomainsVar StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
     return storageDomainsVar.StorageDomains, nil
 }
 
@@ -29951,9 +30818,12 @@ func (op *HostService) Update(
 
     // Send the request
     ovResp, err := op.internalUpdate(host, headers, query, wait)
-    var hostVar *Host
-    xml.Unmarshal([]byte(ovResp.Body), hostVar)
-    return hostVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Update *Host")
+    }
+    var hostVar Host
+    xml.Unmarshal([]byte(ovResp.Body), &hostVar)
+    return &hostVar, nil
 }
 
 //
@@ -30239,9 +31109,12 @@ func (op *HostNicService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nicVar *HostNic
-    xml.Unmarshal([]byte(ovResp.Body), nicVar)
-    return nicVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *HostNic")
+    }
+    var nicVar HostNic
+    xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+    return &nicVar, nil
 }
 
 //
@@ -30385,9 +31258,12 @@ func (op *HostNumaNodeService) Get(
 
     // Send the request and wait for the response:
     ovResp, err := op.internalGet(headers, query, wait)
-    var nodeVar *NumaNode
-    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
-    return nodeVar, nil
+    if err != nil {
+        return nil, errors.New("Failed to calling Get *NumaNode")
+    }
+    var nodeVar NumaNode
+    xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
+    return &nodeVar, nil
 }
 
 //

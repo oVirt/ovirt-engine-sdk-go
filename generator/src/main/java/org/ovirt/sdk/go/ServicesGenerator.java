@@ -306,18 +306,17 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
 
         buffer.addLine("// Send the request and wait for the response:");
-        String ovResponseStr = "ovResp";
         if (outParam == null) {
-            ovResponseStr = "_";
-        }
-        buffer.addLine(
-            "%1$s, err := op.internalAction(action, \"%2$s\", headers, query, wait)",
-            ovResponseStr,
-            getPath(methodName)
-        );
-        if (outParam == null) {
+            buffer.addLine(
+                "_, err := op.internalAction(action, \"%1$s\", headers, query, wait)",
+                getPath(methodName)
+            );
             buffer.addLine("return err");
         } else {
+            buffer.addLine(
+                "ovResp, _ := op.internalAction(action, \"%1$s\", headers, query, wait)",
+                getPath(methodName)
+            );
             // Generate the ovResponse parsing
             this.generateOvResponseParsing(outParam);
         }
@@ -377,7 +376,14 @@ public class ServicesGenerator implements GoGenerator {
         // Generate the code to send the request and wait for the response:
         buffer.addLine("// Send the request and wait for the response:");
         buffer.addLine("ovResp, err := op.internalGet(headers, query, wait)");
-        
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addImport("errors");
+        buffer.addLine("return nil, errors.New(\"Failed to calling Get %1$s\")",
+            outParamGoTypeReference.getText());
+        buffer.endBlock();
+        buffer.addLine("}");
+
         // Generate ovResponse parsing
         this.generateOvResponseParsing(outParameter);
 
@@ -438,7 +444,14 @@ public class ServicesGenerator implements GoGenerator {
         //      Generate the code to send the request
         buffer.addLine("// Send the request");
         buffer.addLine("ovResp, err := op.internalUpdate(%1$s, headers, query, wait)", primaryArg);
-        
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addImport("errors");
+        buffer.addLine("return nil, errors.New(\"Failed to calling Update %1$s\")",
+            primaryParameterGoTypeReference.getText());
+        buffer.endBlock();
+        buffer.addLine("}");
+
         //      Generate ovResponse parsing
         this.generateOvResponseParsing(primaryParameter);
 
@@ -733,7 +746,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateXmlUnmarshal(Parameter outParameter) {
         buffer.addImport("encoding/xml");
-        buffer.addLine("xml.Unmarshal([]byte(ovResp.Body), %1$s)",
+        buffer.addLine("xml.Unmarshal([]byte(ovResp.Body), &%1$s)",
             goNames.getVariableStyleName(outParameter.getName()));
     }
 
@@ -761,15 +774,15 @@ public class ServicesGenerator implements GoGenerator {
                 );
             }
         } else if (outParameterType instanceof StructType) {
-            buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamTypeReference.getText());
+            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameter.getType()).getClassName());
             this.generateXmlUnmarshal(outParameter);
-            buffer.addLine("return %1$s, nil", outParamNameAsVar);
+            buffer.addLine("return &%1$s, nil", outParamNameAsVar);
         } else if (outParameterType instanceof ListType) {
             ListType outParamListType = (ListType) outParameterType;
             if (outParamListType.getElementType() instanceof StructType) {
                 String outParamListTypeStr = outParamTypeReference.getText().replace("[]*", "");
                 String outParamListAttriTypeStr = String.format("%ss", outParamListTypeStr);
-                outParamListTypeStr = String.format("*%ss", outParamListTypeStr);
+                outParamListTypeStr = String.format("%ss", outParamListTypeStr);
 
                 buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamListTypeStr);
                 generateXmlUnmarshal(outParameter);
