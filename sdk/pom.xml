@@ -101,24 +101,24 @@ limitations under the License.
             </configuration>
           </execution>
 
-          <!-- Run code format check: -->
-          <!--<execution>
-            <id>format-check</id>
+          <!-- Run code format by goimports -->
+          <execution>
+            <id>goimports-format</id>
             <phase>package</phase>
             <goals>
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>flake8</executable>
+              <executable>goimports</executable>
               <arguments>
-                <argument>ignore=E501</argument>
+                <argument>-w</argument>
                 <argument>ovirtsdk4</argument>
               </arguments>
             </configuration>
-          </execution>-->
+          </execution>
 
           <!-- Run the tests: -->
-          <!--<execution>
+          <execution>
             <id>test</id>
             <phase>package</phase>
             <goals>
@@ -126,13 +126,14 @@ limitations under the License.
             </goals>
             <configuration>
               <skip>${skipTests}</skip>
-              <executable>${python.command}</executable>
+              <executable>${go.command}</executable>
               <arguments>
-                <argument>setup.py</argument>
-                <argument>nosetests</argument>
+                <argument>test</argument>
+                <argument>-v</argument>
+                <argument>./ovirtsdk4</argument>
               </arguments>
             </configuration>
-          </execution>-->
+          </execution>
 
           <!-- Generate the distributions: -->
           <!--<execution>
@@ -142,7 +143,7 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>${python.command}</executable>
+              <executable>${go.command}</executable>
               <arguments>
                 <argument>setup.py</argument>
                 <argument>sdist</argument>
