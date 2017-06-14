@@ -199,9 +199,9 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            // use Recursion to resolve `[]*String` bug
             GoTypeReference elementTypeReference = this.getTypeReference(listtype.getElementType());
-            reference.setText("[]" + elementTypeReference.getText());
+            // use Recursion to return []StructType / []string
+            reference.setText("[]" + elementTypeReference.getText().replace("*", ""));
         }
         else {
             throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");

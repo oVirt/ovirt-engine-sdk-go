@@ -780,7 +780,7 @@ public class ServicesGenerator implements GoGenerator {
         } else if (outParameterType instanceof ListType) {
             ListType outParamListType = (ListType) outParameterType;
             if (outParamListType.getElementType() instanceof StructType) {
-                String outParamListTypeStr = outParamTypeReference.getText().replace("[]*", "");
+                String outParamListTypeStr = outParamTypeReference.getText().replace("[]", "");
                 String outParamListAttriTypeStr = String.format("%ss", outParamListTypeStr);
                 outParamListTypeStr = String.format("%ss", outParamListTypeStr);
 
