@@ -69,7 +69,7 @@ public class Tool {
         // Options for the location of the generated Python sources:
         options.addOption(Option.builder()
             .longOpt(OUT_OPTION)
-            .desc("The directory where the generated Python source will be created.")
+            .desc("The directory where the generated Go source will be created.")
             .type(File.class)
             .required(false)
             .hasArg(true)
@@ -117,8 +117,6 @@ public class Tool {
         ModelAnalyzer modelAnalyzer = new ModelAnalyzer();
         modelAnalyzer.setModel(model);
         modelAnalyzer.analyzeSource(modelFile);
-
-        System.out.println("***************** Model File is " + modelFile);
 
         // Add the built-in types:
         builtinTypes.addBuiltinTypes(model);
