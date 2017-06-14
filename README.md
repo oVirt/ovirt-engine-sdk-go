@@ -1,5 +1,7 @@
 # oVirt Go SDK ()
-**WIP**: Go SDK for oVirt 4.0+
+Go SDK for oVirt 4.0+, main functions are finished, excluding error processing...
+
+Project completion is almost 80%.
 
 ## Introduction
 
