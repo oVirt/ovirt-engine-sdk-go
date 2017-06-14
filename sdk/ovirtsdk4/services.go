@@ -16,7 +16,10 @@
 package ovirtsdk4
 
 import (
+    "encoding/xml"
+    "errors"
     "fmt"
+    "strconv"
     "strings"
 )
 
@@ -48,17 +51,22 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 // </affinity_group>
 // ----
 //
-func (op *AffinityGroupService) Get (
+func (op *AffinityGroupService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *AffinityGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupVar *AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), groupVar)
+    return groupVar, nil
 }
 
 //
@@ -73,11 +81,12 @@ func (op *AffinityGroupService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupService) Remove (
+func (op *AffinityGroupService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -85,7 +94,8 @@ func (op *AffinityGroupService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -96,12 +106,14 @@ func (op *AffinityGroupService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupService) Update (
+func (op *AffinityGroupService) Update(
     group *AffinityGroup,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *AffinityGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -109,7 +121,10 @@ func (op *AffinityGroupService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(group, headers, query, wait)
+    ovResp, err := op.internalUpdate(group, headers, query, wait)
+    var groupVar *AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), groupVar)
+    return groupVar, nil
 }
 
 //
@@ -165,11 +180,12 @@ func NewAffinityGroupVmService(connection *Connection, path string) *AffinityGro
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupVmService) Remove (
+func (op *AffinityGroupVmService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -177,7 +193,8 @@ func (op *AffinityGroupVmService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -224,18 +241,26 @@ func NewAffinityGroupVmsService(connection *Connection, path string) *AffinityGr
 // <vm id="000-000"/>
 // ----
 //
-func (op *AffinityGroupVmsService) Add (
+func (op *AffinityGroupVmsService) Add(
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(vm, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(vm, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Vm")
+    }
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
@@ -247,11 +272,13 @@ func (op *AffinityGroupVmsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupVmsService) List (
+func (op *AffinityGroupVmsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -259,7 +286,10 @@ func (op *AffinityGroupVmsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmsVar *Vms
+    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    return vmsVar.Vms, nil
 }
 
 //
@@ -326,18 +356,26 @@ func NewAffinityGroupsService(connection *Connection, path string) *AffinityGrou
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupsService) Add (
+func (op *AffinityGroupsService) Add(
     group *AffinityGroup,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *AffinityGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(group, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(group, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *AffinityGroup")
+    }
+    var groupVar *AffinityGroup
+    xml.Unmarshal([]byte(ovResp.Body), groupVar)
+    return groupVar, nil
 }
 
 //
@@ -348,11 +386,13 @@ func (op *AffinityGroupsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityGroupsService) List (
+func (op *AffinityGroupsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*AffinityGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -360,7 +400,10 @@ func (op *AffinityGroupsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupsVar *AffinityGroups
+    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    return groupsVar.AffinityGroups, nil
 }
 
 //
@@ -409,52 +452,64 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 //
 // Retrieves the details of a label.
 //
-func (op *AffinityLabelService) Get (
+func (op *AffinityLabelService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelVar *AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
 // Removes a label from the system and clears all assignments
 // of the removed label.
 //
-func (op *AffinityLabelService) Remove (
+func (op *AffinityLabelService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 // Updates a label. This call will update all metadata, such as the name
 // or description.
 //
-func (op *AffinityLabelService) Update (
+func (op *AffinityLabelService) Update(
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(label, headers, query, wait)
+    ovResp, err := op.internalUpdate(label, headers, query, wait)
+    var labelVar *AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
@@ -518,33 +573,40 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 //
 // Retrieves details about a host that has this label assigned.
 //
-func (op *AffinityLabelHostService) Get (
+func (op *AffinityLabelHostService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostVar *Host
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
 // Remove a label from a host.
 //
-func (op *AffinityLabelHostService) Remove (
+func (op *AffinityLabelHostService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -583,34 +645,47 @@ func NewAffinityLabelHostsService(connection *Connection, path string) *Affinity
 //
 // Add a label to a host.
 //
-func (op *AffinityLabelHostsService) Add (
+func (op *AffinityLabelHostsService) Add(
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(host, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(host, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Host")
+    }
+    var hostVar *Host
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
 // List all hosts with the label.
 //
-func (op *AffinityLabelHostsService) List (
+func (op *AffinityLabelHostsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostsVar *Hosts
+    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    return hostsVar.Hosts, nil
 }
 
 //
@@ -660,33 +735,40 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 //
 // Retrieves details about a vm that has this label assigned.
 //
-func (op *AffinityLabelVmService) Get (
+func (op *AffinityLabelVmService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
 // Remove a label from a vm.
 //
-func (op *AffinityLabelVmService) Remove (
+func (op *AffinityLabelVmService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -725,34 +807,47 @@ func NewAffinityLabelVmsService(connection *Connection, path string) *AffinityLa
 //
 // Add a label to a vm.
 //
-func (op *AffinityLabelVmsService) Add (
+func (op *AffinityLabelVmsService) Add(
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(vm, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(vm, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Vm")
+    }
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
 // List all vms with the label.
 //
-func (op *AffinityLabelVmsService) List (
+func (op *AffinityLabelVmsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmsVar *Vms
+    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    return vmsVar.Vms, nil
 }
 
 //
@@ -802,18 +897,26 @@ func NewAffinityLabelsService(connection *Connection, path string) *AffinityLabe
 // Creates a new label. The label is automatically attached
 // to all entities mentioned in the vms or hosts lists.
 //
-func (op *AffinityLabelsService) Add (
+func (op *AffinityLabelsService) Add(
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(label, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(label, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *AffinityLabel")
+    }
+    var labelVar *AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
@@ -824,11 +927,13 @@ func (op *AffinityLabelsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AffinityLabelsService) List (
+func (op *AffinityLabelsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -836,7 +941,10 @@ func (op *AffinityLabelsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelsVar *AffinityLabels
+    xml.Unmarshal([]byte(ovResp.Body), labelsVar)
+    return labelsVar.AffinityLabels, nil
 }
 
 //
@@ -923,33 +1031,40 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 //
 // Retrieves details about the attached label.
 //
-func (op *AssignedAffinityLabelService) Get (
+func (op *AssignedAffinityLabelService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelVar *AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
 // Removes the label from an entity. Does not touch the label itself.
 //
-func (op *AssignedAffinityLabelService) Remove (
+func (op *AssignedAffinityLabelService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -987,34 +1102,47 @@ func NewAssignedAffinityLabelsService(connection *Connection, path string) *Assi
 //
 // Attaches a label to an entity.
 //
-func (op *AssignedAffinityLabelsService) Add (
+func (op *AssignedAffinityLabelsService) Add(
     label *AffinityLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(label, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(label, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *AffinityLabel")
+    }
+    var labelVar *AffinityLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
 // Lists all labels that are attached to an entity.
 //
-func (op *AssignedAffinityLabelsService) List (
+func (op *AssignedAffinityLabelsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*AffinityLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelVar *AffinityLabels
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar.AffinityLabels, nil
 }
 
 //
@@ -1060,17 +1188,22 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 
 //
 //
-func (op *AssignedCpuProfileService) Get (
+func (op *AssignedCpuProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -1080,11 +1213,12 @@ func (op *AssignedCpuProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedCpuProfileService) Remove (
+func (op *AssignedCpuProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1092,7 +1226,8 @@ func (op *AssignedCpuProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -1127,18 +1262,26 @@ func NewAssignedCpuProfilesService(connection *Connection, path string) *Assigne
 
 //
 //
-func (op *AssignedCpuProfilesService) Add (
+func (op *AssignedCpuProfilesService) Add(
     profile *CpuProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *CpuProfile")
+    }
+    var profileVar *CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -1148,11 +1291,13 @@ func (op *AssignedCpuProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedCpuProfilesService) List (
+func (op *AssignedCpuProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1160,7 +1305,10 @@ func (op *AssignedCpuProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profilesVar *CpuProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    return profilesVar.CpuProfiles, nil
 }
 
 //
@@ -1204,17 +1352,22 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 
 //
 //
-func (op *AssignedDiskProfileService) Get (
+func (op *AssignedDiskProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskProfileVar *DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), diskProfileVar)
+    return diskProfileVar, nil
 }
 
 //
@@ -1224,11 +1377,12 @@ func (op *AssignedDiskProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedDiskProfileService) Remove (
+func (op *AssignedDiskProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1236,7 +1390,8 @@ func (op *AssignedDiskProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -1271,18 +1426,26 @@ func NewAssignedDiskProfilesService(connection *Connection, path string) *Assign
 
 //
 //
-func (op *AssignedDiskProfilesService) Add (
+func (op *AssignedDiskProfilesService) Add(
     profile *DiskProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *DiskProfile")
+    }
+    var profileVar *DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -1292,11 +1455,13 @@ func (op *AssignedDiskProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedDiskProfilesService) List (
+func (op *AssignedDiskProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1304,7 +1469,10 @@ func (op *AssignedDiskProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profilesVar *DiskProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    return profilesVar.DiskProfiles, nil
 }
 
 //
@@ -1348,17 +1516,22 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 
 //
 //
-func (op *AssignedNetworkService) Get (
+func (op *AssignedNetworkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -1368,11 +1541,12 @@ func (op *AssignedNetworkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedNetworkService) Remove (
+func (op *AssignedNetworkService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1380,17 +1554,20 @@ func (op *AssignedNetworkService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *AssignedNetworkService) Update (
+func (op *AssignedNetworkService) Update(
     network *Network,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1398,7 +1575,10 @@ func (op *AssignedNetworkService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(network, headers, query, wait)
+    ovResp, err := op.internalUpdate(network, headers, query, wait)
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -1433,18 +1613,26 @@ func NewAssignedNetworksService(connection *Connection, path string) *AssignedNe
 
 //
 //
-func (op *AssignedNetworksService) Add (
+func (op *AssignedNetworksService) Add(
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(network, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(network, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Network")
+    }
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -1454,11 +1642,13 @@ func (op *AssignedNetworksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedNetworksService) List (
+func (op *AssignedNetworksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1466,7 +1656,10 @@ func (op *AssignedNetworksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networksVar *Networks
+    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    return networksVar.Networks, nil
 }
 
 //
@@ -1563,18 +1756,26 @@ func NewAssignedPermissionsService(connection *Connection, path string) *Assigne
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedPermissionsService) Add (
+func (op *AssignedPermissionsService) Add(
     permission *Permission,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Permission,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(permission, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(permission, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Permission")
+    }
+    var permissionVar *Permission
+    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
+    return permissionVar, nil
 }
 
 //
@@ -1599,17 +1800,22 @@ func (op *AssignedPermissionsService) Add (
 // </permissions>
 // ----
 //
-func (op *AssignedPermissionsService) List (
+func (op *AssignedPermissionsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Permission,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var permissionsVar *Permissions
+    xml.Unmarshal([]byte(ovResp.Body), permissionsVar)
+    return permissionsVar.Permissions, nil
 }
 
 //
@@ -1662,11 +1868,13 @@ func NewAssignedRolesService(connection *Connection, path string) *AssignedRoles
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedRolesService) List (
+func (op *AssignedRolesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Role,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1674,7 +1882,10 @@ func (op *AssignedRolesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var rolesVar *Roles
+    xml.Unmarshal([]byte(ovResp.Body), rolesVar)
+    return rolesVar.Roles, nil
 }
 
 //
@@ -1734,17 +1945,22 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 // </tag>
 // ----
 //
-func (op *AssignedTagService) Get (
+func (op *AssignedTagService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var tagVar *Tag
+    xml.Unmarshal([]byte(ovResp.Body), tagVar)
+    return tagVar, nil
 }
 
 //
@@ -1759,11 +1975,12 @@ func (op *AssignedTagService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedTagService) Remove (
+func (op *AssignedTagService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1771,7 +1988,8 @@ func (op *AssignedTagService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -1824,18 +2042,26 @@ func NewAssignedTagsService(connection *Connection, path string) *AssignedTagsSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedTagsService) Add (
+func (op *AssignedTagsService) Add(
     tag *Tag,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(tag, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(tag, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Tag")
+    }
+    var tagVar *Tag
+    xml.Unmarshal([]byte(ovResp.Body), tagVar)
+    return tagVar, nil
 }
 
 //
@@ -1860,11 +2086,13 @@ func (op *AssignedTagsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedTagsService) List (
+func (op *AssignedTagsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1872,7 +2100,10 @@ func (op *AssignedTagsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var tagsVar *Tags
+    xml.Unmarshal([]byte(ovResp.Body), tagsVar)
+    return tagsVar.Tags, nil
 }
 
 //
@@ -1918,17 +2149,22 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 
 //
 //
-func (op *AssignedVnicProfileService) Get (
+func (op *AssignedVnicProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -1938,11 +2174,12 @@ func (op *AssignedVnicProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedVnicProfileService) Remove (
+func (op *AssignedVnicProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -1950,7 +2187,8 @@ func (op *AssignedVnicProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -1997,18 +2235,26 @@ func NewAssignedVnicProfilesService(connection *Connection, path string) *Assign
 
 //
 //
-func (op *AssignedVnicProfilesService) Add (
+func (op *AssignedVnicProfilesService) Add(
     profile *VnicProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *VnicProfile")
+    }
+    var profileVar *VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -2018,11 +2264,13 @@ func (op *AssignedVnicProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AssignedVnicProfilesService) List (
+func (op *AssignedVnicProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2030,7 +2278,10 @@ func (op *AssignedVnicProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profilesVar *VnicProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    return profilesVar.VnicProfiles, nil
 }
 
 //
@@ -2092,18 +2343,20 @@ func NewAttachedStorageDomainService(connection *Connection, path string) *Attac
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainService) Activate (
+func (op *AttachedStorageDomainService) Activate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "activate", headers, query, wait)
+    _, err := op.internalAction(action, "activate", headers, query, wait)
+    return err
 }
 
 //
@@ -2125,33 +2378,40 @@ func (op *AttachedStorageDomainService) Activate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainService) Deactivate (
+func (op *AttachedStorageDomainService) Deactivate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "deactivate", headers, query, wait)
+    _, err := op.internalAction(action, "deactivate", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *AttachedStorageDomainService) Get (
+func (op *AttachedStorageDomainService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storageDomainVar *StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
+    return storageDomainVar, nil
 }
 
 //
@@ -2161,11 +2421,12 @@ func (op *AttachedStorageDomainService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainService) Remove (
+func (op *AttachedStorageDomainService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2173,7 +2434,8 @@ func (op *AttachedStorageDomainService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -2232,20 +2494,28 @@ func NewAttachedStorageDomainDisksService(connection *Connection, path string) *
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDisksService) Add (
+func (op *AttachedStorageDomainDisksService) Add(
     disk *Disk,
     unregistered bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
     query["unregistered"] = fmt.Sprintf("%v", unregistered)
 
-    // Send the request
-    return op.internalAdd(disk, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(disk, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Disk")
+    }
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -2256,11 +2526,13 @@ func (op *AttachedStorageDomainDisksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDisksService) List (
+func (op *AttachedStorageDomainDisksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2268,7 +2540,10 @@ func (op *AttachedStorageDomainDisksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -2314,18 +2589,26 @@ func NewAttachedStorageDomainsService(connection *Connection, path string) *Atta
 
 //
 //
-func (op *AttachedStorageDomainsService) Add (
+func (op *AttachedStorageDomainsService) Add(
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(storageDomain, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(storageDomain, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *StorageDomain")
+    }
+    var storageDomainVar *StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
+    return storageDomainVar, nil
 }
 
 //
@@ -2335,11 +2618,13 @@ func (op *AttachedStorageDomainsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainsService) List (
+func (op *AttachedStorageDomainsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2347,7 +2632,10 @@ func (op *AttachedStorageDomainsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storageDomainsVar *StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    return storageDomainsVar.StorageDomains, nil
 }
 
 //
@@ -2396,11 +2684,13 @@ func NewBalanceService(connection *Connection, path string) *BalanceService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BalanceService) Get (
+func (op *BalanceService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Balance,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2408,7 +2698,10 @@ func (op *BalanceService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var balanceVar *Balance
+    xml.Unmarshal([]byte(ovResp.Body), balanceVar)
+    return balanceVar, nil
 }
 
 //
@@ -2418,11 +2711,12 @@ func (op *BalanceService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BalanceService) Remove (
+func (op *BalanceService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2430,7 +2724,8 @@ func (op *BalanceService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -2465,18 +2760,26 @@ func NewBalancesService(connection *Connection, path string) *BalancesService {
 
 //
 //
-func (op *BalancesService) Add (
+func (op *BalancesService) Add(
     balance *Balance,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Balance,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(balance, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(balance, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Balance")
+    }
+    var balanceVar *Balance
+    xml.Unmarshal([]byte(ovResp.Body), balanceVar)
+    return balanceVar, nil
 }
 
 //
@@ -2487,12 +2790,14 @@ func (op *BalancesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BalancesService) List (
+func (op *BalancesService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Balance,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2501,7 +2806,10 @@ func (op *BalancesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var balancesVar *Balances
+    xml.Unmarshal([]byte(ovResp.Body), balancesVar)
+    return balancesVar.Balances, nil
 }
 
 //
@@ -2559,17 +2867,22 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 // </bookmark>
 // ----
 //
-func (op *BookmarkService) Get (
+func (op *BookmarkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Bookmark,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var bookmarkVar *Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
+    return bookmarkVar, nil
 }
 
 //
@@ -2585,11 +2898,12 @@ func (op *BookmarkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BookmarkService) Remove (
+func (op *BookmarkService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2597,7 +2911,8 @@ func (op *BookmarkService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -2621,12 +2936,14 @@ func (op *BookmarkService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BookmarkService) Update (
+func (op *BookmarkService) Update(
     bookmark *Bookmark,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Bookmark,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2634,7 +2951,10 @@ func (op *BookmarkService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(bookmark, headers, query, wait)
+    ovResp, err := op.internalUpdate(bookmark, headers, query, wait)
+    var bookmarkVar *Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
+    return bookmarkVar, nil
 }
 
 //
@@ -2688,18 +3008,26 @@ func NewBookmarksService(connection *Connection, path string) *BookmarksService 
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BookmarksService) Add (
+func (op *BookmarksService) Add(
     bookmark *Bookmark,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Bookmark,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(bookmark, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(bookmark, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Bookmark")
+    }
+    var bookmarkVar *Bookmark
+    xml.Unmarshal([]byte(ovResp.Body), bookmarkVar)
+    return bookmarkVar, nil
 }
 
 //
@@ -2728,11 +3056,13 @@ func (op *BookmarksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *BookmarksService) List (
+func (op *BookmarksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Bookmark,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2740,7 +3070,10 @@ func (op *BookmarksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var bookmarksVar *Bookmarks
+    xml.Unmarshal([]byte(ovResp.Body), bookmarksVar)
+    return bookmarksVar.Bookmarks, nil
 }
 
 //
@@ -2874,11 +3207,13 @@ func NewClusterService(connection *Connection, path string) *ClusterService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ClusterService) Get (
+func (op *ClusterService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Cluster,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2886,7 +3221,10 @@ func (op *ClusterService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var clusterVar *Cluster
+    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
+    return clusterVar, nil
 }
 
 //
@@ -2901,11 +3239,12 @@ func (op *ClusterService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ClusterService) Remove (
+func (op *ClusterService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2913,7 +3252,8 @@ func (op *ClusterService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -2923,18 +3263,20 @@ func (op *ClusterService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ClusterService) ResetEmulatedMachine (
+func (op *ClusterService) ResetEmulatedMachine(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "resetemulatedmachine", headers, query, wait)
+    _, err := op.internalAction(action, "resetemulatedmachine", headers, query, wait)
+    return err
 }
 
 //
@@ -2955,12 +3297,14 @@ func (op *ClusterService) ResetEmulatedMachine (
 // </cluster>
 // ----
 //
-func (op *ClusterService) Update (
+func (op *ClusterService) Update(
     cluster *Cluster,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Cluster,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -2968,7 +3312,10 @@ func (op *ClusterService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(cluster, headers, query, wait)
+    ovResp, err := op.internalUpdate(cluster, headers, query, wait)
+    var clusterVar *Cluster
+    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
+    return clusterVar, nil
 }
 
 //
@@ -3123,17 +3470,22 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 // </cluster_level>
 // ----
 //
-func (op *ClusterLevelService) Get (
+func (op *ClusterLevelService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ClusterLevel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var levelVar *ClusterLevel
+    xml.Unmarshal([]byte(ovResp.Body), levelVar)
+    return levelVar, nil
 }
 
 //
@@ -3186,17 +3538,22 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 // </cluster_levels>
 // ----
 //
-func (op *ClusterLevelsService) List (
+func (op *ClusterLevelsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ClusterLevel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var levelsVar *ClusterLevels
+    xml.Unmarshal([]byte(ovResp.Body), levelsVar)
+    return levelsVar.ClusterLevels, nil
 }
 
 //
@@ -3261,18 +3618,26 @@ func NewClustersService(connection *Connection, path string) *ClustersService {
 // </cluster>
 // ----
 //
-func (op *ClustersService) Add (
+func (op *ClustersService) Add(
     cluster *Cluster,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Cluster,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(cluster, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(cluster, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Cluster")
+    }
+    var clusterVar *Cluster
+    xml.Unmarshal([]byte(ovResp.Body), clusterVar)
+    return clusterVar, nil
 }
 
 //
@@ -3287,14 +3652,16 @@ func (op *ClustersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ClustersService) List (
+func (op *ClustersService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Cluster,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3305,7 +3672,10 @@ func (op *ClustersService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var clustersVar *Clusters
+    xml.Unmarshal([]byte(ovResp.Body), clustersVar)
+    return clustersVar.Clusters, nil
 }
 
 //
@@ -3355,18 +3725,20 @@ func NewCopyableService(connection *Connection, path string) *CopyableService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *CopyableService) Copy (
+func (op *CopyableService) Copy(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "copy", headers, query, wait)
+    _, err := op.internalAction(action, "copy", headers, query, wait)
+    return err
 }
 
 //
@@ -3401,17 +3773,22 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 
 //
 //
-func (op *CpuProfileService) Get (
+func (op *CpuProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -3421,11 +3798,12 @@ func (op *CpuProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *CpuProfileService) Remove (
+func (op *CpuProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3433,17 +3811,20 @@ func (op *CpuProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *CpuProfileService) Update (
+func (op *CpuProfileService) Update(
     profile *CpuProfile,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3451,7 +3832,10 @@ func (op *CpuProfileService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(profile, headers, query, wait)
+    ovResp, err := op.internalUpdate(profile, headers, query, wait)
+    var profileVar *CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -3498,18 +3882,26 @@ func NewCpuProfilesService(connection *Connection, path string) *CpuProfilesServ
 
 //
 //
-func (op *CpuProfilesService) Add (
+func (op *CpuProfilesService) Add(
     profile *CpuProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *CpuProfile")
+    }
+    var profileVar *CpuProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -3519,11 +3911,13 @@ func (op *CpuProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *CpuProfilesService) List (
+func (op *CpuProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*CpuProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3531,7 +3925,10 @@ func (op *CpuProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *CpuProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar.CpuProfiles, nil
 }
 
 //
@@ -3623,11 +4020,13 @@ func NewDataCenterService(connection *Connection, path string) *DataCenterServic
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DataCenterService) Get (
+func (op *DataCenterService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DataCenter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3635,7 +4034,10 @@ func (op *DataCenterService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var dataCenterVar *DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
+    return dataCenterVar, nil
 }
 
 //
@@ -3659,12 +4061,13 @@ func (op *DataCenterService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DataCenterService) Remove (
+func (op *DataCenterService) Remove(
     force bool,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3673,7 +4076,8 @@ func (op *DataCenterService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -3698,12 +4102,14 @@ func (op *DataCenterService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DataCenterService) Update (
+func (op *DataCenterService) Update(
     dataCenter *DataCenter,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DataCenter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3711,7 +4117,10 @@ func (op *DataCenterService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(dataCenter, headers, query, wait)
+    ovResp, err := op.internalUpdate(dataCenter, headers, query, wait)
+    var dataCenterVar *DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
+    return dataCenterVar, nil
 }
 
 //
@@ -3874,18 +4283,26 @@ func NewDataCentersService(connection *Connection, path string) *DataCentersServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DataCentersService) Add (
+func (op *DataCentersService) Add(
     dataCenter *DataCenter,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DataCenter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(dataCenter, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(dataCenter, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *DataCenter")
+    }
+    var dataCenterVar *DataCenter
+    xml.Unmarshal([]byte(ovResp.Body), dataCenterVar)
+    return dataCenterVar, nil
 }
 
 //
@@ -3949,14 +4366,16 @@ func (op *DataCentersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DataCentersService) List (
+func (op *DataCentersService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DataCenter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -3967,7 +4386,10 @@ func (op *DataCentersService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var dataCentersVar *DataCenters
+    xml.Unmarshal([]byte(ovResp.Body), dataCentersVar)
+    return dataCentersVar.DataCenters, nil
 }
 
 //
@@ -4029,17 +4451,22 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 // </disk_attachment>
 // ----
 //
-func (op *DiskAttachmentService) Get (
+func (op *DiskAttachmentService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentVar *DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -4058,11 +4485,12 @@ func (op *DiskAttachmentService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskAttachmentService) Remove (
+func (op *DiskAttachmentService) Remove(
     detachOnly bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4070,7 +4498,8 @@ func (op *DiskAttachmentService) Remove (
     query["detach_only"] = fmt.Sprintf("%v", detachOnly)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -4090,18 +4519,23 @@ func (op *DiskAttachmentService) Remove (
 // </disk_attachment>
 // ----
 //
-func (op *DiskAttachmentService) Update (
+func (op *DiskAttachmentService) Update(
     diskAttachment *DiskAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(diskAttachment, headers, query, wait)
+    ovResp, err := op.internalUpdate(diskAttachment, headers, query, wait)
+    var diskAttachmentVar *DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), diskAttachmentVar)
+    return diskAttachmentVar, nil
 }
 
 //
@@ -4176,34 +4610,47 @@ func NewDiskAttachmentsService(connection *Connection, path string) *DiskAttachm
 // avoid issues it is strongly recommended to always include the `active` attribute with the desired
 // value.
 //
-func (op *DiskAttachmentsService) Add (
+func (op *DiskAttachmentsService) Add(
     attachment *DiskAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(attachment, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(attachment, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *DiskAttachment")
+    }
+    var attachmentVar *DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
 // List the disk that are attached to the virtual machine.
 //
-func (op *DiskAttachmentsService) List (
+func (op *DiskAttachmentsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentsVar *DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    return attachmentsVar.DiskAttachments, nil
 }
 
 //
@@ -4249,17 +4696,22 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 
 //
 //
-func (op *DiskProfileService) Get (
+func (op *DiskProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -4269,11 +4721,12 @@ func (op *DiskProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskProfileService) Remove (
+func (op *DiskProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4281,17 +4734,20 @@ func (op *DiskProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *DiskProfileService) Update (
+func (op *DiskProfileService) Update(
     profile *DiskProfile,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4299,7 +4755,10 @@ func (op *DiskProfileService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(profile, headers, query, wait)
+    ovResp, err := op.internalUpdate(profile, headers, query, wait)
+    var profileVar *DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -4346,18 +4805,26 @@ func NewDiskProfilesService(connection *Connection, path string) *DiskProfilesSe
 
 //
 //
-func (op *DiskProfilesService) Add (
+func (op *DiskProfilesService) Add(
     profile *DiskProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *DiskProfile")
+    }
+    var profileVar *DiskProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -4367,11 +4834,13 @@ func (op *DiskProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskProfilesService) List (
+func (op *DiskProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4379,7 +4848,10 @@ func (op *DiskProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *DiskProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar.DiskProfiles, nil
 }
 
 //
@@ -4423,17 +4895,22 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 
 //
 //
-func (op *DiskSnapshotService) Get (
+func (op *DiskSnapshotService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskSnapshot,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var snapshotVar *DiskSnapshot
+    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
+    return snapshotVar, nil
 }
 
 //
@@ -4443,11 +4920,12 @@ func (op *DiskSnapshotService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskSnapshotService) Remove (
+func (op *DiskSnapshotService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4455,7 +4933,8 @@ func (op *DiskSnapshotService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -4495,11 +4974,13 @@ func NewDiskSnapshotsService(connection *Connection, path string) *DiskSnapshots
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskSnapshotsService) List (
+func (op *DiskSnapshotsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskSnapshot,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4507,7 +4988,10 @@ func (op *DiskSnapshotsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var snapshotsVar *DiskSnapshots
+    xml.Unmarshal([]byte(ovResp.Body), snapshotsVar)
+    return snapshotsVar.DiskSnapshots, nil
 }
 
 //
@@ -4637,18 +5121,26 @@ func NewDisksService(connection *Connection, path string) *DisksService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DisksService) Add (
+func (op *DisksService) Add(
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(disk, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(disk, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Disk")
+    }
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -4690,13 +5182,15 @@ func (op *DisksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DisksService) List (
+func (op *DisksService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4706,7 +5200,10 @@ func (op *DisksService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -4770,17 +5267,22 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 // </domain>
 // ----
 //
-func (op *DomainService) Get (
+func (op *DomainService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Domain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var domainVar *Domain
+    xml.Unmarshal([]byte(ovResp.Body), domainVar)
+    return domainVar, nil
 }
 
 //
@@ -4840,17 +5342,22 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 
 //
 //
-func (op *DomainGroupService) Get (
+func (op *DomainGroupService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Group,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var getVar *Group
+    xml.Unmarshal([]byte(ovResp.Body), getVar)
+    return getVar, nil
 }
 
 //
@@ -4894,13 +5401,15 @@ func NewDomainGroupsService(connection *Connection, path string) *DomainGroupsSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DomainGroupsService) List (
+func (op *DomainGroupsService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Group,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -4910,7 +5419,10 @@ func (op *DomainGroupsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupsVar *Groups
+    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    return groupsVar.Groups, nil
 }
 
 //
@@ -4974,17 +5486,22 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 // </user>
 // ----
 //
-func (op *DomainUserService) Get (
+func (op *DomainUserService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *User,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var userVar *User
+    xml.Unmarshal([]byte(ovResp.Body), userVar)
+    return userVar, nil
 }
 
 //
@@ -5050,13 +5567,15 @@ func NewDomainUsersService(connection *Connection, path string) *DomainUsersServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DomainUsersService) List (
+func (op *DomainUsersService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*User,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5066,7 +5585,10 @@ func (op *DomainUsersService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var usersVar *Users
+    xml.Unmarshal([]byte(ovResp.Body), usersVar)
+    return usersVar.Users, nil
 }
 
 //
@@ -5136,11 +5658,13 @@ func NewDomainsService(connection *Connection, path string) *DomainsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DomainsService) List (
+func (op *DomainsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Domain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5148,7 +5672,10 @@ func (op *DomainsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var domainsVar *Domains
+    xml.Unmarshal([]byte(ovResp.Body), domainsVar)
+    return domainsVar.Domains, nil
 }
 
 //
@@ -5219,17 +5746,22 @@ func NewEventService(connection *Connection, path string) *EventService {
 // For example, for storage domain related events you will get the storage domain reference,
 // as well as the reference for the data center this storage domain resides in.
 //
-func (op *EventService) Get (
+func (op *EventService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Event,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var eventVar *Event
+    xml.Unmarshal([]byte(ovResp.Body), eventVar)
+    return eventVar, nil
 }
 
 //
@@ -5245,11 +5777,12 @@ func (op *EventService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *EventService) Remove (
+func (op *EventService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5257,7 +5790,8 @@ func (op *EventService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -5323,18 +5857,26 @@ func NewEventsService(connection *Connection, path string) *EventsService {
 // NOTE: When using links, like the `vm` in the previous example, only the `id` attribute is accepted. The `name`
 // attribute, if provided, is simply ignored.
 //
-func (op *EventsService) Add (
+func (op *EventsService) Add(
     event *Event,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Event,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(event, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(event, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Event")
+    }
+    var eventVar *Event
+    xml.Unmarshal([]byte(ovResp.Body), eventVar)
+    return eventVar, nil
 }
 
 //
@@ -5445,14 +5987,16 @@ func (op *EventsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *EventsService) List (
+func (op *EventsService) List(
     caseSensitive bool,
     from int64,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Event,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5463,7 +6007,10 @@ func (op *EventsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var eventsVar *Events
+    xml.Unmarshal([]byte(ovResp.Body), eventsVar)
+    return eventsVar.Events, nil
 }
 
 //
@@ -5473,18 +6020,20 @@ func (op *EventsService) List (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *EventsService) Undelete (
+func (op *EventsService) Undelete(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "undelete", headers, query, wait)
+    _, err := op.internalAction(action, "undelete", headers, query, wait)
+    return err
 }
 
 //
@@ -5529,17 +6078,22 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 
 //
 //
-func (op *ExternalComputeResourceService) Get (
+func (op *ExternalComputeResourceService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ExternalComputeResource,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var resourceVar *ExternalComputeResource
+    xml.Unmarshal([]byte(ovResp.Body), resourceVar)
+    return resourceVar, nil
 }
 
 //
@@ -5579,11 +6133,13 @@ func NewExternalComputeResourcesService(connection *Connection, path string) *Ex
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalComputeResourcesService) List (
+func (op *ExternalComputeResourcesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ExternalComputeResource,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5591,7 +6147,10 @@ func (op *ExternalComputeResourcesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var resourcesVar *ExternalComputeResources
+    xml.Unmarshal([]byte(ovResp.Body), resourcesVar)
+    return resourcesVar.ExternalComputeResources, nil
 }
 
 //
@@ -5635,17 +6194,22 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 
 //
 //
-func (op *ExternalDiscoveredHostService) Get (
+func (op *ExternalDiscoveredHostService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ExternalDiscoveredHost,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostVar *ExternalDiscoveredHost
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
@@ -5685,11 +6249,13 @@ func NewExternalDiscoveredHostsService(connection *Connection, path string) *Ext
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalDiscoveredHostsService) List (
+func (op *ExternalDiscoveredHostsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ExternalDiscoveredHost,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5697,7 +6263,10 @@ func (op *ExternalDiscoveredHostsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostsVar *ExternalDiscoveredHosts
+    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    return hostsVar.ExternalDiscoveredHosts, nil
 }
 
 //
@@ -5741,17 +6310,22 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 
 //
 //
-func (op *ExternalHostService) Get (
+func (op *ExternalHostService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ExternalHost,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostVar *ExternalHost
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
@@ -5785,17 +6359,22 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 
 //
 //
-func (op *ExternalHostGroupService) Get (
+func (op *ExternalHostGroupService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ExternalHostGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupVar *ExternalHostGroup
+    xml.Unmarshal([]byte(ovResp.Body), groupVar)
+    return groupVar, nil
 }
 
 //
@@ -5835,11 +6414,13 @@ func NewExternalHostGroupsService(connection *Connection, path string) *External
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalHostGroupsService) List (
+func (op *ExternalHostGroupsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ExternalHostGroup,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5847,7 +6428,10 @@ func (op *ExternalHostGroupsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupsVar *ExternalHostGroups
+    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    return groupsVar.ExternalHostGroups, nil
 }
 
 //
@@ -5892,18 +6476,26 @@ func NewExternalHostProvidersService(connection *Connection, path string) *Exter
 
 //
 //
-func (op *ExternalHostProvidersService) Add (
+func (op *ExternalHostProvidersService) Add(
     provider *ExternalHostProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *ExternalHostProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(provider, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(provider, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *ExternalHostProvider")
+    }
+    var providerVar *ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -5913,11 +6505,13 @@ func (op *ExternalHostProvidersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalHostProvidersService) List (
+func (op *ExternalHostProvidersService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ExternalHostProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5925,7 +6519,10 @@ func (op *ExternalHostProvidersService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providersVar *ExternalHostProviders
+    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    return providersVar.ExternalHostProviders, nil
 }
 
 //
@@ -5975,11 +6572,13 @@ func NewExternalHostsService(connection *Connection, path string) *ExternalHosts
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalHostsService) List (
+func (op *ExternalHostsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ExternalHost,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -5987,7 +6586,10 @@ func (op *ExternalHostsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostsVar *ExternalHosts
+    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    return hostsVar.ExternalHosts, nil
 }
 
 //
@@ -6032,18 +6634,20 @@ func NewExternalProviderService(connection *Connection, path string) *ExternalPr
 
 //
 //
-func (op *ExternalProviderService) ImportCertificates (
+func (op *ExternalProviderService) ImportCertificates(
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "importcertificates", headers, query, wait)
+    _, err := op.internalAction(action, "importcertificates", headers, query, wait)
+    return err
 }
 
 //
@@ -6053,18 +6657,20 @@ func (op *ExternalProviderService) ImportCertificates (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalProviderService) TestConnectivity (
+func (op *ExternalProviderService) TestConnectivity(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "testconnectivity", headers, query, wait)
+    _, err := op.internalAction(action, "testconnectivity", headers, query, wait)
+    return err
 }
 
 //
@@ -6110,17 +6716,22 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 
 //
 //
-func (op *ExternalProviderCertificateService) Get (
+func (op *ExternalProviderCertificateService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Certificate,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var certificateVar *Certificate
+    xml.Unmarshal([]byte(ovResp.Body), certificateVar)
+    return certificateVar, nil
 }
 
 //
@@ -6160,11 +6771,13 @@ func NewExternalProviderCertificatesService(connection *Connection, path string)
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalProviderCertificatesService) List (
+func (op *ExternalProviderCertificatesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Certificate,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6172,7 +6785,10 @@ func (op *ExternalProviderCertificatesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var certificatesVar *Certificates
+    xml.Unmarshal([]byte(ovResp.Body), certificatesVar)
+    return certificatesVar.Certificates, nil
 }
 
 //
@@ -6241,18 +6857,26 @@ func NewExternalVmImportsService(connection *Connection, path string) *ExternalV
 // </external_vm_import>
 // ----
 //
-func (op *ExternalVmImportsService) Add (
+func (op *ExternalVmImportsService) Add(
     import_ *ExternalVmImport,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *ExternalVmImport,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(import_, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(import_, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *ExternalVmImport")
+    }
+    var import_Var *ExternalVmImport
+    xml.Unmarshal([]byte(ovResp.Body), import_Var)
+    return import_Var, nil
 }
 
 //
@@ -6286,17 +6910,22 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 
 //
 //
-func (op *FenceAgentService) Get (
+func (op *FenceAgentService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Agent,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var agentVar *Agent
+    xml.Unmarshal([]byte(ovResp.Body), agentVar)
+    return agentVar, nil
 }
 
 //
@@ -6306,11 +6935,12 @@ func (op *FenceAgentService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FenceAgentService) Remove (
+func (op *FenceAgentService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6318,17 +6948,20 @@ func (op *FenceAgentService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *FenceAgentService) Update (
+func (op *FenceAgentService) Update(
     agent *Agent,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Agent,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6336,7 +6969,10 @@ func (op *FenceAgentService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(agent, headers, query, wait)
+    ovResp, err := op.internalUpdate(agent, headers, query, wait)
+    var agentVar *Agent
+    xml.Unmarshal([]byte(ovResp.Body), agentVar)
+    return agentVar, nil
 }
 
 //
@@ -6371,18 +7007,26 @@ func NewFenceAgentsService(connection *Connection, path string) *FenceAgentsServ
 
 //
 //
-func (op *FenceAgentsService) Add (
+func (op *FenceAgentsService) Add(
     agent *Agent,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Agent,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(agent, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(agent, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Agent")
+    }
+    var agentVar *Agent
+    xml.Unmarshal([]byte(ovResp.Body), agentVar)
+    return agentVar, nil
 }
 
 //
@@ -6392,11 +7036,13 @@ func (op *FenceAgentsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FenceAgentsService) List (
+func (op *FenceAgentsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Agent,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6404,7 +7050,10 @@ func (op *FenceAgentsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var agentsVar *Agents
+    xml.Unmarshal([]byte(ovResp.Body), agentsVar)
+    return agentsVar.Agents, nil
 }
 
 //
@@ -6448,17 +7097,22 @@ func NewFileService(connection *Connection, path string) *FileService {
 
 //
 //
-func (op *FileService) Get (
+func (op *FileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *File,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var fileVar *File
+    xml.Unmarshal([]byte(ovResp.Body), fileVar)
+    return fileVar, nil
 }
 
 //
@@ -6506,13 +7160,15 @@ func NewFilesService(connection *Connection, path string) *FilesService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FilesService) List (
+func (op *FilesService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*File,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6522,7 +7178,10 @@ func (op *FilesService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var fileVar *Files
+    xml.Unmarshal([]byte(ovResp.Body), fileVar)
+    return fileVar.Files, nil
 }
 
 //
@@ -6571,11 +7230,13 @@ func NewFilterService(connection *Connection, path string) *FilterService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FilterService) Get (
+func (op *FilterService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Filter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6583,7 +7244,10 @@ func (op *FilterService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var resultVar *Filter
+    xml.Unmarshal([]byte(ovResp.Body), resultVar)
+    return resultVar, nil
 }
 
 //
@@ -6593,11 +7257,12 @@ func (op *FilterService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FilterService) Remove (
+func (op *FilterService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6605,7 +7270,8 @@ func (op *FilterService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -6640,18 +7306,26 @@ func NewFiltersService(connection *Connection, path string) *FiltersService {
 
 //
 //
-func (op *FiltersService) Add (
+func (op *FiltersService) Add(
     filter *Filter,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Filter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(filter, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(filter, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Filter")
+    }
+    var filterVar *Filter
+    xml.Unmarshal([]byte(ovResp.Body), filterVar)
+    return filterVar, nil
 }
 
 //
@@ -6662,12 +7336,14 @@ func (op *FiltersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *FiltersService) List (
+func (op *FiltersService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Filter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6676,7 +7352,10 @@ func (op *FiltersService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var filtersVar *Filters
+    xml.Unmarshal([]byte(ovResp.Body), filtersVar)
+    return filtersVar.Filters, nil
 }
 
 //
@@ -6748,12 +7427,13 @@ func NewGlusterBricksService(connection *Connection, path string) *GlusterBricks
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) Activate (
+func (op *GlusterBricksService) Activate(
     async bool,
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -6761,7 +7441,8 @@ func (op *GlusterBricksService) Activate (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "activate", headers, query, wait)
+    _, err := op.internalAction(action, "activate", headers, query, wait)
+    return err
 }
 
 //
@@ -6790,13 +7471,15 @@ func (op *GlusterBricksService) Activate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) Add (
+func (op *GlusterBricksService) Add(
     bricks []*GlusterBrick,
     replicaCount int64,
     stripeCount int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        []*GlusterBrick,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6804,8 +7487,14 @@ func (op *GlusterBricksService) Add (
     query["replica_count"] = fmt.Sprintf("%v", replicaCount)
     query["stripe_count"] = fmt.Sprintf("%v", stripeCount)
 
-    // Send the request
-    return op.internalAdd(bricks, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(bricks, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add []*GlusterBrick")
+    }
+    var bricksVar *GlusterBricks
+    xml.Unmarshal([]byte(ovResp.Body), bricksVar)
+    return bricksVar.GlusterBricks, nil
 }
 
 //
@@ -6839,11 +7528,13 @@ func (op *GlusterBricksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) List (
+func (op *GlusterBricksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GlusterBrick,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6851,7 +7542,10 @@ func (op *GlusterBricksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var bricksVar *GlusterBricks
+    xml.Unmarshal([]byte(ovResp.Body), bricksVar)
+    return bricksVar.GlusterBricks, nil
 }
 
 //
@@ -6885,12 +7579,13 @@ func (op *GlusterBricksService) List (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) Migrate (
+func (op *GlusterBricksService) Migrate(
     async bool,
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -6898,7 +7593,8 @@ func (op *GlusterBricksService) Migrate (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "migrate", headers, query, wait)
+    _, err := op.internalAction(action, "migrate", headers, query, wait)
+    return err
 }
 
 //
@@ -6928,13 +7624,14 @@ func (op *GlusterBricksService) Migrate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) Remove (
+func (op *GlusterBricksService) Remove(
     bricks []*GlusterBrick,
     replicaCount int64,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -6944,7 +7641,8 @@ func (op *GlusterBricksService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -6974,12 +7672,13 @@ func (op *GlusterBricksService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBricksService) StopMigrate (
+func (op *GlusterBricksService) StopMigrate(
     async bool,
     bricks []*GlusterBrick,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -6987,7 +7686,8 @@ func (op *GlusterBricksService) StopMigrate (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "stopmigrate", headers, query, wait)
+    _, err := op.internalAction(action, "stopmigrate", headers, query, wait)
+    return err
 }
 
 //
@@ -7039,18 +7739,20 @@ func NewGlusterHookService(connection *Connection, path string) *GlusterHookServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterHookService) Disable (
+func (op *GlusterHookService) Disable(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "disable", headers, query, wait)
+    _, err := op.internalAction(action, "disable", headers, query, wait)
+    return err
 }
 
 //
@@ -7062,33 +7764,40 @@ func (op *GlusterHookService) Disable (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterHookService) Enable (
+func (op *GlusterHookService) Enable(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "enable", headers, query, wait)
+    _, err := op.internalAction(action, "enable", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *GlusterHookService) Get (
+func (op *GlusterHookService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GlusterHook,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hookVar *GlusterHook
+    xml.Unmarshal([]byte(ovResp.Body), hookVar)
+    return hookVar, nil
 }
 
 //
@@ -7099,11 +7808,12 @@ func (op *GlusterHookService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterHookService) Remove (
+func (op *GlusterHookService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7111,7 +7821,8 @@ func (op *GlusterHookService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -7128,13 +7839,14 @@ func (op *GlusterHookService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterHookService) Resolve (
+func (op *GlusterHookService) Resolve(
     async bool,
     host *Host,
     resolutionType string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -7143,7 +7855,8 @@ func (op *GlusterHookService) Resolve (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "resolve", headers, query, wait)
+    _, err := op.internalAction(action, "resolve", headers, query, wait)
+    return err
 }
 
 //
@@ -7183,11 +7896,13 @@ func NewGlusterHooksService(connection *Connection, path string) *GlusterHooksSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterHooksService) List (
+func (op *GlusterHooksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GlusterHook,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7195,7 +7910,10 @@ func (op *GlusterHooksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hooksVar *GlusterHooks
+    xml.Unmarshal([]byte(ovResp.Body), hooksVar)
+    return hooksVar.GlusterHooks, nil
 }
 
 //
@@ -7278,18 +7996,26 @@ func NewGlusterVolumesService(connection *Connection, path string) *GlusterVolum
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumesService) Add (
+func (op *GlusterVolumesService) Add(
     volume *GlusterVolume,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *GlusterVolume,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(volume, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(volume, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *GlusterVolume")
+    }
+    var volumeVar *GlusterVolume
+    xml.Unmarshal([]byte(ovResp.Body), volumeVar)
+    return volumeVar, nil
 }
 
 //
@@ -7310,13 +8036,15 @@ func (op *GlusterVolumesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumesService) List (
+func (op *GlusterVolumesService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GlusterVolume,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7326,7 +8054,10 @@ func (op *GlusterVolumesService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var volumesVar *GlusterVolumes
+    xml.Unmarshal([]byte(ovResp.Body), volumesVar)
+    return volumesVar.GlusterVolumes, nil
 }
 
 //
@@ -7374,17 +8105,22 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 
 //
 //
-func (op *GroupService) Get (
+func (op *GroupService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Group,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var getVar *Group
+    xml.Unmarshal([]byte(ovResp.Body), getVar)
+    return getVar, nil
 }
 
 //
@@ -7394,11 +8130,12 @@ func (op *GroupService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GroupService) Remove (
+func (op *GroupService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7406,7 +8143,8 @@ func (op *GroupService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -7494,18 +8232,26 @@ func NewGroupsService(connection *Connection, path string) *GroupsService {
 // </group>
 // ----
 //
-func (op *GroupsService) Add (
+func (op *GroupsService) Add(
     group *Group,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Group,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(group, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(group, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Group")
+    }
+    var groupVar *Group
+    xml.Unmarshal([]byte(ovResp.Body), groupVar)
+    return groupVar, nil
 }
 
 //
@@ -7519,13 +8265,15 @@ func (op *GroupsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GroupsService) List (
+func (op *GroupsService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Group,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7535,7 +8283,10 @@ func (op *GroupsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var groupsVar *Groups
+    xml.Unmarshal([]byte(ovResp.Body), groupsVar)
+    return groupsVar.Groups, nil
 }
 
 //
@@ -7597,17 +8348,22 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 // </host_device>
 // ----
 //
-func (op *HostDeviceService) Get (
+func (op *HostDeviceService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *HostDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var deviceVar *HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
+    return deviceVar, nil
 }
 
 //
@@ -7649,11 +8405,13 @@ func NewHostDevicesService(connection *Connection, path string) *HostDevicesServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostDevicesService) List (
+func (op *HostDevicesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*HostDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7661,7 +8419,10 @@ func (op *HostDevicesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var devicesVar *HostDevices
+    xml.Unmarshal([]byte(ovResp.Body), devicesVar)
+    return devicesVar.HostDevices, nil
 }
 
 //
@@ -7706,17 +8467,22 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 
 //
 //
-func (op *HostHookService) Get (
+func (op *HostHookService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Hook,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hookVar *Hook
+    xml.Unmarshal([]byte(ovResp.Body), hookVar)
+    return hookVar, nil
 }
 
 //
@@ -7756,11 +8522,13 @@ func NewHostHooksService(connection *Connection, path string) *HostHooksService 
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostHooksService) List (
+func (op *HostHooksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Hook,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7768,7 +8536,10 @@ func (op *HostHooksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hooksVar *Hooks
+    xml.Unmarshal([]byte(ovResp.Body), hooksVar)
+    return hooksVar.Hooks, nil
 }
 
 //
@@ -7819,11 +8590,13 @@ func NewHostNicsService(connection *Connection, path string) *HostNicsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostNicsService) List (
+func (op *HostNicsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*HostNic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7831,7 +8604,10 @@ func (op *HostNicsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicsVar *HostNics
+    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    return nicsVar.HostNics, nil
 }
 
 //
@@ -7882,11 +8658,13 @@ func NewHostNumaNodesService(connection *Connection, path string) *HostNumaNodes
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostNumaNodesService) List (
+func (op *HostNumaNodesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*NumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -7894,7 +8672,10 @@ func (op *HostNumaNodesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nodesVar *NumaNodes
+    xml.Unmarshal([]byte(ovResp.Body), nodesVar)
+    return nodesVar.NumaNodes, nil
 }
 
 //
@@ -8003,11 +8784,13 @@ func NewHostStorageService(connection *Connection, path string) *HostStorageServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostStorageService) List (
+func (op *HostStorageService) List(
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*HostStorage,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8015,7 +8798,10 @@ func (op *HostStorageService) List (
     query["report_status"] = fmt.Sprintf("%v", reportStatus)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storagesVar *HostStorages
+    xml.Unmarshal([]byte(ovResp.Body), storagesVar)
+    return storagesVar.HostStorages, nil
 }
 
 //
@@ -8092,13 +8878,15 @@ func NewHostsService(connection *Connection, path string) *HostsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostsService) Add (
+func (op *HostsService) Add(
     host *Host,
     deployHostedEngine bool,
     undeployHostedEngine bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8106,8 +8894,14 @@ func (op *HostsService) Add (
     query["deploy_hosted_engine"] = fmt.Sprintf("%v", deployHostedEngine)
     query["undeploy_hosted_engine"] = fmt.Sprintf("%v", undeployHostedEngine)
 
-    // Send the request
-    return op.internalAdd(host, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(host, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Host")
+    }
+    var hostVar *Host
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
@@ -8140,14 +8934,16 @@ func (op *HostsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostsService) List (
+func (op *HostsService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8158,7 +8954,10 @@ func (op *HostsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostsVar *Hosts
+    xml.Unmarshal([]byte(ovResp.Body), hostsVar)
+    return hostsVar.Hosts, nil
 }
 
 //
@@ -8217,17 +9016,22 @@ func NewIconService(connection *Connection, path string) *IconService {
 // </icon>
 // ----
 //
-func (op *IconService) Get (
+func (op *IconService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Icon,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var iconVar *Icon
+    xml.Unmarshal([]byte(ovResp.Body), iconVar)
+    return iconVar, nil
 }
 
 //
@@ -8284,11 +9088,13 @@ func NewIconsService(connection *Connection, path string) *IconsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *IconsService) List (
+func (op *IconsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Icon,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8296,7 +9102,10 @@ func (op *IconsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var iconsVar *Icons
+    xml.Unmarshal([]byte(ovResp.Body), iconsVar)
+    return iconsVar.Icons, nil
 }
 
 //
@@ -8341,17 +9150,22 @@ func NewImageService(connection *Connection, path string) *ImageService {
 
 //
 //
-func (op *ImageService) Get (
+func (op *ImageService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Image,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imageVar *Image
+    xml.Unmarshal([]byte(ovResp.Body), imageVar)
+    return imageVar, nil
 }
 
 //
@@ -8368,7 +9182,7 @@ func (op *ImageService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ImageService) Import (
+func (op *ImageService) Import(
     async bool,
     cluster *Cluster,
     disk *Disk,
@@ -8377,7 +9191,8 @@ func (op *ImageService) Import (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -8389,7 +9204,8 @@ func (op *ImageService) Import (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "import", headers, query, wait)
+    _, err := op.internalAction(action, "import", headers, query, wait)
+    return err
 }
 
 //
@@ -8569,16 +9385,18 @@ func NewImageTransferService(connection *Connection, path string) *ImageTransfer
 //
 // Extend the image transfer session.
 //
-func (op *ImageTransferService) Extend (
+func (op *ImageTransferService) Extend(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "extend", headers, query, wait)
+    _, err := op.internalAction(action, "extend", headers, query, wait)
+    return err
 }
 
 //
@@ -8588,47 +9406,56 @@ func (op *ImageTransferService) Extend (
 // if the image entity is a QCOW disk, the data uploaded is indeed a QCOW file,
 // and that the image doesn't have a backing file.
 //
-func (op *ImageTransferService) Finalize (
+func (op *ImageTransferService) Finalize(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "finalize", headers, query, wait)
+    _, err := op.internalAction(action, "finalize", headers, query, wait)
+    return err
 }
 
 //
 // Get the image transfer entity.
 //
-func (op *ImageTransferService) Get (
+func (op *ImageTransferService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ImageTransfer,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imageTransferVar *ImageTransfer
+    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
+    return imageTransferVar, nil
 }
 
 //
 // Pause the image transfer session.
 //
-func (op *ImageTransferService) Pause (
+func (op *ImageTransferService) Pause(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "pause", headers, query, wait)
+    _, err := op.internalAction(action, "pause", headers, query, wait)
+    return err
 }
 
 //
@@ -8644,16 +9471,18 @@ func (op *ImageTransferService) Pause (
 //    transfer = transfer_service.get()
 // ----
 //
-func (op *ImageTransferService) Resume (
+func (op *ImageTransferService) Resume(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "resume", headers, query, wait)
+    _, err := op.internalAction(action, "resume", headers, query, wait)
+    return err
 }
 
 //
@@ -8693,35 +9522,48 @@ func NewImageTransfersService(connection *Connection, path string) *ImageTransfe
 // Add a new image transfer. An image needs to be specified in order to make
 // a new transfer.
 //
-func (op *ImageTransfersService) Add (
+func (op *ImageTransfersService) Add(
     imageTransfer *ImageTransfer,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *ImageTransfer,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(imageTransfer, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(imageTransfer, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *ImageTransfer")
+    }
+    var imageTransferVar *ImageTransfer
+    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
+    return imageTransferVar, nil
 }
 
 //
 // Retrieves the list of image transfers that are currently
 // being performed.
 //
-func (op *ImageTransfersService) List (
+func (op *ImageTransfersService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ImageTransfer,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imageTransferVar *ImageTransfers
+    xml.Unmarshal([]byte(ovResp.Body), imageTransferVar)
+    return imageTransferVar.ImageTransfers, nil
 }
 
 //
@@ -8773,11 +9615,13 @@ func NewImagesService(connection *Connection, path string) *ImagesService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ImagesService) List (
+func (op *ImagesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Image,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8785,7 +9629,10 @@ func (op *ImagesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imagesVar *Images
+    xml.Unmarshal([]byte(ovResp.Body), imagesVar)
+    return imagesVar.Images, nil
 }
 
 //
@@ -8837,17 +9684,22 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 // GET /ovirt-engine/api/instancetypes/123
 // ----
 //
-func (op *InstanceTypeService) Get (
+func (op *InstanceTypeService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *InstanceType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var instanceTypeVar *InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
+    return instanceTypeVar, nil
 }
 
 //
@@ -8864,11 +9716,12 @@ func (op *InstanceTypeService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeService) Remove (
+func (op *InstanceTypeService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8876,7 +9729,8 @@ func (op *InstanceTypeService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -8905,12 +9759,14 @@ func (op *InstanceTypeService) Remove (
 // </instance_type>
 // ----
 //
-func (op *InstanceTypeService) Update (
+func (op *InstanceTypeService) Update(
     instanceType *InstanceType,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *InstanceType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -8918,7 +9774,10 @@ func (op *InstanceTypeService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(instanceType, headers, query, wait)
+    ovResp, err := op.internalUpdate(instanceType, headers, query, wait)
+    var instanceTypeVar *InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
+    return instanceTypeVar, nil
 }
 
 //
@@ -8993,17 +9852,22 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 //
 // Gets graphics console configuration of the instance type.
 //
-func (op *InstanceTypeGraphicsConsoleService) Get (
+func (op *InstanceTypeGraphicsConsoleService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -9014,11 +9878,12 @@ func (op *InstanceTypeGraphicsConsoleService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeGraphicsConsoleService) Remove (
+func (op *InstanceTypeGraphicsConsoleService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9026,7 +9891,8 @@ func (op *InstanceTypeGraphicsConsoleService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -9062,18 +9928,26 @@ func NewInstanceTypeGraphicsConsolesService(connection *Connection, path string)
 //
 // Add new graphics console to the instance type.
 //
-func (op *InstanceTypeGraphicsConsolesService) Add (
+func (op *InstanceTypeGraphicsConsolesService) Add(
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(console, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(console, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *GraphicsConsole")
+    }
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -9084,11 +9958,13 @@ func (op *InstanceTypeGraphicsConsolesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeGraphicsConsolesService) List (
+func (op *InstanceTypeGraphicsConsolesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9096,7 +9972,10 @@ func (op *InstanceTypeGraphicsConsolesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consolesVar *GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    return consolesVar.GraphicsConsoles, nil
 }
 
 //
@@ -9142,17 +10021,22 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 //
 // Gets network interface configuration of the instance type.
 //
-func (op *InstanceTypeNicService) Get (
+func (op *InstanceTypeNicService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -9163,11 +10047,12 @@ func (op *InstanceTypeNicService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeNicService) Remove (
+func (op *InstanceTypeNicService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9175,18 +10060,21 @@ func (op *InstanceTypeNicService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 // Updates the network interface configuration of the instance type.
 //
-func (op *InstanceTypeNicService) Update (
+func (op *InstanceTypeNicService) Update(
     nic *Nic,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9194,7 +10082,10 @@ func (op *InstanceTypeNicService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(nic, headers, query, wait)
+    ovResp, err := op.internalUpdate(nic, headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -9230,18 +10121,26 @@ func NewInstanceTypeNicsService(connection *Connection, path string) *InstanceTy
 //
 // Add new network interface to the instance type.
 //
-func (op *InstanceTypeNicsService) Add (
+func (op *InstanceTypeNicsService) Add(
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(nic, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(nic, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Nic")
+    }
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -9253,12 +10152,14 @@ func (op *InstanceTypeNicsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeNicsService) List (
+func (op *InstanceTypeNicsService) List(
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9267,7 +10168,10 @@ func (op *InstanceTypeNicsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicsVar *Nics
+    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    return nicsVar.Nics, nil
 }
 
 //
@@ -9312,17 +10216,22 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 //
 // Gets watchdog configuration of the instance type.
 //
-func (op *InstanceTypeWatchdogService) Get (
+func (op *InstanceTypeWatchdogService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -9333,11 +10242,12 @@ func (op *InstanceTypeWatchdogService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeWatchdogService) Remove (
+func (op *InstanceTypeWatchdogService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9345,18 +10255,21 @@ func (op *InstanceTypeWatchdogService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 // Updates the watchdog configuration of the instance type.
 //
-func (op *InstanceTypeWatchdogService) Update (
+func (op *InstanceTypeWatchdogService) Update(
     watchdog *Watchdog,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9364,7 +10277,10 @@ func (op *InstanceTypeWatchdogService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(watchdog, headers, query, wait)
+    ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -9400,18 +10316,26 @@ func NewInstanceTypeWatchdogsService(connection *Connection, path string) *Insta
 //
 // Add new watchdog to the instance type.
 //
-func (op *InstanceTypeWatchdogsService) Add (
+func (op *InstanceTypeWatchdogsService) Add(
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(watchdog, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(watchdog, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Watchdog")
+    }
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -9424,12 +10348,14 @@ func (op *InstanceTypeWatchdogsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypeWatchdogsService) List (
+func (op *InstanceTypeWatchdogsService) List(
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9438,7 +10364,10 @@ func (op *InstanceTypeWatchdogsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogsVar *Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    return watchdogsVar.Watchdogs, nil
 }
 
 //
@@ -9562,18 +10491,26 @@ func NewInstanceTypesService(connection *Connection, path string) *InstanceTypes
 // </instance_type>
 // ----
 //
-func (op *InstanceTypesService) Add (
+func (op *InstanceTypesService) Add(
     instanceType *InstanceType,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *InstanceType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(instanceType, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(instanceType, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *InstanceType")
+    }
+    var instanceTypeVar *InstanceType
+    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
+    return instanceTypeVar, nil
 }
 
 //
@@ -9589,13 +10526,15 @@ func (op *InstanceTypesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *InstanceTypesService) List (
+func (op *InstanceTypesService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*InstanceType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9605,7 +10544,10 @@ func (op *InstanceTypesService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var instanceTypeVar *InstanceTypes
+    xml.Unmarshal([]byte(ovResp.Body), instanceTypeVar)
+    return instanceTypeVar.InstanceTypes, nil
 }
 
 //
@@ -9651,17 +10593,22 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 
 //
 //
-func (op *IscsiBondService) Get (
+func (op *IscsiBondService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *IscsiBond,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var bondVar *IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), bondVar)
+    return bondVar, nil
 }
 
 //
@@ -9677,11 +10624,12 @@ func (op *IscsiBondService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *IscsiBondService) Remove (
+func (op *IscsiBondService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9689,7 +10637,8 @@ func (op *IscsiBondService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -9709,12 +10658,14 @@ func (op *IscsiBondService) Remove (
 // </iscsi_bond>
 // ----
 //
-func (op *IscsiBondService) Update (
+func (op *IscsiBondService) Update(
     bond *IscsiBond,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *IscsiBond,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9722,7 +10673,10 @@ func (op *IscsiBondService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(bond, headers, query, wait)
+    ovResp, err := op.internalUpdate(bond, headers, query, wait)
+    var bondVar *IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), bondVar)
+    return bondVar, nil
 }
 
 //
@@ -9802,18 +10756,26 @@ func NewIscsiBondsService(connection *Connection, path string) *IscsiBondsServic
 // </iscsi_bond>
 // ----
 //
-func (op *IscsiBondsService) Add (
+func (op *IscsiBondsService) Add(
     bond *IscsiBond,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *IscsiBond,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(bond, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(bond, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *IscsiBond")
+    }
+    var bondVar *IscsiBond
+    xml.Unmarshal([]byte(ovResp.Body), bondVar)
+    return bondVar, nil
 }
 
 //
@@ -9823,11 +10785,13 @@ func (op *IscsiBondsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *IscsiBondsService) List (
+func (op *IscsiBondsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*IscsiBond,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -9835,7 +10799,10 @@ func (op *IscsiBondsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var bondsVar *IscsiBonds
+    xml.Unmarshal([]byte(ovResp.Body), bondsVar)
+    return bondsVar.IscsiBonds, nil
 }
 
 //
@@ -9897,18 +10864,20 @@ func NewJobService(connection *Connection, path string) *JobService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *JobService) Clear (
+func (op *JobService) Clear(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "clear", headers, query, wait)
+    _, err := op.internalAction(action, "clear", headers, query, wait)
+    return err
 }
 
 //
@@ -9935,13 +10904,14 @@ func (op *JobService) Clear (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *JobService) End (
+func (op *JobService) End(
     async bool,
     force bool,
     succeeded bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -9950,7 +10920,8 @@ func (op *JobService) End (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "end", headers, query, wait)
+    _, err := op.internalAction(action, "end", headers, query, wait)
+    return err
 }
 
 //
@@ -9979,17 +10950,22 @@ func (op *JobService) End (
 // </job>
 // ----
 //
-func (op *JobService) Get (
+func (op *JobService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Job,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var jobVar *Job
+    xml.Unmarshal([]byte(ovResp.Body), jobVar)
+    return jobVar, nil
 }
 
 //
@@ -10075,18 +11051,26 @@ func NewJobsService(connection *Connection, path string) *JobsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *JobsService) Add (
+func (op *JobsService) Add(
     job *Job,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Job,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(job, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(job, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Job")
+    }
+    var jobVar *Job
+    xml.Unmarshal([]byte(ovResp.Body), jobVar)
+    return jobVar, nil
 }
 
 //
@@ -10123,11 +11107,13 @@ func (op *JobsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *JobsService) List (
+func (op *JobsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Job,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10135,7 +11121,10 @@ func (op *JobsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var jobsVar *Jobs
+    xml.Unmarshal([]byte(ovResp.Body), jobsVar)
+    return jobsVar.Jobs, nil
 }
 
 //
@@ -10215,11 +11204,13 @@ func NewKatelloErrataService(connection *Connection, path string) *KatelloErrata
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *KatelloErrataService) List (
+func (op *KatelloErrataService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*KatelloErratum,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10227,7 +11218,10 @@ func (op *KatelloErrataService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var errataVar *KatelloErratums
+    xml.Unmarshal([]byte(ovResp.Body), errataVar)
+    return errataVar.KatelloErratums, nil
 }
 
 //
@@ -10298,17 +11292,22 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 // </katello_erratum>
 // ----
 //
-func (op *KatelloErratumService) Get (
+func (op *KatelloErratumService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *KatelloErratum,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var erratumVar *KatelloErratum
+    xml.Unmarshal([]byte(ovResp.Body), erratumVar)
+    return erratumVar, nil
 }
 
 //
@@ -10342,17 +11341,22 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 
 //
 //
-func (op *MacPoolService) Get (
+func (op *MacPoolService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *MacPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var poolVar *MacPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -10368,11 +11372,12 @@ func (op *MacPoolService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *MacPoolService) Remove (
+func (op *MacPoolService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10380,7 +11385,8 @@ func (op *MacPoolService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -10411,12 +11417,14 @@ func (op *MacPoolService) Remove (
 // </mac_pool>
 // ----
 //
-func (op *MacPoolService) Update (
+func (op *MacPoolService) Update(
     pool *MacPool,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *MacPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10424,7 +11432,10 @@ func (op *MacPoolService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(pool, headers, query, wait)
+    ovResp, err := op.internalUpdate(pool, headers, query, wait)
+    var poolVar *MacPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -10482,18 +11493,26 @@ func NewMacPoolsService(connection *Connection, path string) *MacPoolsService {
 // </mac_pool>
 // ----
 //
-func (op *MacPoolsService) Add (
+func (op *MacPoolsService) Add(
     pool *MacPool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *MacPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(pool, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(pool, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *MacPool")
+    }
+    var poolVar *MacPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -10503,11 +11522,13 @@ func (op *MacPoolsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *MacPoolsService) List (
+func (op *MacPoolsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*MacPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10515,7 +11536,10 @@ func (op *MacPoolsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var poolsVar *MacPools
+    xml.Unmarshal([]byte(ovResp.Body), poolsVar)
+    return poolsVar.MacPools, nil
 }
 
 //
@@ -10606,18 +11630,20 @@ func NewMoveableService(connection *Connection, path string) *MoveableService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *MoveableService) Move (
+func (op *MoveableService) Move(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "move", headers, query, wait)
+    _, err := op.internalAction(action, "move", headers, query, wait)
+    return err
 }
 
 //
@@ -10678,17 +11704,22 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 // </network>
 // ----
 //
-func (op *NetworkService) Get (
+func (op *NetworkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -10712,11 +11743,12 @@ func (op *NetworkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkService) Remove (
+func (op *NetworkService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10724,7 +11756,8 @@ func (op *NetworkService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -10757,12 +11790,14 @@ func (op *NetworkService) Remove (
 // </network>
 // ----
 //
-func (op *NetworkService) Update (
+func (op *NetworkService) Update(
     network *Network,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10770,7 +11805,10 @@ func (op *NetworkService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(network, headers, query, wait)
+    ovResp, err := op.internalUpdate(network, headers, query, wait)
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -10843,17 +11881,22 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 
 //
 //
-func (op *NetworkAttachmentService) Get (
+func (op *NetworkAttachmentService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *NetworkAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentVar *NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -10863,11 +11906,12 @@ func (op *NetworkAttachmentService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkAttachmentService) Remove (
+func (op *NetworkAttachmentService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10875,17 +11919,20 @@ func (op *NetworkAttachmentService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *NetworkAttachmentService) Update (
+func (op *NetworkAttachmentService) Update(
     attachment *NetworkAttachment,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *NetworkAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10893,7 +11940,10 @@ func (op *NetworkAttachmentService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(attachment, headers, query, wait)
+    ovResp, err := op.internalUpdate(attachment, headers, query, wait)
+    var attachmentVar *NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -10928,18 +11978,26 @@ func NewNetworkAttachmentsService(connection *Connection, path string) *NetworkA
 
 //
 //
-func (op *NetworkAttachmentsService) Add (
+func (op *NetworkAttachmentsService) Add(
     attachment *NetworkAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *NetworkAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(attachment, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(attachment, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *NetworkAttachment")
+    }
+    var attachmentVar *NetworkAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -10949,11 +12007,13 @@ func (op *NetworkAttachmentsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkAttachmentsService) List (
+func (op *NetworkAttachmentsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*NetworkAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -10961,7 +12021,10 @@ func (op *NetworkAttachmentsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentsVar *NetworkAttachments
+    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    return attachmentsVar.NetworkAttachments, nil
 }
 
 //
@@ -11020,17 +12083,22 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 //
 // Retrieves a representation of the network filter.
 //
-func (op *NetworkFilterService) Get (
+func (op *NetworkFilterService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *NetworkFilter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkFilterVar *NetworkFilter
+    xml.Unmarshal([]byte(ovResp.Body), networkFilterVar)
+    return networkFilterVar, nil
 }
 
 //
@@ -11066,17 +12134,22 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 //
 // Retrieves a representation of the network filter parameter.
 //
-func (op *NetworkFilterParameterService) Get (
+func (op *NetworkFilterParameterService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *NetworkFilterParameter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var parameterVar *NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
+    return parameterVar, nil
 }
 
 //
@@ -11088,17 +12161,19 @@ func (op *NetworkFilterParameterService) Get (
 // DELETE /ovirt-engine/api/vms/789/nics/456/networkfilterparameters/123
 // ----
 //
-func (op *NetworkFilterParameterService) Remove (
+func (op *NetworkFilterParameterService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -11123,18 +12198,23 @@ func (op *NetworkFilterParameterService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkFilterParameterService) Update (
+func (op *NetworkFilterParameterService) Update(
     parameter *NetworkFilterParameter,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *NetworkFilterParameter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(parameter, headers, query, wait)
+    ovResp, err := op.internalUpdate(parameter, headers, query, wait)
+    var parameterVar *NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
+    return parameterVar, nil
 }
 
 //
@@ -11190,34 +12270,47 @@ func NewNetworkFilterParametersService(connection *Connection, path string) *Net
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkFilterParametersService) Add (
+func (op *NetworkFilterParametersService) Add(
     parameter *NetworkFilterParameter,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *NetworkFilterParameter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(parameter, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(parameter, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *NetworkFilterParameter")
+    }
+    var parameterVar *NetworkFilterParameter
+    xml.Unmarshal([]byte(ovResp.Body), parameterVar)
+    return parameterVar, nil
 }
 
 //
 // Retrieves the representations of the network filter parameters.
 //
-func (op *NetworkFilterParametersService) List (
+func (op *NetworkFilterParametersService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*NetworkFilterParameter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var parametersVar *NetworkFilterParameters
+    xml.Unmarshal([]byte(ovResp.Body), parametersVar)
+    return parametersVar.NetworkFilterParameters, nil
 }
 
 //
@@ -11315,17 +12408,22 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 //
 // Retrieves the representations of the network filters.
 //
-func (op *NetworkFiltersService) List (
+func (op *NetworkFiltersService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*NetworkFilter,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var filtersVar *NetworkFilters
+    xml.Unmarshal([]byte(ovResp.Body), filtersVar)
+    return filtersVar.NetworkFilters, nil
 }
 
 //
@@ -11369,17 +12467,22 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 
 //
 //
-func (op *NetworkLabelService) Get (
+func (op *NetworkLabelService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *NetworkLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelVar *NetworkLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
@@ -11395,11 +12498,12 @@ func (op *NetworkLabelService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkLabelService) Remove (
+func (op *NetworkLabelService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11407,7 +12511,8 @@ func (op *NetworkLabelService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -11455,18 +12560,26 @@ func NewNetworkLabelsService(connection *Connection, path string) *NetworkLabels
 // <label id="mylabel"/>
 // ----
 //
-func (op *NetworkLabelsService) Add (
+func (op *NetworkLabelsService) Add(
     label *NetworkLabel,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *NetworkLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(label, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(label, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *NetworkLabel")
+    }
+    var labelVar *NetworkLabel
+    xml.Unmarshal([]byte(ovResp.Body), labelVar)
+    return labelVar, nil
 }
 
 //
@@ -11476,11 +12589,13 @@ func (op *NetworkLabelsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworkLabelsService) List (
+func (op *NetworkLabelsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*NetworkLabel,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11488,7 +12603,10 @@ func (op *NetworkLabelsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var labelsVar *NetworkLabels
+    xml.Unmarshal([]byte(ovResp.Body), labelsVar)
+    return labelsVar.NetworkLabels, nil
 }
 
 //
@@ -11564,18 +12682,26 @@ func NewNetworksService(connection *Connection, path string) *NetworksService {
 // </network>
 // ----
 //
-func (op *NetworksService) Add (
+func (op *NetworksService) Add(
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(network, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(network, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Network")
+    }
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -11615,13 +12741,15 @@ func (op *NetworksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *NetworksService) List (
+func (op *NetworksService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11631,7 +12759,10 @@ func (op *NetworksService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networksVar *Networks
+    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    return networksVar.Networks, nil
 }
 
 //
@@ -11676,17 +12807,22 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 
 //
 //
-func (op *OpenstackImageService) Get (
+func (op *OpenstackImageService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackImage,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imageVar *OpenStackImage
+    xml.Unmarshal([]byte(ovResp.Body), imageVar)
+    return imageVar, nil
 }
 
 //
@@ -11718,7 +12854,7 @@ func (op *OpenstackImageService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackImageService) Import (
+func (op *OpenstackImageService) Import(
     async bool,
     cluster *Cluster,
     disk *Disk,
@@ -11727,7 +12863,8 @@ func (op *OpenstackImageService) Import (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -11739,7 +12876,8 @@ func (op *OpenstackImageService) Import (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "import", headers, query, wait)
+    _, err := op.internalAction(action, "import", headers, query, wait)
+    return err
 }
 
 //
@@ -11775,33 +12913,40 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 
 //
 //
-func (op *OpenstackImageProviderService) Get (
+func (op *OpenstackImageProviderService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackImageProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providerVar *OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
 //
-func (op *OpenstackImageProviderService) ImportCertificates (
+func (op *OpenstackImageProviderService) ImportCertificates(
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "importcertificates", headers, query, wait)
+    _, err := op.internalAction(action, "importcertificates", headers, query, wait)
+    return err
 }
 
 //
@@ -11811,11 +12956,12 @@ func (op *OpenstackImageProviderService) ImportCertificates (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackImageProviderService) Remove (
+func (op *OpenstackImageProviderService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11823,7 +12969,8 @@ func (op *OpenstackImageProviderService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -11833,28 +12980,32 @@ func (op *OpenstackImageProviderService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackImageProviderService) TestConnectivity (
+func (op *OpenstackImageProviderService) TestConnectivity(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "testconnectivity", headers, query, wait)
+    _, err := op.internalAction(action, "testconnectivity", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *OpenstackImageProviderService) Update (
+func (op *OpenstackImageProviderService) Update(
     provider *OpenStackImageProvider,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackImageProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11862,7 +13013,10 @@ func (op *OpenstackImageProviderService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(provider, headers, query, wait)
+    ovResp, err := op.internalUpdate(provider, headers, query, wait)
+    var providerVar *OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -11921,18 +13075,26 @@ func NewOpenstackImageProvidersService(connection *Connection, path string) *Ope
 
 //
 //
-func (op *OpenstackImageProvidersService) Add (
+func (op *OpenstackImageProvidersService) Add(
     provider *OpenStackImageProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackImageProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(provider, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(provider, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *OpenStackImageProvider")
+    }
+    var providerVar *OpenStackImageProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -11942,11 +13104,13 @@ func (op *OpenstackImageProvidersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackImageProvidersService) List (
+func (op *OpenstackImageProvidersService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackImageProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -11954,7 +13118,10 @@ func (op *OpenstackImageProvidersService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providersVar *OpenStackImageProviders
+    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    return providersVar.OpenStackImageProviders, nil
 }
 
 //
@@ -12005,11 +13172,13 @@ func NewOpenstackImagesService(connection *Connection, path string) *OpenstackIm
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackImagesService) List (
+func (op *OpenstackImagesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackImage,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12017,7 +13186,10 @@ func (op *OpenstackImagesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var imagesVar *OpenStackImages
+    xml.Unmarshal([]byte(ovResp.Body), imagesVar)
+    return imagesVar.OpenStackImages, nil
 }
 
 //
@@ -12063,17 +13235,22 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 
 //
 //
-func (op *OpenstackNetworkService) Get (
+func (op *OpenstackNetworkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackNetwork,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkVar *OpenStackNetwork
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -12089,12 +13266,13 @@ func (op *OpenstackNetworkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworkService) Import (
+func (op *OpenstackNetworkService) Import(
     async bool,
     dataCenter *DataCenter,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -12102,7 +13280,8 @@ func (op *OpenstackNetworkService) Import (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "import", headers, query, wait)
+    _, err := op.internalAction(action, "import", headers, query, wait)
+    return err
 }
 
 //
@@ -12157,33 +13336,40 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 // GET /ovirt-engine/api/openstacknetworkproviders/1234
 // ----
 //
-func (op *OpenstackNetworkProviderService) Get (
+func (op *OpenstackNetworkProviderService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackNetworkProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providerVar *OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
 //
-func (op *OpenstackNetworkProviderService) ImportCertificates (
+func (op *OpenstackNetworkProviderService) ImportCertificates(
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "importcertificates", headers, query, wait)
+    _, err := op.internalAction(action, "importcertificates", headers, query, wait)
+    return err
 }
 
 //
@@ -12199,11 +13385,12 @@ func (op *OpenstackNetworkProviderService) ImportCertificates (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworkProviderService) Remove (
+func (op *OpenstackNetworkProviderService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12211,7 +13398,8 @@ func (op *OpenstackNetworkProviderService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -12221,18 +13409,20 @@ func (op *OpenstackNetworkProviderService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworkProviderService) TestConnectivity (
+func (op *OpenstackNetworkProviderService) TestConnectivity(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "testconnectivity", headers, query, wait)
+    _, err := op.internalAction(action, "testconnectivity", headers, query, wait)
+    return err
 }
 
 //
@@ -12260,12 +13450,14 @@ func (op *OpenstackNetworkProviderService) TestConnectivity (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworkProviderService) Update (
+func (op *OpenstackNetworkProviderService) Update(
     provider *OpenStackNetworkProvider,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackNetworkProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12273,7 +13465,10 @@ func (op *OpenstackNetworkProviderService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(provider, headers, query, wait)
+    ovResp, err := op.internalUpdate(provider, headers, query, wait)
+    var providerVar *OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -12336,18 +13531,26 @@ func NewOpenstackNetworkProvidersService(connection *Connection, path string) *O
 // The operation adds a new network provider to the system.
 // If the `type` property is not present, a default value of `NEUTRON` will be used.
 //
-func (op *OpenstackNetworkProvidersService) Add (
+func (op *OpenstackNetworkProvidersService) Add(
     provider *OpenStackNetworkProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackNetworkProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(provider, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(provider, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *OpenStackNetworkProvider")
+    }
+    var providerVar *OpenStackNetworkProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -12357,11 +13560,13 @@ func (op *OpenstackNetworkProvidersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworkProvidersService) List (
+func (op *OpenstackNetworkProvidersService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackNetworkProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12369,7 +13574,10 @@ func (op *OpenstackNetworkProvidersService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providersVar *OpenStackNetworkProviders
+    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    return providersVar.OpenStackNetworkProviders, nil
 }
 
 //
@@ -12420,11 +13628,13 @@ func NewOpenstackNetworksService(connection *Connection, path string) *Openstack
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackNetworksService) List (
+func (op *OpenstackNetworksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackNetwork,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12432,7 +13642,10 @@ func (op *OpenstackNetworksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networksVar *OpenStackNetworks
+    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    return networksVar.OpenStackNetworks, nil
 }
 
 //
@@ -12476,17 +13689,22 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 
 //
 //
-func (op *OpenstackSubnetService) Get (
+func (op *OpenstackSubnetService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackSubnet,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var subnetVar *OpenStackSubnet
+    xml.Unmarshal([]byte(ovResp.Body), subnetVar)
+    return subnetVar, nil
 }
 
 //
@@ -12496,11 +13714,12 @@ func (op *OpenstackSubnetService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackSubnetService) Remove (
+func (op *OpenstackSubnetService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12508,7 +13727,8 @@ func (op *OpenstackSubnetService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -12543,18 +13763,26 @@ func NewOpenstackSubnetsService(connection *Connection, path string) *OpenstackS
 
 //
 //
-func (op *OpenstackSubnetsService) Add (
+func (op *OpenstackSubnetsService) Add(
     subnet *OpenStackSubnet,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackSubnet,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(subnet, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(subnet, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *OpenStackSubnet")
+    }
+    var subnetVar *OpenStackSubnet
+    xml.Unmarshal([]byte(ovResp.Body), subnetVar)
+    return subnetVar, nil
 }
 
 //
@@ -12564,11 +13792,13 @@ func (op *OpenstackSubnetsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackSubnetsService) List (
+func (op *OpenstackSubnetsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackSubnet,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12576,7 +13806,10 @@ func (op *OpenstackSubnetsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var subnetsVar *OpenStackSubnets
+    xml.Unmarshal([]byte(ovResp.Body), subnetsVar)
+    return subnetsVar.OpenStackSubnets, nil
 }
 
 //
@@ -12620,17 +13853,22 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 
 //
 //
-func (op *OpenstackVolumeAuthenticationKeyService) Get (
+func (op *OpenstackVolumeAuthenticationKeyService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenstackVolumeAuthenticationKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var keyVar *OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -12640,11 +13878,12 @@ func (op *OpenstackVolumeAuthenticationKeyService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeAuthenticationKeyService) Remove (
+func (op *OpenstackVolumeAuthenticationKeyService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12652,23 +13891,29 @@ func (op *OpenstackVolumeAuthenticationKeyService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *OpenstackVolumeAuthenticationKeyService) Update (
+func (op *OpenstackVolumeAuthenticationKeyService) Update(
     key *OpenstackVolumeAuthenticationKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenstackVolumeAuthenticationKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(key, headers, query, wait)
+    ovResp, err := op.internalUpdate(key, headers, query, wait)
+    var keyVar *OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -12703,18 +13948,26 @@ func NewOpenstackVolumeAuthenticationKeysService(connection *Connection, path st
 
 //
 //
-func (op *OpenstackVolumeAuthenticationKeysService) Add (
+func (op *OpenstackVolumeAuthenticationKeysService) Add(
     key *OpenstackVolumeAuthenticationKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenstackVolumeAuthenticationKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(key, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(key, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *OpenstackVolumeAuthenticationKey")
+    }
+    var keyVar *OpenstackVolumeAuthenticationKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -12724,11 +13977,13 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeAuthenticationKeysService) List (
+func (op *OpenstackVolumeAuthenticationKeysService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenstackVolumeAuthenticationKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12736,7 +13991,10 @@ func (op *OpenstackVolumeAuthenticationKeysService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var keysVar *OpenstackVolumeAuthenticationKeys
+    xml.Unmarshal([]byte(ovResp.Body), keysVar)
+    return keysVar.OpenstackVolumeAuthenticationKeys, nil
 }
 
 //
@@ -12783,33 +14041,40 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 
 //
 //
-func (op *OpenstackVolumeProviderService) Get (
+func (op *OpenstackVolumeProviderService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackVolumeProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providerVar *OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
 //
-func (op *OpenstackVolumeProviderService) ImportCertificates (
+func (op *OpenstackVolumeProviderService) ImportCertificates(
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "importcertificates", headers, query, wait)
+    _, err := op.internalAction(action, "importcertificates", headers, query, wait)
+    return err
 }
 
 //
@@ -12819,11 +14084,12 @@ func (op *OpenstackVolumeProviderService) ImportCertificates (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeProviderService) Remove (
+func (op *OpenstackVolumeProviderService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12831,7 +14097,8 @@ func (op *OpenstackVolumeProviderService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -12841,28 +14108,32 @@ func (op *OpenstackVolumeProviderService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeProviderService) TestConnectivity (
+func (op *OpenstackVolumeProviderService) TestConnectivity(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "testconnectivity", headers, query, wait)
+    _, err := op.internalAction(action, "testconnectivity", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *OpenstackVolumeProviderService) Update (
+func (op *OpenstackVolumeProviderService) Update(
     provider *OpenStackVolumeProvider,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackVolumeProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12870,7 +14141,10 @@ func (op *OpenstackVolumeProviderService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(provider, headers, query, wait)
+    ovResp, err := op.internalUpdate(provider, headers, query, wait)
+    var providerVar *OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -12962,18 +14236,26 @@ func NewOpenstackVolumeProvidersService(connection *Connection, path string) *Op
 // </openstack_volume_provider>
 // ----
 //
-func (op *OpenstackVolumeProvidersService) Add (
+func (op *OpenstackVolumeProvidersService) Add(
     provider *OpenStackVolumeProvider,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *OpenStackVolumeProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(provider, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(provider, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *OpenStackVolumeProvider")
+    }
+    var providerVar *OpenStackVolumeProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -12984,11 +14266,13 @@ func (op *OpenstackVolumeProvidersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeProvidersService) List (
+func (op *OpenstackVolumeProvidersService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackVolumeProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -12996,7 +14280,10 @@ func (op *OpenstackVolumeProvidersService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providersVar *OpenStackVolumeProviders
+    xml.Unmarshal([]byte(ovResp.Body), providersVar)
+    return providersVar.OpenStackVolumeProviders, nil
 }
 
 //
@@ -13040,17 +14327,22 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 
 //
 //
-func (op *OpenstackVolumeTypeService) Get (
+func (op *OpenstackVolumeTypeService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OpenStackVolumeType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var type_Var *OpenStackVolumeType
+    xml.Unmarshal([]byte(ovResp.Body), type_Var)
+    return type_Var, nil
 }
 
 //
@@ -13090,11 +14382,13 @@ func NewOpenstackVolumeTypesService(connection *Connection, path string) *Openst
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OpenstackVolumeTypesService) List (
+func (op *OpenstackVolumeTypesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OpenStackVolumeType,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13102,7 +14396,10 @@ func (op *OpenstackVolumeTypesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var typesVar *OpenStackVolumeTypes
+    xml.Unmarshal([]byte(ovResp.Body), typesVar)
+    return typesVar.OpenStackVolumeTypes, nil
 }
 
 //
@@ -13146,17 +14443,22 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 
 //
 //
-func (op *OperatingSystemService) Get (
+func (op *OperatingSystemService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *OperatingSystemInfo,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var operatingSystemVar *OperatingSystemInfo
+    xml.Unmarshal([]byte(ovResp.Body), operatingSystemVar)
+    return operatingSystemVar, nil
 }
 
 //
@@ -13196,11 +14498,13 @@ func NewOperatingSystemsService(connection *Connection, path string) *OperatingS
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *OperatingSystemsService) List (
+func (op *OperatingSystemsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*OperatingSystemInfo,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13208,7 +14512,10 @@ func (op *OperatingSystemsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var operatingSystemVar *OperatingSystemInfos
+    xml.Unmarshal([]byte(ovResp.Body), operatingSystemVar)
+    return operatingSystemVar.OperatingSystemInfos, nil
 }
 
 //
@@ -13252,17 +14559,22 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 
 //
 //
-func (op *PermissionService) Get (
+func (op *PermissionService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Permission,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var permissionVar *Permission
+    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
+    return permissionVar, nil
 }
 
 //
@@ -13272,11 +14584,12 @@ func (op *PermissionService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *PermissionService) Remove (
+func (op *PermissionService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13284,7 +14597,8 @@ func (op *PermissionService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -13333,17 +14647,22 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 // </permit>
 // ----
 //
-func (op *PermitService) Get (
+func (op *PermitService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Permit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var permitVar *Permit
+    xml.Unmarshal([]byte(ovResp.Body), permitVar)
+    return permitVar, nil
 }
 
 //
@@ -13358,11 +14677,12 @@ func (op *PermitService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *PermitService) Remove (
+func (op *PermitService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13370,7 +14690,8 @@ func (op *PermitService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -13423,18 +14744,26 @@ func NewPermitsService(connection *Connection, path string) *PermitsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *PermitsService) Add (
+func (op *PermitsService) Add(
     permit *Permit,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Permit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(permit, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(permit, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Permit")
+    }
+    var permitVar *Permit
+    xml.Unmarshal([]byte(ovResp.Body), permitVar)
+    return permitVar, nil
 }
 
 //
@@ -13464,11 +14793,13 @@ func (op *PermitsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *PermitsService) List (
+func (op *PermitsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Permit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13476,7 +14807,10 @@ func (op *PermitsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var permitsVar *Permits
+    xml.Unmarshal([]byte(ovResp.Body), permitsVar)
+    return permitsVar.Permits, nil
 }
 
 //
@@ -13521,17 +14855,22 @@ func NewQosService(connection *Connection, path string) *QosService {
 
 //
 //
-func (op *QosService) Get (
+func (op *QosService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Qos,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var qosVar *Qos
+    xml.Unmarshal([]byte(ovResp.Body), qosVar)
+    return qosVar, nil
 }
 
 //
@@ -13541,11 +14880,12 @@ func (op *QosService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QosService) Remove (
+func (op *QosService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13553,17 +14893,20 @@ func (op *QosService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *QosService) Update (
+func (op *QosService) Update(
     qos *Qos,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Qos,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13571,7 +14914,10 @@ func (op *QosService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(qos, headers, query, wait)
+    ovResp, err := op.internalUpdate(qos, headers, query, wait)
+    var qosVar *Qos
+    xml.Unmarshal([]byte(ovResp.Body), qosVar)
+    return qosVar, nil
 }
 
 //
@@ -13606,18 +14952,26 @@ func NewQossService(connection *Connection, path string) *QossService {
 
 //
 //
-func (op *QossService) Add (
+func (op *QossService) Add(
     qos *Qos,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Qos,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(qos, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(qos, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Qos")
+    }
+    var qosVar *Qos
+    xml.Unmarshal([]byte(ovResp.Body), qosVar)
+    return qosVar, nil
 }
 
 //
@@ -13627,11 +14981,13 @@ func (op *QossService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QossService) List (
+func (op *QossService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Qos,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13639,7 +14995,10 @@ func (op *QossService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var qossVar *Qoss
+    xml.Unmarshal([]byte(ovResp.Body), qossVar)
+    return qossVar.Qoss, nil
 }
 
 //
@@ -13703,17 +15062,22 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 // </quota>
 // ----
 //
-func (op *QuotaService) Get (
+func (op *QuotaService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Quota,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var quotaVar *Quota
+    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
+    return quotaVar, nil
 }
 
 //
@@ -13732,11 +15096,12 @@ func (op *QuotaService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotaService) Remove (
+func (op *QuotaService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13744,7 +15109,8 @@ func (op *QuotaService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -13764,12 +15130,14 @@ func (op *QuotaService) Remove (
 // </quota>
 // ----
 //
-func (op *QuotaService) Update (
+func (op *QuotaService) Update(
     quota *Quota,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Quota,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13777,7 +15145,10 @@ func (op *QuotaService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(quota, headers, query, wait)
+    ovResp, err := op.internalUpdate(quota, headers, query, wait)
+    var quotaVar *Quota
+    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
+    return quotaVar, nil
 }
 
 //
@@ -13847,17 +15218,22 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 
 //
 //
-func (op *QuotaClusterLimitService) Get (
+func (op *QuotaClusterLimitService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *QuotaClusterLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var limitVar *QuotaClusterLimit
+    xml.Unmarshal([]byte(ovResp.Body), limitVar)
+    return limitVar, nil
 }
 
 //
@@ -13867,11 +15243,12 @@ func (op *QuotaClusterLimitService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotaClusterLimitService) Remove (
+func (op *QuotaClusterLimitService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13879,7 +15256,8 @@ func (op *QuotaClusterLimitService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -13914,18 +15292,26 @@ func NewQuotaClusterLimitsService(connection *Connection, path string) *QuotaClu
 
 //
 //
-func (op *QuotaClusterLimitsService) Add (
+func (op *QuotaClusterLimitsService) Add(
     limit *QuotaClusterLimit,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *QuotaClusterLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(limit, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(limit, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *QuotaClusterLimit")
+    }
+    var limitVar *QuotaClusterLimit
+    xml.Unmarshal([]byte(ovResp.Body), limitVar)
+    return limitVar, nil
 }
 
 //
@@ -13935,11 +15321,13 @@ func (op *QuotaClusterLimitsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotaClusterLimitsService) List (
+func (op *QuotaClusterLimitsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*QuotaClusterLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -13947,7 +15335,10 @@ func (op *QuotaClusterLimitsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var limitsVar *QuotaClusterLimits
+    xml.Unmarshal([]byte(ovResp.Body), limitsVar)
+    return limitsVar.QuotaClusterLimits, nil
 }
 
 //
@@ -13991,17 +15382,22 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 
 //
 //
-func (op *QuotaStorageLimitService) Get (
+func (op *QuotaStorageLimitService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *QuotaStorageLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var limitVar *QuotaStorageLimit
+    xml.Unmarshal([]byte(ovResp.Body), limitVar)
+    return limitVar, nil
 }
 
 //
@@ -14011,11 +15407,12 @@ func (op *QuotaStorageLimitService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotaStorageLimitService) Remove (
+func (op *QuotaStorageLimitService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14023,7 +15420,8 @@ func (op *QuotaStorageLimitService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -14058,18 +15456,26 @@ func NewQuotaStorageLimitsService(connection *Connection, path string) *QuotaSto
 
 //
 //
-func (op *QuotaStorageLimitsService) Add (
+func (op *QuotaStorageLimitsService) Add(
     limit *QuotaStorageLimit,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *QuotaStorageLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(limit, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(limit, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *QuotaStorageLimit")
+    }
+    var limitVar *QuotaStorageLimit
+    xml.Unmarshal([]byte(ovResp.Body), limitVar)
+    return limitVar, nil
 }
 
 //
@@ -14079,11 +15485,13 @@ func (op *QuotaStorageLimitsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotaStorageLimitsService) List (
+func (op *QuotaStorageLimitsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*QuotaStorageLimit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14091,7 +15499,10 @@ func (op *QuotaStorageLimitsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var limitsVar *QuotaStorageLimits
+    xml.Unmarshal([]byte(ovResp.Body), limitsVar)
+    return limitsVar.QuotaStorageLimits, nil
 }
 
 //
@@ -14149,18 +15560,26 @@ func NewQuotasService(connection *Connection, path string) *QuotasService {
 // </quota>
 // ----
 //
-func (op *QuotasService) Add (
+func (op *QuotasService) Add(
     quota *Quota,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Quota,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(quota, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(quota, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Quota")
+    }
+    var quotaVar *Quota
+    xml.Unmarshal([]byte(ovResp.Body), quotaVar)
+    return quotaVar, nil
 }
 
 //
@@ -14171,11 +15590,13 @@ func (op *QuotasService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *QuotasService) List (
+func (op *QuotasService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Quota,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14183,7 +15604,10 @@ func (op *QuotasService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var quotasVar *Quotas
+    xml.Unmarshal([]byte(ovResp.Body), quotasVar)
+    return quotasVar.Quotas, nil
 }
 
 //
@@ -14244,17 +15668,22 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 // </role>
 // ----
 //
-func (op *RoleService) Get (
+func (op *RoleService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Role,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var roleVar *Role
+    xml.Unmarshal([]byte(ovResp.Body), roleVar)
+    return roleVar, nil
 }
 
 //
@@ -14270,11 +15699,12 @@ func (op *RoleService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *RoleService) Remove (
+func (op *RoleService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14282,7 +15712,8 @@ func (op *RoleService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -14309,12 +15740,14 @@ func (op *RoleService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *RoleService) Update (
+func (op *RoleService) Update(
     role *Role,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Role,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14322,7 +15755,10 @@ func (op *RoleService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(role, headers, query, wait)
+    ovResp, err := op.internalUpdate(role, headers, query, wait)
+    var roleVar *Role
+    xml.Unmarshal([]byte(ovResp.Body), roleVar)
+    return roleVar, nil
 }
 
 //
@@ -14396,18 +15832,26 @@ func NewRolesService(connection *Connection, path string) *RolesService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *RolesService) Add (
+func (op *RolesService) Add(
     role *Role,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Role,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(role, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(role, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Role")
+    }
+    var roleVar *Role
+    xml.Unmarshal([]byte(ovResp.Body), roleVar)
+    return roleVar, nil
 }
 
 //
@@ -14436,11 +15880,13 @@ func (op *RolesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *RolesService) List (
+func (op *RolesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Role,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14448,7 +15894,10 @@ func (op *RolesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var rolesVar *Roles
+    xml.Unmarshal([]byte(ovResp.Body), rolesVar)
+    return rolesVar.Roles, nil
 }
 
 //
@@ -14494,18 +15943,26 @@ func NewSchedulingPoliciesService(connection *Connection, path string) *Scheduli
 
 //
 //
-func (op *SchedulingPoliciesService) Add (
+func (op *SchedulingPoliciesService) Add(
     policy *SchedulingPolicy,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *SchedulingPolicy,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(policy, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(policy, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *SchedulingPolicy")
+    }
+    var policyVar *SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), policyVar)
+    return policyVar, nil
 }
 
 //
@@ -14516,12 +15973,14 @@ func (op *SchedulingPoliciesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPoliciesService) List (
+func (op *SchedulingPoliciesService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*SchedulingPolicy,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14530,7 +15989,10 @@ func (op *SchedulingPoliciesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var policiesVar *SchedulingPolicys
+    xml.Unmarshal([]byte(ovResp.Body), policiesVar)
+    return policiesVar.SchedulingPolicys, nil
 }
 
 //
@@ -14582,11 +16044,13 @@ func NewSchedulingPolicyService(connection *Connection, path string) *Scheduling
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPolicyService) Get (
+func (op *SchedulingPolicyService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *SchedulingPolicy,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14594,7 +16058,10 @@ func (op *SchedulingPolicyService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var policyVar *SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), policyVar)
+    return policyVar, nil
 }
 
 //
@@ -14604,11 +16071,12 @@ func (op *SchedulingPolicyService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPolicyService) Remove (
+func (op *SchedulingPolicyService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14616,17 +16084,20 @@ func (op *SchedulingPolicyService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *SchedulingPolicyService) Update (
+func (op *SchedulingPolicyService) Update(
     policy *SchedulingPolicy,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *SchedulingPolicy,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14634,7 +16105,10 @@ func (op *SchedulingPolicyService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(policy, headers, query, wait)
+    ovResp, err := op.internalUpdate(policy, headers, query, wait)
+    var policyVar *SchedulingPolicy
+    xml.Unmarshal([]byte(ovResp.Body), policyVar)
+    return policyVar, nil
 }
 
 //
@@ -14709,11 +16183,13 @@ func NewSchedulingPolicyUnitService(connection *Connection, path string) *Schedu
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPolicyUnitService) Get (
+func (op *SchedulingPolicyUnitService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *SchedulingPolicyUnit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14721,7 +16197,10 @@ func (op *SchedulingPolicyUnitService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var unitVar *SchedulingPolicyUnit
+    xml.Unmarshal([]byte(ovResp.Body), unitVar)
+    return unitVar, nil
 }
 
 //
@@ -14731,11 +16210,12 @@ func (op *SchedulingPolicyUnitService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPolicyUnitService) Remove (
+func (op *SchedulingPolicyUnitService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14743,7 +16223,8 @@ func (op *SchedulingPolicyUnitService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -14784,12 +16265,14 @@ func NewSchedulingPolicyUnitsService(connection *Connection, path string) *Sched
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SchedulingPolicyUnitsService) List (
+func (op *SchedulingPolicyUnitsService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*SchedulingPolicyUnit,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14798,7 +16281,10 @@ func (op *SchedulingPolicyUnitsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var unitsVar *SchedulingPolicyUnits
+    xml.Unmarshal([]byte(ovResp.Body), unitsVar)
+    return unitsVar.SchedulingPolicyUnits, nil
 }
 
 //
@@ -14845,17 +16331,22 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 
 //
 //
-func (op *SnapshotService) Get (
+func (op *SnapshotService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Snapshot,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var snapshotVar *Snapshot
+    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
+    return snapshotVar, nil
 }
 
 //
@@ -14872,12 +16363,13 @@ func (op *SnapshotService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotService) Remove (
+func (op *SnapshotService) Remove(
     async bool,
     allContent bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -14886,7 +16378,8 @@ func (op *SnapshotService) Remove (
     query["all_content"] = fmt.Sprintf("%v", allContent)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -14908,13 +16401,14 @@ func (op *SnapshotService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotService) Restore (
+func (op *SnapshotService) Restore(
     async bool,
     disks []*Disk,
     restoreMemory bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -14923,7 +16417,8 @@ func (op *SnapshotService) Restore (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "restore", headers, query, wait)
+    _, err := op.internalAction(action, "restore", headers, query, wait)
+    return err
 }
 
 //
@@ -14993,17 +16488,22 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 
 //
 //
-func (op *SnapshotCdromService) Get (
+func (op *SnapshotCdromService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromVar *Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
+    return cdromVar, nil
 }
 
 //
@@ -15043,11 +16543,13 @@ func NewSnapshotCdromsService(connection *Connection, path string) *SnapshotCdro
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotCdromsService) List (
+func (op *SnapshotCdromsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15055,7 +16557,10 @@ func (op *SnapshotCdromsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromsVar *Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    return cdromsVar.Cdroms, nil
 }
 
 //
@@ -15099,17 +16604,22 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 
 //
 //
-func (op *SnapshotDiskService) Get (
+func (op *SnapshotDiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -15149,11 +16659,13 @@ func NewSnapshotDisksService(connection *Connection, path string) *SnapshotDisks
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotDisksService) List (
+func (op *SnapshotDisksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15161,7 +16673,10 @@ func (op *SnapshotDisksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -15205,17 +16720,22 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 
 //
 //
-func (op *SnapshotNicService) Get (
+func (op *SnapshotNicService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -15255,11 +16775,13 @@ func NewSnapshotNicsService(connection *Connection, path string) *SnapshotNicsSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotNicsService) List (
+func (op *SnapshotNicsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15267,7 +16789,10 @@ func (op *SnapshotNicsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicsVar *Nics
+    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    return nicsVar.Nics, nil
 }
 
 //
@@ -15325,18 +16850,26 @@ func NewSnapshotsService(connection *Connection, path string) *SnapshotsService 
 // </snapshot>
 // ----
 //
-func (op *SnapshotsService) Add (
+func (op *SnapshotsService) Add(
     snapshot *Snapshot,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Snapshot,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(snapshot, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(snapshot, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Snapshot")
+    }
+    var snapshotVar *Snapshot
+    xml.Unmarshal([]byte(ovResp.Body), snapshotVar)
+    return snapshotVar, nil
 }
 
 //
@@ -15353,12 +16886,14 @@ func (op *SnapshotsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SnapshotsService) List (
+func (op *SnapshotsService) List(
     allContent bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Snapshot,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15367,7 +16902,10 @@ func (op *SnapshotsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var snapshotsVar *Snapshots
+    xml.Unmarshal([]byte(ovResp.Body), snapshotsVar)
+    return snapshotsVar.Snapshots, nil
 }
 
 //
@@ -15411,17 +16949,22 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 
 //
 //
-func (op *SshPublicKeyService) Get (
+func (op *SshPublicKeyService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *SshPublicKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var keyVar *SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -15431,11 +16974,12 @@ func (op *SshPublicKeyService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SshPublicKeyService) Remove (
+func (op *SshPublicKeyService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15443,17 +16987,20 @@ func (op *SshPublicKeyService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *SshPublicKeyService) Update (
+func (op *SshPublicKeyService) Update(
     key *SshPublicKey,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *SshPublicKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15461,7 +17008,10 @@ func (op *SshPublicKeyService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(key, headers, query, wait)
+    ovResp, err := op.internalUpdate(key, headers, query, wait)
+    var keyVar *SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -15496,18 +17046,26 @@ func NewSshPublicKeysService(connection *Connection, path string) *SshPublicKeys
 
 //
 //
-func (op *SshPublicKeysService) Add (
+func (op *SshPublicKeysService) Add(
     key *SshPublicKey,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *SshPublicKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(key, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(key, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *SshPublicKey")
+    }
+    var keyVar *SshPublicKey
+    xml.Unmarshal([]byte(ovResp.Body), keyVar)
+    return keyVar, nil
 }
 
 //
@@ -15517,11 +17075,13 @@ func (op *SshPublicKeysService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SshPublicKeysService) List (
+func (op *SshPublicKeysService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*SshPublicKey,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15529,7 +17089,10 @@ func (op *SshPublicKeysService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var keysVar *SshPublicKeys
+    xml.Unmarshal([]byte(ovResp.Body), keysVar)
+    return keysVar.SshPublicKeys, nil
 }
 
 //
@@ -15573,11 +17136,13 @@ func NewStatisticService(connection *Connection, path string) *StatisticService 
 
 //
 //
-func (op *StatisticService) Get (
+func (op *StatisticService) Get(
     statistic *Statistic,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Statistic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15585,7 +17150,10 @@ func (op *StatisticService) Get (
     query["statistic"] = fmt.Sprintf("%v", statistic)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var statisticVar *Statistic
+    xml.Unmarshal([]byte(ovResp.Body), statisticVar)
+    return statisticVar, nil
 }
 
 //
@@ -15674,11 +17242,13 @@ func NewStatisticsService(connection *Connection, path string) *StatisticsServic
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StatisticsService) List (
+func (op *StatisticsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Statistic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15686,7 +17256,10 @@ func (op *StatisticsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var statisticsVar *Statistics
+    xml.Unmarshal([]byte(ovResp.Body), statisticsVar)
+    return statisticsVar.Statistics, nil
 }
 
 //
@@ -15755,13 +17328,14 @@ func NewStepService(connection *Connection, path string) *StepService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StepService) End (
+func (op *StepService) End(
     async bool,
     force bool,
     succeeded bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -15770,7 +17344,8 @@ func (op *StepService) End (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "end", headers, query, wait)
+    _, err := op.internalAction(action, "end", headers, query, wait)
+    return err
 }
 
 //
@@ -15797,17 +17372,22 @@ func (op *StepService) End (
 // </step>
 // ----
 //
-func (op *StepService) Get (
+func (op *StepService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Step,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var stepVar *Step
+    xml.Unmarshal([]byte(ovResp.Body), stepVar)
+    return stepVar, nil
 }
 
 //
@@ -15894,18 +17474,26 @@ func NewStepsService(connection *Connection, path string) *StepsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StepsService) Add (
+func (op *StepsService) Add(
     step *Step,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Step,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(step, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(step, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Step")
+    }
+    var stepVar *Step
+    xml.Unmarshal([]byte(ovResp.Body), stepVar)
+    return stepVar, nil
 }
 
 //
@@ -15940,11 +17528,13 @@ func (op *StepsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StepsService) List (
+func (op *StepsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Step,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -15952,7 +17542,10 @@ func (op *StepsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var stepsVar *Steps
+    xml.Unmarshal([]byte(ovResp.Body), stepsVar)
+    return stepsVar.Steps, nil
 }
 
 //
@@ -16045,11 +17638,13 @@ func NewStorageService(connection *Connection, path string) *StorageService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageService) Get (
+func (op *StorageService) Get(
     reportStatus bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *HostStorage,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16057,7 +17652,10 @@ func (op *StorageService) Get (
     query["report_status"] = fmt.Sprintf("%v", reportStatus)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storageVar *HostStorage
+    xml.Unmarshal([]byte(ovResp.Body), storageVar)
+    return storageVar, nil
 }
 
 //
@@ -16105,11 +17703,13 @@ func NewStorageDomainService(connection *Connection, path string) *StorageDomain
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) Get (
+func (op *StorageDomainService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16117,7 +17717,10 @@ func (op *StorageDomainService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storageDomainVar *StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
+    return storageDomainVar, nil
 }
 
 //
@@ -16127,12 +17730,14 @@ func (op *StorageDomainService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) IsAttached (
+func (op *StorageDomainService) IsAttached(
     async bool,
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        bool,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -16140,7 +17745,8 @@ func (op *StorageDomainService) IsAttached (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "isattached", headers, query, wait)
+    ovResp, err := op.internalAction(action, "isattached", headers, query, wait)
+    return strconv.ParseBool(ovResp.Body)
 }
 
 //
@@ -16168,18 +17774,20 @@ func (op *StorageDomainService) IsAttached (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) ReduceLuns (
+func (op *StorageDomainService) ReduceLuns(
     logicalUnits []*LogicalUnit,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         LogicalUnits: logicalUnits,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "reduceluns", headers, query, wait)
+    _, err := op.internalAction(action, "reduceluns", headers, query, wait)
+    return err
 }
 
 //
@@ -16210,12 +17818,13 @@ func (op *StorageDomainService) ReduceLuns (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) RefreshLuns (
+func (op *StorageDomainService) RefreshLuns(
     async bool,
     logicalUnits []*LogicalUnit,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -16223,7 +17832,8 @@ func (op *StorageDomainService) RefreshLuns (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "refreshluns", headers, query, wait)
+    _, err := op.internalAction(action, "refreshluns", headers, query, wait)
+    return err
 }
 
 //
@@ -16262,14 +17872,15 @@ func (op *StorageDomainService) RefreshLuns (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) Remove (
+func (op *StorageDomainService) Remove(
     host string,
     format bool,
     destroy bool,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16280,7 +17891,8 @@ func (op *StorageDomainService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -16304,12 +17916,14 @@ func (op *StorageDomainService) Remove (
 // </storage_domain>
 // ----
 //
-func (op *StorageDomainService) Update (
+func (op *StorageDomainService) Update(
     storageDomain *StorageDomain,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16317,7 +17931,10 @@ func (op *StorageDomainService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(storageDomain, headers, query, wait)
+    ovResp, err := op.internalUpdate(storageDomain, headers, query, wait)
+    var storageDomainVar *StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
+    return storageDomainVar, nil
 }
 
 //
@@ -16340,18 +17957,20 @@ func (op *StorageDomainService) Update (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainService) UpdateOvfStore (
+func (op *StorageDomainService) UpdateOvfStore(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "updateovfstore", headers, query, wait)
+    _, err := op.internalAction(action, "updateovfstore", headers, query, wait)
+    return err
 }
 
 //
@@ -16501,11 +18120,13 @@ func NewStorageDomainContentDiskService(connection *Connection, path string) *St
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainContentDiskService) Get (
+func (op *StorageDomainContentDiskService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16513,7 +18134,10 @@ func (op *StorageDomainContentDiskService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -16557,13 +18181,15 @@ func NewStorageDomainContentDisksService(connection *Connection, path string) *S
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainContentDisksService) List (
+func (op *StorageDomainContentDisksService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16573,7 +18199,10 @@ func (op *StorageDomainContentDisksService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -16634,12 +18263,13 @@ func NewStorageDomainDiskService(connection *Connection, path string) *StorageDo
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDiskService) Copy (
+func (op *StorageDomainDiskService) Copy(
     disk *Disk,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Disk: disk,
@@ -16647,7 +18277,8 @@ func (op *StorageDomainDiskService) Copy (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "copy", headers, query, wait)
+    _, err := op.internalAction(action, "copy", headers, query, wait)
+    return err
 }
 
 //
@@ -16661,34 +18292,41 @@ func (op *StorageDomainDiskService) Copy (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDiskService) Export (
+func (op *StorageDomainDiskService) Export(
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
 // Retrieves the description of the disk.
 //
-func (op *StorageDomainDiskService) Get (
+func (op *StorageDomainDiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -16704,13 +18342,14 @@ func (op *StorageDomainDiskService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDiskService) Move (
+func (op *StorageDomainDiskService) Move(
     async bool,
     filter bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -16719,7 +18358,8 @@ func (op *StorageDomainDiskService) Move (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "move", headers, query, wait)
+    _, err := op.internalAction(action, "move", headers, query, wait)
+    return err
 }
 
 //
@@ -16728,17 +18368,19 @@ func (op *StorageDomainDiskService) Move (
 // compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
 // operation of the service that manages that disk.
 //
-func (op *StorageDomainDiskService) Remove (
+func (op *StorageDomainDiskService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -16747,16 +18389,18 @@ func (op *StorageDomainDiskService) Remove (
 // compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
 // operation of the service that manages that disk.
 //
-func (op *StorageDomainDiskService) Sparsify (
+func (op *StorageDomainDiskService) Sparsify(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "sparsify", headers, query, wait)
+    _, err := op.internalAction(action, "sparsify", headers, query, wait)
+    return err
 }
 
 //
@@ -16770,18 +18414,23 @@ func (op *StorageDomainDiskService) Sparsify (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDiskService) Update (
+func (op *StorageDomainDiskService) Update(
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(disk, headers, query, wait)
+    ovResp, err := op.internalUpdate(disk, headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -16853,20 +18502,28 @@ func NewStorageDomainDisksService(connection *Connection, path string) *StorageD
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDisksService) Add (
+func (op *StorageDomainDisksService) Add(
     disk *Disk,
     unregistered bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
     query["unregistered"] = fmt.Sprintf("%v", unregistered)
 
-    // Send the request
-    return op.internalAdd(disk, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(disk, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Disk")
+    }
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -16877,11 +18534,13 @@ func (op *StorageDomainDisksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainDisksService) List (
+func (op *StorageDomainDisksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16889,7 +18548,10 @@ func (op *StorageDomainDisksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -16934,17 +18596,22 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 
 //
 //
-func (op *StorageDomainServerConnectionService) Get (
+func (op *StorageDomainServerConnectionService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var connectionVar *StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
+    return connectionVar, nil
 }
 
 //
@@ -16955,11 +18622,12 @@ func (op *StorageDomainServerConnectionService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainServerConnectionService) Remove (
+func (op *StorageDomainServerConnectionService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -16967,7 +18635,8 @@ func (op *StorageDomainServerConnectionService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -17002,18 +18671,26 @@ func NewStorageDomainServerConnectionsService(connection *Connection, path strin
 
 //
 //
-func (op *StorageDomainServerConnectionsService) Add (
+func (op *StorageDomainServerConnectionsService) Add(
     connection *StorageConnection,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(connection, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(connection, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *StorageConnection")
+    }
+    var connectionVar *StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
+    return connectionVar, nil
 }
 
 //
@@ -17023,11 +18700,13 @@ func (op *StorageDomainServerConnectionsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainServerConnectionsService) List (
+func (op *StorageDomainServerConnectionsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17035,7 +18714,10 @@ func (op *StorageDomainServerConnectionsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var connectionsVar *StorageConnections
+    xml.Unmarshal([]byte(ovResp.Body), connectionsVar)
+    return connectionsVar.StorageConnections, nil
 }
 
 //
@@ -17080,17 +18762,22 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 
 //
 //
-func (op *StorageDomainTemplateService) Get (
+func (op *StorageDomainTemplateService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var templateVar *Template
+    xml.Unmarshal([]byte(ovResp.Body), templateVar)
+    return templateVar, nil
 }
 
 //
@@ -17121,7 +18808,7 @@ func (op *StorageDomainTemplateService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainTemplateService) Import (
+func (op *StorageDomainTemplateService) Import(
     async bool,
     clone bool,
     cluster *Cluster,
@@ -17131,7 +18818,8 @@ func (op *StorageDomainTemplateService) Import (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -17144,7 +18832,8 @@ func (op *StorageDomainTemplateService) Import (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "import", headers, query, wait)
+    _, err := op.internalAction(action, "import", headers, query, wait)
+    return err
 }
 
 //
@@ -17158,7 +18847,7 @@ func (op *StorageDomainTemplateService) Import (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainTemplateService) Register (
+func (op *StorageDomainTemplateService) Register(
     allowPartialImport bool,
     async bool,
     clone bool,
@@ -17167,7 +18856,8 @@ func (op *StorageDomainTemplateService) Register (
     template *Template,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         AllowPartialImport: allowPartialImport,
@@ -17179,7 +18869,8 @@ func (op *StorageDomainTemplateService) Register (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "register", headers, query, wait)
+    _, err := op.internalAction(action, "register", headers, query, wait)
+    return err
 }
 
 //
@@ -17189,11 +18880,12 @@ func (op *StorageDomainTemplateService) Register (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainTemplateService) Remove (
+func (op *StorageDomainTemplateService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17201,7 +18893,8 @@ func (op *StorageDomainTemplateService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -17253,11 +18946,13 @@ func NewStorageDomainTemplatesService(connection *Connection, path string) *Stor
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainTemplatesService) List (
+func (op *StorageDomainTemplatesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17265,7 +18960,10 @@ func (op *StorageDomainTemplatesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var templatesVar *Templates
+    xml.Unmarshal([]byte(ovResp.Body), templatesVar)
+    return templatesVar.Templates, nil
 }
 
 //
@@ -17311,17 +19009,22 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 
 //
 //
-func (op *StorageDomainVmService) Get (
+func (op *StorageDomainVmService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
@@ -17394,7 +19097,7 @@ func (op *StorageDomainVmService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainVmService) Import (
+func (op *StorageDomainVmService) Import(
     async bool,
     clone bool,
     cluster *Cluster,
@@ -17403,7 +19106,8 @@ func (op *StorageDomainVmService) Import (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -17415,7 +19119,8 @@ func (op *StorageDomainVmService) Import (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "import", headers, query, wait)
+    _, err := op.internalAction(action, "import", headers, query, wait)
+    return err
 }
 
 //
@@ -17435,7 +19140,7 @@ func (op *StorageDomainVmService) Import (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainVmService) Register (
+func (op *StorageDomainVmService) Register(
     allowPartialImport bool,
     async bool,
     clone bool,
@@ -17445,7 +19150,8 @@ func (op *StorageDomainVmService) Register (
     vnicProfileMappings []*VnicProfileMapping,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         AllowPartialImport: allowPartialImport,
@@ -17458,7 +19164,8 @@ func (op *StorageDomainVmService) Register (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "register", headers, query, wait)
+    _, err := op.internalAction(action, "register", headers, query, wait)
+    return err
 }
 
 //
@@ -17474,11 +19181,12 @@ func (op *StorageDomainVmService) Register (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainVmService) Remove (
+func (op *StorageDomainVmService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17486,7 +19194,8 @@ func (op *StorageDomainVmService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -17547,17 +19256,22 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 //
 // Returns the details of the attachment with all its properties and a link to the disk.
 //
-func (op *StorageDomainVmDiskAttachmentService) Get (
+func (op *StorageDomainVmDiskAttachmentService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentVar *DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -17594,17 +19308,22 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 //
 // List the disks that are attached to the virtual machine.
 //
-func (op *StorageDomainVmDiskAttachmentsService) List (
+func (op *StorageDomainVmDiskAttachmentsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentsVar *DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    return attachmentsVar.DiskAttachments, nil
 }
 
 //
@@ -17681,11 +19400,13 @@ func NewStorageDomainVmsService(connection *Connection, path string) *StorageDom
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainVmsService) List (
+func (op *StorageDomainVmsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17693,7 +19414,10 @@ func (op *StorageDomainVmsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmVar *Vms
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar.Vms, nil
 }
 
 //
@@ -17800,18 +19524,26 @@ func NewStorageDomainsService(connection *Connection, path string) *StorageDomai
 // </storage_domain>
 // ----
 //
-func (op *StorageDomainsService) Add (
+func (op *StorageDomainsService) Add(
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(storageDomain, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(storageDomain, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *StorageDomain")
+    }
+    var storageDomainVar *StorageDomain
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainVar)
+    return storageDomainVar, nil
 }
 
 //
@@ -17826,14 +19558,16 @@ func (op *StorageDomainsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageDomainsService) List (
+func (op *StorageDomainsService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*StorageDomain,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17844,7 +19578,10 @@ func (op *StorageDomainsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var storageDomainsVar *StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    return storageDomainsVar.StorageDomains, nil
 }
 
 //
@@ -17888,17 +19625,22 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 
 //
 //
-func (op *StorageServerConnectionService) Get (
+func (op *StorageServerConnectionService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var conectionVar *StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), conectionVar)
+    return conectionVar, nil
 }
 
 //
@@ -17919,12 +19661,13 @@ func (op *StorageServerConnectionService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageServerConnectionService) Remove (
+func (op *StorageServerConnectionService) Remove(
     host string,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17933,7 +19676,8 @@ func (op *StorageServerConnectionService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -17954,13 +19698,15 @@ func (op *StorageServerConnectionService) Remove (
 // </storage_connection>
 // ----
 //
-func (op *StorageServerConnectionService) Update (
+func (op *StorageServerConnectionService) Update(
     connection *StorageConnection,
     async bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -17969,7 +19715,10 @@ func (op *StorageServerConnectionService) Update (
     query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request
-    return op.internalUpdate(connection, headers, query, wait)
+    ovResp, err := op.internalUpdate(connection, headers, query, wait)
+    var connectionVar *StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
+    return connectionVar, nil
 }
 
 //
@@ -18003,17 +19752,22 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 
 //
 //
-func (op *StorageServerConnectionExtensionService) Get (
+func (op *StorageServerConnectionExtensionService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *StorageConnectionExtension,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var extensionVar *StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
+    return extensionVar, nil
 }
 
 //
@@ -18023,11 +19777,12 @@ func (op *StorageServerConnectionExtensionService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageServerConnectionExtensionService) Remove (
+func (op *StorageServerConnectionExtensionService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18035,7 +19790,8 @@ func (op *StorageServerConnectionExtensionService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -18055,12 +19811,14 @@ func (op *StorageServerConnectionExtensionService) Remove (
 // </storage_connection_extension>
 // ----
 //
-func (op *StorageServerConnectionExtensionService) Update (
+func (op *StorageServerConnectionExtensionService) Update(
     extension *StorageConnectionExtension,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageConnectionExtension,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18068,7 +19826,10 @@ func (op *StorageServerConnectionExtensionService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(extension, headers, query, wait)
+    ovResp, err := op.internalUpdate(extension, headers, query, wait)
+    var extensionVar *StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
+    return extensionVar, nil
 }
 
 //
@@ -18120,18 +19881,26 @@ func NewStorageServerConnectionExtensionsService(connection *Connection, path st
 // </storage_connection_extension>
 // ----
 //
-func (op *StorageServerConnectionExtensionsService) Add (
+func (op *StorageServerConnectionExtensionsService) Add(
     extension *StorageConnectionExtension,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageConnectionExtension,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(extension, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(extension, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *StorageConnectionExtension")
+    }
+    var extensionVar *StorageConnectionExtension
+    xml.Unmarshal([]byte(ovResp.Body), extensionVar)
+    return extensionVar, nil
 }
 
 //
@@ -18141,11 +19910,13 @@ func (op *StorageServerConnectionExtensionsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageServerConnectionExtensionsService) List (
+func (op *StorageServerConnectionExtensionsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*StorageConnectionExtension,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18153,7 +19924,10 @@ func (op *StorageServerConnectionExtensionsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var extensionsVar *StorageConnectionExtensions
+    xml.Unmarshal([]byte(ovResp.Body), extensionsVar)
+    return extensionsVar.StorageConnectionExtensions, nil
 }
 
 //
@@ -18217,18 +19991,26 @@ func NewStorageServerConnectionsService(connection *Connection, path string) *St
 // </storage_connection>
 // ----
 //
-func (op *StorageServerConnectionsService) Add (
+func (op *StorageServerConnectionsService) Add(
     connection *StorageConnection,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(connection, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(connection, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *StorageConnection")
+    }
+    var connectionVar *StorageConnection
+    xml.Unmarshal([]byte(ovResp.Body), connectionVar)
+    return connectionVar, nil
 }
 
 //
@@ -18238,11 +20020,13 @@ func (op *StorageServerConnectionsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *StorageServerConnectionsService) List (
+func (op *StorageServerConnectionsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*StorageConnection,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -18250,7 +20034,10 @@ func (op *StorageServerConnectionsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var connectionsVar *StorageConnections
+    xml.Unmarshal([]byte(ovResp.Body), connectionsVar)
+    return connectionsVar.StorageConnections, nil
 }
 
 //
@@ -18406,17 +20193,22 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 // The entry point also contains other data such as `product_info`,
 // `special_objects` and `summary`.
 //
-func (op *SystemService) Get (
+func (op *SystemService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Api,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var apiVar *Api
+    xml.Unmarshal([]byte(ovResp.Body), apiVar)
+    return apiVar, nil
 }
 
 //
@@ -18426,18 +20218,20 @@ func (op *SystemService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SystemService) ReloadConfigurations (
+func (op *SystemService) ReloadConfigurations(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "reloadconfigurations", headers, query, wait)
+    _, err := op.internalAction(action, "reloadconfigurations", headers, query, wait)
+    return err
 }
 
 //
@@ -18989,18 +20783,26 @@ func NewSystemPermissionsService(connection *Connection, path string) *SystemPer
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *SystemPermissionsService) Add (
+func (op *SystemPermissionsService) Add(
     permission *Permission,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Permission,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(permission, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(permission, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Permission")
+    }
+    var permissionVar *Permission
+    xml.Unmarshal([]byte(ovResp.Body), permissionVar)
+    return permissionVar, nil
 }
 
 //
@@ -19025,17 +20827,22 @@ func (op *SystemPermissionsService) Add (
 // </permissions>
 // ----
 //
-func (op *SystemPermissionsService) List (
+func (op *SystemPermissionsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Permission,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var permissionsVar *Permissions
+    xml.Unmarshal([]byte(ovResp.Body), permissionsVar)
+    return permissionsVar.Permissions, nil
 }
 
 //
@@ -19094,17 +20901,22 @@ func NewTagService(connection *Connection, path string) *TagService {
 // </tag>
 // ----
 //
-func (op *TagService) Get (
+func (op *TagService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var tagVar *Tag
+    xml.Unmarshal([]byte(ovResp.Body), tagVar)
+    return tagVar, nil
 }
 
 //
@@ -19119,11 +20931,12 @@ func (op *TagService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TagService) Remove (
+func (op *TagService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19131,7 +20944,8 @@ func (op *TagService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -19163,12 +20977,14 @@ func (op *TagService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TagService) Update (
+func (op *TagService) Update(
     tag *Tag,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19176,7 +20992,10 @@ func (op *TagService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(tag, headers, query, wait)
+    ovResp, err := op.internalUpdate(tag, headers, query, wait)
+    var tagVar *Tag
+    xml.Unmarshal([]byte(ovResp.Body), tagVar)
+    return tagVar, nil
 }
 
 //
@@ -19241,18 +21060,26 @@ func NewTagsService(connection *Connection, path string) *TagsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TagsService) Add (
+func (op *TagsService) Add(
     tag *Tag,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(tag, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(tag, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Tag")
+    }
+    var tagVar *Tag
+    xml.Unmarshal([]byte(ovResp.Body), tagVar)
+    return tagVar, nil
 }
 
 //
@@ -19292,11 +21119,13 @@ func (op *TagsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TagsService) List (
+func (op *TagsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Tag,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19304,7 +21133,10 @@ func (op *TagsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var tagsVar *Tags
+    xml.Unmarshal([]byte(ovResp.Body), tagsVar)
+    return tagsVar.Tags, nil
 }
 
 //
@@ -19379,12 +21211,13 @@ func NewTemplateService(connection *Connection, path string) *TemplateService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateService) Export (
+func (op *TemplateService) Export(
     exclusive bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Exclusive: exclusive,
@@ -19392,7 +21225,8 @@ func (op *TemplateService) Export (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
@@ -19403,11 +21237,13 @@ func (op *TemplateService) Export (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateService) Get (
+func (op *TemplateService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19415,7 +21251,10 @@ func (op *TemplateService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var templateVar *Template
+    xml.Unmarshal([]byte(ovResp.Body), templateVar)
+    return templateVar, nil
 }
 
 //
@@ -19430,11 +21269,12 @@ func (op *TemplateService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateService) Remove (
+func (op *TemplateService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19442,7 +21282,8 @@ func (op *TemplateService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -19453,16 +21294,18 @@ func (op *TemplateService) Remove (
 // machines without manual intervention.
 // Currently sealing is supported only for Linux OS.
 //
-func (op *TemplateService) Seal (
+func (op *TemplateService) Seal(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "seal", headers, query, wait)
+    _, err := op.internalAction(action, "seal", headers, query, wait)
+    return err
 }
 
 //
@@ -19492,12 +21335,14 @@ func (op *TemplateService) Seal (
 // </template>
 // ----
 //
-func (op *TemplateService) Update (
+func (op *TemplateService) Update(
     template *Template,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19505,7 +21350,10 @@ func (op *TemplateService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(template, headers, query, wait)
+    ovResp, err := op.internalUpdate(template, headers, query, wait)
+    var templateVar *Template
+    xml.Unmarshal([]byte(ovResp.Body), templateVar)
+    return templateVar, nil
 }
 
 //
@@ -19638,17 +21486,22 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 // GET /ovirt-engine/api/templates/123/cdroms/
 // ----
 //
-func (op *TemplateCdromService) Get (
+func (op *TemplateCdromService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromVar *Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
+    return cdromVar, nil
 }
 
 //
@@ -19689,11 +21542,13 @@ func NewTemplateCdromsService(connection *Connection, path string) *TemplateCdro
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateCdromsService) List (
+func (op *TemplateCdromsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19701,7 +21556,10 @@ func (op *TemplateCdromsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromsVar *Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    return cdromsVar.Cdroms, nil
 }
 
 //
@@ -19752,12 +21610,13 @@ func NewTemplateDiskService(connection *Connection, path string) *TemplateDiskSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateDiskService) Copy (
+func (op *TemplateDiskService) Copy(
     async bool,
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -19765,7 +21624,8 @@ func (op *TemplateDiskService) Copy (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "copy", headers, query, wait)
+    _, err := op.internalAction(action, "copy", headers, query, wait)
+    return err
 }
 
 //
@@ -19776,12 +21636,13 @@ func (op *TemplateDiskService) Copy (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateDiskService) Export (
+func (op *TemplateDiskService) Export(
     async bool,
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -19789,22 +21650,28 @@ func (op *TemplateDiskService) Export (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *TemplateDiskService) Get (
+func (op *TemplateDiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -19814,11 +21681,12 @@ func (op *TemplateDiskService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateDiskService) Remove (
+func (op *TemplateDiskService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19826,7 +21694,8 @@ func (op *TemplateDiskService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -19862,17 +21731,22 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 //
 // Returns the details of the attachment.
 //
-func (op *TemplateDiskAttachmentService) Get (
+func (op *TemplateDiskAttachmentService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentVar *DiskAttachment
+    xml.Unmarshal([]byte(ovResp.Body), attachmentVar)
+    return attachmentVar, nil
 }
 
 //
@@ -19890,12 +21764,13 @@ func (op *TemplateDiskAttachmentService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateDiskAttachmentService) Remove (
+func (op *TemplateDiskAttachmentService) Remove(
     storageDomain string,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -19904,7 +21779,8 @@ func (op *TemplateDiskAttachmentService) Remove (
     query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -19942,17 +21818,22 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 //
 // List the disks that are attached to the template.
 //
-func (op *TemplateDiskAttachmentsService) List (
+func (op *TemplateDiskAttachmentsService) List(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*DiskAttachment,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var attachmentsVar *DiskAttachments
+    xml.Unmarshal([]byte(ovResp.Body), attachmentsVar)
+    return attachmentsVar.DiskAttachments, nil
 }
 
 //
@@ -20003,11 +21884,13 @@ func NewTemplateDisksService(connection *Connection, path string) *TemplateDisks
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateDisksService) List (
+func (op *TemplateDisksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20015,7 +21898,10 @@ func (op *TemplateDisksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -20060,17 +21946,22 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 //
 // Gets graphics console configuration of the template.
 //
-func (op *TemplateGraphicsConsoleService) Get (
+func (op *TemplateGraphicsConsoleService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -20081,11 +21972,12 @@ func (op *TemplateGraphicsConsoleService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateGraphicsConsoleService) Remove (
+func (op *TemplateGraphicsConsoleService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20093,7 +21985,8 @@ func (op *TemplateGraphicsConsoleService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -20129,18 +22022,26 @@ func NewTemplateGraphicsConsolesService(connection *Connection, path string) *Te
 //
 // Add new graphics console to the template.
 //
-func (op *TemplateGraphicsConsolesService) Add (
+func (op *TemplateGraphicsConsolesService) Add(
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(console, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(console, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *GraphicsConsole")
+    }
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -20151,11 +22052,13 @@ func (op *TemplateGraphicsConsolesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateGraphicsConsolesService) List (
+func (op *TemplateGraphicsConsolesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20163,7 +22066,10 @@ func (op *TemplateGraphicsConsolesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consolesVar *GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    return consolesVar.GraphicsConsoles, nil
 }
 
 //
@@ -20208,17 +22114,22 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 
 //
 //
-func (op *TemplateNicService) Get (
+func (op *TemplateNicService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -20228,11 +22139,12 @@ func (op *TemplateNicService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateNicService) Remove (
+func (op *TemplateNicService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20240,17 +22152,20 @@ func (op *TemplateNicService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *TemplateNicService) Update (
+func (op *TemplateNicService) Update(
     nic *Nic,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20258,7 +22173,10 @@ func (op *TemplateNicService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(nic, headers, query, wait)
+    ovResp, err := op.internalUpdate(nic, headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -20293,18 +22211,26 @@ func NewTemplateNicsService(connection *Connection, path string) *TemplateNicsSe
 
 //
 //
-func (op *TemplateNicsService) Add (
+func (op *TemplateNicsService) Add(
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(nic, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(nic, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Nic")
+    }
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -20314,11 +22240,13 @@ func (op *TemplateNicsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateNicsService) List (
+func (op *TemplateNicsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20326,7 +22254,10 @@ func (op *TemplateNicsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicsVar *Nics
+    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    return nicsVar.Nics, nil
 }
 
 //
@@ -20370,17 +22301,22 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 
 //
 //
-func (op *TemplateWatchdogService) Get (
+func (op *TemplateWatchdogService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -20390,11 +22326,12 @@ func (op *TemplateWatchdogService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateWatchdogService) Remove (
+func (op *TemplateWatchdogService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20402,17 +22339,20 @@ func (op *TemplateWatchdogService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *TemplateWatchdogService) Update (
+func (op *TemplateWatchdogService) Update(
     watchdog *Watchdog,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20420,7 +22360,10 @@ func (op *TemplateWatchdogService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(watchdog, headers, query, wait)
+    ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -20455,18 +22398,26 @@ func NewTemplateWatchdogsService(connection *Connection, path string) *TemplateW
 
 //
 //
-func (op *TemplateWatchdogsService) Add (
+func (op *TemplateWatchdogsService) Add(
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(watchdog, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(watchdog, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Watchdog")
+    }
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -20476,11 +22427,13 @@ func (op *TemplateWatchdogsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplateWatchdogsService) List (
+func (op *TemplateWatchdogsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20488,7 +22441,10 @@ func (op *TemplateWatchdogsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogsVar *Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    return watchdogsVar.Watchdogs, nil
 }
 
 //
@@ -20568,20 +22524,28 @@ func NewTemplatesService(connection *Connection, path string) *TemplatesService 
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplatesService) Add (
+func (op *TemplatesService) Add(
     template *Template,
     clonePermissions bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
     query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
 
-    // Send the request
-    return op.internalAdd(template, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(template, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Template")
+    }
+    var templateVar *Template
+    xml.Unmarshal([]byte(ovResp.Body), templateVar)
+    return templateVar, nil
 }
 
 //
@@ -20603,14 +22567,16 @@ func (op *TemplatesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *TemplatesService) List (
+func (op *TemplatesService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Template,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20621,7 +22587,10 @@ func (op *TemplatesService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var templatesVar *Templates
+    xml.Unmarshal([]byte(ovResp.Body), templatesVar)
+    return templatesVar.Templates, nil
 }
 
 //
@@ -20666,17 +22635,22 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 
 //
 //
-func (op *UnmanagedNetworkService) Get (
+func (op *UnmanagedNetworkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *UnmanagedNetwork,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkVar *UnmanagedNetwork
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -20686,11 +22660,12 @@ func (op *UnmanagedNetworkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *UnmanagedNetworkService) Remove (
+func (op *UnmanagedNetworkService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20698,7 +22673,8 @@ func (op *UnmanagedNetworkService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -20738,11 +22714,13 @@ func NewUnmanagedNetworksService(connection *Connection, path string) *Unmanaged
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *UnmanagedNetworksService) List (
+func (op *UnmanagedNetworksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*UnmanagedNetwork,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20750,7 +22728,10 @@ func (op *UnmanagedNetworksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networksVar *UnmanagedNetworks
+    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    return networksVar.UnmanagedNetworks, nil
 }
 
 //
@@ -20828,17 +22809,22 @@ func NewUserService(connection *Connection, path string) *UserService {
 // </user>
 // ----
 //
-func (op *UserService) Get (
+func (op *UserService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *User,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var userVar *User
+    xml.Unmarshal([]byte(ovResp.Body), userVar)
+    return userVar, nil
 }
 
 //
@@ -20853,11 +22839,12 @@ func (op *UserService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *UserService) Remove (
+func (op *UserService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -20865,7 +22852,8 @@ func (op *UserService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -20981,18 +22969,26 @@ func NewUsersService(connection *Connection, path string) *UsersService {
 // </user>
 // ----
 //
-func (op *UsersService) Add (
+func (op *UsersService) Add(
     user *User,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *User,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(user, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(user, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *User")
+    }
+    var userVar *User
+    xml.Unmarshal([]byte(ovResp.Body), userVar)
+    return userVar, nil
 }
 
 //
@@ -21031,13 +23027,15 @@ func (op *UsersService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *UsersService) List (
+func (op *UsersService) List(
     caseSensitive bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*User,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21047,7 +23045,10 @@ func (op *UsersService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var usersVar *Users
+    xml.Unmarshal([]byte(ovResp.Body), usersVar)
+    return usersVar.Users, nil
 }
 
 //
@@ -21091,17 +23092,22 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 
 //
 //
-func (op *VirtualFunctionAllowedNetworkService) Get (
+func (op *VirtualFunctionAllowedNetworkService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -21111,11 +23117,12 @@ func (op *VirtualFunctionAllowedNetworkService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VirtualFunctionAllowedNetworkService) Remove (
+func (op *VirtualFunctionAllowedNetworkService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21123,7 +23130,8 @@ func (op *VirtualFunctionAllowedNetworkService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -21158,18 +23166,26 @@ func NewVirtualFunctionAllowedNetworksService(connection *Connection, path strin
 
 //
 //
-func (op *VirtualFunctionAllowedNetworksService) Add (
+func (op *VirtualFunctionAllowedNetworksService) Add(
     network *Network,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(network, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(network, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Network")
+    }
+    var networkVar *Network
+    xml.Unmarshal([]byte(ovResp.Body), networkVar)
+    return networkVar, nil
 }
 
 //
@@ -21179,11 +23195,13 @@ func (op *VirtualFunctionAllowedNetworksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VirtualFunctionAllowedNetworksService) List (
+func (op *VirtualFunctionAllowedNetworksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Network,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21191,7 +23209,10 @@ func (op *VirtualFunctionAllowedNetworksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var networksVar *Networks
+    xml.Unmarshal([]byte(ovResp.Body), networksVar)
+    return networksVar.Networks, nil
 }
 
 //
@@ -21267,18 +23288,20 @@ func NewVmService(connection *Connection, path string) *VmService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) CancelMigration (
+func (op *VmService) CancelMigration(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "cancelmigration", headers, query, wait)
+    _, err := op.internalAction(action, "cancelmigration", headers, query, wait)
+    return err
 }
 
 //
@@ -21288,12 +23311,13 @@ func (op *VmService) CancelMigration (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Clone (
+func (op *VmService) Clone(
     async bool,
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21301,7 +23325,8 @@ func (op *VmService) Clone (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "clone", headers, query, wait)
+    _, err := op.internalAction(action, "clone", headers, query, wait)
+    return err
 }
 
 //
@@ -21311,18 +23336,20 @@ func (op *VmService) Clone (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) CommitSnapshot (
+func (op *VmService) CommitSnapshot(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "commitsnapshot", headers, query, wait)
+    _, err := op.internalAction(action, "commitsnapshot", headers, query, wait)
+    return err
 }
 
 //
@@ -21343,18 +23370,20 @@ func (op *VmService) CommitSnapshot (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Detach (
+func (op *VmService) Detach(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "detach", headers, query, wait)
+    _, err := op.internalAction(action, "detach", headers, query, wait)
+    return err
 }
 
 //
@@ -21385,14 +23414,15 @@ func (op *VmService) Detach (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Export (
+func (op *VmService) Export(
     async bool,
     discardSnapshots bool,
     exclusive bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21402,7 +23432,8 @@ func (op *VmService) Export (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
@@ -21425,18 +23456,20 @@ func (op *VmService) Export (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) FreezeFilesystems (
+func (op *VmService) FreezeFilesystems(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "freezefilesystems", headers, query, wait)
+    _, err := op.internalAction(action, "freezefilesystems", headers, query, wait)
+    return err
 }
 
 //
@@ -21474,13 +23507,15 @@ func (op *VmService) FreezeFilesystems (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Get (
+func (op *VmService) Get(
     allContent bool,
     filter bool,
     nextRun bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21490,7 +23525,10 @@ func (op *VmService) Get (
     query["next_run"] = fmt.Sprintf("%v", nextRun)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
@@ -21515,18 +23553,20 @@ func (op *VmService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Logon (
+func (op *VmService) Logon(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "logon", headers, query, wait)
+    _, err := op.internalAction(action, "logon", headers, query, wait)
+    return err
 }
 
 //
@@ -21550,12 +23590,13 @@ func (op *VmService) Logon (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Maintenance (
+func (op *VmService) Maintenance(
     async bool,
     maintenanceEnabled bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21563,7 +23604,8 @@ func (op *VmService) Maintenance (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "maintenance", headers, query, wait)
+    _, err := op.internalAction(action, "maintenance", headers, query, wait)
+    return err
 }
 
 //
@@ -21592,14 +23634,15 @@ func (op *VmService) Maintenance (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Migrate (
+func (op *VmService) Migrate(
     async bool,
     cluster *Cluster,
     force bool,
     host *Host,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21609,7 +23652,8 @@ func (op *VmService) Migrate (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "migrate", headers, query, wait)
+    _, err := op.internalAction(action, "migrate", headers, query, wait)
+    return err
 }
 
 //
@@ -21619,7 +23663,7 @@ func (op *VmService) Migrate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) PreviewSnapshot (
+func (op *VmService) PreviewSnapshot(
     async bool,
     disks []*Disk,
     restoreMemory bool,
@@ -21627,7 +23671,8 @@ func (op *VmService) PreviewSnapshot (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21638,7 +23683,8 @@ func (op *VmService) PreviewSnapshot (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "previewsnapshot", headers, query, wait)
+    _, err := op.internalAction(action, "previewsnapshot", headers, query, wait)
+    return err
 }
 
 //
@@ -21659,18 +23705,20 @@ func (op *VmService) PreviewSnapshot (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Reboot (
+func (op *VmService) Reboot(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "reboot", headers, query, wait)
+    _, err := op.internalAction(action, "reboot", headers, query, wait)
+    return err
 }
 
 //
@@ -21690,13 +23738,14 @@ func (op *VmService) Reboot (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Remove (
+func (op *VmService) Remove(
     async bool,
     detachOnly bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -21706,7 +23755,8 @@ func (op *VmService) Remove (
     query["force"] = fmt.Sprintf("%v", force)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -21716,18 +23766,20 @@ func (op *VmService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) ReorderMacAddresses (
+func (op *VmService) ReorderMacAddresses(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "reordermacaddresses", headers, query, wait)
+    _, err := op.internalAction(action, "reordermacaddresses", headers, query, wait)
+    return err
 }
 
 //
@@ -21748,18 +23800,20 @@ func (op *VmService) ReorderMacAddresses (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Shutdown (
+func (op *VmService) Shutdown(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "shutdown", headers, query, wait)
+    _, err := op.internalAction(action, "shutdown", headers, query, wait)
+    return err
 }
 
 //
@@ -21806,7 +23860,7 @@ func (op *VmService) Shutdown (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Start (
+func (op *VmService) Start(
     async bool,
     filter bool,
     pause bool,
@@ -21815,7 +23869,8 @@ func (op *VmService) Start (
     vm *Vm,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21827,7 +23882,8 @@ func (op *VmService) Start (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "start", headers, query, wait)
+    _, err := op.internalAction(action, "start", headers, query, wait)
+    return err
 }
 
 //
@@ -21848,18 +23904,20 @@ func (op *VmService) Start (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Stop (
+func (op *VmService) Stop(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "stop", headers, query, wait)
+    _, err := op.internalAction(action, "stop", headers, query, wait)
+    return err
 }
 
 //
@@ -21881,18 +23939,20 @@ func (op *VmService) Stop (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Suspend (
+func (op *VmService) Suspend(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "suspend", headers, query, wait)
+    _, err := op.internalAction(action, "suspend", headers, query, wait)
+    return err
 }
 
 //
@@ -21915,18 +23975,20 @@ func (op *VmService) Suspend (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) ThawFilesystems (
+func (op *VmService) ThawFilesystems(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "thawfilesystems", headers, query, wait)
+    _, err := op.internalAction(action, "thawfilesystems", headers, query, wait)
+    return err
 }
 
 //
@@ -21968,12 +24030,14 @@ func (op *VmService) ThawFilesystems (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) Ticket (
+func (op *VmService) Ticket(
     async bool,
     ticket *Ticket,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Ticket,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -21981,7 +24045,10 @@ func (op *VmService) Ticket (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "ticket", headers, query, wait)
+    ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
+    var ticketVar *Ticket
+    xml.Unmarshal([]byte(ovResp.Body), ticketVar)
+    return ticketVar, nil
 }
 
 //
@@ -21991,29 +24058,33 @@ func (op *VmService) Ticket (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmService) UndoSnapshot (
+func (op *VmService) UndoSnapshot(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "undosnapshot", headers, query, wait)
+    _, err := op.internalAction(action, "undosnapshot", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *VmService) Update (
+func (op *VmService) Update(
     vm *Vm,
     async bool,
     nextRun bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22022,7 +24093,10 @@ func (op *VmService) Update (
     query["next_run"] = fmt.Sprintf("%v", nextRun)
 
     // Send the request
-    return op.internalUpdate(vm, headers, query, wait)
+    ovResp, err := op.internalUpdate(vm, headers, query, wait)
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
@@ -22260,11 +24334,13 @@ func NewVmApplicationService(connection *Connection, path string) *VmApplication
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmApplicationService) Get (
+func (op *VmApplicationService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Application,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22272,7 +24348,10 @@ func (op *VmApplicationService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var applicationVar *Application
+    xml.Unmarshal([]byte(ovResp.Body), applicationVar)
+    return applicationVar, nil
 }
 
 //
@@ -22315,12 +24394,14 @@ func NewVmApplicationsService(connection *Connection, path string) *VmApplicatio
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmApplicationsService) List (
+func (op *VmApplicationsService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Application,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22329,7 +24410,10 @@ func (op *VmApplicationsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var applicationsVar *Applications
+    xml.Unmarshal([]byte(ovResp.Body), applicationsVar)
+    return applicationsVar.Applications, nil
 }
 
 //
@@ -22401,11 +24485,13 @@ func NewVmCdromService(connection *Connection, path string) *VmCdromService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmCdromService) Get (
+func (op *VmCdromService) Get(
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22413,7 +24499,10 @@ func (op *VmCdromService) Get (
     query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromVar *Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
+    return cdromVar, nil
 }
 
 //
@@ -22463,12 +24552,14 @@ func (op *VmCdromService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmCdromService) Update (
+func (op *VmCdromService) Update(
     cdrom *Cdrom,
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22476,7 +24567,10 @@ func (op *VmCdromService) Update (
     query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request
-    return op.internalUpdate(cdrom, headers, query, wait)
+    ovResp, err := op.internalUpdate(cdrom, headers, query, wait)
+    var cdromVar *Cdrom
+    xml.Unmarshal([]byte(ovResp.Body), cdromVar)
+    return cdromVar, nil
 }
 
 //
@@ -22522,11 +24616,13 @@ func NewVmCdromsService(connection *Connection, path string) *VmCdromsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmCdromsService) List (
+func (op *VmCdromsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Cdrom,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22534,7 +24630,10 @@ func (op *VmCdromsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var cdromsVar *Cdroms
+    xml.Unmarshal([]byte(ovResp.Body), cdromsVar)
+    return cdromsVar.Cdroms, nil
 }
 
 //
@@ -22586,18 +24685,20 @@ func NewVmDiskService(connection *Connection, path string) *VmDiskService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDiskService) Activate (
+func (op *VmDiskService) Activate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "activate", headers, query, wait)
+    _, err := op.internalAction(action, "activate", headers, query, wait)
+    return err
 }
 
 //
@@ -22607,18 +24708,20 @@ func (op *VmDiskService) Activate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDiskService) Deactivate (
+func (op *VmDiskService) Deactivate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "deactivate", headers, query, wait)
+    _, err := op.internalAction(action, "deactivate", headers, query, wait)
+    return err
 }
 
 //
@@ -22629,12 +24732,13 @@ func (op *VmDiskService) Deactivate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDiskService) Export (
+func (op *VmDiskService) Export(
     async bool,
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -22642,22 +24746,28 @@ func (op *VmDiskService) Export (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *VmDiskService) Get (
+func (op *VmDiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -22668,12 +24778,13 @@ func (op *VmDiskService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDiskService) Move (
+func (op *VmDiskService) Move(
     async bool,
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -22681,7 +24792,8 @@ func (op *VmDiskService) Move (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "move", headers, query, wait)
+    _, err := op.internalAction(action, "move", headers, query, wait)
+    return err
 }
 
 //
@@ -22695,11 +24807,12 @@ func (op *VmDiskService) Move (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDiskService) Remove (
+func (op *VmDiskService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22707,17 +24820,20 @@ func (op *VmDiskService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *VmDiskService) Update (
+func (op *VmDiskService) Update(
     disk *Disk,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22725,7 +24841,10 @@ func (op *VmDiskService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(disk, headers, query, wait)
+    ovResp, err := op.internalUpdate(disk, headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -22784,18 +24903,26 @@ func NewVmDisksService(connection *Connection, path string) *VmDisksService {
 
 //
 //
-func (op *VmDisksService) Add (
+func (op *VmDisksService) Add(
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(disk, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(disk, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Disk")
+    }
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -22805,11 +24932,13 @@ func (op *VmDisksService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmDisksService) List (
+func (op *VmDisksService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22817,7 +24946,10 @@ func (op *VmDisksService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var disksVar *Disks
+    xml.Unmarshal([]byte(ovResp.Body), disksVar)
+    return disksVar.Disks, nil
 }
 
 //
@@ -22872,11 +25004,13 @@ func NewVmGraphicsConsoleService(connection *Connection, path string) *VmGraphic
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmGraphicsConsoleService) Get (
+func (op *VmGraphicsConsoleService) Get(
     current bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -22884,7 +25018,10 @@ func (op *VmGraphicsConsoleService) Get (
     query["current"] = fmt.Sprintf("%v", current)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -22894,18 +25031,23 @@ func (op *VmGraphicsConsoleService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmGraphicsConsoleService) ProxyTicket (
+func (op *VmGraphicsConsoleService) ProxyTicket(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *ProxyTicket,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "proxyticket", headers, query, wait)
+    ovResp, err := op.internalAction(action, "proxyticket", headers, query, wait)
+    var proxyTicketVar *ProxyTicket
+    xml.Unmarshal([]byte(ovResp.Body), proxyTicketVar)
+    return proxyTicketVar, nil
 }
 
 //
@@ -22975,16 +25117,19 @@ func (op *VmGraphicsConsoleService) ProxyTicket (
 // remote-viewer --ovirt-ca-file=/etc/pki/ovirt-engine/ca.pem /tmp/remote_viewer_connection_file.vv
 // ----
 //
-func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile (
+func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        string,
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
+    ovResp, err := op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
+    return ovResp.Body, nil
 }
 
 //
@@ -22995,11 +25140,12 @@ func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmGraphicsConsoleService) Remove (
+func (op *VmGraphicsConsoleService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23007,7 +25153,8 @@ func (op *VmGraphicsConsoleService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -23033,18 +25180,23 @@ func (op *VmGraphicsConsoleService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmGraphicsConsoleService) Ticket (
+func (op *VmGraphicsConsoleService) Ticket(
     ticket *Ticket,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Ticket,
+        error) {
     // Populate the action:
     action := &Action{
         Ticket: ticket,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "ticket", headers, query, wait)
+    ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
+    var ticketVar *Ticket
+    xml.Unmarshal([]byte(ovResp.Body), ticketVar)
+    return ticketVar, nil
 }
 
 //
@@ -23080,18 +25232,26 @@ func NewVmGraphicsConsolesService(connection *Connection, path string) *VmGraphi
 //
 // Add new graphics console to the virtual machine.
 //
-func (op *VmGraphicsConsolesService) Add (
+func (op *VmGraphicsConsolesService) Add(
     console *GraphicsConsole,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(console, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(console, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *GraphicsConsole")
+    }
+    var consoleVar *GraphicsConsole
+    xml.Unmarshal([]byte(ovResp.Body), consoleVar)
+    return consoleVar, nil
 }
 
 //
@@ -23108,12 +25268,14 @@ func (op *VmGraphicsConsolesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmGraphicsConsolesService) List (
+func (op *VmGraphicsConsolesService) List(
     current bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*GraphicsConsole,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23122,7 +25284,10 @@ func (op *VmGraphicsConsolesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var consolesVar *GraphicsConsoles
+    xml.Unmarshal([]byte(ovResp.Body), consolesVar)
+    return consolesVar.GraphicsConsoles, nil
 }
 
 //
@@ -23194,17 +25359,22 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 // </host_device>
 // ----
 //
-func (op *VmHostDeviceService) Get (
+func (op *VmHostDeviceService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *HostDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var deviceVar *HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
+    return deviceVar, nil
 }
 
 //
@@ -23223,11 +25393,12 @@ func (op *VmHostDeviceService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmHostDeviceService) Remove (
+func (op *VmHostDeviceService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23235,7 +25406,8 @@ func (op *VmHostDeviceService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -23294,18 +25466,26 @@ func NewVmHostDevicesService(connection *Connection, path string) *VmHostDevices
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmHostDevicesService) Add (
+func (op *VmHostDevicesService) Add(
     device *HostDevice,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *HostDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(device, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(device, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *HostDevice")
+    }
+    var deviceVar *HostDevice
+    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
+    return deviceVar, nil
 }
 
 //
@@ -23316,11 +25496,13 @@ func (op *VmHostDevicesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmHostDevicesService) List (
+func (op *VmHostDevicesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*HostDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23328,7 +25510,10 @@ func (op *VmHostDevicesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var deviceVar *HostDevices
+    xml.Unmarshal([]byte(ovResp.Body), deviceVar)
+    return deviceVar.HostDevices, nil
 }
 
 //
@@ -23381,18 +25566,20 @@ func NewVmNicService(connection *Connection, path string) *VmNicService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNicService) Activate (
+func (op *VmNicService) Activate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "activate", headers, query, wait)
+    _, err := op.internalAction(action, "activate", headers, query, wait)
+    return err
 }
 
 //
@@ -23402,33 +25589,40 @@ func (op *VmNicService) Activate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNicService) Deactivate (
+func (op *VmNicService) Deactivate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "deactivate", headers, query, wait)
+    _, err := op.internalAction(action, "deactivate", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *VmNicService) Get (
+func (op *VmNicService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -23453,11 +25647,12 @@ func (op *VmNicService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNicService) Remove (
+func (op *VmNicService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23465,7 +25660,8 @@ func (op *VmNicService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -23495,12 +25691,14 @@ func (op *VmNicService) Remove (
 // - Windows Server 2003
 // ====
 //
-func (op *VmNicService) Update (
+func (op *VmNicService) Update(
     nic *Nic,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23508,7 +25706,10 @@ func (op *VmNicService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(nic, headers, query, wait)
+    ovResp, err := op.internalUpdate(nic, headers, query, wait)
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -23627,18 +25828,26 @@ func NewVmNicsService(connection *Connection, path string) *VmNicsService {
 // - Windows Server 2003
 // ====
 //
-func (op *VmNicsService) Add (
+func (op *VmNicsService) Add(
     nic *Nic,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(nic, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(nic, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Nic")
+    }
+    var nicVar *Nic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -23648,11 +25857,13 @@ func (op *VmNicsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNicsService) List (
+func (op *VmNicsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Nic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23660,7 +25871,10 @@ func (op *VmNicsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicsVar *Nics
+    xml.Unmarshal([]byte(ovResp.Body), nicsVar)
+    return nicsVar.Nics, nil
 }
 
 //
@@ -23704,17 +25918,22 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 
 //
 //
-func (op *VmNumaNodeService) Get (
+func (op *VmNumaNodeService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *VirtualNumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nodeVar *VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
+    return nodeVar, nil
 }
 
 //
@@ -23730,11 +25949,12 @@ func (op *VmNumaNodeService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNumaNodeService) Remove (
+func (op *VmNumaNodeService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23742,7 +25962,8 @@ func (op *VmNumaNodeService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -23764,12 +25985,14 @@ func (op *VmNumaNodeService) Remove (
 // </vm_numa_node>
 // ----
 //
-func (op *VmNumaNodeService) Update (
+func (op *VmNumaNodeService) Update(
     node *VirtualNumaNode,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VirtualNumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23777,7 +26000,10 @@ func (op *VmNumaNodeService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(node, headers, query, wait)
+    ovResp, err := op.internalUpdate(node, headers, query, wait)
+    var nodeVar *VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
+    return nodeVar, nil
 }
 
 //
@@ -23835,18 +26061,26 @@ func NewVmNumaNodesService(connection *Connection, path string) *VmNumaNodesServ
 // </vm_numa_node>
 // ----
 //
-func (op *VmNumaNodesService) Add (
+func (op *VmNumaNodesService) Add(
     node *VirtualNumaNode,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VirtualNumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(node, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(node, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *VirtualNumaNode")
+    }
+    var nodeVar *VirtualNumaNode
+    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
+    return nodeVar, nil
 }
 
 //
@@ -23857,11 +26091,13 @@ func (op *VmNumaNodesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmNumaNodesService) List (
+func (op *VmNumaNodesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*VirtualNumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23869,7 +26105,10 @@ func (op *VmNumaNodesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nodesVar *VirtualNumaNodes
+    xml.Unmarshal([]byte(ovResp.Body), nodesVar)
+    return nodesVar.VirtualNumaNodes, nil
 }
 
 //
@@ -23931,18 +26170,20 @@ func NewVmPoolService(connection *Connection, path string) *VmPoolService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolService) AllocateVm (
+func (op *VmPoolService) AllocateVm(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "allocatevm", headers, query, wait)
+    _, err := op.internalAction(action, "allocatevm", headers, query, wait)
+    return err
 }
 
 //
@@ -23977,11 +26218,13 @@ func (op *VmPoolService) AllocateVm (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolService) Get (
+func (op *VmPoolService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *VmPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -23989,7 +26232,10 @@ func (op *VmPoolService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var poolVar *VmPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -24004,11 +26250,12 @@ func (op *VmPoolService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolService) Remove (
+func (op *VmPoolService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24016,7 +26263,8 @@ func (op *VmPoolService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -24044,12 +26292,14 @@ func (op *VmPoolService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolService) Update (
+func (op *VmPoolService) Update(
     pool *VmPool,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VmPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24057,7 +26307,10 @@ func (op *VmPoolService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(pool, headers, query, wait)
+    ovResp, err := op.internalUpdate(pool, headers, query, wait)
+    var poolVar *VmPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -24127,18 +26380,26 @@ func NewVmPoolsService(connection *Connection, path string) *VmPoolsService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolsService) Add (
+func (op *VmPoolsService) Add(
     pool *VmPool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VmPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(pool, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(pool, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *VmPool")
+    }
+    var poolVar *VmPool
+    xml.Unmarshal([]byte(ovResp.Body), poolVar)
+    return poolVar, nil
 }
 
 //
@@ -24168,14 +26429,16 @@ func (op *VmPoolsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmPoolsService) List (
+func (op *VmPoolsService) List(
     caseSensitive bool,
     filter bool,
     max int64,
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*VmPool,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24186,7 +26449,10 @@ func (op *VmPoolsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var poolsVar *VmPools
+    xml.Unmarshal([]byte(ovResp.Body), poolsVar)
+    return poolsVar.VmPools, nil
 }
 
 //
@@ -24231,17 +26497,22 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 
 //
 //
-func (op *VmReportedDeviceService) Get (
+func (op *VmReportedDeviceService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ReportedDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var reportedDeviceVar *ReportedDevice
+    xml.Unmarshal([]byte(ovResp.Body), reportedDeviceVar)
+    return reportedDeviceVar, nil
 }
 
 //
@@ -24281,11 +26552,13 @@ func NewVmReportedDevicesService(connection *Connection, path string) *VmReporte
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmReportedDevicesService) List (
+func (op *VmReportedDevicesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*ReportedDevice,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24293,7 +26566,10 @@ func (op *VmReportedDevicesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var reportedDeviceVar *ReportedDevices
+    xml.Unmarshal([]byte(ovResp.Body), reportedDeviceVar)
+    return reportedDeviceVar.ReportedDevices, nil
 }
 
 //
@@ -24337,17 +26613,22 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 
 //
 //
-func (op *VmSessionService) Get (
+func (op *VmSessionService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Session,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var sessionVar *Session
+    xml.Unmarshal([]byte(ovResp.Body), sessionVar)
+    return sessionVar, nil
 }
 
 //
@@ -24409,11 +26690,13 @@ func NewVmSessionsService(connection *Connection, path string) *VmSessionsServic
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmSessionsService) List (
+func (op *VmSessionsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Session,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24421,7 +26704,10 @@ func (op *VmSessionsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var sessionsVar *Sessions
+    xml.Unmarshal([]byte(ovResp.Body), sessionsVar)
+    return sessionsVar.Sessions, nil
 }
 
 //
@@ -24468,17 +26754,22 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 //
 // Returns the information about the watchdog.
 //
-func (op *VmWatchdogService) Get (
+func (op *VmWatchdogService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -24494,11 +26785,12 @@ func (op *VmWatchdogService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmWatchdogService) Remove (
+func (op *VmWatchdogService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24506,7 +26798,8 @@ func (op *VmWatchdogService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -24538,12 +26831,14 @@ func (op *VmWatchdogService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmWatchdogService) Update (
+func (op *VmWatchdogService) Update(
     watchdog *Watchdog,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24551,7 +26846,10 @@ func (op *VmWatchdogService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(watchdog, headers, query, wait)
+    ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -24614,18 +26912,26 @@ func NewVmWatchdogsService(connection *Connection, path string) *VmWatchdogsServ
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmWatchdogsService) Add (
+func (op *VmWatchdogsService) Add(
     watchdog *Watchdog,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(watchdog, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(watchdog, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Watchdog")
+    }
+    var watchdogVar *Watchdog
+    xml.Unmarshal([]byte(ovResp.Body), watchdogVar)
+    return watchdogVar, nil
 }
 
 //
@@ -24636,11 +26942,13 @@ func (op *VmWatchdogsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmWatchdogsService) List (
+func (op *VmWatchdogsService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Watchdog,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24648,7 +26956,10 @@ func (op *VmWatchdogsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var watchdogsVar *Watchdogs
+    xml.Unmarshal([]byte(ovResp.Body), watchdogsVar)
+    return watchdogsVar.Watchdogs, nil
 }
 
 //
@@ -24829,13 +27140,15 @@ func NewVmsService(connection *Connection, path string) *VmsService {
 // ----
 // In all cases the name or identifier of the cluster where the virtual machine will be created is mandatory.
 //
-func (op *VmsService) Add (
+func (op *VmsService) Add(
     vm *Vm,
     clone bool,
     clonePermissions bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24843,8 +27156,14 @@ func (op *VmsService) Add (
     query["clone"] = fmt.Sprintf("%v", clone)
     query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
 
-    // Send the request
-    return op.internalAdd(vm, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(vm, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Vm")
+    }
+    var vmVar *Vm
+    xml.Unmarshal([]byte(ovResp.Body), vmVar)
+    return vmVar, nil
 }
 
 //
@@ -24872,7 +27191,7 @@ func (op *VmsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VmsService) List (
+func (op *VmsService) List(
     allContent bool,
     caseSensitive bool,
     filter bool,
@@ -24880,7 +27199,9 @@ func (op *VmsService) List (
     search string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Vm,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24892,7 +27213,10 @@ func (op *VmsService) List (
     query["search"] = fmt.Sprintf("%v", search)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var vmsVar *Vms
+    xml.Unmarshal([]byte(ovResp.Body), vmsVar)
+    return vmsVar.Vms, nil
 }
 
 //
@@ -24939,17 +27263,22 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 //
 // Retrieves details about a vNIC profile.
 //
-func (op *VnicProfileService) Get (
+func (op *VnicProfileService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profileVar *VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -24960,11 +27289,12 @@ func (op *VnicProfileService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VnicProfileService) Remove (
+func (op *VnicProfileService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24972,7 +27302,8 @@ func (op *VnicProfileService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -24983,12 +27314,14 @@ func (op *VnicProfileService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VnicProfileService) Update (
+func (op *VnicProfileService) Update(
     profile *VnicProfile,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -24996,7 +27329,10 @@ func (op *VnicProfileService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(profile, headers, query, wait)
+    ovResp, err := op.internalUpdate(profile, headers, query, wait)
+    var profileVar *VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -25102,18 +27438,26 @@ func NewVnicProfilesService(connection *Connection, path string) *VnicProfilesSe
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VnicProfilesService) Add (
+func (op *VnicProfilesService) Add(
     profile *VnicProfile,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(profile, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(profile, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *VnicProfile")
+    }
+    var profileVar *VnicProfile
+    xml.Unmarshal([]byte(ovResp.Body), profileVar)
+    return profileVar, nil
 }
 
 //
@@ -25124,11 +27468,13 @@ func (op *VnicProfilesService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *VnicProfilesService) List (
+func (op *VnicProfilesService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*VnicProfile,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25136,7 +27482,10 @@ func (op *VnicProfilesService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var profilesVar *VnicProfiles
+    xml.Unmarshal([]byte(ovResp.Body), profilesVar)
+    return profilesVar.VnicProfiles, nil
 }
 
 //
@@ -25185,11 +27534,13 @@ func NewWeightService(connection *Connection, path string) *WeightService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *WeightService) Get (
+func (op *WeightService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Weight,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25197,7 +27548,10 @@ func (op *WeightService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var weightVar *Weight
+    xml.Unmarshal([]byte(ovResp.Body), weightVar)
+    return weightVar, nil
 }
 
 //
@@ -25207,11 +27561,12 @@ func (op *WeightService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *WeightService) Remove (
+func (op *WeightService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25219,7 +27574,8 @@ func (op *WeightService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -25254,18 +27610,26 @@ func NewWeightsService(connection *Connection, path string) *WeightsService {
 
 //
 //
-func (op *WeightsService) Add (
+func (op *WeightsService) Add(
     weight *Weight,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Weight,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
-    // Send the request
-    return op.internalAdd(weight, headers, query, wait)
+    // Send the request and get the response
+    ovResp, err := op.internalAdd(weight, headers, query, wait)
+    if err != nil {
+        return nil, errors.New("Failed to calling Add *Weight")
+    }
+    var weightVar *Weight
+    xml.Unmarshal([]byte(ovResp.Body), weightVar)
+    return weightVar, nil
 }
 
 //
@@ -25276,12 +27640,14 @@ func (op *WeightsService) Add (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *WeightsService) List (
+func (op *WeightsService) List(
     filter bool,
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*Weight,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25290,7 +27656,10 @@ func (op *WeightsService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var weightsVar *Weights
+    xml.Unmarshal([]byte(ovResp.Body), weightsVar)
+    return weightsVar.Weights, nil
 }
 
 //
@@ -25351,12 +27720,13 @@ func NewAttachedStorageDomainDiskService(connection *Connection, path string) *A
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDiskService) Copy (
+func (op *AttachedStorageDomainDiskService) Copy(
     disk *Disk,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Disk: disk,
@@ -25364,7 +27734,8 @@ func (op *AttachedStorageDomainDiskService) Copy (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "copy", headers, query, wait)
+    _, err := op.internalAction(action, "copy", headers, query, wait)
+    return err
 }
 
 //
@@ -25378,34 +27749,41 @@ func (op *AttachedStorageDomainDiskService) Copy (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDiskService) Export (
+func (op *AttachedStorageDomainDiskService) Export(
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         StorageDomain: storageDomain,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
 // Retrieves the description of the disk.
 //
-func (op *AttachedStorageDomainDiskService) Get (
+func (op *AttachedStorageDomainDiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -25421,13 +27799,14 @@ func (op *AttachedStorageDomainDiskService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDiskService) Move (
+func (op *AttachedStorageDomainDiskService) Move(
     async bool,
     filter bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -25436,22 +27815,25 @@ func (op *AttachedStorageDomainDiskService) Move (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "move", headers, query, wait)
+    _, err := op.internalAction(action, "move", headers, query, wait)
+    return err
 }
 
 //
 // Registers an unregistered disk.
 //
-func (op *AttachedStorageDomainDiskService) Register (
+func (op *AttachedStorageDomainDiskService) Register(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "register", headers, query, wait)
+    _, err := op.internalAction(action, "register", headers, query, wait)
+    return err
 }
 
 //
@@ -25460,17 +27842,19 @@ func (op *AttachedStorageDomainDiskService) Register (
 // compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
 // operation of the service that manages that disk.
 //
-func (op *AttachedStorageDomainDiskService) Remove (
+func (op *AttachedStorageDomainDiskService) Remove(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -25479,16 +27863,18 @@ func (op *AttachedStorageDomainDiskService) Remove (
 // compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
 // operation of the service that manages that disk.
 //
-func (op *AttachedStorageDomainDiskService) Sparsify (
+func (op *AttachedStorageDomainDiskService) Sparsify(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "sparsify", headers, query, wait)
+    _, err := op.internalAction(action, "sparsify", headers, query, wait)
+    return err
 }
 
 //
@@ -25502,18 +27888,23 @@ func (op *AttachedStorageDomainDiskService) Sparsify (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *AttachedStorageDomainDiskService) Update (
+func (op *AttachedStorageDomainDiskService) Update(
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(disk, headers, query, wait)
+    ovResp, err := op.internalUpdate(disk, headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -25627,14 +28018,15 @@ func NewDiskService(connection *Connection, path string) *DiskService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskService) Copy (
+func (op *DiskService) Copy(
     async bool,
     disk *Disk,
     filter bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -25644,7 +28036,8 @@ func (op *DiskService) Copy (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "copy", headers, query, wait)
+    _, err := op.internalAction(action, "copy", headers, query, wait)
+    return err
 }
 
 //
@@ -25657,13 +28050,14 @@ func (op *DiskService) Copy (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskService) Export (
+func (op *DiskService) Export(
     async bool,
     filter bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -25672,23 +28066,29 @@ func (op *DiskService) Export (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "export", headers, query, wait)
+    _, err := op.internalAction(action, "export", headers, query, wait)
+    return err
 }
 
 //
 // Retrieves the description of the disk.
 //
-func (op *DiskService) Get (
+func (op *DiskService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -25714,13 +28114,14 @@ func (op *DiskService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskService) Move (
+func (op *DiskService) Move(
     async bool,
     filter bool,
     storageDomain *StorageDomain,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -25729,7 +28130,8 @@ func (op *DiskService) Move (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "move", headers, query, wait)
+    _, err := op.internalAction(action, "move", headers, query, wait)
+    return err
 }
 
 //
@@ -25740,11 +28142,12 @@ func (op *DiskService) Move (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskService) Remove (
+func (op *DiskService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25752,7 +28155,8 @@ func (op *DiskService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -25762,16 +28166,18 @@ func (op *DiskService) Remove (
 // Currently sparsification works only on disks without snapshots. Disks
 // having derived disks are also not allowed.
 //
-func (op *DiskService) Sparsify (
+func (op *DiskService) Sparsify(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "sparsify", headers, query, wait)
+    _, err := op.internalAction(action, "sparsify", headers, query, wait)
+    return err
 }
 
 //
@@ -25797,18 +28203,23 @@ func (op *DiskService) Sparsify (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *DiskService) Update (
+func (op *DiskService) Update(
     disk *Disk,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Disk,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request
-    return op.internalUpdate(disk, headers, query, wait)
+    ovResp, err := op.internalUpdate(disk, headers, query, wait)
+    var diskVar *Disk
+    xml.Unmarshal([]byte(ovResp.Body), diskVar)
+    return diskVar, nil
 }
 
 //
@@ -25902,11 +28313,13 @@ func NewEngineKatelloErrataService(connection *Connection, path string) *EngineK
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *EngineKatelloErrataService) List (
+func (op *EngineKatelloErrataService) List(
     max int64,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        []*KatelloErratum,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -25914,7 +28327,10 @@ func (op *EngineKatelloErrataService) List (
     query["max"] = fmt.Sprintf("%v", max)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var errataVar *KatelloErratums
+    xml.Unmarshal([]byte(ovResp.Body), errataVar)
+    return errataVar.KatelloErratums, nil
 }
 
 //
@@ -25965,33 +28381,40 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 
 //
 //
-func (op *ExternalHostProviderService) Get (
+func (op *ExternalHostProviderService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *ExternalHostProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var providerVar *ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
 //
-func (op *ExternalHostProviderService) ImportCertificates (
+func (op *ExternalHostProviderService) ImportCertificates(
     certificates []*Certificate,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Certificates: certificates,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "importcertificates", headers, query, wait)
+    _, err := op.internalAction(action, "importcertificates", headers, query, wait)
+    return err
 }
 
 //
@@ -26001,11 +28424,12 @@ func (op *ExternalHostProviderService) ImportCertificates (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalHostProviderService) Remove (
+func (op *ExternalHostProviderService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26013,7 +28437,8 @@ func (op *ExternalHostProviderService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -26023,28 +28448,32 @@ func (op *ExternalHostProviderService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *ExternalHostProviderService) TestConnectivity (
+func (op *ExternalHostProviderService) TestConnectivity(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "testconnectivity", headers, query, wait)
+    _, err := op.internalAction(action, "testconnectivity", headers, query, wait)
+    return err
 }
 
 //
 //
-func (op *ExternalHostProviderService) Update (
+func (op *ExternalHostProviderService) Update(
     provider *ExternalHostProvider,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *ExternalHostProvider,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26052,7 +28481,10 @@ func (op *ExternalHostProviderService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(provider, headers, query, wait)
+    ovResp, err := op.internalUpdate(provider, headers, query, wait)
+    var providerVar *ExternalHostProvider
+    xml.Unmarshal([]byte(ovResp.Body), providerVar)
+    return providerVar, nil
 }
 
 //
@@ -26191,17 +28623,22 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 // </brick>
 // ----
 //
-func (op *GlusterBrickService) Get (
+func (op *GlusterBrickService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GlusterBrick,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var brickVar *GlusterBrick
+    xml.Unmarshal([]byte(ovResp.Body), brickVar)
+    return brickVar, nil
 }
 
 //
@@ -26220,11 +28657,12 @@ func (op *GlusterBrickService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBrickService) Remove (
+func (op *GlusterBrickService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26232,7 +28670,8 @@ func (op *GlusterBrickService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -26246,12 +28685,13 @@ func (op *GlusterBrickService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterBrickService) Replace (
+func (op *GlusterBrickService) Replace(
     async bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26259,7 +28699,8 @@ func (op *GlusterBrickService) Replace (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "replace", headers, query, wait)
+    _, err := op.internalAction(action, "replace", headers, query, wait)
+    return err
 }
 
 //
@@ -26345,17 +28786,22 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 //  </gluster_volume>
 // ----
 //
-func (op *GlusterVolumeService) Get (
+func (op *GlusterVolumeService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *GlusterVolume,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var volumeVar *GlusterVolume
+    xml.Unmarshal([]byte(ovResp.Body), volumeVar)
+    return volumeVar, nil
 }
 
 //
@@ -26367,16 +28813,21 @@ func (op *GlusterVolumeService) Get (
 // POST /ovirt-engine/api/clusters/456/glustervolumes/123/getprofilestatistics
 // ----
 //
-func (op *GlusterVolumeService) GetProfileStatistics (
+func (op *GlusterVolumeService) GetProfileStatistics(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *GlusterVolumeProfileDetails,
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "getprofilestatistics", headers, query, wait)
+    ovResp, err := op.internalAction(action, "getprofilestatistics", headers, query, wait)
+    var detailsVar *GlusterVolumeProfileDetails
+    xml.Unmarshal([]byte(ovResp.Body), detailsVar)
+    return detailsVar, nil
 }
 
 //
@@ -26401,13 +28852,14 @@ func (op *GlusterVolumeService) GetProfileStatistics (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) Rebalance (
+func (op *GlusterVolumeService) Rebalance(
     async bool,
     fixLayout bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26416,7 +28868,8 @@ func (op *GlusterVolumeService) Rebalance (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "rebalance", headers, query, wait)
+    _, err := op.internalAction(action, "rebalance", headers, query, wait)
+    return err
 }
 
 //
@@ -26432,11 +28885,12 @@ func (op *GlusterVolumeService) Rebalance (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) Remove (
+func (op *GlusterVolumeService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26444,7 +28898,8 @@ func (op *GlusterVolumeService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -26461,18 +28916,20 @@ func (op *GlusterVolumeService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) ResetAllOptions (
+func (op *GlusterVolumeService) ResetAllOptions(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "resetalloptions", headers, query, wait)
+    _, err := op.internalAction(action, "resetalloptions", headers, query, wait)
+    return err
 }
 
 //
@@ -26497,13 +28954,14 @@ func (op *GlusterVolumeService) ResetAllOptions (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) ResetOption (
+func (op *GlusterVolumeService) ResetOption(
     async bool,
     force bool,
     option *Option,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26512,7 +28970,8 @@ func (op *GlusterVolumeService) ResetOption (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "resetoption", headers, query, wait)
+    _, err := op.internalAction(action, "resetoption", headers, query, wait)
+    return err
 }
 
 //
@@ -26537,12 +28996,13 @@ func (op *GlusterVolumeService) ResetOption (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) SetOption (
+func (op *GlusterVolumeService) SetOption(
     async bool,
     option *Option,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26550,7 +29010,8 @@ func (op *GlusterVolumeService) SetOption (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "setoption", headers, query, wait)
+    _, err := op.internalAction(action, "setoption", headers, query, wait)
+    return err
 }
 
 //
@@ -26569,12 +29030,13 @@ func (op *GlusterVolumeService) SetOption (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) Start (
+func (op *GlusterVolumeService) Start(
     async bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26582,7 +29044,8 @@ func (op *GlusterVolumeService) Start (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "start", headers, query, wait)
+    _, err := op.internalAction(action, "start", headers, query, wait)
+    return err
 }
 
 //
@@ -26598,18 +29061,20 @@ func (op *GlusterVolumeService) Start (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) StartProfile (
+func (op *GlusterVolumeService) StartProfile(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "startprofile", headers, query, wait)
+    _, err := op.internalAction(action, "startprofile", headers, query, wait)
+    return err
 }
 
 //
@@ -26626,12 +29091,13 @@ func (op *GlusterVolumeService) StartProfile (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) Stop (
+func (op *GlusterVolumeService) Stop(
     async bool,
     force bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26639,7 +29105,8 @@ func (op *GlusterVolumeService) Stop (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "stop", headers, query, wait)
+    _, err := op.internalAction(action, "stop", headers, query, wait)
+    return err
 }
 
 //
@@ -26655,18 +29122,20 @@ func (op *GlusterVolumeService) Stop (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) StopProfile (
+func (op *GlusterVolumeService) StopProfile(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "stopprofile", headers, query, wait)
+    _, err := op.internalAction(action, "stopprofile", headers, query, wait)
+    return err
 }
 
 //
@@ -26683,18 +29152,20 @@ func (op *GlusterVolumeService) StopProfile (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *GlusterVolumeService) StopRebalance (
+func (op *GlusterVolumeService) StopRebalance(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "stoprebalance", headers, query, wait)
+    _, err := op.internalAction(action, "stoprebalance", headers, query, wait)
+    return err
 }
 
 //
@@ -26774,18 +29245,20 @@ func NewHostService(connection *Connection, path string) *HostService {
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Activate (
+func (op *HostService) Activate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "activate", headers, query, wait)
+    _, err := op.internalAction(action, "activate", headers, query, wait)
+    return err
 }
 
 //
@@ -26797,12 +29270,13 @@ func (op *HostService) Activate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Approve (
+func (op *HostService) Approve(
     async bool,
     cluster *Cluster,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26810,7 +29284,8 @@ func (op *HostService) Approve (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "approve", headers, query, wait)
+    _, err := op.internalAction(action, "approve", headers, query, wait)
+    return err
 }
 
 //
@@ -26836,18 +29311,20 @@ func (op *HostService) Approve (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) CommitNetConfig (
+func (op *HostService) CommitNetConfig(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "commitnetconfig", headers, query, wait)
+    _, err := op.internalAction(action, "commitnetconfig", headers, query, wait)
+    return err
 }
 
 //
@@ -26860,13 +29337,14 @@ func (op *HostService) CommitNetConfig (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Deactivate (
+func (op *HostService) Deactivate(
     async bool,
     reason string,
     stopGlusterService bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26875,7 +29353,8 @@ func (op *HostService) Deactivate (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "deactivate", headers, query, wait)
+    _, err := op.internalAction(action, "deactivate", headers, query, wait)
+    return err
 }
 
 //
@@ -26886,18 +29365,20 @@ func (op *HostService) Deactivate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) EnrollCertificate (
+func (op *HostService) EnrollCertificate(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "enrollcertificate", headers, query, wait)
+    _, err := op.internalAction(action, "enrollcertificate", headers, query, wait)
+    return err
 }
 
 //
@@ -26930,12 +29411,14 @@ func (op *HostService) EnrollCertificate (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Fence (
+func (op *HostService) Fence(
     async bool,
     fenceType string,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *PowerManagement,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -26943,7 +29426,10 @@ func (op *HostService) Fence (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "fence", headers, query, wait)
+    ovResp, err := op.internalAction(action, "fence", headers, query, wait)
+    var powerManagementVar *PowerManagement
+    xml.Unmarshal([]byte(ovResp.Body), powerManagementVar)
+    return powerManagementVar, nil
 }
 
 //
@@ -26963,18 +29449,20 @@ func (op *HostService) Fence (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) ForceSelectSpm (
+func (op *HostService) ForceSelectSpm(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "forceselectspm", headers, query, wait)
+    _, err := op.internalAction(action, "forceselectspm", headers, query, wait)
+    return err
 }
 
 //
@@ -26985,11 +29473,13 @@ func (op *HostService) ForceSelectSpm (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Get (
+func (op *HostService) Get(
     filter bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -26997,7 +29487,10 @@ func (op *HostService) Get (
     query["filter"] = fmt.Sprintf("%v", filter)
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var hostVar *Host
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
@@ -27059,7 +29552,7 @@ func (op *HostService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Install (
+func (op *HostService) Install(
     async bool,
     deployHostedEngine bool,
     host *Host,
@@ -27069,7 +29562,8 @@ func (op *HostService) Install (
     undeployHostedEngine bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27082,7 +29576,8 @@ func (op *HostService) Install (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "install", headers, query, wait)
+    _, err := op.internalAction(action, "install", headers, query, wait)
+    return err
 }
 
 //
@@ -27094,12 +29589,14 @@ func (op *HostService) Install (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) IscsiDiscover (
+func (op *HostService) IscsiDiscover(
     async bool,
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        []string,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27107,7 +29604,8 @@ func (op *HostService) IscsiDiscover (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "iscsidiscover", headers, query, wait)
+    ovResp, err := op.internalAction(action, "iscsidiscover", headers, query, wait)
+    return []string{ovResp.Body}, nil
 }
 
 //
@@ -27119,12 +29617,13 @@ func (op *HostService) IscsiDiscover (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) IscsiLogin (
+func (op *HostService) IscsiLogin(
     async bool,
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27132,7 +29631,8 @@ func (op *HostService) IscsiLogin (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "iscsilogin", headers, query, wait)
+    _, err := op.internalAction(action, "iscsilogin", headers, query, wait)
+    return err
 }
 
 //
@@ -27143,18 +29643,20 @@ func (op *HostService) IscsiLogin (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Refresh (
+func (op *HostService) Refresh(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "refresh", headers, query, wait)
+    _, err := op.internalAction(action, "refresh", headers, query, wait)
+    return err
 }
 
 //
@@ -27179,11 +29681,12 @@ func (op *HostService) Refresh (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Remove (
+func (op *HostService) Remove(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27191,7 +29694,8 @@ func (op *HostService) Remove (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request and wait for the response:
-    return op.internalRemove(headers, query, wait)
+    _, err := op.internalRemove(headers, query, wait)
+    return err
 }
 
 //
@@ -27352,7 +29856,7 @@ func (op *HostService) Remove (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) SetupNetworks (
+func (op *HostService) SetupNetworks(
     async bool,
     checkConnectivity bool,
     connectivityTimeout int64,
@@ -27365,7 +29869,8 @@ func (op *HostService) SetupNetworks (
     synchronizedNetworkAttachments []*NetworkAttachment,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27381,7 +29886,8 @@ func (op *HostService) SetupNetworks (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "setupnetworks", headers, query, wait)
+    _, err := op.internalAction(action, "setupnetworks", headers, query, wait)
+    return err
 }
 
 //
@@ -27391,12 +29897,14 @@ func (op *HostService) SetupNetworks (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) UnregisteredStorageDomainsDiscover (
+func (op *HostService) UnregisteredStorageDomainsDiscover(
     async bool,
     iscsi *IscsiDetails,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        []*StorageDomain,
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27404,7 +29912,10 @@ func (op *HostService) UnregisteredStorageDomainsDiscover (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
+    ovResp, err := op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
+    var storageDomainsVar *StorageDomains
+    xml.Unmarshal([]byte(ovResp.Body), storageDomainsVar)
+    return storageDomainsVar.StorageDomains, nil
 }
 
 //
@@ -27424,12 +29935,14 @@ func (op *HostService) UnregisteredStorageDomainsDiscover (
 // </host>
 // ----
 //
-func (op *HostService) Update (
+func (op *HostService) Update(
     host *Host,
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        *Host,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
@@ -27437,7 +29950,10 @@ func (op *HostService) Update (
     query["async"] = fmt.Sprintf("%v", async)
 
     // Send the request
-    return op.internalUpdate(host, headers, query, wait)
+    ovResp, err := op.internalUpdate(host, headers, query, wait)
+    var hostVar *Host
+    xml.Unmarshal([]byte(ovResp.Body), hostVar)
+    return hostVar, nil
 }
 
 //
@@ -27448,18 +29964,20 @@ func (op *HostService) Update (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostService) Upgrade (
+func (op *HostService) Upgrade(
     async bool,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "upgrade", headers, query, wait)
+    _, err := op.internalAction(action, "upgrade", headers, query, wait)
+    return err
 }
 
 //
@@ -27469,16 +29987,18 @@ func (op *HostService) Upgrade (
 // The upgrade can be started from the webadmin or by using the
 // <<services/host/methods/upgrade, upgrade>> host action.
 //
-func (op *HostService) UpgradeCheck (
+func (op *HostService) UpgradeCheck(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "upgradecheck", headers, query, wait)
+    _, err := op.internalAction(action, "upgradecheck", headers, query, wait)
+    return err
 }
 
 //
@@ -27706,17 +30226,22 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 
 //
 //
-func (op *HostNicService) Get (
+func (op *HostNicService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *HostNic,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nicVar *HostNic
+    xml.Unmarshal([]byte(ovResp.Body), nicVar)
+    return nicVar, nil
 }
 
 //
@@ -27731,12 +30256,13 @@ func (op *HostNicService) Get (
 // `query`:: Additional URL query parameters.
 // `wait`:: If `True` wait for the response.
 //
-func (op *HostNicService) UpdateVirtualFunctionsConfiguration (
+func (op *HostNicService) UpdateVirtualFunctionsConfiguration(
     async bool,
     virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration,
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) (
+        error) {
     // Populate the action:
     action := &Action{
         Async: async,
@@ -27744,7 +30270,8 @@ func (op *HostNicService) UpdateVirtualFunctionsConfiguration (
     }
 
     // Send the request and wait for the response:
-    return op.internalAction(action, "updatevirtualfunctionsconfiguration", headers, query, wait)
+    _, err := op.internalAction(action, "updatevirtualfunctionsconfiguration", headers, query, wait)
+    return err
 }
 
 //
@@ -27845,17 +30372,22 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 
 //
 //
-func (op *HostNumaNodeService) Get (
+func (op *HostNumaNodeService) Get(
     headers map[string]string,
     query map[string]string,
-    wait bool) (interface{}, error) {
+    wait bool) ( 
+        *NumaNode,
+        error) {
     // Build the URL:
     if query == nil {
         query = make(map[string]string)
     }
 
     // Send the request and wait for the response:
-    return op.internalGet(headers, query, wait)
+    ovResp, err := op.internalGet(headers, query, wait)
+    var nodeVar *NumaNode
+    xml.Unmarshal([]byte(ovResp.Body), nodeVar)
+    return nodeVar, nil
 }
 
 //

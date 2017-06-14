@@ -310,6 +310,14 @@ public class GoNames {
     }
 
     /**
+     * In case of the same with the parameter name, so add _ as suffix
+     */
+    public String getVariableStyleName(Name name) {
+        String paramStyleName = this.getParameterStyleName(name);
+        return paramStyleName + "Var";
+    }
+
+    /**
      * Returns a representation of the given name using the capitalization style typically used for Go constants.
      */
     public String getConstantStyleName(Name name) {
