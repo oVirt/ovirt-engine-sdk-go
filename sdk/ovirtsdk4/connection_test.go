@@ -17,7 +17,7 @@ func TestSend(t *testing.T) {
 	// ovRequest := NewOvRequest("GET", "/clusters", nil, nil, "")
 	clusterList, err := conn.SystemService().ClustersService().List(false, false, 100, "", nil, nil, false)
 	for _, cluster := range clusterList {
-		t.Logf("cluster(%v): %+v", cluster.Id, cluster.Cpu)
+		t.Logf("cluster(%v): CPU architecture is %v and type is %v", cluster.Id, cluster.Cpu.Architecture, cluster.Cpu.Type)
 	}
 
 	// ovResponse, err := conn.Send(ovRequest)

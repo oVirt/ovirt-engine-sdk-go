@@ -1,128 +1,71 @@
-= oVirt Engine API Go SDK
+# oVirt Engine API Go SDK
 
-== Introduction
+## Introduction
 
 This project contains the Go SDK for the oVirt Engine API.
 
-== Important
+## Important
 
-Note that most of the code of this SDK is automatically generated. If
-you just installed the package then you will have everything already,
-but if you downloaded the source then you will need to generate it,
-follow the instructions in the `README.adoc` file of the parent
-directory.
+Note that most of the code of this SDK is automatically generated. You 
+cloud just use this repository then you will have everything alread,
+but if you want to use SDK locally, you can downloaded the source and 
+generate it, please follow the instructions in the `README.md` file of 
+the parent directory.
 
-== Installation
+> Current version of Go SDK just use basic auth when accessing oVirt engine.
 
-The SDK can be installed in Fedora 24 and CentOS 7 using the RPM packages
-provided by the oVirt project. To do so install the oVirt release package:
+> Async api operation is currently not supported.
 
-  # dnf install http://resources.ovirt.org/pub/yum-repo/ovirt-release41.rpm
+## Installation
 
-Then install the SDK packages. For Python 2:
+The SDK can be installed in any operating systems with Go installed. Then
+do the following:
+```bash
+$ go get -u github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4
+```
 
-  # dnf install python-ovirt-engine-sdk4
+## Usage
 
-For Python 3:
+To use the SDK you should import ovirtsdk4 package as follows:
+```go
+import (
+    "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
+)
+```
 
-  # dnf install python3-ovirt-engine-sdk4
-
-For other operating systems (and also for Fedora and CentOS) you can
-install the SDK using the `pip` command, which will download the source
-from https://pypi.python.org/pypi[PyPI], build and install it.
-
-The SDK uses http://www.xmlsoft.org[libxml2] for parsing and rendering
-XML. The part of the SDK that interacts with that library is written in
-C. This means that before building you must make sure you have the C
-compiler and the required header and libraries files installed in your
-system. For example, if you are using distributions like Fedora, or
-CentOS:
-
-  # dnf -y install \
-  gcc \
-  libxml2-devel \
-  python-devel
-
-For Python 3:
-
-  # dnf -y install \
-  gcc \
-  libxml2-devel \
-  python3-devel
-
-If you are using distributions like Debian, or Ubuntu:
-
-  # apt-get --assume-yes install \
-  gcc \
-  libxml2-dev \
-  python-dev
-
-For Python 3:
-
-  # apt-get --assume-yes install \
-  gcc \
-  libxml2-dev \
-  python3-dev
-
-NOTE: The examples above use the `dnf` command, which is the default in
-Fedora 24. In CentOS 7 you may need to use the `yum` command, as `dnf`
-is optional.
-
-== Usage
-
-To use the SDK import the `ovirtsdk4` module. That will give you
-access to all the classes of the SDK, and in particular to the
-`Connection` class. This is the entry point of the SDK,
+That will give you access to all the classes of the SDK, and in particular
+to the `Connection` class. This is the entry point of the SDK,
 and gives you access to the root of the tree of services of the API:
 
-[source,python]
-----
-import ovirtsdk4 as sdk
-
-# Create a connection to the server:
-connection = sdk.Connection(
-  url='https://engine.example.com/ovirt-engine/api',
-  username='admin@internal',
-  password='...',
-  ca_file='ca.pem',
+```go
+// Create a connection to the server:
+import (
+    "time"
+    "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
 )
+var inputRawURL = "https://engine.example.com/ovirt-engine/api"
+conn, err := ovirtsdk4.NewConnection(
+	inputRawURL, "admin@internal", "your-password",
+	"", true, "", false,
+	uint64(10*time.Second), true)
 
-# Get the reference to the system service:
-system_service = connection.system_service()
+// Get the reference to the **system** service
+systemService := conn.SystemService()
 
-# Always remember to close the connection when finished:
-connection.close()
-----
+// Get the reference to the **clusters** service
+clustersService := systemService.ClustersService()
 
-The `ca.pem` file is required when connecting to a server protected
-with TLS. In an usual oVirt installation it will be in
-`/etc/pki/ovirt-engine/ca.pem`. If you don't specify `ca_file`, then
-system wide CA certificate store will be used.
+// Get all the clusters
+clusters, err := clustersService.List(false, false, 100, "", nil, nil, false)
 
-Once you have the reference to the system service you can use it to get
-references to other services, and call their methods. For example, to
-retrieve the list of virtual machines of the system you can use the
-`vms_service()` method, which returns a reference to the service that
-manages the virtual machines:
+// Print clusters attrs
+for _, cluster := range clusters {
+    fmt.Printf("cluster(%v): CPU architecture is %v and type is %v", cluster.Id,            
+        cluster.Cpu.Architecture, cluster.Cpu.Type)
+}
 
-[source,python]
-----
-# Get the reference to the "vms" service:
-vms_service = system_service.vms_service()
-----
+// Close the connection
+conn.Close()
+```
 
-This service is an instance of `VmsService`, and it has a `list` method
-that returns an array of virtual machines, which are instances of the
-`Vm` class:
-
-[source,python]
-----
-# Retrieve the virtual machines:
-vms = vms_service.list()
-
-# Print the names and identifiers of the virtual machines:
-for vm in vms:
-  print("%s: %s" % (vm.name, vm.id))
-----
-
-You will find more usage examples in the `examples` directory.
+More usage examples will be added to the `examples` directory soon.
