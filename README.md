@@ -1,4 +1,4 @@
-# oVirt Go SDK ()
+# oVirt Go SDK
 Go SDK for oVirt 4.0+, main functions are finished, excluding error processing...
 
 Project completion is almost 80%.
