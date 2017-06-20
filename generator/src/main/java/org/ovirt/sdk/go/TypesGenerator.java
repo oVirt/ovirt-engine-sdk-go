@@ -109,6 +109,8 @@ public class TypesGenerator implements GoGenerator {
         // Define []Struct
         buffer.addLine("type %1$ss struct {", typeName.getClassName());
         buffer.startBlock();
+        //  Add xml.Name
+        buffer.addLine("XMLName xml.Name `xml:\"%1$ss\"`", typeName.getClassName().toLowerCase());
         buffer.addLine("%1$ss []%1$s `xml:\"%2$s\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
         buffer.endBlock();
         buffer.addLine("}");
