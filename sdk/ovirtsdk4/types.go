@@ -17,6 +17,7 @@ package ovirtsdk4
 
 import (
 	"encoding/xml"
+	"fmt"
 	"time"
 )
 
@@ -4462,3 +4463,7 @@ type WatchdogModel string
 const (
 	WATCHDOGMODEL_I6300ESB WatchdogModel = "i6300esb"
 )
+
+func (fault *Fault) Error() string {
+	return fmt.Sprintf("Error details is %s, reason is %s", fault.Detail, fault.Reason)
+}

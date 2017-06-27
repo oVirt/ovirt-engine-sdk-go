@@ -100,6 +100,15 @@ public class TypesGenerator implements GoGenerator {
             .map(EnumType.class::cast)
             .sorted()
             .forEach(this::generateEnum);
+        
+        // Customize type generation
+        //      Add  Error method for type Fault
+        buffer.addLine();
+        buffer.addLine("func (fault *Fault) Error() string {");
+        buffer.startBlock();
+        buffer.addLine("return fmt.Sprintf(\"Error details is %%s, reason is %%s\", fault.Detail, fault.Reason)");
+        buffer.endBlock();
+        buffer.addLine("}");
     }
 
     private void generateStruct(StructType type) {
