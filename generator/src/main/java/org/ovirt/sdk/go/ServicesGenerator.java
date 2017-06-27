@@ -244,13 +244,6 @@ public class ServicesGenerator implements GoGenerator {
         //      Generate the code to send the request
         buffer.addLine("// Send the request and get the response");
         buffer.addLine("ovResp, err := op.internalAdd(%1$s, headers, query, wait)", primaryArg);
-        buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addImport("errors");
-        buffer.addLine("return nil, errors.New(\"Failed to calling Add %1$s\")",
-            primaryParameterGoTypeReference.getText());
-        buffer.endBlock();
-        buffer.addLine("}");
         //      Parse the result
         this.generateOvResponseParsing(primaryParameter);
         // End body:
@@ -314,7 +307,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("return err");
         } else {
             buffer.addLine(
-                "ovResp, _ := op.internalAction(action, \"%1$s\", headers, query, wait)",
+                "ovResp, err := op.internalAction(action, \"%1$s\", headers, query, wait)",
                 getPath(methodName)
             );
             // Generate the ovResponse parsing
@@ -376,13 +369,6 @@ public class ServicesGenerator implements GoGenerator {
         // Generate the code to send the request and wait for the response:
         buffer.addLine("// Send the request and wait for the response:");
         buffer.addLine("ovResp, err := op.internalGet(headers, query, wait)");
-        buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addImport("errors");
-        buffer.addLine("return nil, errors.New(\"Failed to calling Get %1$s\")",
-            outParamGoTypeReference.getText());
-        buffer.endBlock();
-        buffer.addLine("}");
 
         // Generate ovResponse parsing
         this.generateOvResponseParsing(outParameter);
@@ -444,13 +430,6 @@ public class ServicesGenerator implements GoGenerator {
         //      Generate the code to send the request
         buffer.addLine("// Send the request");
         buffer.addLine("ovResp, err := op.internalUpdate(%1$s, headers, query, wait)", primaryArg);
-        buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addImport("errors");
-        buffer.addLine("return nil, errors.New(\"Failed to calling Update %1$s\")",
-            primaryParameterGoTypeReference.getText());
-        buffer.endBlock();
-        buffer.addLine("}");
 
         //      Generate ovResponse parsing
         this.generateOvResponseParsing(primaryParameter);
@@ -758,15 +737,35 @@ public class ServicesGenerator implements GoGenerator {
         Type outParameterType = outParameter.getType();
         if (outParameterType instanceof PrimitiveType) {
             if (outParameterType == model.getBooleanType()) {
+                buffer.addLine("if err != nil {");
+                buffer.startBlock();
+                buffer.addLine("return false, err");
+                buffer.endBlock();
+                buffer.addLine("}");
                 buffer.addImport("strconv");
                 buffer.addLine("return strconv.ParseBool(ovResp.Body)");
             } else if (outParameterType == model.getIntegerType()) {
+                buffer.addLine("if err != nil {");
+                buffer.startBlock();
+                buffer.addLine("return 0, err");
+                buffer.endBlock();
+                buffer.addLine("}");
                 buffer.addImport("strconv");
                 buffer.addLine("return strconv.ParseInt(ovResp.Body, 10, 64)");
             } else if (outParameterType == model.getDecimalType()) {
+                buffer.addLine("if err != nil {");
+                buffer.startBlock();
+                buffer.addLine("return 0, err");
+                buffer.endBlock();
+                buffer.addLine("}");
                 buffer.addImport("strconv");
                 buffer.addLine("return srconv.ParseFloat(ovResp.Body, 10, 64");
             } else if (outParameterType == model.getStringType()) {
+                buffer.addLine("if err != nil {");
+                buffer.startBlock();
+                buffer.addLine("return \"\", err");
+                buffer.endBlock();
+                buffer.addLine("}");
                 buffer.addLine("return ovResp.Body, nil");
             } else {
                 throw new IllegalArgumentException(
@@ -774,10 +773,21 @@ public class ServicesGenerator implements GoGenerator {
                 );
             }
         } else if (outParameterType instanceof StructType) {
+            buffer.addLine("if err != nil {");
+            buffer.startBlock();
+            buffer.addLine("return nil, err");
+            buffer.endBlock();
+            buffer.addLine("}");
             buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameter.getType()).getClassName());
             this.generateXmlUnmarshal(outParameter);
             buffer.addLine("return &%1$s, nil", outParamNameAsVar);
         } else if (outParameterType instanceof ListType) {
+            buffer.addLine("if err != nil {");
+            buffer.startBlock();
+            buffer.addLine("return nil, err");
+            buffer.endBlock();
+            buffer.addLine("}");
+
             ListType outParamListType = (ListType) outParameterType;
             if (outParamListType.getElementType() instanceof StructType) {
                 String outParamListTypeStr = outParamTypeReference.getText().replace("[]", "");

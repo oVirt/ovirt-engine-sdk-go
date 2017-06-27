@@ -21,11 +21,21 @@ import (
 	"fmt"
 )
 
-// This is the base for all the services of the SDK. It contains the
+// BaseService : This is the base for all the services of the SDK. It contains the
 // utility methods used by all of them.
 type BaseService struct {
 	Connection *Connection
 	Path       string
+}
+
+func checkFault(response *OvResponse) error {
+	if len(response.Body) == 0 {
+		return &Fault{Detail: fmt.Sprintf("HTTP response code is %d", response.Code)}
+	}
+	// xml unmarshal into Fault struct
+	var faultVar Fault
+	xml.Unmarshal([]byte(response.Body), &faultVar)
+	return &faultVar
 }
 
 func (service *BaseService) internalGet(headers, query map[string]string, wait bool) (*OvResponse, error) {
@@ -34,7 +44,12 @@ func (service *BaseService) internalGet(headers, query map[string]string, wait b
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	// If Get succeed
+	if res.Code == 200 {
+		return res, nil
+	}
+	// Get failed
+	return nil, checkFault(res)
 }
 
 // Executes an `add` method.
@@ -49,7 +64,12 @@ func (service *BaseService) internalAdd(object interface{}, headers, query map[s
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	// If Add succeed
+	if Contains(res.Code, []int{200, 201, 202}) {
+		return res, nil
+	}
+	// Add failed
+	return nil, checkFault(res)
 }
 
 // Executes a `update` method
@@ -64,7 +84,12 @@ func (service *BaseService) internalUpdate(object interface{}, headers, query ma
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	// If Update succeed
+	if res.Code == 200 {
+		return res, nil
+	}
+	// Update faield
+	return nil, checkFault(res)
 }
 
 // Executes a `remove` method
@@ -74,7 +99,12 @@ func (service *BaseService) internalRemove(headers, query map[string]string, wai
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	// If Remove succeed
+	if res.Code == 200 {
+		return res, nil
+	}
+	// Remove failed
+	return nil, checkFault(res)
 }
 
 // Executes an `action` method
@@ -84,5 +114,12 @@ func (service *BaseService) internalAction(action *Action, path string, headers,
 	if err != nil {
 		return nil, err
 	}
-	return res, nil
+	// If Action succeed
+	if Contains(res.Code, []int{200, 201, 202}) {
+		return res, nil
+		// To unmarsh Action, not used now
+		// 		var actionVar Action
+		// 		xml.Unmarshal([]byte(res.Body), &actionVar)
+	}
+	return nil, checkFault(res)
 }
