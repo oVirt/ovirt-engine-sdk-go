@@ -148,7 +148,7 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	useRawURL := c.buildRawURL(r.Path, r.Query)
 
 	// Validate the method selected:
-	if StringInSlice(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
+	if Contains(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
 		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST", r.Method)
 	}
 
