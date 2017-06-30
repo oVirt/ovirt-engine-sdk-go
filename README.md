@@ -53,5 +53,5 @@ By default the build and the tests are executed using the `go` command.
 If you wish to use a different version of Go you can use the
 `go.command` property:
 ```bash
-$ mvn package -Dgo.command=go1.8
+$ mvn package -Dgo.command=go1.7
 ```
