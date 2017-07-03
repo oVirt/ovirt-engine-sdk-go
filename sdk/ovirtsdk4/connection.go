@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2016 Red Hat, Inc. / Nathan Sullivan
+// Copyright (c) 2017 Joey
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-// Most codes of this file if from https://github.com/CpuID/ovirt-engine-sdk-go/blob/master/sdk/http/http.go.
-// The code has some bugs, so I partialy modified, Thanks to @CpuID
+// Some codes of this file is from https://github.com/CpuID/ovirt-engine-sdk-go/blob/master/sdk/http/http.go.
+// And I made some bug fixes, Thanks to @CpuID
 
 package ovirtsdk4
 
@@ -24,6 +24,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -32,6 +33,162 @@ import (
 	"strings"
 	"time"
 )
+
+// NewConnectionBuilder : Create the `ConnectionBuilder struct instance
+func NewConnectionBuilder() *ConnectionBuilder {
+	return &ConnectionBuilder{conn: &Connection{}, err: nil}
+}
+
+// ConnectionBuilder :  Builds the `Connection` struct
+type ConnectionBuilder struct {
+	conn *Connection
+	err  error
+}
+
+// URL : Set the url field for `Connection` instance
+func (connBuilder *ConnectionBuilder) URL(inputRawURL string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	// Check parameters
+	if len(inputRawURL) == 0 {
+		connBuilder.err = errors.New("The URL must not be empty")
+		return connBuilder
+	}
+
+	// Save the URL:
+	useURL, err := url.Parse(inputRawURL)
+	if err != nil {
+		connBuilder.err = err
+		return connBuilder
+	}
+	connBuilder.conn.url = *useURL
+	return connBuilder
+}
+
+// Username : Set the username field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	// Check parameters
+	if len(username) == 0 {
+		connBuilder.err = errors.New("The Username must not be empty")
+		return connBuilder
+	}
+	connBuilder.conn.username = username
+	return connBuilder
+}
+
+// Password : Set the password field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	// Check parameters
+	if len(password) == 0 {
+		connBuilder.err = errors.New("The Password must not be empty")
+		return connBuilder
+	}
+	connBuilder.conn.password = password
+	return connBuilder
+}
+
+// Insecure : Set the insecure field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Insecure(insecure bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.insecure = insecure
+	return connBuilder
+}
+
+// Timeout : Set the timeout field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Timeout(timeout time.Duration) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.timeout = timeout
+	return connBuilder
+}
+
+// CAFile : Set the caFile field for `Connection` instance
+func (connBuilder *ConnectionBuilder) CAFile(caFilePath string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.caFile = caFilePath
+	return connBuilder
+}
+
+// Kerberos : Set the kerberos field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Kerberos(kerbros bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	// TODO: kerbros==true is not implemented
+	if kerbros == true {
+		connBuilder.err = errors.New("Kerberos is not currently implemented")
+		return connBuilder
+	}
+	connBuilder.conn.kerberos = kerbros
+	return connBuilder
+}
+
+// Compress : Set the compress field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Compress(compress bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.compress = compress
+	return connBuilder
+}
+
+// Build : Contruct the `Connection` instance
+func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return nil, connBuilder.err
+	}
+	// Construct http.Client
+	var tlsConfig *tls.Config
+	if connBuilder.conn.url.Scheme == "https" {
+		tlsConfig = &tls.Config{
+			InsecureSkipVerify: connBuilder.conn.insecure,
+		}
+		if len(connBuilder.conn.caFile) > 0 {
+			// Check if the CA File specified exists.
+			if _, err := os.Stat(connBuilder.conn.caFile); os.IsNotExist(err) {
+				return nil, fmt.Errorf("The ca file '%s' doesn't exist", connBuilder.conn.caFile)
+			}
+			pool := x509.NewCertPool()
+			caCerts, err := ioutil.ReadFile(connBuilder.conn.caFile)
+			if err != nil {
+				return nil, err
+			}
+			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
+				return nil, fmt.Errorf("Failed to parse CA Certificate in file '%s'", connBuilder.conn.caFile)
+			}
+			tlsConfig.RootCAs = pool
+		}
+	}
+	connBuilder.conn.client = &http.Client{
+		Timeout: connBuilder.conn.timeout,
+		Transport: &http.Transport{
+			DisableCompression: !connBuilder.conn.compress,
+			TLSClientConfig:    tlsConfig,
+		},
+	}
+	return connBuilder.conn, nil
+}
 
 // Connection ... This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
 // It is intended as the entry point for the SDK, and it provides access to the `system` service and, from there,
@@ -44,79 +201,10 @@ type Connection struct {
 	insecure bool
 	caFile   string
 	kerberos bool
-	timeout  uint64
+	timeout  time.Duration
 	compress bool
 	//
 	client *http.Client
-}
-
-// NewConnection ... Creates a new connection to the API server.
-func NewConnection(inputRawURL string, username string, password string, token string, insecure bool, caFile string, kerberos bool, timeout uint64, compress bool) (*Connection, error) {
-	c := new(Connection)
-	// Get the values of the parameters and assign default values:
-	c.username = username
-	c.password = password
-	c.token = token
-	c.insecure = insecure
-	c.caFile = caFile
-	c.kerberos = kerberos
-	c.timeout = timeout
-	c.compress = compress
-
-	// Check mandatory parameters:
-	if len(inputRawURL) == 0 {
-		return nil, fmt.Errorf("The 'inputRawURL' parameter is mandatory")
-	}
-	// TODOLATER: remove once kerberos is implemented
-	if c.kerberos == true {
-		return nil, fmt.Errorf("Kerberos is not currently implemented")
-	}
-
-	// Save the URL:
-	useURL, err := url.Parse(inputRawURL)
-	if err != nil {
-		return nil, err
-	}
-	c.url = *useURL
-
-	// Create the HTTP client:
-	var disableCompress bool
-	if compress == true {
-		disableCompress = false
-	} else {
-		disableCompress = true
-	}
-
-	var tlsConfig *tls.Config
-	if c.url.Scheme == "https" {
-		tlsConfig = &tls.Config{
-			InsecureSkipVerify: insecure,
-		}
-		if len(c.caFile) > 0 {
-			// Check if the CA File specified exists.
-			if _, err := os.Stat(c.caFile); os.IsNotExist(err) {
-				return nil, fmt.Errorf("The ca file '%s' doesn't exist", c.caFile)
-			}
-			pool := x509.NewCertPool()
-			caCerts, err := ioutil.ReadFile(c.caFile)
-			if err != nil {
-				return nil, err
-			}
-			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
-				return nil, fmt.Errorf("Failed to parse CA Certificate in file '%s'", c.caFile)
-			}
-			tlsConfig.RootCAs = pool
-		}
-	}
-	c.client = &http.Client{
-		Timeout: time.Duration(timeout),
-		Transport: &http.Transport{
-			DisableCompression: disableCompress,
-			TLSClientConfig:    tlsConfig,
-		},
-	}
-	return c, nil
-	// Debug output handled via GODEBUG env var. See https://golang.org/pkg/net/http/ for details.
 }
 
 // URL ... Returns the base URL of this connection.
@@ -124,20 +212,12 @@ func (c *Connection) URL() string {
 	return c.url.String()
 }
 
-// Returns a reference to the root of the services tree.
+// SystemService : Returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
 	return NewSystemService(c, "")
 }
 
-// Returns a reference to the service corresponding to the given path. For example, if the `path` parameter
-// is `vms/123/diskattachments` then it will return a reference to the service that manages the disk
-// attachments for the virtual machine with identifier `123`.
-func (c *Connection) Service(path string) *BaseService {
-	// TODO: implement
-	return nil
-}
-
-// Send ... Sends an HTTP request and waits for the response.
+// Send : Sends an HTTP request and waits for the response.
 func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	var result OvResponse
 
@@ -166,7 +246,7 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	req.Header.Add("Version", "4")
 	req.Header.Add("Content-Type", "application/xml")
 	req.Header.Add("Accept", "application/xml")
-	// Generate base64(username:password)
+	// 		Generate base64(username:password)
 	rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
 	req.Header.Add("Authorization",
 		fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
@@ -392,7 +472,7 @@ func (c *Connection) FollowLink(object string) error {
 	return nil
 }
 
-// Releases the resources used by this connection.
+// Close : Releases the resources used by this connection.
 func (c *Connection) Close() {
 	if len(c.token) > 0 {
 		c.revokeAccessToken()
