@@ -30,7 +30,8 @@ type BaseService struct {
 
 func checkFault(response *OvResponse) error {
 	if len(response.Body) == 0 {
-		return &Fault{Detail: fmt.Sprintf("HTTP response code is %d", response.Code)}
+		detailStr := fmt.Sprintf("HTTP response code is %d", response.Code)
+		return &Fault{Detail: &detailStr}
 	}
 	// xml unmarshal into Fault struct
 	var faultVar Fault

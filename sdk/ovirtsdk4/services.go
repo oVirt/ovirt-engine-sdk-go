@@ -2382,7 +2382,7 @@ func (op *AttachedStorageDomainService) Activate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -2416,7 +2416,7 @@ func (op *AttachedStorageDomainService) Deactivate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -3314,7 +3314,7 @@ func (op *ClusterService) ResetEmulatedMachine(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -3781,7 +3781,7 @@ func (op *CopyableService) Copy(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -6114,7 +6114,7 @@ func (op *EventsService) Undelete(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -6762,7 +6762,7 @@ func (op *ExternalProviderService) TestConnectivity(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -7542,7 +7542,7 @@ func (op *GlusterBricksService) Activate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
+		Async:  &async,
 		Bricks: bricks,
 	}
 
@@ -7696,7 +7696,7 @@ func (op *GlusterBricksService) Migrate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
+		Async:  &async,
 		Bricks: bricks,
 	}
 
@@ -7787,7 +7787,7 @@ func (op *GlusterBricksService) StopMigrate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
+		Async:  &async,
 		Bricks: bricks,
 	}
 
@@ -7850,7 +7850,7 @@ func (op *GlusterHookService) Disable(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -7874,7 +7874,7 @@ func (op *GlusterHookService) Enable(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -7952,9 +7952,9 @@ func (op *GlusterHookService) Resolve(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:          async,
+		Async:          &async,
 		Host:           host,
-		ResolutionType: resolutionType,
+		ResolutionType: &resolutionType,
 	}
 
 	// Send the request and wait for the response:
@@ -9322,10 +9322,10 @@ func (op *ImageService) Import(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:            async,
+		Async:            &async,
 		Cluster:          cluster,
 		Disk:             disk,
-		ImportAsTemplate: importAsTemplate,
+		ImportAsTemplate: &importAsTemplate,
 		StorageDomain:    storageDomain,
 		Template:         template,
 	}
@@ -11018,7 +11018,7 @@ func (op *JobService) Clear(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -11059,9 +11059,9 @@ func (op *JobService) End(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:     async,
-		Force:     force,
-		Succeeded: succeeded,
+		Async:     &async,
+		Force:     &force,
+		Succeeded: &succeeded,
 	}
 
 	// Send the request and wait for the response:
@@ -11792,7 +11792,7 @@ func (op *MoveableService) Move(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -13042,10 +13042,10 @@ func (op *OpenstackImageService) Import(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:            async,
+		Async:            &async,
 		Cluster:          cluster,
 		Disk:             disk,
-		ImportAsTemplate: importAsTemplate,
+		ImportAsTemplate: &importAsTemplate,
 		StorageDomain:    storageDomain,
 		Template:         template,
 	}
@@ -13162,7 +13162,7 @@ func (op *OpenstackImageProviderService) TestConnectivity(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -13457,7 +13457,7 @@ func (op *OpenstackNetworkService) Import(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:      async,
+		Async:      &async,
 		DataCenter: dataCenter,
 	}
 
@@ -13598,7 +13598,7 @@ func (op *OpenstackNetworkProviderService) TestConnectivity(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -14310,7 +14310,7 @@ func (op *OpenstackVolumeProviderService) TestConnectivity(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -16647,9 +16647,9 @@ func (op *SnapshotService) Restore(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
+		Async:         &async,
 		Disks:         disks,
-		RestoreMemory: restoreMemory,
+		RestoreMemory: &restoreMemory,
 	}
 
 	// Send the request and wait for the response:
@@ -17591,9 +17591,9 @@ func (op *StepService) End(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:     async,
-		Force:     force,
-		Succeeded: succeeded,
+		Async:     &async,
+		Force:     &force,
+		Succeeded: &succeeded,
 	}
 
 	// Send the request and wait for the response:
@@ -18001,7 +18001,7 @@ func (op *StorageDomainService) IsAttached(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		Host:  host,
 	}
 
@@ -18089,7 +18089,7 @@ func (op *StorageDomainService) RefreshLuns(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:        async,
+		Async:        &async,
 		LogicalUnits: logicalUnits,
 	}
 
@@ -18228,7 +18228,7 @@ func (op *StorageDomainService) UpdateOvfStore(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -18617,8 +18617,8 @@ func (op *StorageDomainDiskService) Move(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
-		Filter:        filter,
+		Async:         &async,
+		Filter:        &filter,
 		StorageDomain: storageDomain,
 	}
 
@@ -19092,10 +19092,10 @@ func (op *StorageDomainTemplateService) Import(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
-		Clone:         clone,
+		Async:         &async,
+		Clone:         &clone,
 		Cluster:       cluster,
-		Exclusive:     exclusive,
+		Exclusive:     &exclusive,
 		StorageDomain: storageDomain,
 		Template:      template,
 		Vm:            vm,
@@ -19129,11 +19129,11 @@ func (op *StorageDomainTemplateService) Register(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		AllowPartialImport: allowPartialImport,
-		Async:              async,
-		Clone:              clone,
+		AllowPartialImport: &allowPartialImport,
+		Async:              &async,
+		Clone:              &clone,
 		Cluster:            cluster,
-		Exclusive:          exclusive,
+		Exclusive:          &exclusive,
 		Template:           template,
 	}
 
@@ -19381,10 +19381,10 @@ func (op *StorageDomainVmService) Import(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:             async,
-		Clone:             clone,
+		Async:             &async,
+		Clone:             &clone,
 		Cluster:           cluster,
-		CollapseSnapshots: collapseSnapshots,
+		CollapseSnapshots: &collapseSnapshots,
 		StorageDomain:     storageDomain,
 		Vm:                vm,
 	}
@@ -19424,11 +19424,11 @@ func (op *StorageDomainVmService) Register(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		AllowPartialImport:  allowPartialImport,
-		Async:               async,
-		Clone:               clone,
+		AllowPartialImport:  &allowPartialImport,
+		Async:               &async,
+		Clone:               &clone,
 		Cluster:             cluster,
-		ReassignBadMacs:     reassignBadMacs,
+		ReassignBadMacs:     &reassignBadMacs,
 		Vm:                  vm,
 		VnicProfileMappings: vnicProfileMappings,
 	}
@@ -20513,7 +20513,7 @@ func (op *SystemService) ReloadConfigurations(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -21512,7 +21512,7 @@ func (op *TemplateService) Export(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Exclusive:     exclusive,
+		Exclusive:     &exclusive,
 		StorageDomain: storageDomain,
 	}
 
@@ -21914,8 +21914,8 @@ func (op *TemplateDiskService) Copy(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
-		Filter: filter,
+		Async:  &async,
+		Filter: &filter,
 	}
 
 	// Send the request and wait for the response:
@@ -21939,8 +21939,8 @@ func (op *TemplateDiskService) Export(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
-		Filter: filter,
+		Async:  &async,
+		Filter: &filter,
 	}
 
 	// Send the request and wait for the response:
@@ -23615,7 +23615,7 @@ func (op *VmService) CancelMigration(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -23638,7 +23638,7 @@ func (op *VmService) Clone(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		Vm:    vm,
 	}
 
@@ -23661,7 +23661,7 @@ func (op *VmService) CommitSnapshot(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -23694,7 +23694,7 @@ func (op *VmService) Detach(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -23740,9 +23740,9 @@ func (op *VmService) Export(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:            async,
-		DiscardSnapshots: discardSnapshots,
-		Exclusive:        exclusive,
+		Async:            &async,
+		DiscardSnapshots: &discardSnapshots,
+		Exclusive:        &exclusive,
 		StorageDomain:    storageDomain,
 	}
 
@@ -23778,7 +23778,7 @@ func (op *VmService) FreezeFilesystems(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -23877,7 +23877,7 @@ func (op *VmService) Logon(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -23914,8 +23914,8 @@ func (op *VmService) Maintenance(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:              async,
-		MaintenanceEnabled: maintenanceEnabled,
+		Async:              &async,
+		MaintenanceEnabled: &maintenanceEnabled,
 	}
 
 	// Send the request and wait for the response:
@@ -23959,9 +23959,9 @@ func (op *VmService) Migrate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:   async,
+		Async:   &async,
 		Cluster: cluster,
-		Force:   force,
+		Force:   &force,
 		Host:    host,
 	}
 
@@ -23988,9 +23988,9 @@ func (op *VmService) PreviewSnapshot(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
+		Async:         &async,
 		Disks:         disks,
-		RestoreMemory: restoreMemory,
+		RestoreMemory: &restoreMemory,
 		Snapshot:      snapshot,
 		Vm:            vm,
 	}
@@ -24025,7 +24025,7 @@ func (op *VmService) Reboot(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24084,7 +24084,7 @@ func (op *VmService) ReorderMacAddresses(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24117,7 +24117,7 @@ func (op *VmService) Shutdown(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24181,11 +24181,11 @@ func (op *VmService) Start(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:        async,
-		Filter:       filter,
-		Pause:        pause,
-		UseCloudInit: useCloudInit,
-		UseSysprep:   useSysprep,
+		Async:        &async,
+		Filter:       &filter,
+		Pause:        &pause,
+		UseCloudInit: &useCloudInit,
+		UseSysprep:   &useSysprep,
 		Vm:           vm,
 	}
 
@@ -24219,7 +24219,7 @@ func (op *VmService) Stop(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24253,7 +24253,7 @@ func (op *VmService) Suspend(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24288,7 +24288,7 @@ func (op *VmService) ThawFilesystems(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -24345,7 +24345,7 @@ func (op *VmService) Ticket(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
+		Async:  &async,
 		Ticket: ticket,
 	}
 
@@ -24373,7 +24373,7 @@ func (op *VmService) UndoSnapshot(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -25010,7 +25010,7 @@ func (op *VmDiskService) Activate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -25032,7 +25032,7 @@ func (op *VmDiskService) Deactivate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -25056,8 +25056,8 @@ func (op *VmDiskService) Export(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
-		Filter: filter,
+		Async:  &async,
+		Filter: &filter,
 	}
 
 	// Send the request and wait for the response:
@@ -25104,8 +25104,8 @@ func (op *VmDiskService) Move(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
-		Filter: filter,
+		Async:  &async,
+		Filter: &filter,
 	}
 
 	// Send the request and wait for the response:
@@ -25362,7 +25362,7 @@ func (op *VmGraphicsConsoleService) ProxyTicket(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -25905,7 +25905,7 @@ func (op *VmNicService) Activate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -25927,7 +25927,7 @@ func (op *VmNicService) Deactivate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -26518,7 +26518,7 @@ func (op *VmPoolService) AllocateVm(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -28176,8 +28176,8 @@ func (op *AttachedStorageDomainDiskService) Move(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
-		Filter:        filter,
+		Async:         &async,
+		Filter:        &filter,
 		StorageDomain: storageDomain,
 	}
 
@@ -28392,9 +28392,9 @@ func (op *DiskService) Copy(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
+		Async:         &async,
 		Disk:          disk,
-		Filter:        filter,
+		Filter:        &filter,
 		StorageDomain: storageDomain,
 	}
 
@@ -28422,8 +28422,8 @@ func (op *DiskService) Export(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
-		Filter:        filter,
+		Async:         &async,
+		Filter:        &filter,
 		StorageDomain: storageDomain,
 	}
 
@@ -28488,8 +28488,8 @@ func (op *DiskService) Move(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:         async,
-		Filter:        filter,
+		Async:         &async,
+		Filter:        &filter,
 		StorageDomain: storageDomain,
 	}
 
@@ -28821,7 +28821,7 @@ func (op *ExternalHostProviderService) TestConnectivity(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29062,8 +29062,8 @@ func (op *GlusterBrickService) Replace(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
-		Force: force,
+		Async: &async,
+		Force: &force,
 	}
 
 	// Send the request and wait for the response:
@@ -29233,9 +29233,9 @@ func (op *GlusterVolumeService) Rebalance(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:     async,
-		FixLayout: fixLayout,
-		Force:     force,
+		Async:     &async,
+		FixLayout: &fixLayout,
+		Force:     &force,
 	}
 
 	// Send the request and wait for the response:
@@ -29293,7 +29293,7 @@ func (op *GlusterVolumeService) ResetAllOptions(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29332,8 +29332,8 @@ func (op *GlusterVolumeService) ResetOption(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
-		Force:  force,
+		Async:  &async,
+		Force:  &force,
 		Option: option,
 	}
 
@@ -29372,7 +29372,7 @@ func (op *GlusterVolumeService) SetOption(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:  async,
+		Async:  &async,
 		Option: option,
 	}
 
@@ -29405,8 +29405,8 @@ func (op *GlusterVolumeService) Start(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
-		Force: force,
+		Async: &async,
+		Force: &force,
 	}
 
 	// Send the request and wait for the response:
@@ -29434,7 +29434,7 @@ func (op *GlusterVolumeService) StartProfile(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29464,8 +29464,8 @@ func (op *GlusterVolumeService) Stop(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
-		Force: force,
+		Async: &async,
+		Force: &force,
 	}
 
 	// Send the request and wait for the response:
@@ -29493,7 +29493,7 @@ func (op *GlusterVolumeService) StopProfile(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29522,7 +29522,7 @@ func (op *GlusterVolumeService) StopRebalance(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29613,7 +29613,7 @@ func (op *HostService) Activate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29638,7 +29638,7 @@ func (op *HostService) Approve(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:   async,
+		Async:   &async,
 		Cluster: cluster,
 	}
 
@@ -29677,7 +29677,7 @@ func (op *HostService) CommitNetConfig(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29704,9 +29704,9 @@ func (op *HostService) Deactivate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:              async,
-		Reason:             reason,
-		StopGlusterService: stopGlusterService,
+		Async:              &async,
+		Reason:             &reason,
+		StopGlusterService: &stopGlusterService,
 	}
 
 	// Send the request and wait for the response:
@@ -29729,7 +29729,7 @@ func (op *HostService) EnrollCertificate(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29777,8 +29777,8 @@ func (op *HostService) Fence(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async:     async,
-		FenceType: fenceType,
+		Async:     &async,
+		FenceType: &fenceType,
 	}
 
 	// Send the request and wait for the response:
@@ -29815,7 +29815,7 @@ func (op *HostService) ForceSelectSpm(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -29926,13 +29926,13 @@ func (op *HostService) Install(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:                async,
-		DeployHostedEngine:   deployHostedEngine,
+		Async:                &async,
+		DeployHostedEngine:   &deployHostedEngine,
 		Host:                 host,
-		Image:                image,
-		RootPassword:         rootPassword,
+		Image:                &image,
+		RootPassword:         &rootPassword,
 		Ssh:                  ssh,
-		UndeployHostedEngine: undeployHostedEngine,
+		UndeployHostedEngine: &undeployHostedEngine,
 	}
 
 	// Send the request and wait for the response:
@@ -29959,7 +29959,7 @@ func (op *HostService) IscsiDiscover(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		Iscsi: iscsi,
 	}
 
@@ -29988,7 +29988,7 @@ func (op *HostService) IscsiLogin(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		Iscsi: iscsi,
 	}
 
@@ -30012,7 +30012,7 @@ func (op *HostService) Refresh(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -30232,9 +30232,9 @@ func (op *HostService) SetupNetworks(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async:                          async,
-		CheckConnectivity:              checkConnectivity,
-		ConnectivityTimeout:            connectivityTimeout,
+		Async:                          &async,
+		CheckConnectivity:              &checkConnectivity,
+		ConnectivityTimeout:            &connectivityTimeout,
 		ModifiedBonds:                  modifiedBonds,
 		ModifiedLabels:                 modifiedLabels,
 		ModifiedNetworkAttachments:     modifiedNetworkAttachments,
@@ -30266,7 +30266,7 @@ func (op *HostService) UnregisteredStorageDomainsDiscover(
 	error) {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		Iscsi: iscsi,
 	}
 
@@ -30336,7 +30336,7 @@ func (op *HostService) Upgrade(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 	}
 
 	// Send the request and wait for the response:
@@ -30628,7 +30628,7 @@ func (op *HostNicService) UpdateVirtualFunctionsConfiguration(
 	wait bool) error {
 	// Populate the action:
 	action := &Action{
-		Async: async,
+		Async: &async,
 		VirtualFunctionsConfiguration: virtualFunctionsConfiguration,
 	}
 

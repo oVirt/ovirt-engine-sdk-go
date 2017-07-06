@@ -178,7 +178,7 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        GoTypeReference goTypeReference = goNames.getTypeReference(member.getType());
+        GoTypeReference goTypeReference = goNames.getTypeReferenceAsStructMember(member.getType());
         buffer.addImports(goTypeReference.getImports());
         buffer.addLine(
             "%1$s    %2$s   `xml:\"%3$s\"` ",

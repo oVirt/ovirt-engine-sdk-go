@@ -828,8 +828,11 @@ public class ServicesGenerator implements GoGenerator {
     private void generateSetActionAttribute(Parameter parameter) {
         String memberName = goNames.getMemberStyleName(parameter.getName());
         String parameterName = goNames.getParameterStyleName(parameter.getName());
-
-        buffer.addLine("%1$s: %2$s,", memberName, parameterName);
+        String varTypeSuffix = "";
+        if (GoNames.isPrimitiveTypeCanAsPointer(parameter.getType())) {
+            varTypeSuffix = "&";
+        }
+        buffer.addLine("%1$s: %2$s%3$s,", memberName, varTypeSuffix, parameterName);
     }
 
 }
