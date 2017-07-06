@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a reference to a Python type, including all the imports that are necessary to use it. For
- * example, if the type reference is {@code types.Vm} and the {@code types} prefix corresponds to the package
- * {@code ovirtsdk4.types} then the list of imports will contain {@code from ovirtsdk4 import types}.
+ * This class represents a reference to a Go type, including all the imports that are necessary to use it.
  */
 public class GoTypeReference {
     private String text;
