@@ -161,25 +161,53 @@ public class GoNames {
         return buildClassName(type.getName(), null, TYPES_PACKAGE);
     }
 
+    public static Boolean isPrimitiveTypeCanAsPointer(Type type) {
+        if (type instanceof PrimitiveType) {
+            if (type == type.getModel().getBooleanType() ||
+                type == type.getModel().getIntegerType() ||
+                type == type.getModel().getDecimalType() ||
+                type == type.getModel().getStringType()) {
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    public GoTypeReference getTypeReference(Type type) {
+        return this.getTypeReferenceWithPointer(type, false);
+    }
+
+    /**
+     * Calculates that should be used in Go as struct member to reference the 
+     * given type. For exmpale, if it's primitive type, it should be a pointer.
+     */
+    public GoTypeReference getTypeReferenceAsStructMember(Type type) {
+        return this.getTypeReferenceWithPointer(type, true);
+    }
+
     /**
      * Calculates that should be used in Go to reference the given type. For example, for the boolean type it will
      * return the {@code bool} string.
      */
-    public GoTypeReference getTypeReference(Type type) {
+    private GoTypeReference getTypeReferenceWithPointer(Type type, Boolean withPointer) {
+        String pointerSuffix = "";
+        if (withPointer) {
+            pointerSuffix = "*";
+        }
         GoTypeReference reference = new GoTypeReference();
         if (type instanceof PrimitiveType) {
             Model model = type.getModel();
             if (type == model.getBooleanType()) {
-                reference.setText("bool");
+                reference.setText(pointerSuffix + "bool");
             }
             else if (type == model.getIntegerType()) {
-                reference.setText("int64");
+                reference.setText(pointerSuffix + "int64");
             }
             else if (type == model.getDecimalType()) {
-                reference.setText("float64");
+                reference.setText(pointerSuffix + "float64");
             }
             else if (type == model.getStringType()) {
-                reference.setText("string");
+                reference.setText(pointerSuffix + "string");
             }
             else if (type == model.getDateType()) {
                 reference.addImport("time");
@@ -199,7 +227,8 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            GoTypeReference elementTypeReference = this.getTypeReference(listtype.getElementType());
+            GoTypeReference elementTypeReference = this.getTypeReferenceWithPointer(
+                listtype.getElementType(), withPointer);
             // use Recursion to return []StructType / []string
             reference.setText("[]" + elementTypeReference.getText().replace("*", ""));
         }

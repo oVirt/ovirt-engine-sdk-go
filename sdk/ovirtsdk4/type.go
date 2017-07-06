@@ -18,11 +18,11 @@ package ovirtsdk4
 
 // Link :
 type Link struct {
-	Href string `xml:"href, attr"`
-	Rel  string `xml:"rel, attr"`
+	Href *string `xml:"href, attr"`
+	Rel  *string `xml:"rel, attr"`
 }
 
 // OvStruct : Base for all struts defined in types.go
 type OvStruct struct {
-	Href string `xml:"href, attr"`
+	Href *string `xml:"href, attr"`
 }
