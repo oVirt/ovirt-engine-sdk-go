@@ -161,7 +161,7 @@ public class GoNames {
         return buildClassName(type.getName(), null, TYPES_PACKAGE);
     }
 
-    public static Boolean isPrimitiveTypeCanAsPointer(Type type) {
+    public static Boolean isGoPrimitiveType(Type type) {
         if (type instanceof PrimitiveType) {
             if (type == type.getModel().getBooleanType() ||
                 type == type.getModel().getIntegerType() ||
