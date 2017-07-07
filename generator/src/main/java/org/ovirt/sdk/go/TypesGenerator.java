@@ -120,7 +120,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.startBlock();
         //  Add xml.Name
         buffer.addLine("XMLName xml.Name `xml:\"%1$ss\"`", typeName.getClassName().toLowerCase());
-        buffer.addLine("%1$ss []%1$s `xml:\"%2$s\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
+        buffer.addLine("%1$ss []%1$s `xml:\"%2$s,omitempty\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
         buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
@@ -181,7 +181,7 @@ public class TypesGenerator implements GoGenerator {
         GoTypeReference goTypeReference = goNames.getTypeReferenceAsStructMember(member.getType());
         buffer.addImports(goTypeReference.getImports());
         buffer.addLine(
-            "%1$s    %2$s   `xml:\"%3$s\"` ",
+            "%1$s    %2$s   `xml:\"%3$s,omitempty\"` ",
             goNames.getMemberStyleName(member.getName()),
             goTypeReference.getText(),
             goNames.getTagStyleName(member.getName())

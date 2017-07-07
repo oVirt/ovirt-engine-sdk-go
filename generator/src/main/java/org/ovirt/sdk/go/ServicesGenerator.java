@@ -829,7 +829,7 @@ public class ServicesGenerator implements GoGenerator {
         String memberName = goNames.getMemberStyleName(parameter.getName());
         String parameterName = goNames.getParameterStyleName(parameter.getName());
         String varTypeSuffix = "";
-        if (GoNames.isGoPrimitiveType(parameter.getType())) {
+        if (GoTypes.isGoPrimitiveType(parameter.getType())) {
             varTypeSuffix = "&";
         }
         buffer.addLine("%1$s: %2$s%3$s,", memberName, varTypeSuffix, parameterName);

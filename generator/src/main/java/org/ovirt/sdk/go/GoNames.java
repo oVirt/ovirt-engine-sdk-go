@@ -18,7 +18,6 @@ package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.joining;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -159,18 +158,6 @@ public class GoNames {
      */
     public GoClassName getTypeName(Type type) {
         return buildClassName(type.getName(), null, TYPES_PACKAGE);
-    }
-
-    public static Boolean isGoPrimitiveType(Type type) {
-        if (type instanceof PrimitiveType) {
-            if (type == type.getModel().getBooleanType() ||
-                type == type.getModel().getIntegerType() ||
-                type == type.getModel().getDecimalType() ||
-                type == type.getModel().getStringType()) {
-                    return true;
-                }
-        }
-        return false;
     }
 
     public GoTypeReference getTypeReference(Type type) {
