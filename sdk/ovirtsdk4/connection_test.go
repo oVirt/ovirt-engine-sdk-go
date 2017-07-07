@@ -24,6 +24,6 @@ func TestSend(t *testing.T) {
 		t.Fatalf("Get clusters failed, reason: %s", err.Error())
 	}
 	for _, cluster := range clusterList {
-		t.Logf("cluster(%v): CPU architecture is %v and type is %v", cluster.Id, cluster.Cpu.Architecture, cluster.Cpu.Type)
+		t.Logf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id, cluster.Cpu.Architecture, *cluster.Cpu.Type)
 	}
 }
