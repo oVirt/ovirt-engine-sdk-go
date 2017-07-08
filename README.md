@@ -55,3 +55,55 @@ If you wish to use a different version of Go you can use the
 ```bash
 $ mvn package -Dgo.command=go1.7
 ```
+
+## Usage
+
+To use the SDK you should import ovirtsdk4 package as follows:
+```go
+import (
+    "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
+)
+```
+
+That will give you access to all the classes of the SDK, and in particular
+to the `Connection` class. This is the entry point of the SDK,
+and gives you access to the root of the tree of services of the API:
+
+```go
+// Create a connection to the server:
+import (
+    "time"
+    "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
+)
+
+var inputRawURL = "https://engine.example.com/ovirt-engine/api"
+
+conn, err := NewConnectionBuilder().
+	URL(inputRawURL).
+	Username("your-username").
+	Password("your-password").
+	Insecure(true).
+	Compress(true).
+	Timeout(time.Second * 10).
+	Build()
+
+// Get the reference to the **system** service
+systemService := conn.SystemService()
+
+// Get the reference to the **clusters** service
+clustersService := systemService.ClustersService()
+
+// Get all the clusters
+clusters, err := clustersService.List(false, false, 100, "", nil, nil, false)
+
+// Print clusters attrs
+for _, cluster := range clusters {
+    fmt.Printf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id,
+        cluster.Cpu.Architecture, *cluster.Cpu.Type)
+}
+
+// Close the connection
+conn.Close()
+```
+
+For more usage examples, you could refer to [sdk/README](https://github.com/imjoey/ovirt-engine-sdk-go/blob/master/sdk/README.md).
