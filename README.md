@@ -8,10 +8,6 @@ Project completion is almost 80%.
 The oVirt Go SDK is a Go package that simplyfies access to the
 oVirt Engine API.
 
-IMPORTANT: This document describes how to generate, build and test the
-SDK. If you are interested in how to use it read the `README.md` file
-in the `sdk` directory instead.
-
 ## Building
 
 You must install the Go binary and setup the Go environments, including
