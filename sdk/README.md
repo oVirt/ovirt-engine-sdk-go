@@ -43,11 +43,17 @@ import (
     "time"
     "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
 )
+
 var inputRawURL = "https://engine.example.com/ovirt-engine/api"
-conn, err := ovirtsdk4.NewConnection(
-	inputRawURL, "admin@internal", "your-password",
-	"", true, "", false,
-	uint64(10*time.Second), true)
+
+conn, err := NewConnectionBuilder().
+	URL(inputRawURL).
+	Username("your-username").
+	Password("your-password").
+	Insecure(true).
+	Compress(true).
+	Timeout(time.Second * 10).
+	Build()
 
 // Get the reference to the **system** service
 systemService := conn.SystemService()
@@ -60,8 +66,8 @@ clusters, err := clustersService.List(false, false, 100, "", nil, nil, false)
 
 // Print clusters attrs
 for _, cluster := range clusters {
-    fmt.Printf("cluster(%v): CPU architecture is %v and type is %v", cluster.Id,            
-        cluster.Cpu.Architecture, cluster.Cpu.Type)
+    fmt.Printf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id,
+        cluster.Cpu.Architecture, *cluster.Cpu.Type)
 }
 
 // Close the connection
