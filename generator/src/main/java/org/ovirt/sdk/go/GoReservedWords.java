@@ -90,6 +90,8 @@ public class GoReservedWords {
         words.add("select");
         // others
         words.add("panic");
+        words.add("build");
+        words.add("Build");
 
         // Wrap the set so that it is unmodifiable:
         words = Collections.unmodifiableSet(words);
