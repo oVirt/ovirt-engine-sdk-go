@@ -22,12 +22,13 @@ import static java.util.stream.Collectors.toSet;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Stream;
 import javax.inject.Inject;
-
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.EnumValue;
 import org.ovirt.api.metamodel.concepts.Model;
@@ -94,6 +95,10 @@ public class TypesGenerator implements GoGenerator {
         structs.stream()
             .forEach(this::generateStruct);
 
+        // Generate the StructBuilder
+        structs.stream()
+            .forEach(this::generateStructBuilder);
+
         // Enum types don't need any special order, so we sort them only by name:
         model.types()
             .filter(EnumType.class::isInstance)
@@ -147,6 +152,64 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
+    private void generateStructBuilder(StructType type) {
+        // Get Type names
+        GoClassName typeName = goNames.getTypeName(type);
+        String typeClassName = typeName.getClassName();
+        String typePrivateClassName = typeName.getPrivateClassName();
+        String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
+        // Get struct members
+        Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
+            .collect(toSet());
+        Set<StructMember> declaredMembers = Stream.concat(type.declaredAttributes(), type.declaredLinks())
+            .collect(toSet());
+        allMembers.addAll(declaredMembers);
+
+        // Begin class:
+        buffer.addLine("type %1$sBuilder struct {", typePrivateClassName);
+        buffer.startBlock();
+        //      Add properties of TypeBuilder
+        buffer.addLine("%1$s *%2$s", typePrivateMemberName,
+            typeName.getClassName());
+        buffer.addLine("err error");
+        // End class:
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
+
+        // Define NewStructBuilder function
+        buffer.addLine("func New%1$sBuilder() *%2$sBuilder {",
+            typeClassName, typePrivateClassName);
+        buffer.startBlock();
+        buffer.addLine("return &%1$sBuilder{%2$s: &%3$s{}, err: nil}",
+            typePrivateClassName,
+            typePrivateMemberName,
+            typeClassName
+            );
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
+
+        // Construct TypeBuilder methods for member-settings
+        List<StructMember> members = allMembers.stream().sorted().collect(toCollection(ArrayList::new));
+        for (StructMember member : members) {
+            this.generateBuilderMemberMethods(type, member);
+        }
+
+        // Generate Build method
+        buffer.addLine("func (builder *%1$sBuilder) Build() (*%2$s, error) {",
+            typePrivateClassName, typeClassName);
+        buffer.startBlock();
+        buffer.addLine("if builder.err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, builder.err");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine("return builder.%1$s, nil", typePrivateMemberName);
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
+
     private void generateEnum(EnumType type) {
         // Begin class:
         GoClassName typeName = goNames.getTypeName(type);
@@ -178,14 +241,53 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        GoTypeReference goTypeReference = goNames.getTypeReferenceAsStructMember(member.getType());
-        buffer.addImports(goTypeReference.getImports());
+        GoTypeReference memberTypeReference = goNames.getTypeReferenceAsStructMember(member.getType());
+        buffer.addImports(memberTypeReference.getImports());
         buffer.addLine(
             "%1$s    %2$s   `xml:\"%3$s,omitempty\"` ",
             goNames.getMemberStyleName(member.getName()),
-            goTypeReference.getText(),
+            memberTypeReference.getText(),
             goNames.getTagStyleName(member.getName())
         );
+    }
+
+    private void generateBuilderMemberMethods(StructType type, StructMember member) {
+        // Get Type names
+        GoClassName typeName = goNames.getTypeName(type);
+        String typeClassName = typeName.getClassName();
+        String typePrivateClassName = typeName.getPrivateClassName();
+        String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
+
+        // Get member names
+        GoTypeReference memberTypeReference = goNames.getTypeReference(member.getType());
+        // Define method for TypeBuilder
+        buffer.addLine("func (builder *%1$sBuilder) %2$s(%3$s %4$s) *%1$sBuilder {",
+            typePrivateClassName, goNames.getMethodStyleName(member.getName()),
+            goNames.getParameterStyleName(member.getName()), memberTypeReference.getText());
+        buffer.startBlock();
+        //      Check if has errors
+        buffer.addLine("if builder.err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return builder");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
+        //      Method Body
+        String settedValue = goNames.getParameterStyleName(member.getName());
+        if (GoTypes.isGoPrimitiveType(member.getType())) {
+            buffer.addLine("temp := %1$s", settedValue);
+            settedValue = "&temp";
+        }
+        
+        buffer.addLine("builder.%1$s.%2$s = %3$s",
+            typePrivateMemberName,
+            goNames.getMemberStyleName(member.getName()),
+            settedValue
+            );
+        buffer.addLine("return builder");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
 }

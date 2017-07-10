@@ -35,6 +35,10 @@ public class GoClassName {
         return className;
     }
 
+    public String getPrivateClassName() {
+        return getClassName().substring(0, 1).toLowerCase() + getClassName().substring(1);
+    }
+
     public void setClassName(String newClassName) {
         className = newClassName;
     }
