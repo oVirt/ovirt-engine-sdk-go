@@ -83,6 +83,9 @@ conn, err := NewConnectionBuilder().
 	Timeout(time.Second * 10).
 	Build()
 
+// Close the connection
+defer conn.Close()
+
 // Get the reference to the **system** service
 systemService := conn.SystemService()
 
@@ -98,8 +101,6 @@ for _, cluster := range clusters {
         cluster.Cpu.Architecture, *cluster.Cpu.Type)
 }
 
-// Close the connection
-conn.Close()
 ```
 
 For more usage examples, you could refer to [sdk/README](https://github.com/imjoey/ovirt-engine-sdk-go/blob/master/sdk/README.md).

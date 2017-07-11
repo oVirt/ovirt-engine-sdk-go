@@ -19,6 +19,7 @@ func TestSend(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Make connection failed, reason: %s", err.Error())
 	}
+	defer conn.Close()
 	clusterList, err := conn.SystemService().ClustersService().List(false, false, 100, "", nil, nil, false)
 	if err != nil {
 		t.Fatalf("Get clusters failed, reason: %s", err.Error())
