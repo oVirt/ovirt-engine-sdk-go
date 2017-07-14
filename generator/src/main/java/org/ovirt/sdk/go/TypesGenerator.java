@@ -275,8 +275,7 @@ public class TypesGenerator implements GoGenerator {
         //      Method Body
         String settedValue = goNames.getParameterStyleName(member.getName());
         if (GoTypes.isGoPrimitiveType(member.getType())) {
-            buffer.addLine("temp := %1$s", settedValue);
-            settedValue = "&temp";
+            settedValue = "&" + settedValue;
         }
         
         buffer.addLine("builder.%1$s.%2$s = %3$s",

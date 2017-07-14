@@ -3665,8 +3665,7 @@ func (builder *affinityRuleBuilder) Enabled(enabled bool) *affinityRuleBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.affinityRule.Enabled = &temp
+	builder.affinityRule.Enabled = &enabled
 	return builder
 }
 
@@ -3675,8 +3674,7 @@ func (builder *affinityRuleBuilder) Enforcing(enforcing bool) *affinityRuleBuild
 		return builder
 	}
 
-	temp := enforcing
-	builder.affinityRule.Enforcing = &temp
+	builder.affinityRule.Enforcing = &enforcing
 	return builder
 }
 
@@ -3685,8 +3683,7 @@ func (builder *affinityRuleBuilder) Positive(positive bool) *affinityRuleBuilder
 		return builder
 	}
 
-	temp := positive
-	builder.affinityRule.Positive = &temp
+	builder.affinityRule.Positive = &positive
 	return builder
 }
 
@@ -3711,8 +3708,7 @@ func (builder *agentConfigurationBuilder) Address(address string) *agentConfigur
 		return builder
 	}
 
-	temp := address
-	builder.agentConfiguration.Address = &temp
+	builder.agentConfiguration.Address = &address
 	return builder
 }
 
@@ -3730,8 +3726,7 @@ func (builder *agentConfigurationBuilder) NetworkMappings(networkMappings string
 		return builder
 	}
 
-	temp := networkMappings
-	builder.agentConfiguration.NetworkMappings = &temp
+	builder.agentConfiguration.NetworkMappings = &networkMappings
 	return builder
 }
 
@@ -3740,8 +3735,7 @@ func (builder *agentConfigurationBuilder) Password(password string) *agentConfig
 		return builder
 	}
 
-	temp := password
-	builder.agentConfiguration.Password = &temp
+	builder.agentConfiguration.Password = &password
 	return builder
 }
 
@@ -3750,8 +3744,7 @@ func (builder *agentConfigurationBuilder) Port(port int64) *agentConfigurationBu
 		return builder
 	}
 
-	temp := port
-	builder.agentConfiguration.Port = &temp
+	builder.agentConfiguration.Port = &port
 	return builder
 }
 
@@ -3760,8 +3753,7 @@ func (builder *agentConfigurationBuilder) Username(username string) *agentConfig
 		return builder
 	}
 
-	temp := username
-	builder.agentConfiguration.Username = &temp
+	builder.agentConfiguration.Username = &username
 	return builder
 }
 
@@ -3890,8 +3882,7 @@ func (builder *apiSummaryItemBuilder) Active(active int64) *apiSummaryItemBuilde
 		return builder
 	}
 
-	temp := active
-	builder.apiSummaryItem.Active = &temp
+	builder.apiSummaryItem.Active = &active
 	return builder
 }
 
@@ -3900,8 +3891,7 @@ func (builder *apiSummaryItemBuilder) Total(total int64) *apiSummaryItemBuilder 
 		return builder
 	}
 
-	temp := total
-	builder.apiSummaryItem.Total = &temp
+	builder.apiSummaryItem.Total = &total
 	return builder
 }
 
@@ -4053,8 +4043,7 @@ func (builder *bootMenuBuilder) Enabled(enabled bool) *bootMenuBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.bootMenu.Enabled = &temp
+	builder.bootMenu.Enabled = &enabled
 	return builder
 }
 
@@ -4115,8 +4104,7 @@ func (builder *cloudInitBuilder) RegenerateSshKeys(regenerateSshKeys bool) *clou
 		return builder
 	}
 
-	temp := regenerateSshKeys
-	builder.cloudInit.RegenerateSshKeys = &temp
+	builder.cloudInit.RegenerateSshKeys = &regenerateSshKeys
 	return builder
 }
 
@@ -4125,8 +4113,7 @@ func (builder *cloudInitBuilder) Timezone(timezone string) *cloudInitBuilder {
 		return builder
 	}
 
-	temp := timezone
-	builder.cloudInit.Timezone = &temp
+	builder.cloudInit.Timezone = &timezone
 	return builder
 }
 
@@ -4160,8 +4147,7 @@ func (builder *configurationBuilder) Data(data string) *configurationBuilder {
 		return builder
 	}
 
-	temp := data
-	builder.configuration.Data = &temp
+	builder.configuration.Data = &data
 	return builder
 }
 
@@ -4195,8 +4181,7 @@ func (builder *consoleBuilder) Enabled(enabled bool) *consoleBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.console.Enabled = &temp
+	builder.console.Enabled = &enabled
 	return builder
 }
 
@@ -4221,8 +4206,7 @@ func (builder *coreBuilder) Index(index int64) *coreBuilder {
 		return builder
 	}
 
-	temp := index
-	builder.core.Index = &temp
+	builder.core.Index = &index
 	return builder
 }
 
@@ -4231,8 +4215,7 @@ func (builder *coreBuilder) Socket(socket int64) *coreBuilder {
 		return builder
 	}
 
-	temp := socket
-	builder.core.Socket = &temp
+	builder.core.Socket = &socket
 	return builder
 }
 
@@ -4284,8 +4267,7 @@ func (builder *cpuBuilder) Level(level int64) *cpuBuilder {
 		return builder
 	}
 
-	temp := level
-	builder.cpu.Level = &temp
+	builder.cpu.Level = &level
 	return builder
 }
 
@@ -4303,8 +4285,7 @@ func (builder *cpuBuilder) Name(name string) *cpuBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.cpu.Name = &temp
+	builder.cpu.Name = &name
 	return builder
 }
 
@@ -4313,8 +4294,7 @@ func (builder *cpuBuilder) Speed(speed float64) *cpuBuilder {
 		return builder
 	}
 
-	temp := speed
-	builder.cpu.Speed = &temp
+	builder.cpu.Speed = &speed
 	return builder
 }
 
@@ -4332,8 +4312,7 @@ func (builder *cpuBuilder) Type(type_ string) *cpuBuilder {
 		return builder
 	}
 
-	temp := type_
-	builder.cpu.Type = &temp
+	builder.cpu.Type = &type_
 	return builder
 }
 
@@ -4358,8 +4337,7 @@ func (builder *cpuTopologyBuilder) Cores(cores int64) *cpuTopologyBuilder {
 		return builder
 	}
 
-	temp := cores
-	builder.cpuTopology.Cores = &temp
+	builder.cpuTopology.Cores = &cores
 	return builder
 }
 
@@ -4368,8 +4346,7 @@ func (builder *cpuTopologyBuilder) Sockets(sockets int64) *cpuTopologyBuilder {
 		return builder
 	}
 
-	temp := sockets
-	builder.cpuTopology.Sockets = &temp
+	builder.cpuTopology.Sockets = &sockets
 	return builder
 }
 
@@ -4378,8 +4355,7 @@ func (builder *cpuTopologyBuilder) Threads(threads int64) *cpuTopologyBuilder {
 		return builder
 	}
 
-	temp := threads
-	builder.cpuTopology.Threads = &temp
+	builder.cpuTopology.Threads = &threads
 	return builder
 }
 
@@ -4438,8 +4414,7 @@ func (builder *cpuTypeBuilder) Level(level int64) *cpuTypeBuilder {
 		return builder
 	}
 
-	temp := level
-	builder.cpuType.Level = &temp
+	builder.cpuType.Level = &level
 	return builder
 }
 
@@ -4448,8 +4423,7 @@ func (builder *cpuTypeBuilder) Name(name string) *cpuTypeBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.cpuType.Name = &temp
+	builder.cpuType.Name = &name
 	return builder
 }
 
@@ -4474,8 +4448,7 @@ func (builder *customPropertyBuilder) Name(name string) *customPropertyBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.customProperty.Name = &temp
+	builder.customProperty.Name = &name
 	return builder
 }
 
@@ -4484,8 +4457,7 @@ func (builder *customPropertyBuilder) Regexp(regexp string) *customPropertyBuild
 		return builder
 	}
 
-	temp := regexp
-	builder.customProperty.Regexp = &temp
+	builder.customProperty.Regexp = &regexp
 	return builder
 }
 
@@ -4494,8 +4466,7 @@ func (builder *customPropertyBuilder) Value(value string) *customPropertyBuilder
 		return builder
 	}
 
-	temp := value
-	builder.customProperty.Value = &temp
+	builder.customProperty.Value = &value
 	return builder
 }
 
@@ -4520,8 +4491,7 @@ func (builder *displayBuilder) Address(address string) *displayBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.display.Address = &temp
+	builder.display.Address = &address
 	return builder
 }
 
@@ -4530,8 +4500,7 @@ func (builder *displayBuilder) AllowOverride(allowOverride bool) *displayBuilder
 		return builder
 	}
 
-	temp := allowOverride
-	builder.display.AllowOverride = &temp
+	builder.display.AllowOverride = &allowOverride
 	return builder
 }
 
@@ -4549,8 +4518,7 @@ func (builder *displayBuilder) CopyPasteEnabled(copyPasteEnabled bool) *displayB
 		return builder
 	}
 
-	temp := copyPasteEnabled
-	builder.display.CopyPasteEnabled = &temp
+	builder.display.CopyPasteEnabled = &copyPasteEnabled
 	return builder
 }
 
@@ -4559,8 +4527,7 @@ func (builder *displayBuilder) DisconnectAction(disconnectAction string) *displa
 		return builder
 	}
 
-	temp := disconnectAction
-	builder.display.DisconnectAction = &temp
+	builder.display.DisconnectAction = &disconnectAction
 	return builder
 }
 
@@ -4569,8 +4536,7 @@ func (builder *displayBuilder) FileTransferEnabled(fileTransferEnabled bool) *di
 		return builder
 	}
 
-	temp := fileTransferEnabled
-	builder.display.FileTransferEnabled = &temp
+	builder.display.FileTransferEnabled = &fileTransferEnabled
 	return builder
 }
 
@@ -4579,8 +4545,7 @@ func (builder *displayBuilder) KeyboardLayout(keyboardLayout string) *displayBui
 		return builder
 	}
 
-	temp := keyboardLayout
-	builder.display.KeyboardLayout = &temp
+	builder.display.KeyboardLayout = &keyboardLayout
 	return builder
 }
 
@@ -4589,8 +4554,7 @@ func (builder *displayBuilder) Monitors(monitors int64) *displayBuilder {
 		return builder
 	}
 
-	temp := monitors
-	builder.display.Monitors = &temp
+	builder.display.Monitors = &monitors
 	return builder
 }
 
@@ -4599,8 +4563,7 @@ func (builder *displayBuilder) Port(port int64) *displayBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.display.Port = &temp
+	builder.display.Port = &port
 	return builder
 }
 
@@ -4609,8 +4572,7 @@ func (builder *displayBuilder) Proxy(proxy string) *displayBuilder {
 		return builder
 	}
 
-	temp := proxy
-	builder.display.Proxy = &temp
+	builder.display.Proxy = &proxy
 	return builder
 }
 
@@ -4619,8 +4581,7 @@ func (builder *displayBuilder) SecurePort(securePort int64) *displayBuilder {
 		return builder
 	}
 
-	temp := securePort
-	builder.display.SecurePort = &temp
+	builder.display.SecurePort = &securePort
 	return builder
 }
 
@@ -4629,8 +4590,7 @@ func (builder *displayBuilder) SingleQxlPci(singleQxlPci bool) *displayBuilder {
 		return builder
 	}
 
-	temp := singleQxlPci
-	builder.display.SingleQxlPci = &temp
+	builder.display.SingleQxlPci = &singleQxlPci
 	return builder
 }
 
@@ -4639,8 +4599,7 @@ func (builder *displayBuilder) SmartcardEnabled(smartcardEnabled bool) *displayB
 		return builder
 	}
 
-	temp := smartcardEnabled
-	builder.display.SmartcardEnabled = &temp
+	builder.display.SmartcardEnabled = &smartcardEnabled
 	return builder
 }
 
@@ -4819,8 +4778,7 @@ func (builder *externalVmImportBuilder) Name(name string) *externalVmImportBuild
 		return builder
 	}
 
-	temp := name
-	builder.externalVmImport.Name = &temp
+	builder.externalVmImport.Name = &name
 	return builder
 }
 
@@ -4829,8 +4787,7 @@ func (builder *externalVmImportBuilder) Password(password string) *externalVmImp
 		return builder
 	}
 
-	temp := password
-	builder.externalVmImport.Password = &temp
+	builder.externalVmImport.Password = &password
 	return builder
 }
 
@@ -4857,8 +4814,7 @@ func (builder *externalVmImportBuilder) Sparse(sparse bool) *externalVmImportBui
 		return builder
 	}
 
-	temp := sparse
-	builder.externalVmImport.Sparse = &temp
+	builder.externalVmImport.Sparse = &sparse
 	return builder
 }
 
@@ -4876,8 +4832,7 @@ func (builder *externalVmImportBuilder) Url(url string) *externalVmImportBuilder
 		return builder
 	}
 
-	temp := url
-	builder.externalVmImport.Url = &temp
+	builder.externalVmImport.Url = &url
 	return builder
 }
 
@@ -4886,8 +4841,7 @@ func (builder *externalVmImportBuilder) Username(username string) *externalVmImp
 		return builder
 	}
 
-	temp := username
-	builder.externalVmImport.Username = &temp
+	builder.externalVmImport.Username = &username
 	return builder
 }
 
@@ -4921,8 +4875,7 @@ func (builder *faultBuilder) Detail(detail string) *faultBuilder {
 		return builder
 	}
 
-	temp := detail
-	builder.fault.Detail = &temp
+	builder.fault.Detail = &detail
 	return builder
 }
 
@@ -4931,8 +4884,7 @@ func (builder *faultBuilder) Reason(reason string) *faultBuilder {
 		return builder
 	}
 
-	temp := reason
-	builder.fault.Reason = &temp
+	builder.fault.Reason = &reason
 	return builder
 }
 
@@ -4957,8 +4909,7 @@ func (builder *fencingPolicyBuilder) Enabled(enabled bool) *fencingPolicyBuilder
 		return builder
 	}
 
-	temp := enabled
-	builder.fencingPolicy.Enabled = &temp
+	builder.fencingPolicy.Enabled = &enabled
 	return builder
 }
 
@@ -4976,8 +4927,7 @@ func (builder *fencingPolicyBuilder) SkipIfGlusterBricksUp(skipIfGlusterBricksUp
 		return builder
 	}
 
-	temp := skipIfGlusterBricksUp
-	builder.fencingPolicy.SkipIfGlusterBricksUp = &temp
+	builder.fencingPolicy.SkipIfGlusterBricksUp = &skipIfGlusterBricksUp
 	return builder
 }
 
@@ -4986,8 +4936,7 @@ func (builder *fencingPolicyBuilder) SkipIfGlusterQuorumNotMet(skipIfGlusterQuor
 		return builder
 	}
 
-	temp := skipIfGlusterQuorumNotMet
-	builder.fencingPolicy.SkipIfGlusterQuorumNotMet = &temp
+	builder.fencingPolicy.SkipIfGlusterQuorumNotMet = &skipIfGlusterQuorumNotMet
 	return builder
 }
 
@@ -5021,8 +4970,7 @@ func (builder *fopStatisticBuilder) Name(name string) *fopStatisticBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.fopStatistic.Name = &temp
+	builder.fopStatistic.Name = &name
 	return builder
 }
 
@@ -5081,8 +5029,7 @@ func (builder *glusterClientBuilder) BytesRead(bytesRead int64) *glusterClientBu
 		return builder
 	}
 
-	temp := bytesRead
-	builder.glusterClient.BytesRead = &temp
+	builder.glusterClient.BytesRead = &bytesRead
 	return builder
 }
 
@@ -5091,8 +5038,7 @@ func (builder *glusterClientBuilder) BytesWritten(bytesWritten int64) *glusterCl
 		return builder
 	}
 
-	temp := bytesWritten
-	builder.glusterClient.BytesWritten = &temp
+	builder.glusterClient.BytesWritten = &bytesWritten
 	return builder
 }
 
@@ -5101,8 +5047,7 @@ func (builder *glusterClientBuilder) ClientPort(clientPort int64) *glusterClient
 		return builder
 	}
 
-	temp := clientPort
-	builder.glusterClient.ClientPort = &temp
+	builder.glusterClient.ClientPort = &clientPort
 	return builder
 }
 
@@ -5111,8 +5056,7 @@ func (builder *glusterClientBuilder) HostName(hostName string) *glusterClientBui
 		return builder
 	}
 
-	temp := hostName
-	builder.glusterClient.HostName = &temp
+	builder.glusterClient.HostName = &hostName
 	return builder
 }
 
@@ -5137,8 +5081,7 @@ func (builder *gracePeriodBuilder) Expiry(expiry int64) *gracePeriodBuilder {
 		return builder
 	}
 
-	temp := expiry
-	builder.gracePeriod.Expiry = &temp
+	builder.gracePeriod.Expiry = &expiry
 	return builder
 }
 
@@ -5163,8 +5106,7 @@ func (builder *guestOperatingSystemBuilder) Architecture(architecture string) *g
 		return builder
 	}
 
-	temp := architecture
-	builder.guestOperatingSystem.Architecture = &temp
+	builder.guestOperatingSystem.Architecture = &architecture
 	return builder
 }
 
@@ -5173,8 +5115,7 @@ func (builder *guestOperatingSystemBuilder) Codename(codename string) *guestOper
 		return builder
 	}
 
-	temp := codename
-	builder.guestOperatingSystem.Codename = &temp
+	builder.guestOperatingSystem.Codename = &codename
 	return builder
 }
 
@@ -5183,8 +5124,7 @@ func (builder *guestOperatingSystemBuilder) Distribution(distribution string) *g
 		return builder
 	}
 
-	temp := distribution
-	builder.guestOperatingSystem.Distribution = &temp
+	builder.guestOperatingSystem.Distribution = &distribution
 	return builder
 }
 
@@ -5193,8 +5133,7 @@ func (builder *guestOperatingSystemBuilder) Family(family string) *guestOperatin
 		return builder
 	}
 
-	temp := family
-	builder.guestOperatingSystem.Family = &temp
+	builder.guestOperatingSystem.Family = &family
 	return builder
 }
 
@@ -5237,8 +5176,7 @@ func (builder *hardwareInformationBuilder) Family(family string) *hardwareInform
 		return builder
 	}
 
-	temp := family
-	builder.hardwareInformation.Family = &temp
+	builder.hardwareInformation.Family = &family
 	return builder
 }
 
@@ -5247,8 +5185,7 @@ func (builder *hardwareInformationBuilder) Manufacturer(manufacturer string) *ha
 		return builder
 	}
 
-	temp := manufacturer
-	builder.hardwareInformation.Manufacturer = &temp
+	builder.hardwareInformation.Manufacturer = &manufacturer
 	return builder
 }
 
@@ -5257,8 +5194,7 @@ func (builder *hardwareInformationBuilder) ProductName(productName string) *hard
 		return builder
 	}
 
-	temp := productName
-	builder.hardwareInformation.ProductName = &temp
+	builder.hardwareInformation.ProductName = &productName
 	return builder
 }
 
@@ -5267,8 +5203,7 @@ func (builder *hardwareInformationBuilder) SerialNumber(serialNumber string) *ha
 		return builder
 	}
 
-	temp := serialNumber
-	builder.hardwareInformation.SerialNumber = &temp
+	builder.hardwareInformation.SerialNumber = &serialNumber
 	return builder
 }
 
@@ -5286,8 +5221,7 @@ func (builder *hardwareInformationBuilder) Uuid(uuid string) *hardwareInformatio
 		return builder
 	}
 
-	temp := uuid
-	builder.hardwareInformation.Uuid = &temp
+	builder.hardwareInformation.Uuid = &uuid
 	return builder
 }
 
@@ -5296,8 +5230,7 @@ func (builder *hardwareInformationBuilder) Version(version string) *hardwareInfo
 		return builder
 	}
 
-	temp := version
-	builder.hardwareInformation.Version = &temp
+	builder.hardwareInformation.Version = &version
 	return builder
 }
 
@@ -5322,8 +5255,7 @@ func (builder *highAvailabilityBuilder) Enabled(enabled bool) *highAvailabilityB
 		return builder
 	}
 
-	temp := enabled
-	builder.highAvailability.Enabled = &temp
+	builder.highAvailability.Enabled = &enabled
 	return builder
 }
 
@@ -5332,8 +5264,7 @@ func (builder *highAvailabilityBuilder) Priority(priority int64) *highAvailabili
 		return builder
 	}
 
-	temp := priority
-	builder.highAvailability.Priority = &temp
+	builder.highAvailability.Priority = &priority
 	return builder
 }
 
@@ -5358,8 +5289,7 @@ func (builder *hostDevicePassthroughBuilder) Enabled(enabled bool) *hostDevicePa
 		return builder
 	}
 
-	temp := enabled
-	builder.hostDevicePassthrough.Enabled = &temp
+	builder.hostDevicePassthrough.Enabled = &enabled
 	return builder
 }
 
@@ -5384,8 +5314,7 @@ func (builder *hostNicVirtualFunctionsConfigurationBuilder) AllNetworksAllowed(a
 		return builder
 	}
 
-	temp := allNetworksAllowed
-	builder.hostNicVirtualFunctionsConfiguration.AllNetworksAllowed = &temp
+	builder.hostNicVirtualFunctionsConfiguration.AllNetworksAllowed = &allNetworksAllowed
 	return builder
 }
 
@@ -5394,8 +5323,7 @@ func (builder *hostNicVirtualFunctionsConfigurationBuilder) MaxNumberOfVirtualFu
 		return builder
 	}
 
-	temp := maxNumberOfVirtualFunctions
-	builder.hostNicVirtualFunctionsConfiguration.MaxNumberOfVirtualFunctions = &temp
+	builder.hostNicVirtualFunctionsConfiguration.MaxNumberOfVirtualFunctions = &maxNumberOfVirtualFunctions
 	return builder
 }
 
@@ -5404,8 +5332,7 @@ func (builder *hostNicVirtualFunctionsConfigurationBuilder) NumberOfVirtualFunct
 		return builder
 	}
 
-	temp := numberOfVirtualFunctions
-	builder.hostNicVirtualFunctionsConfiguration.NumberOfVirtualFunctions = &temp
+	builder.hostNicVirtualFunctionsConfiguration.NumberOfVirtualFunctions = &numberOfVirtualFunctions
 	return builder
 }
 
@@ -5430,8 +5357,7 @@ func (builder *hostedEngineBuilder) Active(active bool) *hostedEngineBuilder {
 		return builder
 	}
 
-	temp := active
-	builder.hostedEngine.Active = &temp
+	builder.hostedEngine.Active = &active
 	return builder
 }
 
@@ -5440,8 +5366,7 @@ func (builder *hostedEngineBuilder) Configured(configured bool) *hostedEngineBui
 		return builder
 	}
 
-	temp := configured
-	builder.hostedEngine.Configured = &temp
+	builder.hostedEngine.Configured = &configured
 	return builder
 }
 
@@ -5450,8 +5375,7 @@ func (builder *hostedEngineBuilder) GlobalMaintenance(globalMaintenance bool) *h
 		return builder
 	}
 
-	temp := globalMaintenance
-	builder.hostedEngine.GlobalMaintenance = &temp
+	builder.hostedEngine.GlobalMaintenance = &globalMaintenance
 	return builder
 }
 
@@ -5460,8 +5384,7 @@ func (builder *hostedEngineBuilder) LocalMaintenance(localMaintenance bool) *hos
 		return builder
 	}
 
-	temp := localMaintenance
-	builder.hostedEngine.LocalMaintenance = &temp
+	builder.hostedEngine.LocalMaintenance = &localMaintenance
 	return builder
 }
 
@@ -5470,8 +5393,7 @@ func (builder *hostedEngineBuilder) Score(score int64) *hostedEngineBuilder {
 		return builder
 	}
 
-	temp := score
-	builder.hostedEngine.Score = &temp
+	builder.hostedEngine.Score = &score
 	return builder
 }
 
@@ -5496,8 +5418,7 @@ func (builder *identifiedBuilder) Comment(comment string) *identifiedBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.identified.Comment = &temp
+	builder.identified.Comment = &comment
 	return builder
 }
 
@@ -5506,8 +5427,7 @@ func (builder *identifiedBuilder) Description(description string) *identifiedBui
 		return builder
 	}
 
-	temp := description
-	builder.identified.Description = &temp
+	builder.identified.Description = &description
 	return builder
 }
 
@@ -5516,8 +5436,7 @@ func (builder *identifiedBuilder) Id(id string) *identifiedBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.identified.Id = &temp
+	builder.identified.Id = &id
 	return builder
 }
 
@@ -5526,8 +5445,7 @@ func (builder *identifiedBuilder) Name(name string) *identifiedBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.identified.Name = &temp
+	builder.identified.Name = &name
 	return builder
 }
 
@@ -5552,8 +5470,7 @@ func (builder *imageBuilder) Comment(comment string) *imageBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.image.Comment = &temp
+	builder.image.Comment = &comment
 	return builder
 }
 
@@ -5562,8 +5479,7 @@ func (builder *imageBuilder) Description(description string) *imageBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.image.Description = &temp
+	builder.image.Description = &description
 	return builder
 }
 
@@ -5572,8 +5488,7 @@ func (builder *imageBuilder) Id(id string) *imageBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.image.Id = &temp
+	builder.image.Id = &id
 	return builder
 }
 
@@ -5582,8 +5497,7 @@ func (builder *imageBuilder) Name(name string) *imageBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.image.Name = &temp
+	builder.image.Name = &name
 	return builder
 }
 
@@ -5617,8 +5531,7 @@ func (builder *imageTransferBuilder) Comment(comment string) *imageTransferBuild
 		return builder
 	}
 
-	temp := comment
-	builder.imageTransfer.Comment = &temp
+	builder.imageTransfer.Comment = &comment
 	return builder
 }
 
@@ -5627,8 +5540,7 @@ func (builder *imageTransferBuilder) Description(description string) *imageTrans
 		return builder
 	}
 
-	temp := description
-	builder.imageTransfer.Description = &temp
+	builder.imageTransfer.Description = &description
 	return builder
 }
 
@@ -5655,8 +5567,7 @@ func (builder *imageTransferBuilder) Id(id string) *imageTransferBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.imageTransfer.Id = &temp
+	builder.imageTransfer.Id = &id
 	return builder
 }
 
@@ -5674,8 +5585,7 @@ func (builder *imageTransferBuilder) Name(name string) *imageTransferBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.imageTransfer.Name = &temp
+	builder.imageTransfer.Name = &name
 	return builder
 }
 
@@ -5693,8 +5603,7 @@ func (builder *imageTransferBuilder) ProxyUrl(proxyUrl string) *imageTransferBui
 		return builder
 	}
 
-	temp := proxyUrl
-	builder.imageTransfer.ProxyUrl = &temp
+	builder.imageTransfer.ProxyUrl = &proxyUrl
 	return builder
 }
 
@@ -5703,8 +5612,7 @@ func (builder *imageTransferBuilder) SignedTicket(signedTicket string) *imageTra
 		return builder
 	}
 
-	temp := signedTicket
-	builder.imageTransfer.SignedTicket = &temp
+	builder.imageTransfer.SignedTicket = &signedTicket
 	return builder
 }
 
@@ -5729,8 +5637,7 @@ func (builder *initializationBuilder) ActiveDirectoryOu(activeDirectoryOu string
 		return builder
 	}
 
-	temp := activeDirectoryOu
-	builder.initialization.ActiveDirectoryOu = &temp
+	builder.initialization.ActiveDirectoryOu = &activeDirectoryOu
 	return builder
 }
 
@@ -5739,8 +5646,7 @@ func (builder *initializationBuilder) AuthorizedSshKeys(authorizedSshKeys string
 		return builder
 	}
 
-	temp := authorizedSshKeys
-	builder.initialization.AuthorizedSshKeys = &temp
+	builder.initialization.AuthorizedSshKeys = &authorizedSshKeys
 	return builder
 }
 
@@ -5767,8 +5673,7 @@ func (builder *initializationBuilder) CustomScript(customScript string) *initial
 		return builder
 	}
 
-	temp := customScript
-	builder.initialization.CustomScript = &temp
+	builder.initialization.CustomScript = &customScript
 	return builder
 }
 
@@ -5777,8 +5682,7 @@ func (builder *initializationBuilder) DnsSearch(dnsSearch string) *initializatio
 		return builder
 	}
 
-	temp := dnsSearch
-	builder.initialization.DnsSearch = &temp
+	builder.initialization.DnsSearch = &dnsSearch
 	return builder
 }
 
@@ -5787,8 +5691,7 @@ func (builder *initializationBuilder) DnsServers(dnsServers string) *initializat
 		return builder
 	}
 
-	temp := dnsServers
-	builder.initialization.DnsServers = &temp
+	builder.initialization.DnsServers = &dnsServers
 	return builder
 }
 
@@ -5797,8 +5700,7 @@ func (builder *initializationBuilder) Domain(domain string) *initializationBuild
 		return builder
 	}
 
-	temp := domain
-	builder.initialization.Domain = &temp
+	builder.initialization.Domain = &domain
 	return builder
 }
 
@@ -5807,8 +5709,7 @@ func (builder *initializationBuilder) HostName(hostName string) *initializationB
 		return builder
 	}
 
-	temp := hostName
-	builder.initialization.HostName = &temp
+	builder.initialization.HostName = &hostName
 	return builder
 }
 
@@ -5817,8 +5718,7 @@ func (builder *initializationBuilder) InputLocale(inputLocale string) *initializ
 		return builder
 	}
 
-	temp := inputLocale
-	builder.initialization.InputLocale = &temp
+	builder.initialization.InputLocale = &inputLocale
 	return builder
 }
 
@@ -5836,8 +5736,7 @@ func (builder *initializationBuilder) OrgName(orgName string) *initializationBui
 		return builder
 	}
 
-	temp := orgName
-	builder.initialization.OrgName = &temp
+	builder.initialization.OrgName = &orgName
 	return builder
 }
 
@@ -5846,8 +5745,7 @@ func (builder *initializationBuilder) RegenerateIds(regenerateIds bool) *initial
 		return builder
 	}
 
-	temp := regenerateIds
-	builder.initialization.RegenerateIds = &temp
+	builder.initialization.RegenerateIds = &regenerateIds
 	return builder
 }
 
@@ -5856,8 +5754,7 @@ func (builder *initializationBuilder) RegenerateSshKeys(regenerateSshKeys bool) 
 		return builder
 	}
 
-	temp := regenerateSshKeys
-	builder.initialization.RegenerateSshKeys = &temp
+	builder.initialization.RegenerateSshKeys = &regenerateSshKeys
 	return builder
 }
 
@@ -5866,8 +5763,7 @@ func (builder *initializationBuilder) RootPassword(rootPassword string) *initial
 		return builder
 	}
 
-	temp := rootPassword
-	builder.initialization.RootPassword = &temp
+	builder.initialization.RootPassword = &rootPassword
 	return builder
 }
 
@@ -5876,8 +5772,7 @@ func (builder *initializationBuilder) SystemLocale(systemLocale string) *initial
 		return builder
 	}
 
-	temp := systemLocale
-	builder.initialization.SystemLocale = &temp
+	builder.initialization.SystemLocale = &systemLocale
 	return builder
 }
 
@@ -5886,8 +5781,7 @@ func (builder *initializationBuilder) Timezone(timezone string) *initializationB
 		return builder
 	}
 
-	temp := timezone
-	builder.initialization.Timezone = &temp
+	builder.initialization.Timezone = &timezone
 	return builder
 }
 
@@ -5896,8 +5790,7 @@ func (builder *initializationBuilder) UiLanguage(uiLanguage string) *initializat
 		return builder
 	}
 
-	temp := uiLanguage
-	builder.initialization.UiLanguage = &temp
+	builder.initialization.UiLanguage = &uiLanguage
 	return builder
 }
 
@@ -5906,8 +5799,7 @@ func (builder *initializationBuilder) UserLocale(userLocale string) *initializat
 		return builder
 	}
 
-	temp := userLocale
-	builder.initialization.UserLocale = &temp
+	builder.initialization.UserLocale = &userLocale
 	return builder
 }
 
@@ -5916,8 +5808,7 @@ func (builder *initializationBuilder) UserName(userName string) *initializationB
 		return builder
 	}
 
-	temp := userName
-	builder.initialization.UserName = &temp
+	builder.initialization.UserName = &userName
 	return builder
 }
 
@@ -5926,8 +5817,7 @@ func (builder *initializationBuilder) WindowsLicenseKey(windowsLicenseKey string
 		return builder
 	}
 
-	temp := windowsLicenseKey
-	builder.initialization.WindowsLicenseKey = &temp
+	builder.initialization.WindowsLicenseKey = &windowsLicenseKey
 	return builder
 }
 
@@ -5952,8 +5842,7 @@ func (builder *ioBuilder) Threads(threads int64) *ioBuilder {
 		return builder
 	}
 
-	temp := threads
-	builder.io.Threads = &temp
+	builder.io.Threads = &threads
 	return builder
 }
 
@@ -5978,8 +5867,7 @@ func (builder *ipBuilder) Address(address string) *ipBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.ip.Address = &temp
+	builder.ip.Address = &address
 	return builder
 }
 
@@ -5988,8 +5876,7 @@ func (builder *ipBuilder) Gateway(gateway string) *ipBuilder {
 		return builder
 	}
 
-	temp := gateway
-	builder.ip.Gateway = &temp
+	builder.ip.Gateway = &gateway
 	return builder
 }
 
@@ -5998,8 +5885,7 @@ func (builder *ipBuilder) Netmask(netmask string) *ipBuilder {
 		return builder
 	}
 
-	temp := netmask
-	builder.ip.Netmask = &temp
+	builder.ip.Netmask = &netmask
 	return builder
 }
 
@@ -6067,8 +5953,7 @@ func (builder *iscsiBondBuilder) Comment(comment string) *iscsiBondBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.iscsiBond.Comment = &temp
+	builder.iscsiBond.Comment = &comment
 	return builder
 }
 
@@ -6086,8 +5971,7 @@ func (builder *iscsiBondBuilder) Description(description string) *iscsiBondBuild
 		return builder
 	}
 
-	temp := description
-	builder.iscsiBond.Description = &temp
+	builder.iscsiBond.Description = &description
 	return builder
 }
 
@@ -6096,8 +5980,7 @@ func (builder *iscsiBondBuilder) Id(id string) *iscsiBondBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.iscsiBond.Id = &temp
+	builder.iscsiBond.Id = &id
 	return builder
 }
 
@@ -6106,8 +5989,7 @@ func (builder *iscsiBondBuilder) Name(name string) *iscsiBondBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.iscsiBond.Name = &temp
+	builder.iscsiBond.Name = &name
 	return builder
 }
 
@@ -6150,8 +6032,7 @@ func (builder *iscsiDetailsBuilder) Address(address string) *iscsiDetailsBuilder
 		return builder
 	}
 
-	temp := address
-	builder.iscsiDetails.Address = &temp
+	builder.iscsiDetails.Address = &address
 	return builder
 }
 
@@ -6160,8 +6041,7 @@ func (builder *iscsiDetailsBuilder) DiskId(diskId string) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := diskId
-	builder.iscsiDetails.DiskId = &temp
+	builder.iscsiDetails.DiskId = &diskId
 	return builder
 }
 
@@ -6170,8 +6050,7 @@ func (builder *iscsiDetailsBuilder) Initiator(initiator string) *iscsiDetailsBui
 		return builder
 	}
 
-	temp := initiator
-	builder.iscsiDetails.Initiator = &temp
+	builder.iscsiDetails.Initiator = &initiator
 	return builder
 }
 
@@ -6180,8 +6059,7 @@ func (builder *iscsiDetailsBuilder) LunMapping(lunMapping int64) *iscsiDetailsBu
 		return builder
 	}
 
-	temp := lunMapping
-	builder.iscsiDetails.LunMapping = &temp
+	builder.iscsiDetails.LunMapping = &lunMapping
 	return builder
 }
 
@@ -6190,8 +6068,7 @@ func (builder *iscsiDetailsBuilder) Password(password string) *iscsiDetailsBuild
 		return builder
 	}
 
-	temp := password
-	builder.iscsiDetails.Password = &temp
+	builder.iscsiDetails.Password = &password
 	return builder
 }
 
@@ -6200,8 +6077,7 @@ func (builder *iscsiDetailsBuilder) Paths(paths int64) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := paths
-	builder.iscsiDetails.Paths = &temp
+	builder.iscsiDetails.Paths = &paths
 	return builder
 }
 
@@ -6210,8 +6086,7 @@ func (builder *iscsiDetailsBuilder) Port(port int64) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.iscsiDetails.Port = &temp
+	builder.iscsiDetails.Port = &port
 	return builder
 }
 
@@ -6220,8 +6095,7 @@ func (builder *iscsiDetailsBuilder) Portal(portal string) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := portal
-	builder.iscsiDetails.Portal = &temp
+	builder.iscsiDetails.Portal = &portal
 	return builder
 }
 
@@ -6230,8 +6104,7 @@ func (builder *iscsiDetailsBuilder) ProductId(productId string) *iscsiDetailsBui
 		return builder
 	}
 
-	temp := productId
-	builder.iscsiDetails.ProductId = &temp
+	builder.iscsiDetails.ProductId = &productId
 	return builder
 }
 
@@ -6240,8 +6113,7 @@ func (builder *iscsiDetailsBuilder) Serial(serial string) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := serial
-	builder.iscsiDetails.Serial = &temp
+	builder.iscsiDetails.Serial = &serial
 	return builder
 }
 
@@ -6250,8 +6122,7 @@ func (builder *iscsiDetailsBuilder) Size(size int64) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := size
-	builder.iscsiDetails.Size = &temp
+	builder.iscsiDetails.Size = &size
 	return builder
 }
 
@@ -6260,8 +6131,7 @@ func (builder *iscsiDetailsBuilder) Status(status string) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := status
-	builder.iscsiDetails.Status = &temp
+	builder.iscsiDetails.Status = &status
 	return builder
 }
 
@@ -6270,8 +6140,7 @@ func (builder *iscsiDetailsBuilder) StorageDomainId(storageDomainId string) *isc
 		return builder
 	}
 
-	temp := storageDomainId
-	builder.iscsiDetails.StorageDomainId = &temp
+	builder.iscsiDetails.StorageDomainId = &storageDomainId
 	return builder
 }
 
@@ -6280,8 +6149,7 @@ func (builder *iscsiDetailsBuilder) Target(target string) *iscsiDetailsBuilder {
 		return builder
 	}
 
-	temp := target
-	builder.iscsiDetails.Target = &temp
+	builder.iscsiDetails.Target = &target
 	return builder
 }
 
@@ -6290,8 +6158,7 @@ func (builder *iscsiDetailsBuilder) Username(username string) *iscsiDetailsBuild
 		return builder
 	}
 
-	temp := username
-	builder.iscsiDetails.Username = &temp
+	builder.iscsiDetails.Username = &username
 	return builder
 }
 
@@ -6300,8 +6167,7 @@ func (builder *iscsiDetailsBuilder) VendorId(vendorId string) *iscsiDetailsBuild
 		return builder
 	}
 
-	temp := vendorId
-	builder.iscsiDetails.VendorId = &temp
+	builder.iscsiDetails.VendorId = &vendorId
 	return builder
 }
 
@@ -6310,8 +6176,7 @@ func (builder *iscsiDetailsBuilder) VolumeGroupId(volumeGroupId string) *iscsiDe
 		return builder
 	}
 
-	temp := volumeGroupId
-	builder.iscsiDetails.VolumeGroupId = &temp
+	builder.iscsiDetails.VolumeGroupId = &volumeGroupId
 	return builder
 }
 
@@ -6336,8 +6201,7 @@ func (builder *jobBuilder) AutoCleared(autoCleared bool) *jobBuilder {
 		return builder
 	}
 
-	temp := autoCleared
-	builder.job.AutoCleared = &temp
+	builder.job.AutoCleared = &autoCleared
 	return builder
 }
 
@@ -6346,8 +6210,7 @@ func (builder *jobBuilder) Comment(comment string) *jobBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.job.Comment = &temp
+	builder.job.Comment = &comment
 	return builder
 }
 
@@ -6356,8 +6219,7 @@ func (builder *jobBuilder) Description(description string) *jobBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.job.Description = &temp
+	builder.job.Description = &description
 	return builder
 }
 
@@ -6375,8 +6237,7 @@ func (builder *jobBuilder) External(external bool) *jobBuilder {
 		return builder
 	}
 
-	temp := external
-	builder.job.External = &temp
+	builder.job.External = &external
 	return builder
 }
 
@@ -6385,8 +6246,7 @@ func (builder *jobBuilder) Id(id string) *jobBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.job.Id = &temp
+	builder.job.Id = &id
 	return builder
 }
 
@@ -6404,8 +6264,7 @@ func (builder *jobBuilder) Name(name string) *jobBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.job.Name = &temp
+	builder.job.Name = &name
 	return builder
 }
 
@@ -6466,8 +6325,7 @@ func (builder *katelloErratumBuilder) Comment(comment string) *katelloErratumBui
 		return builder
 	}
 
-	temp := comment
-	builder.katelloErratum.Comment = &temp
+	builder.katelloErratum.Comment = &comment
 	return builder
 }
 
@@ -6476,8 +6334,7 @@ func (builder *katelloErratumBuilder) Description(description string) *katelloEr
 		return builder
 	}
 
-	temp := description
-	builder.katelloErratum.Description = &temp
+	builder.katelloErratum.Description = &description
 	return builder
 }
 
@@ -6495,8 +6352,7 @@ func (builder *katelloErratumBuilder) Id(id string) *katelloErratumBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.katelloErratum.Id = &temp
+	builder.katelloErratum.Id = &id
 	return builder
 }
 
@@ -6514,8 +6370,7 @@ func (builder *katelloErratumBuilder) Name(name string) *katelloErratumBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.katelloErratum.Name = &temp
+	builder.katelloErratum.Name = &name
 	return builder
 }
 
@@ -6533,8 +6388,7 @@ func (builder *katelloErratumBuilder) Severity(severity string) *katelloErratumB
 		return builder
 	}
 
-	temp := severity
-	builder.katelloErratum.Severity = &temp
+	builder.katelloErratum.Severity = &severity
 	return builder
 }
 
@@ -6543,8 +6397,7 @@ func (builder *katelloErratumBuilder) Solution(solution string) *katelloErratumB
 		return builder
 	}
 
-	temp := solution
-	builder.katelloErratum.Solution = &temp
+	builder.katelloErratum.Solution = &solution
 	return builder
 }
 
@@ -6553,8 +6406,7 @@ func (builder *katelloErratumBuilder) Summary(summary string) *katelloErratumBui
 		return builder
 	}
 
-	temp := summary
-	builder.katelloErratum.Summary = &temp
+	builder.katelloErratum.Summary = &summary
 	return builder
 }
 
@@ -6563,8 +6415,7 @@ func (builder *katelloErratumBuilder) Title(title string) *katelloErratumBuilder
 		return builder
 	}
 
-	temp := title
-	builder.katelloErratum.Title = &temp
+	builder.katelloErratum.Title = &title
 	return builder
 }
 
@@ -6573,8 +6424,7 @@ func (builder *katelloErratumBuilder) Type(type_ string) *katelloErratumBuilder 
 		return builder
 	}
 
-	temp := type_
-	builder.katelloErratum.Type = &temp
+	builder.katelloErratum.Type = &type_
 	return builder
 }
 
@@ -6633,8 +6483,7 @@ func (builder *ksmBuilder) Enabled(enabled bool) *ksmBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.ksm.Enabled = &temp
+	builder.ksm.Enabled = &enabled
 	return builder
 }
 
@@ -6643,8 +6492,7 @@ func (builder *ksmBuilder) MergeAcrossNodes(mergeAcrossNodes bool) *ksmBuilder {
 		return builder
 	}
 
-	temp := mergeAcrossNodes
-	builder.ksm.MergeAcrossNodes = &temp
+	builder.ksm.MergeAcrossNodes = &mergeAcrossNodes
 	return builder
 }
 
@@ -6669,8 +6517,7 @@ func (builder *logicalUnitBuilder) Address(address string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.logicalUnit.Address = &temp
+	builder.logicalUnit.Address = &address
 	return builder
 }
 
@@ -6679,8 +6526,7 @@ func (builder *logicalUnitBuilder) DiscardMaxSize(discardMaxSize int64) *logical
 		return builder
 	}
 
-	temp := discardMaxSize
-	builder.logicalUnit.DiscardMaxSize = &temp
+	builder.logicalUnit.DiscardMaxSize = &discardMaxSize
 	return builder
 }
 
@@ -6689,8 +6535,7 @@ func (builder *logicalUnitBuilder) DiscardZeroesData(discardZeroesData bool) *lo
 		return builder
 	}
 
-	temp := discardZeroesData
-	builder.logicalUnit.DiscardZeroesData = &temp
+	builder.logicalUnit.DiscardZeroesData = &discardZeroesData
 	return builder
 }
 
@@ -6699,8 +6544,7 @@ func (builder *logicalUnitBuilder) DiskId(diskId string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := diskId
-	builder.logicalUnit.DiskId = &temp
+	builder.logicalUnit.DiskId = &diskId
 	return builder
 }
 
@@ -6709,8 +6553,7 @@ func (builder *logicalUnitBuilder) Id(id string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.logicalUnit.Id = &temp
+	builder.logicalUnit.Id = &id
 	return builder
 }
 
@@ -6719,8 +6562,7 @@ func (builder *logicalUnitBuilder) LunMapping(lunMapping int64) *logicalUnitBuil
 		return builder
 	}
 
-	temp := lunMapping
-	builder.logicalUnit.LunMapping = &temp
+	builder.logicalUnit.LunMapping = &lunMapping
 	return builder
 }
 
@@ -6729,8 +6571,7 @@ func (builder *logicalUnitBuilder) Password(password string) *logicalUnitBuilder
 		return builder
 	}
 
-	temp := password
-	builder.logicalUnit.Password = &temp
+	builder.logicalUnit.Password = &password
 	return builder
 }
 
@@ -6739,8 +6580,7 @@ func (builder *logicalUnitBuilder) Paths(paths int64) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := paths
-	builder.logicalUnit.Paths = &temp
+	builder.logicalUnit.Paths = &paths
 	return builder
 }
 
@@ -6749,8 +6589,7 @@ func (builder *logicalUnitBuilder) Port(port int64) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.logicalUnit.Port = &temp
+	builder.logicalUnit.Port = &port
 	return builder
 }
 
@@ -6759,8 +6598,7 @@ func (builder *logicalUnitBuilder) Portal(portal string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := portal
-	builder.logicalUnit.Portal = &temp
+	builder.logicalUnit.Portal = &portal
 	return builder
 }
 
@@ -6769,8 +6607,7 @@ func (builder *logicalUnitBuilder) ProductId(productId string) *logicalUnitBuild
 		return builder
 	}
 
-	temp := productId
-	builder.logicalUnit.ProductId = &temp
+	builder.logicalUnit.ProductId = &productId
 	return builder
 }
 
@@ -6779,8 +6616,7 @@ func (builder *logicalUnitBuilder) Serial(serial string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := serial
-	builder.logicalUnit.Serial = &temp
+	builder.logicalUnit.Serial = &serial
 	return builder
 }
 
@@ -6789,8 +6625,7 @@ func (builder *logicalUnitBuilder) Size(size int64) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := size
-	builder.logicalUnit.Size = &temp
+	builder.logicalUnit.Size = &size
 	return builder
 }
 
@@ -6808,8 +6643,7 @@ func (builder *logicalUnitBuilder) StorageDomainId(storageDomainId string) *logi
 		return builder
 	}
 
-	temp := storageDomainId
-	builder.logicalUnit.StorageDomainId = &temp
+	builder.logicalUnit.StorageDomainId = &storageDomainId
 	return builder
 }
 
@@ -6818,8 +6652,7 @@ func (builder *logicalUnitBuilder) Target(target string) *logicalUnitBuilder {
 		return builder
 	}
 
-	temp := target
-	builder.logicalUnit.Target = &temp
+	builder.logicalUnit.Target = &target
 	return builder
 }
 
@@ -6828,8 +6661,7 @@ func (builder *logicalUnitBuilder) Username(username string) *logicalUnitBuilder
 		return builder
 	}
 
-	temp := username
-	builder.logicalUnit.Username = &temp
+	builder.logicalUnit.Username = &username
 	return builder
 }
 
@@ -6838,8 +6670,7 @@ func (builder *logicalUnitBuilder) VendorId(vendorId string) *logicalUnitBuilder
 		return builder
 	}
 
-	temp := vendorId
-	builder.logicalUnit.VendorId = &temp
+	builder.logicalUnit.VendorId = &vendorId
 	return builder
 }
 
@@ -6848,8 +6679,7 @@ func (builder *logicalUnitBuilder) VolumeGroupId(volumeGroupId string) *logicalU
 		return builder
 	}
 
-	temp := volumeGroupId
-	builder.logicalUnit.VolumeGroupId = &temp
+	builder.logicalUnit.VolumeGroupId = &volumeGroupId
 	return builder
 }
 
@@ -6874,8 +6704,7 @@ func (builder *macBuilder) Address(address string) *macBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.mac.Address = &temp
+	builder.mac.Address = &address
 	return builder
 }
 
@@ -6900,8 +6729,7 @@ func (builder *macPoolBuilder) AllowDuplicates(allowDuplicates bool) *macPoolBui
 		return builder
 	}
 
-	temp := allowDuplicates
-	builder.macPool.AllowDuplicates = &temp
+	builder.macPool.AllowDuplicates = &allowDuplicates
 	return builder
 }
 
@@ -6910,8 +6738,7 @@ func (builder *macPoolBuilder) Comment(comment string) *macPoolBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.macPool.Comment = &temp
+	builder.macPool.Comment = &comment
 	return builder
 }
 
@@ -6920,8 +6747,7 @@ func (builder *macPoolBuilder) DefaultPool(defaultPool bool) *macPoolBuilder {
 		return builder
 	}
 
-	temp := defaultPool
-	builder.macPool.DefaultPool = &temp
+	builder.macPool.DefaultPool = &defaultPool
 	return builder
 }
 
@@ -6930,8 +6756,7 @@ func (builder *macPoolBuilder) Description(description string) *macPoolBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.macPool.Description = &temp
+	builder.macPool.Description = &description
 	return builder
 }
 
@@ -6940,8 +6765,7 @@ func (builder *macPoolBuilder) Id(id string) *macPoolBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.macPool.Id = &temp
+	builder.macPool.Id = &id
 	return builder
 }
 
@@ -6950,8 +6774,7 @@ func (builder *macPoolBuilder) Name(name string) *macPoolBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.macPool.Name = &temp
+	builder.macPool.Name = &name
 	return builder
 }
 
@@ -6985,8 +6808,7 @@ func (builder *memoryOverCommitBuilder) Percent(percent int64) *memoryOverCommit
 		return builder
 	}
 
-	temp := percent
-	builder.memoryOverCommit.Percent = &temp
+	builder.memoryOverCommit.Percent = &percent
 	return builder
 }
 
@@ -7011,8 +6833,7 @@ func (builder *memoryPolicyBuilder) Ballooning(ballooning bool) *memoryPolicyBui
 		return builder
 	}
 
-	temp := ballooning
-	builder.memoryPolicy.Ballooning = &temp
+	builder.memoryPolicy.Ballooning = &ballooning
 	return builder
 }
 
@@ -7021,8 +6842,7 @@ func (builder *memoryPolicyBuilder) Guaranteed(guaranteed int64) *memoryPolicyBu
 		return builder
 	}
 
-	temp := guaranteed
-	builder.memoryPolicy.Guaranteed = &temp
+	builder.memoryPolicy.Guaranteed = &guaranteed
 	return builder
 }
 
@@ -7031,8 +6851,7 @@ func (builder *memoryPolicyBuilder) Max(max int64) *memoryPolicyBuilder {
 		return builder
 	}
 
-	temp := max
-	builder.memoryPolicy.Max = &temp
+	builder.memoryPolicy.Max = &max
 	return builder
 }
 
@@ -7109,8 +6928,7 @@ func (builder *migrationBandwidthBuilder) CustomValue(customValue int64) *migrat
 		return builder
 	}
 
-	temp := customValue
-	builder.migrationBandwidth.CustomValue = &temp
+	builder.migrationBandwidth.CustomValue = &customValue
 	return builder
 }
 
@@ -7187,8 +7005,7 @@ func (builder *migrationPolicyBuilder) Comment(comment string) *migrationPolicyB
 		return builder
 	}
 
-	temp := comment
-	builder.migrationPolicy.Comment = &temp
+	builder.migrationPolicy.Comment = &comment
 	return builder
 }
 
@@ -7197,8 +7014,7 @@ func (builder *migrationPolicyBuilder) Description(description string) *migratio
 		return builder
 	}
 
-	temp := description
-	builder.migrationPolicy.Description = &temp
+	builder.migrationPolicy.Description = &description
 	return builder
 }
 
@@ -7207,8 +7023,7 @@ func (builder *migrationPolicyBuilder) Id(id string) *migrationPolicyBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.migrationPolicy.Id = &temp
+	builder.migrationPolicy.Id = &id
 	return builder
 }
 
@@ -7217,8 +7032,7 @@ func (builder *migrationPolicyBuilder) Name(name string) *migrationPolicyBuilder
 		return builder
 	}
 
-	temp := name
-	builder.migrationPolicy.Name = &temp
+	builder.migrationPolicy.Name = &name
 	return builder
 }
 
@@ -7252,8 +7066,7 @@ func (builder *networkBuilder) Comment(comment string) *networkBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.network.Comment = &temp
+	builder.network.Comment = &comment
 	return builder
 }
 
@@ -7271,8 +7084,7 @@ func (builder *networkBuilder) Description(description string) *networkBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.network.Description = &temp
+	builder.network.Description = &description
 	return builder
 }
 
@@ -7281,8 +7093,7 @@ func (builder *networkBuilder) Display(display bool) *networkBuilder {
 		return builder
 	}
 
-	temp := display
-	builder.network.Display = &temp
+	builder.network.Display = &display
 	return builder
 }
 
@@ -7300,8 +7111,7 @@ func (builder *networkBuilder) Id(id string) *networkBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.network.Id = &temp
+	builder.network.Id = &id
 	return builder
 }
 
@@ -7319,8 +7129,7 @@ func (builder *networkBuilder) Mtu(mtu int64) *networkBuilder {
 		return builder
 	}
 
-	temp := mtu
-	builder.network.Mtu = &temp
+	builder.network.Mtu = &mtu
 	return builder
 }
 
@@ -7329,8 +7138,7 @@ func (builder *networkBuilder) Name(name string) *networkBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.network.Name = &temp
+	builder.network.Name = &name
 	return builder
 }
 
@@ -7357,8 +7165,7 @@ func (builder *networkBuilder) ProfileRequired(profileRequired bool) *networkBui
 		return builder
 	}
 
-	temp := profileRequired
-	builder.network.ProfileRequired = &temp
+	builder.network.ProfileRequired = &profileRequired
 	return builder
 }
 
@@ -7376,8 +7183,7 @@ func (builder *networkBuilder) Required(required bool) *networkBuilder {
 		return builder
 	}
 
-	temp := required
-	builder.network.Required = &temp
+	builder.network.Required = &required
 	return builder
 }
 
@@ -7395,8 +7201,7 @@ func (builder *networkBuilder) Stp(stp bool) *networkBuilder {
 		return builder
 	}
 
-	temp := stp
-	builder.network.Stp = &temp
+	builder.network.Stp = &stp
 	return builder
 }
 
@@ -7448,8 +7253,7 @@ func (builder *networkAttachmentBuilder) Comment(comment string) *networkAttachm
 		return builder
 	}
 
-	temp := comment
-	builder.networkAttachment.Comment = &temp
+	builder.networkAttachment.Comment = &comment
 	return builder
 }
 
@@ -7458,8 +7262,7 @@ func (builder *networkAttachmentBuilder) Description(description string) *networ
 		return builder
 	}
 
-	temp := description
-	builder.networkAttachment.Description = &temp
+	builder.networkAttachment.Description = &description
 	return builder
 }
 
@@ -7495,8 +7298,7 @@ func (builder *networkAttachmentBuilder) Id(id string) *networkAttachmentBuilder
 		return builder
 	}
 
-	temp := id
-	builder.networkAttachment.Id = &temp
+	builder.networkAttachment.Id = &id
 	return builder
 }
 
@@ -7505,8 +7307,7 @@ func (builder *networkAttachmentBuilder) InSync(inSync bool) *networkAttachmentB
 		return builder
 	}
 
-	temp := inSync
-	builder.networkAttachment.InSync = &temp
+	builder.networkAttachment.InSync = &inSync
 	return builder
 }
 
@@ -7524,8 +7325,7 @@ func (builder *networkAttachmentBuilder) Name(name string) *networkAttachmentBui
 		return builder
 	}
 
-	temp := name
-	builder.networkAttachment.Name = &temp
+	builder.networkAttachment.Name = &name
 	return builder
 }
 
@@ -7620,8 +7420,7 @@ func (builder *networkFilterBuilder) Comment(comment string) *networkFilterBuild
 		return builder
 	}
 
-	temp := comment
-	builder.networkFilter.Comment = &temp
+	builder.networkFilter.Comment = &comment
 	return builder
 }
 
@@ -7630,8 +7429,7 @@ func (builder *networkFilterBuilder) Description(description string) *networkFil
 		return builder
 	}
 
-	temp := description
-	builder.networkFilter.Description = &temp
+	builder.networkFilter.Description = &description
 	return builder
 }
 
@@ -7640,8 +7438,7 @@ func (builder *networkFilterBuilder) Id(id string) *networkFilterBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.networkFilter.Id = &temp
+	builder.networkFilter.Id = &id
 	return builder
 }
 
@@ -7650,8 +7447,7 @@ func (builder *networkFilterBuilder) Name(name string) *networkFilterBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.networkFilter.Name = &temp
+	builder.networkFilter.Name = &name
 	return builder
 }
 
@@ -7685,8 +7481,7 @@ func (builder *networkFilterParameterBuilder) Comment(comment string) *networkFi
 		return builder
 	}
 
-	temp := comment
-	builder.networkFilterParameter.Comment = &temp
+	builder.networkFilterParameter.Comment = &comment
 	return builder
 }
 
@@ -7695,8 +7490,7 @@ func (builder *networkFilterParameterBuilder) Description(description string) *n
 		return builder
 	}
 
-	temp := description
-	builder.networkFilterParameter.Description = &temp
+	builder.networkFilterParameter.Description = &description
 	return builder
 }
 
@@ -7705,8 +7499,7 @@ func (builder *networkFilterParameterBuilder) Id(id string) *networkFilterParame
 		return builder
 	}
 
-	temp := id
-	builder.networkFilterParameter.Id = &temp
+	builder.networkFilterParameter.Id = &id
 	return builder
 }
 
@@ -7715,8 +7508,7 @@ func (builder *networkFilterParameterBuilder) Name(name string) *networkFilterPa
 		return builder
 	}
 
-	temp := name
-	builder.networkFilterParameter.Name = &temp
+	builder.networkFilterParameter.Name = &name
 	return builder
 }
 
@@ -7725,8 +7517,7 @@ func (builder *networkFilterParameterBuilder) Value(value string) *networkFilter
 		return builder
 	}
 
-	temp := value
-	builder.networkFilterParameter.Value = &temp
+	builder.networkFilterParameter.Value = &value
 	return builder
 }
 
@@ -7751,8 +7542,7 @@ func (builder *networkLabelBuilder) Comment(comment string) *networkLabelBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.networkLabel.Comment = &temp
+	builder.networkLabel.Comment = &comment
 	return builder
 }
 
@@ -7761,8 +7551,7 @@ func (builder *networkLabelBuilder) Description(description string) *networkLabe
 		return builder
 	}
 
-	temp := description
-	builder.networkLabel.Description = &temp
+	builder.networkLabel.Description = &description
 	return builder
 }
 
@@ -7780,8 +7569,7 @@ func (builder *networkLabelBuilder) Id(id string) *networkLabelBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.networkLabel.Id = &temp
+	builder.networkLabel.Id = &id
 	return builder
 }
 
@@ -7790,8 +7578,7 @@ func (builder *networkLabelBuilder) Name(name string) *networkLabelBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.networkLabel.Name = &temp
+	builder.networkLabel.Name = &name
 	return builder
 }
 
@@ -7825,8 +7612,7 @@ func (builder *nfsProfileDetailBuilder) NfsServerIp(nfsServerIp string) *nfsProf
 		return builder
 	}
 
-	temp := nfsServerIp
-	builder.nfsProfileDetail.NfsServerIp = &temp
+	builder.nfsProfileDetail.NfsServerIp = &nfsServerIp
 	return builder
 }
 
@@ -7896,8 +7682,7 @@ func (builder *nicConfigurationBuilder) Name(name string) *nicConfigurationBuild
 		return builder
 	}
 
-	temp := name
-	builder.nicConfiguration.Name = &temp
+	builder.nicConfiguration.Name = &name
 	return builder
 }
 
@@ -7906,8 +7691,7 @@ func (builder *nicConfigurationBuilder) OnBoot(onBoot bool) *nicConfigurationBui
 		return builder
 	}
 
-	temp := onBoot
-	builder.nicConfiguration.OnBoot = &temp
+	builder.nicConfiguration.OnBoot = &onBoot
 	return builder
 }
 
@@ -7932,8 +7716,7 @@ func (builder *numaNodeBuilder) Comment(comment string) *numaNodeBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.numaNode.Comment = &temp
+	builder.numaNode.Comment = &comment
 	return builder
 }
 
@@ -7951,8 +7734,7 @@ func (builder *numaNodeBuilder) Description(description string) *numaNodeBuilder
 		return builder
 	}
 
-	temp := description
-	builder.numaNode.Description = &temp
+	builder.numaNode.Description = &description
 	return builder
 }
 
@@ -7970,8 +7752,7 @@ func (builder *numaNodeBuilder) Id(id string) *numaNodeBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.numaNode.Id = &temp
+	builder.numaNode.Id = &id
 	return builder
 }
 
@@ -7980,8 +7761,7 @@ func (builder *numaNodeBuilder) Index(index int64) *numaNodeBuilder {
 		return builder
 	}
 
-	temp := index
-	builder.numaNode.Index = &temp
+	builder.numaNode.Index = &index
 	return builder
 }
 
@@ -7990,8 +7770,7 @@ func (builder *numaNodeBuilder) Memory(memory int64) *numaNodeBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.numaNode.Memory = &temp
+	builder.numaNode.Memory = &memory
 	return builder
 }
 
@@ -8000,8 +7779,7 @@ func (builder *numaNodeBuilder) Name(name string) *numaNodeBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.numaNode.Name = &temp
+	builder.numaNode.Name = &name
 	return builder
 }
 
@@ -8010,8 +7788,7 @@ func (builder *numaNodeBuilder) NodeDistance(nodeDistance string) *numaNodeBuild
 		return builder
 	}
 
-	temp := nodeDistance
-	builder.numaNode.NodeDistance = &temp
+	builder.numaNode.NodeDistance = &nodeDistance
 	return builder
 }
 
@@ -8054,8 +7831,7 @@ func (builder *numaNodePinBuilder) Index(index int64) *numaNodePinBuilder {
 		return builder
 	}
 
-	temp := index
-	builder.numaNodePin.Index = &temp
+	builder.numaNodePin.Index = &index
 	return builder
 }
 
@@ -8064,8 +7840,7 @@ func (builder *numaNodePinBuilder) Pinned(pinned bool) *numaNodePinBuilder {
 		return builder
 	}
 
-	temp := pinned
-	builder.numaNodePin.Pinned = &temp
+	builder.numaNodePin.Pinned = &pinned
 	return builder
 }
 
@@ -8090,8 +7865,7 @@ func (builder *openStackImageBuilder) Comment(comment string) *openStackImageBui
 		return builder
 	}
 
-	temp := comment
-	builder.openStackImage.Comment = &temp
+	builder.openStackImage.Comment = &comment
 	return builder
 }
 
@@ -8100,8 +7874,7 @@ func (builder *openStackImageBuilder) Description(description string) *openStack
 		return builder
 	}
 
-	temp := description
-	builder.openStackImage.Description = &temp
+	builder.openStackImage.Description = &description
 	return builder
 }
 
@@ -8110,8 +7883,7 @@ func (builder *openStackImageBuilder) Id(id string) *openStackImageBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.openStackImage.Id = &temp
+	builder.openStackImage.Id = &id
 	return builder
 }
 
@@ -8120,8 +7892,7 @@ func (builder *openStackImageBuilder) Name(name string) *openStackImageBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.openStackImage.Name = &temp
+	builder.openStackImage.Name = &name
 	return builder
 }
 
@@ -8155,8 +7926,7 @@ func (builder *openStackNetworkBuilder) Comment(comment string) *openStackNetwor
 		return builder
 	}
 
-	temp := comment
-	builder.openStackNetwork.Comment = &temp
+	builder.openStackNetwork.Comment = &comment
 	return builder
 }
 
@@ -8165,8 +7935,7 @@ func (builder *openStackNetworkBuilder) Description(description string) *openSta
 		return builder
 	}
 
-	temp := description
-	builder.openStackNetwork.Description = &temp
+	builder.openStackNetwork.Description = &description
 	return builder
 }
 
@@ -8175,8 +7944,7 @@ func (builder *openStackNetworkBuilder) Id(id string) *openStackNetworkBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.openStackNetwork.Id = &temp
+	builder.openStackNetwork.Id = &id
 	return builder
 }
 
@@ -8185,8 +7953,7 @@ func (builder *openStackNetworkBuilder) Name(name string) *openStackNetworkBuild
 		return builder
 	}
 
-	temp := name
-	builder.openStackNetwork.Name = &temp
+	builder.openStackNetwork.Name = &name
 	return builder
 }
 
@@ -8220,8 +7987,7 @@ func (builder *openStackSubnetBuilder) Cidr(cidr string) *openStackSubnetBuilder
 		return builder
 	}
 
-	temp := cidr
-	builder.openStackSubnet.Cidr = &temp
+	builder.openStackSubnet.Cidr = &cidr
 	return builder
 }
 
@@ -8230,8 +7996,7 @@ func (builder *openStackSubnetBuilder) Comment(comment string) *openStackSubnetB
 		return builder
 	}
 
-	temp := comment
-	builder.openStackSubnet.Comment = &temp
+	builder.openStackSubnet.Comment = &comment
 	return builder
 }
 
@@ -8240,8 +8005,7 @@ func (builder *openStackSubnetBuilder) Description(description string) *openStac
 		return builder
 	}
 
-	temp := description
-	builder.openStackSubnet.Description = &temp
+	builder.openStackSubnet.Description = &description
 	return builder
 }
 
@@ -8259,8 +8023,7 @@ func (builder *openStackSubnetBuilder) Gateway(gateway string) *openStackSubnetB
 		return builder
 	}
 
-	temp := gateway
-	builder.openStackSubnet.Gateway = &temp
+	builder.openStackSubnet.Gateway = &gateway
 	return builder
 }
 
@@ -8269,8 +8032,7 @@ func (builder *openStackSubnetBuilder) Id(id string) *openStackSubnetBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.openStackSubnet.Id = &temp
+	builder.openStackSubnet.Id = &id
 	return builder
 }
 
@@ -8279,8 +8041,7 @@ func (builder *openStackSubnetBuilder) IpVersion(ipVersion string) *openStackSub
 		return builder
 	}
 
-	temp := ipVersion
-	builder.openStackSubnet.IpVersion = &temp
+	builder.openStackSubnet.IpVersion = &ipVersion
 	return builder
 }
 
@@ -8289,8 +8050,7 @@ func (builder *openStackSubnetBuilder) Name(name string) *openStackSubnetBuilder
 		return builder
 	}
 
-	temp := name
-	builder.openStackSubnet.Name = &temp
+	builder.openStackSubnet.Name = &name
 	return builder
 }
 
@@ -8324,8 +8084,7 @@ func (builder *openStackVolumeTypeBuilder) Comment(comment string) *openStackVol
 		return builder
 	}
 
-	temp := comment
-	builder.openStackVolumeType.Comment = &temp
+	builder.openStackVolumeType.Comment = &comment
 	return builder
 }
 
@@ -8334,8 +8093,7 @@ func (builder *openStackVolumeTypeBuilder) Description(description string) *open
 		return builder
 	}
 
-	temp := description
-	builder.openStackVolumeType.Description = &temp
+	builder.openStackVolumeType.Description = &description
 	return builder
 }
 
@@ -8344,8 +8102,7 @@ func (builder *openStackVolumeTypeBuilder) Id(id string) *openStackVolumeTypeBui
 		return builder
 	}
 
-	temp := id
-	builder.openStackVolumeType.Id = &temp
+	builder.openStackVolumeType.Id = &id
 	return builder
 }
 
@@ -8354,8 +8111,7 @@ func (builder *openStackVolumeTypeBuilder) Name(name string) *openStackVolumeTyp
 		return builder
 	}
 
-	temp := name
-	builder.openStackVolumeType.Name = &temp
+	builder.openStackVolumeType.Name = &name
 	return builder
 }
 
@@ -8398,8 +8154,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Comment(comment string) 
 		return builder
 	}
 
-	temp := comment
-	builder.openstackVolumeAuthenticationKey.Comment = &temp
+	builder.openstackVolumeAuthenticationKey.Comment = &comment
 	return builder
 }
 
@@ -8417,8 +8172,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Description(description 
 		return builder
 	}
 
-	temp := description
-	builder.openstackVolumeAuthenticationKey.Description = &temp
+	builder.openstackVolumeAuthenticationKey.Description = &description
 	return builder
 }
 
@@ -8427,8 +8181,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Id(id string) *openstack
 		return builder
 	}
 
-	temp := id
-	builder.openstackVolumeAuthenticationKey.Id = &temp
+	builder.openstackVolumeAuthenticationKey.Id = &id
 	return builder
 }
 
@@ -8437,8 +8190,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Name(name string) *opens
 		return builder
 	}
 
-	temp := name
-	builder.openstackVolumeAuthenticationKey.Name = &temp
+	builder.openstackVolumeAuthenticationKey.Name = &name
 	return builder
 }
 
@@ -8465,8 +8217,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Uuid(uuid string) *opens
 		return builder
 	}
 
-	temp := uuid
-	builder.openstackVolumeAuthenticationKey.Uuid = &temp
+	builder.openstackVolumeAuthenticationKey.Uuid = &uuid
 	return builder
 }
 
@@ -8475,8 +8226,7 @@ func (builder *openstackVolumeAuthenticationKeyBuilder) Value(value string) *ope
 		return builder
 	}
 
-	temp := value
-	builder.openstackVolumeAuthenticationKey.Value = &temp
+	builder.openstackVolumeAuthenticationKey.Value = &value
 	return builder
 }
 
@@ -8510,8 +8260,7 @@ func (builder *operatingSystemBuilder) Cmdline(cmdline string) *operatingSystemB
 		return builder
 	}
 
-	temp := cmdline
-	builder.operatingSystem.Cmdline = &temp
+	builder.operatingSystem.Cmdline = &cmdline
 	return builder
 }
 
@@ -8520,8 +8269,7 @@ func (builder *operatingSystemBuilder) CustomKernelCmdline(customKernelCmdline s
 		return builder
 	}
 
-	temp := customKernelCmdline
-	builder.operatingSystem.CustomKernelCmdline = &temp
+	builder.operatingSystem.CustomKernelCmdline = &customKernelCmdline
 	return builder
 }
 
@@ -8530,8 +8278,7 @@ func (builder *operatingSystemBuilder) Initrd(initrd string) *operatingSystemBui
 		return builder
 	}
 
-	temp := initrd
-	builder.operatingSystem.Initrd = &temp
+	builder.operatingSystem.Initrd = &initrd
 	return builder
 }
 
@@ -8540,8 +8287,7 @@ func (builder *operatingSystemBuilder) Kernel(kernel string) *operatingSystemBui
 		return builder
 	}
 
-	temp := kernel
-	builder.operatingSystem.Kernel = &temp
+	builder.operatingSystem.Kernel = &kernel
 	return builder
 }
 
@@ -8550,8 +8296,7 @@ func (builder *operatingSystemBuilder) ReportedKernelCmdline(reportedKernelCmdli
 		return builder
 	}
 
-	temp := reportedKernelCmdline
-	builder.operatingSystem.ReportedKernelCmdline = &temp
+	builder.operatingSystem.ReportedKernelCmdline = &reportedKernelCmdline
 	return builder
 }
 
@@ -8560,8 +8305,7 @@ func (builder *operatingSystemBuilder) Type(type_ string) *operatingSystemBuilde
 		return builder
 	}
 
-	temp := type_
-	builder.operatingSystem.Type = &temp
+	builder.operatingSystem.Type = &type_
 	return builder
 }
 
@@ -8595,8 +8339,7 @@ func (builder *operatingSystemInfoBuilder) Comment(comment string) *operatingSys
 		return builder
 	}
 
-	temp := comment
-	builder.operatingSystemInfo.Comment = &temp
+	builder.operatingSystemInfo.Comment = &comment
 	return builder
 }
 
@@ -8605,8 +8348,7 @@ func (builder *operatingSystemInfoBuilder) Description(description string) *oper
 		return builder
 	}
 
-	temp := description
-	builder.operatingSystemInfo.Description = &temp
+	builder.operatingSystemInfo.Description = &description
 	return builder
 }
 
@@ -8615,8 +8357,7 @@ func (builder *operatingSystemInfoBuilder) Id(id string) *operatingSystemInfoBui
 		return builder
 	}
 
-	temp := id
-	builder.operatingSystemInfo.Id = &temp
+	builder.operatingSystemInfo.Id = &id
 	return builder
 }
 
@@ -8634,8 +8375,7 @@ func (builder *operatingSystemInfoBuilder) Name(name string) *operatingSystemInf
 		return builder
 	}
 
-	temp := name
-	builder.operatingSystemInfo.Name = &temp
+	builder.operatingSystemInfo.Name = &name
 	return builder
 }
 
@@ -8669,8 +8409,7 @@ func (builder *optionBuilder) Name(name string) *optionBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.option.Name = &temp
+	builder.option.Name = &name
 	return builder
 }
 
@@ -8679,8 +8418,7 @@ func (builder *optionBuilder) Type(type_ string) *optionBuilder {
 		return builder
 	}
 
-	temp := type_
-	builder.option.Type = &temp
+	builder.option.Type = &type_
 	return builder
 }
 
@@ -8689,8 +8427,7 @@ func (builder *optionBuilder) Value(value string) *optionBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.option.Value = &temp
+	builder.option.Value = &value
 	return builder
 }
 
@@ -8715,8 +8452,7 @@ func (builder *packageBuilder) Name(name string) *packageBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.package_.Name = &temp
+	builder.package_.Name = &name
 	return builder
 }
 
@@ -8759,8 +8495,7 @@ func (builder *payloadBuilder) VolumeId(volumeId string) *payloadBuilder {
 		return builder
 	}
 
-	temp := volumeId
-	builder.payload.VolumeId = &temp
+	builder.payload.VolumeId = &volumeId
 	return builder
 }
 
@@ -8794,8 +8529,7 @@ func (builder *permissionBuilder) Comment(comment string) *permissionBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.permission.Comment = &temp
+	builder.permission.Comment = &comment
 	return builder
 }
 
@@ -8813,8 +8547,7 @@ func (builder *permissionBuilder) Description(description string) *permissionBui
 		return builder
 	}
 
-	temp := description
-	builder.permission.Description = &temp
+	builder.permission.Description = &description
 	return builder
 }
 
@@ -8850,8 +8583,7 @@ func (builder *permissionBuilder) Id(id string) *permissionBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.permission.Id = &temp
+	builder.permission.Id = &id
 	return builder
 }
 
@@ -8860,8 +8592,7 @@ func (builder *permissionBuilder) Name(name string) *permissionBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.permission.Name = &temp
+	builder.permission.Name = &name
 	return builder
 }
 
@@ -8940,8 +8671,7 @@ func (builder *permitBuilder) Administrative(administrative bool) *permitBuilder
 		return builder
 	}
 
-	temp := administrative
-	builder.permit.Administrative = &temp
+	builder.permit.Administrative = &administrative
 	return builder
 }
 
@@ -8950,8 +8680,7 @@ func (builder *permitBuilder) Comment(comment string) *permitBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.permit.Comment = &temp
+	builder.permit.Comment = &comment
 	return builder
 }
 
@@ -8960,8 +8689,7 @@ func (builder *permitBuilder) Description(description string) *permitBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.permit.Description = &temp
+	builder.permit.Description = &description
 	return builder
 }
 
@@ -8970,8 +8698,7 @@ func (builder *permitBuilder) Id(id string) *permitBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.permit.Id = &temp
+	builder.permit.Id = &id
 	return builder
 }
 
@@ -8980,8 +8707,7 @@ func (builder *permitBuilder) Name(name string) *permitBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.permit.Name = &temp
+	builder.permit.Name = &name
 	return builder
 }
 
@@ -9056,8 +8782,7 @@ func (builder *powerManagementBuilder) Address(address string) *powerManagementB
 		return builder
 	}
 
-	temp := address
-	builder.powerManagement.Address = &temp
+	builder.powerManagement.Address = &address
 	return builder
 }
 
@@ -9075,8 +8800,7 @@ func (builder *powerManagementBuilder) AutomaticPmEnabled(automaticPmEnabled boo
 		return builder
 	}
 
-	temp := automaticPmEnabled
-	builder.powerManagement.AutomaticPmEnabled = &temp
+	builder.powerManagement.AutomaticPmEnabled = &automaticPmEnabled
 	return builder
 }
 
@@ -9085,8 +8809,7 @@ func (builder *powerManagementBuilder) Enabled(enabled bool) *powerManagementBui
 		return builder
 	}
 
-	temp := enabled
-	builder.powerManagement.Enabled = &temp
+	builder.powerManagement.Enabled = &enabled
 	return builder
 }
 
@@ -9095,8 +8818,7 @@ func (builder *powerManagementBuilder) KdumpDetection(kdumpDetection bool) *powe
 		return builder
 	}
 
-	temp := kdumpDetection
-	builder.powerManagement.KdumpDetection = &temp
+	builder.powerManagement.KdumpDetection = &kdumpDetection
 	return builder
 }
 
@@ -9114,8 +8836,7 @@ func (builder *powerManagementBuilder) Password(password string) *powerManagemen
 		return builder
 	}
 
-	temp := password
-	builder.powerManagement.Password = &temp
+	builder.powerManagement.Password = &password
 	return builder
 }
 
@@ -9142,8 +8863,7 @@ func (builder *powerManagementBuilder) Type(type_ string) *powerManagementBuilde
 		return builder
 	}
 
-	temp := type_
-	builder.powerManagement.Type = &temp
+	builder.powerManagement.Type = &type_
 	return builder
 }
 
@@ -9152,8 +8872,7 @@ func (builder *powerManagementBuilder) Username(username string) *powerManagemen
 		return builder
 	}
 
-	temp := username
-	builder.powerManagement.Username = &temp
+	builder.powerManagement.Username = &username
 	return builder
 }
 
@@ -9178,8 +8897,7 @@ func (builder *productBuilder) Comment(comment string) *productBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.product.Comment = &temp
+	builder.product.Comment = &comment
 	return builder
 }
 
@@ -9188,8 +8906,7 @@ func (builder *productBuilder) Description(description string) *productBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.product.Description = &temp
+	builder.product.Description = &description
 	return builder
 }
 
@@ -9198,8 +8915,7 @@ func (builder *productBuilder) Id(id string) *productBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.product.Id = &temp
+	builder.product.Id = &id
 	return builder
 }
 
@@ -9208,8 +8924,7 @@ func (builder *productBuilder) Name(name string) *productBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.product.Name = &temp
+	builder.product.Name = &name
 	return builder
 }
 
@@ -9234,8 +8949,7 @@ func (builder *productInfoBuilder) Name(name string) *productInfoBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.productInfo.Name = &temp
+	builder.productInfo.Name = &name
 	return builder
 }
 
@@ -9244,8 +8958,7 @@ func (builder *productInfoBuilder) Vendor(vendor string) *productInfoBuilder {
 		return builder
 	}
 
-	temp := vendor
-	builder.productInfo.Vendor = &temp
+	builder.productInfo.Vendor = &vendor
 	return builder
 }
 
@@ -9288,8 +9001,7 @@ func (builder *profileDetailBuilder) Duration(duration int64) *profileDetailBuil
 		return builder
 	}
 
-	temp := duration
-	builder.profileDetail.Duration = &temp
+	builder.profileDetail.Duration = &duration
 	return builder
 }
 
@@ -9307,8 +9019,7 @@ func (builder *profileDetailBuilder) ProfileType(profileType string) *profileDet
 		return builder
 	}
 
-	temp := profileType
-	builder.profileDetail.ProfileType = &temp
+	builder.profileDetail.ProfileType = &profileType
 	return builder
 }
 
@@ -9342,8 +9053,7 @@ func (builder *propertyBuilder) Name(name string) *propertyBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.property.Name = &temp
+	builder.property.Name = &name
 	return builder
 }
 
@@ -9352,8 +9062,7 @@ func (builder *propertyBuilder) Value(value string) *propertyBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.property.Value = &temp
+	builder.property.Value = &value
 	return builder
 }
 
@@ -9378,8 +9087,7 @@ func (builder *proxyTicketBuilder) Value(value string) *proxyTicketBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.proxyTicket.Value = &temp
+	builder.proxyTicket.Value = &value
 	return builder
 }
 
@@ -9404,8 +9112,7 @@ func (builder *qosBuilder) Comment(comment string) *qosBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.qos.Comment = &temp
+	builder.qos.Comment = &comment
 	return builder
 }
 
@@ -9414,8 +9121,7 @@ func (builder *qosBuilder) CpuLimit(cpuLimit int64) *qosBuilder {
 		return builder
 	}
 
-	temp := cpuLimit
-	builder.qos.CpuLimit = &temp
+	builder.qos.CpuLimit = &cpuLimit
 	return builder
 }
 
@@ -9433,8 +9139,7 @@ func (builder *qosBuilder) Description(description string) *qosBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.qos.Description = &temp
+	builder.qos.Description = &description
 	return builder
 }
 
@@ -9443,8 +9148,7 @@ func (builder *qosBuilder) Id(id string) *qosBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.qos.Id = &temp
+	builder.qos.Id = &id
 	return builder
 }
 
@@ -9453,8 +9157,7 @@ func (builder *qosBuilder) InboundAverage(inboundAverage int64) *qosBuilder {
 		return builder
 	}
 
-	temp := inboundAverage
-	builder.qos.InboundAverage = &temp
+	builder.qos.InboundAverage = &inboundAverage
 	return builder
 }
 
@@ -9463,8 +9166,7 @@ func (builder *qosBuilder) InboundBurst(inboundBurst int64) *qosBuilder {
 		return builder
 	}
 
-	temp := inboundBurst
-	builder.qos.InboundBurst = &temp
+	builder.qos.InboundBurst = &inboundBurst
 	return builder
 }
 
@@ -9473,8 +9175,7 @@ func (builder *qosBuilder) InboundPeak(inboundPeak int64) *qosBuilder {
 		return builder
 	}
 
-	temp := inboundPeak
-	builder.qos.InboundPeak = &temp
+	builder.qos.InboundPeak = &inboundPeak
 	return builder
 }
 
@@ -9483,8 +9184,7 @@ func (builder *qosBuilder) MaxIops(maxIops int64) *qosBuilder {
 		return builder
 	}
 
-	temp := maxIops
-	builder.qos.MaxIops = &temp
+	builder.qos.MaxIops = &maxIops
 	return builder
 }
 
@@ -9493,8 +9193,7 @@ func (builder *qosBuilder) MaxReadIops(maxReadIops int64) *qosBuilder {
 		return builder
 	}
 
-	temp := maxReadIops
-	builder.qos.MaxReadIops = &temp
+	builder.qos.MaxReadIops = &maxReadIops
 	return builder
 }
 
@@ -9503,8 +9202,7 @@ func (builder *qosBuilder) MaxReadThroughput(maxReadThroughput int64) *qosBuilde
 		return builder
 	}
 
-	temp := maxReadThroughput
-	builder.qos.MaxReadThroughput = &temp
+	builder.qos.MaxReadThroughput = &maxReadThroughput
 	return builder
 }
 
@@ -9513,8 +9211,7 @@ func (builder *qosBuilder) MaxThroughput(maxThroughput int64) *qosBuilder {
 		return builder
 	}
 
-	temp := maxThroughput
-	builder.qos.MaxThroughput = &temp
+	builder.qos.MaxThroughput = &maxThroughput
 	return builder
 }
 
@@ -9523,8 +9220,7 @@ func (builder *qosBuilder) MaxWriteIops(maxWriteIops int64) *qosBuilder {
 		return builder
 	}
 
-	temp := maxWriteIops
-	builder.qos.MaxWriteIops = &temp
+	builder.qos.MaxWriteIops = &maxWriteIops
 	return builder
 }
 
@@ -9533,8 +9229,7 @@ func (builder *qosBuilder) MaxWriteThroughput(maxWriteThroughput int64) *qosBuil
 		return builder
 	}
 
-	temp := maxWriteThroughput
-	builder.qos.MaxWriteThroughput = &temp
+	builder.qos.MaxWriteThroughput = &maxWriteThroughput
 	return builder
 }
 
@@ -9543,8 +9238,7 @@ func (builder *qosBuilder) Name(name string) *qosBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.qos.Name = &temp
+	builder.qos.Name = &name
 	return builder
 }
 
@@ -9553,8 +9247,7 @@ func (builder *qosBuilder) OutboundAverage(outboundAverage int64) *qosBuilder {
 		return builder
 	}
 
-	temp := outboundAverage
-	builder.qos.OutboundAverage = &temp
+	builder.qos.OutboundAverage = &outboundAverage
 	return builder
 }
 
@@ -9563,8 +9256,7 @@ func (builder *qosBuilder) OutboundAverageLinkshare(outboundAverageLinkshare int
 		return builder
 	}
 
-	temp := outboundAverageLinkshare
-	builder.qos.OutboundAverageLinkshare = &temp
+	builder.qos.OutboundAverageLinkshare = &outboundAverageLinkshare
 	return builder
 }
 
@@ -9573,8 +9265,7 @@ func (builder *qosBuilder) OutboundAverageRealtime(outboundAverageRealtime int64
 		return builder
 	}
 
-	temp := outboundAverageRealtime
-	builder.qos.OutboundAverageRealtime = &temp
+	builder.qos.OutboundAverageRealtime = &outboundAverageRealtime
 	return builder
 }
 
@@ -9583,8 +9274,7 @@ func (builder *qosBuilder) OutboundAverageUpperlimit(outboundAverageUpperlimit i
 		return builder
 	}
 
-	temp := outboundAverageUpperlimit
-	builder.qos.OutboundAverageUpperlimit = &temp
+	builder.qos.OutboundAverageUpperlimit = &outboundAverageUpperlimit
 	return builder
 }
 
@@ -9593,8 +9283,7 @@ func (builder *qosBuilder) OutboundBurst(outboundBurst int64) *qosBuilder {
 		return builder
 	}
 
-	temp := outboundBurst
-	builder.qos.OutboundBurst = &temp
+	builder.qos.OutboundBurst = &outboundBurst
 	return builder
 }
 
@@ -9603,8 +9292,7 @@ func (builder *qosBuilder) OutboundPeak(outboundPeak int64) *qosBuilder {
 		return builder
 	}
 
-	temp := outboundPeak
-	builder.qos.OutboundPeak = &temp
+	builder.qos.OutboundPeak = &outboundPeak
 	return builder
 }
 
@@ -9638,8 +9326,7 @@ func (builder *quotaBuilder) ClusterHardLimitPct(clusterHardLimitPct int64) *quo
 		return builder
 	}
 
-	temp := clusterHardLimitPct
-	builder.quota.ClusterHardLimitPct = &temp
+	builder.quota.ClusterHardLimitPct = &clusterHardLimitPct
 	return builder
 }
 
@@ -9648,8 +9335,7 @@ func (builder *quotaBuilder) ClusterSoftLimitPct(clusterSoftLimitPct int64) *quo
 		return builder
 	}
 
-	temp := clusterSoftLimitPct
-	builder.quota.ClusterSoftLimitPct = &temp
+	builder.quota.ClusterSoftLimitPct = &clusterSoftLimitPct
 	return builder
 }
 
@@ -9658,8 +9344,7 @@ func (builder *quotaBuilder) Comment(comment string) *quotaBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.quota.Comment = &temp
+	builder.quota.Comment = &comment
 	return builder
 }
 
@@ -9677,8 +9362,7 @@ func (builder *quotaBuilder) Description(description string) *quotaBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.quota.Description = &temp
+	builder.quota.Description = &description
 	return builder
 }
 
@@ -9696,8 +9380,7 @@ func (builder *quotaBuilder) Id(id string) *quotaBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.quota.Id = &temp
+	builder.quota.Id = &id
 	return builder
 }
 
@@ -9706,8 +9389,7 @@ func (builder *quotaBuilder) Name(name string) *quotaBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.quota.Name = &temp
+	builder.quota.Name = &name
 	return builder
 }
 
@@ -9743,8 +9425,7 @@ func (builder *quotaBuilder) StorageHardLimitPct(storageHardLimitPct int64) *quo
 		return builder
 	}
 
-	temp := storageHardLimitPct
-	builder.quota.StorageHardLimitPct = &temp
+	builder.quota.StorageHardLimitPct = &storageHardLimitPct
 	return builder
 }
 
@@ -9753,8 +9434,7 @@ func (builder *quotaBuilder) StorageSoftLimitPct(storageSoftLimitPct int64) *quo
 		return builder
 	}
 
-	temp := storageSoftLimitPct
-	builder.quota.StorageSoftLimitPct = &temp
+	builder.quota.StorageSoftLimitPct = &storageSoftLimitPct
 	return builder
 }
 
@@ -9806,8 +9486,7 @@ func (builder *quotaClusterLimitBuilder) Comment(comment string) *quotaClusterLi
 		return builder
 	}
 
-	temp := comment
-	builder.quotaClusterLimit.Comment = &temp
+	builder.quotaClusterLimit.Comment = &comment
 	return builder
 }
 
@@ -9816,8 +9495,7 @@ func (builder *quotaClusterLimitBuilder) Description(description string) *quotaC
 		return builder
 	}
 
-	temp := description
-	builder.quotaClusterLimit.Description = &temp
+	builder.quotaClusterLimit.Description = &description
 	return builder
 }
 
@@ -9826,8 +9504,7 @@ func (builder *quotaClusterLimitBuilder) Id(id string) *quotaClusterLimitBuilder
 		return builder
 	}
 
-	temp := id
-	builder.quotaClusterLimit.Id = &temp
+	builder.quotaClusterLimit.Id = &id
 	return builder
 }
 
@@ -9836,8 +9513,7 @@ func (builder *quotaClusterLimitBuilder) MemoryLimit(memoryLimit float64) *quota
 		return builder
 	}
 
-	temp := memoryLimit
-	builder.quotaClusterLimit.MemoryLimit = &temp
+	builder.quotaClusterLimit.MemoryLimit = &memoryLimit
 	return builder
 }
 
@@ -9846,8 +9522,7 @@ func (builder *quotaClusterLimitBuilder) MemoryUsage(memoryUsage float64) *quota
 		return builder
 	}
 
-	temp := memoryUsage
-	builder.quotaClusterLimit.MemoryUsage = &temp
+	builder.quotaClusterLimit.MemoryUsage = &memoryUsage
 	return builder
 }
 
@@ -9856,8 +9531,7 @@ func (builder *quotaClusterLimitBuilder) Name(name string) *quotaClusterLimitBui
 		return builder
 	}
 
-	temp := name
-	builder.quotaClusterLimit.Name = &temp
+	builder.quotaClusterLimit.Name = &name
 	return builder
 }
 
@@ -9875,8 +9549,7 @@ func (builder *quotaClusterLimitBuilder) VcpuLimit(vcpuLimit int64) *quotaCluste
 		return builder
 	}
 
-	temp := vcpuLimit
-	builder.quotaClusterLimit.VcpuLimit = &temp
+	builder.quotaClusterLimit.VcpuLimit = &vcpuLimit
 	return builder
 }
 
@@ -9885,8 +9558,7 @@ func (builder *quotaClusterLimitBuilder) VcpuUsage(vcpuUsage int64) *quotaCluste
 		return builder
 	}
 
-	temp := vcpuUsage
-	builder.quotaClusterLimit.VcpuUsage = &temp
+	builder.quotaClusterLimit.VcpuUsage = &vcpuUsage
 	return builder
 }
 
@@ -9911,8 +9583,7 @@ func (builder *quotaStorageLimitBuilder) Comment(comment string) *quotaStorageLi
 		return builder
 	}
 
-	temp := comment
-	builder.quotaStorageLimit.Comment = &temp
+	builder.quotaStorageLimit.Comment = &comment
 	return builder
 }
 
@@ -9921,8 +9592,7 @@ func (builder *quotaStorageLimitBuilder) Description(description string) *quotaS
 		return builder
 	}
 
-	temp := description
-	builder.quotaStorageLimit.Description = &temp
+	builder.quotaStorageLimit.Description = &description
 	return builder
 }
 
@@ -9931,8 +9601,7 @@ func (builder *quotaStorageLimitBuilder) Id(id string) *quotaStorageLimitBuilder
 		return builder
 	}
 
-	temp := id
-	builder.quotaStorageLimit.Id = &temp
+	builder.quotaStorageLimit.Id = &id
 	return builder
 }
 
@@ -9941,8 +9610,7 @@ func (builder *quotaStorageLimitBuilder) Limit(limit int64) *quotaStorageLimitBu
 		return builder
 	}
 
-	temp := limit
-	builder.quotaStorageLimit.Limit = &temp
+	builder.quotaStorageLimit.Limit = &limit
 	return builder
 }
 
@@ -9951,8 +9619,7 @@ func (builder *quotaStorageLimitBuilder) Name(name string) *quotaStorageLimitBui
 		return builder
 	}
 
-	temp := name
-	builder.quotaStorageLimit.Name = &temp
+	builder.quotaStorageLimit.Name = &name
 	return builder
 }
 
@@ -9979,8 +9646,7 @@ func (builder *quotaStorageLimitBuilder) Usage(usage float64) *quotaStorageLimit
 		return builder
 	}
 
-	temp := usage
-	builder.quotaStorageLimit.Usage = &temp
+	builder.quotaStorageLimit.Usage = &usage
 	return builder
 }
 
@@ -10005,8 +9671,7 @@ func (builder *rangeBuilder) From(from string) *rangeBuilder {
 		return builder
 	}
 
-	temp := from
-	builder.range_.From = &temp
+	builder.range_.From = &from
 	return builder
 }
 
@@ -10015,8 +9680,7 @@ func (builder *rangeBuilder) To(to string) *rangeBuilder {
 		return builder
 	}
 
-	temp := to
-	builder.range_.To = &temp
+	builder.range_.To = &to
 	return builder
 }
 
@@ -10041,8 +9705,7 @@ func (builder *rateBuilder) Bytes(bytes int64) *rateBuilder {
 		return builder
 	}
 
-	temp := bytes
-	builder.rate.Bytes = &temp
+	builder.rate.Bytes = &bytes
 	return builder
 }
 
@@ -10051,8 +9714,7 @@ func (builder *rateBuilder) Period(period int64) *rateBuilder {
 		return builder
 	}
 
-	temp := period
-	builder.rate.Period = &temp
+	builder.rate.Period = &period
 	return builder
 }
 
@@ -10077,8 +9739,7 @@ func (builder *reportedConfigurationBuilder) ActualValue(actualValue string) *re
 		return builder
 	}
 
-	temp := actualValue
-	builder.reportedConfiguration.ActualValue = &temp
+	builder.reportedConfiguration.ActualValue = &actualValue
 	return builder
 }
 
@@ -10087,8 +9748,7 @@ func (builder *reportedConfigurationBuilder) ExpectedValue(expectedValue string)
 		return builder
 	}
 
-	temp := expectedValue
-	builder.reportedConfiguration.ExpectedValue = &temp
+	builder.reportedConfiguration.ExpectedValue = &expectedValue
 	return builder
 }
 
@@ -10097,8 +9757,7 @@ func (builder *reportedConfigurationBuilder) InSync(inSync bool) *reportedConfig
 		return builder
 	}
 
-	temp := inSync
-	builder.reportedConfiguration.InSync = &temp
+	builder.reportedConfiguration.InSync = &inSync
 	return builder
 }
 
@@ -10107,8 +9766,7 @@ func (builder *reportedConfigurationBuilder) Name(name string) *reportedConfigur
 		return builder
 	}
 
-	temp := name
-	builder.reportedConfiguration.Name = &temp
+	builder.reportedConfiguration.Name = &name
 	return builder
 }
 
@@ -10133,8 +9791,7 @@ func (builder *reportedDeviceBuilder) Comment(comment string) *reportedDeviceBui
 		return builder
 	}
 
-	temp := comment
-	builder.reportedDevice.Comment = &temp
+	builder.reportedDevice.Comment = &comment
 	return builder
 }
 
@@ -10143,8 +9800,7 @@ func (builder *reportedDeviceBuilder) Description(description string) *reportedD
 		return builder
 	}
 
-	temp := description
-	builder.reportedDevice.Description = &temp
+	builder.reportedDevice.Description = &description
 	return builder
 }
 
@@ -10153,8 +9809,7 @@ func (builder *reportedDeviceBuilder) Id(id string) *reportedDeviceBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.reportedDevice.Id = &temp
+	builder.reportedDevice.Id = &id
 	return builder
 }
 
@@ -10181,8 +9836,7 @@ func (builder *reportedDeviceBuilder) Name(name string) *reportedDeviceBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.reportedDevice.Name = &temp
+	builder.reportedDevice.Name = &name
 	return builder
 }
 
@@ -10259,8 +9913,7 @@ func (builder *roleBuilder) Administrative(administrative bool) *roleBuilder {
 		return builder
 	}
 
-	temp := administrative
-	builder.role.Administrative = &temp
+	builder.role.Administrative = &administrative
 	return builder
 }
 
@@ -10269,8 +9922,7 @@ func (builder *roleBuilder) Comment(comment string) *roleBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.role.Comment = &temp
+	builder.role.Comment = &comment
 	return builder
 }
 
@@ -10279,8 +9931,7 @@ func (builder *roleBuilder) Description(description string) *roleBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.role.Description = &temp
+	builder.role.Description = &description
 	return builder
 }
 
@@ -10289,8 +9940,7 @@ func (builder *roleBuilder) Id(id string) *roleBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.role.Id = &temp
+	builder.role.Id = &id
 	return builder
 }
 
@@ -10299,8 +9949,7 @@ func (builder *roleBuilder) Mutable(mutable bool) *roleBuilder {
 		return builder
 	}
 
-	temp := mutable
-	builder.role.Mutable = &temp
+	builder.role.Mutable = &mutable
 	return builder
 }
 
@@ -10309,8 +9958,7 @@ func (builder *roleBuilder) Name(name string) *roleBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.role.Name = &temp
+	builder.role.Name = &name
 	return builder
 }
 
@@ -10362,8 +10010,7 @@ func (builder *schedulingPolicyBuilder) Comment(comment string) *schedulingPolic
 		return builder
 	}
 
-	temp := comment
-	builder.schedulingPolicy.Comment = &temp
+	builder.schedulingPolicy.Comment = &comment
 	return builder
 }
 
@@ -10372,8 +10019,7 @@ func (builder *schedulingPolicyBuilder) DefaultPolicy(defaultPolicy bool) *sched
 		return builder
 	}
 
-	temp := defaultPolicy
-	builder.schedulingPolicy.DefaultPolicy = &temp
+	builder.schedulingPolicy.DefaultPolicy = &defaultPolicy
 	return builder
 }
 
@@ -10382,8 +10028,7 @@ func (builder *schedulingPolicyBuilder) Description(description string) *schedul
 		return builder
 	}
 
-	temp := description
-	builder.schedulingPolicy.Description = &temp
+	builder.schedulingPolicy.Description = &description
 	return builder
 }
 
@@ -10401,8 +10046,7 @@ func (builder *schedulingPolicyBuilder) Id(id string) *schedulingPolicyBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.schedulingPolicy.Id = &temp
+	builder.schedulingPolicy.Id = &id
 	return builder
 }
 
@@ -10411,8 +10055,7 @@ func (builder *schedulingPolicyBuilder) Locked(locked bool) *schedulingPolicyBui
 		return builder
 	}
 
-	temp := locked
-	builder.schedulingPolicy.Locked = &temp
+	builder.schedulingPolicy.Locked = &locked
 	return builder
 }
 
@@ -10421,8 +10064,7 @@ func (builder *schedulingPolicyBuilder) Name(name string) *schedulingPolicyBuild
 		return builder
 	}
 
-	temp := name
-	builder.schedulingPolicy.Name = &temp
+	builder.schedulingPolicy.Name = &name
 	return builder
 }
 
@@ -10465,8 +10107,7 @@ func (builder *schedulingPolicyUnitBuilder) Comment(comment string) *schedulingP
 		return builder
 	}
 
-	temp := comment
-	builder.schedulingPolicyUnit.Comment = &temp
+	builder.schedulingPolicyUnit.Comment = &comment
 	return builder
 }
 
@@ -10475,8 +10116,7 @@ func (builder *schedulingPolicyUnitBuilder) Description(description string) *sch
 		return builder
 	}
 
-	temp := description
-	builder.schedulingPolicyUnit.Description = &temp
+	builder.schedulingPolicyUnit.Description = &description
 	return builder
 }
 
@@ -10485,8 +10125,7 @@ func (builder *schedulingPolicyUnitBuilder) Enabled(enabled bool) *schedulingPol
 		return builder
 	}
 
-	temp := enabled
-	builder.schedulingPolicyUnit.Enabled = &temp
+	builder.schedulingPolicyUnit.Enabled = &enabled
 	return builder
 }
 
@@ -10495,8 +10134,7 @@ func (builder *schedulingPolicyUnitBuilder) Id(id string) *schedulingPolicyUnitB
 		return builder
 	}
 
-	temp := id
-	builder.schedulingPolicyUnit.Id = &temp
+	builder.schedulingPolicyUnit.Id = &id
 	return builder
 }
 
@@ -10505,8 +10143,7 @@ func (builder *schedulingPolicyUnitBuilder) Internal(internal bool) *schedulingP
 		return builder
 	}
 
-	temp := internal
-	builder.schedulingPolicyUnit.Internal = &temp
+	builder.schedulingPolicyUnit.Internal = &internal
 	return builder
 }
 
@@ -10515,8 +10152,7 @@ func (builder *schedulingPolicyUnitBuilder) Name(name string) *schedulingPolicyU
 		return builder
 	}
 
-	temp := name
-	builder.schedulingPolicyUnit.Name = &temp
+	builder.schedulingPolicyUnit.Name = &name
 	return builder
 }
 
@@ -10593,8 +10229,7 @@ func (builder *serialNumberBuilder) Value(value string) *serialNumberBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.serialNumber.Value = &temp
+	builder.serialNumber.Value = &value
 	return builder
 }
 
@@ -10619,8 +10254,7 @@ func (builder *sessionBuilder) Comment(comment string) *sessionBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.session.Comment = &temp
+	builder.session.Comment = &comment
 	return builder
 }
 
@@ -10629,8 +10263,7 @@ func (builder *sessionBuilder) ConsoleUser(consoleUser bool) *sessionBuilder {
 		return builder
 	}
 
-	temp := consoleUser
-	builder.session.ConsoleUser = &temp
+	builder.session.ConsoleUser = &consoleUser
 	return builder
 }
 
@@ -10639,8 +10272,7 @@ func (builder *sessionBuilder) Description(description string) *sessionBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.session.Description = &temp
+	builder.session.Description = &description
 	return builder
 }
 
@@ -10649,8 +10281,7 @@ func (builder *sessionBuilder) Id(id string) *sessionBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.session.Id = &temp
+	builder.session.Id = &id
 	return builder
 }
 
@@ -10668,8 +10299,7 @@ func (builder *sessionBuilder) Name(name string) *sessionBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.session.Name = &temp
+	builder.session.Name = &name
 	return builder
 }
 
@@ -10678,8 +10308,7 @@ func (builder *sessionBuilder) Protocol(protocol string) *sessionBuilder {
 		return builder
 	}
 
-	temp := protocol
-	builder.session.Protocol = &temp
+	builder.session.Protocol = &protocol
 	return builder
 }
 
@@ -10722,8 +10351,7 @@ func (builder *skipIfConnectivityBrokenBuilder) Enabled(enabled bool) *skipIfCon
 		return builder
 	}
 
-	temp := enabled
-	builder.skipIfConnectivityBroken.Enabled = &temp
+	builder.skipIfConnectivityBroken.Enabled = &enabled
 	return builder
 }
 
@@ -10732,8 +10360,7 @@ func (builder *skipIfConnectivityBrokenBuilder) Threshold(threshold int64) *skip
 		return builder
 	}
 
-	temp := threshold
-	builder.skipIfConnectivityBroken.Threshold = &temp
+	builder.skipIfConnectivityBroken.Threshold = &threshold
 	return builder
 }
 
@@ -10758,8 +10385,7 @@ func (builder *skipIfSdActiveBuilder) Enabled(enabled bool) *skipIfSdActiveBuild
 		return builder
 	}
 
-	temp := enabled
-	builder.skipIfSdActive.Enabled = &temp
+	builder.skipIfSdActive.Enabled = &enabled
 	return builder
 }
 
@@ -10818,8 +10444,7 @@ func (builder *spmBuilder) Priority(priority int64) *spmBuilder {
 		return builder
 	}
 
-	temp := priority
-	builder.spm.Priority = &temp
+	builder.spm.Priority = &priority
 	return builder
 }
 
@@ -10862,8 +10487,7 @@ func (builder *sshBuilder) Comment(comment string) *sshBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.ssh.Comment = &temp
+	builder.ssh.Comment = &comment
 	return builder
 }
 
@@ -10872,8 +10496,7 @@ func (builder *sshBuilder) Description(description string) *sshBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.ssh.Description = &temp
+	builder.ssh.Description = &description
 	return builder
 }
 
@@ -10882,8 +10505,7 @@ func (builder *sshBuilder) Fingerprint(fingerprint string) *sshBuilder {
 		return builder
 	}
 
-	temp := fingerprint
-	builder.ssh.Fingerprint = &temp
+	builder.ssh.Fingerprint = &fingerprint
 	return builder
 }
 
@@ -10892,8 +10514,7 @@ func (builder *sshBuilder) Id(id string) *sshBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.ssh.Id = &temp
+	builder.ssh.Id = &id
 	return builder
 }
 
@@ -10902,8 +10523,7 @@ func (builder *sshBuilder) Name(name string) *sshBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.ssh.Name = &temp
+	builder.ssh.Name = &name
 	return builder
 }
 
@@ -10912,8 +10532,7 @@ func (builder *sshBuilder) Port(port int64) *sshBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.ssh.Port = &temp
+	builder.ssh.Port = &port
 	return builder
 }
 
@@ -10947,8 +10566,7 @@ func (builder *sshPublicKeyBuilder) Comment(comment string) *sshPublicKeyBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.sshPublicKey.Comment = &temp
+	builder.sshPublicKey.Comment = &comment
 	return builder
 }
 
@@ -10957,8 +10575,7 @@ func (builder *sshPublicKeyBuilder) Content(content string) *sshPublicKeyBuilder
 		return builder
 	}
 
-	temp := content
-	builder.sshPublicKey.Content = &temp
+	builder.sshPublicKey.Content = &content
 	return builder
 }
 
@@ -10967,8 +10584,7 @@ func (builder *sshPublicKeyBuilder) Description(description string) *sshPublicKe
 		return builder
 	}
 
-	temp := description
-	builder.sshPublicKey.Description = &temp
+	builder.sshPublicKey.Description = &description
 	return builder
 }
 
@@ -10977,8 +10593,7 @@ func (builder *sshPublicKeyBuilder) Id(id string) *sshPublicKeyBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.sshPublicKey.Id = &temp
+	builder.sshPublicKey.Id = &id
 	return builder
 }
 
@@ -10987,8 +10602,7 @@ func (builder *sshPublicKeyBuilder) Name(name string) *sshPublicKeyBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.sshPublicKey.Name = &temp
+	builder.sshPublicKey.Name = &name
 	return builder
 }
 
@@ -11056,8 +10670,7 @@ func (builder *statisticBuilder) Comment(comment string) *statisticBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.statistic.Comment = &temp
+	builder.statistic.Comment = &comment
 	return builder
 }
 
@@ -11066,8 +10679,7 @@ func (builder *statisticBuilder) Description(description string) *statisticBuild
 		return builder
 	}
 
-	temp := description
-	builder.statistic.Description = &temp
+	builder.statistic.Description = &description
 	return builder
 }
 
@@ -11121,8 +10733,7 @@ func (builder *statisticBuilder) Id(id string) *statisticBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.statistic.Id = &temp
+	builder.statistic.Id = &id
 	return builder
 }
 
@@ -11140,8 +10751,7 @@ func (builder *statisticBuilder) Name(name string) *statisticBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.statistic.Name = &temp
+	builder.statistic.Name = &name
 	return builder
 }
 
@@ -11220,8 +10830,7 @@ func (builder *stepBuilder) Comment(comment string) *stepBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.step.Comment = &temp
+	builder.step.Comment = &comment
 	return builder
 }
 
@@ -11230,8 +10839,7 @@ func (builder *stepBuilder) Description(description string) *stepBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.step.Description = &temp
+	builder.step.Description = &description
 	return builder
 }
 
@@ -11258,8 +10866,7 @@ func (builder *stepBuilder) External(external bool) *stepBuilder {
 		return builder
 	}
 
-	temp := external
-	builder.step.External = &temp
+	builder.step.External = &external
 	return builder
 }
 
@@ -11277,8 +10884,7 @@ func (builder *stepBuilder) Id(id string) *stepBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.step.Id = &temp
+	builder.step.Id = &id
 	return builder
 }
 
@@ -11296,8 +10902,7 @@ func (builder *stepBuilder) Name(name string) *stepBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.step.Name = &temp
+	builder.step.Name = &name
 	return builder
 }
 
@@ -11306,8 +10911,7 @@ func (builder *stepBuilder) Number(number int64) *stepBuilder {
 		return builder
 	}
 
-	temp := number
-	builder.step.Number = &temp
+	builder.step.Number = &number
 	return builder
 }
 
@@ -11325,8 +10929,7 @@ func (builder *stepBuilder) Progress(progress int64) *stepBuilder {
 		return builder
 	}
 
-	temp := progress
-	builder.step.Progress = &temp
+	builder.step.Progress = &progress
 	return builder
 }
 
@@ -11387,8 +10990,7 @@ func (builder *storageConnectionBuilder) Address(address string) *storageConnect
 		return builder
 	}
 
-	temp := address
-	builder.storageConnection.Address = &temp
+	builder.storageConnection.Address = &address
 	return builder
 }
 
@@ -11397,8 +10999,7 @@ func (builder *storageConnectionBuilder) Comment(comment string) *storageConnect
 		return builder
 	}
 
-	temp := comment
-	builder.storageConnection.Comment = &temp
+	builder.storageConnection.Comment = &comment
 	return builder
 }
 
@@ -11407,8 +11008,7 @@ func (builder *storageConnectionBuilder) Description(description string) *storag
 		return builder
 	}
 
-	temp := description
-	builder.storageConnection.Description = &temp
+	builder.storageConnection.Description = &description
 	return builder
 }
 
@@ -11426,8 +11026,7 @@ func (builder *storageConnectionBuilder) Id(id string) *storageConnectionBuilder
 		return builder
 	}
 
-	temp := id
-	builder.storageConnection.Id = &temp
+	builder.storageConnection.Id = &id
 	return builder
 }
 
@@ -11436,8 +11035,7 @@ func (builder *storageConnectionBuilder) MountOptions(mountOptions string) *stor
 		return builder
 	}
 
-	temp := mountOptions
-	builder.storageConnection.MountOptions = &temp
+	builder.storageConnection.MountOptions = &mountOptions
 	return builder
 }
 
@@ -11446,8 +11044,7 @@ func (builder *storageConnectionBuilder) Name(name string) *storageConnectionBui
 		return builder
 	}
 
-	temp := name
-	builder.storageConnection.Name = &temp
+	builder.storageConnection.Name = &name
 	return builder
 }
 
@@ -11456,8 +11053,7 @@ func (builder *storageConnectionBuilder) NfsRetrans(nfsRetrans int64) *storageCo
 		return builder
 	}
 
-	temp := nfsRetrans
-	builder.storageConnection.NfsRetrans = &temp
+	builder.storageConnection.NfsRetrans = &nfsRetrans
 	return builder
 }
 
@@ -11466,8 +11062,7 @@ func (builder *storageConnectionBuilder) NfsTimeo(nfsTimeo int64) *storageConnec
 		return builder
 	}
 
-	temp := nfsTimeo
-	builder.storageConnection.NfsTimeo = &temp
+	builder.storageConnection.NfsTimeo = &nfsTimeo
 	return builder
 }
 
@@ -11485,8 +11080,7 @@ func (builder *storageConnectionBuilder) Password(password string) *storageConne
 		return builder
 	}
 
-	temp := password
-	builder.storageConnection.Password = &temp
+	builder.storageConnection.Password = &password
 	return builder
 }
 
@@ -11495,8 +11089,7 @@ func (builder *storageConnectionBuilder) Path(path string) *storageConnectionBui
 		return builder
 	}
 
-	temp := path
-	builder.storageConnection.Path = &temp
+	builder.storageConnection.Path = &path
 	return builder
 }
 
@@ -11505,8 +11098,7 @@ func (builder *storageConnectionBuilder) Port(port int64) *storageConnectionBuil
 		return builder
 	}
 
-	temp := port
-	builder.storageConnection.Port = &temp
+	builder.storageConnection.Port = &port
 	return builder
 }
 
@@ -11515,8 +11107,7 @@ func (builder *storageConnectionBuilder) Portal(portal string) *storageConnectio
 		return builder
 	}
 
-	temp := portal
-	builder.storageConnection.Portal = &temp
+	builder.storageConnection.Portal = &portal
 	return builder
 }
 
@@ -11525,8 +11116,7 @@ func (builder *storageConnectionBuilder) Target(target string) *storageConnectio
 		return builder
 	}
 
-	temp := target
-	builder.storageConnection.Target = &temp
+	builder.storageConnection.Target = &target
 	return builder
 }
 
@@ -11544,8 +11134,7 @@ func (builder *storageConnectionBuilder) Username(username string) *storageConne
 		return builder
 	}
 
-	temp := username
-	builder.storageConnection.Username = &temp
+	builder.storageConnection.Username = &username
 	return builder
 }
 
@@ -11554,8 +11143,7 @@ func (builder *storageConnectionBuilder) VfsType(vfsType string) *storageConnect
 		return builder
 	}
 
-	temp := vfsType
-	builder.storageConnection.VfsType = &temp
+	builder.storageConnection.VfsType = &vfsType
 	return builder
 }
 
@@ -11580,8 +11168,7 @@ func (builder *storageConnectionExtensionBuilder) Comment(comment string) *stora
 		return builder
 	}
 
-	temp := comment
-	builder.storageConnectionExtension.Comment = &temp
+	builder.storageConnectionExtension.Comment = &comment
 	return builder
 }
 
@@ -11590,8 +11177,7 @@ func (builder *storageConnectionExtensionBuilder) Description(description string
 		return builder
 	}
 
-	temp := description
-	builder.storageConnectionExtension.Description = &temp
+	builder.storageConnectionExtension.Description = &description
 	return builder
 }
 
@@ -11609,8 +11195,7 @@ func (builder *storageConnectionExtensionBuilder) Id(id string) *storageConnecti
 		return builder
 	}
 
-	temp := id
-	builder.storageConnectionExtension.Id = &temp
+	builder.storageConnectionExtension.Id = &id
 	return builder
 }
 
@@ -11619,8 +11204,7 @@ func (builder *storageConnectionExtensionBuilder) Name(name string) *storageConn
 		return builder
 	}
 
-	temp := name
-	builder.storageConnectionExtension.Name = &temp
+	builder.storageConnectionExtension.Name = &name
 	return builder
 }
 
@@ -11629,8 +11213,7 @@ func (builder *storageConnectionExtensionBuilder) Password(password string) *sto
 		return builder
 	}
 
-	temp := password
-	builder.storageConnectionExtension.Password = &temp
+	builder.storageConnectionExtension.Password = &password
 	return builder
 }
 
@@ -11639,8 +11222,7 @@ func (builder *storageConnectionExtensionBuilder) Target(target string) *storage
 		return builder
 	}
 
-	temp := target
-	builder.storageConnectionExtension.Target = &temp
+	builder.storageConnectionExtension.Target = &target
 	return builder
 }
 
@@ -11649,8 +11231,7 @@ func (builder *storageConnectionExtensionBuilder) Username(username string) *sto
 		return builder
 	}
 
-	temp := username
-	builder.storageConnectionExtension.Username = &temp
+	builder.storageConnectionExtension.Username = &username
 	return builder
 }
 
@@ -11675,8 +11256,7 @@ func (builder *storageDomainBuilder) Available(available int64) *storageDomainBu
 		return builder
 	}
 
-	temp := available
-	builder.storageDomain.Available = &temp
+	builder.storageDomain.Available = &available
 	return builder
 }
 
@@ -11685,8 +11265,7 @@ func (builder *storageDomainBuilder) Comment(comment string) *storageDomainBuild
 		return builder
 	}
 
-	temp := comment
-	builder.storageDomain.Comment = &temp
+	builder.storageDomain.Comment = &comment
 	return builder
 }
 
@@ -11695,8 +11274,7 @@ func (builder *storageDomainBuilder) Committed(committed int64) *storageDomainBu
 		return builder
 	}
 
-	temp := committed
-	builder.storageDomain.Committed = &temp
+	builder.storageDomain.Committed = &committed
 	return builder
 }
 
@@ -11705,8 +11283,7 @@ func (builder *storageDomainBuilder) CriticalSpaceActionBlocker(criticalSpaceAct
 		return builder
 	}
 
-	temp := criticalSpaceActionBlocker
-	builder.storageDomain.CriticalSpaceActionBlocker = &temp
+	builder.storageDomain.CriticalSpaceActionBlocker = &criticalSpaceActionBlocker
 	return builder
 }
 
@@ -11733,8 +11310,7 @@ func (builder *storageDomainBuilder) Description(description string) *storageDom
 		return builder
 	}
 
-	temp := description
-	builder.storageDomain.Description = &temp
+	builder.storageDomain.Description = &description
 	return builder
 }
 
@@ -11743,8 +11319,7 @@ func (builder *storageDomainBuilder) DiscardAfterDelete(discardAfterDelete bool)
 		return builder
 	}
 
-	temp := discardAfterDelete
-	builder.storageDomain.DiscardAfterDelete = &temp
+	builder.storageDomain.DiscardAfterDelete = &discardAfterDelete
 	return builder
 }
 
@@ -11807,8 +11382,7 @@ func (builder *storageDomainBuilder) Id(id string) *storageDomainBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.storageDomain.Id = &temp
+	builder.storageDomain.Id = &id
 	return builder
 }
 
@@ -11826,8 +11400,7 @@ func (builder *storageDomainBuilder) Import(import_ bool) *storageDomainBuilder 
 		return builder
 	}
 
-	temp := import_
-	builder.storageDomain.Import = &temp
+	builder.storageDomain.Import = &import_
 	return builder
 }
 
@@ -11836,8 +11409,7 @@ func (builder *storageDomainBuilder) Master(master bool) *storageDomainBuilder {
 		return builder
 	}
 
-	temp := master
-	builder.storageDomain.Master = &temp
+	builder.storageDomain.Master = &master
 	return builder
 }
 
@@ -11846,8 +11418,7 @@ func (builder *storageDomainBuilder) Name(name string) *storageDomainBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.storageDomain.Name = &temp
+	builder.storageDomain.Name = &name
 	return builder
 }
 
@@ -11901,8 +11472,7 @@ func (builder *storageDomainBuilder) SupportsDiscard(supportsDiscard bool) *stor
 		return builder
 	}
 
-	temp := supportsDiscard
-	builder.storageDomain.SupportsDiscard = &temp
+	builder.storageDomain.SupportsDiscard = &supportsDiscard
 	return builder
 }
 
@@ -11911,8 +11481,7 @@ func (builder *storageDomainBuilder) SupportsDiscardZeroesData(supportsDiscardZe
 		return builder
 	}
 
-	temp := supportsDiscardZeroesData
-	builder.storageDomain.SupportsDiscardZeroesData = &temp
+	builder.storageDomain.SupportsDiscardZeroesData = &supportsDiscardZeroesData
 	return builder
 }
 
@@ -11939,8 +11508,7 @@ func (builder *storageDomainBuilder) Used(used int64) *storageDomainBuilder {
 		return builder
 	}
 
-	temp := used
-	builder.storageDomain.Used = &temp
+	builder.storageDomain.Used = &used
 	return builder
 }
 
@@ -11958,8 +11526,7 @@ func (builder *storageDomainBuilder) WarningLowSpaceIndicator(warningLowSpaceInd
 		return builder
 	}
 
-	temp := warningLowSpaceIndicator
-	builder.storageDomain.WarningLowSpaceIndicator = &temp
+	builder.storageDomain.WarningLowSpaceIndicator = &warningLowSpaceIndicator
 	return builder
 }
 
@@ -11968,8 +11535,7 @@ func (builder *storageDomainBuilder) WipeAfterDelete(wipeAfterDelete bool) *stor
 		return builder
 	}
 
-	temp := wipeAfterDelete
-	builder.storageDomain.WipeAfterDelete = &temp
+	builder.storageDomain.WipeAfterDelete = &wipeAfterDelete
 	return builder
 }
 
@@ -12019,8 +11585,7 @@ func (builder *tagBuilder) Comment(comment string) *tagBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.tag.Comment = &temp
+	builder.tag.Comment = &comment
 	return builder
 }
 
@@ -12029,8 +11594,7 @@ func (builder *tagBuilder) Description(description string) *tagBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.tag.Description = &temp
+	builder.tag.Description = &description
 	return builder
 }
 
@@ -12057,8 +11621,7 @@ func (builder *tagBuilder) Id(id string) *tagBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.tag.Id = &temp
+	builder.tag.Id = &id
 	return builder
 }
 
@@ -12067,8 +11630,7 @@ func (builder *tagBuilder) Name(name string) *tagBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.tag.Name = &temp
+	builder.tag.Name = &name
 	return builder
 }
 
@@ -12138,8 +11700,7 @@ func (builder *templateVersionBuilder) VersionName(versionName string) *template
 		return builder
 	}
 
-	temp := versionName
-	builder.templateVersion.VersionName = &temp
+	builder.templateVersion.VersionName = &versionName
 	return builder
 }
 
@@ -12148,8 +11709,7 @@ func (builder *templateVersionBuilder) VersionNumber(versionNumber int64) *templ
 		return builder
 	}
 
-	temp := versionNumber
-	builder.templateVersion.VersionNumber = &temp
+	builder.templateVersion.VersionNumber = &versionNumber
 	return builder
 }
 
@@ -12174,8 +11734,7 @@ func (builder *ticketBuilder) Expiry(expiry int64) *ticketBuilder {
 		return builder
 	}
 
-	temp := expiry
-	builder.ticket.Expiry = &temp
+	builder.ticket.Expiry = &expiry
 	return builder
 }
 
@@ -12184,8 +11743,7 @@ func (builder *ticketBuilder) Value(value string) *ticketBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.ticket.Value = &temp
+	builder.ticket.Value = &value
 	return builder
 }
 
@@ -12210,8 +11768,7 @@ func (builder *timeZoneBuilder) Name(name string) *timeZoneBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.timeZone.Name = &temp
+	builder.timeZone.Name = &name
 	return builder
 }
 
@@ -12220,8 +11777,7 @@ func (builder *timeZoneBuilder) UtcOffset(utcOffset string) *timeZoneBuilder {
 		return builder
 	}
 
-	temp := utcOffset
-	builder.timeZone.UtcOffset = &temp
+	builder.timeZone.UtcOffset = &utcOffset
 	return builder
 }
 
@@ -12246,8 +11802,7 @@ func (builder *transparentHugePagesBuilder) Enabled(enabled bool) *transparentHu
 		return builder
 	}
 
-	temp := enabled
-	builder.transparentHugePages.Enabled = &temp
+	builder.transparentHugePages.Enabled = &enabled
 	return builder
 }
 
@@ -12272,8 +11827,7 @@ func (builder *unmanagedNetworkBuilder) Comment(comment string) *unmanagedNetwor
 		return builder
 	}
 
-	temp := comment
-	builder.unmanagedNetwork.Comment = &temp
+	builder.unmanagedNetwork.Comment = &comment
 	return builder
 }
 
@@ -12282,8 +11836,7 @@ func (builder *unmanagedNetworkBuilder) Description(description string) *unmanag
 		return builder
 	}
 
-	temp := description
-	builder.unmanagedNetwork.Description = &temp
+	builder.unmanagedNetwork.Description = &description
 	return builder
 }
 
@@ -12310,8 +11863,7 @@ func (builder *unmanagedNetworkBuilder) Id(id string) *unmanagedNetworkBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.unmanagedNetwork.Id = &temp
+	builder.unmanagedNetwork.Id = &id
 	return builder
 }
 
@@ -12320,8 +11872,7 @@ func (builder *unmanagedNetworkBuilder) Name(name string) *unmanagedNetworkBuild
 		return builder
 	}
 
-	temp := name
-	builder.unmanagedNetwork.Name = &temp
+	builder.unmanagedNetwork.Name = &name
 	return builder
 }
 
@@ -12346,8 +11897,7 @@ func (builder *usbBuilder) Enabled(enabled bool) *usbBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.usb.Enabled = &temp
+	builder.usb.Enabled = &enabled
 	return builder
 }
 
@@ -12381,8 +11931,7 @@ func (builder *userBuilder) Comment(comment string) *userBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.user.Comment = &temp
+	builder.user.Comment = &comment
 	return builder
 }
 
@@ -12391,8 +11940,7 @@ func (builder *userBuilder) Department(department string) *userBuilder {
 		return builder
 	}
 
-	temp := department
-	builder.user.Department = &temp
+	builder.user.Department = &department
 	return builder
 }
 
@@ -12401,8 +11949,7 @@ func (builder *userBuilder) Description(description string) *userBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.user.Description = &temp
+	builder.user.Description = &description
 	return builder
 }
 
@@ -12420,8 +11967,7 @@ func (builder *userBuilder) DomainEntryId(domainEntryId string) *userBuilder {
 		return builder
 	}
 
-	temp := domainEntryId
-	builder.user.DomainEntryId = &temp
+	builder.user.DomainEntryId = &domainEntryId
 	return builder
 }
 
@@ -12430,8 +11976,7 @@ func (builder *userBuilder) Email(email string) *userBuilder {
 		return builder
 	}
 
-	temp := email
-	builder.user.Email = &temp
+	builder.user.Email = &email
 	return builder
 }
 
@@ -12449,8 +11994,7 @@ func (builder *userBuilder) Id(id string) *userBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.user.Id = &temp
+	builder.user.Id = &id
 	return builder
 }
 
@@ -12459,8 +12003,7 @@ func (builder *userBuilder) LastName(lastName string) *userBuilder {
 		return builder
 	}
 
-	temp := lastName
-	builder.user.LastName = &temp
+	builder.user.LastName = &lastName
 	return builder
 }
 
@@ -12469,8 +12012,7 @@ func (builder *userBuilder) LoggedIn(loggedIn bool) *userBuilder {
 		return builder
 	}
 
-	temp := loggedIn
-	builder.user.LoggedIn = &temp
+	builder.user.LoggedIn = &loggedIn
 	return builder
 }
 
@@ -12479,8 +12021,7 @@ func (builder *userBuilder) Name(name string) *userBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.user.Name = &temp
+	builder.user.Name = &name
 	return builder
 }
 
@@ -12489,8 +12030,7 @@ func (builder *userBuilder) Namespace(namespace string) *userBuilder {
 		return builder
 	}
 
-	temp := namespace
-	builder.user.Namespace = &temp
+	builder.user.Namespace = &namespace
 	return builder
 }
 
@@ -12499,8 +12039,7 @@ func (builder *userBuilder) Password(password string) *userBuilder {
 		return builder
 	}
 
-	temp := password
-	builder.user.Password = &temp
+	builder.user.Password = &password
 	return builder
 }
 
@@ -12518,8 +12057,7 @@ func (builder *userBuilder) Principal(principal string) *userBuilder {
 		return builder
 	}
 
-	temp := principal
-	builder.user.Principal = &temp
+	builder.user.Principal = &principal
 	return builder
 }
 
@@ -12555,8 +12093,7 @@ func (builder *userBuilder) UserName(userName string) *userBuilder {
 		return builder
 	}
 
-	temp := userName
-	builder.user.UserName = &temp
+	builder.user.UserName = &userName
 	return builder
 }
 
@@ -12581,8 +12118,7 @@ func (builder *valueBuilder) Datum(datum float64) *valueBuilder {
 		return builder
 	}
 
-	temp := datum
-	builder.value.Datum = &temp
+	builder.value.Datum = &datum
 	return builder
 }
 
@@ -12591,8 +12127,7 @@ func (builder *valueBuilder) Detail(detail string) *valueBuilder {
 		return builder
 	}
 
-	temp := detail
-	builder.value.Detail = &temp
+	builder.value.Detail = &detail
 	return builder
 }
 
@@ -12617,8 +12152,7 @@ func (builder *vcpuPinBuilder) CpuSet(cpuSet string) *vcpuPinBuilder {
 		return builder
 	}
 
-	temp := cpuSet
-	builder.vcpuPin.CpuSet = &temp
+	builder.vcpuPin.CpuSet = &cpuSet
 	return builder
 }
 
@@ -12627,8 +12161,7 @@ func (builder *vcpuPinBuilder) Vcpu(vcpu int64) *vcpuPinBuilder {
 		return builder
 	}
 
-	temp := vcpu
-	builder.vcpuPin.Vcpu = &temp
+	builder.vcpuPin.Vcpu = &vcpu
 	return builder
 }
 
@@ -12653,8 +12186,7 @@ func (builder *vendorBuilder) Comment(comment string) *vendorBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.vendor.Comment = &temp
+	builder.vendor.Comment = &comment
 	return builder
 }
 
@@ -12663,8 +12195,7 @@ func (builder *vendorBuilder) Description(description string) *vendorBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.vendor.Description = &temp
+	builder.vendor.Description = &description
 	return builder
 }
 
@@ -12673,8 +12204,7 @@ func (builder *vendorBuilder) Id(id string) *vendorBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vendor.Id = &temp
+	builder.vendor.Id = &id
 	return builder
 }
 
@@ -12683,8 +12213,7 @@ func (builder *vendorBuilder) Name(name string) *vendorBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.vendor.Name = &temp
+	builder.vendor.Name = &name
 	return builder
 }
 
@@ -12709,8 +12238,7 @@ func (builder *versionBuilder) Build_(build_ int64) *versionBuilder {
 		return builder
 	}
 
-	temp := build_
-	builder.version.Build_ = &temp
+	builder.version.Build_ = &build_
 	return builder
 }
 
@@ -12719,8 +12247,7 @@ func (builder *versionBuilder) Comment(comment string) *versionBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.version.Comment = &temp
+	builder.version.Comment = &comment
 	return builder
 }
 
@@ -12729,8 +12256,7 @@ func (builder *versionBuilder) Description(description string) *versionBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.version.Description = &temp
+	builder.version.Description = &description
 	return builder
 }
 
@@ -12739,8 +12265,7 @@ func (builder *versionBuilder) FullVersion(fullVersion string) *versionBuilder {
 		return builder
 	}
 
-	temp := fullVersion
-	builder.version.FullVersion = &temp
+	builder.version.FullVersion = &fullVersion
 	return builder
 }
 
@@ -12749,8 +12274,7 @@ func (builder *versionBuilder) Id(id string) *versionBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.version.Id = &temp
+	builder.version.Id = &id
 	return builder
 }
 
@@ -12759,8 +12283,7 @@ func (builder *versionBuilder) Major(major int64) *versionBuilder {
 		return builder
 	}
 
-	temp := major
-	builder.version.Major = &temp
+	builder.version.Major = &major
 	return builder
 }
 
@@ -12769,8 +12292,7 @@ func (builder *versionBuilder) Minor(minor int64) *versionBuilder {
 		return builder
 	}
 
-	temp := minor
-	builder.version.Minor = &temp
+	builder.version.Minor = &minor
 	return builder
 }
 
@@ -12779,8 +12301,7 @@ func (builder *versionBuilder) Name(name string) *versionBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.version.Name = &temp
+	builder.version.Name = &name
 	return builder
 }
 
@@ -12789,8 +12310,7 @@ func (builder *versionBuilder) Revision(revision int64) *versionBuilder {
 		return builder
 	}
 
-	temp := revision
-	builder.version.Revision = &temp
+	builder.version.Revision = &revision
 	return builder
 }
 
@@ -12815,8 +12335,7 @@ func (builder *virtioScsiBuilder) Enabled(enabled bool) *virtioScsiBuilder {
 		return builder
 	}
 
-	temp := enabled
-	builder.virtioScsi.Enabled = &temp
+	builder.virtioScsi.Enabled = &enabled
 	return builder
 }
 
@@ -12841,8 +12360,7 @@ func (builder *virtualNumaNodeBuilder) Comment(comment string) *virtualNumaNodeB
 		return builder
 	}
 
-	temp := comment
-	builder.virtualNumaNode.Comment = &temp
+	builder.virtualNumaNode.Comment = &comment
 	return builder
 }
 
@@ -12860,8 +12378,7 @@ func (builder *virtualNumaNodeBuilder) Description(description string) *virtualN
 		return builder
 	}
 
-	temp := description
-	builder.virtualNumaNode.Description = &temp
+	builder.virtualNumaNode.Description = &description
 	return builder
 }
 
@@ -12879,8 +12396,7 @@ func (builder *virtualNumaNodeBuilder) Id(id string) *virtualNumaNodeBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.virtualNumaNode.Id = &temp
+	builder.virtualNumaNode.Id = &id
 	return builder
 }
 
@@ -12889,8 +12405,7 @@ func (builder *virtualNumaNodeBuilder) Index(index int64) *virtualNumaNodeBuilde
 		return builder
 	}
 
-	temp := index
-	builder.virtualNumaNode.Index = &temp
+	builder.virtualNumaNode.Index = &index
 	return builder
 }
 
@@ -12899,8 +12414,7 @@ func (builder *virtualNumaNodeBuilder) Memory(memory int64) *virtualNumaNodeBuil
 		return builder
 	}
 
-	temp := memory
-	builder.virtualNumaNode.Memory = &temp
+	builder.virtualNumaNode.Memory = &memory
 	return builder
 }
 
@@ -12909,8 +12423,7 @@ func (builder *virtualNumaNodeBuilder) Name(name string) *virtualNumaNodeBuilder
 		return builder
 	}
 
-	temp := name
-	builder.virtualNumaNode.Name = &temp
+	builder.virtualNumaNode.Name = &name
 	return builder
 }
 
@@ -12919,8 +12432,7 @@ func (builder *virtualNumaNodeBuilder) NodeDistance(nodeDistance string) *virtua
 		return builder
 	}
 
-	temp := nodeDistance
-	builder.virtualNumaNode.NodeDistance = &temp
+	builder.virtualNumaNode.NodeDistance = &nodeDistance
 	return builder
 }
 
@@ -12972,8 +12484,7 @@ func (builder *vlanBuilder) Id(id int64) *vlanBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vlan.Id = &temp
+	builder.vlan.Id = &id
 	return builder
 }
 
@@ -13016,8 +12527,7 @@ func (builder *vmBaseBuilder) Comment(comment string) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.vmBase.Comment = &temp
+	builder.vmBase.Comment = &comment
 	return builder
 }
 
@@ -13053,8 +12563,7 @@ func (builder *vmBaseBuilder) CpuShares(cpuShares int64) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := cpuShares
-	builder.vmBase.CpuShares = &temp
+	builder.vmBase.CpuShares = &cpuShares
 	return builder
 }
 
@@ -13081,8 +12590,7 @@ func (builder *vmBaseBuilder) CustomCpuModel(customCpuModel string) *vmBaseBuild
 		return builder
 	}
 
-	temp := customCpuModel
-	builder.vmBase.CustomCpuModel = &temp
+	builder.vmBase.CustomCpuModel = &customCpuModel
 	return builder
 }
 
@@ -13091,8 +12599,7 @@ func (builder *vmBaseBuilder) CustomEmulatedMachine(customEmulatedMachine string
 		return builder
 	}
 
-	temp := customEmulatedMachine
-	builder.vmBase.CustomEmulatedMachine = &temp
+	builder.vmBase.CustomEmulatedMachine = &customEmulatedMachine
 	return builder
 }
 
@@ -13110,8 +12617,7 @@ func (builder *vmBaseBuilder) DeleteProtected(deleteProtected bool) *vmBaseBuild
 		return builder
 	}
 
-	temp := deleteProtected
-	builder.vmBase.DeleteProtected = &temp
+	builder.vmBase.DeleteProtected = &deleteProtected
 	return builder
 }
 
@@ -13120,8 +12626,7 @@ func (builder *vmBaseBuilder) Description(description string) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.vmBase.Description = &temp
+	builder.vmBase.Description = &description
 	return builder
 }
 
@@ -13157,8 +12662,7 @@ func (builder *vmBaseBuilder) Id(id string) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vmBase.Id = &temp
+	builder.vmBase.Id = &id
 	return builder
 }
 
@@ -13203,8 +12707,7 @@ func (builder *vmBaseBuilder) Memory(memory int64) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.vmBase.Memory = &temp
+	builder.vmBase.Memory = &memory
 	return builder
 }
 
@@ -13231,8 +12734,7 @@ func (builder *vmBaseBuilder) MigrationDowntime(migrationDowntime int64) *vmBase
 		return builder
 	}
 
-	temp := migrationDowntime
-	builder.vmBase.MigrationDowntime = &temp
+	builder.vmBase.MigrationDowntime = &migrationDowntime
 	return builder
 }
 
@@ -13241,8 +12743,7 @@ func (builder *vmBaseBuilder) Name(name string) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.vmBase.Name = &temp
+	builder.vmBase.Name = &name
 	return builder
 }
 
@@ -13251,8 +12752,7 @@ func (builder *vmBaseBuilder) Origin(origin string) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.vmBase.Origin = &temp
+	builder.vmBase.Origin = &origin
 	return builder
 }
 
@@ -13306,8 +12806,7 @@ func (builder *vmBaseBuilder) SoundcardEnabled(soundcardEnabled bool) *vmBaseBui
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.vmBase.SoundcardEnabled = &temp
+	builder.vmBase.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -13325,8 +12824,7 @@ func (builder *vmBaseBuilder) StartPaused(startPaused bool) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := startPaused
-	builder.vmBase.StartPaused = &temp
+	builder.vmBase.StartPaused = &startPaused
 	return builder
 }
 
@@ -13335,8 +12833,7 @@ func (builder *vmBaseBuilder) Stateless(stateless bool) *vmBaseBuilder {
 		return builder
 	}
 
-	temp := stateless
-	builder.vmBase.Stateless = &temp
+	builder.vmBase.Stateless = &stateless
 	return builder
 }
 
@@ -13363,8 +12860,7 @@ func (builder *vmBaseBuilder) TunnelMigration(tunnelMigration bool) *vmBaseBuild
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.vmBase.TunnelMigration = &temp
+	builder.vmBase.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -13450,8 +12946,7 @@ func (builder *vmPoolBuilder) AutoStorageSelect(autoStorageSelect bool) *vmPoolB
 		return builder
 	}
 
-	temp := autoStorageSelect
-	builder.vmPool.AutoStorageSelect = &temp
+	builder.vmPool.AutoStorageSelect = &autoStorageSelect
 	return builder
 }
 
@@ -13469,8 +12964,7 @@ func (builder *vmPoolBuilder) Comment(comment string) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.vmPool.Comment = &temp
+	builder.vmPool.Comment = &comment
 	return builder
 }
 
@@ -13479,8 +12973,7 @@ func (builder *vmPoolBuilder) Description(description string) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.vmPool.Description = &temp
+	builder.vmPool.Description = &description
 	return builder
 }
 
@@ -13498,8 +12991,7 @@ func (builder *vmPoolBuilder) Id(id string) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vmPool.Id = &temp
+	builder.vmPool.Id = &id
 	return builder
 }
 
@@ -13517,8 +13009,7 @@ func (builder *vmPoolBuilder) MaxUserVms(maxUserVms int64) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := maxUserVms
-	builder.vmPool.MaxUserVms = &temp
+	builder.vmPool.MaxUserVms = &maxUserVms
 	return builder
 }
 
@@ -13527,8 +13018,7 @@ func (builder *vmPoolBuilder) Name(name string) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.vmPool.Name = &temp
+	builder.vmPool.Name = &name
 	return builder
 }
 
@@ -13546,8 +13036,7 @@ func (builder *vmPoolBuilder) PrestartedVms(prestartedVms int64) *vmPoolBuilder 
 		return builder
 	}
 
-	temp := prestartedVms
-	builder.vmPool.PrestartedVms = &temp
+	builder.vmPool.PrestartedVms = &prestartedVms
 	return builder
 }
 
@@ -13565,8 +13054,7 @@ func (builder *vmPoolBuilder) Size(size int64) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := size
-	builder.vmPool.Size = &temp
+	builder.vmPool.Size = &size
 	return builder
 }
 
@@ -13575,8 +13063,7 @@ func (builder *vmPoolBuilder) SoundcardEnabled(soundcardEnabled bool) *vmPoolBui
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.vmPool.SoundcardEnabled = &temp
+	builder.vmPool.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -13585,8 +13072,7 @@ func (builder *vmPoolBuilder) Stateful(stateful bool) *vmPoolBuilder {
 		return builder
 	}
 
-	temp := stateful
-	builder.vmPool.Stateful = &temp
+	builder.vmPool.Stateful = &stateful
 	return builder
 }
 
@@ -13613,8 +13099,7 @@ func (builder *vmPoolBuilder) UseLatestTemplateVersion(useLatestTemplateVersion 
 		return builder
 	}
 
-	temp := useLatestTemplateVersion
-	builder.vmPool.UseLatestTemplateVersion = &temp
+	builder.vmPool.UseLatestTemplateVersion = &useLatestTemplateVersion
 	return builder
 }
 
@@ -13648,8 +13133,7 @@ func (builder *vmSummaryBuilder) Active(active int64) *vmSummaryBuilder {
 		return builder
 	}
 
-	temp := active
-	builder.vmSummary.Active = &temp
+	builder.vmSummary.Active = &active
 	return builder
 }
 
@@ -13658,8 +13142,7 @@ func (builder *vmSummaryBuilder) Migrating(migrating int64) *vmSummaryBuilder {
 		return builder
 	}
 
-	temp := migrating
-	builder.vmSummary.Migrating = &temp
+	builder.vmSummary.Migrating = &migrating
 	return builder
 }
 
@@ -13668,8 +13151,7 @@ func (builder *vmSummaryBuilder) Total(total int64) *vmSummaryBuilder {
 		return builder
 	}
 
-	temp := total
-	builder.vmSummary.Total = &temp
+	builder.vmSummary.Total = &total
 	return builder
 }
 
@@ -13719,8 +13201,7 @@ func (builder *vnicProfileBuilder) Comment(comment string) *vnicProfileBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.vnicProfile.Comment = &temp
+	builder.vnicProfile.Comment = &comment
 	return builder
 }
 
@@ -13738,8 +13219,7 @@ func (builder *vnicProfileBuilder) Description(description string) *vnicProfileB
 		return builder
 	}
 
-	temp := description
-	builder.vnicProfile.Description = &temp
+	builder.vnicProfile.Description = &description
 	return builder
 }
 
@@ -13748,8 +13228,7 @@ func (builder *vnicProfileBuilder) Id(id string) *vnicProfileBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vnicProfile.Id = &temp
+	builder.vnicProfile.Id = &id
 	return builder
 }
 
@@ -13758,8 +13237,7 @@ func (builder *vnicProfileBuilder) Migratable(migratable bool) *vnicProfileBuild
 		return builder
 	}
 
-	temp := migratable
-	builder.vnicProfile.Migratable = &temp
+	builder.vnicProfile.Migratable = &migratable
 	return builder
 }
 
@@ -13768,8 +13246,7 @@ func (builder *vnicProfileBuilder) Name(name string) *vnicProfileBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.vnicProfile.Name = &temp
+	builder.vnicProfile.Name = &name
 	return builder
 }
 
@@ -13814,8 +13291,7 @@ func (builder *vnicProfileBuilder) PortMirroring(portMirroring bool) *vnicProfil
 		return builder
 	}
 
-	temp := portMirroring
-	builder.vnicProfile.PortMirroring = &temp
+	builder.vnicProfile.PortMirroring = &portMirroring
 	return builder
 }
 
@@ -13849,8 +13325,7 @@ func (builder *vnicProfileMappingBuilder) SourceNetworkName(sourceNetworkName st
 		return builder
 	}
 
-	temp := sourceNetworkName
-	builder.vnicProfileMapping.SourceNetworkName = &temp
+	builder.vnicProfileMapping.SourceNetworkName = &sourceNetworkName
 	return builder
 }
 
@@ -13859,8 +13334,7 @@ func (builder *vnicProfileMappingBuilder) SourceNetworkProfileName(sourceNetwork
 		return builder
 	}
 
-	temp := sourceNetworkProfileName
-	builder.vnicProfileMapping.SourceNetworkProfileName = &temp
+	builder.vnicProfileMapping.SourceNetworkProfileName = &sourceNetworkProfileName
 	return builder
 }
 
@@ -13894,8 +13368,7 @@ func (builder *volumeGroupBuilder) Id(id string) *volumeGroupBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.volumeGroup.Id = &temp
+	builder.volumeGroup.Id = &id
 	return builder
 }
 
@@ -13913,8 +13386,7 @@ func (builder *volumeGroupBuilder) Name(name string) *volumeGroupBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.volumeGroup.Name = &temp
+	builder.volumeGroup.Name = &name
 	return builder
 }
 
@@ -13939,8 +13411,7 @@ func (builder *weightBuilder) Comment(comment string) *weightBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.weight.Comment = &temp
+	builder.weight.Comment = &comment
 	return builder
 }
 
@@ -13949,8 +13420,7 @@ func (builder *weightBuilder) Description(description string) *weightBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.weight.Description = &temp
+	builder.weight.Description = &description
 	return builder
 }
 
@@ -13959,8 +13429,7 @@ func (builder *weightBuilder) Factor(factor int64) *weightBuilder {
 		return builder
 	}
 
-	temp := factor
-	builder.weight.Factor = &temp
+	builder.weight.Factor = &factor
 	return builder
 }
 
@@ -13969,8 +13438,7 @@ func (builder *weightBuilder) Id(id string) *weightBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.weight.Id = &temp
+	builder.weight.Id = &id
 	return builder
 }
 
@@ -13979,8 +13447,7 @@ func (builder *weightBuilder) Name(name string) *weightBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.weight.Name = &temp
+	builder.weight.Name = &name
 	return builder
 }
 
@@ -14023,8 +13490,7 @@ func (builder *actionBuilder) AllowPartialImport(allowPartialImport bool) *actio
 		return builder
 	}
 
-	temp := allowPartialImport
-	builder.action.AllowPartialImport = &temp
+	builder.action.AllowPartialImport = &allowPartialImport
 	return builder
 }
 
@@ -14033,8 +13499,7 @@ func (builder *actionBuilder) Async(async bool) *actionBuilder {
 		return builder
 	}
 
-	temp := async
-	builder.action.Async = &temp
+	builder.action.Async = &async
 	return builder
 }
 
@@ -14061,8 +13526,7 @@ func (builder *actionBuilder) CheckConnectivity(checkConnectivity bool) *actionB
 		return builder
 	}
 
-	temp := checkConnectivity
-	builder.action.CheckConnectivity = &temp
+	builder.action.CheckConnectivity = &checkConnectivity
 	return builder
 }
 
@@ -14071,8 +13535,7 @@ func (builder *actionBuilder) Clone(clone bool) *actionBuilder {
 		return builder
 	}
 
-	temp := clone
-	builder.action.Clone = &temp
+	builder.action.Clone = &clone
 	return builder
 }
 
@@ -14090,8 +13553,7 @@ func (builder *actionBuilder) CollapseSnapshots(collapseSnapshots bool) *actionB
 		return builder
 	}
 
-	temp := collapseSnapshots
-	builder.action.CollapseSnapshots = &temp
+	builder.action.CollapseSnapshots = &collapseSnapshots
 	return builder
 }
 
@@ -14100,8 +13562,7 @@ func (builder *actionBuilder) Comment(comment string) *actionBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.action.Comment = &temp
+	builder.action.Comment = &comment
 	return builder
 }
 
@@ -14110,8 +13571,7 @@ func (builder *actionBuilder) ConnectivityTimeout(connectivityTimeout int64) *ac
 		return builder
 	}
 
-	temp := connectivityTimeout
-	builder.action.ConnectivityTimeout = &temp
+	builder.action.ConnectivityTimeout = &connectivityTimeout
 	return builder
 }
 
@@ -14129,8 +13589,7 @@ func (builder *actionBuilder) DeployHostedEngine(deployHostedEngine bool) *actio
 		return builder
 	}
 
-	temp := deployHostedEngine
-	builder.action.DeployHostedEngine = &temp
+	builder.action.DeployHostedEngine = &deployHostedEngine
 	return builder
 }
 
@@ -14139,8 +13598,7 @@ func (builder *actionBuilder) Description(description string) *actionBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.action.Description = &temp
+	builder.action.Description = &description
 	return builder
 }
 
@@ -14158,8 +13616,7 @@ func (builder *actionBuilder) DiscardSnapshots(discardSnapshots bool) *actionBui
 		return builder
 	}
 
-	temp := discardSnapshots
-	builder.action.DiscardSnapshots = &temp
+	builder.action.DiscardSnapshots = &discardSnapshots
 	return builder
 }
 
@@ -14186,8 +13643,7 @@ func (builder *actionBuilder) Exclusive(exclusive bool) *actionBuilder {
 		return builder
 	}
 
-	temp := exclusive
-	builder.action.Exclusive = &temp
+	builder.action.Exclusive = &exclusive
 	return builder
 }
 
@@ -14205,8 +13661,7 @@ func (builder *actionBuilder) FenceType(fenceType string) *actionBuilder {
 		return builder
 	}
 
-	temp := fenceType
-	builder.action.FenceType = &temp
+	builder.action.FenceType = &fenceType
 	return builder
 }
 
@@ -14215,8 +13670,7 @@ func (builder *actionBuilder) Filter(filter bool) *actionBuilder {
 		return builder
 	}
 
-	temp := filter
-	builder.action.Filter = &temp
+	builder.action.Filter = &filter
 	return builder
 }
 
@@ -14225,8 +13679,7 @@ func (builder *actionBuilder) FixLayout(fixLayout bool) *actionBuilder {
 		return builder
 	}
 
-	temp := fixLayout
-	builder.action.FixLayout = &temp
+	builder.action.FixLayout = &fixLayout
 	return builder
 }
 
@@ -14235,8 +13688,7 @@ func (builder *actionBuilder) Force(force bool) *actionBuilder {
 		return builder
 	}
 
-	temp := force
-	builder.action.Force = &temp
+	builder.action.Force = &force
 	return builder
 }
 
@@ -14263,8 +13715,7 @@ func (builder *actionBuilder) Id(id string) *actionBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.action.Id = &temp
+	builder.action.Id = &id
 	return builder
 }
 
@@ -14273,8 +13724,7 @@ func (builder *actionBuilder) Image(image string) *actionBuilder {
 		return builder
 	}
 
-	temp := image
-	builder.action.Image = &temp
+	builder.action.Image = &image
 	return builder
 }
 
@@ -14283,8 +13733,7 @@ func (builder *actionBuilder) ImportAsTemplate(importAsTemplate bool) *actionBui
 		return builder
 	}
 
-	temp := importAsTemplate
-	builder.action.ImportAsTemplate = &temp
+	builder.action.ImportAsTemplate = &importAsTemplate
 	return builder
 }
 
@@ -14293,8 +13742,7 @@ func (builder *actionBuilder) IsAttached(isAttached bool) *actionBuilder {
 		return builder
 	}
 
-	temp := isAttached
-	builder.action.IsAttached = &temp
+	builder.action.IsAttached = &isAttached
 	return builder
 }
 
@@ -14339,8 +13787,7 @@ func (builder *actionBuilder) MaintenanceEnabled(maintenanceEnabled bool) *actio
 		return builder
 	}
 
-	temp := maintenanceEnabled
-	builder.action.MaintenanceEnabled = &temp
+	builder.action.MaintenanceEnabled = &maintenanceEnabled
 	return builder
 }
 
@@ -14376,8 +13823,7 @@ func (builder *actionBuilder) Name(name string) *actionBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.action.Name = &temp
+	builder.action.Name = &name
 	return builder
 }
 
@@ -14395,8 +13841,7 @@ func (builder *actionBuilder) Pause(pause bool) *actionBuilder {
 		return builder
 	}
 
-	temp := pause
-	builder.action.Pause = &temp
+	builder.action.Pause = &pause
 	return builder
 }
 
@@ -14423,8 +13868,7 @@ func (builder *actionBuilder) Reason(reason string) *actionBuilder {
 		return builder
 	}
 
-	temp := reason
-	builder.action.Reason = &temp
+	builder.action.Reason = &reason
 	return builder
 }
 
@@ -14433,8 +13877,7 @@ func (builder *actionBuilder) ReassignBadMacs(reassignBadMacs bool) *actionBuild
 		return builder
 	}
 
-	temp := reassignBadMacs
-	builder.action.ReassignBadMacs = &temp
+	builder.action.ReassignBadMacs = &reassignBadMacs
 	return builder
 }
 
@@ -14443,8 +13886,7 @@ func (builder *actionBuilder) RemoteViewerConnectionFile(remoteViewerConnectionF
 		return builder
 	}
 
-	temp := remoteViewerConnectionFile
-	builder.action.RemoteViewerConnectionFile = &temp
+	builder.action.RemoteViewerConnectionFile = &remoteViewerConnectionFile
 	return builder
 }
 
@@ -14480,8 +13922,7 @@ func (builder *actionBuilder) ResolutionType(resolutionType string) *actionBuild
 		return builder
 	}
 
-	temp := resolutionType
-	builder.action.ResolutionType = &temp
+	builder.action.ResolutionType = &resolutionType
 	return builder
 }
 
@@ -14490,8 +13931,7 @@ func (builder *actionBuilder) RestoreMemory(restoreMemory bool) *actionBuilder {
 		return builder
 	}
 
-	temp := restoreMemory
-	builder.action.RestoreMemory = &temp
+	builder.action.RestoreMemory = &restoreMemory
 	return builder
 }
 
@@ -14500,8 +13940,7 @@ func (builder *actionBuilder) RootPassword(rootPassword string) *actionBuilder {
 		return builder
 	}
 
-	temp := rootPassword
-	builder.action.RootPassword = &temp
+	builder.action.RootPassword = &rootPassword
 	return builder
 }
 
@@ -14528,8 +13967,7 @@ func (builder *actionBuilder) Status(status string) *actionBuilder {
 		return builder
 	}
 
-	temp := status
-	builder.action.Status = &temp
+	builder.action.Status = &status
 	return builder
 }
 
@@ -14538,8 +13976,7 @@ func (builder *actionBuilder) StopGlusterService(stopGlusterService bool) *actio
 		return builder
 	}
 
-	temp := stopGlusterService
-	builder.action.StopGlusterService = &temp
+	builder.action.StopGlusterService = &stopGlusterService
 	return builder
 }
 
@@ -14566,8 +14003,7 @@ func (builder *actionBuilder) Succeeded(succeeded bool) *actionBuilder {
 		return builder
 	}
 
-	temp := succeeded
-	builder.action.Succeeded = &temp
+	builder.action.Succeeded = &succeeded
 	return builder
 }
 
@@ -14603,8 +14039,7 @@ func (builder *actionBuilder) UndeployHostedEngine(undeployHostedEngine bool) *a
 		return builder
 	}
 
-	temp := undeployHostedEngine
-	builder.action.UndeployHostedEngine = &temp
+	builder.action.UndeployHostedEngine = &undeployHostedEngine
 	return builder
 }
 
@@ -14613,8 +14048,7 @@ func (builder *actionBuilder) UseCloudInit(useCloudInit bool) *actionBuilder {
 		return builder
 	}
 
-	temp := useCloudInit
-	builder.action.UseCloudInit = &temp
+	builder.action.UseCloudInit = &useCloudInit
 	return builder
 }
 
@@ -14623,8 +14057,7 @@ func (builder *actionBuilder) UseSysprep(useSysprep bool) *actionBuilder {
 		return builder
 	}
 
-	temp := useSysprep
-	builder.action.UseSysprep = &temp
+	builder.action.UseSysprep = &useSysprep
 	return builder
 }
 
@@ -14685,8 +14118,7 @@ func (builder *affinityGroupBuilder) Comment(comment string) *affinityGroupBuild
 		return builder
 	}
 
-	temp := comment
-	builder.affinityGroup.Comment = &temp
+	builder.affinityGroup.Comment = &comment
 	return builder
 }
 
@@ -14695,8 +14127,7 @@ func (builder *affinityGroupBuilder) Description(description string) *affinityGr
 		return builder
 	}
 
-	temp := description
-	builder.affinityGroup.Description = &temp
+	builder.affinityGroup.Description = &description
 	return builder
 }
 
@@ -14705,8 +14136,7 @@ func (builder *affinityGroupBuilder) Enforcing(enforcing bool) *affinityGroupBui
 		return builder
 	}
 
-	temp := enforcing
-	builder.affinityGroup.Enforcing = &temp
+	builder.affinityGroup.Enforcing = &enforcing
 	return builder
 }
 
@@ -14733,8 +14163,7 @@ func (builder *affinityGroupBuilder) Id(id string) *affinityGroupBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.affinityGroup.Id = &temp
+	builder.affinityGroup.Id = &id
 	return builder
 }
 
@@ -14743,8 +14172,7 @@ func (builder *affinityGroupBuilder) Name(name string) *affinityGroupBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.affinityGroup.Name = &temp
+	builder.affinityGroup.Name = &name
 	return builder
 }
 
@@ -14753,8 +14181,7 @@ func (builder *affinityGroupBuilder) Positive(positive bool) *affinityGroupBuild
 		return builder
 	}
 
-	temp := positive
-	builder.affinityGroup.Positive = &temp
+	builder.affinityGroup.Positive = &positive
 	return builder
 }
 
@@ -14797,8 +14224,7 @@ func (builder *affinityLabelBuilder) Comment(comment string) *affinityLabelBuild
 		return builder
 	}
 
-	temp := comment
-	builder.affinityLabel.Comment = &temp
+	builder.affinityLabel.Comment = &comment
 	return builder
 }
 
@@ -14807,8 +14233,7 @@ func (builder *affinityLabelBuilder) Description(description string) *affinityLa
 		return builder
 	}
 
-	temp := description
-	builder.affinityLabel.Description = &temp
+	builder.affinityLabel.Description = &description
 	return builder
 }
 
@@ -14826,8 +14251,7 @@ func (builder *affinityLabelBuilder) Id(id string) *affinityLabelBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.affinityLabel.Id = &temp
+	builder.affinityLabel.Id = &id
 	return builder
 }
 
@@ -14836,8 +14260,7 @@ func (builder *affinityLabelBuilder) Name(name string) *affinityLabelBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.affinityLabel.Name = &temp
+	builder.affinityLabel.Name = &name
 	return builder
 }
 
@@ -14846,8 +14269,7 @@ func (builder *affinityLabelBuilder) ReadOnly(readOnly bool) *affinityLabelBuild
 		return builder
 	}
 
-	temp := readOnly
-	builder.affinityLabel.ReadOnly = &temp
+	builder.affinityLabel.ReadOnly = &readOnly
 	return builder
 }
 
@@ -14881,8 +14303,7 @@ func (builder *agentBuilder) Address(address string) *agentBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.agent.Address = &temp
+	builder.agent.Address = &address
 	return builder
 }
 
@@ -14891,8 +14312,7 @@ func (builder *agentBuilder) Comment(comment string) *agentBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.agent.Comment = &temp
+	builder.agent.Comment = &comment
 	return builder
 }
 
@@ -14901,8 +14321,7 @@ func (builder *agentBuilder) Concurrent(concurrent bool) *agentBuilder {
 		return builder
 	}
 
-	temp := concurrent
-	builder.agent.Concurrent = &temp
+	builder.agent.Concurrent = &concurrent
 	return builder
 }
 
@@ -14911,8 +14330,7 @@ func (builder *agentBuilder) Description(description string) *agentBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.agent.Description = &temp
+	builder.agent.Description = &description
 	return builder
 }
 
@@ -14921,8 +14339,7 @@ func (builder *agentBuilder) EncryptOptions(encryptOptions bool) *agentBuilder {
 		return builder
 	}
 
-	temp := encryptOptions
-	builder.agent.EncryptOptions = &temp
+	builder.agent.EncryptOptions = &encryptOptions
 	return builder
 }
 
@@ -14940,8 +14357,7 @@ func (builder *agentBuilder) Id(id string) *agentBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.agent.Id = &temp
+	builder.agent.Id = &id
 	return builder
 }
 
@@ -14950,8 +14366,7 @@ func (builder *agentBuilder) Name(name string) *agentBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.agent.Name = &temp
+	builder.agent.Name = &name
 	return builder
 }
 
@@ -14969,8 +14384,7 @@ func (builder *agentBuilder) Order(order int64) *agentBuilder {
 		return builder
 	}
 
-	temp := order
-	builder.agent.Order = &temp
+	builder.agent.Order = &order
 	return builder
 }
 
@@ -14979,8 +14393,7 @@ func (builder *agentBuilder) Password(password string) *agentBuilder {
 		return builder
 	}
 
-	temp := password
-	builder.agent.Password = &temp
+	builder.agent.Password = &password
 	return builder
 }
 
@@ -14989,8 +14402,7 @@ func (builder *agentBuilder) Port(port int64) *agentBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.agent.Port = &temp
+	builder.agent.Port = &port
 	return builder
 }
 
@@ -14999,8 +14411,7 @@ func (builder *agentBuilder) Type(type_ string) *agentBuilder {
 		return builder
 	}
 
-	temp := type_
-	builder.agent.Type = &temp
+	builder.agent.Type = &type_
 	return builder
 }
 
@@ -15009,8 +14420,7 @@ func (builder *agentBuilder) Username(username string) *agentBuilder {
 		return builder
 	}
 
-	temp := username
-	builder.agent.Username = &temp
+	builder.agent.Username = &username
 	return builder
 }
 
@@ -15035,8 +14445,7 @@ func (builder *applicationBuilder) Comment(comment string) *applicationBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.application.Comment = &temp
+	builder.application.Comment = &comment
 	return builder
 }
 
@@ -15045,8 +14454,7 @@ func (builder *applicationBuilder) Description(description string) *applicationB
 		return builder
 	}
 
-	temp := description
-	builder.application.Description = &temp
+	builder.application.Description = &description
 	return builder
 }
 
@@ -15055,8 +14463,7 @@ func (builder *applicationBuilder) Id(id string) *applicationBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.application.Id = &temp
+	builder.application.Id = &id
 	return builder
 }
 
@@ -15065,8 +14472,7 @@ func (builder *applicationBuilder) Name(name string) *applicationBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.application.Name = &temp
+	builder.application.Name = &name
 	return builder
 }
 
@@ -15100,8 +14506,7 @@ func (builder *authorizedKeyBuilder) Comment(comment string) *authorizedKeyBuild
 		return builder
 	}
 
-	temp := comment
-	builder.authorizedKey.Comment = &temp
+	builder.authorizedKey.Comment = &comment
 	return builder
 }
 
@@ -15110,8 +14515,7 @@ func (builder *authorizedKeyBuilder) Description(description string) *authorized
 		return builder
 	}
 
-	temp := description
-	builder.authorizedKey.Description = &temp
+	builder.authorizedKey.Description = &description
 	return builder
 }
 
@@ -15120,8 +14524,7 @@ func (builder *authorizedKeyBuilder) Id(id string) *authorizedKeyBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.authorizedKey.Id = &temp
+	builder.authorizedKey.Id = &id
 	return builder
 }
 
@@ -15130,8 +14533,7 @@ func (builder *authorizedKeyBuilder) Key(key string) *authorizedKeyBuilder {
 		return builder
 	}
 
-	temp := key
-	builder.authorizedKey.Key = &temp
+	builder.authorizedKey.Key = &key
 	return builder
 }
 
@@ -15140,8 +14542,7 @@ func (builder *authorizedKeyBuilder) Name(name string) *authorizedKeyBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.authorizedKey.Name = &temp
+	builder.authorizedKey.Name = &name
 	return builder
 }
 
@@ -15175,8 +14576,7 @@ func (builder *balanceBuilder) Comment(comment string) *balanceBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.balance.Comment = &temp
+	builder.balance.Comment = &comment
 	return builder
 }
 
@@ -15185,8 +14585,7 @@ func (builder *balanceBuilder) Description(description string) *balanceBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.balance.Description = &temp
+	builder.balance.Description = &description
 	return builder
 }
 
@@ -15195,8 +14594,7 @@ func (builder *balanceBuilder) Id(id string) *balanceBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.balance.Id = &temp
+	builder.balance.Id = &id
 	return builder
 }
 
@@ -15205,8 +14603,7 @@ func (builder *balanceBuilder) Name(name string) *balanceBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.balance.Name = &temp
+	builder.balance.Name = &name
 	return builder
 }
 
@@ -15249,8 +14646,7 @@ func (builder *bookmarkBuilder) Comment(comment string) *bookmarkBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.bookmark.Comment = &temp
+	builder.bookmark.Comment = &comment
 	return builder
 }
 
@@ -15259,8 +14655,7 @@ func (builder *bookmarkBuilder) Description(description string) *bookmarkBuilder
 		return builder
 	}
 
-	temp := description
-	builder.bookmark.Description = &temp
+	builder.bookmark.Description = &description
 	return builder
 }
 
@@ -15269,8 +14664,7 @@ func (builder *bookmarkBuilder) Id(id string) *bookmarkBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.bookmark.Id = &temp
+	builder.bookmark.Id = &id
 	return builder
 }
 
@@ -15279,8 +14673,7 @@ func (builder *bookmarkBuilder) Name(name string) *bookmarkBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.bookmark.Name = &temp
+	builder.bookmark.Name = &name
 	return builder
 }
 
@@ -15289,8 +14682,7 @@ func (builder *bookmarkBuilder) Value(value string) *bookmarkBuilder {
 		return builder
 	}
 
-	temp := value
-	builder.bookmark.Value = &temp
+	builder.bookmark.Value = &value
 	return builder
 }
 
@@ -15349,8 +14741,7 @@ func (builder *certificateBuilder) Comment(comment string) *certificateBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.certificate.Comment = &temp
+	builder.certificate.Comment = &comment
 	return builder
 }
 
@@ -15359,8 +14750,7 @@ func (builder *certificateBuilder) Content(content string) *certificateBuilder {
 		return builder
 	}
 
-	temp := content
-	builder.certificate.Content = &temp
+	builder.certificate.Content = &content
 	return builder
 }
 
@@ -15369,8 +14759,7 @@ func (builder *certificateBuilder) Description(description string) *certificateB
 		return builder
 	}
 
-	temp := description
-	builder.certificate.Description = &temp
+	builder.certificate.Description = &description
 	return builder
 }
 
@@ -15379,8 +14768,7 @@ func (builder *certificateBuilder) Id(id string) *certificateBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.certificate.Id = &temp
+	builder.certificate.Id = &id
 	return builder
 }
 
@@ -15389,8 +14777,7 @@ func (builder *certificateBuilder) Name(name string) *certificateBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.certificate.Name = &temp
+	builder.certificate.Name = &name
 	return builder
 }
 
@@ -15399,8 +14786,7 @@ func (builder *certificateBuilder) Organization(organization string) *certificat
 		return builder
 	}
 
-	temp := organization
-	builder.certificate.Organization = &temp
+	builder.certificate.Organization = &organization
 	return builder
 }
 
@@ -15409,8 +14795,7 @@ func (builder *certificateBuilder) Subject(subject string) *certificateBuilder {
 		return builder
 	}
 
-	temp := subject
-	builder.certificate.Subject = &temp
+	builder.certificate.Subject = &subject
 	return builder
 }
 
@@ -15444,8 +14829,7 @@ func (builder *clusterBuilder) BallooningEnabled(ballooningEnabled bool) *cluste
 		return builder
 	}
 
-	temp := ballooningEnabled
-	builder.cluster.BallooningEnabled = &temp
+	builder.cluster.BallooningEnabled = &ballooningEnabled
 	return builder
 }
 
@@ -15454,8 +14838,7 @@ func (builder *clusterBuilder) Comment(comment string) *clusterBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.cluster.Comment = &temp
+	builder.cluster.Comment = &comment
 	return builder
 }
 
@@ -15500,8 +14883,7 @@ func (builder *clusterBuilder) Description(description string) *clusterBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.cluster.Description = &temp
+	builder.cluster.Description = &description
 	return builder
 }
 
@@ -15546,8 +14928,7 @@ func (builder *clusterBuilder) GlusterService(glusterService bool) *clusterBuild
 		return builder
 	}
 
-	temp := glusterService
-	builder.cluster.GlusterService = &temp
+	builder.cluster.GlusterService = &glusterService
 	return builder
 }
 
@@ -15556,8 +14937,7 @@ func (builder *clusterBuilder) GlusterTunedProfile(glusterTunedProfile string) *
 		return builder
 	}
 
-	temp := glusterTunedProfile
-	builder.cluster.GlusterTunedProfile = &temp
+	builder.cluster.GlusterTunedProfile = &glusterTunedProfile
 	return builder
 }
 
@@ -15575,8 +14955,7 @@ func (builder *clusterBuilder) HaReservation(haReservation bool) *clusterBuilder
 		return builder
 	}
 
-	temp := haReservation
-	builder.cluster.HaReservation = &temp
+	builder.cluster.HaReservation = &haReservation
 	return builder
 }
 
@@ -15585,8 +14964,7 @@ func (builder *clusterBuilder) Id(id string) *clusterBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.cluster.Id = &temp
+	builder.cluster.Id = &id
 	return builder
 }
 
@@ -15613,8 +14991,7 @@ func (builder *clusterBuilder) MaintenanceReasonRequired(maintenanceReasonRequir
 		return builder
 	}
 
-	temp := maintenanceReasonRequired
-	builder.cluster.MaintenanceReasonRequired = &temp
+	builder.cluster.MaintenanceReasonRequired = &maintenanceReasonRequired
 	return builder
 }
 
@@ -15650,8 +15027,7 @@ func (builder *clusterBuilder) Name(name string) *clusterBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.cluster.Name = &temp
+	builder.cluster.Name = &name
 	return builder
 }
 
@@ -15678,8 +15054,7 @@ func (builder *clusterBuilder) OptionalReason(optionalReason bool) *clusterBuild
 		return builder
 	}
 
-	temp := optionalReason
-	builder.cluster.OptionalReason = &temp
+	builder.cluster.OptionalReason = &optionalReason
 	return builder
 }
 
@@ -15742,8 +15117,7 @@ func (builder *clusterBuilder) ThreadsAsCores(threadsAsCores bool) *clusterBuild
 		return builder
 	}
 
-	temp := threadsAsCores
-	builder.cluster.ThreadsAsCores = &temp
+	builder.cluster.ThreadsAsCores = &threadsAsCores
 	return builder
 }
 
@@ -15752,8 +15126,7 @@ func (builder *clusterBuilder) TrustedService(trustedService bool) *clusterBuild
 		return builder
 	}
 
-	temp := trustedService
-	builder.cluster.TrustedService = &temp
+	builder.cluster.TrustedService = &trustedService
 	return builder
 }
 
@@ -15762,8 +15135,7 @@ func (builder *clusterBuilder) TunnelMigration(tunnelMigration bool) *clusterBui
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.cluster.TunnelMigration = &temp
+	builder.cluster.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -15781,8 +15153,7 @@ func (builder *clusterBuilder) VirtService(virtService bool) *clusterBuilder {
 		return builder
 	}
 
-	temp := virtService
-	builder.cluster.VirtService = &temp
+	builder.cluster.VirtService = &virtService
 	return builder
 }
 
@@ -15807,8 +15178,7 @@ func (builder *clusterLevelBuilder) Comment(comment string) *clusterLevelBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.clusterLevel.Comment = &temp
+	builder.clusterLevel.Comment = &comment
 	return builder
 }
 
@@ -15826,8 +15196,7 @@ func (builder *clusterLevelBuilder) Description(description string) *clusterLeve
 		return builder
 	}
 
-	temp := description
-	builder.clusterLevel.Description = &temp
+	builder.clusterLevel.Description = &description
 	return builder
 }
 
@@ -15836,8 +15205,7 @@ func (builder *clusterLevelBuilder) Id(id string) *clusterLevelBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.clusterLevel.Id = &temp
+	builder.clusterLevel.Id = &id
 	return builder
 }
 
@@ -15846,8 +15214,7 @@ func (builder *clusterLevelBuilder) Name(name string) *clusterLevelBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.clusterLevel.Name = &temp
+	builder.clusterLevel.Name = &name
 	return builder
 }
 
@@ -15890,8 +15257,7 @@ func (builder *cpuProfileBuilder) Comment(comment string) *cpuProfileBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.cpuProfile.Comment = &temp
+	builder.cpuProfile.Comment = &comment
 	return builder
 }
 
@@ -15900,8 +15266,7 @@ func (builder *cpuProfileBuilder) Description(description string) *cpuProfileBui
 		return builder
 	}
 
-	temp := description
-	builder.cpuProfile.Description = &temp
+	builder.cpuProfile.Description = &description
 	return builder
 }
 
@@ -15910,8 +15275,7 @@ func (builder *cpuProfileBuilder) Id(id string) *cpuProfileBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.cpuProfile.Id = &temp
+	builder.cpuProfile.Id = &id
 	return builder
 }
 
@@ -15920,8 +15284,7 @@ func (builder *cpuProfileBuilder) Name(name string) *cpuProfileBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.cpuProfile.Name = &temp
+	builder.cpuProfile.Name = &name
 	return builder
 }
 
@@ -15973,8 +15336,7 @@ func (builder *dataCenterBuilder) Comment(comment string) *dataCenterBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.dataCenter.Comment = &temp
+	builder.dataCenter.Comment = &comment
 	return builder
 }
 
@@ -15983,8 +15345,7 @@ func (builder *dataCenterBuilder) Description(description string) *dataCenterBui
 		return builder
 	}
 
-	temp := description
-	builder.dataCenter.Description = &temp
+	builder.dataCenter.Description = &description
 	return builder
 }
 
@@ -15993,8 +15354,7 @@ func (builder *dataCenterBuilder) Id(id string) *dataCenterBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.dataCenter.Id = &temp
+	builder.dataCenter.Id = &id
 	return builder
 }
 
@@ -16012,8 +15372,7 @@ func (builder *dataCenterBuilder) Local(local bool) *dataCenterBuilder {
 		return builder
 	}
 
-	temp := local
-	builder.dataCenter.Local = &temp
+	builder.dataCenter.Local = &local
 	return builder
 }
 
@@ -16031,8 +15390,7 @@ func (builder *dataCenterBuilder) Name(name string) *dataCenterBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.dataCenter.Name = &temp
+	builder.dataCenter.Name = &name
 	return builder
 }
 
@@ -16147,8 +15505,7 @@ func (builder *deviceBuilder) Comment(comment string) *deviceBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.device.Comment = &temp
+	builder.device.Comment = &comment
 	return builder
 }
 
@@ -16157,8 +15514,7 @@ func (builder *deviceBuilder) Description(description string) *deviceBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.device.Description = &temp
+	builder.device.Description = &description
 	return builder
 }
 
@@ -16167,8 +15523,7 @@ func (builder *deviceBuilder) Id(id string) *deviceBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.device.Id = &temp
+	builder.device.Id = &id
 	return builder
 }
 
@@ -16186,8 +15541,7 @@ func (builder *deviceBuilder) Name(name string) *deviceBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.device.Name = &temp
+	builder.device.Name = &name
 	return builder
 }
 
@@ -16239,8 +15593,7 @@ func (builder *diskBuilder) Active(active bool) *diskBuilder {
 		return builder
 	}
 
-	temp := active
-	builder.disk.Active = &temp
+	builder.disk.Active = &active
 	return builder
 }
 
@@ -16249,8 +15602,7 @@ func (builder *diskBuilder) ActualSize(actualSize int64) *diskBuilder {
 		return builder
 	}
 
-	temp := actualSize
-	builder.disk.ActualSize = &temp
+	builder.disk.ActualSize = &actualSize
 	return builder
 }
 
@@ -16259,8 +15611,7 @@ func (builder *diskBuilder) Alias(alias string) *diskBuilder {
 		return builder
 	}
 
-	temp := alias
-	builder.disk.Alias = &temp
+	builder.disk.Alias = &alias
 	return builder
 }
 
@@ -16269,8 +15620,7 @@ func (builder *diskBuilder) Bootable(bootable bool) *diskBuilder {
 		return builder
 	}
 
-	temp := bootable
-	builder.disk.Bootable = &temp
+	builder.disk.Bootable = &bootable
 	return builder
 }
 
@@ -16279,8 +15629,7 @@ func (builder *diskBuilder) Comment(comment string) *diskBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.disk.Comment = &temp
+	builder.disk.Comment = &comment
 	return builder
 }
 
@@ -16289,8 +15638,7 @@ func (builder *diskBuilder) Description(description string) *diskBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.disk.Description = &temp
+	builder.disk.Description = &description
 	return builder
 }
 
@@ -16317,8 +15665,7 @@ func (builder *diskBuilder) Id(id string) *diskBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.disk.Id = &temp
+	builder.disk.Id = &id
 	return builder
 }
 
@@ -16327,8 +15674,7 @@ func (builder *diskBuilder) ImageId(imageId string) *diskBuilder {
 		return builder
 	}
 
-	temp := imageId
-	builder.disk.ImageId = &temp
+	builder.disk.ImageId = &imageId
 	return builder
 }
 
@@ -16337,8 +15683,7 @@ func (builder *diskBuilder) InitialSize(initialSize int64) *diskBuilder {
 		return builder
 	}
 
-	temp := initialSize
-	builder.disk.InitialSize = &temp
+	builder.disk.InitialSize = &initialSize
 	return builder
 }
 
@@ -16365,8 +15710,7 @@ func (builder *diskBuilder) LogicalName(logicalName string) *diskBuilder {
 		return builder
 	}
 
-	temp := logicalName
-	builder.disk.LogicalName = &temp
+	builder.disk.LogicalName = &logicalName
 	return builder
 }
 
@@ -16384,8 +15728,7 @@ func (builder *diskBuilder) Name(name string) *diskBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.disk.Name = &temp
+	builder.disk.Name = &name
 	return builder
 }
 
@@ -16412,8 +15755,7 @@ func (builder *diskBuilder) PropagateErrors(propagateErrors bool) *diskBuilder {
 		return builder
 	}
 
-	temp := propagateErrors
-	builder.disk.PropagateErrors = &temp
+	builder.disk.PropagateErrors = &propagateErrors
 	return builder
 }
 
@@ -16422,8 +15764,7 @@ func (builder *diskBuilder) ProvisionedSize(provisionedSize int64) *diskBuilder 
 		return builder
 	}
 
-	temp := provisionedSize
-	builder.disk.ProvisionedSize = &temp
+	builder.disk.ProvisionedSize = &provisionedSize
 	return builder
 }
 
@@ -16450,8 +15791,7 @@ func (builder *diskBuilder) ReadOnly(readOnly bool) *diskBuilder {
 		return builder
 	}
 
-	temp := readOnly
-	builder.disk.ReadOnly = &temp
+	builder.disk.ReadOnly = &readOnly
 	return builder
 }
 
@@ -16469,8 +15809,7 @@ func (builder *diskBuilder) Shareable(shareable bool) *diskBuilder {
 		return builder
 	}
 
-	temp := shareable
-	builder.disk.Shareable = &temp
+	builder.disk.Shareable = &shareable
 	return builder
 }
 
@@ -16488,8 +15827,7 @@ func (builder *diskBuilder) Sparse(sparse bool) *diskBuilder {
 		return builder
 	}
 
-	temp := sparse
-	builder.disk.Sparse = &temp
+	builder.disk.Sparse = &sparse
 	return builder
 }
 
@@ -16552,8 +15890,7 @@ func (builder *diskBuilder) UsesScsiReservation(usesScsiReservation bool) *diskB
 		return builder
 	}
 
-	temp := usesScsiReservation
-	builder.disk.UsesScsiReservation = &temp
+	builder.disk.UsesScsiReservation = &usesScsiReservation
 	return builder
 }
 
@@ -16580,8 +15917,7 @@ func (builder *diskBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskBuilder {
 		return builder
 	}
 
-	temp := wipeAfterDelete
-	builder.disk.WipeAfterDelete = &temp
+	builder.disk.WipeAfterDelete = &wipeAfterDelete
 	return builder
 }
 
@@ -16606,8 +15942,7 @@ func (builder *diskAttachmentBuilder) Active(active bool) *diskAttachmentBuilder
 		return builder
 	}
 
-	temp := active
-	builder.diskAttachment.Active = &temp
+	builder.diskAttachment.Active = &active
 	return builder
 }
 
@@ -16616,8 +15951,7 @@ func (builder *diskAttachmentBuilder) Bootable(bootable bool) *diskAttachmentBui
 		return builder
 	}
 
-	temp := bootable
-	builder.diskAttachment.Bootable = &temp
+	builder.diskAttachment.Bootable = &bootable
 	return builder
 }
 
@@ -16626,8 +15960,7 @@ func (builder *diskAttachmentBuilder) Comment(comment string) *diskAttachmentBui
 		return builder
 	}
 
-	temp := comment
-	builder.diskAttachment.Comment = &temp
+	builder.diskAttachment.Comment = &comment
 	return builder
 }
 
@@ -16636,8 +15969,7 @@ func (builder *diskAttachmentBuilder) Description(description string) *diskAttac
 		return builder
 	}
 
-	temp := description
-	builder.diskAttachment.Description = &temp
+	builder.diskAttachment.Description = &description
 	return builder
 }
 
@@ -16655,8 +15987,7 @@ func (builder *diskAttachmentBuilder) Id(id string) *diskAttachmentBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.diskAttachment.Id = &temp
+	builder.diskAttachment.Id = &id
 	return builder
 }
 
@@ -16674,8 +16005,7 @@ func (builder *diskAttachmentBuilder) LogicalName(logicalName string) *diskAttac
 		return builder
 	}
 
-	temp := logicalName
-	builder.diskAttachment.LogicalName = &temp
+	builder.diskAttachment.LogicalName = &logicalName
 	return builder
 }
 
@@ -16684,8 +16014,7 @@ func (builder *diskAttachmentBuilder) Name(name string) *diskAttachmentBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.diskAttachment.Name = &temp
+	builder.diskAttachment.Name = &name
 	return builder
 }
 
@@ -16694,8 +16023,7 @@ func (builder *diskAttachmentBuilder) PassDiscard(passDiscard bool) *diskAttachm
 		return builder
 	}
 
-	temp := passDiscard
-	builder.diskAttachment.PassDiscard = &temp
+	builder.diskAttachment.PassDiscard = &passDiscard
 	return builder
 }
 
@@ -16713,8 +16041,7 @@ func (builder *diskAttachmentBuilder) UsesScsiReservation(usesScsiReservation bo
 		return builder
 	}
 
-	temp := usesScsiReservation
-	builder.diskAttachment.UsesScsiReservation = &temp
+	builder.diskAttachment.UsesScsiReservation = &usesScsiReservation
 	return builder
 }
 
@@ -16748,8 +16075,7 @@ func (builder *diskProfileBuilder) Comment(comment string) *diskProfileBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.diskProfile.Comment = &temp
+	builder.diskProfile.Comment = &comment
 	return builder
 }
 
@@ -16758,8 +16084,7 @@ func (builder *diskProfileBuilder) Description(description string) *diskProfileB
 		return builder
 	}
 
-	temp := description
-	builder.diskProfile.Description = &temp
+	builder.diskProfile.Description = &description
 	return builder
 }
 
@@ -16768,8 +16093,7 @@ func (builder *diskProfileBuilder) Id(id string) *diskProfileBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.diskProfile.Id = &temp
+	builder.diskProfile.Id = &id
 	return builder
 }
 
@@ -16778,8 +16102,7 @@ func (builder *diskProfileBuilder) Name(name string) *diskProfileBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.diskProfile.Name = &temp
+	builder.diskProfile.Name = &name
 	return builder
 }
 
@@ -16831,8 +16154,7 @@ func (builder *diskSnapshotBuilder) Active(active bool) *diskSnapshotBuilder {
 		return builder
 	}
 
-	temp := active
-	builder.diskSnapshot.Active = &temp
+	builder.diskSnapshot.Active = &active
 	return builder
 }
 
@@ -16841,8 +16163,7 @@ func (builder *diskSnapshotBuilder) ActualSize(actualSize int64) *diskSnapshotBu
 		return builder
 	}
 
-	temp := actualSize
-	builder.diskSnapshot.ActualSize = &temp
+	builder.diskSnapshot.ActualSize = &actualSize
 	return builder
 }
 
@@ -16851,8 +16172,7 @@ func (builder *diskSnapshotBuilder) Alias(alias string) *diskSnapshotBuilder {
 		return builder
 	}
 
-	temp := alias
-	builder.diskSnapshot.Alias = &temp
+	builder.diskSnapshot.Alias = &alias
 	return builder
 }
 
@@ -16861,8 +16181,7 @@ func (builder *diskSnapshotBuilder) Bootable(bootable bool) *diskSnapshotBuilder
 		return builder
 	}
 
-	temp := bootable
-	builder.diskSnapshot.Bootable = &temp
+	builder.diskSnapshot.Bootable = &bootable
 	return builder
 }
 
@@ -16871,8 +16190,7 @@ func (builder *diskSnapshotBuilder) Comment(comment string) *diskSnapshotBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.diskSnapshot.Comment = &temp
+	builder.diskSnapshot.Comment = &comment
 	return builder
 }
 
@@ -16881,8 +16199,7 @@ func (builder *diskSnapshotBuilder) Description(description string) *diskSnapsho
 		return builder
 	}
 
-	temp := description
-	builder.diskSnapshot.Description = &temp
+	builder.diskSnapshot.Description = &description
 	return builder
 }
 
@@ -16918,8 +16235,7 @@ func (builder *diskSnapshotBuilder) Id(id string) *diskSnapshotBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.diskSnapshot.Id = &temp
+	builder.diskSnapshot.Id = &id
 	return builder
 }
 
@@ -16928,8 +16244,7 @@ func (builder *diskSnapshotBuilder) ImageId(imageId string) *diskSnapshotBuilder
 		return builder
 	}
 
-	temp := imageId
-	builder.diskSnapshot.ImageId = &temp
+	builder.diskSnapshot.ImageId = &imageId
 	return builder
 }
 
@@ -16938,8 +16253,7 @@ func (builder *diskSnapshotBuilder) InitialSize(initialSize int64) *diskSnapshot
 		return builder
 	}
 
-	temp := initialSize
-	builder.diskSnapshot.InitialSize = &temp
+	builder.diskSnapshot.InitialSize = &initialSize
 	return builder
 }
 
@@ -16966,8 +16280,7 @@ func (builder *diskSnapshotBuilder) LogicalName(logicalName string) *diskSnapsho
 		return builder
 	}
 
-	temp := logicalName
-	builder.diskSnapshot.LogicalName = &temp
+	builder.diskSnapshot.LogicalName = &logicalName
 	return builder
 }
 
@@ -16985,8 +16298,7 @@ func (builder *diskSnapshotBuilder) Name(name string) *diskSnapshotBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.diskSnapshot.Name = &temp
+	builder.diskSnapshot.Name = &name
 	return builder
 }
 
@@ -17013,8 +16325,7 @@ func (builder *diskSnapshotBuilder) PropagateErrors(propagateErrors bool) *diskS
 		return builder
 	}
 
-	temp := propagateErrors
-	builder.diskSnapshot.PropagateErrors = &temp
+	builder.diskSnapshot.PropagateErrors = &propagateErrors
 	return builder
 }
 
@@ -17023,8 +16334,7 @@ func (builder *diskSnapshotBuilder) ProvisionedSize(provisionedSize int64) *disk
 		return builder
 	}
 
-	temp := provisionedSize
-	builder.diskSnapshot.ProvisionedSize = &temp
+	builder.diskSnapshot.ProvisionedSize = &provisionedSize
 	return builder
 }
 
@@ -17051,8 +16361,7 @@ func (builder *diskSnapshotBuilder) ReadOnly(readOnly bool) *diskSnapshotBuilder
 		return builder
 	}
 
-	temp := readOnly
-	builder.diskSnapshot.ReadOnly = &temp
+	builder.diskSnapshot.ReadOnly = &readOnly
 	return builder
 }
 
@@ -17070,8 +16379,7 @@ func (builder *diskSnapshotBuilder) Shareable(shareable bool) *diskSnapshotBuild
 		return builder
 	}
 
-	temp := shareable
-	builder.diskSnapshot.Shareable = &temp
+	builder.diskSnapshot.Shareable = &shareable
 	return builder
 }
 
@@ -17089,8 +16397,7 @@ func (builder *diskSnapshotBuilder) Sparse(sparse bool) *diskSnapshotBuilder {
 		return builder
 	}
 
-	temp := sparse
-	builder.diskSnapshot.Sparse = &temp
+	builder.diskSnapshot.Sparse = &sparse
 	return builder
 }
 
@@ -17153,8 +16460,7 @@ func (builder *diskSnapshotBuilder) UsesScsiReservation(usesScsiReservation bool
 		return builder
 	}
 
-	temp := usesScsiReservation
-	builder.diskSnapshot.UsesScsiReservation = &temp
+	builder.diskSnapshot.UsesScsiReservation = &usesScsiReservation
 	return builder
 }
 
@@ -17181,8 +16487,7 @@ func (builder *diskSnapshotBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskS
 		return builder
 	}
 
-	temp := wipeAfterDelete
-	builder.diskSnapshot.WipeAfterDelete = &temp
+	builder.diskSnapshot.WipeAfterDelete = &wipeAfterDelete
 	return builder
 }
 
@@ -17207,8 +16512,7 @@ func (builder *domainBuilder) Comment(comment string) *domainBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.domain.Comment = &temp
+	builder.domain.Comment = &comment
 	return builder
 }
 
@@ -17217,8 +16521,7 @@ func (builder *domainBuilder) Description(description string) *domainBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.domain.Description = &temp
+	builder.domain.Description = &description
 	return builder
 }
 
@@ -17236,8 +16539,7 @@ func (builder *domainBuilder) Id(id string) *domainBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.domain.Id = &temp
+	builder.domain.Id = &id
 	return builder
 }
 
@@ -17246,8 +16548,7 @@ func (builder *domainBuilder) Name(name string) *domainBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.domain.Name = &temp
+	builder.domain.Name = &name
 	return builder
 }
 
@@ -17299,8 +16600,7 @@ func (builder *eventBuilder) Code(code int64) *eventBuilder {
 		return builder
 	}
 
-	temp := code
-	builder.event.Code = &temp
+	builder.event.Code = &code
 	return builder
 }
 
@@ -17309,8 +16609,7 @@ func (builder *eventBuilder) Comment(comment string) *eventBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.event.Comment = &temp
+	builder.event.Comment = &comment
 	return builder
 }
 
@@ -17319,8 +16618,7 @@ func (builder *eventBuilder) CorrelationId(correlationId string) *eventBuilder {
 		return builder
 	}
 
-	temp := correlationId
-	builder.event.CorrelationId = &temp
+	builder.event.CorrelationId = &correlationId
 	return builder
 }
 
@@ -17329,8 +16627,7 @@ func (builder *eventBuilder) CustomData(customData string) *eventBuilder {
 		return builder
 	}
 
-	temp := customData
-	builder.event.CustomData = &temp
+	builder.event.CustomData = &customData
 	return builder
 }
 
@@ -17339,8 +16636,7 @@ func (builder *eventBuilder) CustomId(customId int64) *eventBuilder {
 		return builder
 	}
 
-	temp := customId
-	builder.event.CustomId = &temp
+	builder.event.CustomId = &customId
 	return builder
 }
 
@@ -17358,8 +16654,7 @@ func (builder *eventBuilder) Description(description string) *eventBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.event.Description = &temp
+	builder.event.Description = &description
 	return builder
 }
 
@@ -17368,8 +16663,7 @@ func (builder *eventBuilder) FloodRate(floodRate int64) *eventBuilder {
 		return builder
 	}
 
-	temp := floodRate
-	builder.event.FloodRate = &temp
+	builder.event.FloodRate = &floodRate
 	return builder
 }
 
@@ -17387,8 +16681,7 @@ func (builder *eventBuilder) Id(id string) *eventBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.event.Id = &temp
+	builder.event.Id = &id
 	return builder
 }
 
@@ -17397,8 +16690,7 @@ func (builder *eventBuilder) Name(name string) *eventBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.event.Name = &temp
+	builder.event.Name = &name
 	return builder
 }
 
@@ -17407,8 +16699,7 @@ func (builder *eventBuilder) Origin(origin string) *eventBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.event.Origin = &temp
+	builder.event.Origin = &origin
 	return builder
 }
 
@@ -17487,8 +16778,7 @@ func (builder *externalComputeResourceBuilder) Comment(comment string) *external
 		return builder
 	}
 
-	temp := comment
-	builder.externalComputeResource.Comment = &temp
+	builder.externalComputeResource.Comment = &comment
 	return builder
 }
 
@@ -17497,8 +16787,7 @@ func (builder *externalComputeResourceBuilder) Description(description string) *
 		return builder
 	}
 
-	temp := description
-	builder.externalComputeResource.Description = &temp
+	builder.externalComputeResource.Description = &description
 	return builder
 }
 
@@ -17516,8 +16805,7 @@ func (builder *externalComputeResourceBuilder) Id(id string) *externalComputeRes
 		return builder
 	}
 
-	temp := id
-	builder.externalComputeResource.Id = &temp
+	builder.externalComputeResource.Id = &id
 	return builder
 }
 
@@ -17526,8 +16814,7 @@ func (builder *externalComputeResourceBuilder) Name(name string) *externalComput
 		return builder
 	}
 
-	temp := name
-	builder.externalComputeResource.Name = &temp
+	builder.externalComputeResource.Name = &name
 	return builder
 }
 
@@ -17536,8 +16823,7 @@ func (builder *externalComputeResourceBuilder) Provider(provider string) *extern
 		return builder
 	}
 
-	temp := provider
-	builder.externalComputeResource.Provider = &temp
+	builder.externalComputeResource.Provider = &provider
 	return builder
 }
 
@@ -17546,8 +16832,7 @@ func (builder *externalComputeResourceBuilder) Url(url string) *externalComputeR
 		return builder
 	}
 
-	temp := url
-	builder.externalComputeResource.Url = &temp
+	builder.externalComputeResource.Url = &url
 	return builder
 }
 
@@ -17556,8 +16841,7 @@ func (builder *externalComputeResourceBuilder) User(user string) *externalComput
 		return builder
 	}
 
-	temp := user
-	builder.externalComputeResource.User = &temp
+	builder.externalComputeResource.User = &user
 	return builder
 }
 
@@ -17582,8 +16866,7 @@ func (builder *externalDiscoveredHostBuilder) Comment(comment string) *externalD
 		return builder
 	}
 
-	temp := comment
-	builder.externalDiscoveredHost.Comment = &temp
+	builder.externalDiscoveredHost.Comment = &comment
 	return builder
 }
 
@@ -17592,8 +16875,7 @@ func (builder *externalDiscoveredHostBuilder) Description(description string) *e
 		return builder
 	}
 
-	temp := description
-	builder.externalDiscoveredHost.Description = &temp
+	builder.externalDiscoveredHost.Description = &description
 	return builder
 }
 
@@ -17611,8 +16893,7 @@ func (builder *externalDiscoveredHostBuilder) Id(id string) *externalDiscoveredH
 		return builder
 	}
 
-	temp := id
-	builder.externalDiscoveredHost.Id = &temp
+	builder.externalDiscoveredHost.Id = &id
 	return builder
 }
 
@@ -17621,8 +16902,7 @@ func (builder *externalDiscoveredHostBuilder) Ip(ip string) *externalDiscoveredH
 		return builder
 	}
 
-	temp := ip
-	builder.externalDiscoveredHost.Ip = &temp
+	builder.externalDiscoveredHost.Ip = &ip
 	return builder
 }
 
@@ -17631,8 +16911,7 @@ func (builder *externalDiscoveredHostBuilder) LastReport(lastReport string) *ext
 		return builder
 	}
 
-	temp := lastReport
-	builder.externalDiscoveredHost.LastReport = &temp
+	builder.externalDiscoveredHost.LastReport = &lastReport
 	return builder
 }
 
@@ -17641,8 +16920,7 @@ func (builder *externalDiscoveredHostBuilder) Mac(mac string) *externalDiscovere
 		return builder
 	}
 
-	temp := mac
-	builder.externalDiscoveredHost.Mac = &temp
+	builder.externalDiscoveredHost.Mac = &mac
 	return builder
 }
 
@@ -17651,8 +16929,7 @@ func (builder *externalDiscoveredHostBuilder) Name(name string) *externalDiscove
 		return builder
 	}
 
-	temp := name
-	builder.externalDiscoveredHost.Name = &temp
+	builder.externalDiscoveredHost.Name = &name
 	return builder
 }
 
@@ -17661,8 +16938,7 @@ func (builder *externalDiscoveredHostBuilder) SubnetName(subnetName string) *ext
 		return builder
 	}
 
-	temp := subnetName
-	builder.externalDiscoveredHost.SubnetName = &temp
+	builder.externalDiscoveredHost.SubnetName = &subnetName
 	return builder
 }
 
@@ -17687,8 +16963,7 @@ func (builder *externalHostBuilder) Address(address string) *externalHostBuilder
 		return builder
 	}
 
-	temp := address
-	builder.externalHost.Address = &temp
+	builder.externalHost.Address = &address
 	return builder
 }
 
@@ -17697,8 +16972,7 @@ func (builder *externalHostBuilder) Comment(comment string) *externalHostBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.externalHost.Comment = &temp
+	builder.externalHost.Comment = &comment
 	return builder
 }
 
@@ -17707,8 +16981,7 @@ func (builder *externalHostBuilder) Description(description string) *externalHos
 		return builder
 	}
 
-	temp := description
-	builder.externalHost.Description = &temp
+	builder.externalHost.Description = &description
 	return builder
 }
 
@@ -17726,8 +16999,7 @@ func (builder *externalHostBuilder) Id(id string) *externalHostBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.externalHost.Id = &temp
+	builder.externalHost.Id = &id
 	return builder
 }
 
@@ -17736,8 +17008,7 @@ func (builder *externalHostBuilder) Name(name string) *externalHostBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.externalHost.Name = &temp
+	builder.externalHost.Name = &name
 	return builder
 }
 
@@ -17762,8 +17033,7 @@ func (builder *externalHostGroupBuilder) ArchitectureName(architectureName strin
 		return builder
 	}
 
-	temp := architectureName
-	builder.externalHostGroup.ArchitectureName = &temp
+	builder.externalHostGroup.ArchitectureName = &architectureName
 	return builder
 }
 
@@ -17772,8 +17042,7 @@ func (builder *externalHostGroupBuilder) Comment(comment string) *externalHostGr
 		return builder
 	}
 
-	temp := comment
-	builder.externalHostGroup.Comment = &temp
+	builder.externalHostGroup.Comment = &comment
 	return builder
 }
 
@@ -17782,8 +17051,7 @@ func (builder *externalHostGroupBuilder) Description(description string) *extern
 		return builder
 	}
 
-	temp := description
-	builder.externalHostGroup.Description = &temp
+	builder.externalHostGroup.Description = &description
 	return builder
 }
 
@@ -17792,8 +17060,7 @@ func (builder *externalHostGroupBuilder) DomainName(domainName string) *external
 		return builder
 	}
 
-	temp := domainName
-	builder.externalHostGroup.DomainName = &temp
+	builder.externalHostGroup.DomainName = &domainName
 	return builder
 }
 
@@ -17811,8 +17078,7 @@ func (builder *externalHostGroupBuilder) Id(id string) *externalHostGroupBuilder
 		return builder
 	}
 
-	temp := id
-	builder.externalHostGroup.Id = &temp
+	builder.externalHostGroup.Id = &id
 	return builder
 }
 
@@ -17821,8 +17087,7 @@ func (builder *externalHostGroupBuilder) Name(name string) *externalHostGroupBui
 		return builder
 	}
 
-	temp := name
-	builder.externalHostGroup.Name = &temp
+	builder.externalHostGroup.Name = &name
 	return builder
 }
 
@@ -17831,8 +17096,7 @@ func (builder *externalHostGroupBuilder) OperatingSystemName(operatingSystemName
 		return builder
 	}
 
-	temp := operatingSystemName
-	builder.externalHostGroup.OperatingSystemName = &temp
+	builder.externalHostGroup.OperatingSystemName = &operatingSystemName
 	return builder
 }
 
@@ -17841,8 +17105,7 @@ func (builder *externalHostGroupBuilder) SubnetName(subnetName string) *external
 		return builder
 	}
 
-	temp := subnetName
-	builder.externalHostGroup.SubnetName = &temp
+	builder.externalHostGroup.SubnetName = &subnetName
 	return builder
 }
 
@@ -17867,8 +17130,7 @@ func (builder *externalProviderBuilder) AuthenticationUrl(authenticationUrl stri
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.externalProvider.AuthenticationUrl = &temp
+	builder.externalProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -17877,8 +17139,7 @@ func (builder *externalProviderBuilder) Comment(comment string) *externalProvide
 		return builder
 	}
 
-	temp := comment
-	builder.externalProvider.Comment = &temp
+	builder.externalProvider.Comment = &comment
 	return builder
 }
 
@@ -17887,8 +17148,7 @@ func (builder *externalProviderBuilder) Description(description string) *externa
 		return builder
 	}
 
-	temp := description
-	builder.externalProvider.Description = &temp
+	builder.externalProvider.Description = &description
 	return builder
 }
 
@@ -17897,8 +17157,7 @@ func (builder *externalProviderBuilder) Id(id string) *externalProviderBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.externalProvider.Id = &temp
+	builder.externalProvider.Id = &id
 	return builder
 }
 
@@ -17907,8 +17166,7 @@ func (builder *externalProviderBuilder) Name(name string) *externalProviderBuild
 		return builder
 	}
 
-	temp := name
-	builder.externalProvider.Name = &temp
+	builder.externalProvider.Name = &name
 	return builder
 }
 
@@ -17917,8 +17175,7 @@ func (builder *externalProviderBuilder) Password(password string) *externalProvi
 		return builder
 	}
 
-	temp := password
-	builder.externalProvider.Password = &temp
+	builder.externalProvider.Password = &password
 	return builder
 }
 
@@ -17936,8 +17193,7 @@ func (builder *externalProviderBuilder) RequiresAuthentication(requiresAuthentic
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.externalProvider.RequiresAuthentication = &temp
+	builder.externalProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -17946,8 +17202,7 @@ func (builder *externalProviderBuilder) Url(url string) *externalProviderBuilder
 		return builder
 	}
 
-	temp := url
-	builder.externalProvider.Url = &temp
+	builder.externalProvider.Url = &url
 	return builder
 }
 
@@ -17956,8 +17211,7 @@ func (builder *externalProviderBuilder) Username(username string) *externalProvi
 		return builder
 	}
 
-	temp := username
-	builder.externalProvider.Username = &temp
+	builder.externalProvider.Username = &username
 	return builder
 }
 
@@ -17982,8 +17236,7 @@ func (builder *fileBuilder) Comment(comment string) *fileBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.file.Comment = &temp
+	builder.file.Comment = &comment
 	return builder
 }
 
@@ -17992,8 +17245,7 @@ func (builder *fileBuilder) Content(content string) *fileBuilder {
 		return builder
 	}
 
-	temp := content
-	builder.file.Content = &temp
+	builder.file.Content = &content
 	return builder
 }
 
@@ -18002,8 +17254,7 @@ func (builder *fileBuilder) Description(description string) *fileBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.file.Description = &temp
+	builder.file.Description = &description
 	return builder
 }
 
@@ -18012,8 +17263,7 @@ func (builder *fileBuilder) Id(id string) *fileBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.file.Id = &temp
+	builder.file.Id = &id
 	return builder
 }
 
@@ -18022,8 +17272,7 @@ func (builder *fileBuilder) Name(name string) *fileBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.file.Name = &temp
+	builder.file.Name = &name
 	return builder
 }
 
@@ -18041,8 +17290,7 @@ func (builder *fileBuilder) Type(type_ string) *fileBuilder {
 		return builder
 	}
 
-	temp := type_
-	builder.file.Type = &temp
+	builder.file.Type = &type_
 	return builder
 }
 
@@ -18067,8 +17315,7 @@ func (builder *filterBuilder) Comment(comment string) *filterBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.filter.Comment = &temp
+	builder.filter.Comment = &comment
 	return builder
 }
 
@@ -18077,8 +17324,7 @@ func (builder *filterBuilder) Description(description string) *filterBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.filter.Description = &temp
+	builder.filter.Description = &description
 	return builder
 }
 
@@ -18087,8 +17333,7 @@ func (builder *filterBuilder) Id(id string) *filterBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.filter.Id = &temp
+	builder.filter.Id = &id
 	return builder
 }
 
@@ -18097,8 +17342,7 @@ func (builder *filterBuilder) Name(name string) *filterBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.filter.Name = &temp
+	builder.filter.Name = &name
 	return builder
 }
 
@@ -18107,8 +17351,7 @@ func (builder *filterBuilder) Position(position int64) *filterBuilder {
 		return builder
 	}
 
-	temp := position
-	builder.filter.Position = &temp
+	builder.filter.Position = &position
 	return builder
 }
 
@@ -18142,8 +17385,7 @@ func (builder *floppyBuilder) Comment(comment string) *floppyBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.floppy.Comment = &temp
+	builder.floppy.Comment = &comment
 	return builder
 }
 
@@ -18152,8 +17394,7 @@ func (builder *floppyBuilder) Description(description string) *floppyBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.floppy.Description = &temp
+	builder.floppy.Description = &description
 	return builder
 }
 
@@ -18171,8 +17412,7 @@ func (builder *floppyBuilder) Id(id string) *floppyBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.floppy.Id = &temp
+	builder.floppy.Id = &id
 	return builder
 }
 
@@ -18190,8 +17430,7 @@ func (builder *floppyBuilder) Name(name string) *floppyBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.floppy.Name = &temp
+	builder.floppy.Name = &name
 	return builder
 }
 
@@ -18243,8 +17482,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Comment(comment string) *glus
 		return builder
 	}
 
-	temp := comment
-	builder.glusterBrickAdvancedDetails.Comment = &temp
+	builder.glusterBrickAdvancedDetails.Comment = &comment
 	return builder
 }
 
@@ -18253,8 +17491,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Description(description strin
 		return builder
 	}
 
-	temp := description
-	builder.glusterBrickAdvancedDetails.Description = &temp
+	builder.glusterBrickAdvancedDetails.Description = &description
 	return builder
 }
 
@@ -18263,8 +17500,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Device(device string) *gluste
 		return builder
 	}
 
-	temp := device
-	builder.glusterBrickAdvancedDetails.Device = &temp
+	builder.glusterBrickAdvancedDetails.Device = &device
 	return builder
 }
 
@@ -18273,8 +17509,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) FsName(fsName string) *gluste
 		return builder
 	}
 
-	temp := fsName
-	builder.glusterBrickAdvancedDetails.FsName = &temp
+	builder.glusterBrickAdvancedDetails.FsName = &fsName
 	return builder
 }
 
@@ -18292,8 +17527,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Id(id string) *glusterBrickAd
 		return builder
 	}
 
-	temp := id
-	builder.glusterBrickAdvancedDetails.Id = &temp
+	builder.glusterBrickAdvancedDetails.Id = &id
 	return builder
 }
 
@@ -18320,8 +17554,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) MntOptions(mntOptions string)
 		return builder
 	}
 
-	temp := mntOptions
-	builder.glusterBrickAdvancedDetails.MntOptions = &temp
+	builder.glusterBrickAdvancedDetails.MntOptions = &mntOptions
 	return builder
 }
 
@@ -18330,8 +17563,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Name(name string) *glusterBri
 		return builder
 	}
 
-	temp := name
-	builder.glusterBrickAdvancedDetails.Name = &temp
+	builder.glusterBrickAdvancedDetails.Name = &name
 	return builder
 }
 
@@ -18340,8 +17572,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Pid(pid int64) *glusterBrickA
 		return builder
 	}
 
-	temp := pid
-	builder.glusterBrickAdvancedDetails.Pid = &temp
+	builder.glusterBrickAdvancedDetails.Pid = &pid
 	return builder
 }
 
@@ -18350,8 +17581,7 @@ func (builder *glusterBrickAdvancedDetailsBuilder) Port(port int64) *glusterBric
 		return builder
 	}
 
-	temp := port
-	builder.glusterBrickAdvancedDetails.Port = &temp
+	builder.glusterBrickAdvancedDetails.Port = &port
 	return builder
 }
 
@@ -18403,8 +17633,7 @@ func (builder *glusterHookBuilder) Checksum(checksum string) *glusterHookBuilder
 		return builder
 	}
 
-	temp := checksum
-	builder.glusterHook.Checksum = &temp
+	builder.glusterHook.Checksum = &checksum
 	return builder
 }
 
@@ -18422,8 +17651,7 @@ func (builder *glusterHookBuilder) Comment(comment string) *glusterHookBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.glusterHook.Comment = &temp
+	builder.glusterHook.Comment = &comment
 	return builder
 }
 
@@ -18432,8 +17660,7 @@ func (builder *glusterHookBuilder) ConflictStatus(conflictStatus int64) *gluster
 		return builder
 	}
 
-	temp := conflictStatus
-	builder.glusterHook.ConflictStatus = &temp
+	builder.glusterHook.ConflictStatus = &conflictStatus
 	return builder
 }
 
@@ -18442,8 +17669,7 @@ func (builder *glusterHookBuilder) Conflicts(conflicts string) *glusterHookBuild
 		return builder
 	}
 
-	temp := conflicts
-	builder.glusterHook.Conflicts = &temp
+	builder.glusterHook.Conflicts = &conflicts
 	return builder
 }
 
@@ -18452,8 +17678,7 @@ func (builder *glusterHookBuilder) Content(content string) *glusterHookBuilder {
 		return builder
 	}
 
-	temp := content
-	builder.glusterHook.Content = &temp
+	builder.glusterHook.Content = &content
 	return builder
 }
 
@@ -18471,8 +17696,7 @@ func (builder *glusterHookBuilder) Description(description string) *glusterHookB
 		return builder
 	}
 
-	temp := description
-	builder.glusterHook.Description = &temp
+	builder.glusterHook.Description = &description
 	return builder
 }
 
@@ -18481,8 +17705,7 @@ func (builder *glusterHookBuilder) GlusterCommand(glusterCommand string) *gluste
 		return builder
 	}
 
-	temp := glusterCommand
-	builder.glusterHook.GlusterCommand = &temp
+	builder.glusterHook.GlusterCommand = &glusterCommand
 	return builder
 }
 
@@ -18491,8 +17714,7 @@ func (builder *glusterHookBuilder) Id(id string) *glusterHookBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.glusterHook.Id = &temp
+	builder.glusterHook.Id = &id
 	return builder
 }
 
@@ -18501,8 +17723,7 @@ func (builder *glusterHookBuilder) Name(name string) *glusterHookBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.glusterHook.Name = &temp
+	builder.glusterHook.Name = &name
 	return builder
 }
 
@@ -18554,8 +17775,7 @@ func (builder *glusterMemoryPoolBuilder) AllocCount(allocCount int64) *glusterMe
 		return builder
 	}
 
-	temp := allocCount
-	builder.glusterMemoryPool.AllocCount = &temp
+	builder.glusterMemoryPool.AllocCount = &allocCount
 	return builder
 }
 
@@ -18564,8 +17784,7 @@ func (builder *glusterMemoryPoolBuilder) ColdCount(coldCount int64) *glusterMemo
 		return builder
 	}
 
-	temp := coldCount
-	builder.glusterMemoryPool.ColdCount = &temp
+	builder.glusterMemoryPool.ColdCount = &coldCount
 	return builder
 }
 
@@ -18574,8 +17793,7 @@ func (builder *glusterMemoryPoolBuilder) Comment(comment string) *glusterMemoryP
 		return builder
 	}
 
-	temp := comment
-	builder.glusterMemoryPool.Comment = &temp
+	builder.glusterMemoryPool.Comment = &comment
 	return builder
 }
 
@@ -18584,8 +17802,7 @@ func (builder *glusterMemoryPoolBuilder) Description(description string) *gluste
 		return builder
 	}
 
-	temp := description
-	builder.glusterMemoryPool.Description = &temp
+	builder.glusterMemoryPool.Description = &description
 	return builder
 }
 
@@ -18594,8 +17811,7 @@ func (builder *glusterMemoryPoolBuilder) HotCount(hotCount int64) *glusterMemory
 		return builder
 	}
 
-	temp := hotCount
-	builder.glusterMemoryPool.HotCount = &temp
+	builder.glusterMemoryPool.HotCount = &hotCount
 	return builder
 }
 
@@ -18604,8 +17820,7 @@ func (builder *glusterMemoryPoolBuilder) Id(id string) *glusterMemoryPoolBuilder
 		return builder
 	}
 
-	temp := id
-	builder.glusterMemoryPool.Id = &temp
+	builder.glusterMemoryPool.Id = &id
 	return builder
 }
 
@@ -18614,8 +17829,7 @@ func (builder *glusterMemoryPoolBuilder) MaxAlloc(maxAlloc int64) *glusterMemory
 		return builder
 	}
 
-	temp := maxAlloc
-	builder.glusterMemoryPool.MaxAlloc = &temp
+	builder.glusterMemoryPool.MaxAlloc = &maxAlloc
 	return builder
 }
 
@@ -18624,8 +17838,7 @@ func (builder *glusterMemoryPoolBuilder) MaxStdalloc(maxStdalloc int64) *gluster
 		return builder
 	}
 
-	temp := maxStdalloc
-	builder.glusterMemoryPool.MaxStdalloc = &temp
+	builder.glusterMemoryPool.MaxStdalloc = &maxStdalloc
 	return builder
 }
 
@@ -18634,8 +17847,7 @@ func (builder *glusterMemoryPoolBuilder) Name(name string) *glusterMemoryPoolBui
 		return builder
 	}
 
-	temp := name
-	builder.glusterMemoryPool.Name = &temp
+	builder.glusterMemoryPool.Name = &name
 	return builder
 }
 
@@ -18644,8 +17856,7 @@ func (builder *glusterMemoryPoolBuilder) PaddedSize(paddedSize int64) *glusterMe
 		return builder
 	}
 
-	temp := paddedSize
-	builder.glusterMemoryPool.PaddedSize = &temp
+	builder.glusterMemoryPool.PaddedSize = &paddedSize
 	return builder
 }
 
@@ -18654,8 +17865,7 @@ func (builder *glusterMemoryPoolBuilder) PoolMisses(poolMisses int64) *glusterMe
 		return builder
 	}
 
-	temp := poolMisses
-	builder.glusterMemoryPool.PoolMisses = &temp
+	builder.glusterMemoryPool.PoolMisses = &poolMisses
 	return builder
 }
 
@@ -18664,8 +17874,7 @@ func (builder *glusterMemoryPoolBuilder) Type(type_ string) *glusterMemoryPoolBu
 		return builder
 	}
 
-	temp := type_
-	builder.glusterMemoryPool.Type = &temp
+	builder.glusterMemoryPool.Type = &type_
 	return builder
 }
 
@@ -18690,8 +17899,7 @@ func (builder *glusterServerHookBuilder) Checksum(checksum string) *glusterServe
 		return builder
 	}
 
-	temp := checksum
-	builder.glusterServerHook.Checksum = &temp
+	builder.glusterServerHook.Checksum = &checksum
 	return builder
 }
 
@@ -18700,8 +17908,7 @@ func (builder *glusterServerHookBuilder) Comment(comment string) *glusterServerH
 		return builder
 	}
 
-	temp := comment
-	builder.glusterServerHook.Comment = &temp
+	builder.glusterServerHook.Comment = &comment
 	return builder
 }
 
@@ -18719,8 +17926,7 @@ func (builder *glusterServerHookBuilder) Description(description string) *gluste
 		return builder
 	}
 
-	temp := description
-	builder.glusterServerHook.Description = &temp
+	builder.glusterServerHook.Description = &description
 	return builder
 }
 
@@ -18738,8 +17944,7 @@ func (builder *glusterServerHookBuilder) Id(id string) *glusterServerHookBuilder
 		return builder
 	}
 
-	temp := id
-	builder.glusterServerHook.Id = &temp
+	builder.glusterServerHook.Id = &id
 	return builder
 }
 
@@ -18748,8 +17953,7 @@ func (builder *glusterServerHookBuilder) Name(name string) *glusterServerHookBui
 		return builder
 	}
 
-	temp := name
-	builder.glusterServerHook.Name = &temp
+	builder.glusterServerHook.Name = &name
 	return builder
 }
 
@@ -18801,8 +18005,7 @@ func (builder *glusterVolumeBuilder) Comment(comment string) *glusterVolumeBuild
 		return builder
 	}
 
-	temp := comment
-	builder.glusterVolume.Comment = &temp
+	builder.glusterVolume.Comment = &comment
 	return builder
 }
 
@@ -18811,8 +18014,7 @@ func (builder *glusterVolumeBuilder) Description(description string) *glusterVol
 		return builder
 	}
 
-	temp := description
-	builder.glusterVolume.Description = &temp
+	builder.glusterVolume.Description = &description
 	return builder
 }
 
@@ -18821,8 +18023,7 @@ func (builder *glusterVolumeBuilder) DisperseCount(disperseCount int64) *gluster
 		return builder
 	}
 
-	temp := disperseCount
-	builder.glusterVolume.DisperseCount = &temp
+	builder.glusterVolume.DisperseCount = &disperseCount
 	return builder
 }
 
@@ -18831,8 +18032,7 @@ func (builder *glusterVolumeBuilder) Id(id string) *glusterVolumeBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.glusterVolume.Id = &temp
+	builder.glusterVolume.Id = &id
 	return builder
 }
 
@@ -18841,8 +18041,7 @@ func (builder *glusterVolumeBuilder) Name(name string) *glusterVolumeBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.glusterVolume.Name = &temp
+	builder.glusterVolume.Name = &name
 	return builder
 }
 
@@ -18860,8 +18059,7 @@ func (builder *glusterVolumeBuilder) RedundancyCount(redundancyCount int64) *glu
 		return builder
 	}
 
-	temp := redundancyCount
-	builder.glusterVolume.RedundancyCount = &temp
+	builder.glusterVolume.RedundancyCount = &redundancyCount
 	return builder
 }
 
@@ -18870,8 +18068,7 @@ func (builder *glusterVolumeBuilder) ReplicaCount(replicaCount int64) *glusterVo
 		return builder
 	}
 
-	temp := replicaCount
-	builder.glusterVolume.ReplicaCount = &temp
+	builder.glusterVolume.ReplicaCount = &replicaCount
 	return builder
 }
 
@@ -18898,8 +18095,7 @@ func (builder *glusterVolumeBuilder) StripeCount(stripeCount int64) *glusterVolu
 		return builder
 	}
 
-	temp := stripeCount
-	builder.glusterVolume.StripeCount = &temp
+	builder.glusterVolume.StripeCount = &stripeCount
 	return builder
 }
 
@@ -18951,8 +18147,7 @@ func (builder *glusterVolumeProfileDetailsBuilder) Comment(comment string) *glus
 		return builder
 	}
 
-	temp := comment
-	builder.glusterVolumeProfileDetails.Comment = &temp
+	builder.glusterVolumeProfileDetails.Comment = &comment
 	return builder
 }
 
@@ -18961,8 +18156,7 @@ func (builder *glusterVolumeProfileDetailsBuilder) Description(description strin
 		return builder
 	}
 
-	temp := description
-	builder.glusterVolumeProfileDetails.Description = &temp
+	builder.glusterVolumeProfileDetails.Description = &description
 	return builder
 }
 
@@ -18971,8 +18165,7 @@ func (builder *glusterVolumeProfileDetailsBuilder) Id(id string) *glusterVolumeP
 		return builder
 	}
 
-	temp := id
-	builder.glusterVolumeProfileDetails.Id = &temp
+	builder.glusterVolumeProfileDetails.Id = &id
 	return builder
 }
 
@@ -18981,8 +18174,7 @@ func (builder *glusterVolumeProfileDetailsBuilder) Name(name string) *glusterVol
 		return builder
 	}
 
-	temp := name
-	builder.glusterVolumeProfileDetails.Name = &temp
+	builder.glusterVolumeProfileDetails.Name = &name
 	return builder
 }
 
@@ -19016,8 +18208,7 @@ func (builder *graphicsConsoleBuilder) Address(address string) *graphicsConsoleB
 		return builder
 	}
 
-	temp := address
-	builder.graphicsConsole.Address = &temp
+	builder.graphicsConsole.Address = &address
 	return builder
 }
 
@@ -19026,8 +18217,7 @@ func (builder *graphicsConsoleBuilder) Comment(comment string) *graphicsConsoleB
 		return builder
 	}
 
-	temp := comment
-	builder.graphicsConsole.Comment = &temp
+	builder.graphicsConsole.Comment = &comment
 	return builder
 }
 
@@ -19036,8 +18226,7 @@ func (builder *graphicsConsoleBuilder) Description(description string) *graphics
 		return builder
 	}
 
-	temp := description
-	builder.graphicsConsole.Description = &temp
+	builder.graphicsConsole.Description = &description
 	return builder
 }
 
@@ -19046,8 +18235,7 @@ func (builder *graphicsConsoleBuilder) Id(id string) *graphicsConsoleBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.graphicsConsole.Id = &temp
+	builder.graphicsConsole.Id = &id
 	return builder
 }
 
@@ -19065,8 +18253,7 @@ func (builder *graphicsConsoleBuilder) Name(name string) *graphicsConsoleBuilder
 		return builder
 	}
 
-	temp := name
-	builder.graphicsConsole.Name = &temp
+	builder.graphicsConsole.Name = &name
 	return builder
 }
 
@@ -19075,8 +18262,7 @@ func (builder *graphicsConsoleBuilder) Port(port int64) *graphicsConsoleBuilder 
 		return builder
 	}
 
-	temp := port
-	builder.graphicsConsole.Port = &temp
+	builder.graphicsConsole.Port = &port
 	return builder
 }
 
@@ -19103,8 +18289,7 @@ func (builder *graphicsConsoleBuilder) TlsPort(tlsPort int64) *graphicsConsoleBu
 		return builder
 	}
 
-	temp := tlsPort
-	builder.graphicsConsole.TlsPort = &temp
+	builder.graphicsConsole.TlsPort = &tlsPort
 	return builder
 }
 
@@ -19138,8 +18323,7 @@ func (builder *groupBuilder) Comment(comment string) *groupBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.group.Comment = &temp
+	builder.group.Comment = &comment
 	return builder
 }
 
@@ -19148,8 +18332,7 @@ func (builder *groupBuilder) Description(description string) *groupBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.group.Description = &temp
+	builder.group.Description = &description
 	return builder
 }
 
@@ -19167,8 +18350,7 @@ func (builder *groupBuilder) DomainEntryId(domainEntryId string) *groupBuilder {
 		return builder
 	}
 
-	temp := domainEntryId
-	builder.group.DomainEntryId = &temp
+	builder.group.DomainEntryId = &domainEntryId
 	return builder
 }
 
@@ -19177,8 +18359,7 @@ func (builder *groupBuilder) Id(id string) *groupBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.group.Id = &temp
+	builder.group.Id = &id
 	return builder
 }
 
@@ -19187,8 +18368,7 @@ func (builder *groupBuilder) Name(name string) *groupBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.group.Name = &temp
+	builder.group.Name = &name
 	return builder
 }
 
@@ -19197,8 +18377,7 @@ func (builder *groupBuilder) Namespace(namespace string) *groupBuilder {
 		return builder
 	}
 
-	temp := namespace
-	builder.group.Namespace = &temp
+	builder.group.Namespace = &namespace
 	return builder
 }
 
@@ -19250,8 +18429,7 @@ func (builder *hookBuilder) Comment(comment string) *hookBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.hook.Comment = &temp
+	builder.hook.Comment = &comment
 	return builder
 }
 
@@ -19260,8 +18438,7 @@ func (builder *hookBuilder) Description(description string) *hookBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.hook.Description = &temp
+	builder.hook.Description = &description
 	return builder
 }
 
@@ -19270,8 +18447,7 @@ func (builder *hookBuilder) EventName(eventName string) *hookBuilder {
 		return builder
 	}
 
-	temp := eventName
-	builder.hook.EventName = &temp
+	builder.hook.EventName = &eventName
 	return builder
 }
 
@@ -19289,8 +18465,7 @@ func (builder *hookBuilder) Id(id string) *hookBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.hook.Id = &temp
+	builder.hook.Id = &id
 	return builder
 }
 
@@ -19299,8 +18474,7 @@ func (builder *hookBuilder) Md5(md5 string) *hookBuilder {
 		return builder
 	}
 
-	temp := md5
-	builder.hook.Md5 = &temp
+	builder.hook.Md5 = &md5
 	return builder
 }
 
@@ -19309,8 +18483,7 @@ func (builder *hookBuilder) Name(name string) *hookBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.hook.Name = &temp
+	builder.hook.Name = &name
 	return builder
 }
 
@@ -19335,8 +18508,7 @@ func (builder *hostBuilder) Address(address string) *hostBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.host.Address = &temp
+	builder.host.Address = &address
 	return builder
 }
 
@@ -19390,8 +18562,7 @@ func (builder *hostBuilder) Comment(comment string) *hostBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.host.Comment = &temp
+	builder.host.Comment = &comment
 	return builder
 }
 
@@ -19409,8 +18580,7 @@ func (builder *hostBuilder) Description(description string) *hostBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.host.Description = &temp
+	builder.host.Description = &description
 	return builder
 }
 
@@ -19491,8 +18661,7 @@ func (builder *hostBuilder) Id(id string) *hostBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.host.Id = &temp
+	builder.host.Id = &id
 	return builder
 }
 
@@ -19546,8 +18715,7 @@ func (builder *hostBuilder) MaxSchedulingMemory(maxSchedulingMemory int64) *host
 		return builder
 	}
 
-	temp := maxSchedulingMemory
-	builder.host.MaxSchedulingMemory = &temp
+	builder.host.MaxSchedulingMemory = &maxSchedulingMemory
 	return builder
 }
 
@@ -19556,8 +18724,7 @@ func (builder *hostBuilder) Memory(memory int64) *hostBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.host.Memory = &temp
+	builder.host.Memory = &memory
 	return builder
 }
 
@@ -19566,8 +18733,7 @@ func (builder *hostBuilder) Name(name string) *hostBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.host.Name = &temp
+	builder.host.Name = &name
 	return builder
 }
 
@@ -19603,8 +18769,7 @@ func (builder *hostBuilder) NumaSupported(numaSupported bool) *hostBuilder {
 		return builder
 	}
 
-	temp := numaSupported
-	builder.host.NumaSupported = &temp
+	builder.host.NumaSupported = &numaSupported
 	return builder
 }
 
@@ -19622,8 +18787,7 @@ func (builder *hostBuilder) OverrideIptables(overrideIptables bool) *hostBuilder
 		return builder
 	}
 
-	temp := overrideIptables
-	builder.host.OverrideIptables = &temp
+	builder.host.OverrideIptables = &overrideIptables
 	return builder
 }
 
@@ -19641,8 +18805,7 @@ func (builder *hostBuilder) Port(port int64) *hostBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.host.Port = &temp
+	builder.host.Port = &port
 	return builder
 }
 
@@ -19669,8 +18832,7 @@ func (builder *hostBuilder) RootPassword(rootPassword string) *hostBuilder {
 		return builder
 	}
 
-	temp := rootPassword
-	builder.host.RootPassword = &temp
+	builder.host.RootPassword = &rootPassword
 	return builder
 }
 
@@ -19724,8 +18886,7 @@ func (builder *hostBuilder) StatusDetail(statusDetail string) *hostBuilder {
 		return builder
 	}
 
-	temp := statusDetail
-	builder.host.StatusDetail = &temp
+	builder.host.StatusDetail = &statusDetail
 	return builder
 }
 
@@ -19797,8 +18958,7 @@ func (builder *hostBuilder) UpdateAvailable(updateAvailable bool) *hostBuilder {
 		return builder
 	}
 
-	temp := updateAvailable
-	builder.host.UpdateAvailable = &temp
+	builder.host.UpdateAvailable = &updateAvailable
 	return builder
 }
 
@@ -19832,8 +18992,7 @@ func (builder *hostDeviceBuilder) Capability(capability string) *hostDeviceBuild
 		return builder
 	}
 
-	temp := capability
-	builder.hostDevice.Capability = &temp
+	builder.hostDevice.Capability = &capability
 	return builder
 }
 
@@ -19842,8 +19001,7 @@ func (builder *hostDeviceBuilder) Comment(comment string) *hostDeviceBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.hostDevice.Comment = &temp
+	builder.hostDevice.Comment = &comment
 	return builder
 }
 
@@ -19852,8 +19010,7 @@ func (builder *hostDeviceBuilder) Description(description string) *hostDeviceBui
 		return builder
 	}
 
-	temp := description
-	builder.hostDevice.Description = &temp
+	builder.hostDevice.Description = &description
 	return builder
 }
 
@@ -19871,8 +19028,7 @@ func (builder *hostDeviceBuilder) Id(id string) *hostDeviceBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.hostDevice.Id = &temp
+	builder.hostDevice.Id = &id
 	return builder
 }
 
@@ -19881,8 +19037,7 @@ func (builder *hostDeviceBuilder) IommuGroup(iommuGroup int64) *hostDeviceBuilde
 		return builder
 	}
 
-	temp := iommuGroup
-	builder.hostDevice.IommuGroup = &temp
+	builder.hostDevice.IommuGroup = &iommuGroup
 	return builder
 }
 
@@ -19891,8 +19046,7 @@ func (builder *hostDeviceBuilder) Name(name string) *hostDeviceBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.hostDevice.Name = &temp
+	builder.hostDevice.Name = &name
 	return builder
 }
 
@@ -19919,8 +19073,7 @@ func (builder *hostDeviceBuilder) Placeholder(placeholder bool) *hostDeviceBuild
 		return builder
 	}
 
-	temp := placeholder
-	builder.hostDevice.Placeholder = &temp
+	builder.hostDevice.Placeholder = &placeholder
 	return builder
 }
 
@@ -19947,8 +19100,7 @@ func (builder *hostDeviceBuilder) VirtualFunctions(virtualFunctions int64) *host
 		return builder
 	}
 
-	temp := virtualFunctions
-	builder.hostDevice.VirtualFunctions = &temp
+	builder.hostDevice.VirtualFunctions = &virtualFunctions
 	return builder
 }
 
@@ -19982,8 +19134,7 @@ func (builder *hostNicBuilder) AdAggregatorId(adAggregatorId int64) *hostNicBuil
 		return builder
 	}
 
-	temp := adAggregatorId
-	builder.hostNic.AdAggregatorId = &temp
+	builder.hostNic.AdAggregatorId = &adAggregatorId
 	return builder
 }
 
@@ -19992,8 +19143,7 @@ func (builder *hostNicBuilder) BaseInterface(baseInterface string) *hostNicBuild
 		return builder
 	}
 
-	temp := baseInterface
-	builder.hostNic.BaseInterface = &temp
+	builder.hostNic.BaseInterface = &baseInterface
 	return builder
 }
 
@@ -20020,8 +19170,7 @@ func (builder *hostNicBuilder) Bridged(bridged bool) *hostNicBuilder {
 		return builder
 	}
 
-	temp := bridged
-	builder.hostNic.Bridged = &temp
+	builder.hostNic.Bridged = &bridged
 	return builder
 }
 
@@ -20030,8 +19179,7 @@ func (builder *hostNicBuilder) CheckConnectivity(checkConnectivity bool) *hostNi
 		return builder
 	}
 
-	temp := checkConnectivity
-	builder.hostNic.CheckConnectivity = &temp
+	builder.hostNic.CheckConnectivity = &checkConnectivity
 	return builder
 }
 
@@ -20040,8 +19188,7 @@ func (builder *hostNicBuilder) Comment(comment string) *hostNicBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.hostNic.Comment = &temp
+	builder.hostNic.Comment = &comment
 	return builder
 }
 
@@ -20050,8 +19197,7 @@ func (builder *hostNicBuilder) CustomConfiguration(customConfiguration bool) *ho
 		return builder
 	}
 
-	temp := customConfiguration
-	builder.hostNic.CustomConfiguration = &temp
+	builder.hostNic.CustomConfiguration = &customConfiguration
 	return builder
 }
 
@@ -20060,8 +19206,7 @@ func (builder *hostNicBuilder) Description(description string) *hostNicBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.hostNic.Description = &temp
+	builder.hostNic.Description = &description
 	return builder
 }
 
@@ -20079,8 +19224,7 @@ func (builder *hostNicBuilder) Id(id string) *hostNicBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.hostNic.Id = &temp
+	builder.hostNic.Id = &id
 	return builder
 }
 
@@ -20125,8 +19269,7 @@ func (builder *hostNicBuilder) Mtu(mtu int64) *hostNicBuilder {
 		return builder
 	}
 
-	temp := mtu
-	builder.hostNic.Mtu = &temp
+	builder.hostNic.Mtu = &mtu
 	return builder
 }
 
@@ -20135,8 +19278,7 @@ func (builder *hostNicBuilder) Name(name string) *hostNicBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.hostNic.Name = &temp
+	builder.hostNic.Name = &name
 	return builder
 }
 
@@ -20163,8 +19305,7 @@ func (builder *hostNicBuilder) OverrideConfiguration(overrideConfiguration bool)
 		return builder
 	}
 
-	temp := overrideConfiguration
-	builder.hostNic.OverrideConfiguration = &temp
+	builder.hostNic.OverrideConfiguration = &overrideConfiguration
 	return builder
 }
 
@@ -20200,8 +19341,7 @@ func (builder *hostNicBuilder) Speed(speed int64) *hostNicBuilder {
 		return builder
 	}
 
-	temp := speed
-	builder.hostNic.Speed = &temp
+	builder.hostNic.Speed = &speed
 	return builder
 }
 
@@ -20262,8 +19402,7 @@ func (builder *hostStorageBuilder) Address(address string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := address
-	builder.hostStorage.Address = &temp
+	builder.hostStorage.Address = &address
 	return builder
 }
 
@@ -20272,8 +19411,7 @@ func (builder *hostStorageBuilder) Comment(comment string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.hostStorage.Comment = &temp
+	builder.hostStorage.Comment = &comment
 	return builder
 }
 
@@ -20282,8 +19420,7 @@ func (builder *hostStorageBuilder) Description(description string) *hostStorageB
 		return builder
 	}
 
-	temp := description
-	builder.hostStorage.Description = &temp
+	builder.hostStorage.Description = &description
 	return builder
 }
 
@@ -20301,8 +19438,7 @@ func (builder *hostStorageBuilder) Id(id string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.hostStorage.Id = &temp
+	builder.hostStorage.Id = &id
 	return builder
 }
 
@@ -20320,8 +19456,7 @@ func (builder *hostStorageBuilder) MountOptions(mountOptions string) *hostStorag
 		return builder
 	}
 
-	temp := mountOptions
-	builder.hostStorage.MountOptions = &temp
+	builder.hostStorage.MountOptions = &mountOptions
 	return builder
 }
 
@@ -20330,8 +19465,7 @@ func (builder *hostStorageBuilder) Name(name string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.hostStorage.Name = &temp
+	builder.hostStorage.Name = &name
 	return builder
 }
 
@@ -20340,8 +19474,7 @@ func (builder *hostStorageBuilder) NfsRetrans(nfsRetrans int64) *hostStorageBuil
 		return builder
 	}
 
-	temp := nfsRetrans
-	builder.hostStorage.NfsRetrans = &temp
+	builder.hostStorage.NfsRetrans = &nfsRetrans
 	return builder
 }
 
@@ -20350,8 +19483,7 @@ func (builder *hostStorageBuilder) NfsTimeo(nfsTimeo int64) *hostStorageBuilder 
 		return builder
 	}
 
-	temp := nfsTimeo
-	builder.hostStorage.NfsTimeo = &temp
+	builder.hostStorage.NfsTimeo = &nfsTimeo
 	return builder
 }
 
@@ -20369,8 +19501,7 @@ func (builder *hostStorageBuilder) OverrideLuns(overrideLuns bool) *hostStorageB
 		return builder
 	}
 
-	temp := overrideLuns
-	builder.hostStorage.OverrideLuns = &temp
+	builder.hostStorage.OverrideLuns = &overrideLuns
 	return builder
 }
 
@@ -20379,8 +19510,7 @@ func (builder *hostStorageBuilder) Password(password string) *hostStorageBuilder
 		return builder
 	}
 
-	temp := password
-	builder.hostStorage.Password = &temp
+	builder.hostStorage.Password = &password
 	return builder
 }
 
@@ -20389,8 +19519,7 @@ func (builder *hostStorageBuilder) Path(path string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := path
-	builder.hostStorage.Path = &temp
+	builder.hostStorage.Path = &path
 	return builder
 }
 
@@ -20399,8 +19528,7 @@ func (builder *hostStorageBuilder) Port(port int64) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.hostStorage.Port = &temp
+	builder.hostStorage.Port = &port
 	return builder
 }
 
@@ -20409,8 +19537,7 @@ func (builder *hostStorageBuilder) Portal(portal string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := portal
-	builder.hostStorage.Portal = &temp
+	builder.hostStorage.Portal = &portal
 	return builder
 }
 
@@ -20419,8 +19546,7 @@ func (builder *hostStorageBuilder) Target(target string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := target
-	builder.hostStorage.Target = &temp
+	builder.hostStorage.Target = &target
 	return builder
 }
 
@@ -20438,8 +19564,7 @@ func (builder *hostStorageBuilder) Username(username string) *hostStorageBuilder
 		return builder
 	}
 
-	temp := username
-	builder.hostStorage.Username = &temp
+	builder.hostStorage.Username = &username
 	return builder
 }
 
@@ -20448,8 +19573,7 @@ func (builder *hostStorageBuilder) VfsType(vfsType string) *hostStorageBuilder {
 		return builder
 	}
 
-	temp := vfsType
-	builder.hostStorage.VfsType = &temp
+	builder.hostStorage.VfsType = &vfsType
 	return builder
 }
 
@@ -20483,8 +19607,7 @@ func (builder *iconBuilder) Comment(comment string) *iconBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.icon.Comment = &temp
+	builder.icon.Comment = &comment
 	return builder
 }
 
@@ -20493,8 +19616,7 @@ func (builder *iconBuilder) Data(data string) *iconBuilder {
 		return builder
 	}
 
-	temp := data
-	builder.icon.Data = &temp
+	builder.icon.Data = &data
 	return builder
 }
 
@@ -20503,8 +19625,7 @@ func (builder *iconBuilder) Description(description string) *iconBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.icon.Description = &temp
+	builder.icon.Description = &description
 	return builder
 }
 
@@ -20513,8 +19634,7 @@ func (builder *iconBuilder) Id(id string) *iconBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.icon.Id = &temp
+	builder.icon.Id = &id
 	return builder
 }
 
@@ -20523,8 +19643,7 @@ func (builder *iconBuilder) MediaType(mediaType string) *iconBuilder {
 		return builder
 	}
 
-	temp := mediaType
-	builder.icon.MediaType = &temp
+	builder.icon.MediaType = &mediaType
 	return builder
 }
 
@@ -20533,8 +19652,7 @@ func (builder *iconBuilder) Name(name string) *iconBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.icon.Name = &temp
+	builder.icon.Name = &name
 	return builder
 }
 
@@ -20568,8 +19686,7 @@ func (builder *nicBuilder) Comment(comment string) *nicBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.nic.Comment = &temp
+	builder.nic.Comment = &comment
 	return builder
 }
 
@@ -20578,8 +19695,7 @@ func (builder *nicBuilder) Description(description string) *nicBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.nic.Description = &temp
+	builder.nic.Description = &description
 	return builder
 }
 
@@ -20588,8 +19704,7 @@ func (builder *nicBuilder) Id(id string) *nicBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.nic.Id = &temp
+	builder.nic.Id = &id
 	return builder
 }
 
@@ -20616,8 +19731,7 @@ func (builder *nicBuilder) Linked(linked bool) *nicBuilder {
 		return builder
 	}
 
-	temp := linked
-	builder.nic.Linked = &temp
+	builder.nic.Linked = &linked
 	return builder
 }
 
@@ -20635,8 +19749,7 @@ func (builder *nicBuilder) Name(name string) *nicBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.nic.Name = &temp
+	builder.nic.Name = &name
 	return builder
 }
 
@@ -20681,8 +19794,7 @@ func (builder *nicBuilder) OnBoot(onBoot bool) *nicBuilder {
 		return builder
 	}
 
-	temp := onBoot
-	builder.nic.OnBoot = &temp
+	builder.nic.OnBoot = &onBoot
 	return builder
 }
 
@@ -20691,8 +19803,7 @@ func (builder *nicBuilder) Plugged(plugged bool) *nicBuilder {
 		return builder
 	}
 
-	temp := plugged
-	builder.nic.Plugged = &temp
+	builder.nic.Plugged = &plugged
 	return builder
 }
 
@@ -20789,8 +19900,7 @@ func (builder *openStackProviderBuilder) AuthenticationUrl(authenticationUrl str
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.openStackProvider.AuthenticationUrl = &temp
+	builder.openStackProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -20799,8 +19909,7 @@ func (builder *openStackProviderBuilder) Comment(comment string) *openStackProvi
 		return builder
 	}
 
-	temp := comment
-	builder.openStackProvider.Comment = &temp
+	builder.openStackProvider.Comment = &comment
 	return builder
 }
 
@@ -20809,8 +19918,7 @@ func (builder *openStackProviderBuilder) Description(description string) *openSt
 		return builder
 	}
 
-	temp := description
-	builder.openStackProvider.Description = &temp
+	builder.openStackProvider.Description = &description
 	return builder
 }
 
@@ -20819,8 +19927,7 @@ func (builder *openStackProviderBuilder) Id(id string) *openStackProviderBuilder
 		return builder
 	}
 
-	temp := id
-	builder.openStackProvider.Id = &temp
+	builder.openStackProvider.Id = &id
 	return builder
 }
 
@@ -20829,8 +19936,7 @@ func (builder *openStackProviderBuilder) Name(name string) *openStackProviderBui
 		return builder
 	}
 
-	temp := name
-	builder.openStackProvider.Name = &temp
+	builder.openStackProvider.Name = &name
 	return builder
 }
 
@@ -20839,8 +19945,7 @@ func (builder *openStackProviderBuilder) Password(password string) *openStackPro
 		return builder
 	}
 
-	temp := password
-	builder.openStackProvider.Password = &temp
+	builder.openStackProvider.Password = &password
 	return builder
 }
 
@@ -20858,8 +19963,7 @@ func (builder *openStackProviderBuilder) RequiresAuthentication(requiresAuthenti
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.openStackProvider.RequiresAuthentication = &temp
+	builder.openStackProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -20868,8 +19972,7 @@ func (builder *openStackProviderBuilder) TenantName(tenantName string) *openStac
 		return builder
 	}
 
-	temp := tenantName
-	builder.openStackProvider.TenantName = &temp
+	builder.openStackProvider.TenantName = &tenantName
 	return builder
 }
 
@@ -20878,8 +19981,7 @@ func (builder *openStackProviderBuilder) Url(url string) *openStackProviderBuild
 		return builder
 	}
 
-	temp := url
-	builder.openStackProvider.Url = &temp
+	builder.openStackProvider.Url = &url
 	return builder
 }
 
@@ -20888,8 +19990,7 @@ func (builder *openStackProviderBuilder) Username(username string) *openStackPro
 		return builder
 	}
 
-	temp := username
-	builder.openStackProvider.Username = &temp
+	builder.openStackProvider.Username = &username
 	return builder
 }
 
@@ -20923,8 +20024,7 @@ func (builder *openStackVolumeProviderBuilder) AuthenticationUrl(authenticationU
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.openStackVolumeProvider.AuthenticationUrl = &temp
+	builder.openStackVolumeProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -20942,8 +20042,7 @@ func (builder *openStackVolumeProviderBuilder) Comment(comment string) *openStac
 		return builder
 	}
 
-	temp := comment
-	builder.openStackVolumeProvider.Comment = &temp
+	builder.openStackVolumeProvider.Comment = &comment
 	return builder
 }
 
@@ -20961,8 +20060,7 @@ func (builder *openStackVolumeProviderBuilder) Description(description string) *
 		return builder
 	}
 
-	temp := description
-	builder.openStackVolumeProvider.Description = &temp
+	builder.openStackVolumeProvider.Description = &description
 	return builder
 }
 
@@ -20971,8 +20069,7 @@ func (builder *openStackVolumeProviderBuilder) Id(id string) *openStackVolumePro
 		return builder
 	}
 
-	temp := id
-	builder.openStackVolumeProvider.Id = &temp
+	builder.openStackVolumeProvider.Id = &id
 	return builder
 }
 
@@ -20981,8 +20078,7 @@ func (builder *openStackVolumeProviderBuilder) Name(name string) *openStackVolum
 		return builder
 	}
 
-	temp := name
-	builder.openStackVolumeProvider.Name = &temp
+	builder.openStackVolumeProvider.Name = &name
 	return builder
 }
 
@@ -20991,8 +20087,7 @@ func (builder *openStackVolumeProviderBuilder) Password(password string) *openSt
 		return builder
 	}
 
-	temp := password
-	builder.openStackVolumeProvider.Password = &temp
+	builder.openStackVolumeProvider.Password = &password
 	return builder
 }
 
@@ -21010,8 +20105,7 @@ func (builder *openStackVolumeProviderBuilder) RequiresAuthentication(requiresAu
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.openStackVolumeProvider.RequiresAuthentication = &temp
+	builder.openStackVolumeProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -21020,8 +20114,7 @@ func (builder *openStackVolumeProviderBuilder) TenantName(tenantName string) *op
 		return builder
 	}
 
-	temp := tenantName
-	builder.openStackVolumeProvider.TenantName = &temp
+	builder.openStackVolumeProvider.TenantName = &tenantName
 	return builder
 }
 
@@ -21030,8 +20123,7 @@ func (builder *openStackVolumeProviderBuilder) Url(url string) *openStackVolumeP
 		return builder
 	}
 
-	temp := url
-	builder.openStackVolumeProvider.Url = &temp
+	builder.openStackVolumeProvider.Url = &url
 	return builder
 }
 
@@ -21040,8 +20132,7 @@ func (builder *openStackVolumeProviderBuilder) Username(username string) *openSt
 		return builder
 	}
 
-	temp := username
-	builder.openStackVolumeProvider.Username = &temp
+	builder.openStackVolumeProvider.Username = &username
 	return builder
 }
 
@@ -21102,8 +20193,7 @@ func (builder *templateBuilder) Comment(comment string) *templateBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.template.Comment = &temp
+	builder.template.Comment = &comment
 	return builder
 }
 
@@ -21139,8 +20229,7 @@ func (builder *templateBuilder) CpuShares(cpuShares int64) *templateBuilder {
 		return builder
 	}
 
-	temp := cpuShares
-	builder.template.CpuShares = &temp
+	builder.template.CpuShares = &cpuShares
 	return builder
 }
 
@@ -21167,8 +20256,7 @@ func (builder *templateBuilder) CustomCpuModel(customCpuModel string) *templateB
 		return builder
 	}
 
-	temp := customCpuModel
-	builder.template.CustomCpuModel = &temp
+	builder.template.CustomCpuModel = &customCpuModel
 	return builder
 }
 
@@ -21177,8 +20265,7 @@ func (builder *templateBuilder) CustomEmulatedMachine(customEmulatedMachine stri
 		return builder
 	}
 
-	temp := customEmulatedMachine
-	builder.template.CustomEmulatedMachine = &temp
+	builder.template.CustomEmulatedMachine = &customEmulatedMachine
 	return builder
 }
 
@@ -21196,8 +20283,7 @@ func (builder *templateBuilder) DeleteProtected(deleteProtected bool) *templateB
 		return builder
 	}
 
-	temp := deleteProtected
-	builder.template.DeleteProtected = &temp
+	builder.template.DeleteProtected = &deleteProtected
 	return builder
 }
 
@@ -21206,8 +20292,7 @@ func (builder *templateBuilder) Description(description string) *templateBuilder
 		return builder
 	}
 
-	temp := description
-	builder.template.Description = &temp
+	builder.template.Description = &description
 	return builder
 }
 
@@ -21261,8 +20346,7 @@ func (builder *templateBuilder) Id(id string) *templateBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.template.Id = &temp
+	builder.template.Id = &id
 	return builder
 }
 
@@ -21307,8 +20391,7 @@ func (builder *templateBuilder) Memory(memory int64) *templateBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.template.Memory = &temp
+	builder.template.Memory = &memory
 	return builder
 }
 
@@ -21335,8 +20418,7 @@ func (builder *templateBuilder) MigrationDowntime(migrationDowntime int64) *temp
 		return builder
 	}
 
-	temp := migrationDowntime
-	builder.template.MigrationDowntime = &temp
+	builder.template.MigrationDowntime = &migrationDowntime
 	return builder
 }
 
@@ -21345,8 +20427,7 @@ func (builder *templateBuilder) Name(name string) *templateBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.template.Name = &temp
+	builder.template.Name = &name
 	return builder
 }
 
@@ -21364,8 +20445,7 @@ func (builder *templateBuilder) Origin(origin string) *templateBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.template.Origin = &temp
+	builder.template.Origin = &origin
 	return builder
 }
 
@@ -21428,8 +20508,7 @@ func (builder *templateBuilder) SoundcardEnabled(soundcardEnabled bool) *templat
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.template.SoundcardEnabled = &temp
+	builder.template.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -21447,8 +20526,7 @@ func (builder *templateBuilder) StartPaused(startPaused bool) *templateBuilder {
 		return builder
 	}
 
-	temp := startPaused
-	builder.template.StartPaused = &temp
+	builder.template.StartPaused = &startPaused
 	return builder
 }
 
@@ -21457,8 +20535,7 @@ func (builder *templateBuilder) Stateless(stateless bool) *templateBuilder {
 		return builder
 	}
 
-	temp := stateless
-	builder.template.Stateless = &temp
+	builder.template.Stateless = &stateless
 	return builder
 }
 
@@ -21503,8 +20580,7 @@ func (builder *templateBuilder) TunnelMigration(tunnelMigration bool) *templateB
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.template.TunnelMigration = &temp
+	builder.template.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -21628,8 +20704,7 @@ func (builder *vmBuilder) Comment(comment string) *vmBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.vm.Comment = &temp
+	builder.vm.Comment = &comment
 	return builder
 }
 
@@ -21665,8 +20740,7 @@ func (builder *vmBuilder) CpuShares(cpuShares int64) *vmBuilder {
 		return builder
 	}
 
-	temp := cpuShares
-	builder.vm.CpuShares = &temp
+	builder.vm.CpuShares = &cpuShares
 	return builder
 }
 
@@ -21693,8 +20767,7 @@ func (builder *vmBuilder) CustomCpuModel(customCpuModel string) *vmBuilder {
 		return builder
 	}
 
-	temp := customCpuModel
-	builder.vm.CustomCpuModel = &temp
+	builder.vm.CustomCpuModel = &customCpuModel
 	return builder
 }
 
@@ -21703,8 +20776,7 @@ func (builder *vmBuilder) CustomEmulatedMachine(customEmulatedMachine string) *v
 		return builder
 	}
 
-	temp := customEmulatedMachine
-	builder.vm.CustomEmulatedMachine = &temp
+	builder.vm.CustomEmulatedMachine = &customEmulatedMachine
 	return builder
 }
 
@@ -21722,8 +20794,7 @@ func (builder *vmBuilder) DeleteProtected(deleteProtected bool) *vmBuilder {
 		return builder
 	}
 
-	temp := deleteProtected
-	builder.vm.DeleteProtected = &temp
+	builder.vm.DeleteProtected = &deleteProtected
 	return builder
 }
 
@@ -21732,8 +20803,7 @@ func (builder *vmBuilder) Description(description string) *vmBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.vm.Description = &temp
+	builder.vm.Description = &description
 	return builder
 }
 
@@ -21787,8 +20857,7 @@ func (builder *vmBuilder) Fqdn(fqdn string) *vmBuilder {
 		return builder
 	}
 
-	temp := fqdn
-	builder.vm.Fqdn = &temp
+	builder.vm.Fqdn = &fqdn
 	return builder
 }
 
@@ -21851,8 +20920,7 @@ func (builder *vmBuilder) Id(id string) *vmBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.vm.Id = &temp
+	builder.vm.Id = &id
 	return builder
 }
 
@@ -21915,8 +20983,7 @@ func (builder *vmBuilder) Memory(memory int64) *vmBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.vm.Memory = &temp
+	builder.vm.Memory = &memory
 	return builder
 }
 
@@ -21943,8 +21010,7 @@ func (builder *vmBuilder) MigrationDowntime(migrationDowntime int64) *vmBuilder 
 		return builder
 	}
 
-	temp := migrationDowntime
-	builder.vm.MigrationDowntime = &temp
+	builder.vm.MigrationDowntime = &migrationDowntime
 	return builder
 }
 
@@ -21953,8 +21019,7 @@ func (builder *vmBuilder) Name(name string) *vmBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.vm.Name = &temp
+	builder.vm.Name = &name
 	return builder
 }
 
@@ -21963,8 +21028,7 @@ func (builder *vmBuilder) NextRunConfigurationExists(nextRunConfigurationExists 
 		return builder
 	}
 
-	temp := nextRunConfigurationExists
-	builder.vm.NextRunConfigurationExists = &temp
+	builder.vm.NextRunConfigurationExists = &nextRunConfigurationExists
 	return builder
 }
 
@@ -22000,8 +21064,7 @@ func (builder *vmBuilder) Origin(origin string) *vmBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.vm.Origin = &temp
+	builder.vm.Origin = &origin
 	return builder
 }
 
@@ -22082,8 +21145,7 @@ func (builder *vmBuilder) RunOnce(runOnce bool) *vmBuilder {
 		return builder
 	}
 
-	temp := runOnce
-	builder.vm.RunOnce = &temp
+	builder.vm.RunOnce = &runOnce
 	return builder
 }
 
@@ -22128,8 +21190,7 @@ func (builder *vmBuilder) SoundcardEnabled(soundcardEnabled bool) *vmBuilder {
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.vm.SoundcardEnabled = &temp
+	builder.vm.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -22147,8 +21208,7 @@ func (builder *vmBuilder) StartPaused(startPaused bool) *vmBuilder {
 		return builder
 	}
 
-	temp := startPaused
-	builder.vm.StartPaused = &temp
+	builder.vm.StartPaused = &startPaused
 	return builder
 }
 
@@ -22166,8 +21226,7 @@ func (builder *vmBuilder) Stateless(stateless bool) *vmBuilder {
 		return builder
 	}
 
-	temp := stateless
-	builder.vm.Stateless = &temp
+	builder.vm.Stateless = &stateless
 	return builder
 }
 
@@ -22194,8 +21253,7 @@ func (builder *vmBuilder) StatusDetail(statusDetail string) *vmBuilder {
 		return builder
 	}
 
-	temp := statusDetail
-	builder.vm.StatusDetail = &temp
+	builder.vm.StatusDetail = &statusDetail
 	return builder
 }
 
@@ -22204,8 +21262,7 @@ func (builder *vmBuilder) StopReason(stopReason string) *vmBuilder {
 		return builder
 	}
 
-	temp := stopReason
-	builder.vm.StopReason = &temp
+	builder.vm.StopReason = &stopReason
 	return builder
 }
 
@@ -22259,8 +21316,7 @@ func (builder *vmBuilder) TunnelMigration(tunnelMigration bool) *vmBuilder {
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.vm.TunnelMigration = &temp
+	builder.vm.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -22287,8 +21343,7 @@ func (builder *vmBuilder) UseLatestTemplateVersion(useLatestTemplateVersion bool
 		return builder
 	}
 
-	temp := useLatestTemplateVersion
-	builder.vm.UseLatestTemplateVersion = &temp
+	builder.vm.UseLatestTemplateVersion = &useLatestTemplateVersion
 	return builder
 }
 
@@ -22349,8 +21404,7 @@ func (builder *watchdogBuilder) Comment(comment string) *watchdogBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.watchdog.Comment = &temp
+	builder.watchdog.Comment = &comment
 	return builder
 }
 
@@ -22359,8 +21413,7 @@ func (builder *watchdogBuilder) Description(description string) *watchdogBuilder
 		return builder
 	}
 
-	temp := description
-	builder.watchdog.Description = &temp
+	builder.watchdog.Description = &description
 	return builder
 }
 
@@ -22369,8 +21422,7 @@ func (builder *watchdogBuilder) Id(id string) *watchdogBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.watchdog.Id = &temp
+	builder.watchdog.Id = &id
 	return builder
 }
 
@@ -22397,8 +21449,7 @@ func (builder *watchdogBuilder) Name(name string) *watchdogBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.watchdog.Name = &temp
+	builder.watchdog.Name = &name
 	return builder
 }
 
@@ -22450,8 +21501,7 @@ func (builder *cdromBuilder) Comment(comment string) *cdromBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.cdrom.Comment = &temp
+	builder.cdrom.Comment = &comment
 	return builder
 }
 
@@ -22460,8 +21510,7 @@ func (builder *cdromBuilder) Description(description string) *cdromBuilder {
 		return builder
 	}
 
-	temp := description
-	builder.cdrom.Description = &temp
+	builder.cdrom.Description = &description
 	return builder
 }
 
@@ -22479,8 +21528,7 @@ func (builder *cdromBuilder) Id(id string) *cdromBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.cdrom.Id = &temp
+	builder.cdrom.Id = &id
 	return builder
 }
 
@@ -22498,8 +21546,7 @@ func (builder *cdromBuilder) Name(name string) *cdromBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.cdrom.Name = &temp
+	builder.cdrom.Name = &name
 	return builder
 }
 
@@ -22551,8 +21598,7 @@ func (builder *externalHostProviderBuilder) AuthenticationUrl(authenticationUrl 
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.externalHostProvider.AuthenticationUrl = &temp
+	builder.externalHostProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -22570,8 +21616,7 @@ func (builder *externalHostProviderBuilder) Comment(comment string) *externalHos
 		return builder
 	}
 
-	temp := comment
-	builder.externalHostProvider.Comment = &temp
+	builder.externalHostProvider.Comment = &comment
 	return builder
 }
 
@@ -22589,8 +21634,7 @@ func (builder *externalHostProviderBuilder) Description(description string) *ext
 		return builder
 	}
 
-	temp := description
-	builder.externalHostProvider.Description = &temp
+	builder.externalHostProvider.Description = &description
 	return builder
 }
 
@@ -22626,8 +21670,7 @@ func (builder *externalHostProviderBuilder) Id(id string) *externalHostProviderB
 		return builder
 	}
 
-	temp := id
-	builder.externalHostProvider.Id = &temp
+	builder.externalHostProvider.Id = &id
 	return builder
 }
 
@@ -22636,8 +21679,7 @@ func (builder *externalHostProviderBuilder) Name(name string) *externalHostProvi
 		return builder
 	}
 
-	temp := name
-	builder.externalHostProvider.Name = &temp
+	builder.externalHostProvider.Name = &name
 	return builder
 }
 
@@ -22646,8 +21688,7 @@ func (builder *externalHostProviderBuilder) Password(password string) *externalH
 		return builder
 	}
 
-	temp := password
-	builder.externalHostProvider.Password = &temp
+	builder.externalHostProvider.Password = &password
 	return builder
 }
 
@@ -22665,8 +21706,7 @@ func (builder *externalHostProviderBuilder) RequiresAuthentication(requiresAuthe
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.externalHostProvider.RequiresAuthentication = &temp
+	builder.externalHostProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -22675,8 +21715,7 @@ func (builder *externalHostProviderBuilder) Url(url string) *externalHostProvide
 		return builder
 	}
 
-	temp := url
-	builder.externalHostProvider.Url = &temp
+	builder.externalHostProvider.Url = &url
 	return builder
 }
 
@@ -22685,8 +21724,7 @@ func (builder *externalHostProviderBuilder) Username(username string) *externalH
 		return builder
 	}
 
-	temp := username
-	builder.externalHostProvider.Username = &temp
+	builder.externalHostProvider.Username = &username
 	return builder
 }
 
@@ -22711,8 +21749,7 @@ func (builder *glusterBrickBuilder) BrickDir(brickDir string) *glusterBrickBuild
 		return builder
 	}
 
-	temp := brickDir
-	builder.glusterBrick.BrickDir = &temp
+	builder.glusterBrick.BrickDir = &brickDir
 	return builder
 }
 
@@ -22721,8 +21758,7 @@ func (builder *glusterBrickBuilder) Comment(comment string) *glusterBrickBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.glusterBrick.Comment = &temp
+	builder.glusterBrick.Comment = &comment
 	return builder
 }
 
@@ -22731,8 +21767,7 @@ func (builder *glusterBrickBuilder) Description(description string) *glusterBric
 		return builder
 	}
 
-	temp := description
-	builder.glusterBrick.Description = &temp
+	builder.glusterBrick.Description = &description
 	return builder
 }
 
@@ -22741,8 +21776,7 @@ func (builder *glusterBrickBuilder) Device(device string) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := device
-	builder.glusterBrick.Device = &temp
+	builder.glusterBrick.Device = &device
 	return builder
 }
 
@@ -22751,8 +21785,7 @@ func (builder *glusterBrickBuilder) FsName(fsName string) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := fsName
-	builder.glusterBrick.FsName = &temp
+	builder.glusterBrick.FsName = &fsName
 	return builder
 }
 
@@ -22779,8 +21812,7 @@ func (builder *glusterBrickBuilder) Id(id string) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.glusterBrick.Id = &temp
+	builder.glusterBrick.Id = &id
 	return builder
 }
 
@@ -22807,8 +21839,7 @@ func (builder *glusterBrickBuilder) MntOptions(mntOptions string) *glusterBrickB
 		return builder
 	}
 
-	temp := mntOptions
-	builder.glusterBrick.MntOptions = &temp
+	builder.glusterBrick.MntOptions = &mntOptions
 	return builder
 }
 
@@ -22817,8 +21848,7 @@ func (builder *glusterBrickBuilder) Name(name string) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.glusterBrick.Name = &temp
+	builder.glusterBrick.Name = &name
 	return builder
 }
 
@@ -22827,8 +21857,7 @@ func (builder *glusterBrickBuilder) Pid(pid int64) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := pid
-	builder.glusterBrick.Pid = &temp
+	builder.glusterBrick.Pid = &pid
 	return builder
 }
 
@@ -22837,8 +21866,7 @@ func (builder *glusterBrickBuilder) Port(port int64) *glusterBrickBuilder {
 		return builder
 	}
 
-	temp := port
-	builder.glusterBrick.Port = &temp
+	builder.glusterBrick.Port = &port
 	return builder
 }
 
@@ -22847,8 +21875,7 @@ func (builder *glusterBrickBuilder) ServerId(serverId string) *glusterBrickBuild
 		return builder
 	}
 
-	temp := serverId
-	builder.glusterBrick.ServerId = &temp
+	builder.glusterBrick.ServerId = &serverId
 	return builder
 }
 
@@ -22945,8 +21972,7 @@ func (builder *instanceTypeBuilder) Comment(comment string) *instanceTypeBuilder
 		return builder
 	}
 
-	temp := comment
-	builder.instanceType.Comment = &temp
+	builder.instanceType.Comment = &comment
 	return builder
 }
 
@@ -22982,8 +22008,7 @@ func (builder *instanceTypeBuilder) CpuShares(cpuShares int64) *instanceTypeBuil
 		return builder
 	}
 
-	temp := cpuShares
-	builder.instanceType.CpuShares = &temp
+	builder.instanceType.CpuShares = &cpuShares
 	return builder
 }
 
@@ -23010,8 +22035,7 @@ func (builder *instanceTypeBuilder) CustomCpuModel(customCpuModel string) *insta
 		return builder
 	}
 
-	temp := customCpuModel
-	builder.instanceType.CustomCpuModel = &temp
+	builder.instanceType.CustomCpuModel = &customCpuModel
 	return builder
 }
 
@@ -23020,8 +22044,7 @@ func (builder *instanceTypeBuilder) CustomEmulatedMachine(customEmulatedMachine 
 		return builder
 	}
 
-	temp := customEmulatedMachine
-	builder.instanceType.CustomEmulatedMachine = &temp
+	builder.instanceType.CustomEmulatedMachine = &customEmulatedMachine
 	return builder
 }
 
@@ -23039,8 +22062,7 @@ func (builder *instanceTypeBuilder) DeleteProtected(deleteProtected bool) *insta
 		return builder
 	}
 
-	temp := deleteProtected
-	builder.instanceType.DeleteProtected = &temp
+	builder.instanceType.DeleteProtected = &deleteProtected
 	return builder
 }
 
@@ -23049,8 +22071,7 @@ func (builder *instanceTypeBuilder) Description(description string) *instanceTyp
 		return builder
 	}
 
-	temp := description
-	builder.instanceType.Description = &temp
+	builder.instanceType.Description = &description
 	return builder
 }
 
@@ -23104,8 +22125,7 @@ func (builder *instanceTypeBuilder) Id(id string) *instanceTypeBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.instanceType.Id = &temp
+	builder.instanceType.Id = &id
 	return builder
 }
 
@@ -23150,8 +22170,7 @@ func (builder *instanceTypeBuilder) Memory(memory int64) *instanceTypeBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.instanceType.Memory = &temp
+	builder.instanceType.Memory = &memory
 	return builder
 }
 
@@ -23178,8 +22197,7 @@ func (builder *instanceTypeBuilder) MigrationDowntime(migrationDowntime int64) *
 		return builder
 	}
 
-	temp := migrationDowntime
-	builder.instanceType.MigrationDowntime = &temp
+	builder.instanceType.MigrationDowntime = &migrationDowntime
 	return builder
 }
 
@@ -23188,8 +22206,7 @@ func (builder *instanceTypeBuilder) Name(name string) *instanceTypeBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.instanceType.Name = &temp
+	builder.instanceType.Name = &name
 	return builder
 }
 
@@ -23207,8 +22224,7 @@ func (builder *instanceTypeBuilder) Origin(origin string) *instanceTypeBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.instanceType.Origin = &temp
+	builder.instanceType.Origin = &origin
 	return builder
 }
 
@@ -23271,8 +22287,7 @@ func (builder *instanceTypeBuilder) SoundcardEnabled(soundcardEnabled bool) *ins
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.instanceType.SoundcardEnabled = &temp
+	builder.instanceType.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -23290,8 +22305,7 @@ func (builder *instanceTypeBuilder) StartPaused(startPaused bool) *instanceTypeB
 		return builder
 	}
 
-	temp := startPaused
-	builder.instanceType.StartPaused = &temp
+	builder.instanceType.StartPaused = &startPaused
 	return builder
 }
 
@@ -23300,8 +22314,7 @@ func (builder *instanceTypeBuilder) Stateless(stateless bool) *instanceTypeBuild
 		return builder
 	}
 
-	temp := stateless
-	builder.instanceType.Stateless = &temp
+	builder.instanceType.Stateless = &stateless
 	return builder
 }
 
@@ -23346,8 +22359,7 @@ func (builder *instanceTypeBuilder) TunnelMigration(tunnelMigration bool) *insta
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.instanceType.TunnelMigration = &temp
+	builder.instanceType.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -23426,8 +22438,7 @@ func (builder *openStackImageProviderBuilder) AuthenticationUrl(authenticationUr
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.openStackImageProvider.AuthenticationUrl = &temp
+	builder.openStackImageProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -23445,8 +22456,7 @@ func (builder *openStackImageProviderBuilder) Comment(comment string) *openStack
 		return builder
 	}
 
-	temp := comment
-	builder.openStackImageProvider.Comment = &temp
+	builder.openStackImageProvider.Comment = &comment
 	return builder
 }
 
@@ -23455,8 +22465,7 @@ func (builder *openStackImageProviderBuilder) Description(description string) *o
 		return builder
 	}
 
-	temp := description
-	builder.openStackImageProvider.Description = &temp
+	builder.openStackImageProvider.Description = &description
 	return builder
 }
 
@@ -23465,8 +22474,7 @@ func (builder *openStackImageProviderBuilder) Id(id string) *openStackImageProvi
 		return builder
 	}
 
-	temp := id
-	builder.openStackImageProvider.Id = &temp
+	builder.openStackImageProvider.Id = &id
 	return builder
 }
 
@@ -23484,8 +22492,7 @@ func (builder *openStackImageProviderBuilder) Name(name string) *openStackImageP
 		return builder
 	}
 
-	temp := name
-	builder.openStackImageProvider.Name = &temp
+	builder.openStackImageProvider.Name = &name
 	return builder
 }
 
@@ -23494,8 +22501,7 @@ func (builder *openStackImageProviderBuilder) Password(password string) *openSta
 		return builder
 	}
 
-	temp := password
-	builder.openStackImageProvider.Password = &temp
+	builder.openStackImageProvider.Password = &password
 	return builder
 }
 
@@ -23513,8 +22519,7 @@ func (builder *openStackImageProviderBuilder) RequiresAuthentication(requiresAut
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.openStackImageProvider.RequiresAuthentication = &temp
+	builder.openStackImageProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -23523,8 +22528,7 @@ func (builder *openStackImageProviderBuilder) TenantName(tenantName string) *ope
 		return builder
 	}
 
-	temp := tenantName
-	builder.openStackImageProvider.TenantName = &temp
+	builder.openStackImageProvider.TenantName = &tenantName
 	return builder
 }
 
@@ -23533,8 +22537,7 @@ func (builder *openStackImageProviderBuilder) Url(url string) *openStackImagePro
 		return builder
 	}
 
-	temp := url
-	builder.openStackImageProvider.Url = &temp
+	builder.openStackImageProvider.Url = &url
 	return builder
 }
 
@@ -23543,8 +22546,7 @@ func (builder *openStackImageProviderBuilder) Username(username string) *openSta
 		return builder
 	}
 
-	temp := username
-	builder.openStackImageProvider.Username = &temp
+	builder.openStackImageProvider.Username = &username
 	return builder
 }
 
@@ -23578,8 +22580,7 @@ func (builder *openStackNetworkProviderBuilder) AuthenticationUrl(authentication
 		return builder
 	}
 
-	temp := authenticationUrl
-	builder.openStackNetworkProvider.AuthenticationUrl = &temp
+	builder.openStackNetworkProvider.AuthenticationUrl = &authenticationUrl
 	return builder
 }
 
@@ -23597,8 +22598,7 @@ func (builder *openStackNetworkProviderBuilder) Comment(comment string) *openSta
 		return builder
 	}
 
-	temp := comment
-	builder.openStackNetworkProvider.Comment = &temp
+	builder.openStackNetworkProvider.Comment = &comment
 	return builder
 }
 
@@ -23607,8 +22607,7 @@ func (builder *openStackNetworkProviderBuilder) Description(description string) 
 		return builder
 	}
 
-	temp := description
-	builder.openStackNetworkProvider.Description = &temp
+	builder.openStackNetworkProvider.Description = &description
 	return builder
 }
 
@@ -23617,8 +22616,7 @@ func (builder *openStackNetworkProviderBuilder) Id(id string) *openStackNetworkP
 		return builder
 	}
 
-	temp := id
-	builder.openStackNetworkProvider.Id = &temp
+	builder.openStackNetworkProvider.Id = &id
 	return builder
 }
 
@@ -23627,8 +22625,7 @@ func (builder *openStackNetworkProviderBuilder) Name(name string) *openStackNetw
 		return builder
 	}
 
-	temp := name
-	builder.openStackNetworkProvider.Name = &temp
+	builder.openStackNetworkProvider.Name = &name
 	return builder
 }
 
@@ -23646,8 +22643,7 @@ func (builder *openStackNetworkProviderBuilder) Password(password string) *openS
 		return builder
 	}
 
-	temp := password
-	builder.openStackNetworkProvider.Password = &temp
+	builder.openStackNetworkProvider.Password = &password
 	return builder
 }
 
@@ -23674,8 +22670,7 @@ func (builder *openStackNetworkProviderBuilder) ReadOnly(readOnly bool) *openSta
 		return builder
 	}
 
-	temp := readOnly
-	builder.openStackNetworkProvider.ReadOnly = &temp
+	builder.openStackNetworkProvider.ReadOnly = &readOnly
 	return builder
 }
 
@@ -23684,8 +22679,7 @@ func (builder *openStackNetworkProviderBuilder) RequiresAuthentication(requiresA
 		return builder
 	}
 
-	temp := requiresAuthentication
-	builder.openStackNetworkProvider.RequiresAuthentication = &temp
+	builder.openStackNetworkProvider.RequiresAuthentication = &requiresAuthentication
 	return builder
 }
 
@@ -23703,8 +22697,7 @@ func (builder *openStackNetworkProviderBuilder) TenantName(tenantName string) *o
 		return builder
 	}
 
-	temp := tenantName
-	builder.openStackNetworkProvider.TenantName = &temp
+	builder.openStackNetworkProvider.TenantName = &tenantName
 	return builder
 }
 
@@ -23722,8 +22715,7 @@ func (builder *openStackNetworkProviderBuilder) Url(url string) *openStackNetwor
 		return builder
 	}
 
-	temp := url
-	builder.openStackNetworkProvider.Url = &temp
+	builder.openStackNetworkProvider.Url = &url
 	return builder
 }
 
@@ -23732,8 +22724,7 @@ func (builder *openStackNetworkProviderBuilder) Username(username string) *openS
 		return builder
 	}
 
-	temp := username
-	builder.openStackNetworkProvider.Username = &temp
+	builder.openStackNetworkProvider.Username = &username
 	return builder
 }
 
@@ -23803,8 +22794,7 @@ func (builder *snapshotBuilder) Comment(comment string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := comment
-	builder.snapshot.Comment = &temp
+	builder.snapshot.Comment = &comment
 	return builder
 }
 
@@ -23840,8 +22830,7 @@ func (builder *snapshotBuilder) CpuShares(cpuShares int64) *snapshotBuilder {
 		return builder
 	}
 
-	temp := cpuShares
-	builder.snapshot.CpuShares = &temp
+	builder.snapshot.CpuShares = &cpuShares
 	return builder
 }
 
@@ -23868,8 +22857,7 @@ func (builder *snapshotBuilder) CustomCpuModel(customCpuModel string) *snapshotB
 		return builder
 	}
 
-	temp := customCpuModel
-	builder.snapshot.CustomCpuModel = &temp
+	builder.snapshot.CustomCpuModel = &customCpuModel
 	return builder
 }
 
@@ -23878,8 +22866,7 @@ func (builder *snapshotBuilder) CustomEmulatedMachine(customEmulatedMachine stri
 		return builder
 	}
 
-	temp := customEmulatedMachine
-	builder.snapshot.CustomEmulatedMachine = &temp
+	builder.snapshot.CustomEmulatedMachine = &customEmulatedMachine
 	return builder
 }
 
@@ -23906,8 +22893,7 @@ func (builder *snapshotBuilder) DeleteProtected(deleteProtected bool) *snapshotB
 		return builder
 	}
 
-	temp := deleteProtected
-	builder.snapshot.DeleteProtected = &temp
+	builder.snapshot.DeleteProtected = &deleteProtected
 	return builder
 }
 
@@ -23916,8 +22902,7 @@ func (builder *snapshotBuilder) Description(description string) *snapshotBuilder
 		return builder
 	}
 
-	temp := description
-	builder.snapshot.Description = &temp
+	builder.snapshot.Description = &description
 	return builder
 }
 
@@ -23971,8 +22956,7 @@ func (builder *snapshotBuilder) Fqdn(fqdn string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := fqdn
-	builder.snapshot.Fqdn = &temp
+	builder.snapshot.Fqdn = &fqdn
 	return builder
 }
 
@@ -24035,8 +23019,7 @@ func (builder *snapshotBuilder) Id(id string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := id
-	builder.snapshot.Id = &temp
+	builder.snapshot.Id = &id
 	return builder
 }
 
@@ -24099,8 +23082,7 @@ func (builder *snapshotBuilder) Memory(memory int64) *snapshotBuilder {
 		return builder
 	}
 
-	temp := memory
-	builder.snapshot.Memory = &temp
+	builder.snapshot.Memory = &memory
 	return builder
 }
 
@@ -24127,8 +23109,7 @@ func (builder *snapshotBuilder) MigrationDowntime(migrationDowntime int64) *snap
 		return builder
 	}
 
-	temp := migrationDowntime
-	builder.snapshot.MigrationDowntime = &temp
+	builder.snapshot.MigrationDowntime = &migrationDowntime
 	return builder
 }
 
@@ -24137,8 +23118,7 @@ func (builder *snapshotBuilder) Name(name string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := name
-	builder.snapshot.Name = &temp
+	builder.snapshot.Name = &name
 	return builder
 }
 
@@ -24147,8 +23127,7 @@ func (builder *snapshotBuilder) NextRunConfigurationExists(nextRunConfigurationE
 		return builder
 	}
 
-	temp := nextRunConfigurationExists
-	builder.snapshot.NextRunConfigurationExists = &temp
+	builder.snapshot.NextRunConfigurationExists = &nextRunConfigurationExists
 	return builder
 }
 
@@ -24184,8 +23163,7 @@ func (builder *snapshotBuilder) Origin(origin string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := origin
-	builder.snapshot.Origin = &temp
+	builder.snapshot.Origin = &origin
 	return builder
 }
 
@@ -24230,8 +23208,7 @@ func (builder *snapshotBuilder) PersistMemorystate(persistMemorystate bool) *sna
 		return builder
 	}
 
-	temp := persistMemorystate
-	builder.snapshot.PersistMemorystate = &temp
+	builder.snapshot.PersistMemorystate = &persistMemorystate
 	return builder
 }
 
@@ -24276,8 +23253,7 @@ func (builder *snapshotBuilder) RunOnce(runOnce bool) *snapshotBuilder {
 		return builder
 	}
 
-	temp := runOnce
-	builder.snapshot.RunOnce = &temp
+	builder.snapshot.RunOnce = &runOnce
 	return builder
 }
 
@@ -24340,8 +23316,7 @@ func (builder *snapshotBuilder) SoundcardEnabled(soundcardEnabled bool) *snapsho
 		return builder
 	}
 
-	temp := soundcardEnabled
-	builder.snapshot.SoundcardEnabled = &temp
+	builder.snapshot.SoundcardEnabled = &soundcardEnabled
 	return builder
 }
 
@@ -24359,8 +23334,7 @@ func (builder *snapshotBuilder) StartPaused(startPaused bool) *snapshotBuilder {
 		return builder
 	}
 
-	temp := startPaused
-	builder.snapshot.StartPaused = &temp
+	builder.snapshot.StartPaused = &startPaused
 	return builder
 }
 
@@ -24378,8 +23352,7 @@ func (builder *snapshotBuilder) Stateless(stateless bool) *snapshotBuilder {
 		return builder
 	}
 
-	temp := stateless
-	builder.snapshot.Stateless = &temp
+	builder.snapshot.Stateless = &stateless
 	return builder
 }
 
@@ -24406,8 +23379,7 @@ func (builder *snapshotBuilder) StatusDetail(statusDetail string) *snapshotBuild
 		return builder
 	}
 
-	temp := statusDetail
-	builder.snapshot.StatusDetail = &temp
+	builder.snapshot.StatusDetail = &statusDetail
 	return builder
 }
 
@@ -24416,8 +23388,7 @@ func (builder *snapshotBuilder) StopReason(stopReason string) *snapshotBuilder {
 		return builder
 	}
 
-	temp := stopReason
-	builder.snapshot.StopReason = &temp
+	builder.snapshot.StopReason = &stopReason
 	return builder
 }
 
@@ -24471,8 +23442,7 @@ func (builder *snapshotBuilder) TunnelMigration(tunnelMigration bool) *snapshotB
 		return builder
 	}
 
-	temp := tunnelMigration
-	builder.snapshot.TunnelMigration = &temp
+	builder.snapshot.TunnelMigration = &tunnelMigration
 	return builder
 }
 
@@ -24499,8 +23469,7 @@ func (builder *snapshotBuilder) UseLatestTemplateVersion(useLatestTemplateVersio
 		return builder
 	}
 
-	temp := useLatestTemplateVersion
-	builder.snapshot.UseLatestTemplateVersion = &temp
+	builder.snapshot.UseLatestTemplateVersion = &useLatestTemplateVersion
 	return builder
 }
 
