@@ -112,21 +112,8 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("}");
         buffer.addLine();
 
-        // Generate the constructor by New:
-        buffer.addLine(
-            "func New%1$s(connection *Connection, path string) *%2$s {",
-            serviceName.getClassName(), serviceName.getClassName());
-        buffer.startBlock();
-        //      inititalize struct
-        buffer.addLine("var result %1$s", serviceName.getClassName());
-        buffer.addLine("result.Connection = connection");
-        buffer.addLine("result.Path = path");
-        buffer.addLine("return &result");
-        buffer.endBlock();
-
-        // Generate constructor ending
-        buffer.addLine("}");
-        buffer.addLine();
+        // Generate the service struct constructor by Newer function
+        this.generateConstructor(serviceName.getClassName());
 
         // Generate the methods
         List<Method>methods = service.methods().sorted().collect(toCollection(ArrayList::new));
@@ -146,6 +133,23 @@ public class ServicesGenerator implements GoGenerator {
         // Generate other methods that don't correspond to model methods or locators:
         generateStr(service);
 
+        buffer.addLine();
+    }
+
+    private void generateConstructor(String serviceClassName) {
+        buffer.addLine(
+            "func New%1$s(connection *Connection, path string) *%2$s {",
+            serviceClassName, serviceClassName);
+        buffer.startBlock();
+        //      inititalize struct
+        buffer.addLine("var result %1$s", serviceClassName);
+        buffer.addLine("result.Connection = connection");
+        buffer.addLine("result.Path = path");
+        buffer.addLine("return &result");
+        buffer.endBlock();
+
+        // Generate constructor ending
+        buffer.addLine("}");
         buffer.addLine();
     }
 
