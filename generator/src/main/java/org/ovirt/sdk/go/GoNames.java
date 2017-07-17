@@ -161,22 +161,22 @@ public class GoNames {
     }
 
     public GoTypeReference getTypeReference(Type type) {
-        return this.getTypeReferenceWithPointer(type, false);
+        return this.getTypeReferenceWithRef(type, false);
     }
 
     /**
      * Calculates that should be used in Go as struct member to reference the 
      * given type. For exmpale, if it's primitive type, it should be a pointer.
      */
-    public GoTypeReference getTypeReferenceAsStructMember(Type type) {
-        return this.getTypeReferenceWithPointer(type, true);
+    public GoTypeReference getRefTypeReference(Type type) {
+        return this.getTypeReferenceWithRef(type, true);
     }
 
     /**
      * Calculates that should be used in Go to reference the given type. For example, for the boolean type it will
      * return the {@code bool} string.
      */
-    private GoTypeReference getTypeReferenceWithPointer(Type type, Boolean withPointer) {
+    private GoTypeReference getTypeReferenceWithRef(Type type, Boolean withPointer) {
         String pointerSuffix = "";
         if (withPointer) {
             pointerSuffix = "*";
@@ -214,7 +214,7 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            GoTypeReference elementTypeReference = this.getTypeReferenceWithPointer(
+            GoTypeReference elementTypeReference = this.getTypeReferenceWithRef(
                 listtype.getElementType(), withPointer);
             // use Recursion to return []StructType / []string
             reference.setText("[]" + elementTypeReference.getText().replace("*", ""));
@@ -285,7 +285,7 @@ public class GoNames {
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go members.
      */
-    public String getMemberStyleName(Name name) {
+    public String getPublicMemberStyleName(Name name) {
         String result = getClassStyleName(name);
         return renameReserved(result);
     }
@@ -298,9 +298,15 @@ public class GoNames {
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go method name.
      */
-    public String getMethodStyleName(Name name) {
+    public String getPublicMethodStyleName(Name name) {
         String result = getClassStyleName(name);
         return renameReserved(result);
+    }
+
+    public String getPrivateMethodStyleName(Name name) {
+        String result = getClassStyleName(name);
+        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
+
     }
 
     /**

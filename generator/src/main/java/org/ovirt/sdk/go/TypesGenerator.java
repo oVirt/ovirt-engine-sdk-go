@@ -241,11 +241,11 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        GoTypeReference memberTypeReference = goNames.getTypeReferenceAsStructMember(member.getType());
+        GoTypeReference memberTypeReference = goNames.getRefTypeReference(member.getType());
         buffer.addImports(memberTypeReference.getImports());
         buffer.addLine(
             "%1$s    %2$s   `xml:\"%3$s,omitempty\"` ",
-            goNames.getMemberStyleName(member.getName()),
+            goNames.getPublicMemberStyleName(member.getName()),
             memberTypeReference.getText(),
             goNames.getTagStyleName(member.getName())
         );
@@ -262,7 +262,7 @@ public class TypesGenerator implements GoGenerator {
         GoTypeReference memberTypeReference = goNames.getTypeReference(member.getType());
         // Define method for TypeBuilder
         buffer.addLine("func (builder *%1$sBuilder) %2$s(%3$s %4$s) *%1$sBuilder {",
-            typePrivateClassName, goNames.getMethodStyleName(member.getName()),
+            typePrivateClassName, goNames.getPublicMethodStyleName(member.getName()),
             goNames.getParameterStyleName(member.getName()), memberTypeReference.getText());
         buffer.startBlock();
         //      Check if has errors
@@ -280,7 +280,7 @@ public class TypesGenerator implements GoGenerator {
         
         buffer.addLine("builder.%1$s.%2$s = %3$s",
             typePrivateMemberName,
-            goNames.getMemberStyleName(member.getName()),
+            goNames.getPublicMemberStyleName(member.getName()),
             settedValue
             );
         buffer.addLine("return builder");

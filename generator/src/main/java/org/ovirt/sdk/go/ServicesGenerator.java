@@ -239,7 +239,7 @@ public class ServicesGenerator implements GoGenerator {
     private void generateRequestParameter(Parameter parameter) {
         // Get parameter name
         Name parameterName = parameter.getName();
-        GoTypeReference goTypeReference = goNames.getTypeReferenceAsStructMember(parameter.getType());
+        GoTypeReference goTypeReference = goNames.getRefTypeReference(parameter.getType());
         buffer.addImports(goTypeReference.getImports());
 
         String arg = goNames.getParameterStyleName(parameterName);
@@ -253,7 +253,7 @@ public class ServicesGenerator implements GoGenerator {
         GoTypeReference paraTypeReference = goNames.getTypeReference(paraType);
         buffer.addImports(paraTypeReference.getImports());
         String paraName = goNames.getParameterStyleName(parameter.getName());
-        String paraMethodName = goNames.getMethodStyleName(parameter.getName());
+        String paraMethodName = goNames.getPublicMethodStyleName(parameter.getName());
 
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) {",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
@@ -295,7 +295,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func (op *%1$s) %2$s(",
             serviceName.getClassName(),
-            goNames.getMethodStyleName(methodName));
+            goNames.getPublicMethodStyleName(methodName));
         //      Generate func-codes definition
         buffer.startBlock();
         buffer.addLine("%1$s %2$s,", primaryArg, primaryParameterGoTypeReference.getText());
@@ -352,7 +352,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func (op *%1$s) %2$s(",
             serviceName.getClassName(),
-            goNames.getMethodStyleName(methodName));
+            goNames.getPublicMethodStyleName(methodName));
         buffer.startBlock();
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
@@ -421,7 +421,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func (op *%1$s) %2$s(",
             serviceName.getClassName(),
-            goNames.getMethodStyleName(methodName));
+            goNames.getPublicMethodStyleName(methodName));
         buffer.startBlock();
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
@@ -481,7 +481,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func (op *%1$s) %2$s(",
             serviceName.getClassName(),
-            goNames.getMethodStyleName(methodName));
+            goNames.getPublicMethodStyleName(methodName));
         //      Generate function parameters definition
         buffer.startBlock();
         buffer.addLine("%1$s %2$s,", primaryArg, primaryParameterGoTypeReference.getText());
@@ -540,7 +540,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func (op *%1$s) %2$s(",
             serviceName.getClassName(),
-            goNames.getMethodStyleName(methodName));
+            goNames.getPublicMethodStyleName(methodName));
         buffer.startBlock();
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers map[string]string,");
@@ -608,7 +608,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateLocatorMember(Locator locator) {
         GoClassName serviceName = goNames.getServiceName(locator.getService());
-        String memberName = goNames.getMemberStyleName(locator.getName());
+        String memberName = goNames.getPublicMemberStyleName(locator.getName());
         buffer.addLine("%1$sServ  *%2$s", memberName, serviceName.getClassName());
     }
 
@@ -624,7 +624,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateLocatorWithParameters(Locator locator, Service service) {
         Parameter parameter = locator.parameters().findFirst().get();
-        String methodName = goNames.getMemberStyleName(locator.getName());
+        String methodName = goNames.getPublicMemberStyleName(locator.getName());
         String argName = goNames.getParameterStyleName(parameter.getName());
         GoTypeReference parameterTypeReference = goNames.getTypeReference(parameter.getType());
         buffer.addImports(parameterTypeReference.getImports());
@@ -652,7 +652,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateLocatorWithoutParameters(Locator locator, Service service) {
-        String methodName = goNames.getMethodStyleName(locator.getName());
+        String methodName = goNames.getPublicMethodStyleName(locator.getName());
         String urlSegment = getPath(locator.getName());
         GoClassName locatorServiceName = goNames.getServiceName(locator.getService());
         generateDoc(locator);
@@ -696,7 +696,7 @@ public class ServicesGenerator implements GoGenerator {
             String segment = getPath(name);
             buffer.addLine("if path == \"%1$s\" {", segment);
             buffer.startBlock();
-            buffer.addLine(  "return op.%1$sService(), nil", goNames.getMethodStyleName(name));
+            buffer.addLine(  "return op.%1$sService(), nil", goNames.getPublicMethodStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine("if strings.HasPrefix(path, \"%1$s/\") {", segment);
@@ -704,7 +704,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.startBlock();
             buffer.addLine(
                 "return op.%1$sService().Service(path[%2$d:])",
-                goNames.getMemberStyleName(name),
+                goNames.getPublicMemberStyleName(name),
                 segment.length() + 1
             );
             buffer.endBlock();
@@ -721,12 +721,12 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("index := strings.Index(path, \"/\")");
             buffer.addLine("if index == -1 {");
             buffer.startBlock();
-            buffer.addLine("return *(op.%1$sService(path)), nil", goNames.getMemberStyleName(name));
+            buffer.addLine("return *(op.%1$sService(path)), nil", goNames.getPublicMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine(
                 "return op.%1$sService(path[:index]).Service(path[index + 1:])",
-                goNames.getMemberStyleName(name)
+                goNames.getPublicMemberStyleName(name)
             );
         }
         else {
@@ -752,7 +752,7 @@ public class ServicesGenerator implements GoGenerator {
             List<String> lines = method.parameters()
                 .filter(predicate)
                 .filter(p -> p.getDoc() != null)
-                .map(p -> String.format("`%s`:: %s", goNames.getMemberStyleName(p.getName()), p.getDoc()))
+                .map(p -> String.format("`%s`:: %s", goNames.getPublicMemberStyleName(p.getName()), p.getDoc()))
                 .collect(toList());
 
             if (!lines.isEmpty()) {
@@ -896,7 +896,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateSetActionAttribute(Parameter parameter) {
-        String memberName = goNames.getMemberStyleName(parameter.getName());
+        String memberName = goNames.getPublicMemberStyleName(parameter.getName());
         String parameterName = goNames.getParameterStyleName(parameter.getName());
         String varTypeSuffix = "";
         if (GoTypes.isGoPrimitiveType(parameter.getType())) {
