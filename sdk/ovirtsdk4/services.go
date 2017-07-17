@@ -73,6 +73,30 @@ func NewVnicProfilesService(connection *Connection, path string) *VnicProfilesSe
 	return &result
 }
 
+type VnicProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *VnicProfile
+}
+
+func (p *VnicProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VnicProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VnicProfilesServiceAddRequest) Profile(profile *VnicProfile) {
+	p.profile = profile
+}
+
 //
 // Add a vNIC profile.
 // For example to add vNIC profile `123` to network `456` send a request to:
@@ -155,6 +179,30 @@ func (op *VnicProfilesService) Add(
 	return &profileVar, nil
 }
 
+type VnicProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VnicProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VnicProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VnicProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // List all vNIC profiles.
 // This method supports the following parameters:
@@ -223,6 +271,30 @@ func NewSchedulingPolicyUnitService(connection *Connection, path string) *Schedu
 	return &result
 }
 
+type SchedulingPolicyUnitServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *SchedulingPolicyUnitServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyUnitServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -251,6 +323,30 @@ func (op *SchedulingPolicyUnitService) Get(
 	var unitVar SchedulingPolicyUnit
 	xml.Unmarshal([]byte(ovResp.Body), &unitVar)
 	return &unitVar, nil
+}
+
+type SchedulingPolicyUnitServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -303,6 +399,25 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 	return &result
 }
 
+type VirtualFunctionAllowedNetworkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VirtualFunctionAllowedNetworkService) Get(
@@ -324,6 +439,30 @@ func (op *VirtualFunctionAllowedNetworkService) Get(
 	var networkVar Network
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type VirtualFunctionAllowedNetworkServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -376,6 +515,30 @@ func NewTemplateNicsService(connection *Connection, path string) *TemplateNicsSe
 	return &result
 }
 
+type TemplateNicsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	nic    *Nic
+}
+
+func (p *TemplateNicsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateNicsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateNicsServiceAddRequest) Nic(nic *Nic) {
+	p.nic = nic
+}
+
 //
 //
 func (op *TemplateNicsService) Add(
@@ -398,6 +561,30 @@ func (op *TemplateNicsService) Add(
 	var nicVar Nic
 	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
 	return &nicVar, nil
+}
+
+type TemplateNicsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TemplateNicsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateNicsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateNicsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -468,6 +655,25 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 	return &result
 }
 
+type AffinityLabelServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves the details of a label.
 //
@@ -492,6 +698,25 @@ func (op *AffinityLabelService) Get(
 	return &labelVar, nil
 }
 
+type AffinityLabelServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Removes a label from the system and clears all assignments
 // of the removed label.
@@ -508,6 +733,30 @@ func (op *AffinityLabelService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type AffinityLabelServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	label  *AffinityLabel
+}
+
+func (p *AffinityLabelServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityLabelServiceUpdateRequest) Label(label *AffinityLabel) {
+	p.label = label
 }
 
 //
@@ -590,6 +839,30 @@ func NewBookmarksService(connection *Connection, path string) *BookmarksService 
 	return &result
 }
 
+type BookmarksServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	bookmark *Bookmark
+}
+
+func (p *BookmarksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BookmarksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BookmarksServiceAddRequest) Bookmark(bookmark *Bookmark) {
+	p.bookmark = bookmark
+}
+
 //
 // Adding a new bookmark.
 // Example of adding a bookmark:
@@ -630,6 +903,30 @@ func (op *BookmarksService) Add(
 	var bookmarkVar Bookmark
 	xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
 	return &bookmarkVar, nil
+}
+
+type BookmarksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *BookmarksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BookmarksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BookmarksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -719,6 +1016,30 @@ func NewNetworkAttachmentsService(connection *Connection, path string) *NetworkA
 	return &result
 }
 
+type NetworkAttachmentsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	attachment *NetworkAttachment
+}
+
+func (p *NetworkAttachmentsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkAttachmentsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkAttachmentsServiceAddRequest) Attachment(attachment *NetworkAttachment) {
+	p.attachment = attachment
+}
+
 //
 //
 func (op *NetworkAttachmentsService) Add(
@@ -741,6 +1062,30 @@ func (op *NetworkAttachmentsService) Add(
 	var attachmentVar NetworkAttachment
 	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
 	return &attachmentVar, nil
+}
+
+type NetworkAttachmentsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *NetworkAttachmentsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkAttachmentsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkAttachmentsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -810,6 +1155,25 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 	return &result
 }
 
+type OperatingSystemServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OperatingSystemServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OperatingSystemServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OperatingSystemService) Get(
@@ -858,6 +1222,30 @@ func NewTemplateDisksService(connection *Connection, path string) *TemplateDisks
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type TemplateDisksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TemplateDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateDisksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -927,6 +1315,30 @@ func NewSystemPermissionsService(connection *Connection, path string) *SystemPer
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type SystemPermissionsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	permission *Permission
+}
+
+func (p *SystemPermissionsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SystemPermissionsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SystemPermissionsServiceAddRequest) Permission(permission *Permission) {
+	p.permission = permission
 }
 
 //
@@ -1002,6 +1414,25 @@ func (op *SystemPermissionsService) Add(
 	var permissionVar Permission
 	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
 	return &permissionVar, nil
+}
+
+type SystemPermissionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SystemPermissionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SystemPermissionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -1086,6 +1517,25 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 	return &result
 }
 
+type VmReportedDeviceServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmReportedDeviceServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VmReportedDeviceService) Get(
@@ -1134,6 +1584,30 @@ func NewSnapshotNicsService(connection *Connection, path string) *SnapshotNicsSe
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type SnapshotNicsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *SnapshotNicsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotNicsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotNicsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -1203,6 +1677,30 @@ func NewAssignedVnicProfilesService(connection *Connection, path string) *Assign
 	return &result
 }
 
+type AssignedVnicProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *VnicProfile
+}
+
+func (p *AssignedVnicProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedVnicProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedVnicProfilesServiceAddRequest) Profile(profile *VnicProfile) {
+	p.profile = profile
+}
+
 //
 //
 func (op *AssignedVnicProfilesService) Add(
@@ -1225,6 +1723,30 @@ func (op *AssignedVnicProfilesService) Add(
 	var profileVar VnicProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type AssignedVnicProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedVnicProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedVnicProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -1294,6 +1816,30 @@ func NewQuotaClusterLimitsService(connection *Connection, path string) *QuotaClu
 	return &result
 }
 
+type QuotaClusterLimitsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	limit  *QuotaClusterLimit
+}
+
+func (p *QuotaClusterLimitsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaClusterLimitsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaClusterLimitsServiceAddRequest) Limit(limit *QuotaClusterLimit) {
+	p.limit = limit
+}
+
 //
 //
 func (op *QuotaClusterLimitsService) Add(
@@ -1316,6 +1862,30 @@ func (op *QuotaClusterLimitsService) Add(
 	var limitVar QuotaClusterLimit
 	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
 	return &limitVar, nil
+}
+
+type QuotaClusterLimitsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *QuotaClusterLimitsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaClusterLimitsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -1389,6 +1959,30 @@ func NewNetworksService(connection *Connection, path string) *NetworksService {
 	return &result
 }
 
+type NetworksServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	network *Network
+}
+
+func (p *NetworksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworksServiceAddRequest) Network(network *Network) {
+	p.network = network
+}
+
 //
 // Creates a new logical network, or associates an existing network with a data center.
 // Creation of a new network requires the `name` and `data_center` elements.
@@ -1438,6 +2032,38 @@ func (op *NetworksService) Add(
 	var networkVar Network
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type NetworksServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *NetworksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworksServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *NetworksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *NetworksServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -1543,6 +2169,30 @@ func NewAffinityGroupsService(connection *Connection, path string) *AffinityGrou
 	return &result
 }
 
+type AffinityGroupsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	group  *AffinityGroup
+}
+
+func (p *AffinityGroupsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupsServiceAddRequest) Group(group *AffinityGroup) {
+	p.group = group
+}
+
 //
 // Create a new affinity group.
 // Post a request like in the example below to create a new affinity group:
@@ -1585,6 +2235,30 @@ func (op *AffinityGroupsService) Add(
 	var groupVar AffinityGroup
 	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
 	return &groupVar, nil
+}
+
+type AffinityGroupsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AffinityGroupsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -1656,6 +2330,25 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 	return &result
 }
 
+type DiskSnapshotServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskSnapshotServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskSnapshotServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *DiskSnapshotService) Get(
@@ -1677,6 +2370,30 @@ func (op *DiskSnapshotService) Get(
 	var snapshotVar DiskSnapshot
 	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
 	return &snapshotVar, nil
+}
+
+type DiskSnapshotServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *DiskSnapshotServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskSnapshotServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskSnapshotServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -1729,6 +2446,30 @@ func NewSchedulingPolicyService(connection *Connection, path string) *Scheduling
 	return &result
 }
 
+type SchedulingPolicyServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *SchedulingPolicyServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -1759,6 +2500,30 @@ func (op *SchedulingPolicyService) Get(
 	return &policyVar, nil
 }
 
+type SchedulingPolicyServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *SchedulingPolicyServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -1780,6 +2545,34 @@ func (op *SchedulingPolicyService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type SchedulingPolicyServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	policy *SchedulingPolicy
+}
+
+func (p *SchedulingPolicyServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *SchedulingPolicyServiceUpdateRequest) Policy(policy *SchedulingPolicy) {
+	p.policy = policy
 }
 
 //
@@ -1871,6 +2664,25 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 	return &result
 }
 
+type NetworkAttachmentServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkAttachmentServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *NetworkAttachmentService) Get(
@@ -1894,6 +2706,30 @@ func (op *NetworkAttachmentService) Get(
 	return &attachmentVar, nil
 }
 
+type NetworkAttachmentServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *NetworkAttachmentServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkAttachmentServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkAttachmentServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -1915,6 +2751,34 @@ func (op *NetworkAttachmentService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type NetworkAttachmentServiceUpdateRequest struct {
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	attachment *NetworkAttachment
+}
+
+func (p *NetworkAttachmentServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkAttachmentServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkAttachmentServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *NetworkAttachmentServiceUpdateRequest) Attachment(attachment *NetworkAttachment) {
+	p.attachment = attachment
 }
 
 //
@@ -1970,6 +2834,30 @@ func NewDiskProfilesService(connection *Connection, path string) *DiskProfilesSe
 	return &result
 }
 
+type DiskProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *DiskProfile
+}
+
+func (p *DiskProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskProfilesServiceAddRequest) Profile(profile *DiskProfile) {
+	p.profile = profile
+}
+
 //
 //
 func (op *DiskProfilesService) Add(
@@ -1992,6 +2880,30 @@ func (op *DiskProfilesService) Add(
 	var profileVar DiskProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type DiskProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *DiskProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -2062,6 +2974,25 @@ func NewIconService(connection *Connection, path string) *IconService {
 	return &result
 }
 
+type IconServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *IconServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IconServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get an icon.
 // [source]
@@ -2127,6 +3058,25 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 	return &result
 }
 
+type AssignedAffinityLabelServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedAffinityLabelServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves details about the attached label.
 //
@@ -2149,6 +3099,25 @@ func (op *AssignedAffinityLabelService) Get(
 	var labelVar AffinityLabel
 	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
 	return &labelVar, nil
+}
+
+type AssignedAffinityLabelServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedAffinityLabelServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedAffinityLabelServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -2195,6 +3164,30 @@ func NewCpuProfilesService(connection *Connection, path string) *CpuProfilesServ
 	return &result
 }
 
+type CpuProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *CpuProfile
+}
+
+func (p *CpuProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CpuProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *CpuProfilesServiceAddRequest) Profile(profile *CpuProfile) {
+	p.profile = profile
+}
+
 //
 //
 func (op *CpuProfilesService) Add(
@@ -2217,6 +3210,30 @@ func (op *CpuProfilesService) Add(
 	var profileVar CpuProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type CpuProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *CpuProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CpuProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *CpuProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -2286,6 +3303,30 @@ func NewMacPoolsService(connection *Connection, path string) *MacPoolsService {
 	return &result
 }
 
+type MacPoolsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	pool   *MacPool
+}
+
+func (p *MacPoolsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MacPoolsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *MacPoolsServiceAddRequest) Pool(pool *MacPool) {
+	p.pool = pool
+}
+
 //
 // Creates a new MAC address pool.
 // Creation of a MAC address pool requires values for the `name` and `ranges` attributes.
@@ -2331,6 +3372,30 @@ func (op *MacPoolsService) Add(
 	var poolVar MacPool
 	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
 	return &poolVar, nil
+}
+
+type MacPoolsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *MacPoolsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MacPoolsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *MacPoolsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -2401,6 +3466,30 @@ func NewAffinityGroupVmsService(connection *Connection, path string) *AffinityGr
 	return &result
 }
 
+type AffinityGroupVmsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	vm     *Vm
+}
+
+func (p *AffinityGroupVmsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupVmsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupVmsServiceAddRequest) Vm(vm *Vm) {
+	p.vm = vm
+}
+
 //
 // Add a virtual machine to the affinity group.
 // For example, to add the virtual machine 000-000 to affinity group 123-456 send a request to:
@@ -2434,6 +3523,30 @@ func (op *AffinityGroupVmsService) Add(
 	var vmVar Vm
 	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
 	return &vmVar, nil
+}
+
+type AffinityGroupVmsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AffinityGroupVmsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupVmsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupVmsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -2506,6 +3619,25 @@ func NewQosService(connection *Connection, path string) *QosService {
 	return &result
 }
 
+type QosServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *QosServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QosServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *QosService) Get(
@@ -2529,6 +3661,30 @@ func (op *QosService) Get(
 	return &qosVar, nil
 }
 
+type QosServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *QosServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QosServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QosServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -2550,6 +3706,34 @@ func (op *QosService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type QosServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	qos    *Qos
+}
+
+func (p *QosServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QosServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QosServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *QosServiceUpdateRequest) Qos(qos *Qos) {
+	p.qos = qos
 }
 
 //
@@ -2606,6 +3790,30 @@ func NewTagsService(connection *Connection, path string) *TagsService {
 	return &result
 }
 
+type TagsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	tag    *Tag
+}
+
+func (p *TagsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TagsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TagsServiceAddRequest) Tag(tag *Tag) {
+	p.tag = tag
+}
+
 //
 // Add a new tag to the system.
 // For example, to add new tag with name `mytag` to the system send a request like this:
@@ -2657,6 +3865,30 @@ func (op *TagsService) Add(
 	var tagVar Tag
 	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
 	return &tagVar, nil
+}
+
+type TagsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TagsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TagsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TagsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -2757,6 +3989,25 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 	return &result
 }
 
+type ExternalProviderCertificateServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalProviderCertificateServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ExternalProviderCertificateService) Get(
@@ -2806,6 +4057,30 @@ func NewEventsService(connection *Connection, path string) *EventsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type EventsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	event  *Event
+}
+
+func (p *EventsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EventsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *EventsServiceAddRequest) Event(event *Event) {
+	p.event = event
 }
 
 //
@@ -2860,6 +4135,42 @@ func (op *EventsService) Add(
 	var eventVar Event
 	xml.Unmarshal([]byte(ovResp.Body), &eventVar)
 	return &eventVar, nil
+}
+
+type EventsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	from          *int64
+	max           *int64
+	search        *string
+}
+
+func (p *EventsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EventsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *EventsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *EventsServiceListRequest) From(from int64) {
+	p.from = &from
+}
+func (p *EventsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *EventsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -2999,6 +4310,30 @@ func (op *EventsService) List(
 	return eventsVar.Events, nil
 }
 
+type EventsServiceUndeleteRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *EventsServiceUndeleteRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EventsServiceUndeleteRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *EventsServiceUndeleteRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the un-delete should be performed asynchronously.
@@ -3060,6 +4395,25 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 	return &result
 }
 
+type VmWatchdogServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmWatchdogServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmWatchdogServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the information about the watchdog.
 //
@@ -3082,6 +4436,30 @@ func (op *VmWatchdogService) Get(
 	var watchdogVar Watchdog
 	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
 	return &watchdogVar, nil
+}
+
+type VmWatchdogServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmWatchdogServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmWatchdogServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmWatchdogServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -3111,6 +4489,34 @@ func (op *VmWatchdogService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmWatchdogServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	watchdog *Watchdog
+}
+
+func (p *VmWatchdogServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmWatchdogServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmWatchdogServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
 }
 
 //
@@ -3193,6 +4599,30 @@ func NewAttachedStorageDomainService(connection *Connection, path string) *Attac
 	return &result
 }
 
+type AttachedStorageDomainServiceActivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AttachedStorageDomainServiceActivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainServiceActivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainServiceActivateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This operation activates an attached storage domain.
 // Once the storage domain is activated it is ready for use with the data center.
@@ -3225,6 +4655,30 @@ func (op *AttachedStorageDomainService) Activate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "activate", headers, query, wait)
 	return err
+}
+
+type AttachedStorageDomainServiceDeactivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AttachedStorageDomainServiceDeactivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainServiceDeactivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainServiceDeactivateRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -3261,6 +4715,25 @@ func (op *AttachedStorageDomainService) Deactivate(
 	return err
 }
 
+type AttachedStorageDomainServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AttachedStorageDomainServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *AttachedStorageDomainService) Get(
@@ -3282,6 +4755,30 @@ func (op *AttachedStorageDomainService) Get(
 	var storageDomainVar StorageDomain
 	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
 	return &storageDomainVar, nil
+}
+
+type AttachedStorageDomainServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AttachedStorageDomainServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -3346,6 +4843,30 @@ func NewAttachedStorageDomainsService(connection *Connection, path string) *Atta
 	return &result
 }
 
+type AttachedStorageDomainsServiceAddRequest struct {
+	header        map[string]string
+	query         map[string]string
+	storageDomain *StorageDomain
+}
+
+func (p *AttachedStorageDomainsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 //
 func (op *AttachedStorageDomainsService) Add(
@@ -3368,6 +4889,30 @@ func (op *AttachedStorageDomainsService) Add(
 	var storageDomainVar StorageDomain
 	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
 	return &storageDomainVar, nil
+}
+
+type AttachedStorageDomainsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AttachedStorageDomainsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -3437,6 +4982,25 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 	return &result
 }
 
+type InstanceTypeWatchdogServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *InstanceTypeWatchdogServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets watchdog configuration of the instance type.
 //
@@ -3461,6 +5025,30 @@ func (op *InstanceTypeWatchdogService) Get(
 	return &watchdogVar, nil
 }
 
+type InstanceTypeWatchdogServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove a watchdog from the instance type.
 // This method supports the following parameters:
@@ -3483,6 +5071,34 @@ func (op *InstanceTypeWatchdogService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type InstanceTypeWatchdogServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	watchdog *Watchdog
+}
+
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
 }
 
 //
@@ -3539,6 +5155,25 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 	return &result
 }
 
+type QuotaStorageLimitServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *QuotaStorageLimitServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *QuotaStorageLimitService) Get(
@@ -3560,6 +5195,30 @@ func (op *QuotaStorageLimitService) Get(
 	var limitVar QuotaStorageLimit
 	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
 	return &limitVar, nil
+}
+
+type QuotaStorageLimitServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *QuotaStorageLimitServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaStorageLimitServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaStorageLimitServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -3612,6 +5271,25 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 	return &result
 }
 
+type RoleServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *RoleServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *RoleServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get the role.
 // [source]
@@ -3651,6 +5329,30 @@ func (op *RoleService) Get(
 	return &roleVar, nil
 }
 
+type RoleServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *RoleServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *RoleServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *RoleServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes the role.
 // To remove the role you need to know its id, then send request like this:
@@ -3678,6 +5380,34 @@ func (op *RoleService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type RoleServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	role   *Role
+}
+
+func (p *RoleServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *RoleServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *RoleServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *RoleServiceUpdateRequest) Role(role *Role) {
+	p.role = role
 }
 
 //
@@ -3768,6 +5498,25 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 	return &result
 }
 
+type AssignedNetworkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedNetworkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedNetworkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *AssignedNetworkService) Get(
@@ -3791,6 +5540,30 @@ func (op *AssignedNetworkService) Get(
 	return &networkVar, nil
 }
 
+type AssignedNetworkServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AssignedNetworkServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedNetworkServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedNetworkServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -3812,6 +5585,34 @@ func (op *AssignedNetworkService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type AssignedNetworkServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	network *Network
+}
+
+func (p *AssignedNetworkServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedNetworkServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedNetworkServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *AssignedNetworkServiceUpdateRequest) Network(network *Network) {
+	p.network = network
 }
 
 //
@@ -3868,6 +5669,25 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 	return &result
 }
 
+type StorageDomainVmDiskAttachmentServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the details of the attachment with all its properties and a link to the disk.
 //
@@ -3918,6 +5738,30 @@ func NewHostNicsService(connection *Connection, path string) *HostNicsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type HostNicsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *HostNicsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostNicsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostNicsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -3988,6 +5832,25 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 	return &result
 }
 
+type VmNumaNodeServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmNumaNodeServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNumaNodeServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VmNumaNodeService) Get(
@@ -4009,6 +5872,30 @@ func (op *VmNumaNodeService) Get(
 	var nodeVar VirtualNumaNode
 	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
 	return &nodeVar, nil
+}
+
+type VmNumaNodeServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmNumaNodeServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNumaNodeServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNumaNodeServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -4038,6 +5925,34 @@ func (op *VmNumaNodeService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmNumaNodeServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	node   *VirtualNumaNode
+}
+
+func (p *VmNumaNodeServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNumaNodeServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNumaNodeServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmNumaNodeServiceUpdateRequest) Node(node *VirtualNumaNode) {
+	p.node = node
 }
 
 //
@@ -4111,6 +6026,30 @@ func NewTemplateCdromsService(connection *Connection, path string) *TemplateCdro
 	return &result
 }
 
+type TemplateCdromsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TemplateCdromsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateCdromsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateCdromsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of CD-ROMs to return. If not specified all the CD-ROMs are returned.
@@ -4179,6 +6118,25 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 	return &result
 }
 
+type SnapshotServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SnapshotServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *SnapshotService) Get(
@@ -4200,6 +6158,34 @@ func (op *SnapshotService) Get(
 	var snapshotVar Snapshot
 	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
 	return &snapshotVar, nil
+}
+
+type SnapshotServiceRemoveRequest struct {
+	header     map[string]string
+	query      map[string]string
+	allContent *bool
+	async      *bool
+}
+
+func (p *SnapshotServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotServiceRemoveRequest) AllContent(allContent bool) {
+	p.allContent = &allContent
+}
+func (p *SnapshotServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -4232,6 +6218,38 @@ func (op *SnapshotService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type SnapshotServiceRestoreRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	disks         []Disk
+	restoreMemory *bool
+}
+
+func (p *SnapshotServiceRestoreRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotServiceRestoreRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotServiceRestoreRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *SnapshotServiceRestoreRequest) Disks(disks []Disk) {
+	p.disks = disks
+}
+func (p *SnapshotServiceRestoreRequest) RestoreMemory(restoreMemory bool) {
+	p.restoreMemory = &restoreMemory
 }
 
 //
@@ -4335,6 +6353,30 @@ func NewSchedulingPoliciesService(connection *Connection, path string) *Scheduli
 	return &result
 }
 
+type SchedulingPoliciesServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	policy *SchedulingPolicy
+}
+
+func (p *SchedulingPoliciesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPoliciesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPoliciesServiceAddRequest) Policy(policy *SchedulingPolicy) {
+	p.policy = policy
+}
+
 //
 //
 func (op *SchedulingPoliciesService) Add(
@@ -4357,6 +6399,34 @@ func (op *SchedulingPoliciesService) Add(
 	var policyVar SchedulingPolicy
 	xml.Unmarshal([]byte(ovResp.Body), &policyVar)
 	return &policyVar, nil
+}
+
+type SchedulingPoliciesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *SchedulingPoliciesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPoliciesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPoliciesServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *SchedulingPoliciesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -4429,6 +6499,30 @@ func NewWeightsService(connection *Connection, path string) *WeightsService {
 	return &result
 }
 
+type WeightsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	weight *Weight
+}
+
+func (p *WeightsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *WeightsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *WeightsServiceAddRequest) Weight(weight *Weight) {
+	p.weight = weight
+}
+
 //
 //
 func (op *WeightsService) Add(
@@ -4451,6 +6545,34 @@ func (op *WeightsService) Add(
 	var weightVar Weight
 	xml.Unmarshal([]byte(ovResp.Body), &weightVar)
 	return &weightVar, nil
+}
+
+type WeightsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *WeightsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *WeightsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *WeightsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *WeightsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -4524,6 +6646,30 @@ func NewVmHostDevicesService(connection *Connection, path string) *VmHostDevices
 	return &result
 }
 
+type VmHostDevicesServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	device *HostDevice
+}
+
+func (p *VmHostDevicesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmHostDevicesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmHostDevicesServiceAddRequest) Device(device *HostDevice) {
+	p.device = device
+}
+
 //
 // Attach target device to given virtual machine.
 // Example:
@@ -4569,6 +6715,30 @@ func (op *VmHostDevicesService) Add(
 	var deviceVar HostDevice
 	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
 	return &deviceVar, nil
+}
+
+type VmHostDevicesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmHostDevicesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmHostDevicesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmHostDevicesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -4640,6 +6810,25 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 	return &result
 }
 
+type AssignedCpuProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedCpuProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *AssignedCpuProfileService) Get(
@@ -4661,6 +6850,30 @@ func (op *AssignedCpuProfileService) Get(
 	var profileVar CpuProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type AssignedCpuProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AssignedCpuProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedCpuProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedCpuProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -4713,6 +6926,25 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 	return &result
 }
 
+type SnapshotNicServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SnapshotNicServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotNicServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *SnapshotNicService) Get(
@@ -4762,6 +6994,25 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type HostDeviceServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *HostDeviceServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostDeviceServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -4834,6 +7085,30 @@ func NewImageTransfersService(connection *Connection, path string) *ImageTransfe
 	return &result
 }
 
+type ImageTransfersServiceAddRequest struct {
+	header        map[string]string
+	query         map[string]string
+	imageTransfer *ImageTransfer
+}
+
+func (p *ImageTransfersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransfersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ImageTransfersServiceAddRequest) ImageTransfer(imageTransfer *ImageTransfer) {
+	p.imageTransfer = imageTransfer
+}
+
 //
 // Add a new image transfer. An image needs to be specified in order to make
 // a new transfer.
@@ -4858,6 +7133,25 @@ func (op *ImageTransfersService) Add(
 	var imageTransferVar ImageTransfer
 	xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
 	return &imageTransferVar, nil
+}
+
+type ImageTransfersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransfersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransfersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -4924,6 +7218,30 @@ func NewExternalProviderService(connection *Connection, path string) *ExternalPr
 	return &result
 }
 
+type ExternalProviderServiceImportCertificatesRequest struct {
+	header       map[string]string
+	query        map[string]string
+	certificates []Certificate
+}
+
+func (p *ExternalProviderServiceImportCertificatesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalProviderServiceImportCertificatesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+	p.certificates = certificates
+}
+
 //
 //
 func (op *ExternalProviderService) ImportCertificates(
@@ -4939,6 +7257,30 @@ func (op *ExternalProviderService) ImportCertificates(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
 	return err
+}
+
+type ExternalProviderServiceTestConnectivityRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *ExternalProviderServiceTestConnectivityRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalProviderServiceTestConnectivityRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalProviderServiceTestConnectivityRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -5003,6 +7345,25 @@ func NewEventService(connection *Connection, path string) *EventService {
 	return &result
 }
 
+type EventServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *EventServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EventServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get an event.
 // An example of getting an event:
@@ -5049,6 +7410,30 @@ func (op *EventService) Get(
 	var eventVar Event
 	xml.Unmarshal([]byte(ovResp.Body), &eventVar)
 	return &eventVar, nil
+}
+
+type EventServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *EventServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EventServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *EventServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -5158,6 +7543,25 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 	return &result
 }
 
+type NetworkFiltersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkFiltersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFiltersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves the representations of the network filters.
 //
@@ -5219,6 +7623,30 @@ func NewStatisticService(connection *Connection, path string) *StatisticService 
 	return &result
 }
 
+type StatisticServiceGetRequest struct {
+	header    map[string]string
+	query     map[string]string
+	statistic *Statistic
+}
+
+func (p *StatisticServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StatisticServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) {
+	p.statistic = statistic
+}
+
 //
 //
 func (op *StatisticService) Get(
@@ -5270,6 +7698,30 @@ func NewExternalVmImportsService(connection *Connection, path string) *ExternalV
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ExternalVmImportsServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	import_ *ExternalVmImport
+}
+
+func (p *ExternalVmImportsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalVmImportsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalVmImportsServiceAddRequest) Import(import_ *ExternalVmImport) {
+	p.import_ = import_
 }
 
 //
@@ -5348,6 +7800,30 @@ func NewAssignedRolesService(connection *Connection, path string) *AssignedRoles
 	return &result
 }
 
+type AssignedRolesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedRolesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedRolesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedRolesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of roles to return. If not specified all the roles are returned.
@@ -5417,6 +7893,25 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 	return &result
 }
 
+type NetworkFilterParameterServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkFilterParameterServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves a representation of the network filter parameter.
 //
@@ -5441,6 +7936,25 @@ func (op *NetworkFilterParameterService) Get(
 	return &parameterVar, nil
 }
 
+type NetworkFilterParameterServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkFilterParameterServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterParameterServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Removes the filter parameter.
 // For example, to remove the filter parameter with id `123` on NIC `456` of virtual machine `789`
@@ -5462,6 +7976,30 @@ func (op *NetworkFilterParameterService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type NetworkFilterParameterServiceUpdateRequest struct {
+	header    map[string]string
+	query     map[string]string
+	parameter *NetworkFilterParameter
+}
+
+func (p *NetworkFilterParameterServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterParameterServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkFilterParameterServiceUpdateRequest) Parameter(parameter *NetworkFilterParameter) {
+	p.parameter = parameter
 }
 
 //
@@ -5535,6 +8073,25 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 	return &result
 }
 
+type OpenstackImageProviderServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackImageProviderServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackImageProviderService) Get(
@@ -5558,6 +8115,30 @@ func (op *OpenstackImageProviderService) Get(
 	return &providerVar, nil
 }
 
+type OpenstackImageProviderServiceImportCertificatesRequest struct {
+	header       map[string]string
+	query        map[string]string
+	certificates []Certificate
+}
+
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+	p.certificates = certificates
+}
+
 //
 //
 func (op *OpenstackImageProviderService) ImportCertificates(
@@ -5573,6 +8154,30 @@ func (op *OpenstackImageProviderService) ImportCertificates(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
 	return err
+}
+
+type OpenstackImageProviderServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackImageProviderServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProviderServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProviderServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -5598,6 +8203,30 @@ func (op *OpenstackImageProviderService) Remove(
 	return err
 }
 
+type OpenstackImageProviderServiceTestConnectivityRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the test should be performed asynchronously.
@@ -5618,6 +8247,34 @@ func (op *OpenstackImageProviderService) TestConnectivity(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
 	return err
+}
+
+type OpenstackImageProviderServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	provider *OpenStackImageProvider
+}
+
+func (p *OpenstackImageProviderServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProviderServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProviderServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *OpenstackImageProviderServiceUpdateRequest) Provider(provider *OpenStackImageProvider) {
+	p.provider = provider
 }
 
 //
@@ -5697,6 +8354,25 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 	return &result
 }
 
+type OpenstackNetworkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackNetworkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackNetworkService) Get(
@@ -5718,6 +8394,34 @@ func (op *OpenstackNetworkService) Get(
 	var networkVar OpenStackNetwork
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type OpenstackNetworkServiceImportRequest struct {
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	dataCenter *DataCenter
+}
+
+func (p *OpenstackNetworkServiceImportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkServiceImportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkServiceImportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *OpenstackNetworkServiceImportRequest) DataCenter(dataCenter *DataCenter) {
+	p.dataCenter = dataCenter
 }
 
 //
@@ -5789,6 +8493,30 @@ func NewOpenstackImageProvidersService(connection *Connection, path string) *Ope
 	return &result
 }
 
+type OpenstackImageProvidersServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	provider *OpenStackImageProvider
+}
+
+func (p *OpenstackImageProvidersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProvidersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProvidersServiceAddRequest) Provider(provider *OpenStackImageProvider) {
+	p.provider = provider
+}
+
 //
 //
 func (op *OpenstackImageProvidersService) Add(
@@ -5811,6 +8539,30 @@ func (op *OpenstackImageProvidersService) Add(
 	var providerVar OpenStackImageProvider
 	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
 	return &providerVar, nil
+}
+
+type OpenstackImageProvidersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackImageProvidersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageProvidersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -5880,6 +8632,25 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 	return &result
 }
 
+type OpenstackVolumeAuthenticationKeyServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackVolumeAuthenticationKeyService) Get(
@@ -5903,6 +8674,30 @@ func (op *OpenstackVolumeAuthenticationKeyService) Get(
 	return &keyVar, nil
 }
 
+type OpenstackVolumeAuthenticationKeyServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -5924,6 +8719,30 @@ func (op *OpenstackVolumeAuthenticationKeyService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type OpenstackVolumeAuthenticationKeyServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	key    *OpenstackVolumeAuthenticationKey
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Key(key *OpenstackVolumeAuthenticationKey) {
+	p.key = key
 }
 
 //
@@ -5975,6 +8794,30 @@ func NewOpenstackImagesService(connection *Connection, path string) *OpenstackIm
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type OpenstackImagesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackImagesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImagesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImagesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -6047,6 +8890,30 @@ func NewOpenstackNetworkProvidersService(connection *Connection, path string) *O
 	return &result
 }
 
+type OpenstackNetworkProvidersServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	provider *OpenStackNetworkProvider
+}
+
+func (p *OpenstackNetworkProvidersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProvidersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProvidersServiceAddRequest) Provider(provider *OpenStackNetworkProvider) {
+	p.provider = provider
+}
+
 //
 // The operation adds a new network provider to the system.
 // If the `type` property is not present, a default value of `NEUTRON` will be used.
@@ -6071,6 +8938,30 @@ func (op *OpenstackNetworkProvidersService) Add(
 	var providerVar OpenStackNetworkProvider
 	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
 	return &providerVar, nil
+}
+
+type OpenstackNetworkProvidersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackNetworkProvidersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProvidersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -6141,6 +9032,30 @@ func NewOpenstackVolumeProvidersService(connection *Connection, path string) *Op
 	return &result
 }
 
+type OpenstackVolumeProvidersServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	provider *OpenStackVolumeProvider
+}
+
+func (p *OpenstackVolumeProvidersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProvidersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProvidersServiceAddRequest) Provider(provider *OpenStackVolumeProvider) {
+	p.provider = provider
+}
+
 //
 // Adds a new volume provider.
 // For example:
@@ -6184,6 +9099,30 @@ func (op *OpenstackVolumeProvidersService) Add(
 	var providerVar OpenStackVolumeProvider
 	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
 	return &providerVar, nil
+}
+
+type OpenstackVolumeProvidersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackVolumeProvidersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProvidersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -6254,6 +9193,30 @@ func NewOpenstackNetworksService(connection *Connection, path string) *Openstack
 	return &result
 }
 
+type OpenstackNetworksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackNetworksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
@@ -6321,6 +9284,25 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 	return &result
 }
 
+type OpenstackVolumeProviderServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackVolumeProviderServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackVolumeProviderService) Get(
@@ -6344,6 +9326,30 @@ func (op *OpenstackVolumeProviderService) Get(
 	return &providerVar, nil
 }
 
+type OpenstackVolumeProviderServiceImportCertificatesRequest struct {
+	header       map[string]string
+	query        map[string]string
+	certificates []Certificate
+}
+
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+	p.certificates = certificates
+}
+
 //
 //
 func (op *OpenstackVolumeProviderService) ImportCertificates(
@@ -6359,6 +9365,30 @@ func (op *OpenstackVolumeProviderService) ImportCertificates(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
 	return err
+}
+
+type OpenstackVolumeProviderServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -6384,6 +9414,30 @@ func (op *OpenstackVolumeProviderService) Remove(
 	return err
 }
 
+type OpenstackVolumeProviderServiceTestConnectivityRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the test should be performed asynchronously.
@@ -6404,6 +9458,34 @@ func (op *OpenstackVolumeProviderService) TestConnectivity(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
 	return err
+}
+
+type OpenstackVolumeProviderServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	provider *OpenStackVolumeProvider
+}
+
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Provider(provider *OpenStackVolumeProvider) {
+	p.provider = provider
 }
 
 //
@@ -6495,6 +9577,30 @@ func NewOpenstackVolumeTypesService(connection *Connection, path string) *Openst
 	return &result
 }
 
+type OpenstackVolumeTypesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackVolumeTypesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeTypesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of volume types to return. If not specified all the volume types are returned.
@@ -6562,6 +9668,30 @@ func NewOpenstackVolumeAuthenticationKeysService(connection *Connection, path st
 	return &result
 }
 
+type OpenstackVolumeAuthenticationKeysServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	key    *OpenstackVolumeAuthenticationKey
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Key(key *OpenstackVolumeAuthenticationKey) {
+	p.key = key
+}
+
 //
 //
 func (op *OpenstackVolumeAuthenticationKeysService) Add(
@@ -6584,6 +9714,30 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add(
 	var keyVar OpenstackVolumeAuthenticationKey
 	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
 	return &keyVar, nil
+}
+
+type OpenstackVolumeAuthenticationKeysServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -6653,6 +9807,25 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 	return &result
 }
 
+type OpenstackImageServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackImageServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackImageService) Get(
@@ -6674,6 +9847,50 @@ func (op *OpenstackImageService) Get(
 	var imageVar OpenStackImage
 	xml.Unmarshal([]byte(ovResp.Body), &imageVar)
 	return &imageVar, nil
+}
+
+type OpenstackImageServiceImportRequest struct {
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	cluster          *Cluster
+	disk             *Disk
+	importAsTemplate *bool
+	storageDomain    *StorageDomain
+	template         *Template
+}
+
+func (p *OpenstackImageServiceImportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackImageServiceImportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackImageServiceImportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *OpenstackImageServiceImportRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *OpenstackImageServiceImportRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *OpenstackImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) {
+	p.importAsTemplate = &importAsTemplate
+}
+func (p *OpenstackImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+func (p *OpenstackImageServiceImportRequest) Template(template *Template) {
+	p.template = template
 }
 
 //
@@ -6757,6 +9974,25 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 	return &result
 }
 
+type OpenstackVolumeTypeServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackVolumeTypeServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackVolumeTypeService) Get(
@@ -6807,6 +10043,25 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 	return &result
 }
 
+type OpenstackSubnetServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackSubnetServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *OpenstackSubnetService) Get(
@@ -6828,6 +10083,30 @@ func (op *OpenstackSubnetService) Get(
 	var subnetVar OpenStackSubnet
 	xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
 	return &subnetVar, nil
+}
+
+type OpenstackSubnetServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackSubnetServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackSubnetServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackSubnetServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -6880,6 +10159,30 @@ func NewOpenstackSubnetsService(connection *Connection, path string) *OpenstackS
 	return &result
 }
 
+type OpenstackSubnetsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	subnet *OpenStackSubnet
+}
+
+func (p *OpenstackSubnetsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackSubnetsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackSubnetsServiceAddRequest) Subnet(subnet *OpenStackSubnet) {
+	p.subnet = subnet
+}
+
 //
 //
 func (op *OpenstackSubnetsService) Add(
@@ -6902,6 +10205,30 @@ func (op *OpenstackSubnetsService) Add(
 	var subnetVar OpenStackSubnet
 	xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
 	return &subnetVar, nil
+}
+
+type OpenstackSubnetsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OpenstackSubnetsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackSubnetsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackSubnetsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -6972,6 +10299,25 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 	return &result
 }
 
+type OpenstackNetworkProviderServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *OpenstackNetworkProviderServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the representation of the object managed by this service.
 // For example, to get the OpenStack network provider with identifier `1234`, send a request like this:
@@ -7001,6 +10347,30 @@ func (op *OpenstackNetworkProviderService) Get(
 	return &providerVar, nil
 }
 
+type OpenstackNetworkProviderServiceImportCertificatesRequest struct {
+	header       map[string]string
+	query        map[string]string
+	certificates []Certificate
+}
+
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+	p.certificates = certificates
+}
+
 //
 //
 func (op *OpenstackNetworkProviderService) ImportCertificates(
@@ -7016,6 +10386,30 @@ func (op *OpenstackNetworkProviderService) ImportCertificates(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
 	return err
+}
+
+type OpenstackNetworkProviderServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -7047,6 +10441,30 @@ func (op *OpenstackNetworkProviderService) Remove(
 	return err
 }
 
+type OpenstackNetworkProviderServiceTestConnectivityRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the test should be performed asynchronously.
@@ -7067,6 +10485,34 @@ func (op *OpenstackNetworkProviderService) TestConnectivity(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
 	return err
+}
+
+type OpenstackNetworkProviderServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	provider *OpenStackNetworkProvider
+}
+
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Provider(provider *OpenStackNetworkProvider) {
+	p.provider = provider
 }
 
 //
@@ -7171,6 +10617,34 @@ func NewTemplateService(connection *Connection, path string) *TemplateService {
 	return &result
 }
 
+type TemplateServiceExportRequest struct {
+	header        map[string]string
+	query         map[string]string
+	exclusive     *bool
+	storageDomain *StorageDomain
+}
+
+func (p *TemplateServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateServiceExportRequest) Exclusive(exclusive bool) {
+	p.exclusive = &exclusive
+}
+func (p *TemplateServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Exports a template to the data center export domain.
 // For example, the operation can be facilitated using the following request:
@@ -7212,6 +10686,30 @@ func (op *TemplateService) Export(
 	return err
 }
 
+type TemplateServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *TemplateServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // Returns the information about this template or template version.
 // This method supports the following parameters:
@@ -7243,6 +10741,30 @@ func (op *TemplateService) Get(
 	return &templateVar, nil
 }
 
+type TemplateServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TemplateServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes a virtual machine template.
 // [source]
@@ -7271,6 +10793,25 @@ func (op *TemplateService) Remove(
 	return err
 }
 
+type TemplateServiceSealRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateServiceSealRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateServiceSealRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Seal the template.
 // Sealing erases all host-specific configuration from the filesystem:
@@ -7289,6 +10830,34 @@ func (op *TemplateService) Seal(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "seal", headers, query, wait)
 	return err
+}
+
+type TemplateServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	template *Template
+}
+
+func (p *TemplateServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TemplateServiceUpdateRequest) Template(template *Template) {
+	p.template = template
 }
 
 //
@@ -7462,6 +11031,30 @@ func NewVmWatchdogsService(connection *Connection, path string) *VmWatchdogsServ
 	return &result
 }
 
+type VmWatchdogsServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	watchdog *Watchdog
+}
+
+func (p *VmWatchdogsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmWatchdogsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
+}
+
 //
 // Adds new watchdog to the virtual machine.
 // For example, to add a watchdog to a virtual machine, send a request like this:
@@ -7511,6 +11104,30 @@ func (op *VmWatchdogsService) Add(
 	var watchdogVar Watchdog
 	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
 	return &watchdogVar, nil
+}
+
+type VmWatchdogsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmWatchdogsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmWatchdogsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmWatchdogsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -7585,6 +11202,25 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 	return &result
 }
 
+type AffinityLabelVmServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelVmServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves details about a vm that has this label assigned.
 //
@@ -7607,6 +11243,25 @@ func (op *AffinityLabelVmService) Get(
 	var vmVar Vm
 	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
 	return &vmVar, nil
+}
+
+type AffinityLabelVmServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelVmServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelVmServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -7653,6 +11308,30 @@ func NewVmService(connection *Connection, path string) *VmService {
 	return &result
 }
 
+type VmServiceCancelMigrationRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceCancelMigrationRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceCancelMigrationRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceCancelMigrationRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This operation stops any migration of a virtual machine to another physical host.
 // [source]
@@ -7686,6 +11365,34 @@ func (op *VmService) CancelMigration(
 	return err
 }
 
+type VmServiceCloneRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	vm     *Vm
+}
+
+func (p *VmServiceCloneRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceCloneRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceCloneRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceCloneRequest) Vm(vm *Vm) {
+	p.vm = vm
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the clone should be performed asynchronously.
@@ -7710,6 +11417,30 @@ func (op *VmService) Clone(
 	return err
 }
 
+type VmServiceCommitSnapshotRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceCommitSnapshotRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceCommitSnapshotRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceCommitSnapshotRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the snapshots should be committed asynchronously.
@@ -7730,6 +11461,30 @@ func (op *VmService) CommitSnapshot(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "commitsnapshot", headers, query, wait)
 	return err
+}
+
+type VmServiceDetachRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceDetachRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceDetachRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceDetachRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -7763,6 +11518,42 @@ func (op *VmService) Detach(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "detach", headers, query, wait)
 	return err
+}
+
+type VmServiceExportRequest struct {
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	discardSnapshots *bool
+	exclusive        *bool
+	storageDomain    *StorageDomain
+}
+
+func (p *VmServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceExportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceExportRequest) DiscardSnapshots(discardSnapshots bool) {
+	p.discardSnapshots = &discardSnapshots
+}
+func (p *VmServiceExportRequest) Exclusive(exclusive bool) {
+	p.exclusive = &exclusive
+}
+func (p *VmServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -7814,6 +11605,30 @@ func (op *VmService) Export(
 	return err
 }
 
+type VmServiceFreezeFilesystemsRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceFreezeFilesystemsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceFreezeFilesystemsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceFreezeFilesystemsRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Freeze virtual machine file systems.
 // This operation freezes a virtual machine's file systems using the QEMU guest agent when taking a live snapshot of
@@ -7847,6 +11662,38 @@ func (op *VmService) FreezeFilesystems(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "freezefilesystems", headers, query, wait)
 	return err
+}
+
+type VmServiceGetRequest struct {
+	header     map[string]string
+	query      map[string]string
+	allContent *bool
+	filter     *bool
+	nextRun    *bool
+}
+
+func (p *VmServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceGetRequest) AllContent(allContent bool) {
+	p.allContent = &allContent
+}
+func (p *VmServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *VmServiceGetRequest) NextRun(nextRun bool) {
+	p.nextRun = &nextRun
 }
 
 //
@@ -7911,6 +11758,30 @@ func (op *VmService) Get(
 	return &vmVar, nil
 }
 
+type VmServiceLogonRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceLogonRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceLogonRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceLogonRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Initiates the automatic user logon to access a virtual machine from an external console.
 // This action requires the `ovirt-guest-agent-gdm-plugin` and the `ovirt-guest-agent-pam-module` packages to be
@@ -7946,6 +11817,34 @@ func (op *VmService) Logon(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "logon", headers, query, wait)
 	return err
+}
+
+type VmServiceMaintenanceRequest struct {
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	maintenanceEnabled *bool
+}
+
+func (p *VmServiceMaintenanceRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceMaintenanceRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceMaintenanceRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceMaintenanceRequest) MaintenanceEnabled(maintenanceEnabled bool) {
+	p.maintenanceEnabled = &maintenanceEnabled
 }
 
 //
@@ -7984,6 +11883,42 @@ func (op *VmService) Maintenance(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "maintenance", headers, query, wait)
 	return err
+}
+
+type VmServiceMigrateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	cluster *Cluster
+	force   *bool
+	host    *Host
+}
+
+func (p *VmServiceMigrateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceMigrateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceMigrateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceMigrateRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *VmServiceMigrateRequest) Force(force bool) {
+	p.force = &force
+}
+func (p *VmServiceMigrateRequest) Host(host *Host) {
+	p.host = host
 }
 
 //
@@ -8033,6 +11968,46 @@ func (op *VmService) Migrate(
 	return err
 }
 
+type VmServicePreviewSnapshotRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	disks         []Disk
+	restoreMemory *bool
+	snapshot      *Snapshot
+	vm            *Vm
+}
+
+func (p *VmServicePreviewSnapshotRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServicePreviewSnapshotRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServicePreviewSnapshotRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServicePreviewSnapshotRequest) Disks(disks []Disk) {
+	p.disks = disks
+}
+func (p *VmServicePreviewSnapshotRequest) RestoreMemory(restoreMemory bool) {
+	p.restoreMemory = &restoreMemory
+}
+func (p *VmServicePreviewSnapshotRequest) Snapshot(snapshot *Snapshot) {
+	p.snapshot = snapshot
+}
+func (p *VmServicePreviewSnapshotRequest) Vm(vm *Vm) {
+	p.vm = vm
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the preview should be performed asynchronously.
@@ -8061,6 +12036,30 @@ func (op *VmService) PreviewSnapshot(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "previewsnapshot", headers, query, wait)
 	return err
+}
+
+type VmServiceRebootRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceRebootRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceRebootRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceRebootRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -8094,6 +12093,38 @@ func (op *VmService) Reboot(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "reboot", headers, query, wait)
 	return err
+}
+
+type VmServiceRemoveRequest struct {
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	detachOnly *bool
+	force      *bool
+}
+
+func (p *VmServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceRemoveRequest) DetachOnly(detachOnly bool) {
+	p.detachOnly = &detachOnly
+}
+func (p *VmServiceRemoveRequest) Force(force bool) {
+	p.force = &force
 }
 
 //
@@ -8133,6 +12164,30 @@ func (op *VmService) Remove(
 	return err
 }
 
+type VmServiceReorderMacAddressesRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceReorderMacAddressesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceReorderMacAddressesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceReorderMacAddressesRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the action should be performed asynchronously.
@@ -8153,6 +12208,30 @@ func (op *VmService) ReorderMacAddresses(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "reordermacaddresses", headers, query, wait)
 	return err
+}
+
+type VmServiceShutdownRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceShutdownRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceShutdownRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceShutdownRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -8186,6 +12265,50 @@ func (op *VmService) Shutdown(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "shutdown", headers, query, wait)
 	return err
+}
+
+type VmServiceStartRequest struct {
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	filter       *bool
+	pause        *bool
+	useCloudInit *bool
+	useSysprep   *bool
+	vm           *Vm
+}
+
+func (p *VmServiceStartRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceStartRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceStartRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceStartRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *VmServiceStartRequest) Pause(pause bool) {
+	p.pause = &pause
+}
+func (p *VmServiceStartRequest) UseCloudInit(useCloudInit bool) {
+	p.useCloudInit = &useCloudInit
+}
+func (p *VmServiceStartRequest) UseSysprep(useSysprep bool) {
+	p.useSysprep = &useSysprep
+}
+func (p *VmServiceStartRequest) Vm(vm *Vm) {
+	p.vm = vm
 }
 
 //
@@ -8257,6 +12380,30 @@ func (op *VmService) Start(
 	return err
 }
 
+type VmServiceStopRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceStopRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceStopRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceStopRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This operation forces a virtual machine to power-off.
 // [source]
@@ -8288,6 +12435,30 @@ func (op *VmService) Stop(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "stop", headers, query, wait)
 	return err
+}
+
+type VmServiceSuspendRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceSuspendRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceSuspendRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceSuspendRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -8324,6 +12495,30 @@ func (op *VmService) Suspend(
 	return err
 }
 
+type VmServiceThawFilesystemsRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceThawFilesystemsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceThawFilesystemsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceThawFilesystemsRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Thaw virtual machine file systems.
 // This operation thaws a virtual machine's file systems using the QEMU guest agent when taking a live snapshot of a
@@ -8357,6 +12552,34 @@ func (op *VmService) ThawFilesystems(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "thawfilesystems", headers, query, wait)
 	return err
+}
+
+type VmServiceTicketRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	ticket *Ticket
+}
+
+func (p *VmServiceTicketRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceTicketRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceTicketRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceTicketRequest) Ticket(ticket *Ticket) {
+	p.ticket = ticket
 }
 
 //
@@ -8422,6 +12645,30 @@ func (op *VmService) Ticket(
 	return &ticketVar, nil
 }
 
+type VmServiceUndoSnapshotRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmServiceUndoSnapshotRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceUndoSnapshotRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceUndoSnapshotRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the action should be performed asynchronously.
@@ -8442,6 +12689,38 @@ func (op *VmService) UndoSnapshot(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "undosnapshot", headers, query, wait)
 	return err
+}
+
+type VmServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	nextRun *bool
+	vm      *Vm
+}
+
+func (p *VmServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmServiceUpdateRequest) NextRun(nextRun bool) {
+	p.nextRun = &nextRun
+}
+func (p *VmServiceUpdateRequest) Vm(vm *Vm) {
+	p.vm = vm
 }
 
 //
@@ -8696,6 +12975,30 @@ func NewInstanceTypeGraphicsConsolesService(connection *Connection, path string)
 	return &result
 }
 
+type InstanceTypeGraphicsConsolesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	console *GraphicsConsole
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+	p.console = console
+}
+
 //
 // Add new graphics console to the instance type.
 //
@@ -8719,6 +13022,30 @@ func (op *InstanceTypeGraphicsConsolesService) Add(
 	var consoleVar GraphicsConsole
 	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
 	return &consoleVar, nil
+}
+
+type InstanceTypeGraphicsConsolesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -8790,6 +13117,25 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 	return &result
 }
 
+type StorageDomainVmServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainVmServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *StorageDomainVmService) Get(
@@ -8811,6 +13157,50 @@ func (op *StorageDomainVmService) Get(
 	var vmVar Vm
 	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
 	return &vmVar, nil
+}
+
+type StorageDomainVmServiceImportRequest struct {
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	clone             *bool
+	cluster           *Cluster
+	collapseSnapshots *bool
+	storageDomain     *StorageDomain
+	vm                *Vm
+}
+
+func (p *StorageDomainVmServiceImportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmServiceImportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainVmServiceImportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainVmServiceImportRequest) Clone(clone bool) {
+	p.clone = &clone
+}
+func (p *StorageDomainVmServiceImportRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *StorageDomainVmServiceImportRequest) CollapseSnapshots(collapseSnapshots bool) {
+	p.collapseSnapshots = &collapseSnapshots
+}
+func (p *StorageDomainVmServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+func (p *StorageDomainVmServiceImportRequest) Vm(vm *Vm) {
+	p.vm = vm
 }
 
 //
@@ -8908,6 +13298,54 @@ func (op *StorageDomainVmService) Import(
 	return err
 }
 
+type StorageDomainVmServiceRegisterRequest struct {
+	header              map[string]string
+	query               map[string]string
+	allowPartialImport  *bool
+	async               *bool
+	clone               *bool
+	cluster             *Cluster
+	reassignBadMacs     *bool
+	vm                  *Vm
+	vnicProfileMappings []VnicProfileMapping
+}
+
+func (p *StorageDomainVmServiceRegisterRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmServiceRegisterRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainVmServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) {
+	p.allowPartialImport = &allowPartialImport
+}
+func (p *StorageDomainVmServiceRegisterRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainVmServiceRegisterRequest) Clone(clone bool) {
+	p.clone = &clone
+}
+func (p *StorageDomainVmServiceRegisterRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *StorageDomainVmServiceRegisterRequest) ReassignBadMacs(reassignBadMacs bool) {
+	p.reassignBadMacs = &reassignBadMacs
+}
+func (p *StorageDomainVmServiceRegisterRequest) Vm(vm *Vm) {
+	p.vm = vm
+}
+func (p *StorageDomainVmServiceRegisterRequest) VnicProfileMappings(vnicProfileMappings []VnicProfileMapping) {
+	p.vnicProfileMappings = vnicProfileMappings
+}
+
 //
 // This method supports the following parameters:
 // `AllowPartialImport`:: Indicates whether a virtual machine is allowed to be registered with only some of its disks.
@@ -8950,6 +13388,30 @@ func (op *StorageDomainVmService) Register(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "register", headers, query, wait)
 	return err
+}
+
+type StorageDomainVmServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *StorageDomainVmServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainVmServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -9032,6 +13494,30 @@ func NewClusterService(connection *Connection, path string) *ClusterService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ClusterServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *ClusterServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClusterServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -9140,6 +13626,30 @@ func (op *ClusterService) Get(
 	return &clusterVar, nil
 }
 
+type ClusterServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *ClusterServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClusterServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes cluster from the system.
 // [source]
@@ -9168,6 +13678,30 @@ func (op *ClusterService) Remove(
 	return err
 }
 
+type ClusterServiceResetEmulatedMachineRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *ClusterServiceResetEmulatedMachineRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterServiceResetEmulatedMachineRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClusterServiceResetEmulatedMachineRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the reset should be performed asynchronously.
@@ -9188,6 +13722,34 @@ func (op *ClusterService) ResetEmulatedMachine(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "resetemulatedmachine", headers, query, wait)
 	return err
+}
+
+type ClusterServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	cluster *Cluster
+}
+
+func (p *ClusterServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClusterServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *ClusterServiceUpdateRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
 }
 
 //
@@ -9350,6 +13912,30 @@ func NewSnapshotDisksService(connection *Connection, path string) *SnapshotDisks
 	return &result
 }
 
+type SnapshotDisksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *SnapshotDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotDisksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
@@ -9417,6 +14003,30 @@ func NewTemplateGraphicsConsolesService(connection *Connection, path string) *Te
 	return &result
 }
 
+type TemplateGraphicsConsolesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	console *GraphicsConsole
+}
+
+func (p *TemplateGraphicsConsolesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateGraphicsConsolesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+	p.console = console
+}
+
 //
 // Add new graphics console to the template.
 //
@@ -9440,6 +14050,30 @@ func (op *TemplateGraphicsConsolesService) Add(
 	var consoleVar GraphicsConsole
 	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
 	return &consoleVar, nil
+}
+
+type TemplateGraphicsConsolesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TemplateGraphicsConsolesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateGraphicsConsolesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -9512,6 +14146,30 @@ func NewVmPoolService(connection *Connection, path string) *VmPoolService {
 	return &result
 }
 
+type VmPoolServiceAllocateVmRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmPoolServiceAllocateVmRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolServiceAllocateVmRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolServiceAllocateVmRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This operation allocates a virtual machine in the virtual machine pool.
 // [source]
@@ -9543,6 +14201,30 @@ func (op *VmPoolService) AllocateVm(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "allocatevm", headers, query, wait)
 	return err
+}
+
+type VmPoolServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *VmPoolServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -9600,6 +14282,30 @@ func (op *VmPoolService) Get(
 	return &poolVar, nil
 }
 
+type VmPoolServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmPoolServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes a virtual machine pool.
 // [source]
@@ -9626,6 +14332,34 @@ func (op *VmPoolService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmPoolServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	pool   *VmPool
+}
+
+func (p *VmPoolServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmPoolServiceUpdateRequest) Pool(pool *VmPool) {
+	p.pool = pool
 }
 
 //
@@ -9717,6 +14451,30 @@ func NewQuotasService(connection *Connection, path string) *QuotasService {
 	return &result
 }
 
+type QuotasServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	quota  *Quota
+}
+
+func (p *QuotasServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotasServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotasServiceAddRequest) Quota(quota *Quota) {
+	p.quota = quota
+}
+
 //
 // Creates a new quota.
 // An example of creating a new quota:
@@ -9752,6 +14510,30 @@ func (op *QuotasService) Add(
 	var quotaVar Quota
 	xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
 	return &quotaVar, nil
+}
+
+type QuotasServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *QuotasServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotasServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotasServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -9822,6 +14604,25 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ClusterLevelServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ClusterLevelServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterLevelServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -9902,6 +14703,30 @@ func NewStorageDomainContentDiskService(connection *Connection, path string) *St
 	return &result
 }
 
+type StorageDomainContentDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *StorageDomainContentDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainContentDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -9958,6 +14783,34 @@ func NewVmApplicationsService(connection *Connection, path string) *VmApplicatio
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmApplicationsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *VmApplicationsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmApplicationsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmApplicationsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *VmApplicationsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -10036,6 +14889,38 @@ func NewFilesService(connection *Connection, path string) *FilesService {
 	return &result
 }
 
+type FilesServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *FilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FilesServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *FilesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *FilesServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of files to return. If not specified all the files are returned.
@@ -10112,6 +14997,30 @@ func NewAffinityGroupVmService(connection *Connection, path string) *AffinityGro
 	return &result
 }
 
+type AffinityGroupVmServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AffinityGroupVmServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupVmServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupVmServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove this virtual machine from the affinity group.
 // This method supports the following parameters:
@@ -10166,6 +15075,30 @@ func NewVmCdromService(connection *Connection, path string) *VmCdromService {
 	return &result
 }
 
+type VmCdromServiceGetRequest struct {
+	header  map[string]string
+	query   map[string]string
+	current *bool
+}
+
+func (p *VmCdromServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmCdromServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmCdromServiceGetRequest) Current(current bool) {
+	p.current = &current
+}
+
 //
 // Returns the information about this CDROM device.
 // The information consists of `cdrom` attribute containing reference to the CDROM device, the virtual machine,
@@ -10213,6 +15146,34 @@ func (op *VmCdromService) Get(
 	var cdromVar Cdrom
 	xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
 	return &cdromVar, nil
+}
+
+type VmCdromServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	cdrom   *Cdrom
+	current *bool
+}
+
+func (p *VmCdromServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmCdromServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmCdromServiceUpdateRequest) Cdrom(cdrom *Cdrom) {
+	p.cdrom = cdrom
+}
+func (p *VmCdromServiceUpdateRequest) Current(current bool) {
+	p.current = &current
 }
 
 //
@@ -10313,6 +15274,25 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 	return &result
 }
 
+type QuotaClusterLimitServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *QuotaClusterLimitServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *QuotaClusterLimitService) Get(
@@ -10334,6 +15314,30 @@ func (op *QuotaClusterLimitService) Get(
 	var limitVar QuotaClusterLimit
 	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
 	return &limitVar, nil
+}
+
+type QuotaClusterLimitServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *QuotaClusterLimitServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaClusterLimitServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaClusterLimitServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -10387,6 +15391,25 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 	return &result
 }
 
+type DiskAttachmentServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskAttachmentServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskAttachmentServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the details of the attachment, including the bootable flag and link to the disk.
 // An example of getting a disk attachment:
@@ -10426,6 +15449,30 @@ func (op *DiskAttachmentService) Get(
 	return &attachmentVar, nil
 }
 
+type DiskAttachmentServiceRemoveRequest struct {
+	header     map[string]string
+	query      map[string]string
+	detachOnly *bool
+}
+
+func (p *DiskAttachmentServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskAttachmentServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskAttachmentServiceRemoveRequest) DetachOnly(detachOnly bool) {
+	p.detachOnly = &detachOnly
+}
+
 //
 // Removes the disk attachment.
 // This will only detach the disk from the virtual machine, but won't remove it from
@@ -10456,6 +15503,30 @@ func (op *DiskAttachmentService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type DiskAttachmentServiceUpdateRequest struct {
+	header         map[string]string
+	query          map[string]string
+	diskAttachment *DiskAttachment
+}
+
+func (p *DiskAttachmentServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskAttachmentServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskAttachmentServiceUpdateRequest) DiskAttachment(diskAttachment *DiskAttachment) {
+	p.diskAttachment = diskAttachment
 }
 
 //
@@ -10525,6 +15596,25 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 	return &result
 }
 
+type BookmarkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *BookmarkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BookmarkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get a bookmark.
 // An example for getting a bookmark:
@@ -10561,6 +15651,30 @@ func (op *BookmarkService) Get(
 	return &bookmarkVar, nil
 }
 
+type BookmarkServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *BookmarkServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BookmarkServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BookmarkServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove a bookmark.
 // An example for removing a bookmark:
@@ -10588,6 +15702,34 @@ func (op *BookmarkService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type BookmarkServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	bookmark *Bookmark
+}
+
+func (p *BookmarkServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BookmarkServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BookmarkServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *BookmarkServiceUpdateRequest) Bookmark(bookmark *Bookmark) {
+	p.bookmark = bookmark
 }
 
 //
@@ -10662,6 +15804,25 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 	return &result
 }
 
+type InstanceTypeNicServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *InstanceTypeNicServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets network interface configuration of the instance type.
 //
@@ -10686,6 +15847,30 @@ func (op *InstanceTypeNicService) Get(
 	return &nicVar, nil
 }
 
+type InstanceTypeNicServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *InstanceTypeNicServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeNicServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeNicServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove the network interface from the instance type.
 // This method supports the following parameters:
@@ -10708,6 +15893,34 @@ func (op *InstanceTypeNicService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type InstanceTypeNicServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	nic    *Nic
+}
+
+func (p *InstanceTypeNicServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeNicServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeNicServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *InstanceTypeNicServiceUpdateRequest) Nic(nic *Nic) {
+	p.nic = nic
 }
 
 //
@@ -10764,6 +15977,25 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 	return &result
 }
 
+type AssignedDiskProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedDiskProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *AssignedDiskProfileService) Get(
@@ -10785,6 +16017,30 @@ func (op *AssignedDiskProfileService) Get(
 	var diskProfileVar DiskProfile
 	xml.Unmarshal([]byte(ovResp.Body), &diskProfileVar)
 	return &diskProfileVar, nil
+}
+
+type AssignedDiskProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AssignedDiskProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedDiskProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedDiskProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -10837,6 +16093,30 @@ func NewNetworkLabelsService(connection *Connection, path string) *NetworkLabels
 	return &result
 }
 
+type NetworkLabelsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	label  *NetworkLabel
+}
+
+func (p *NetworkLabelsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkLabelsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkLabelsServiceAddRequest) Label(label *NetworkLabel) {
+	p.label = label
+}
+
 //
 // Attaches label to logical network.
 // You can attach labels to a logical network to automate the association of that logical network with physical host
@@ -10872,6 +16152,30 @@ func (op *NetworkLabelsService) Add(
 	var labelVar NetworkLabel
 	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
 	return &labelVar, nil
+}
+
+type NetworkLabelsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *NetworkLabelsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkLabelsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkLabelsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -10941,6 +16245,30 @@ func NewStorageDomainService(connection *Connection, path string) *StorageDomain
 	return &result
 }
 
+type StorageDomainServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *StorageDomainServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -10971,6 +16299,34 @@ func (op *StorageDomainService) Get(
 	return &storageDomainVar, nil
 }
 
+type StorageDomainServiceIsAttachedRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	host   *Host
+}
+
+func (p *StorageDomainServiceIsAttachedRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceIsAttachedRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceIsAttachedRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainServiceIsAttachedRequest) Host(host *Host) {
+	p.host = host
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the action should be performed asynchronously.
@@ -10998,6 +16354,30 @@ func (op *StorageDomainService) IsAttached(
 		return false, err
 	}
 	return strconv.ParseBool(ovResp.Body)
+}
+
+type StorageDomainServiceReduceLunsRequest struct {
+	header       map[string]string
+	query        map[string]string
+	logicalUnits []LogicalUnit
+}
+
+func (p *StorageDomainServiceReduceLunsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceReduceLunsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceReduceLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) {
+	p.logicalUnits = logicalUnits
 }
 
 //
@@ -11038,6 +16418,34 @@ func (op *StorageDomainService) ReduceLuns(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "reduceluns", headers, query, wait)
 	return err
+}
+
+type StorageDomainServiceRefreshLunsRequest struct {
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	logicalUnits []LogicalUnit
+}
+
+func (p *StorageDomainServiceRefreshLunsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceRefreshLunsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceRefreshLunsRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainServiceRefreshLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) {
+	p.logicalUnits = logicalUnits
 }
 
 //
@@ -11083,6 +16491,42 @@ func (op *StorageDomainService) RefreshLuns(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "refreshluns", headers, query, wait)
 	return err
+}
+
+type StorageDomainServiceRemoveRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	destroy *bool
+	format  *bool
+	host    *string
+}
+
+func (p *StorageDomainServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainServiceRemoveRequest) Destroy(destroy bool) {
+	p.destroy = &destroy
+}
+func (p *StorageDomainServiceRemoveRequest) Format(format bool) {
+	p.format = &format
+}
+func (p *StorageDomainServiceRemoveRequest) Host(host string) {
+	p.host = &host
 }
 
 //
@@ -11143,6 +16587,34 @@ func (op *StorageDomainService) Remove(
 	return err
 }
 
+type StorageDomainServiceUpdateRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	storageDomain *StorageDomain
+}
+
+func (p *StorageDomainServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainServiceUpdateRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Updates a storage domain.
 // Not all of the <<types/storage_domain,StorageDomain>>'s attributes are updatable post-creation. Those that can be
@@ -11186,6 +16658,30 @@ func (op *StorageDomainService) Update(
 	var storageDomainVar StorageDomain
 	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
 	return &storageDomainVar, nil
+}
+
+type StorageDomainServiceUpdateOvfStoreRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -11362,6 +16858,30 @@ func NewDataCentersService(connection *Connection, path string) *DataCentersServ
 	return &result
 }
 
+type DataCentersServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	dataCenter *DataCenter
+}
+
+func (p *DataCentersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DataCentersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DataCentersServiceAddRequest) DataCenter(dataCenter *DataCenter) {
+	p.dataCenter = dataCenter
+}
+
 //
 // Creates a new data center.
 // Creation of a new data center requires the `name` and `local` elements. For example, to create a data center
@@ -11404,6 +16924,42 @@ func (op *DataCentersService) Add(
 	var dataCenterVar DataCenter
 	xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
 	return &dataCenterVar, nil
+}
+
+type DataCentersServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *DataCentersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DataCentersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DataCentersServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *DataCentersServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *DataCentersServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *DataCentersServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -11535,6 +17091,30 @@ func NewVmApplicationService(connection *Connection, path string) *VmApplication
 	return &result
 }
 
+type VmApplicationServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *VmApplicationServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmApplicationServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmApplicationServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // Returns the information about the application.
 // This method supports the following parameters:
@@ -11593,6 +17173,30 @@ func NewQuotaStorageLimitsService(connection *Connection, path string) *QuotaSto
 	return &result
 }
 
+type QuotaStorageLimitsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	limit  *QuotaStorageLimit
+}
+
+func (p *QuotaStorageLimitsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaStorageLimitsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaStorageLimitsServiceAddRequest) Limit(limit *QuotaStorageLimit) {
+	p.limit = limit
+}
+
 //
 //
 func (op *QuotaStorageLimitsService) Add(
@@ -11615,6 +17219,30 @@ func (op *QuotaStorageLimitsService) Add(
 	var limitVar QuotaStorageLimit
 	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
 	return &limitVar, nil
+}
+
+type QuotaStorageLimitsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *QuotaStorageLimitsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaStorageLimitsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -11684,6 +17312,25 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 	return &result
 }
 
+type TemplateNicServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateNicServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateNicServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *TemplateNicService) Get(
@@ -11707,6 +17354,30 @@ func (op *TemplateNicService) Get(
 	return &nicVar, nil
 }
 
+type TemplateNicServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TemplateNicServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateNicServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateNicServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -11728,6 +17399,34 @@ func (op *TemplateNicService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type TemplateNicServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	nic    *Nic
+}
+
+func (p *TemplateNicServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateNicServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateNicServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TemplateNicServiceUpdateRequest) Nic(nic *Nic) {
+	p.nic = nic
 }
 
 //
@@ -11786,6 +17485,30 @@ func NewVmCdromsService(connection *Connection, path string) *VmCdromsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmCdromsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmCdromsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmCdromsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmCdromsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -11856,6 +17579,30 @@ func NewVmSessionsService(connection *Connection, path string) *VmSessionsServic
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmSessionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmSessionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmSessionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmSessionsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -11947,6 +17694,30 @@ func NewVmDiskService(connection *Connection, path string) *VmDiskService {
 	return &result
 }
 
+type VmDiskServiceActivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmDiskServiceActivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceActivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceActivateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the activation should be performed asynchronously.
@@ -11969,6 +17740,30 @@ func (op *VmDiskService) Activate(
 	return err
 }
 
+type VmDiskServiceDeactivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmDiskServiceDeactivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceDeactivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceDeactivateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the deactivation should be performed asynchronously.
@@ -11989,6 +17784,34 @@ func (op *VmDiskService) Deactivate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "deactivate", headers, query, wait)
 	return err
+}
+
+type VmDiskServiceExportRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	filter *bool
+}
+
+func (p *VmDiskServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceExportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmDiskServiceExportRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -12016,6 +17839,25 @@ func (op *VmDiskService) Export(
 	return err
 }
 
+type VmDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VmDiskService) Get(
@@ -12037,6 +17879,34 @@ func (op *VmDiskService) Get(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type VmDiskServiceMoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	filter *bool
+}
+
+func (p *VmDiskServiceMoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceMoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceMoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmDiskServiceMoveRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -12064,6 +17934,30 @@ func (op *VmDiskService) Move(
 	return err
 }
 
+type VmDiskServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmDiskServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Detach the disk from the virtual machine.
 // NOTE: In version 3 of the API this used to also remove the disk completely from the system, but starting with
@@ -12089,6 +17983,34 @@ func (op *VmDiskService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmDiskServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	disk   *Disk
+}
+
+func (p *VmDiskServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDiskServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDiskServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmDiskServiceUpdateRequest) Disk(disk *Disk) {
+	p.disk = disk
 }
 
 //
@@ -12168,6 +18090,25 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 	return &result
 }
 
+type StorageServerConnectionServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageServerConnectionServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *StorageServerConnectionService) Get(
@@ -12189,6 +18130,34 @@ func (op *StorageServerConnectionService) Get(
 	var conectionVar StorageConnection
 	xml.Unmarshal([]byte(ovResp.Body), &conectionVar)
 	return &conectionVar, nil
+}
+
+type StorageServerConnectionServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	host   *string
+}
+
+func (p *StorageServerConnectionServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageServerConnectionServiceRemoveRequest) Host(host string) {
+	p.host = &host
 }
 
 //
@@ -12225,6 +18194,38 @@ func (op *StorageServerConnectionService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type StorageServerConnectionServiceUpdateRequest struct {
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	connection *StorageConnection
+	force      *bool
+}
+
+func (p *StorageServerConnectionServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageServerConnectionServiceUpdateRequest) Connection(connection *StorageConnection) {
+	p.connection = connection
+}
+func (p *StorageServerConnectionServiceUpdateRequest) Force(force bool) {
+	p.force = &force
 }
 
 //
@@ -12299,6 +18300,30 @@ func NewHostService(connection *Connection, path string) *HostService {
 	return &result
 }
 
+type HostServiceActivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceActivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceActivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceActivateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Activate the host for use, such as running virtual machines.
 // This method supports the following parameters:
@@ -12320,6 +18345,34 @@ func (op *HostService) Activate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "activate", headers, query, wait)
 	return err
+}
+
+type HostServiceApproveRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	cluster *Cluster
+}
+
+func (p *HostServiceApproveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceApproveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceApproveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceApproveRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
 }
 
 //
@@ -12346,6 +18399,30 @@ func (op *HostService) Approve(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "approve", headers, query, wait)
 	return err
+}
+
+type HostServiceCommitNetConfigRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceCommitNetConfigRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceCommitNetConfigRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceCommitNetConfigRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -12386,6 +18463,38 @@ func (op *HostService) CommitNetConfig(
 	return err
 }
 
+type HostServiceDeactivateRequest struct {
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	reason             *string
+	stopGlusterService *bool
+}
+
+func (p *HostServiceDeactivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceDeactivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceDeactivateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceDeactivateRequest) Reason(reason string) {
+	p.reason = &reason
+}
+func (p *HostServiceDeactivateRequest) StopGlusterService(stopGlusterService bool) {
+	p.stopGlusterService = &stopGlusterService
+}
+
 //
 // Deactivate the host to perform maintenance tasks.
 // This method supports the following parameters:
@@ -12415,6 +18524,30 @@ func (op *HostService) Deactivate(
 	return err
 }
 
+type HostServiceEnrollCertificateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceEnrollCertificateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceEnrollCertificateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceEnrollCertificateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Enroll certificate of the host. Useful in case you get a warning that it is about to, or already expired.
 // This method supports the following parameters:
@@ -12436,6 +18569,34 @@ func (op *HostService) EnrollCertificate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "enrollcertificate", headers, query, wait)
 	return err
+}
+
+type HostServiceFenceRequest struct {
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	fenceType *string
+}
+
+func (p *HostServiceFenceRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceFenceRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceFenceRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceFenceRequest) FenceType(fenceType string) {
+	p.fenceType = &fenceType
 }
 
 //
@@ -12492,6 +18653,30 @@ func (op *HostService) Fence(
 	return &powerManagementVar, nil
 }
 
+type HostServiceForceSelectSpmRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceForceSelectSpmRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceForceSelectSpmRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceForceSelectSpmRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Manually set a host as the storage pool manager (SPM).
 // [source]
@@ -12524,6 +18709,30 @@ func (op *HostService) ForceSelectSpm(
 	return err
 }
 
+type HostServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *HostServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // Get the host details.
 // This method supports the following parameters:
@@ -12553,6 +18762,54 @@ func (op *HostService) Get(
 	var hostVar Host
 	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
 	return &hostVar, nil
+}
+
+type HostServiceInstallRequest struct {
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	deployHostedEngine   *bool
+	host                 *Host
+	image                *string
+	rootPassword         *string
+	ssh                  *Ssh
+	undeployHostedEngine *bool
+}
+
+func (p *HostServiceInstallRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceInstallRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceInstallRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceInstallRequest) DeployHostedEngine(deployHostedEngine bool) {
+	p.deployHostedEngine = &deployHostedEngine
+}
+func (p *HostServiceInstallRequest) Host(host *Host) {
+	p.host = host
+}
+func (p *HostServiceInstallRequest) Image(image string) {
+	p.image = &image
+}
+func (p *HostServiceInstallRequest) RootPassword(rootPassword string) {
+	p.rootPassword = &rootPassword
+}
+func (p *HostServiceInstallRequest) Ssh(ssh *Ssh) {
+	p.ssh = ssh
+}
+func (p *HostServiceInstallRequest) UndeployHostedEngine(undeployHostedEngine bool) {
+	p.undeployHostedEngine = &undeployHostedEngine
 }
 
 //
@@ -12641,6 +18898,34 @@ func (op *HostService) Install(
 	return err
 }
 
+type HostServiceIscsiDiscoverRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	iscsi  *IscsiDetails
+}
+
+func (p *HostServiceIscsiDiscoverRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceIscsiDiscoverRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceIscsiDiscoverRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceIscsiDiscoverRequest) Iscsi(iscsi *IscsiDetails) {
+	p.iscsi = iscsi
+}
+
 //
 // Discover iSCSI targets on the host, using the initiator details.
 // This method supports the following parameters:
@@ -12672,6 +18957,34 @@ func (op *HostService) IscsiDiscover(
 	return []string{ovResp.Body}, nil
 }
 
+type HostServiceIscsiLoginRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	iscsi  *IscsiDetails
+}
+
+func (p *HostServiceIscsiLoginRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceIscsiLoginRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceIscsiLoginRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceIscsiLoginRequest) Iscsi(iscsi *IscsiDetails) {
+	p.iscsi = iscsi
+}
+
 //
 // Login to iSCSI targets on the host, using the target details.
 // This method supports the following parameters:
@@ -12698,6 +19011,30 @@ func (op *HostService) IscsiLogin(
 	return err
 }
 
+type HostServiceRefreshRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceRefreshRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceRefreshRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceRefreshRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Refresh the host devices and capabilities.
 // This method supports the following parameters:
@@ -12719,6 +19056,30 @@ func (op *HostService) Refresh(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "refresh", headers, query, wait)
 	return err
+}
+
+type HostServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -12757,6 +19118,66 @@ func (op *HostService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type HostServiceSetupNetworksRequest struct {
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
+	checkConnectivity              *bool
+	connectivityTimeout            *int64
+	modifiedBonds                  []HostNic
+	modifiedLabels                 []NetworkLabel
+	modifiedNetworkAttachments     []NetworkAttachment
+	removedBonds                   []HostNic
+	removedLabels                  []NetworkLabel
+	removedNetworkAttachments      []NetworkAttachment
+	synchronizedNetworkAttachments []NetworkAttachment
+}
+
+func (p *HostServiceSetupNetworksRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceSetupNetworksRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceSetupNetworksRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceSetupNetworksRequest) CheckConnectivity(checkConnectivity bool) {
+	p.checkConnectivity = &checkConnectivity
+}
+func (p *HostServiceSetupNetworksRequest) ConnectivityTimeout(connectivityTimeout int64) {
+	p.connectivityTimeout = &connectivityTimeout
+}
+func (p *HostServiceSetupNetworksRequest) ModifiedBonds(modifiedBonds []HostNic) {
+	p.modifiedBonds = modifiedBonds
+}
+func (p *HostServiceSetupNetworksRequest) ModifiedLabels(modifiedLabels []NetworkLabel) {
+	p.modifiedLabels = modifiedLabels
+}
+func (p *HostServiceSetupNetworksRequest) ModifiedNetworkAttachments(modifiedNetworkAttachments []NetworkAttachment) {
+	p.modifiedNetworkAttachments = modifiedNetworkAttachments
+}
+func (p *HostServiceSetupNetworksRequest) RemovedBonds(removedBonds []HostNic) {
+	p.removedBonds = removedBonds
+}
+func (p *HostServiceSetupNetworksRequest) RemovedLabels(removedLabels []NetworkLabel) {
+	p.removedLabels = removedLabels
+}
+func (p *HostServiceSetupNetworksRequest) RemovedNetworkAttachments(removedNetworkAttachments []NetworkAttachment) {
+	p.removedNetworkAttachments = removedNetworkAttachments
+}
+func (p *HostServiceSetupNetworksRequest) SynchronizedNetworkAttachments(synchronizedNetworkAttachments []NetworkAttachment) {
+	p.synchronizedNetworkAttachments = synchronizedNetworkAttachments
 }
 
 //
@@ -12950,6 +19371,34 @@ func (op *HostService) SetupNetworks(
 	return err
 }
 
+type HostServiceUnregisteredStorageDomainsDiscoverRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	iscsi  *IscsiDetails
+}
+
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Iscsi(iscsi *IscsiDetails) {
+	p.iscsi = iscsi
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the discovery should be performed asynchronously.
@@ -12979,6 +19428,34 @@ func (op *HostService) UnregisteredStorageDomainsDiscover(
 	var storageDomainsVar StorageDomains
 	xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
 	return storageDomainsVar.StorageDomains, nil
+}
+
+type HostServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	host   *Host
+}
+
+func (p *HostServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostServiceUpdateRequest) Host(host *Host) {
+	p.host = host
 }
 
 //
@@ -13022,6 +19499,30 @@ func (op *HostService) Update(
 	return &hostVar, nil
 }
 
+type HostServiceUpgradeRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *HostServiceUpgradeRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceUpgradeRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostServiceUpgradeRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Upgrade VDSM and selected software on the host.
 // This method supports the following parameters:
@@ -13043,6 +19544,25 @@ func (op *HostService) Upgrade(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "upgrade", headers, query, wait)
 	return err
+}
+
+type HostServiceUpgradeCheckRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *HostServiceUpgradeCheckRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostServiceUpgradeCheckRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -13279,6 +19799,30 @@ func NewExternalProviderCertificatesService(connection *Connection, path string)
 	return &result
 }
 
+type ExternalProviderCertificatesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalProviderCertificatesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalProviderCertificatesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of certificates to return. If not specified all the certificates are returned.
@@ -13347,6 +19891,25 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 	return &result
 }
 
+type VmHostDeviceServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmHostDeviceServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmHostDeviceServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieve information about particular host device attached to given virtual machine.
 // Example:
@@ -13394,6 +19957,30 @@ func (op *VmHostDeviceService) Get(
 	var deviceVar HostDevice
 	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
 	return &deviceVar, nil
+}
+
+type VmHostDeviceServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmHostDeviceServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmHostDeviceServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmHostDeviceServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -13456,6 +20043,25 @@ func NewTagService(connection *Connection, path string) *TagService {
 	return &result
 }
 
+type TagServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TagServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TagServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets the information about the tag.
 // For example to retrieve the information about the tag with the id `123` send a request like this:
@@ -13491,6 +20097,30 @@ func (op *TagService) Get(
 	return &tagVar, nil
 }
 
+type TagServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TagServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TagServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TagServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes the tag from the system.
 // For example to remove the tag with id `123` send a request like this:
@@ -13517,6 +20147,34 @@ func (op *TagService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type TagServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	tag    *Tag
+}
+
+func (p *TagServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TagServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TagServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TagServiceUpdateRequest) Tag(tag *Tag) {
+	p.tag = tag
 }
 
 //
@@ -13599,6 +20257,30 @@ func NewHostNumaNodesService(connection *Connection, path string) *HostNumaNodes
 	return &result
 }
 
+type HostNumaNodesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *HostNumaNodesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostNumaNodesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostNumaNodesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of nodes to return. If not specified all the nodes are returned.
@@ -13667,6 +20349,30 @@ func NewAssignedTagsService(connection *Connection, path string) *AssignedTagsSe
 	return &result
 }
 
+type AssignedTagsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	tag    *Tag
+}
+
+func (p *AssignedTagsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedTagsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedTagsServiceAddRequest) Tag(tag *Tag) {
+	p.tag = tag
+}
+
 //
 // Assign tag to specific entity in the system.
 // For example to assign tag `mytag` to virtual machine with the id `123` send a request like this:
@@ -13706,6 +20412,30 @@ func (op *AssignedTagsService) Add(
 	var tagVar Tag
 	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
 	return &tagVar, nil
+}
+
+type AssignedTagsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedTagsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedTagsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedTagsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -13792,6 +20522,30 @@ func NewJobService(connection *Connection, path string) *JobService {
 	return &result
 }
 
+type JobServiceClearRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *JobServiceClearRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *JobServiceClearRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *JobServiceClearRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Set an external job execution to be cleared by the system.
 // For example, to set a job with identifier `123` send the following request:
@@ -13823,6 +20577,38 @@ func (op *JobService) Clear(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "clear", headers, query, wait)
 	return err
+}
+
+type JobServiceEndRequest struct {
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	force     *bool
+	succeeded *bool
+}
+
+func (p *JobServiceEndRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *JobServiceEndRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *JobServiceEndRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *JobServiceEndRequest) Force(force bool) {
+	p.force = &force
+}
+func (p *JobServiceEndRequest) Succeeded(succeeded bool) {
+	p.succeeded = &succeeded
 }
 
 //
@@ -13866,6 +20652,25 @@ func (op *JobService) End(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "end", headers, query, wait)
 	return err
+}
+
+type JobServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *JobServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *JobServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -13955,6 +20760,25 @@ func NewFileService(connection *Connection, path string) *FileService {
 	return &result
 }
 
+type FileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *FileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *FileService) Get(
@@ -14004,6 +20828,30 @@ func NewStepsService(connection *Connection, path string) *StepsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type StepsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	step   *Step
+}
+
+func (p *StepsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StepsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StepsServiceAddRequest) Step(step *Step) {
+	p.step = step
 }
 
 //
@@ -14067,6 +20915,30 @@ func (op *StepsService) Add(
 	var stepVar Step
 	xml.Unmarshal([]byte(ovResp.Body), &stepVar)
 	return &stepVar, nil
+}
+
+type StepsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StepsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StepsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StepsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -14162,6 +21034,25 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 	return &result
 }
 
+type StorageDomainServerConnectionServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainServerConnectionServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *StorageDomainServerConnectionService) Get(
@@ -14183,6 +21074,30 @@ func (op *StorageDomainServerConnectionService) Get(
 	var connectionVar StorageConnection
 	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
 	return &connectionVar, nil
+}
+
+type StorageDomainServerConnectionServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -14237,6 +21152,30 @@ func NewRolesService(connection *Connection, path string) *RolesService {
 	return &result
 }
 
+type RolesServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	role   *Role
+}
+
+func (p *RolesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *RolesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *RolesServiceAddRequest) Role(role *Role) {
+	p.role = role
+}
+
 //
 // Create a new role. The role can be administrative or non-administrative and can have different permits.
 // For example, to add the `MyRole` non-administrative role with permits to login and create virtual machines
@@ -14284,6 +21223,30 @@ func (op *RolesService) Add(
 	var roleVar Role
 	xml.Unmarshal([]byte(ovResp.Body), &roleVar)
 	return &roleVar, nil
+}
+
+type RolesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *RolesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *RolesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *RolesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -14518,6 +21481,25 @@ func NewImageTransferService(connection *Connection, path string) *ImageTransfer
 	return &result
 }
 
+type ImageTransferServiceExtendRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransferServiceExtendRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransferServiceExtendRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Extend the image transfer session.
 //
@@ -14531,6 +21513,25 @@ func (op *ImageTransferService) Extend(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "extend", headers, query, wait)
 	return err
+}
+
+type ImageTransferServiceFinalizeRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransferServiceFinalizeRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransferServiceFinalizeRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -14550,6 +21551,25 @@ func (op *ImageTransferService) Finalize(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "finalize", headers, query, wait)
 	return err
+}
+
+type ImageTransferServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransferServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransferServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -14576,6 +21596,25 @@ func (op *ImageTransferService) Get(
 	return &imageTransferVar, nil
 }
 
+type ImageTransferServicePauseRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransferServicePauseRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransferServicePauseRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Pause the image transfer session.
 //
@@ -14589,6 +21628,25 @@ func (op *ImageTransferService) Pause(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "pause", headers, query, wait)
 	return err
+}
+
+type ImageTransferServiceResumeRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageTransferServiceResumeRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageTransferServiceResumeRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -14643,6 +21701,25 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 	return &result
 }
 
+type AssignedVnicProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedVnicProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *AssignedVnicProfileService) Get(
@@ -14664,6 +21741,30 @@ func (op *AssignedVnicProfileService) Get(
 	var profileVar VnicProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type AssignedVnicProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AssignedVnicProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedVnicProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedVnicProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -14728,6 +21829,25 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 	return &result
 }
 
+type TemplateWatchdogServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateWatchdogServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *TemplateWatchdogService) Get(
@@ -14751,6 +21871,30 @@ func (op *TemplateWatchdogService) Get(
 	return &watchdogVar, nil
 }
 
+type TemplateWatchdogServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TemplateWatchdogServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateWatchdogServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateWatchdogServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -14772,6 +21916,34 @@ func (op *TemplateWatchdogService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type TemplateWatchdogServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	watchdog *Watchdog
+}
+
+func (p *TemplateWatchdogServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateWatchdogServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateWatchdogServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TemplateWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
 }
 
 //
@@ -14827,6 +21999,25 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 	return &result
 }
 
+type VmSessionServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmSessionServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmSessionServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VmSessionService) Get(
@@ -14877,6 +22068,30 @@ func NewVmNicService(connection *Connection, path string) *VmNicService {
 	return &result
 }
 
+type VmNicServiceActivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmNicServiceActivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicServiceActivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicServiceActivateRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the activation should be performed asynchronously.
@@ -14897,6 +22112,30 @@ func (op *VmNicService) Activate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "activate", headers, query, wait)
 	return err
+}
+
+type VmNicServiceDeactivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmNicServiceDeactivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicServiceDeactivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicServiceDeactivateRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -14921,6 +22160,25 @@ func (op *VmNicService) Deactivate(
 	return err
 }
 
+type VmNicServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmNicServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *VmNicService) Get(
@@ -14942,6 +22200,30 @@ func (op *VmNicService) Get(
 	var nicVar Nic
 	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
 	return &nicVar, nil
+}
+
+type VmNicServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmNicServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -14980,6 +22262,34 @@ func (op *VmNicService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmNicServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	nic    *Nic
+}
+
+func (p *VmNicServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VmNicServiceUpdateRequest) Nic(nic *Nic) {
+	p.nic = nic
 }
 
 //
@@ -15098,6 +22408,30 @@ func NewSnapshotsService(connection *Connection, path string) *SnapshotsService 
 	return &result
 }
 
+type SnapshotsServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	snapshot *Snapshot
+}
+
+func (p *SnapshotsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotsServiceAddRequest) Snapshot(snapshot *Snapshot) {
+	p.snapshot = snapshot
+}
+
 //
 // Creates a virtual machine snapshot.
 // For example, to create a new snapshot for virtual machine `123` send a request like this:
@@ -15133,6 +22467,34 @@ func (op *SnapshotsService) Add(
 	var snapshotVar Snapshot
 	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
 	return &snapshotVar, nil
+}
+
+type SnapshotsServiceListRequest struct {
+	header     map[string]string
+	query      map[string]string
+	allContent *bool
+	max        *int64
+}
+
+func (p *SnapshotsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotsServiceListRequest) AllContent(allContent bool) {
+	p.allContent = &allContent
+}
+func (p *SnapshotsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -15212,6 +22574,25 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 	return &result
 }
 
+type StorageDomainVmDiskAttachmentsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // List the disks that are attached to the virtual machine.
 //
@@ -15274,6 +22655,25 @@ func NewImageService(connection *Connection, path string) *ImageService {
 	return &result
 }
 
+type ImageServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ImageServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ImageService) Get(
@@ -15295,6 +22695,50 @@ func (op *ImageService) Get(
 	var imageVar Image
 	xml.Unmarshal([]byte(ovResp.Body), &imageVar)
 	return &imageVar, nil
+}
+
+type ImageServiceImportRequest struct {
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	cluster          *Cluster
+	disk             *Disk
+	importAsTemplate *bool
+	storageDomain    *StorageDomain
+	template         *Template
+}
+
+func (p *ImageServiceImportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImageServiceImportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ImageServiceImportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *ImageServiceImportRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *ImageServiceImportRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *ImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) {
+	p.importAsTemplate = &importAsTemplate
+}
+func (p *ImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+func (p *ImageServiceImportRequest) Template(template *Template) {
+	p.template = template
 }
 
 //
@@ -15363,6 +22807,30 @@ func NewInstanceTypeNicsService(connection *Connection, path string) *InstanceTy
 	return &result
 }
 
+type InstanceTypeNicsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	nic    *Nic
+}
+
+func (p *InstanceTypeNicsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeNicsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeNicsServiceAddRequest) Nic(nic *Nic) {
+	p.nic = nic
+}
+
 //
 // Add new network interface to the instance type.
 //
@@ -15386,6 +22854,34 @@ func (op *InstanceTypeNicsService) Add(
 	var nicVar Nic
 	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
 	return &nicVar, nil
+}
+
+type InstanceTypeNicsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+	search *string
+}
+
+func (p *InstanceTypeNicsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeNicsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeNicsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *InstanceTypeNicsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -15459,6 +22955,30 @@ func NewOperatingSystemsService(connection *Connection, path string) *OperatingS
 	return &result
 }
 
+type OperatingSystemsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *OperatingSystemsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *OperatingSystemsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *OperatingSystemsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
@@ -15527,6 +23047,25 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 	return &result
 }
 
+type HostNicServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *HostNicServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostNicServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *HostNicService) Get(
@@ -15548,6 +23087,34 @@ func (op *HostNicService) Get(
 	var nicVar HostNic
 	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
 	return &nicVar, nil
+}
+
+type HostNicServiceUpdateVirtualFunctionsConfigurationRequest struct {
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
+	virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration
+}
+
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) {
+	p.virtualFunctionsConfiguration = virtualFunctionsConfiguration
 }
 
 //
@@ -15672,6 +23239,30 @@ func NewIscsiBondsService(connection *Connection, path string) *IscsiBondsServic
 	return &result
 }
 
+type IscsiBondsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	bond   *IscsiBond
+}
+
+func (p *IscsiBondsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IscsiBondsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *IscsiBondsServiceAddRequest) Bond(bond *IscsiBond) {
+	p.bond = bond
+}
+
 //
 // Create a new iSCSI bond on a data center.
 // For example, to create a new iSCSI bond on data center `123` using storage connections `456` and `789`, send a
@@ -15715,6 +23306,30 @@ func (op *IscsiBondsService) Add(
 	var bondVar IscsiBond
 	xml.Unmarshal([]byte(ovResp.Body), &bondVar)
 	return &bondVar, nil
+}
+
+type IscsiBondsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *IscsiBondsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IscsiBondsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *IscsiBondsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -15785,6 +23400,30 @@ func NewUsersService(connection *Connection, path string) *UsersService {
 	return &result
 }
 
+type UsersServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	user   *User
+}
+
+func (p *UsersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UsersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *UsersServiceAddRequest) User(user *User) {
+	p.user = user
+}
+
 //
 // Add user from a directory service.
 // For example, to add the `myuser` user from the `myextension-authz` authorization provider send a request
@@ -15839,6 +23478,38 @@ func (op *UsersService) Add(
 	var userVar User
 	xml.Unmarshal([]byte(ovResp.Body), &userVar)
 	return &userVar, nil
+}
+
+type UsersServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *UsersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UsersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *UsersServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *UsersServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *UsersServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -15941,6 +23612,30 @@ func NewGroupsService(connection *Connection, path string) *GroupsService {
 	return &result
 }
 
+type GroupsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	group  *Group
+}
+
+func (p *GroupsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GroupsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GroupsServiceAddRequest) Group(group *Group) {
+	p.group = group
+}
+
 //
 // Add group from a directory service. Please note that domain name is name of the authorization provider.
 // For example, to add the `Developers` group from the `internal-authz` authorization provider send a request
@@ -15980,6 +23675,38 @@ func (op *GroupsService) Add(
 	var groupVar Group
 	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
 	return &groupVar, nil
+}
+
+type GroupsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *GroupsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GroupsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GroupsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *GroupsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *GroupsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -16056,6 +23783,25 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DomainServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DomainServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -16150,6 +23896,30 @@ func NewSshPublicKeysService(connection *Connection, path string) *SshPublicKeys
 	return &result
 }
 
+type SshPublicKeysServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	key    *SshPublicKey
+}
+
+func (p *SshPublicKeysServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SshPublicKeysServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SshPublicKeysServiceAddRequest) Key(key *SshPublicKey) {
+	p.key = key
+}
+
 //
 //
 func (op *SshPublicKeysService) Add(
@@ -16172,6 +23942,30 @@ func (op *SshPublicKeysService) Add(
 	var keyVar SshPublicKey
 	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
 	return &keyVar, nil
+}
+
+type SshPublicKeysServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *SshPublicKeysServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SshPublicKeysServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SshPublicKeysServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -16240,6 +24034,25 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DomainUserServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DomainUserServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainUserServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -16315,6 +24128,25 @@ func NewUserService(connection *Connection, path string) *UserService {
 	return &result
 }
 
+type UserServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *UserServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UserServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets the system user information.
 // Usage:
@@ -16362,6 +24194,30 @@ func (op *UserService) Get(
 	var userVar User
 	xml.Unmarshal([]byte(ovResp.Body), &userVar)
 	return &userVar, nil
+}
+
+type UserServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *UserServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UserServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *UserServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -16468,6 +24324,30 @@ func NewDomainsService(connection *Connection, path string) *DomainsService {
 	return &result
 }
 
+type DomainsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *DomainsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DomainsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // List all the authentication domains in the system.
 // Usage:
@@ -16553,6 +24433,38 @@ func NewDomainUsersService(connection *Connection, path string) *DomainUsersServ
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DomainUsersServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *DomainUsersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainUsersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DomainUsersServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *DomainUsersServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *DomainUsersServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -16652,6 +24564,38 @@ func NewDomainGroupsService(connection *Connection, path string) *DomainGroupsSe
 	return &result
 }
 
+type DomainGroupsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *DomainGroupsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainGroupsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DomainGroupsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *DomainGroupsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *DomainGroupsServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of groups to return. If not specified all the groups are returned.
@@ -16727,6 +24671,25 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 	return &result
 }
 
+type GroupServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *GroupServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GroupServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *GroupService) Get(
@@ -16748,6 +24711,30 @@ func (op *GroupService) Get(
 	var getVar Group
 	xml.Unmarshal([]byte(ovResp.Body), &getVar)
 	return &getVar, nil
+}
+
+type GroupServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GroupServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GroupServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GroupServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -16836,6 +24823,25 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 	return &result
 }
 
+type DomainGroupServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DomainGroupServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DomainGroupServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *DomainGroupService) Get(
@@ -16886,6 +24892,25 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 	return &result
 }
 
+type SshPublicKeyServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SshPublicKeyServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SshPublicKeyServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *SshPublicKeyService) Get(
@@ -16909,6 +24934,30 @@ func (op *SshPublicKeyService) Get(
 	return &keyVar, nil
 }
 
+type SshPublicKeyServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *SshPublicKeyServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SshPublicKeyServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SshPublicKeyServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -16930,6 +24979,34 @@ func (op *SshPublicKeyService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type SshPublicKeyServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	key    *SshPublicKey
+}
+
+func (p *SshPublicKeyServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SshPublicKeyServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SshPublicKeyServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *SshPublicKeyServiceUpdateRequest) Key(key *SshPublicKey) {
+	p.key = key
 }
 
 //
@@ -16985,6 +25062,25 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 	return &result
 }
 
+type FenceAgentServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *FenceAgentServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FenceAgentServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *FenceAgentService) Get(
@@ -17008,6 +25104,30 @@ func (op *FenceAgentService) Get(
 	return &agentVar, nil
 }
 
+type FenceAgentServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *FenceAgentServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FenceAgentServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FenceAgentServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -17029,6 +25149,34 @@ func (op *FenceAgentService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type FenceAgentServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	agent  *Agent
+	async  *bool
+}
+
+func (p *FenceAgentServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FenceAgentServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FenceAgentServiceUpdateRequest) Agent(agent *Agent) {
+	p.agent = agent
+}
+func (p *FenceAgentServiceUpdateRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -17084,6 +25232,25 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 	return &result
 }
 
+type MacPoolServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *MacPoolServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MacPoolServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *MacPoolService) Get(
@@ -17105,6 +25272,30 @@ func (op *MacPoolService) Get(
 	var poolVar MacPool
 	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
 	return &poolVar, nil
+}
+
+type MacPoolServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *MacPoolServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MacPoolServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *MacPoolServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -17134,6 +25325,34 @@ func (op *MacPoolService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type MacPoolServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	pool   *MacPool
+}
+
+func (p *MacPoolServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MacPoolServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *MacPoolServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *MacPoolServiceUpdateRequest) Pool(pool *MacPool) {
+	p.pool = pool
 }
 
 //
@@ -17215,6 +25434,30 @@ func NewAssignedCpuProfilesService(connection *Connection, path string) *Assigne
 	return &result
 }
 
+type AssignedCpuProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *CpuProfile
+}
+
+func (p *AssignedCpuProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedCpuProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedCpuProfilesServiceAddRequest) Profile(profile *CpuProfile) {
+	p.profile = profile
+}
+
 //
 //
 func (op *AssignedCpuProfilesService) Add(
@@ -17237,6 +25480,30 @@ func (op *AssignedCpuProfilesService) Add(
 	var profileVar CpuProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type AssignedCpuProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedCpuProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedCpuProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -17306,6 +25573,30 @@ func NewStorageServerConnectionExtensionsService(connection *Connection, path st
 	return &result
 }
 
+type StorageServerConnectionExtensionsServiceAddRequest struct {
+	header    map[string]string
+	query     map[string]string
+	extension *StorageConnectionExtension
+}
+
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Extension(extension *StorageConnectionExtension) {
+	p.extension = extension
+}
+
 //
 // Creates a new storage server connection extension for the given host.
 // The extension lets the user define credentials for an iSCSI target for a specific host. For example to use
@@ -17345,6 +25636,30 @@ func (op *StorageServerConnectionExtensionsService) Add(
 	var extensionVar StorageConnectionExtension
 	xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
 	return &extensionVar, nil
+}
+
+type StorageServerConnectionExtensionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageServerConnectionExtensionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionExtensionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -17414,6 +25729,25 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 	return &result
 }
 
+type PermissionServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *PermissionServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermissionServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *PermissionService) Get(
@@ -17435,6 +25769,30 @@ func (op *PermissionService) Get(
 	var permissionVar Permission
 	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
 	return &permissionVar, nil
+}
+
+type PermissionServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *PermissionServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermissionServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *PermissionServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -17487,6 +25845,25 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 	return &result
 }
 
+type DiskProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *DiskProfileService) Get(
@@ -17510,6 +25887,30 @@ func (op *DiskProfileService) Get(
 	return &profileVar, nil
 }
 
+type DiskProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *DiskProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -17531,6 +25932,34 @@ func (op *DiskProfileService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type DiskProfileServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	profile *DiskProfile
+}
+
+func (p *DiskProfileServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskProfileServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskProfileServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DiskProfileServiceUpdateRequest) Profile(profile *DiskProfile) {
+	p.profile = profile
 }
 
 //
@@ -17599,6 +26028,25 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 	return &result
 }
 
+type AffinityGroupServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityGroupServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieve the affinity group details.
 // [source,xml]
@@ -17632,6 +26080,30 @@ func (op *AffinityGroupService) Get(
 	return &groupVar, nil
 }
 
+type AffinityGroupServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AffinityGroupServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove the affinity group.
 // [source]
@@ -17658,6 +26130,34 @@ func (op *AffinityGroupService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type AffinityGroupServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	group  *AffinityGroup
+}
+
+func (p *AffinityGroupServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityGroupServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityGroupServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *AffinityGroupServiceUpdateRequest) Group(group *AffinityGroup) {
+	p.group = group
 }
 
 //
@@ -17734,6 +26234,30 @@ func NewUnmanagedNetworksService(connection *Connection, path string) *Unmanaged
 	return &result
 }
 
+type UnmanagedNetworksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *UnmanagedNetworksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UnmanagedNetworksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *UnmanagedNetworksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
@@ -17799,6 +26323,38 @@ func NewVmsService(connection *Connection, path string) *VmsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmsServiceAddRequest struct {
+	header           map[string]string
+	query            map[string]string
+	clone            *bool
+	clonePermissions *bool
+	vm               *Vm
+}
+
+func (p *VmsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmsServiceAddRequest) Clone(clone bool) {
+	p.clone = &clone
+}
+func (p *VmsServiceAddRequest) ClonePermissions(clonePermissions bool) {
+	p.clonePermissions = &clonePermissions
+}
+func (p *VmsServiceAddRequest) Vm(vm *Vm) {
+	p.vm = vm
 }
 
 //
@@ -17964,6 +26520,46 @@ func (op *VmsService) Add(
 	return &vmVar, nil
 }
 
+type VmsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	allContent    *bool
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *VmsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmsServiceListRequest) AllContent(allContent bool) {
+	p.allContent = &allContent
+}
+func (p *VmsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *VmsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *VmsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *VmsServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // This method supports the following parameters:
 // `Search`:: A query string used to restrict the returned virtual machines.
@@ -18057,6 +26653,25 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 	return &result
 }
 
+type StorageDomainTemplateServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainTemplateServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *StorageDomainTemplateService) Get(
@@ -18078,6 +26693,54 @@ func (op *StorageDomainTemplateService) Get(
 	var templateVar Template
 	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
 	return &templateVar, nil
+}
+
+type StorageDomainTemplateServiceImportRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	clone         *bool
+	cluster       *Cluster
+	exclusive     *bool
+	storageDomain *StorageDomain
+	template      *Template
+	vm            *Vm
+}
+
+func (p *StorageDomainTemplateServiceImportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainTemplateServiceImportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainTemplateServiceImportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainTemplateServiceImportRequest) Clone(clone bool) {
+	p.clone = &clone
+}
+func (p *StorageDomainTemplateServiceImportRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *StorageDomainTemplateServiceImportRequest) Exclusive(exclusive bool) {
+	p.exclusive = &exclusive
+}
+func (p *StorageDomainTemplateServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+func (p *StorageDomainTemplateServiceImportRequest) Template(template *Template) {
+	p.template = template
+}
+func (p *StorageDomainTemplateServiceImportRequest) Vm(vm *Vm) {
+	p.vm = vm
 }
 
 //
@@ -18135,6 +26798,50 @@ func (op *StorageDomainTemplateService) Import(
 	return err
 }
 
+type StorageDomainTemplateServiceRegisterRequest struct {
+	header             map[string]string
+	query              map[string]string
+	allowPartialImport *bool
+	async              *bool
+	clone              *bool
+	cluster            *Cluster
+	exclusive          *bool
+	template           *Template
+}
+
+func (p *StorageDomainTemplateServiceRegisterRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainTemplateServiceRegisterRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainTemplateServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) {
+	p.allowPartialImport = &allowPartialImport
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) Clone(clone bool) {
+	p.clone = &clone
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) Exclusive(exclusive bool) {
+	p.exclusive = &exclusive
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) Template(template *Template) {
+	p.template = template
+}
+
 //
 // This method supports the following parameters:
 // `AllowPartialImport`:: Indicates whether a template is allowed to be registered with only some of its disks.
@@ -18169,6 +26876,30 @@ func (op *StorageDomainTemplateService) Register(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "register", headers, query, wait)
 	return err
+}
+
+type StorageDomainTemplateServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *StorageDomainTemplateServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainTemplateServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainTemplateServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -18234,6 +26965,30 @@ func NewVmPoolsService(connection *Connection, path string) *VmPoolsService {
 	return &result
 }
 
+type VmPoolsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	pool   *VmPool
+}
+
+func (p *VmPoolsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolsServiceAddRequest) Pool(pool *VmPool) {
+	p.pool = pool
+}
+
 //
 // Creates a new virtual machine pool.
 // A new pool requires the `name`, `cluster` and `template` attributes. Identify the cluster and template with the
@@ -18277,6 +27032,42 @@ func (op *VmPoolsService) Add(
 	var poolVar VmPool
 	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
 	return &poolVar, nil
+}
+
+type VmPoolsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *VmPoolsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmPoolsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmPoolsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *VmPoolsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *VmPoolsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *VmPoolsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -18373,6 +27164,30 @@ func NewAssignedDiskProfilesService(connection *Connection, path string) *Assign
 	return &result
 }
 
+type AssignedDiskProfilesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	profile *DiskProfile
+}
+
+func (p *AssignedDiskProfilesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedDiskProfilesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedDiskProfilesServiceAddRequest) Profile(profile *DiskProfile) {
+	p.profile = profile
+}
+
 //
 //
 func (op *AssignedDiskProfilesService) Add(
@@ -18395,6 +27210,30 @@ func (op *AssignedDiskProfilesService) Add(
 	var profileVar DiskProfile
 	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
 	return &profileVar, nil
+}
+
+type AssignedDiskProfilesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedDiskProfilesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedDiskProfilesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -18465,6 +27304,38 @@ func NewStepService(connection *Connection, path string) *StepService {
 	return &result
 }
 
+type StepServiceEndRequest struct {
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	force     *bool
+	succeeded *bool
+}
+
+func (p *StepServiceEndRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StepServiceEndRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StepServiceEndRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StepServiceEndRequest) Force(force bool) {
+	p.force = &force
+}
+func (p *StepServiceEndRequest) Succeeded(succeeded bool) {
+	p.succeeded = &succeeded
+}
+
 //
 // Marks an external step execution as ended.
 // For example, to terminate a step with identifier `456` which belongs to a `job` with identifier `123` send the
@@ -18507,6 +27378,25 @@ func (op *StepService) End(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "end", headers, query, wait)
 	return err
+}
+
+type StepServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StepServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StepServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -18594,6 +27484,34 @@ func NewAttachedStorageDomainDisksService(connection *Connection, path string) *
 	return &result
 }
 
+type AttachedStorageDomainDisksServiceAddRequest struct {
+	header       map[string]string
+	query        map[string]string
+	disk         *Disk
+	unregistered *bool
+}
+
+func (p *AttachedStorageDomainDisksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDisksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDisksServiceAddRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *AttachedStorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) {
+	p.unregistered = &unregistered
+}
+
 //
 // Adds or registers a disk.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -18629,6 +27547,30 @@ func (op *AttachedStorageDomainDisksService) Add(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type AttachedStorageDomainDisksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AttachedStorageDomainDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -18714,6 +27656,25 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 	return &result
 }
 
+type NetworkFilterServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkFilterServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves a representation of the network filter.
 //
@@ -18765,6 +27726,30 @@ func NewVmDisksService(connection *Connection, path string) *VmDisksService {
 	return &result
 }
 
+type VmDisksServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	disk   *Disk
+}
+
+func (p *VmDisksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDisksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDisksServiceAddRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+
 //
 //
 func (op *VmDisksService) Add(
@@ -18787,6 +27772,30 @@ func (op *VmDisksService) Add(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type VmDisksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmDisksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -18859,6 +27868,30 @@ func NewDiskAttachmentsService(connection *Connection, path string) *DiskAttachm
 	return &result
 }
 
+type DiskAttachmentsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	attachment *DiskAttachment
+}
+
+func (p *DiskAttachmentsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskAttachmentsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskAttachmentsServiceAddRequest) Attachment(attachment *DiskAttachment) {
+	p.attachment = attachment
+}
+
 //
 // Adds a new disk attachment to the virtual machine. The `attachment` parameter can contain just a reference, if
 // the disk already exists:
@@ -18918,6 +27951,25 @@ func (op *DiskAttachmentsService) Add(
 	var attachmentVar DiskAttachment
 	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
 	return &attachmentVar, nil
+}
+
+type DiskAttachmentsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskAttachmentsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskAttachmentsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -18987,6 +28039,34 @@ func NewStorageDomainDiskService(connection *Connection, path string) *StorageDo
 	return &result
 }
 
+type StorageDomainDiskServiceCopyRequest struct {
+	header        map[string]string
+	query         map[string]string
+	disk          *Disk
+	storageDomain *StorageDomain
+}
+
+func (p *StorageDomainDiskServiceCopyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceCopyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDiskServiceCopyRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *StorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Copies a disk to the specified storage domain.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -19016,6 +28096,30 @@ func (op *StorageDomainDiskService) Copy(
 	return err
 }
 
+type StorageDomainDiskServiceExportRequest struct {
+	header        map[string]string
+	query         map[string]string
+	storageDomain *StorageDomain
+}
+
+func (p *StorageDomainDiskServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Exports a disk to an export storage domain.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -19042,6 +28146,25 @@ func (op *StorageDomainDiskService) Export(
 	return err
 }
 
+type StorageDomainDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves the description of the disk.
 //
@@ -19064,6 +28187,38 @@ func (op *StorageDomainDiskService) Get(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type StorageDomainDiskServiceMoveRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
+	storageDomain *StorageDomain
+}
+
+func (p *StorageDomainDiskServiceMoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceMoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDiskServiceMoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageDomainDiskServiceMoveRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *StorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -19098,6 +28253,25 @@ func (op *StorageDomainDiskService) Move(
 	return err
 }
 
+type StorageDomainDiskServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainDiskServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Removes a disk.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -19118,6 +28292,25 @@ func (op *StorageDomainDiskService) Remove(
 	return err
 }
 
+type StorageDomainDiskServiceSparsifyRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageDomainDiskServiceSparsifyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceSparsifyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Sparsify the disk.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -19134,6 +28327,30 @@ func (op *StorageDomainDiskService) Sparsify(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "sparsify", headers, query, wait)
 	return err
+}
+
+type StorageDomainDiskServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	disk   *Disk
+}
+
+func (p *StorageDomainDiskServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDiskServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) {
+	p.disk = disk
 }
 
 //
@@ -19221,6 +28438,30 @@ func NewHostHooksService(connection *Connection, path string) *HostHooksService 
 	return &result
 }
 
+type HostHooksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *HostHooksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostHooksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostHooksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of hooks to return. If not specified all the hooks are returned.
@@ -19286,6 +28527,30 @@ func NewStorageDomainsService(connection *Connection, path string) *StorageDomai
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type StorageDomainsServiceAddRequest struct {
+	header        map[string]string
+	query         map[string]string
+	storageDomain *StorageDomain
+}
+
+func (p *StorageDomainsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -19374,6 +28639,42 @@ func (op *StorageDomainsService) Add(
 	return &storageDomainVar, nil
 }
 
+type StorageDomainsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *StorageDomainsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *StorageDomainsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *StorageDomainsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *StorageDomainsServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of storage domains to return. If not specified all the storage domains are returned.
@@ -19452,6 +28753,25 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 	return &result
 }
 
+type NetworkLabelServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkLabelServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkLabelServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *NetworkLabelService) Get(
@@ -19473,6 +28793,30 @@ func (op *NetworkLabelService) Get(
 	var labelVar NetworkLabel
 	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
 	return &labelVar, nil
+}
+
+type NetworkLabelServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *NetworkLabelServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkLabelServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkLabelServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -19529,6 +28873,30 @@ func NewInstanceTypesService(connection *Connection, path string) *InstanceTypes
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type InstanceTypesServiceAddRequest struct {
+	header       map[string]string
+	query        map[string]string
+	instanceType *InstanceType
+}
+
+func (p *InstanceTypesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypesServiceAddRequest) InstanceType(instanceType *InstanceType) {
+	p.instanceType = instanceType
 }
 
 //
@@ -19634,6 +29002,38 @@ func (op *InstanceTypesService) Add(
 	return &instanceTypeVar, nil
 }
 
+type InstanceTypesServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *InstanceTypesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypesServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *InstanceTypesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *InstanceTypesServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // Lists all existing instance types in the system.
 // This method supports the following parameters:
@@ -19711,6 +29111,30 @@ func NewStorageDomainServerConnectionsService(connection *Connection, path strin
 	return &result
 }
 
+type StorageDomainServerConnectionsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	connection *StorageConnection
+}
+
+func (p *StorageDomainServerConnectionsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServerConnectionsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) {
+	p.connection = connection
+}
+
 //
 //
 func (op *StorageDomainServerConnectionsService) Add(
@@ -19733,6 +29157,30 @@ func (op *StorageDomainServerConnectionsService) Add(
 	var connectionVar StorageConnection
 	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
 	return &connectionVar, nil
+}
+
+type StorageDomainServerConnectionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageDomainServerConnectionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainServerConnectionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -19802,6 +29250,25 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 	return &result
 }
 
+type InstanceTypeGraphicsConsoleServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets graphics console configuration of the instance type.
 //
@@ -19824,6 +29291,30 @@ func (op *InstanceTypeGraphicsConsoleService) Get(
 	var consoleVar GraphicsConsole
 	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
 	return &consoleVar, nil
+}
+
+type InstanceTypeGraphicsConsoleServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -19877,6 +29368,25 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 	return &result
 }
 
+type IscsiBondServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *IscsiBondServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IscsiBondServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *IscsiBondService) Get(
@@ -19898,6 +29408,30 @@ func (op *IscsiBondService) Get(
 	var bondVar IscsiBond
 	xml.Unmarshal([]byte(ovResp.Body), &bondVar)
 	return &bondVar, nil
+}
+
+type IscsiBondServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *IscsiBondServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IscsiBondServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *IscsiBondServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -19927,6 +29461,34 @@ func (op *IscsiBondService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type IscsiBondServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	bond   *IscsiBond
+}
+
+func (p *IscsiBondServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IscsiBondServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *IscsiBondServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *IscsiBondServiceUpdateRequest) Bond(bond *IscsiBond) {
+	p.bond = bond
 }
 
 //
@@ -20022,6 +29584,25 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 	return &result
 }
 
+type TemplateDiskAttachmentServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateDiskAttachmentServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the details of the attachment.
 //
@@ -20044,6 +29625,34 @@ func (op *TemplateDiskAttachmentService) Get(
 	var attachmentVar DiskAttachment
 	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
 	return &attachmentVar, nil
+}
+
+type TemplateDiskAttachmentServiceRemoveRequest struct {
+	header        map[string]string
+	query         map[string]string
+	force         *bool
+	storageDomain *string
+}
+
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Force(force bool) {
+	p.force = &force
+}
+func (p *TemplateDiskAttachmentServiceRemoveRequest) StorageDomain(storageDomain string) {
+	p.storageDomain = &storageDomain
 }
 
 //
@@ -20105,6 +29714,30 @@ func NewHostStorageService(connection *Connection, path string) *HostStorageServ
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type HostStorageServiceListRequest struct {
+	header       map[string]string
+	query        map[string]string
+	reportStatus *bool
+}
+
+func (p *HostStorageServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostStorageServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) {
+	p.reportStatus = &reportStatus
 }
 
 //
@@ -20233,6 +29866,30 @@ func NewWeightService(connection *Connection, path string) *WeightService {
 	return &result
 }
 
+type WeightServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *WeightServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *WeightServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *WeightServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -20261,6 +29918,30 @@ func (op *WeightService) Get(
 	var weightVar Weight
 	xml.Unmarshal([]byte(ovResp.Body), &weightVar)
 	return &weightVar, nil
+}
+
+type WeightServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *WeightServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *WeightServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *WeightServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -20313,6 +29994,30 @@ func NewVmNumaNodesService(connection *Connection, path string) *VmNumaNodesServ
 	return &result
 }
 
+type VmNumaNodesServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	node   *VirtualNumaNode
+}
+
+func (p *VmNumaNodesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNumaNodesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNumaNodesServiceAddRequest) Node(node *VirtualNumaNode) {
+	p.node = node
+}
+
 //
 // Creates a new virtual NUMA node for the virtual machine.
 // An example of creating a NUMA node:
@@ -20358,6 +30063,30 @@ func (op *VmNumaNodesService) Add(
 	var nodeVar VirtualNumaNode
 	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
 	return &nodeVar, nil
+}
+
+type VmNumaNodesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmNumaNodesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNumaNodesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNumaNodesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -20428,6 +30157,30 @@ func NewTemplateWatchdogsService(connection *Connection, path string) *TemplateW
 	return &result
 }
 
+type TemplateWatchdogsServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	watchdog *Watchdog
+}
+
+func (p *TemplateWatchdogsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateWatchdogsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
+}
+
 //
 //
 func (op *TemplateWatchdogsService) Add(
@@ -20450,6 +30203,30 @@ func (op *TemplateWatchdogsService) Add(
 	var watchdogVar Watchdog
 	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
 	return &watchdogVar, nil
+}
+
+type TemplateWatchdogsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *TemplateWatchdogsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateWatchdogsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateWatchdogsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -20524,6 +30301,34 @@ func NewAttachedStorageDomainDiskService(connection *Connection, path string) *A
 	return &result
 }
 
+type AttachedStorageDomainDiskServiceCopyRequest struct {
+	header        map[string]string
+	query         map[string]string
+	disk          *Disk
+	storageDomain *StorageDomain
+}
+
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *AttachedStorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Copies a disk to the specified storage domain.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -20553,6 +30358,30 @@ func (op *AttachedStorageDomainDiskService) Copy(
 	return err
 }
 
+type AttachedStorageDomainDiskServiceExportRequest struct {
+	header        map[string]string
+	query         map[string]string
+	storageDomain *StorageDomain
+}
+
+func (p *AttachedStorageDomainDiskServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Exports a disk to an export storage domain.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -20579,6 +30408,25 @@ func (op *AttachedStorageDomainDiskService) Export(
 	return err
 }
 
+type AttachedStorageDomainDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AttachedStorageDomainDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves the description of the disk.
 //
@@ -20601,6 +30449,38 @@ func (op *AttachedStorageDomainDiskService) Get(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type AttachedStorageDomainDiskServiceMoveRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
+	storageDomain *StorageDomain
+}
+
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *AttachedStorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -20635,6 +30515,25 @@ func (op *AttachedStorageDomainDiskService) Move(
 	return err
 }
 
+type AttachedStorageDomainDiskServiceRegisterRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Registers an unregistered disk.
 //
@@ -20648,6 +30547,25 @@ func (op *AttachedStorageDomainDiskService) Register(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "register", headers, query, wait)
 	return err
+}
+
+type AttachedStorageDomainDiskServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -20670,6 +30588,25 @@ func (op *AttachedStorageDomainDiskService) Remove(
 	return err
 }
 
+type AttachedStorageDomainDiskServiceSparsifyRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Sparsify the disk.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -20686,6 +30623,30 @@ func (op *AttachedStorageDomainDiskService) Sparsify(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "sparsify", headers, query, wait)
 	return err
+}
+
+type AttachedStorageDomainDiskServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	disk   *Disk
+}
+
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) {
+	p.disk = disk
 }
 
 //
@@ -20774,6 +30735,25 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 	return &result
 }
 
+type VnicProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VnicProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VnicProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves details about a vNIC profile.
 //
@@ -20798,6 +30778,30 @@ func (op *VnicProfileService) Get(
 	return &profileVar, nil
 }
 
+type VnicProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VnicProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VnicProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VnicProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes the vNIC profile.
 // This method supports the following parameters:
@@ -20820,6 +30824,34 @@ func (op *VnicProfileService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VnicProfileServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	profile *VnicProfile
+}
+
+func (p *VnicProfileServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VnicProfileServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VnicProfileServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *VnicProfileServiceUpdateRequest) Profile(profile *VnicProfile) {
+	p.profile = profile
 }
 
 //
@@ -20893,6 +30925,30 @@ func NewVmGraphicsConsolesService(connection *Connection, path string) *VmGraphi
 	return &result
 }
 
+type VmGraphicsConsolesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	console *GraphicsConsole
+}
+
+func (p *VmGraphicsConsolesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsolesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+	p.console = console
+}
+
 //
 // Add new graphics console to the virtual machine.
 //
@@ -20916,6 +30972,34 @@ func (op *VmGraphicsConsolesService) Add(
 	var consoleVar GraphicsConsole
 	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
 	return &consoleVar, nil
+}
+
+type VmGraphicsConsolesServiceListRequest struct {
+	header  map[string]string
+	query   map[string]string
+	current *bool
+	max     *int64
+}
+
+func (p *VmGraphicsConsolesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsolesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsolesServiceListRequest) Current(current bool) {
+	p.current = &current
+}
+func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -20996,6 +31080,25 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 	return &result
 }
 
+type PermitServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *PermitServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermitServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets the information about the permit of the role.
 // For example to retrieve the information about the permit with the id `456` of the role with the id `123`
@@ -21031,6 +31134,30 @@ func (op *PermitService) Get(
 	var permitVar Permit
 	xml.Unmarshal([]byte(ovResp.Body), &permitVar)
 	return &permitVar, nil
+}
+
+type PermitServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *PermitServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermitServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *PermitServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -21087,6 +31214,30 @@ func NewDataCenterService(connection *Connection, path string) *DataCenterServic
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DataCenterServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *DataCenterServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DataCenterServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DataCenterServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -21154,6 +31305,34 @@ func (op *DataCenterService) Get(
 	return &dataCenterVar, nil
 }
 
+type DataCenterServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	force  *bool
+}
+
+func (p *DataCenterServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DataCenterServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DataCenterServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DataCenterServiceRemoveRequest) Force(force bool) {
+	p.force = &force
+}
+
 //
 // Removes the data center.
 // [source]
@@ -21191,6 +31370,34 @@ func (op *DataCenterService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type DataCenterServiceUpdateRequest struct {
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	dataCenter *DataCenter
+}
+
+func (p *DataCenterServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DataCenterServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DataCenterServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DataCenterServiceUpdateRequest) DataCenter(dataCenter *DataCenter) {
+	p.dataCenter = dataCenter
 }
 
 //
@@ -21373,6 +31580,30 @@ func NewStatisticsService(connection *Connection, path string) *StatisticsServic
 	return &result
 }
 
+type StatisticsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StatisticsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StatisticsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StatisticsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // Retrieves a list of statistics.
 // For example, to retrieve the statistics for virtual machine `123` send a
@@ -21489,6 +31720,34 @@ func NewSchedulingPolicyUnitsService(connection *Connection, path string) *Sched
 	return &result
 }
 
+type SchedulingPolicyUnitsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *SchedulingPolicyUnitsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SchedulingPolicyUnitsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SchedulingPolicyUnitsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of policy units to return. If not specified all the policy units are returned.
@@ -21559,6 +31818,34 @@ func NewTemplateDiskService(connection *Connection, path string) *TemplateDiskSe
 	return &result
 }
 
+type TemplateDiskServiceCopyRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	filter *bool
+}
+
+func (p *TemplateDiskServiceCopyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskServiceCopyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateDiskServiceCopyRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TemplateDiskServiceCopyRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the copy should be performed asynchronously.
@@ -21582,6 +31869,34 @@ func (op *TemplateDiskService) Copy(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "copy", headers, query, wait)
 	return err
+}
+
+type TemplateDiskServiceExportRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	filter *bool
+}
+
+func (p *TemplateDiskServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateDiskServiceExportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *TemplateDiskServiceExportRequest) Filter(filter bool) {
+	p.filter = &filter
 }
 
 //
@@ -21609,6 +31924,25 @@ func (op *TemplateDiskService) Export(
 	return err
 }
 
+type TemplateDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *TemplateDiskService) Get(
@@ -21630,6 +31964,30 @@ func (op *TemplateDiskService) Get(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type TemplateDiskServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TemplateDiskServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateDiskServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -21685,6 +32043,30 @@ func NewAffinityLabelVmsService(connection *Connection, path string) *AffinityLa
 	return &result
 }
 
+type AffinityLabelVmsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	vm     *Vm
+}
+
+func (p *AffinityLabelVmsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelVmsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityLabelVmsServiceAddRequest) Vm(vm *Vm) {
+	p.vm = vm
+}
+
 //
 // Add a label to a vm.
 //
@@ -21708,6 +32090,25 @@ func (op *AffinityLabelVmsService) Add(
 	var vmVar Vm
 	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
 	return &vmVar, nil
+}
+
+type AffinityLabelVmsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelVmsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -21773,6 +32174,30 @@ func NewCopyableService(connection *Connection, path string) *CopyableService {
 	return &result
 }
 
+type CopyableServiceCopyRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *CopyableServiceCopyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CopyableServiceCopyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *CopyableServiceCopyRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the copy should be performed asynchronously.
@@ -21823,6 +32248,30 @@ func NewAffinityLabelsService(connection *Connection, path string) *AffinityLabe
 	return &result
 }
 
+type AffinityLabelsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	label  *AffinityLabel
+}
+
+func (p *AffinityLabelsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityLabelsServiceAddRequest) Label(label *AffinityLabel) {
+	p.label = label
+}
+
 //
 // Creates a new label. The label is automatically attached
 // to all entities mentioned in the vms or hosts lists.
@@ -21847,6 +32296,30 @@ func (op *AffinityLabelsService) Add(
 	var labelVar AffinityLabel
 	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
 	return &labelVar, nil
+}
+
+type AffinityLabelsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AffinityLabelsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityLabelsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -21918,6 +32391,30 @@ func NewVmGraphicsConsoleService(connection *Connection, path string) *VmGraphic
 	return &result
 }
 
+type VmGraphicsConsoleServiceGetRequest struct {
+	header  map[string]string
+	query   map[string]string
+	current *bool
+}
+
+func (p *VmGraphicsConsoleServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) {
+	p.current = &current
+}
+
 //
 // Gets graphics console configuration of the virtual machine.
 // This method supports the following parameters:
@@ -21954,6 +32451,30 @@ func (op *VmGraphicsConsoleService) Get(
 	return &consoleVar, nil
 }
 
+type VmGraphicsConsoleServiceProxyTicketRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the generation of the ticket should be performed asynchronously.
@@ -21981,6 +32502,25 @@ func (op *VmGraphicsConsoleService) ProxyTicket(
 	var proxyTicketVar ProxyTicket
 	xml.Unmarshal([]byte(ovResp.Body), &proxyTicketVar)
 	return &proxyTicketVar, nil
+}
+
+type VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -22067,6 +32607,30 @@ func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
 	return ovResp.Body, nil
 }
 
+type VmGraphicsConsoleServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *VmGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Remove the graphics console from the virtual machine.
 // This method supports the following parameters:
@@ -22089,6 +32653,30 @@ func (op *VmGraphicsConsoleService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type VmGraphicsConsoleServiceTicketRequest struct {
+	header map[string]string
+	query  map[string]string
+	ticket *Ticket
+}
+
+func (p *VmGraphicsConsoleServiceTicketRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceTicketRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmGraphicsConsoleServiceTicketRequest) Ticket(ticket *Ticket) {
+	p.ticket = ticket
 }
 
 //
@@ -22166,6 +32754,25 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 	return &result
 }
 
+type AffinityLabelHostServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelHostServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves details about a host that has this label assigned.
 //
@@ -22188,6 +32795,25 @@ func (op *AffinityLabelHostService) Get(
 	var hostVar Host
 	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
 	return &hostVar, nil
+}
+
+type AffinityLabelHostServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelHostServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelHostServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -22235,6 +32861,25 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 	return &result
 }
 
+type AssignedTagServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedTagServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedTagServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets the information about the assigned tag.
 // For example to retrieve the information about the tag with the id `456` which is assigned to virtual machine
@@ -22270,6 +32915,30 @@ func (op *AssignedTagService) Get(
 	var tagVar Tag
 	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
 	return &tagVar, nil
+}
+
+type AssignedTagServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *AssignedTagServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedTagServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedTagServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -22326,6 +32995,42 @@ func NewDiskService(connection *Connection, path string) *DiskService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DiskServiceCopyRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	disk          *Disk
+	filter        *bool
+	storageDomain *StorageDomain
+}
+
+func (p *DiskServiceCopyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceCopyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskServiceCopyRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DiskServiceCopyRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *DiskServiceCopyRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *DiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -22403,6 +33108,38 @@ func (op *DiskService) Copy(
 	return err
 }
 
+type DiskServiceExportRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
+	storageDomain *StorageDomain
+}
+
+func (p *DiskServiceExportRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceExportRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskServiceExportRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DiskServiceExportRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *DiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
+}
+
 //
 // Exports a disk to an export storage domain.
 // This method supports the following parameters:
@@ -22432,6 +33169,25 @@ func (op *DiskService) Export(
 	return err
 }
 
+type DiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves the description of the disk.
 //
@@ -22454,6 +33210,38 @@ func (op *DiskService) Get(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type DiskServiceMoveRequest struct {
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
+	storageDomain *StorageDomain
+}
+
+func (p *DiskServiceMoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceMoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskServiceMoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *DiskServiceMoveRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *DiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+	p.storageDomain = storageDomain
 }
 
 //
@@ -22498,6 +33286,30 @@ func (op *DiskService) Move(
 	return err
 }
 
+type DiskServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *DiskServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes a disk.
 // This method supports the following parameters:
@@ -22522,6 +33334,25 @@ func (op *DiskService) Remove(
 	return err
 }
 
+type DiskServiceSparsifyRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *DiskServiceSparsifyRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceSparsifyRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Sparsify the disk.
 // Sparsification frees space in the disk image that is not used by its
@@ -22539,6 +33370,30 @@ func (op *DiskService) Sparsify(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "sparsify", headers, query, wait)
 	return err
+}
+
+type DiskServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	disk   *Disk
+}
+
+func (p *DiskServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskServiceUpdateRequest) Disk(disk *Disk) {
+	p.disk = disk
 }
 
 //
@@ -22640,6 +33495,25 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 	return &result
 }
 
+type TemplateDiskAttachmentsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateDiskAttachmentsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // List the disks that are attached to the template.
 //
@@ -22700,6 +33574,38 @@ func NewStorageDomainContentDisksService(connection *Connection, path string) *S
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type StorageDomainContentDisksServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *StorageDomainContentDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainContentDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainContentDisksServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *StorageDomainContentDisksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *StorageDomainContentDisksServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -22778,6 +33684,30 @@ func NewHostDevicesService(connection *Connection, path string) *HostDevicesServ
 	return &result
 }
 
+type HostDevicesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *HostDevicesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostDevicesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostDevicesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // List the devices of a host.
 // This method supports the following parameters:
@@ -22847,6 +33777,30 @@ func NewAssignedNetworksService(connection *Connection, path string) *AssignedNe
 	return &result
 }
 
+type AssignedNetworksServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	network *Network
+}
+
+func (p *AssignedNetworksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedNetworksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedNetworksServiceAddRequest) Network(network *Network) {
+	p.network = network
+}
+
 //
 //
 func (op *AssignedNetworksService) Add(
@@ -22869,6 +33823,30 @@ func (op *AssignedNetworksService) Add(
 	var networkVar Network
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type AssignedNetworksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *AssignedNetworksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedNetworksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedNetworksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -22936,6 +33914,30 @@ func NewStorageService(connection *Connection, path string) *StorageService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type StorageServiceGetRequest struct {
+	header       map[string]string
+	query        map[string]string
+	reportStatus *bool
+}
+
+func (p *StorageServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) {
+	p.reportStatus = &reportStatus
 }
 
 //
@@ -23038,6 +34040,25 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 	return &result
 }
 
+type UnmanagedNetworkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *UnmanagedNetworkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *UnmanagedNetworkService) Get(
@@ -23059,6 +34080,30 @@ func (op *UnmanagedNetworkService) Get(
 	var networkVar UnmanagedNetwork
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type UnmanagedNetworkServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *UnmanagedNetworkServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *UnmanagedNetworkServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *UnmanagedNetworkServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -23111,6 +34156,25 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 	return &result
 }
 
+type QuotaServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *QuotaServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Retrieves a quota.
 // An example of retrieving a quota:
@@ -23151,6 +34215,30 @@ func (op *QuotaService) Get(
 	return &quotaVar, nil
 }
 
+type QuotaServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *QuotaServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Delete a quota.
 // An example of deleting a quota:
@@ -23181,6 +34269,34 @@ func (op *QuotaService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type QuotaServiceUpdateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	quota  *Quota
+}
+
+func (p *QuotaServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QuotaServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QuotaServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *QuotaServiceUpdateRequest) Quota(quota *Quota) {
+	p.quota = quota
 }
 
 //
@@ -23287,6 +34403,25 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 	return &result
 }
 
+type SnapshotDiskServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SnapshotDiskServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotDiskServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *SnapshotDiskService) Get(
@@ -23337,6 +34472,30 @@ func NewQossService(connection *Connection, path string) *QossService {
 	return &result
 }
 
+type QossServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	qos    *Qos
+}
+
+func (p *QossServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QossServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QossServiceAddRequest) Qos(qos *Qos) {
+	p.qos = qos
+}
+
 //
 //
 func (op *QossService) Add(
@@ -23359,6 +34518,30 @@ func (op *QossService) Add(
 	var qosVar Qos
 	xml.Unmarshal([]byte(ovResp.Body), &qosVar)
 	return &qosVar, nil
+}
+
+type QossServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *QossServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *QossServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *QossServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -23429,6 +34612,25 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 	return &result
 }
 
+type NetworkServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets a logical network.
 // For example:
@@ -23475,6 +34677,30 @@ func (op *NetworkService) Get(
 	return &networkVar, nil
 }
 
+type NetworkServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *NetworkServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes a logical network, or the association of a logical network to a data center.
 // For example, to remove the logical network `123` send a request like this:
@@ -23510,6 +34736,34 @@ func (op *NetworkService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type NetworkServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	network *Network
+}
+
+func (p *NetworkServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *NetworkServiceUpdateRequest) Network(network *Network) {
+	p.network = network
 }
 
 //
@@ -23632,6 +34886,25 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 	return &result
 }
 
+type InstanceTypeServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *InstanceTypeServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get a specific instance type and it's attributes.
 // [source]
@@ -23658,6 +34931,30 @@ func (op *InstanceTypeService) Get(
 	var instanceTypeVar InstanceType
 	xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
 	return &instanceTypeVar, nil
+}
+
+type InstanceTypeServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *InstanceTypeServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -23688,6 +34985,34 @@ func (op *InstanceTypeService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type InstanceTypeServiceUpdateRequest struct {
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	instanceType *InstanceType
+}
+
+func (p *InstanceTypeServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *InstanceTypeServiceUpdateRequest) InstanceType(instanceType *InstanceType) {
+	p.instanceType = instanceType
 }
 
 //
@@ -23807,6 +35132,30 @@ func NewVirtualFunctionAllowedNetworksService(connection *Connection, path strin
 	return &result
 }
 
+type VirtualFunctionAllowedNetworksServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	network *Network
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Network(network *Network) {
+	p.network = network
+}
+
 //
 //
 func (op *VirtualFunctionAllowedNetworksService) Add(
@@ -23829,6 +35178,30 @@ func (op *VirtualFunctionAllowedNetworksService) Add(
 	var networkVar Network
 	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
 	return &networkVar, nil
+}
+
+type VirtualFunctionAllowedNetworksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -23898,6 +35271,25 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 	return &result
 }
 
+type HostHookServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *HostHookServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostHookServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *HostHookService) Get(
@@ -23946,6 +35338,30 @@ func NewImagesService(connection *Connection, path string) *ImagesService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ImagesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ImagesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ImagesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ImagesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -24015,6 +35431,30 @@ func NewSnapshotCdromsService(connection *Connection, path string) *SnapshotCdro
 	return &result
 }
 
+type SnapshotCdromsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *SnapshotCdromsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotCdromsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SnapshotCdromsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of CDROMS to return. If not specified all the CDROMS are returned.
@@ -24082,6 +35522,30 @@ func NewBalancesService(connection *Connection, path string) *BalancesService {
 	return &result
 }
 
+type BalancesServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	balance *Balance
+}
+
+func (p *BalancesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BalancesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BalancesServiceAddRequest) Balance(balance *Balance) {
+	p.balance = balance
+}
+
 //
 //
 func (op *BalancesService) Add(
@@ -24104,6 +35568,34 @@ func (op *BalancesService) Add(
 	var balanceVar Balance
 	xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
 	return &balanceVar, nil
+}
+
+type BalancesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *BalancesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BalancesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BalancesServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *BalancesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -24177,6 +35669,25 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 	return &result
 }
 
+type TemplateCdromServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateCdromServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateCdromServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Returns the information about this CD-ROM device.
 // For example, to get information about the CD-ROM device of template `123` send a request like:
@@ -24233,6 +35744,30 @@ func NewMoveableService(connection *Connection, path string) *MoveableService {
 	return &result
 }
 
+type MoveableServiceMoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *MoveableServiceMoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *MoveableServiceMoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *MoveableServiceMoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the move should be performed asynchronously.
@@ -24282,6 +35817,25 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 	return &result
 }
 
+type CpuProfileServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *CpuProfileServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CpuProfileServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *CpuProfileService) Get(
@@ -24305,6 +35859,30 @@ func (op *CpuProfileService) Get(
 	return &profileVar, nil
 }
 
+type CpuProfileServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *CpuProfileServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CpuProfileServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *CpuProfileServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -24326,6 +35904,34 @@ func (op *CpuProfileService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type CpuProfileServiceUpdateRequest struct {
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	profile *CpuProfile
+}
+
+func (p *CpuProfileServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *CpuProfileServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *CpuProfileServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *CpuProfileServiceUpdateRequest) Profile(profile *CpuProfile) {
+	p.profile = profile
 }
 
 //
@@ -24432,6 +36038,25 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 	return &result
 }
 
+type StorageServerConnectionExtensionServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *StorageServerConnectionExtensionServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *StorageServerConnectionExtensionService) Get(
@@ -24455,6 +36080,30 @@ func (op *StorageServerConnectionExtensionService) Get(
 	return &extensionVar, nil
 }
 
+type StorageServerConnectionExtensionServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the remove should be performed asynchronously.
@@ -24476,6 +36125,34 @@ func (op *StorageServerConnectionExtensionService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type StorageServerConnectionExtensionServiceUpdateRequest struct {
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	extension *StorageConnectionExtension
+}
+
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Extension(extension *StorageConnectionExtension) {
+	p.extension = extension
 }
 
 //
@@ -24547,6 +36224,25 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ClusterLevelsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ClusterLevelsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClusterLevelsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -24626,6 +36322,30 @@ func NewNetworkFilterParametersService(connection *Connection, path string) *Net
 	return &result
 }
 
+type NetworkFilterParametersServiceAddRequest struct {
+	header    map[string]string
+	query     map[string]string
+	parameter *NetworkFilterParameter
+}
+
+func (p *NetworkFilterParametersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterParametersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *NetworkFilterParametersServiceAddRequest) Parameter(parameter *NetworkFilterParameter) {
+	p.parameter = parameter
+}
+
 //
 // Add a network filter parameter.
 // For example, to add the parameter for the network filter on NIC `456` of
@@ -24668,6 +36388,25 @@ func (op *NetworkFilterParametersService) Add(
 	var parameterVar NetworkFilterParameter
 	xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
 	return &parameterVar, nil
+}
+
+type NetworkFilterParametersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *NetworkFilterParametersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -24730,6 +36469,30 @@ func NewVmNicsService(connection *Connection, path string) *VmNicsService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmNicsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	nic    *Nic
+}
+
+func (p *VmNicsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicsServiceAddRequest) Nic(nic *Nic) {
+	p.nic = nic
 }
 
 //
@@ -24802,6 +36565,30 @@ func (op *VmNicsService) Add(
 	return &nicVar, nil
 }
 
+type VmNicsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmNicsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmNicsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmNicsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
@@ -24867,6 +36654,30 @@ func NewVmReportedDevicesService(connection *Connection, path string) *VmReporte
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type VmReportedDevicesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *VmReportedDevicesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *VmReportedDevicesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *VmReportedDevicesServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -24936,6 +36747,30 @@ func NewBalanceService(connection *Connection, path string) *BalanceService {
 	return &result
 }
 
+type BalanceServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *BalanceServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BalanceServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BalanceServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -24964,6 +36799,30 @@ func (op *BalanceService) Get(
 	var balanceVar Balance
 	xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
 	return &balanceVar, nil
+}
+
+type BalanceServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *BalanceServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *BalanceServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *BalanceServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -25017,6 +36876,30 @@ func NewPermitsService(connection *Connection, path string) *PermitsService {
 	return &result
 }
 
+type PermitsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	permit *Permit
+}
+
+func (p *PermitsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermitsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *PermitsServiceAddRequest) Permit(permit *Permit) {
+	p.permit = permit
+}
+
 //
 // Adds a permit to the role. The permit name can be retrieved from the <<services/cluster_levels>> service.
 // For example to assign a permit `create_vm` to the role with id `123` send a request like this:
@@ -25056,6 +36939,30 @@ func (op *PermitsService) Add(
 	var permitVar Permit
 	xml.Unmarshal([]byte(ovResp.Body), &permitVar)
 	return &permitVar, nil
+}
+
+type PermitsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *PermitsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *PermitsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *PermitsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -25146,6 +37053,30 @@ func NewStorageDomainTemplatesService(connection *Connection, path string) *Stor
 	return &result
 }
 
+type StorageDomainTemplatesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageDomainTemplatesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainTemplatesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of templates to return. If not specified all the templates are returned.
@@ -25211,6 +37142,25 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type SystemServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SystemServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SystemServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -25308,6 +37258,30 @@ func (op *SystemService) Get(
 	var apiVar Api
 	xml.Unmarshal([]byte(ovResp.Body), &apiVar)
 	return &apiVar, nil
+}
+
+type SystemServiceReloadConfigurationsRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *SystemServiceReloadConfigurationsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SystemServiceReloadConfigurationsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *SystemServiceReloadConfigurationsRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -25823,6 +37797,25 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 	return &result
 }
 
+type ExternalHostServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalHostServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ExternalHostService) Get(
@@ -25871,6 +37864,25 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ExternalHostGroupServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalHostGroupServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -25922,6 +37934,25 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type KatelloErratumServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *KatelloErratumServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *KatelloErratumServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -25998,6 +38029,25 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 	return &result
 }
 
+type ExternalDiscoveredHostServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalDiscoveredHostServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ExternalDiscoveredHostService) Get(
@@ -26048,6 +38098,30 @@ func NewEngineKatelloErrataService(connection *Connection, path string) *EngineK
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type EngineKatelloErrataServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *EngineKatelloErrataServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *EngineKatelloErrataServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *EngineKatelloErrataServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -26146,6 +38220,25 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 	return &result
 }
 
+type ExternalComputeResourceServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalComputeResourceServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ExternalComputeResourceService) Get(
@@ -26194,6 +38287,30 @@ func NewExternalHostGroupsService(connection *Connection, path string) *External
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ExternalHostGroupsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalHostGroupsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostGroupsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostGroupsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -26263,6 +38380,25 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 	return &result
 }
 
+type ExternalHostProviderServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *ExternalHostProviderServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *ExternalHostProviderService) Get(
@@ -26286,6 +38422,30 @@ func (op *ExternalHostProviderService) Get(
 	return &providerVar, nil
 }
 
+type ExternalHostProviderServiceImportCertificatesRequest struct {
+	header       map[string]string
+	query        map[string]string
+	certificates []Certificate
+}
+
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+	p.certificates = certificates
+}
+
 //
 //
 func (op *ExternalHostProviderService) ImportCertificates(
@@ -26301,6 +38461,30 @@ func (op *ExternalHostProviderService) ImportCertificates(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
 	return err
+}
+
+type ExternalHostProviderServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *ExternalHostProviderServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProviderServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProviderServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -26326,6 +38510,30 @@ func (op *ExternalHostProviderService) Remove(
 	return err
 }
 
+type ExternalHostProviderServiceTestConnectivityRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // This method supports the following parameters:
 // `Async`:: Indicates if the test should be performed asynchronously.
@@ -26346,6 +38554,34 @@ func (op *ExternalHostProviderService) TestConnectivity(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
 	return err
+}
+
+type ExternalHostProviderServiceUpdateRequest struct {
+	header   map[string]string
+	query    map[string]string
+	async    *bool
+	provider *ExternalHostProvider
+}
+
+func (p *ExternalHostProviderServiceUpdateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProviderServiceUpdateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProviderServiceUpdateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *ExternalHostProviderServiceUpdateRequest) Provider(provider *ExternalHostProvider) {
+	p.provider = provider
 }
 
 //
@@ -26463,6 +38699,30 @@ func NewKatelloErrataService(connection *Connection, path string) *KatelloErrata
 	return &result
 }
 
+type KatelloErrataServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *KatelloErrataServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *KatelloErrataServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *KatelloErrataServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // Retrieves the representation of the Katello errata.
 // [source]
@@ -26559,6 +38819,30 @@ func NewExternalDiscoveredHostsService(connection *Connection, path string) *Ext
 	return &result
 }
 
+type ExternalDiscoveredHostsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalDiscoveredHostsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalDiscoveredHostsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of hosts to return. If not specified all the hosts are returned.
@@ -26624,6 +38908,30 @@ func NewExternalHostsService(connection *Connection, path string) *ExternalHosts
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type ExternalHostsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalHostsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -26693,6 +39001,30 @@ func NewExternalComputeResourcesService(connection *Connection, path string) *Ex
 	return &result
 }
 
+type ExternalComputeResourcesServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalComputeResourcesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalComputeResourcesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of resources to return. If not specified all the resources are returned.
@@ -26760,6 +39092,30 @@ func NewExternalHostProvidersService(connection *Connection, path string) *Exter
 	return &result
 }
 
+type ExternalHostProvidersServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	provider *ExternalHostProvider
+}
+
+func (p *ExternalHostProvidersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProvidersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProvidersServiceAddRequest) Provider(provider *ExternalHostProvider) {
+	p.provider = provider
+}
+
 //
 //
 func (op *ExternalHostProvidersService) Add(
@@ -26782,6 +39138,30 @@ func (op *ExternalHostProvidersService) Add(
 	var providerVar ExternalHostProvider
 	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
 	return &providerVar, nil
+}
+
+type ExternalHostProvidersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *ExternalHostProvidersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ExternalHostProvidersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ExternalHostProvidersServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -26852,6 +39232,25 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 	return &result
 }
 
+type GlusterBrickServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *GlusterBrickServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBrickServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get details of a brick.
 // Retrieves status details of brick from underlying gluster volume with header `All-Content` set to `true`. This is
@@ -26918,6 +39317,30 @@ func (op *GlusterBrickService) Get(
 	return &brickVar, nil
 }
 
+type GlusterBrickServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterBrickServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBrickServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBrickServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes a brick.
 // Removes a brick from the underlying gluster volume and deletes entries from database. This can be used only when
@@ -26948,6 +39371,34 @@ func (op *GlusterBrickService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type GlusterBrickServiceReplaceRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	force  *bool
+}
+
+func (p *GlusterBrickServiceReplaceRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBrickServiceReplaceRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBrickServiceReplaceRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterBrickServiceReplaceRequest) Force(force bool) {
+	p.force = &force
 }
 
 //
@@ -27018,6 +39469,30 @@ func NewGlusterVolumesService(connection *Connection, path string) *GlusterVolum
 	return &result
 }
 
+type GlusterVolumesServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	volume *GlusterVolume
+}
+
+func (p *GlusterVolumesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumesServiceAddRequest) Volume(volume *GlusterVolume) {
+	p.volume = volume
+}
+
 //
 // Creates a new gluster volume.
 // The volume is created based on properties of the `volume` parameter. The properties `name`, `volume_type` and
@@ -27077,6 +39552,38 @@ func (op *GlusterVolumesService) Add(
 	var volumeVar GlusterVolume
 	xml.Unmarshal([]byte(ovResp.Body), &volumeVar)
 	return &volumeVar, nil
+}
+
+type GlusterVolumesServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *GlusterVolumesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumesServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *GlusterVolumesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *GlusterVolumesServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -27163,6 +39670,25 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 	return &result
 }
 
+type GlusterVolumeServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *GlusterVolumeServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get the gluster volume details.
 // For example, to get details of a gluster volume with identifier `123` in cluster `456`, send a request like this:
@@ -27223,6 +39749,25 @@ func (op *GlusterVolumeService) Get(
 	return &volumeVar, nil
 }
 
+type GlusterVolumeServiceGetProfileStatisticsRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Get gluster volume profile statistics.
 // For example, to get profile statistics for a gluster volume with identifier `123` in cluster `456`, send a
@@ -27249,6 +39794,38 @@ func (op *GlusterVolumeService) GetProfileStatistics(
 	var detailsVar GlusterVolumeProfileDetails
 	xml.Unmarshal([]byte(ovResp.Body), &detailsVar)
 	return &detailsVar, nil
+}
+
+type GlusterVolumeServiceRebalanceRequest struct {
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	fixLayout *bool
+	force     *bool
+}
+
+func (p *GlusterVolumeServiceRebalanceRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceRebalanceRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceRebalanceRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterVolumeServiceRebalanceRequest) FixLayout(fixLayout bool) {
+	p.fixLayout = &fixLayout
+}
+func (p *GlusterVolumeServiceRebalanceRequest) Force(force bool) {
+	p.force = &force
 }
 
 //
@@ -27292,6 +39869,30 @@ func (op *GlusterVolumeService) Rebalance(
 	return err
 }
 
+type GlusterVolumeServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterVolumeServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Removes the gluster volume.
 // For example, to remove a volume with identifier `123` in cluster `456`, send a request like this:
@@ -27321,6 +39922,30 @@ func (op *GlusterVolumeService) Remove(
 	return err
 }
 
+type GlusterVolumeServiceResetAllOptionsRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Resets all the options set in the gluster volume.
 // For example, to reset all options in a gluster volume with identifier `123` in cluster `456`, send a request like
@@ -27348,6 +39973,38 @@ func (op *GlusterVolumeService) ResetAllOptions(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "resetalloptions", headers, query, wait)
 	return err
+}
+
+type GlusterVolumeServiceResetOptionRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	force  *bool
+	option *Option
+}
+
+func (p *GlusterVolumeServiceResetOptionRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceResetOptionRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceResetOptionRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterVolumeServiceResetOptionRequest) Force(force bool) {
+	p.force = &force
+}
+func (p *GlusterVolumeServiceResetOptionRequest) Option(option *Option) {
+	p.option = option
 }
 
 //
@@ -27391,6 +40048,34 @@ func (op *GlusterVolumeService) ResetOption(
 	return err
 }
 
+type GlusterVolumeServiceSetOptionRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	option *Option
+}
+
+func (p *GlusterVolumeServiceSetOptionRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceSetOptionRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceSetOptionRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterVolumeServiceSetOptionRequest) Option(option *Option) {
+	p.option = option
+}
+
 //
 // Sets a particular option in the gluster volume.
 // For example, to set `option1` with value `value1` in a gluster volume with identifier `123` in cluster `456`,
@@ -27430,6 +40115,34 @@ func (op *GlusterVolumeService) SetOption(
 	return err
 }
 
+type GlusterVolumeServiceStartRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	force  *bool
+}
+
+func (p *GlusterVolumeServiceStartRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceStartRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceStartRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterVolumeServiceStartRequest) Force(force bool) {
+	p.force = &force
+}
+
 //
 // Starts the gluster volume.
 // A Gluster Volume should be started to read/write data. For example, to start a gluster volume with identifier
@@ -27463,6 +40176,30 @@ func (op *GlusterVolumeService) Start(
 	return err
 }
 
+type GlusterVolumeServiceStartProfileRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterVolumeServiceStartProfileRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceStartProfileRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceStartProfileRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Start profiling the gluster volume.
 // For example, to start profiling a gluster volume with identifier `123` in cluster `456`, send a request like this:
@@ -27489,6 +40226,34 @@ func (op *GlusterVolumeService) StartProfile(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "startprofile", headers, query, wait)
 	return err
+}
+
+type GlusterVolumeServiceStopRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	force  *bool
+}
+
+func (p *GlusterVolumeServiceStopRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceStopRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceStopRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterVolumeServiceStopRequest) Force(force bool) {
+	p.force = &force
 }
 
 //
@@ -27522,6 +40287,30 @@ func (op *GlusterVolumeService) Stop(
 	return err
 }
 
+type GlusterVolumeServiceStopProfileRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterVolumeServiceStopProfileRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceStopProfileRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceStopProfileRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Stop profiling the gluster volume.
 // For example, to stop profiling a gluster volume with identifier `123` in cluster `456`, send a request like this:
@@ -27548,6 +40337,30 @@ func (op *GlusterVolumeService) StopProfile(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "stopprofile", headers, query, wait)
 	return err
+}
+
+type GlusterVolumeServiceStopRebalanceRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterVolumeServiceStopRebalanceRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterVolumeServiceStopRebalanceRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterVolumeServiceStopRebalanceRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -27631,6 +40444,30 @@ func NewGlusterHookService(connection *Connection, path string) *GlusterHookServ
 	return &result
 }
 
+type GlusterHookServiceDisableRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterHookServiceDisableRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHookServiceDisableRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterHookServiceDisableRequest) Async(async bool) {
+	p.async = &async
+}
+
 //
 // Resolves status conflict of hook among servers in cluster by disabling Gluster hook in all servers of the
 // cluster. This updates the hook status to `DISABLED` in database.
@@ -27653,6 +40490,30 @@ func (op *GlusterHookService) Disable(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "disable", headers, query, wait)
 	return err
+}
+
+type GlusterHookServiceEnableRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterHookServiceEnableRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHookServiceEnableRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterHookServiceEnableRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -27679,6 +40540,25 @@ func (op *GlusterHookService) Enable(
 	return err
 }
 
+type GlusterHookServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *GlusterHookServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHookServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *GlusterHookService) Get(
@@ -27700,6 +40580,30 @@ func (op *GlusterHookService) Get(
 	var hookVar GlusterHook
 	xml.Unmarshal([]byte(ovResp.Body), &hookVar)
 	return &hookVar, nil
+}
+
+type GlusterHookServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *GlusterHookServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHookServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterHookServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -27724,6 +40628,38 @@ func (op *GlusterHookService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type GlusterHookServiceResolveRequest struct {
+	header         map[string]string
+	query          map[string]string
+	async          *bool
+	host           *Host
+	resolutionType *string
+}
+
+func (p *GlusterHookServiceResolveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHookServiceResolveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterHookServiceResolveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterHookServiceResolveRequest) Host(host *Host) {
+	p.host = host
+}
+func (p *GlusterHookServiceResolveRequest) ResolutionType(resolutionType string) {
+	p.resolutionType = &resolutionType
 }
 
 //
@@ -27787,6 +40723,34 @@ func NewGlusterBricksService(connection *Connection, path string) *GlusterBricks
 	return &result
 }
 
+type GlusterBricksServiceActivateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	bricks []GlusterBrick
+}
+
+func (p *GlusterBricksServiceActivateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceActivateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceActivateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterBricksServiceActivateRequest) Bricks(bricks []GlusterBrick) {
+	p.bricks = bricks
+}
+
 //
 // Activate the bricks post data migration of remove brick operation.
 // Used to activate brick(s) once the data migration from bricks is complete but user no longer wishes to remove
@@ -27830,6 +40794,38 @@ func (op *GlusterBricksService) Activate(
 	// Send the request and wait for the response:
 	_, err := op.internalAction(action, "activate", headers, query, wait)
 	return err
+}
+
+type GlusterBricksServiceAddRequest struct {
+	header       map[string]string
+	query        map[string]string
+	bricks       []GlusterBrick
+	replicaCount *int64
+	stripeCount  *int64
+}
+
+func (p *GlusterBricksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceAddRequest) Bricks(bricks []GlusterBrick) {
+	p.bricks = bricks
+}
+func (p *GlusterBricksServiceAddRequest) ReplicaCount(replicaCount int64) {
+	p.replicaCount = &replicaCount
+}
+func (p *GlusterBricksServiceAddRequest) StripeCount(stripeCount int64) {
+	p.stripeCount = &stripeCount
 }
 
 //
@@ -27882,6 +40878,30 @@ func (op *GlusterBricksService) Add(
 	var bricksVar GlusterBricks
 	xml.Unmarshal([]byte(ovResp.Body), &bricksVar)
 	return bricksVar.GlusterBricks, nil
+}
+
+type GlusterBricksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *GlusterBricksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -27938,6 +40958,34 @@ func (op *GlusterBricksService) List(
 	return bricksVar.GlusterBricks, nil
 }
 
+type GlusterBricksServiceMigrateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	bricks []GlusterBrick
+}
+
+func (p *GlusterBricksServiceMigrateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceMigrateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceMigrateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterBricksServiceMigrateRequest) Bricks(bricks []GlusterBrick) {
+	p.bricks = bricks
+}
+
 //
 // Start migration of data prior to removing bricks.
 // Removing bricks is a two-step process, where the data on bricks to be removed, is first migrated to remaining
@@ -27986,6 +41034,38 @@ func (op *GlusterBricksService) Migrate(
 	return err
 }
 
+type GlusterBricksServiceRemoveRequest struct {
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	bricks       []GlusterBrick
+	replicaCount *int64
+}
+
+func (p *GlusterBricksServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceRemoveRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterBricksServiceRemoveRequest) Bricks(bricks []GlusterBrick) {
+	p.bricks = bricks
+}
+func (p *GlusterBricksServiceRemoveRequest) ReplicaCount(replicaCount int64) {
+	p.replicaCount = &replicaCount
+}
+
 //
 // Removes bricks from gluster volume.
 // The recommended way to remove bricks without data loss is to first migrate the data using
@@ -28031,6 +41111,34 @@ func (op *GlusterBricksService) Remove(
 	// Send the request and wait for the response:
 	_, err := op.internalRemove(headers, query, wait)
 	return err
+}
+
+type GlusterBricksServiceStopMigrateRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+	bricks []GlusterBrick
+}
+
+func (p *GlusterBricksServiceStopMigrateRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterBricksServiceStopMigrateRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterBricksServiceStopMigrateRequest) Async(async bool) {
+	p.async = &async
+}
+func (p *GlusterBricksServiceStopMigrateRequest) Bricks(bricks []GlusterBrick) {
+	p.bricks = bricks
 }
 
 //
@@ -28115,6 +41223,30 @@ func NewGlusterHooksService(connection *Connection, path string) *GlusterHooksSe
 	return &result
 }
 
+type GlusterHooksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *GlusterHooksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *GlusterHooksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *GlusterHooksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of hooks to return. If not specified all the hooks are returned.
@@ -28181,6 +41313,30 @@ func NewDisksService(connection *Connection, path string) *DisksService {
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DisksServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	disk   *Disk
+}
+
+func (p *DisksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DisksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DisksServiceAddRequest) Disk(disk *Disk) {
+	p.disk = disk
 }
 
 //
@@ -28291,6 +41447,38 @@ func (op *DisksService) Add(
 	return &diskVar, nil
 }
 
+type DisksServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	max           *int64
+	search        *string
+}
+
+func (p *DisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DisksServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *DisksServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *DisksServiceListRequest) Search(search string) {
+	p.search = &search
+}
+
 //
 // Get list of disks.
 // [source]
@@ -28395,6 +41583,30 @@ func NewInstanceTypeWatchdogsService(connection *Connection, path string) *Insta
 	return &result
 }
 
+type InstanceTypeWatchdogsServiceAddRequest struct {
+	header   map[string]string
+	query    map[string]string
+	watchdog *Watchdog
+}
+
+func (p *InstanceTypeWatchdogsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeWatchdogsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+	p.watchdog = watchdog
+}
+
 //
 // Add new watchdog to the instance type.
 //
@@ -28418,6 +41630,34 @@ func (op *InstanceTypeWatchdogsService) Add(
 	var watchdogVar Watchdog
 	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
 	return &watchdogVar, nil
+}
+
+type InstanceTypeWatchdogsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+	search *string
+}
+
+func (p *InstanceTypeWatchdogsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *InstanceTypeWatchdogsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *InstanceTypeWatchdogsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -28493,6 +41733,30 @@ func NewJobsService(connection *Connection, path string) *JobsService {
 	return &result
 }
 
+type JobsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	job    *Job
+}
+
+func (p *JobsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *JobsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *JobsServiceAddRequest) Job(job *Job) {
+	p.job = job
+}
+
 //
 // Add an external job.
 // For example, to add a job with the following request:
@@ -28552,6 +41816,30 @@ func (op *JobsService) Add(
 	var jobVar Job
 	xml.Unmarshal([]byte(ovResp.Body), &jobVar)
 	return &jobVar, nil
+}
+
+type JobsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *JobsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *JobsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *JobsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -28650,6 +41938,30 @@ func NewIconsService(connection *Connection, path string) *IconsService {
 	return &result
 }
 
+type IconsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *IconsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *IconsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *IconsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // Get a list of icons.
 // [source]
@@ -28735,6 +42047,34 @@ func NewTemplatesService(connection *Connection, path string) *TemplatesService 
 	return &result
 }
 
+type TemplatesServiceAddRequest struct {
+	header           map[string]string
+	query            map[string]string
+	clonePermissions *bool
+	template         *Template
+}
+
+func (p *TemplatesServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplatesServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplatesServiceAddRequest) ClonePermissions(clonePermissions bool) {
+	p.clonePermissions = &clonePermissions
+}
+func (p *TemplatesServiceAddRequest) Template(template *Template) {
+	p.template = template
+}
+
 //
 // Creates a new template.
 // This requires the `name` and `vm` elements. Identify the virtual machine with the `id` `name` attributes.
@@ -28793,6 +42133,42 @@ func (op *TemplatesService) Add(
 	var templateVar Template
 	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
 	return &templateVar, nil
+}
+
+type TemplatesServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *TemplatesServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplatesServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplatesServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *TemplatesServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *TemplatesServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *TemplatesServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -28881,6 +42257,30 @@ func NewFilterService(connection *Connection, path string) *FilterService {
 	return &result
 }
 
+type FilterServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+}
+
+func (p *FilterServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FilterServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FilterServiceGetRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+
 //
 // This method supports the following parameters:
 // `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
@@ -28909,6 +42309,30 @@ func (op *FilterService) Get(
 	var resultVar Filter
 	xml.Unmarshal([]byte(ovResp.Body), &resultVar)
 	return &resultVar, nil
+}
+
+type FilterServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *FilterServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FilterServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FilterServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -28963,6 +42387,30 @@ func NewAssignedAffinityLabelsService(connection *Connection, path string) *Assi
 	return &result
 }
 
+type AssignedAffinityLabelsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	label  *AffinityLabel
+}
+
+func (p *AssignedAffinityLabelsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedAffinityLabelsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedAffinityLabelsServiceAddRequest) Label(label *AffinityLabel) {
+	p.label = label
+}
+
 //
 // Attaches a label to an entity.
 //
@@ -28986,6 +42434,25 @@ func (op *AssignedAffinityLabelsService) Add(
 	var labelVar AffinityLabel
 	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
 	return &labelVar, nil
+}
+
+type AssignedAffinityLabelsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedAffinityLabelsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -29051,6 +42518,25 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 	return &result
 }
 
+type SnapshotCdromServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *SnapshotCdromServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *SnapshotCdromServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 //
 func (op *SnapshotCdromService) Get(
@@ -29099,6 +42585,25 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type HostNumaNodeServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *HostNumaNodeServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostNumaNodeServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -29163,6 +42668,25 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 	return &result
 }
 
+type TemplateGraphicsConsoleServiceGetRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *TemplateGraphicsConsoleServiceGetRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
 //
 // Gets graphics console configuration of the template.
 //
@@ -29185,6 +42709,30 @@ func (op *TemplateGraphicsConsoleService) Get(
 	var consoleVar GraphicsConsole
 	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
 	return &consoleVar, nil
+}
+
+type TemplateGraphicsConsoleServiceRemoveRequest struct {
+	header map[string]string
+	query  map[string]string
+	async  *bool
+}
+
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+	p.async = &async
 }
 
 //
@@ -29241,6 +42789,30 @@ func NewAffinityLabelHostsService(connection *Connection, path string) *Affinity
 	return &result
 }
 
+type AffinityLabelHostsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	host   *Host
+}
+
+func (p *AffinityLabelHostsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelHostsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AffinityLabelHostsServiceAddRequest) Host(host *Host) {
+	p.host = host
+}
+
 //
 // Add a label to a host.
 //
@@ -29264,6 +42836,25 @@ func (op *AffinityLabelHostsService) Add(
 	var hostVar Host
 	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
 	return &hostVar, nil
+}
+
+type AffinityLabelHostsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AffinityLabelHostsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //
@@ -29327,6 +42918,30 @@ func NewDiskSnapshotsService(connection *Connection, path string) *DiskSnapshots
 	result.Connection = connection
 	result.Path = path
 	return &result
+}
+
+type DiskSnapshotsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *DiskSnapshotsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *DiskSnapshotsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *DiskSnapshotsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -29421,6 +43036,30 @@ func NewStorageDomainVmsService(connection *Connection, path string) *StorageDom
 	return &result
 }
 
+type StorageDomainVmsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageDomainVmsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainVmsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainVmsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+
 //
 // This method supports the following parameters:
 // `Max`:: Sets the maximum number of virtual machines to return. If not specified all the virtual machines are
@@ -29490,6 +43129,38 @@ func NewHostsService(connection *Connection, path string) *HostsService {
 	return &result
 }
 
+type HostsServiceAddRequest struct {
+	header               map[string]string
+	query                map[string]string
+	deployHostedEngine   *bool
+	host                 *Host
+	undeployHostedEngine *bool
+}
+
+func (p *HostsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostsServiceAddRequest) DeployHostedEngine(deployHostedEngine bool) {
+	p.deployHostedEngine = &deployHostedEngine
+}
+func (p *HostsServiceAddRequest) Host(host *Host) {
+	p.host = host
+}
+func (p *HostsServiceAddRequest) UndeployHostedEngine(undeployHostedEngine bool) {
+	p.undeployHostedEngine = &undeployHostedEngine
+}
+
 //
 // Creates a new host.
 // The host is created based on the attributes of the `host` parameter. The `name`, `address` and `root_password`
@@ -29546,6 +43217,42 @@ func (op *HostsService) Add(
 	var hostVar Host
 	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
 	return &hostVar, nil
+}
+
+type HostsServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *HostsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *HostsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *HostsServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *HostsServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *HostsServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *HostsServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -29646,6 +43353,34 @@ func NewStorageDomainDisksService(connection *Connection, path string) *StorageD
 	return &result
 }
 
+type StorageDomainDisksServiceAddRequest struct {
+	header       map[string]string
+	query        map[string]string
+	disk         *Disk
+	unregistered *bool
+}
+
+func (p *StorageDomainDisksServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDisksServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDisksServiceAddRequest) Disk(disk *Disk) {
+	p.disk = disk
+}
+func (p *StorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) {
+	p.unregistered = &unregistered
+}
+
 //
 // Adds or registers a disk.
 // IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
@@ -29681,6 +43416,30 @@ func (op *StorageDomainDisksService) Add(
 	var diskVar Disk
 	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
 	return &diskVar, nil
+}
+
+type StorageDomainDisksServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageDomainDisksServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageDomainDisksServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageDomainDisksServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -29752,6 +43511,30 @@ func NewFiltersService(connection *Connection, path string) *FiltersService {
 	return &result
 }
 
+type FiltersServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *Filter
+}
+
+func (p *FiltersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FiltersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FiltersServiceAddRequest) Filter(filter *Filter) {
+	p.filter = filter
+}
+
 //
 //
 func (op *FiltersService) Add(
@@ -29774,6 +43557,34 @@ func (op *FiltersService) Add(
 	var filterVar Filter
 	xml.Unmarshal([]byte(ovResp.Body), &filterVar)
 	return &filterVar, nil
+}
+
+type FiltersServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	filter *bool
+	max    *int64
+}
+
+func (p *FiltersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FiltersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FiltersServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *FiltersServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -29846,6 +43657,30 @@ func NewStorageServerConnectionsService(connection *Connection, path string) *St
 	return &result
 }
 
+type StorageServerConnectionsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	connection *StorageConnection
+}
+
+func (p *StorageServerConnectionsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) {
+	p.connection = connection
+}
+
 //
 // Creates a new storage connection.
 // For example, to create a new storage connection for the NFS server `mynfs.example.com` and NFS share
@@ -29887,6 +43722,30 @@ func (op *StorageServerConnectionsService) Add(
 	var connectionVar StorageConnection
 	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
 	return &connectionVar, nil
+}
+
+type StorageServerConnectionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *StorageServerConnectionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *StorageServerConnectionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *StorageServerConnectionsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -29956,6 +43815,30 @@ func NewFenceAgentsService(connection *Connection, path string) *FenceAgentsServ
 	return &result
 }
 
+type FenceAgentsServiceAddRequest struct {
+	header map[string]string
+	query  map[string]string
+	agent  *Agent
+}
+
+func (p *FenceAgentsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FenceAgentsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FenceAgentsServiceAddRequest) Agent(agent *Agent) {
+	p.agent = agent
+}
+
 //
 //
 func (op *FenceAgentsService) Add(
@@ -29978,6 +43861,30 @@ func (op *FenceAgentsService) Add(
 	var agentVar Agent
 	xml.Unmarshal([]byte(ovResp.Body), &agentVar)
 	return &agentVar, nil
+}
+
+type FenceAgentsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+	max    *int64
+}
+
+func (p *FenceAgentsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *FenceAgentsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *FenceAgentsServiceListRequest) Max(max int64) {
+	p.max = &max
 }
 
 //
@@ -30048,6 +43955,30 @@ func NewClustersService(connection *Connection, path string) *ClustersService {
 	return &result
 }
 
+type ClustersServiceAddRequest struct {
+	header  map[string]string
+	query   map[string]string
+	cluster *Cluster
+}
+
+func (p *ClustersServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClustersServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClustersServiceAddRequest) Cluster(cluster *Cluster) {
+	p.cluster = cluster
+}
+
 //
 // Creates a new cluster.
 // This requires the `name`, `cpu.type` and `data_center` attributes. Identify the data center with either the `id`
@@ -30088,6 +44019,42 @@ func (op *ClustersService) Add(
 	var clusterVar Cluster
 	xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
 	return &clusterVar, nil
+}
+
+type ClustersServiceListRequest struct {
+	header        map[string]string
+	query         map[string]string
+	caseSensitive *bool
+	filter        *bool
+	max           *int64
+	search        *string
+}
+
+func (p *ClustersServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *ClustersServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *ClustersServiceListRequest) CaseSensitive(caseSensitive bool) {
+	p.caseSensitive = &caseSensitive
+}
+func (p *ClustersServiceListRequest) Filter(filter bool) {
+	p.filter = &filter
+}
+func (p *ClustersServiceListRequest) Max(max int64) {
+	p.max = &max
+}
+func (p *ClustersServiceListRequest) Search(search string) {
+	p.search = &search
 }
 
 //
@@ -30170,6 +44137,30 @@ func NewAssignedPermissionsService(connection *Connection, path string) *Assigne
 	return &result
 }
 
+type AssignedPermissionsServiceAddRequest struct {
+	header     map[string]string
+	query      map[string]string
+	permission *Permission
+}
+
+func (p *AssignedPermissionsServiceAddRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedPermissionsServiceAddRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
+}
+
+func (p *AssignedPermissionsServiceAddRequest) Permission(permission *Permission) {
+	p.permission = permission
+}
+
 //
 // Assign a new permission to a user or group for specific entity.
 // For example, to assign the `UserVmManager` role to the virtual machine with id `123` to the user with id `456`
@@ -30243,6 +44234,25 @@ func (op *AssignedPermissionsService) Add(
 	var permissionVar Permission
 	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
 	return &permissionVar, nil
+}
+
+type AssignedPermissionsServiceListRequest struct {
+	header map[string]string
+	query  map[string]string
+}
+
+func (p *AssignedPermissionsServiceListRequest) Header(key, value string) {
+	if p.header == nil {
+		p.header = make(map[string]string)
+	}
+	p.header[key] = value
+}
+
+func (p *AssignedPermissionsServiceListRequest) Query(key, value string) {
+	if p.query == nil {
+		p.query = make(map[string]string)
+	}
+	p.query[key] = value
 }
 
 //

@@ -29,6 +29,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -155,6 +156,11 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateMethod(Method method, Service service) {
         Name name = method.getName();
+
+        // Generate the request and response struct for method
+        generateRequest(method, service);
+        generateResponse(method, service);
+
         if (ADD.equals(name)) {
             generateAddHttpPost(method, service);
         }
@@ -170,6 +176,100 @@ public class ServicesGenerator implements GoGenerator {
         else {
             generateActionHttpPost(method, service);
         }
+    }
+
+    private void generateRequest(Method method, Service service) {
+        // Begin class
+        Name name = method.getName();
+        String request = getRequestClassName(method, service);
+        String response = getResponseClassName(method, service);
+
+        buffer.addLine("type %1$s struct {", request);
+        buffer.startBlock();
+
+        //      Generate common parameters
+        generateRequestCommonParameter();
+        
+        //      Generate the input parameters
+        method.parameters()
+            .filter(Parameter::isIn)
+            .sorted().forEach(this::generateRequestParameter);
+        
+        buffer.endBlock();
+        buffer.addLine("}");
+        // End class
+
+        // Generate methods to set common parameters
+        generateRequestCommonParameterMethod(request);
+
+        // Generate methods to set input parameters
+        List<Parameter> parameterList = method.parameters()
+            .filter(Parameter::isIn)
+            .sorted().collect(toCollection(ArrayList::new));
+        for (Parameter para : parameterList) {
+            generateRequestParameterMethod(para, request);
+        }
+    }
+
+    private void generateRequestCommonParameter() {
+        // Add common header and query parameters
+        buffer.addLine("header map[string]string");
+        buffer.addLine("query map[string]string");
+    }
+
+    private void generateRequestCommonParameterMethod(String requestClassName) {
+        String[] commonParameters = new String[]{"header", "query"};
+
+        for (String para : commonParameters) {
+            buffer.addLine("func (p *%1$s) %2$s(key, value string) {",
+                requestClassName, GoNames.capitalize(para));
+            buffer.startBlock();
+            buffer.addLine("if p.%1$s == nil {", para);
+            buffer.startBlock();
+            buffer.addLine("p.%1$s = make(map[string]string)", para);
+            buffer.endBlock();
+            buffer.addLine("}");
+            buffer.addLine("p.%1$s[key] = value", para);
+            buffer.endBlock();
+            buffer.addLine("}");
+            buffer.addLine();
+        }
+    }
+
+    private void generateRequestParameter(Parameter parameter) {
+        // Get parameter name
+        Name parameterName = parameter.getName();
+        GoTypeReference goTypeReference = goNames.getTypeReferenceAsStructMember(parameter.getType());
+        buffer.addImports(goTypeReference.getImports());
+
+        String arg = goNames.getParameterStyleName(parameterName);
+        // Get parameter type name
+        buffer.addLine(
+            "%1$s %2$s", arg, goTypeReference.getText());
+    }
+
+    private void generateRequestParameterMethod(Parameter parameter, String requestClassName) {
+        Type paraType = parameter.getType();
+        GoTypeReference paraTypeReference = goNames.getTypeReference(paraType);
+        buffer.addImports(paraTypeReference.getImports());
+        String paraName = goNames.getParameterStyleName(parameter.getName());
+        String paraMethodName = goNames.getMethodStyleName(parameter.getName());
+
+        buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) {",
+            requestClassName, paraMethodName, paraName, paraTypeReference.getText());
+        buffer.startBlock();
+        if (GoTypes.isGoPrimitiveType(paraType)) {
+            buffer.addLine("p.%1$s = &%1$s", paraName);
+        } else {
+            buffer.addLine("p.%1$s = %1$s", paraName);
+        }
+        
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
+
+    private void generateResponse(Method method, Service service) {
+        // Begin class
     }
 
     private void generateAddHttpPost(Method method, Service service) {
@@ -475,18 +575,6 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
-    }
-
-    private void generateFormalParameter(Parameter parameter) {
-        // Get parameter name
-        Name parameterName = parameter.getName();
-        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
-        buffer.addImports(goTypeReference.getImports());
-
-        String arg = goNames.getParameterStyleName(parameterName);
-        // Get parameter type name
-        buffer.addLine(
-            "%1$s %2$s,", arg, goTypeReference.getText());
     }
 
     private void generateOutputParameter(Parameter parameter) {
@@ -815,6 +903,28 @@ public class ServicesGenerator implements GoGenerator {
             varTypeSuffix = "&";
         }
         buffer.addLine("%1$s: %2$s%3$s,", memberName, varTypeSuffix, parameterName);
+    }
+
+    private String getRequestClassName(Method method, Service service) {
+        return goNames.getServiceName(service).getClassName() + 
+            goNames.getClassStyleName(method.getName()) + "Request";
+    }
+
+    private String getResponseClassName(Method method, Service service) {
+        return goNames.getServiceName(service) + 
+            goNames.getClassStyleName(method.getName()) + "Response";
+    }
+
+    private void generateFormalParameter(Parameter parameter) {
+        // Get parameter name
+        Name parameterName = parameter.getName();
+        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
+        buffer.addImports(goTypeReference.getImports());
+
+        String arg = goNames.getParameterStyleName(parameterName);
+        // Get parameter type name
+        buffer.addLine(
+            "%1$s %2$s,", arg, goTypeReference.getText());
     }
 
 }
