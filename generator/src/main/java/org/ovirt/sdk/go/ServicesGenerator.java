@@ -103,14 +103,10 @@ public class ServicesGenerator implements GoGenerator {
         // Generate struct definition
         generateDoc(service);
         buffer.addLine("type %1$s struct {", serviceName.getClassName());
-
         // Generate struct members definition
         buffer.startBlock();
         //      with Service struct mixin
         buffer.addLine("BaseService");
-        buffer.addLine();
-        //      members
-        service.locators().sorted().forEach(this::generateLocatorMember);
         buffer.endBlock();
         // Generate struct ending
         buffer.addLine("}");
