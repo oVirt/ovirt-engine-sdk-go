@@ -74,27 +74,34 @@ func NewVnicProfilesService(connection *Connection, path string) *VnicProfilesSe
 }
 
 type VnicProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *VnicProfile
+	vnicProfiles *VnicProfilesService
+	header       map[string]string
+	query        map[string]string
+	profile      *VnicProfile
 }
 
-func (p *VnicProfilesServiceAddRequest) Header(key, value string) {
+func (p *VnicProfilesServiceAddRequest) Header(key, value string) *VnicProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VnicProfilesServiceAddRequest) Query(key, value string) {
+func (p *VnicProfilesServiceAddRequest) Query(key, value string) *VnicProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VnicProfilesServiceAddRequest) Profile(profile *VnicProfile) {
+func (p *VnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *VnicProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *VnicProfilesServiceAddRequest) send() *VnicProfilesServiceAddResponse {
+
 }
 
 //
@@ -180,27 +187,34 @@ func (op *VnicProfilesService) Add(
 }
 
 type VnicProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vnicProfiles *VnicProfilesService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *VnicProfilesServiceListRequest) Header(key, value string) {
+func (p *VnicProfilesServiceListRequest) Header(key, value string) *VnicProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VnicProfilesServiceListRequest) Query(key, value string) {
+func (p *VnicProfilesServiceListRequest) Query(key, value string) *VnicProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VnicProfilesServiceListRequest) Max(max int64) {
+func (p *VnicProfilesServiceListRequest) Max(max int64) *VnicProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VnicProfilesServiceListRequest) send() *VnicProfilesServiceListResponse {
+
 }
 
 //
@@ -272,27 +286,34 @@ func NewSchedulingPolicyUnitService(connection *Connection, path string) *Schedu
 }
 
 type SchedulingPolicyUnitServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	schedulingPolicyUnit *SchedulingPolicyUnitService
+	header               map[string]string
+	query                map[string]string
+	filter               *bool
 }
 
-func (p *SchedulingPolicyUnitServiceGetRequest) Header(key, value string) {
+func (p *SchedulingPolicyUnitServiceGetRequest) Header(key, value string) *SchedulingPolicyUnitServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitServiceGetRequest) Query(key, value string) {
+func (p *SchedulingPolicyUnitServiceGetRequest) Query(key, value string) *SchedulingPolicyUnitServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) {
+func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) *SchedulingPolicyUnitServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *SchedulingPolicyUnitServiceGetRequest) send() *SchedulingPolicyUnitServiceGetResponse {
+
 }
 
 //
@@ -326,27 +347,34 @@ func (op *SchedulingPolicyUnitService) Get(
 }
 
 type SchedulingPolicyUnitServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	schedulingPolicyUnit *SchedulingPolicyUnitService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
-func (p *SchedulingPolicyUnitServiceRemoveRequest) Header(key, value string) {
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Header(key, value string) *SchedulingPolicyUnitServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitServiceRemoveRequest) Query(key, value string) {
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Query(key, value string) *SchedulingPolicyUnitServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitServiceRemoveRequest) Async(async bool) {
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Async(async bool) *SchedulingPolicyUnitServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *SchedulingPolicyUnitServiceRemoveRequest) send() *SchedulingPolicyUnitServiceRemoveResponse {
+
 }
 
 //
@@ -400,22 +428,29 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 }
 
 type VirtualFunctionAllowedNetworkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	virtualFunctionAllowedNetwork *VirtualFunctionAllowedNetworkService
+	header                        map[string]string
+	query                         map[string]string
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Header(key, value string) {
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Header(key, value string) *VirtualFunctionAllowedNetworkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string) {
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string) *VirtualFunctionAllowedNetworkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) send() *VirtualFunctionAllowedNetworkServiceGetResponse {
+
 }
 
 //
@@ -442,27 +477,34 @@ func (op *VirtualFunctionAllowedNetworkService) Get(
 }
 
 type VirtualFunctionAllowedNetworkServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	virtualFunctionAllowedNetwork *VirtualFunctionAllowedNetworkService
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Header(key, value string) {
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Header(key, value string) *VirtualFunctionAllowedNetworkServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Query(key, value string) {
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Query(key, value string) *VirtualFunctionAllowedNetworkServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Async(async bool) {
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Async(async bool) *VirtualFunctionAllowedNetworkServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) send() *VirtualFunctionAllowedNetworkServiceRemoveResponse {
+
 }
 
 //
@@ -516,27 +558,34 @@ func NewTemplateNicsService(connection *Connection, path string) *TemplateNicsSe
 }
 
 type TemplateNicsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	nic    *Nic
+	templateNics *TemplateNicsService
+	header       map[string]string
+	query        map[string]string
+	nic          *Nic
 }
 
-func (p *TemplateNicsServiceAddRequest) Header(key, value string) {
+func (p *TemplateNicsServiceAddRequest) Header(key, value string) *TemplateNicsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateNicsServiceAddRequest) Query(key, value string) {
+func (p *TemplateNicsServiceAddRequest) Query(key, value string) *TemplateNicsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateNicsServiceAddRequest) Nic(nic *Nic) {
+func (p *TemplateNicsServiceAddRequest) Nic(nic *Nic) *TemplateNicsServiceAddRequest {
 	p.nic = nic
+	return p
+}
+func (p *TemplateNicsServiceAddRequest) send() *TemplateNicsServiceAddResponse {
+
 }
 
 //
@@ -564,27 +613,34 @@ func (op *TemplateNicsService) Add(
 }
 
 type TemplateNicsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	templateNics *TemplateNicsService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *TemplateNicsServiceListRequest) Header(key, value string) {
+func (p *TemplateNicsServiceListRequest) Header(key, value string) *TemplateNicsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateNicsServiceListRequest) Query(key, value string) {
+func (p *TemplateNicsServiceListRequest) Query(key, value string) *TemplateNicsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateNicsServiceListRequest) Max(max int64) {
+func (p *TemplateNicsServiceListRequest) Max(max int64) *TemplateNicsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TemplateNicsServiceListRequest) send() *TemplateNicsServiceListResponse {
+
 }
 
 //
@@ -656,22 +712,29 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 }
 
 type AffinityLabelServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabel *AffinityLabelService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *AffinityLabelServiceGetRequest) Header(key, value string) {
+func (p *AffinityLabelServiceGetRequest) Header(key, value string) *AffinityLabelServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelServiceGetRequest) Query(key, value string) {
+func (p *AffinityLabelServiceGetRequest) Query(key, value string) *AffinityLabelServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelServiceGetRequest) send() *AffinityLabelServiceGetResponse {
+
 }
 
 //
@@ -699,22 +762,29 @@ func (op *AffinityLabelService) Get(
 }
 
 type AffinityLabelServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabel *AffinityLabelService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *AffinityLabelServiceRemoveRequest) Header(key, value string) {
+func (p *AffinityLabelServiceRemoveRequest) Header(key, value string) *AffinityLabelServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelServiceRemoveRequest) Query(key, value string) {
+func (p *AffinityLabelServiceRemoveRequest) Query(key, value string) *AffinityLabelServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelServiceRemoveRequest) send() *AffinityLabelServiceRemoveResponse {
+
 }
 
 //
@@ -736,27 +806,34 @@ func (op *AffinityLabelService) Remove(
 }
 
 type AffinityLabelServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	label  *AffinityLabel
+	affinityLabel *AffinityLabelService
+	header        map[string]string
+	query         map[string]string
+	label         *AffinityLabel
 }
 
-func (p *AffinityLabelServiceUpdateRequest) Header(key, value string) {
+func (p *AffinityLabelServiceUpdateRequest) Header(key, value string) *AffinityLabelServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelServiceUpdateRequest) Query(key, value string) {
+func (p *AffinityLabelServiceUpdateRequest) Query(key, value string) *AffinityLabelServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityLabelServiceUpdateRequest) Label(label *AffinityLabel) {
+func (p *AffinityLabelServiceUpdateRequest) Label(label *AffinityLabel) *AffinityLabelServiceUpdateRequest {
 	p.label = label
+	return p
+}
+func (p *AffinityLabelServiceUpdateRequest) send() *AffinityLabelServiceUpdateResponse {
+
 }
 
 //
@@ -840,27 +917,34 @@ func NewBookmarksService(connection *Connection, path string) *BookmarksService 
 }
 
 type BookmarksServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	bookmark *Bookmark
+	bookmarks *BookmarksService
+	header    map[string]string
+	query     map[string]string
+	bookmark  *Bookmark
 }
 
-func (p *BookmarksServiceAddRequest) Header(key, value string) {
+func (p *BookmarksServiceAddRequest) Header(key, value string) *BookmarksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BookmarksServiceAddRequest) Query(key, value string) {
+func (p *BookmarksServiceAddRequest) Query(key, value string) *BookmarksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BookmarksServiceAddRequest) Bookmark(bookmark *Bookmark) {
+func (p *BookmarksServiceAddRequest) Bookmark(bookmark *Bookmark) *BookmarksServiceAddRequest {
 	p.bookmark = bookmark
+	return p
+}
+func (p *BookmarksServiceAddRequest) send() *BookmarksServiceAddResponse {
+
 }
 
 //
@@ -906,27 +990,34 @@ func (op *BookmarksService) Add(
 }
 
 type BookmarksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	bookmarks *BookmarksService
+	header    map[string]string
+	query     map[string]string
+	max       *int64
 }
 
-func (p *BookmarksServiceListRequest) Header(key, value string) {
+func (p *BookmarksServiceListRequest) Header(key, value string) *BookmarksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BookmarksServiceListRequest) Query(key, value string) {
+func (p *BookmarksServiceListRequest) Query(key, value string) *BookmarksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BookmarksServiceListRequest) Max(max int64) {
+func (p *BookmarksServiceListRequest) Max(max int64) *BookmarksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *BookmarksServiceListRequest) send() *BookmarksServiceListResponse {
+
 }
 
 //
@@ -1017,27 +1108,34 @@ func NewNetworkAttachmentsService(connection *Connection, path string) *NetworkA
 }
 
 type NetworkAttachmentsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	attachment *NetworkAttachment
+	networkAttachments *NetworkAttachmentsService
+	header             map[string]string
+	query              map[string]string
+	attachment         *NetworkAttachment
 }
 
-func (p *NetworkAttachmentsServiceAddRequest) Header(key, value string) {
+func (p *NetworkAttachmentsServiceAddRequest) Header(key, value string) *NetworkAttachmentsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentsServiceAddRequest) Query(key, value string) {
+func (p *NetworkAttachmentsServiceAddRequest) Query(key, value string) *NetworkAttachmentsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentsServiceAddRequest) Attachment(attachment *NetworkAttachment) {
+func (p *NetworkAttachmentsServiceAddRequest) Attachment(attachment *NetworkAttachment) *NetworkAttachmentsServiceAddRequest {
 	p.attachment = attachment
+	return p
+}
+func (p *NetworkAttachmentsServiceAddRequest) send() *NetworkAttachmentsServiceAddResponse {
+
 }
 
 //
@@ -1065,27 +1163,34 @@ func (op *NetworkAttachmentsService) Add(
 }
 
 type NetworkAttachmentsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	networkAttachments *NetworkAttachmentsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
-func (p *NetworkAttachmentsServiceListRequest) Header(key, value string) {
+func (p *NetworkAttachmentsServiceListRequest) Header(key, value string) *NetworkAttachmentsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentsServiceListRequest) Query(key, value string) {
+func (p *NetworkAttachmentsServiceListRequest) Query(key, value string) *NetworkAttachmentsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentsServiceListRequest) Max(max int64) {
+func (p *NetworkAttachmentsServiceListRequest) Max(max int64) *NetworkAttachmentsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *NetworkAttachmentsServiceListRequest) send() *NetworkAttachmentsServiceListResponse {
+
 }
 
 //
@@ -1156,22 +1261,29 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 }
 
 type OperatingSystemServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	operatingSystem *OperatingSystemService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *OperatingSystemServiceGetRequest) Header(key, value string) {
+func (p *OperatingSystemServiceGetRequest) Header(key, value string) *OperatingSystemServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OperatingSystemServiceGetRequest) Query(key, value string) {
+func (p *OperatingSystemServiceGetRequest) Query(key, value string) *OperatingSystemServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OperatingSystemServiceGetRequest) send() *OperatingSystemServiceGetResponse {
+
 }
 
 //
@@ -1225,27 +1337,34 @@ func NewTemplateDisksService(connection *Connection, path string) *TemplateDisks
 }
 
 type TemplateDisksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	templateDisks *TemplateDisksService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *TemplateDisksServiceListRequest) Header(key, value string) {
+func (p *TemplateDisksServiceListRequest) Header(key, value string) *TemplateDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDisksServiceListRequest) Query(key, value string) {
+func (p *TemplateDisksServiceListRequest) Query(key, value string) *TemplateDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateDisksServiceListRequest) Max(max int64) {
+func (p *TemplateDisksServiceListRequest) Max(max int64) *TemplateDisksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TemplateDisksServiceListRequest) send() *TemplateDisksServiceListResponse {
+
 }
 
 //
@@ -1318,27 +1437,34 @@ func NewSystemPermissionsService(connection *Connection, path string) *SystemPer
 }
 
 type SystemPermissionsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	permission *Permission
+	systemPermissions *SystemPermissionsService
+	header            map[string]string
+	query             map[string]string
+	permission        *Permission
 }
 
-func (p *SystemPermissionsServiceAddRequest) Header(key, value string) {
+func (p *SystemPermissionsServiceAddRequest) Header(key, value string) *SystemPermissionsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SystemPermissionsServiceAddRequest) Query(key, value string) {
+func (p *SystemPermissionsServiceAddRequest) Query(key, value string) *SystemPermissionsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SystemPermissionsServiceAddRequest) Permission(permission *Permission) {
+func (p *SystemPermissionsServiceAddRequest) Permission(permission *Permission) *SystemPermissionsServiceAddRequest {
 	p.permission = permission
+	return p
+}
+func (p *SystemPermissionsServiceAddRequest) send() *SystemPermissionsServiceAddResponse {
+
 }
 
 //
@@ -1417,22 +1543,29 @@ func (op *SystemPermissionsService) Add(
 }
 
 type SystemPermissionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	systemPermissions *SystemPermissionsService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *SystemPermissionsServiceListRequest) Header(key, value string) {
+func (p *SystemPermissionsServiceListRequest) Header(key, value string) *SystemPermissionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SystemPermissionsServiceListRequest) Query(key, value string) {
+func (p *SystemPermissionsServiceListRequest) Query(key, value string) *SystemPermissionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SystemPermissionsServiceListRequest) send() *SystemPermissionsServiceListResponse {
+
 }
 
 //
@@ -1518,22 +1651,29 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 }
 
 type VmReportedDeviceServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmReportedDevice *VmReportedDeviceService
+	header           map[string]string
+	query            map[string]string
 }
 
-func (p *VmReportedDeviceServiceGetRequest) Header(key, value string) {
+func (p *VmReportedDeviceServiceGetRequest) Header(key, value string) *VmReportedDeviceServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) {
+func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) *VmReportedDeviceServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmReportedDeviceServiceGetRequest) send() *VmReportedDeviceServiceGetResponse {
+
 }
 
 //
@@ -1587,27 +1727,34 @@ func NewSnapshotNicsService(connection *Connection, path string) *SnapshotNicsSe
 }
 
 type SnapshotNicsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	snapshotNics *SnapshotNicsService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *SnapshotNicsServiceListRequest) Header(key, value string) {
+func (p *SnapshotNicsServiceListRequest) Header(key, value string) *SnapshotNicsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotNicsServiceListRequest) Query(key, value string) {
+func (p *SnapshotNicsServiceListRequest) Query(key, value string) *SnapshotNicsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotNicsServiceListRequest) Max(max int64) {
+func (p *SnapshotNicsServiceListRequest) Max(max int64) *SnapshotNicsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SnapshotNicsServiceListRequest) send() *SnapshotNicsServiceListResponse {
+
 }
 
 //
@@ -1678,27 +1825,34 @@ func NewAssignedVnicProfilesService(connection *Connection, path string) *Assign
 }
 
 type AssignedVnicProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *VnicProfile
+	assignedVnicProfiles *AssignedVnicProfilesService
+	header               map[string]string
+	query                map[string]string
+	profile              *VnicProfile
 }
 
-func (p *AssignedVnicProfilesServiceAddRequest) Header(key, value string) {
+func (p *AssignedVnicProfilesServiceAddRequest) Header(key, value string) *AssignedVnicProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfilesServiceAddRequest) Query(key, value string) {
+func (p *AssignedVnicProfilesServiceAddRequest) Query(key, value string) *AssignedVnicProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfilesServiceAddRequest) Profile(profile *VnicProfile) {
+func (p *AssignedVnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *AssignedVnicProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *AssignedVnicProfilesServiceAddRequest) send() *AssignedVnicProfilesServiceAddResponse {
+
 }
 
 //
@@ -1726,27 +1880,34 @@ func (op *AssignedVnicProfilesService) Add(
 }
 
 type AssignedVnicProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedVnicProfiles *AssignedVnicProfilesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
-func (p *AssignedVnicProfilesServiceListRequest) Header(key, value string) {
+func (p *AssignedVnicProfilesServiceListRequest) Header(key, value string) *AssignedVnicProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfilesServiceListRequest) Query(key, value string) {
+func (p *AssignedVnicProfilesServiceListRequest) Query(key, value string) *AssignedVnicProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) {
+func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) *AssignedVnicProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedVnicProfilesServiceListRequest) send() *AssignedVnicProfilesServiceListResponse {
+
 }
 
 //
@@ -1817,27 +1978,34 @@ func NewQuotaClusterLimitsService(connection *Connection, path string) *QuotaClu
 }
 
 type QuotaClusterLimitsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	limit  *QuotaClusterLimit
+	quotaClusterLimits *QuotaClusterLimitsService
+	header             map[string]string
+	query              map[string]string
+	limit              *QuotaClusterLimit
 }
 
-func (p *QuotaClusterLimitsServiceAddRequest) Header(key, value string) {
+func (p *QuotaClusterLimitsServiceAddRequest) Header(key, value string) *QuotaClusterLimitsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitsServiceAddRequest) Query(key, value string) {
+func (p *QuotaClusterLimitsServiceAddRequest) Query(key, value string) *QuotaClusterLimitsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitsServiceAddRequest) Limit(limit *QuotaClusterLimit) {
+func (p *QuotaClusterLimitsServiceAddRequest) Limit(limit *QuotaClusterLimit) *QuotaClusterLimitsServiceAddRequest {
 	p.limit = limit
+	return p
+}
+func (p *QuotaClusterLimitsServiceAddRequest) send() *QuotaClusterLimitsServiceAddResponse {
+
 }
 
 //
@@ -1865,27 +2033,34 @@ func (op *QuotaClusterLimitsService) Add(
 }
 
 type QuotaClusterLimitsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	quotaClusterLimits *QuotaClusterLimitsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
-func (p *QuotaClusterLimitsServiceListRequest) Header(key, value string) {
+func (p *QuotaClusterLimitsServiceListRequest) Header(key, value string) *QuotaClusterLimitsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitsServiceListRequest) Query(key, value string) {
+func (p *QuotaClusterLimitsServiceListRequest) Query(key, value string) *QuotaClusterLimitsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) {
+func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) *QuotaClusterLimitsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *QuotaClusterLimitsServiceListRequest) send() *QuotaClusterLimitsServiceListResponse {
+
 }
 
 //
@@ -1960,27 +2135,34 @@ func NewNetworksService(connection *Connection, path string) *NetworksService {
 }
 
 type NetworksServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	network *Network
+	networks *NetworksService
+	header   map[string]string
+	query    map[string]string
+	network  *Network
 }
 
-func (p *NetworksServiceAddRequest) Header(key, value string) {
+func (p *NetworksServiceAddRequest) Header(key, value string) *NetworksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworksServiceAddRequest) Query(key, value string) {
+func (p *NetworksServiceAddRequest) Query(key, value string) *NetworksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworksServiceAddRequest) Network(network *Network) {
+func (p *NetworksServiceAddRequest) Network(network *Network) *NetworksServiceAddRequest {
 	p.network = network
+	return p
+}
+func (p *NetworksServiceAddRequest) send() *NetworksServiceAddResponse {
+
 }
 
 //
@@ -2035,6 +2217,7 @@ func (op *NetworksService) Add(
 }
 
 type NetworksServiceListRequest struct {
+	networks      *NetworksService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -2042,28 +2225,36 @@ type NetworksServiceListRequest struct {
 	search        *string
 }
 
-func (p *NetworksServiceListRequest) Header(key, value string) {
+func (p *NetworksServiceListRequest) Header(key, value string) *NetworksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworksServiceListRequest) Query(key, value string) {
+func (p *NetworksServiceListRequest) Query(key, value string) *NetworksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworksServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *NetworksServiceListRequest) CaseSensitive(caseSensitive bool) *NetworksServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *NetworksServiceListRequest) Max(max int64) {
+func (p *NetworksServiceListRequest) Max(max int64) *NetworksServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *NetworksServiceListRequest) Search(search string) {
+func (p *NetworksServiceListRequest) Search(search string) *NetworksServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *NetworksServiceListRequest) send() *NetworksServiceListResponse {
+
 }
 
 //
@@ -2170,27 +2361,34 @@ func NewAffinityGroupsService(connection *Connection, path string) *AffinityGrou
 }
 
 type AffinityGroupsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	group  *AffinityGroup
+	affinityGroups *AffinityGroupsService
+	header         map[string]string
+	query          map[string]string
+	group          *AffinityGroup
 }
 
-func (p *AffinityGroupsServiceAddRequest) Header(key, value string) {
+func (p *AffinityGroupsServiceAddRequest) Header(key, value string) *AffinityGroupsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupsServiceAddRequest) Query(key, value string) {
+func (p *AffinityGroupsServiceAddRequest) Query(key, value string) *AffinityGroupsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupsServiceAddRequest) Group(group *AffinityGroup) {
+func (p *AffinityGroupsServiceAddRequest) Group(group *AffinityGroup) *AffinityGroupsServiceAddRequest {
 	p.group = group
+	return p
+}
+func (p *AffinityGroupsServiceAddRequest) send() *AffinityGroupsServiceAddResponse {
+
 }
 
 //
@@ -2238,27 +2436,34 @@ func (op *AffinityGroupsService) Add(
 }
 
 type AffinityGroupsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	affinityGroups *AffinityGroupsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
-func (p *AffinityGroupsServiceListRequest) Header(key, value string) {
+func (p *AffinityGroupsServiceListRequest) Header(key, value string) *AffinityGroupsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupsServiceListRequest) Query(key, value string) {
+func (p *AffinityGroupsServiceListRequest) Query(key, value string) *AffinityGroupsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupsServiceListRequest) Max(max int64) {
+func (p *AffinityGroupsServiceListRequest) Max(max int64) *AffinityGroupsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AffinityGroupsServiceListRequest) send() *AffinityGroupsServiceListResponse {
+
 }
 
 //
@@ -2331,22 +2536,29 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 }
 
 type DiskSnapshotServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	diskSnapshot *DiskSnapshotService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *DiskSnapshotServiceGetRequest) Header(key, value string) {
+func (p *DiskSnapshotServiceGetRequest) Header(key, value string) *DiskSnapshotServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskSnapshotServiceGetRequest) Query(key, value string) {
+func (p *DiskSnapshotServiceGetRequest) Query(key, value string) *DiskSnapshotServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskSnapshotServiceGetRequest) send() *DiskSnapshotServiceGetResponse {
+
 }
 
 //
@@ -2373,27 +2585,34 @@ func (op *DiskSnapshotService) Get(
 }
 
 type DiskSnapshotServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	diskSnapshot *DiskSnapshotService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *DiskSnapshotServiceRemoveRequest) Header(key, value string) {
+func (p *DiskSnapshotServiceRemoveRequest) Header(key, value string) *DiskSnapshotServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskSnapshotServiceRemoveRequest) Query(key, value string) {
+func (p *DiskSnapshotServiceRemoveRequest) Query(key, value string) *DiskSnapshotServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskSnapshotServiceRemoveRequest) Async(async bool) {
+func (p *DiskSnapshotServiceRemoveRequest) Async(async bool) *DiskSnapshotServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *DiskSnapshotServiceRemoveRequest) send() *DiskSnapshotServiceRemoveResponse {
+
 }
 
 //
@@ -2447,27 +2666,34 @@ func NewSchedulingPolicyService(connection *Connection, path string) *Scheduling
 }
 
 type SchedulingPolicyServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	schedulingPolicy *SchedulingPolicyService
+	header           map[string]string
+	query            map[string]string
+	filter           *bool
 }
 
-func (p *SchedulingPolicyServiceGetRequest) Header(key, value string) {
+func (p *SchedulingPolicyServiceGetRequest) Header(key, value string) *SchedulingPolicyServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceGetRequest) Query(key, value string) {
+func (p *SchedulingPolicyServiceGetRequest) Query(key, value string) *SchedulingPolicyServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) {
+func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) *SchedulingPolicyServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *SchedulingPolicyServiceGetRequest) send() *SchedulingPolicyServiceGetResponse {
+
 }
 
 //
@@ -2501,27 +2727,34 @@ func (op *SchedulingPolicyService) Get(
 }
 
 type SchedulingPolicyServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	schedulingPolicy *SchedulingPolicyService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
 }
 
-func (p *SchedulingPolicyServiceRemoveRequest) Header(key, value string) {
+func (p *SchedulingPolicyServiceRemoveRequest) Header(key, value string) *SchedulingPolicyServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceRemoveRequest) Query(key, value string) {
+func (p *SchedulingPolicyServiceRemoveRequest) Query(key, value string) *SchedulingPolicyServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceRemoveRequest) Async(async bool) {
+func (p *SchedulingPolicyServiceRemoveRequest) Async(async bool) *SchedulingPolicyServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *SchedulingPolicyServiceRemoveRequest) send() *SchedulingPolicyServiceRemoveResponse {
+
 }
 
 //
@@ -2548,31 +2781,39 @@ func (op *SchedulingPolicyService) Remove(
 }
 
 type SchedulingPolicyServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	policy *SchedulingPolicy
+	schedulingPolicy *SchedulingPolicyService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	policy           *SchedulingPolicy
 }
 
-func (p *SchedulingPolicyServiceUpdateRequest) Header(key, value string) {
+func (p *SchedulingPolicyServiceUpdateRequest) Header(key, value string) *SchedulingPolicyServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceUpdateRequest) Query(key, value string) {
+func (p *SchedulingPolicyServiceUpdateRequest) Query(key, value string) *SchedulingPolicyServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyServiceUpdateRequest) Async(async bool) {
+func (p *SchedulingPolicyServiceUpdateRequest) Async(async bool) *SchedulingPolicyServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *SchedulingPolicyServiceUpdateRequest) Policy(policy *SchedulingPolicy) {
+func (p *SchedulingPolicyServiceUpdateRequest) Policy(policy *SchedulingPolicy) *SchedulingPolicyServiceUpdateRequest {
 	p.policy = policy
+	return p
+}
+func (p *SchedulingPolicyServiceUpdateRequest) send() *SchedulingPolicyServiceUpdateResponse {
+
 }
 
 //
@@ -2665,22 +2906,29 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 }
 
 type NetworkAttachmentServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkAttachment *NetworkAttachmentService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *NetworkAttachmentServiceGetRequest) Header(key, value string) {
+func (p *NetworkAttachmentServiceGetRequest) Header(key, value string) *NetworkAttachmentServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) {
+func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) *NetworkAttachmentServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkAttachmentServiceGetRequest) send() *NetworkAttachmentServiceGetResponse {
+
 }
 
 //
@@ -2707,27 +2955,34 @@ func (op *NetworkAttachmentService) Get(
 }
 
 type NetworkAttachmentServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	networkAttachment *NetworkAttachmentService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
-func (p *NetworkAttachmentServiceRemoveRequest) Header(key, value string) {
+func (p *NetworkAttachmentServiceRemoveRequest) Header(key, value string) *NetworkAttachmentServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentServiceRemoveRequest) Query(key, value string) {
+func (p *NetworkAttachmentServiceRemoveRequest) Query(key, value string) *NetworkAttachmentServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentServiceRemoveRequest) Async(async bool) {
+func (p *NetworkAttachmentServiceRemoveRequest) Async(async bool) *NetworkAttachmentServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *NetworkAttachmentServiceRemoveRequest) send() *NetworkAttachmentServiceRemoveResponse {
+
 }
 
 //
@@ -2754,31 +3009,39 @@ func (op *NetworkAttachmentService) Remove(
 }
 
 type NetworkAttachmentServiceUpdateRequest struct {
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	attachment *NetworkAttachment
+	networkAttachment *NetworkAttachmentService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	attachment        *NetworkAttachment
 }
 
-func (p *NetworkAttachmentServiceUpdateRequest) Header(key, value string) {
+func (p *NetworkAttachmentServiceUpdateRequest) Header(key, value string) *NetworkAttachmentServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentServiceUpdateRequest) Query(key, value string) {
+func (p *NetworkAttachmentServiceUpdateRequest) Query(key, value string) *NetworkAttachmentServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkAttachmentServiceUpdateRequest) Async(async bool) {
+func (p *NetworkAttachmentServiceUpdateRequest) Async(async bool) *NetworkAttachmentServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *NetworkAttachmentServiceUpdateRequest) Attachment(attachment *NetworkAttachment) {
+func (p *NetworkAttachmentServiceUpdateRequest) Attachment(attachment *NetworkAttachment) *NetworkAttachmentServiceUpdateRequest {
 	p.attachment = attachment
+	return p
+}
+func (p *NetworkAttachmentServiceUpdateRequest) send() *NetworkAttachmentServiceUpdateResponse {
+
 }
 
 //
@@ -2835,27 +3098,34 @@ func NewDiskProfilesService(connection *Connection, path string) *DiskProfilesSe
 }
 
 type DiskProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *DiskProfile
+	diskProfiles *DiskProfilesService
+	header       map[string]string
+	query        map[string]string
+	profile      *DiskProfile
 }
 
-func (p *DiskProfilesServiceAddRequest) Header(key, value string) {
+func (p *DiskProfilesServiceAddRequest) Header(key, value string) *DiskProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskProfilesServiceAddRequest) Query(key, value string) {
+func (p *DiskProfilesServiceAddRequest) Query(key, value string) *DiskProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskProfilesServiceAddRequest) Profile(profile *DiskProfile) {
+func (p *DiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *DiskProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *DiskProfilesServiceAddRequest) send() *DiskProfilesServiceAddResponse {
+
 }
 
 //
@@ -2883,27 +3153,34 @@ func (op *DiskProfilesService) Add(
 }
 
 type DiskProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	diskProfiles *DiskProfilesService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *DiskProfilesServiceListRequest) Header(key, value string) {
+func (p *DiskProfilesServiceListRequest) Header(key, value string) *DiskProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskProfilesServiceListRequest) Query(key, value string) {
+func (p *DiskProfilesServiceListRequest) Query(key, value string) *DiskProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskProfilesServiceListRequest) Max(max int64) {
+func (p *DiskProfilesServiceListRequest) Max(max int64) *DiskProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *DiskProfilesServiceListRequest) send() *DiskProfilesServiceListResponse {
+
 }
 
 //
@@ -2975,22 +3252,29 @@ func NewIconService(connection *Connection, path string) *IconService {
 }
 
 type IconServiceGetRequest struct {
+	icon   *IconService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *IconServiceGetRequest) Header(key, value string) {
+func (p *IconServiceGetRequest) Header(key, value string) *IconServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IconServiceGetRequest) Query(key, value string) {
+func (p *IconServiceGetRequest) Query(key, value string) *IconServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *IconServiceGetRequest) send() *IconServiceGetResponse {
+
 }
 
 //
@@ -3059,22 +3343,29 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 }
 
 type AssignedAffinityLabelServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedAffinityLabel *AssignedAffinityLabelService
+	header                map[string]string
+	query                 map[string]string
 }
 
-func (p *AssignedAffinityLabelServiceGetRequest) Header(key, value string) {
+func (p *AssignedAffinityLabelServiceGetRequest) Header(key, value string) *AssignedAffinityLabelServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) {
+func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) *AssignedAffinityLabelServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedAffinityLabelServiceGetRequest) send() *AssignedAffinityLabelServiceGetResponse {
+
 }
 
 //
@@ -3102,22 +3393,29 @@ func (op *AssignedAffinityLabelService) Get(
 }
 
 type AssignedAffinityLabelServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedAffinityLabel *AssignedAffinityLabelService
+	header                map[string]string
+	query                 map[string]string
 }
 
-func (p *AssignedAffinityLabelServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedAffinityLabelServiceRemoveRequest) Header(key, value string) *AssignedAffinityLabelServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedAffinityLabelServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedAffinityLabelServiceRemoveRequest) Query(key, value string) *AssignedAffinityLabelServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedAffinityLabelServiceRemoveRequest) send() *AssignedAffinityLabelServiceRemoveResponse {
+
 }
 
 //
@@ -3165,27 +3463,34 @@ func NewCpuProfilesService(connection *Connection, path string) *CpuProfilesServ
 }
 
 type CpuProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *CpuProfile
+	cpuProfiles *CpuProfilesService
+	header      map[string]string
+	query       map[string]string
+	profile     *CpuProfile
 }
 
-func (p *CpuProfilesServiceAddRequest) Header(key, value string) {
+func (p *CpuProfilesServiceAddRequest) Header(key, value string) *CpuProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CpuProfilesServiceAddRequest) Query(key, value string) {
+func (p *CpuProfilesServiceAddRequest) Query(key, value string) *CpuProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *CpuProfilesServiceAddRequest) Profile(profile *CpuProfile) {
+func (p *CpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *CpuProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *CpuProfilesServiceAddRequest) send() *CpuProfilesServiceAddResponse {
+
 }
 
 //
@@ -3213,27 +3518,34 @@ func (op *CpuProfilesService) Add(
 }
 
 type CpuProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	cpuProfiles *CpuProfilesService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
-func (p *CpuProfilesServiceListRequest) Header(key, value string) {
+func (p *CpuProfilesServiceListRequest) Header(key, value string) *CpuProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CpuProfilesServiceListRequest) Query(key, value string) {
+func (p *CpuProfilesServiceListRequest) Query(key, value string) *CpuProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *CpuProfilesServiceListRequest) Max(max int64) {
+func (p *CpuProfilesServiceListRequest) Max(max int64) *CpuProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *CpuProfilesServiceListRequest) send() *CpuProfilesServiceListResponse {
+
 }
 
 //
@@ -3304,27 +3616,34 @@ func NewMacPoolsService(connection *Connection, path string) *MacPoolsService {
 }
 
 type MacPoolsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	pool   *MacPool
+	macPools *MacPoolsService
+	header   map[string]string
+	query    map[string]string
+	pool     *MacPool
 }
 
-func (p *MacPoolsServiceAddRequest) Header(key, value string) {
+func (p *MacPoolsServiceAddRequest) Header(key, value string) *MacPoolsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MacPoolsServiceAddRequest) Query(key, value string) {
+func (p *MacPoolsServiceAddRequest) Query(key, value string) *MacPoolsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *MacPoolsServiceAddRequest) Pool(pool *MacPool) {
+func (p *MacPoolsServiceAddRequest) Pool(pool *MacPool) *MacPoolsServiceAddRequest {
 	p.pool = pool
+	return p
+}
+func (p *MacPoolsServiceAddRequest) send() *MacPoolsServiceAddResponse {
+
 }
 
 //
@@ -3375,27 +3694,34 @@ func (op *MacPoolsService) Add(
 }
 
 type MacPoolsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	macPools *MacPoolsService
+	header   map[string]string
+	query    map[string]string
+	max      *int64
 }
 
-func (p *MacPoolsServiceListRequest) Header(key, value string) {
+func (p *MacPoolsServiceListRequest) Header(key, value string) *MacPoolsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MacPoolsServiceListRequest) Query(key, value string) {
+func (p *MacPoolsServiceListRequest) Query(key, value string) *MacPoolsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *MacPoolsServiceListRequest) Max(max int64) {
+func (p *MacPoolsServiceListRequest) Max(max int64) *MacPoolsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *MacPoolsServiceListRequest) send() *MacPoolsServiceListResponse {
+
 }
 
 //
@@ -3467,27 +3793,34 @@ func NewAffinityGroupVmsService(connection *Connection, path string) *AffinityGr
 }
 
 type AffinityGroupVmsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	vm     *Vm
+	affinityGroupVms *AffinityGroupVmsService
+	header           map[string]string
+	query            map[string]string
+	vm               *Vm
 }
 
-func (p *AffinityGroupVmsServiceAddRequest) Header(key, value string) {
+func (p *AffinityGroupVmsServiceAddRequest) Header(key, value string) *AffinityGroupVmsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmsServiceAddRequest) Query(key, value string) {
+func (p *AffinityGroupVmsServiceAddRequest) Query(key, value string) *AffinityGroupVmsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmsServiceAddRequest) Vm(vm *Vm) {
+func (p *AffinityGroupVmsServiceAddRequest) Vm(vm *Vm) *AffinityGroupVmsServiceAddRequest {
 	p.vm = vm
+	return p
+}
+func (p *AffinityGroupVmsServiceAddRequest) send() *AffinityGroupVmsServiceAddResponse {
+
 }
 
 //
@@ -3526,27 +3859,34 @@ func (op *AffinityGroupVmsService) Add(
 }
 
 type AffinityGroupVmsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	affinityGroupVms *AffinityGroupVmsService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
-func (p *AffinityGroupVmsServiceListRequest) Header(key, value string) {
+func (p *AffinityGroupVmsServiceListRequest) Header(key, value string) *AffinityGroupVmsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmsServiceListRequest) Query(key, value string) {
+func (p *AffinityGroupVmsServiceListRequest) Query(key, value string) *AffinityGroupVmsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmsServiceListRequest) Max(max int64) {
+func (p *AffinityGroupVmsServiceListRequest) Max(max int64) *AffinityGroupVmsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AffinityGroupVmsServiceListRequest) send() *AffinityGroupVmsServiceListResponse {
+
 }
 
 //
@@ -3620,22 +3960,29 @@ func NewQosService(connection *Connection, path string) *QosService {
 }
 
 type QosServiceGetRequest struct {
+	qos    *QosService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *QosServiceGetRequest) Header(key, value string) {
+func (p *QosServiceGetRequest) Header(key, value string) *QosServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QosServiceGetRequest) Query(key, value string) {
+func (p *QosServiceGetRequest) Query(key, value string) *QosServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *QosServiceGetRequest) send() *QosServiceGetResponse {
+
 }
 
 //
@@ -3662,27 +4009,34 @@ func (op *QosService) Get(
 }
 
 type QosServiceRemoveRequest struct {
+	qos    *QosService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *QosServiceRemoveRequest) Header(key, value string) {
+func (p *QosServiceRemoveRequest) Header(key, value string) *QosServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QosServiceRemoveRequest) Query(key, value string) {
+func (p *QosServiceRemoveRequest) Query(key, value string) *QosServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QosServiceRemoveRequest) Async(async bool) {
+func (p *QosServiceRemoveRequest) Async(async bool) *QosServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *QosServiceRemoveRequest) send() *QosServiceRemoveResponse {
+
 }
 
 //
@@ -3709,31 +4063,39 @@ func (op *QosService) Remove(
 }
 
 type QosServiceUpdateRequest struct {
+	qos    *QosService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	qos    *Qos
 }
 
-func (p *QosServiceUpdateRequest) Header(key, value string) {
+func (p *QosServiceUpdateRequest) Header(key, value string) *QosServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QosServiceUpdateRequest) Query(key, value string) {
+func (p *QosServiceUpdateRequest) Query(key, value string) *QosServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QosServiceUpdateRequest) Async(async bool) {
+func (p *QosServiceUpdateRequest) Async(async bool) *QosServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *QosServiceUpdateRequest) Qos(qos *Qos) {
+func (p *QosServiceUpdateRequest) Qos(qos *Qos) *QosServiceUpdateRequest {
 	p.qos = qos
+	return p
+}
+func (p *QosServiceUpdateRequest) send() *QosServiceUpdateResponse {
+
 }
 
 //
@@ -3791,27 +4153,34 @@ func NewTagsService(connection *Connection, path string) *TagsService {
 }
 
 type TagsServiceAddRequest struct {
+	tags   *TagsService
 	header map[string]string
 	query  map[string]string
 	tag    *Tag
 }
 
-func (p *TagsServiceAddRequest) Header(key, value string) {
+func (p *TagsServiceAddRequest) Header(key, value string) *TagsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TagsServiceAddRequest) Query(key, value string) {
+func (p *TagsServiceAddRequest) Query(key, value string) *TagsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TagsServiceAddRequest) Tag(tag *Tag) {
+func (p *TagsServiceAddRequest) Tag(tag *Tag) *TagsServiceAddRequest {
 	p.tag = tag
+	return p
+}
+func (p *TagsServiceAddRequest) send() *TagsServiceAddResponse {
+
 }
 
 //
@@ -3868,27 +4237,34 @@ func (op *TagsService) Add(
 }
 
 type TagsServiceListRequest struct {
+	tags   *TagsService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *TagsServiceListRequest) Header(key, value string) {
+func (p *TagsServiceListRequest) Header(key, value string) *TagsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TagsServiceListRequest) Query(key, value string) {
+func (p *TagsServiceListRequest) Query(key, value string) *TagsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TagsServiceListRequest) Max(max int64) {
+func (p *TagsServiceListRequest) Max(max int64) *TagsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TagsServiceListRequest) send() *TagsServiceListResponse {
+
 }
 
 //
@@ -3990,22 +4366,29 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 }
 
 type ExternalProviderCertificateServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalProviderCertificate *ExternalProviderCertificateService
+	header                      map[string]string
+	query                       map[string]string
 }
 
-func (p *ExternalProviderCertificateServiceGetRequest) Header(key, value string) {
+func (p *ExternalProviderCertificateServiceGetRequest) Header(key, value string) *ExternalProviderCertificateServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) {
+func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) *ExternalProviderCertificateServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalProviderCertificateServiceGetRequest) send() *ExternalProviderCertificateServiceGetResponse {
+
 }
 
 //
@@ -4060,27 +4443,34 @@ func NewEventsService(connection *Connection, path string) *EventsService {
 }
 
 type EventsServiceAddRequest struct {
+	events *EventsService
 	header map[string]string
 	query  map[string]string
 	event  *Event
 }
 
-func (p *EventsServiceAddRequest) Header(key, value string) {
+func (p *EventsServiceAddRequest) Header(key, value string) *EventsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EventsServiceAddRequest) Query(key, value string) {
+func (p *EventsServiceAddRequest) Query(key, value string) *EventsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *EventsServiceAddRequest) Event(event *Event) {
+func (p *EventsServiceAddRequest) Event(event *Event) *EventsServiceAddRequest {
 	p.event = event
+	return p
+}
+func (p *EventsServiceAddRequest) send() *EventsServiceAddResponse {
+
 }
 
 //
@@ -4138,6 +4528,7 @@ func (op *EventsService) Add(
 }
 
 type EventsServiceListRequest struct {
+	events        *EventsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -4146,31 +4537,40 @@ type EventsServiceListRequest struct {
 	search        *string
 }
 
-func (p *EventsServiceListRequest) Header(key, value string) {
+func (p *EventsServiceListRequest) Header(key, value string) *EventsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EventsServiceListRequest) Query(key, value string) {
+func (p *EventsServiceListRequest) Query(key, value string) *EventsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *EventsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *EventsServiceListRequest) CaseSensitive(caseSensitive bool) *EventsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *EventsServiceListRequest) From(from int64) {
+func (p *EventsServiceListRequest) From(from int64) *EventsServiceListRequest {
 	p.from = &from
+	return p
 }
-func (p *EventsServiceListRequest) Max(max int64) {
+func (p *EventsServiceListRequest) Max(max int64) *EventsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *EventsServiceListRequest) Search(search string) {
+func (p *EventsServiceListRequest) Search(search string) *EventsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *EventsServiceListRequest) send() *EventsServiceListResponse {
+
 }
 
 //
@@ -4311,27 +4711,34 @@ func (op *EventsService) List(
 }
 
 type EventsServiceUndeleteRequest struct {
+	events *EventsService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *EventsServiceUndeleteRequest) Header(key, value string) {
+func (p *EventsServiceUndeleteRequest) Header(key, value string) *EventsServiceUndeleteRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EventsServiceUndeleteRequest) Query(key, value string) {
+func (p *EventsServiceUndeleteRequest) Query(key, value string) *EventsServiceUndeleteRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *EventsServiceUndeleteRequest) Async(async bool) {
+func (p *EventsServiceUndeleteRequest) Async(async bool) *EventsServiceUndeleteRequest {
 	p.async = &async
+	return p
+}
+func (p *EventsServiceUndeleteRequest) send() *EventsServiceUndeleteResponse {
+
 }
 
 //
@@ -4396,22 +4803,29 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 }
 
 type VmWatchdogServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmWatchdog *VmWatchdogService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *VmWatchdogServiceGetRequest) Header(key, value string) {
+func (p *VmWatchdogServiceGetRequest) Header(key, value string) *VmWatchdogServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmWatchdogServiceGetRequest) Query(key, value string) {
+func (p *VmWatchdogServiceGetRequest) Query(key, value string) *VmWatchdogServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmWatchdogServiceGetRequest) send() *VmWatchdogServiceGetResponse {
+
 }
 
 //
@@ -4439,27 +4853,34 @@ func (op *VmWatchdogService) Get(
 }
 
 type VmWatchdogServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmWatchdog *VmWatchdogService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
-func (p *VmWatchdogServiceRemoveRequest) Header(key, value string) {
+func (p *VmWatchdogServiceRemoveRequest) Header(key, value string) *VmWatchdogServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmWatchdogServiceRemoveRequest) Query(key, value string) {
+func (p *VmWatchdogServiceRemoveRequest) Query(key, value string) *VmWatchdogServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmWatchdogServiceRemoveRequest) Async(async bool) {
+func (p *VmWatchdogServiceRemoveRequest) Async(async bool) *VmWatchdogServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmWatchdogServiceRemoveRequest) send() *VmWatchdogServiceRemoveResponse {
+
 }
 
 //
@@ -4492,31 +4913,39 @@ func (op *VmWatchdogService) Remove(
 }
 
 type VmWatchdogServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	watchdog *Watchdog
+	vmWatchdog *VmWatchdogService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	watchdog   *Watchdog
 }
 
-func (p *VmWatchdogServiceUpdateRequest) Header(key, value string) {
+func (p *VmWatchdogServiceUpdateRequest) Header(key, value string) *VmWatchdogServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmWatchdogServiceUpdateRequest) Query(key, value string) {
+func (p *VmWatchdogServiceUpdateRequest) Query(key, value string) *VmWatchdogServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmWatchdogServiceUpdateRequest) Async(async bool) {
+func (p *VmWatchdogServiceUpdateRequest) Async(async bool) *VmWatchdogServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+func (p *VmWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *VmWatchdogServiceUpdateRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *VmWatchdogServiceUpdateRequest) send() *VmWatchdogServiceUpdateResponse {
+
 }
 
 //
@@ -4600,27 +5029,34 @@ func NewAttachedStorageDomainService(connection *Connection, path string) *Attac
 }
 
 type AttachedStorageDomainServiceActivateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	attachedStorageDomain *AttachedStorageDomainService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
 }
 
-func (p *AttachedStorageDomainServiceActivateRequest) Header(key, value string) {
+func (p *AttachedStorageDomainServiceActivateRequest) Header(key, value string) *AttachedStorageDomainServiceActivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceActivateRequest) Query(key, value string) {
+func (p *AttachedStorageDomainServiceActivateRequest) Query(key, value string) *AttachedStorageDomainServiceActivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceActivateRequest) Async(async bool) {
+func (p *AttachedStorageDomainServiceActivateRequest) Async(async bool) *AttachedStorageDomainServiceActivateRequest {
 	p.async = &async
+	return p
+}
+func (p *AttachedStorageDomainServiceActivateRequest) send() *AttachedStorageDomainServiceActivateResponse {
+
 }
 
 //
@@ -4658,27 +5094,34 @@ func (op *AttachedStorageDomainService) Activate(
 }
 
 type AttachedStorageDomainServiceDeactivateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	attachedStorageDomain *AttachedStorageDomainService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
 }
 
-func (p *AttachedStorageDomainServiceDeactivateRequest) Header(key, value string) {
+func (p *AttachedStorageDomainServiceDeactivateRequest) Header(key, value string) *AttachedStorageDomainServiceDeactivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceDeactivateRequest) Query(key, value string) {
+func (p *AttachedStorageDomainServiceDeactivateRequest) Query(key, value string) *AttachedStorageDomainServiceDeactivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceDeactivateRequest) Async(async bool) {
+func (p *AttachedStorageDomainServiceDeactivateRequest) Async(async bool) *AttachedStorageDomainServiceDeactivateRequest {
 	p.async = &async
+	return p
+}
+func (p *AttachedStorageDomainServiceDeactivateRequest) send() *AttachedStorageDomainServiceDeactivateResponse {
+
 }
 
 //
@@ -4716,22 +5159,29 @@ func (op *AttachedStorageDomainService) Deactivate(
 }
 
 type AttachedStorageDomainServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	attachedStorageDomain *AttachedStorageDomainService
+	header                map[string]string
+	query                 map[string]string
 }
 
-func (p *AttachedStorageDomainServiceGetRequest) Header(key, value string) {
+func (p *AttachedStorageDomainServiceGetRequest) Header(key, value string) *AttachedStorageDomainServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) {
+func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) *AttachedStorageDomainServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AttachedStorageDomainServiceGetRequest) send() *AttachedStorageDomainServiceGetResponse {
+
 }
 
 //
@@ -4758,27 +5208,34 @@ func (op *AttachedStorageDomainService) Get(
 }
 
 type AttachedStorageDomainServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	attachedStorageDomain *AttachedStorageDomainService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
 }
 
-func (p *AttachedStorageDomainServiceRemoveRequest) Header(key, value string) {
+func (p *AttachedStorageDomainServiceRemoveRequest) Header(key, value string) *AttachedStorageDomainServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceRemoveRequest) Query(key, value string) {
+func (p *AttachedStorageDomainServiceRemoveRequest) Query(key, value string) *AttachedStorageDomainServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainServiceRemoveRequest) Async(async bool) {
+func (p *AttachedStorageDomainServiceRemoveRequest) Async(async bool) *AttachedStorageDomainServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AttachedStorageDomainServiceRemoveRequest) send() *AttachedStorageDomainServiceRemoveResponse {
+
 }
 
 //
@@ -4844,27 +5301,34 @@ func NewAttachedStorageDomainsService(connection *Connection, path string) *Atta
 }
 
 type AttachedStorageDomainsServiceAddRequest struct {
-	header        map[string]string
-	query         map[string]string
-	storageDomain *StorageDomain
+	attachedStorageDomains *AttachedStorageDomainsService
+	header                 map[string]string
+	query                  map[string]string
+	storageDomain          *StorageDomain
 }
 
-func (p *AttachedStorageDomainsServiceAddRequest) Header(key, value string) {
+func (p *AttachedStorageDomainsServiceAddRequest) Header(key, value string) *AttachedStorageDomainsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainsServiceAddRequest) Query(key, value string) {
+func (p *AttachedStorageDomainsServiceAddRequest) Query(key, value string) *AttachedStorageDomainsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *AttachedStorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) *AttachedStorageDomainsServiceAddRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *AttachedStorageDomainsServiceAddRequest) send() *AttachedStorageDomainsServiceAddResponse {
+
 }
 
 //
@@ -4892,27 +5356,34 @@ func (op *AttachedStorageDomainsService) Add(
 }
 
 type AttachedStorageDomainsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	attachedStorageDomains *AttachedStorageDomainsService
+	header                 map[string]string
+	query                  map[string]string
+	max                    *int64
 }
 
-func (p *AttachedStorageDomainsServiceListRequest) Header(key, value string) {
+func (p *AttachedStorageDomainsServiceListRequest) Header(key, value string) *AttachedStorageDomainsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainsServiceListRequest) Query(key, value string) {
+func (p *AttachedStorageDomainsServiceListRequest) Query(key, value string) *AttachedStorageDomainsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) {
+func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) *AttachedStorageDomainsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AttachedStorageDomainsServiceListRequest) send() *AttachedStorageDomainsServiceListResponse {
+
 }
 
 //
@@ -4983,22 +5454,29 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 }
 
 type InstanceTypeWatchdogServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	instanceTypeWatchdog *InstanceTypeWatchdogService
+	header               map[string]string
+	query                map[string]string
 }
 
-func (p *InstanceTypeWatchdogServiceGetRequest) Header(key, value string) {
+func (p *InstanceTypeWatchdogServiceGetRequest) Header(key, value string) *InstanceTypeWatchdogServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) {
+func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) *InstanceTypeWatchdogServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *InstanceTypeWatchdogServiceGetRequest) send() *InstanceTypeWatchdogServiceGetResponse {
+
 }
 
 //
@@ -5026,27 +5504,34 @@ func (op *InstanceTypeWatchdogService) Get(
 }
 
 type InstanceTypeWatchdogServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	instanceTypeWatchdog *InstanceTypeWatchdogService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
-func (p *InstanceTypeWatchdogServiceRemoveRequest) Header(key, value string) {
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Header(key, value string) *InstanceTypeWatchdogServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogServiceRemoveRequest) Query(key, value string) {
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Query(key, value string) *InstanceTypeWatchdogServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogServiceRemoveRequest) Async(async bool) {
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Async(async bool) *InstanceTypeWatchdogServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *InstanceTypeWatchdogServiceRemoveRequest) send() *InstanceTypeWatchdogServiceRemoveResponse {
+
 }
 
 //
@@ -5074,31 +5559,39 @@ func (op *InstanceTypeWatchdogService) Remove(
 }
 
 type InstanceTypeWatchdogServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	watchdog *Watchdog
+	instanceTypeWatchdog *InstanceTypeWatchdogService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	watchdog             *Watchdog
 }
 
-func (p *InstanceTypeWatchdogServiceUpdateRequest) Header(key, value string) {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Header(key, value string) *InstanceTypeWatchdogServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogServiceUpdateRequest) Query(key, value string) {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Query(key, value string) *InstanceTypeWatchdogServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogServiceUpdateRequest) Async(async bool) {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Async(async bool) *InstanceTypeWatchdogServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *InstanceTypeWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *InstanceTypeWatchdogServiceUpdateRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *InstanceTypeWatchdogServiceUpdateRequest) send() *InstanceTypeWatchdogServiceUpdateResponse {
+
 }
 
 //
@@ -5156,22 +5649,29 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 }
 
 type QuotaStorageLimitServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	quotaStorageLimit *QuotaStorageLimitService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *QuotaStorageLimitServiceGetRequest) Header(key, value string) {
+func (p *QuotaStorageLimitServiceGetRequest) Header(key, value string) *QuotaStorageLimitServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) {
+func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) *QuotaStorageLimitServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *QuotaStorageLimitServiceGetRequest) send() *QuotaStorageLimitServiceGetResponse {
+
 }
 
 //
@@ -5198,27 +5698,34 @@ func (op *QuotaStorageLimitService) Get(
 }
 
 type QuotaStorageLimitServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	quotaStorageLimit *QuotaStorageLimitService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
-func (p *QuotaStorageLimitServiceRemoveRequest) Header(key, value string) {
+func (p *QuotaStorageLimitServiceRemoveRequest) Header(key, value string) *QuotaStorageLimitServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitServiceRemoveRequest) Query(key, value string) {
+func (p *QuotaStorageLimitServiceRemoveRequest) Query(key, value string) *QuotaStorageLimitServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitServiceRemoveRequest) Async(async bool) {
+func (p *QuotaStorageLimitServiceRemoveRequest) Async(async bool) *QuotaStorageLimitServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *QuotaStorageLimitServiceRemoveRequest) send() *QuotaStorageLimitServiceRemoveResponse {
+
 }
 
 //
@@ -5272,22 +5779,29 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 }
 
 type RoleServiceGetRequest struct {
+	role   *RoleService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *RoleServiceGetRequest) Header(key, value string) {
+func (p *RoleServiceGetRequest) Header(key, value string) *RoleServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *RoleServiceGetRequest) Query(key, value string) {
+func (p *RoleServiceGetRequest) Query(key, value string) *RoleServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *RoleServiceGetRequest) send() *RoleServiceGetResponse {
+
 }
 
 //
@@ -5330,27 +5844,34 @@ func (op *RoleService) Get(
 }
 
 type RoleServiceRemoveRequest struct {
+	role   *RoleService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *RoleServiceRemoveRequest) Header(key, value string) {
+func (p *RoleServiceRemoveRequest) Header(key, value string) *RoleServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *RoleServiceRemoveRequest) Query(key, value string) {
+func (p *RoleServiceRemoveRequest) Query(key, value string) *RoleServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *RoleServiceRemoveRequest) Async(async bool) {
+func (p *RoleServiceRemoveRequest) Async(async bool) *RoleServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *RoleServiceRemoveRequest) send() *RoleServiceRemoveResponse {
+
 }
 
 //
@@ -5383,31 +5904,39 @@ func (op *RoleService) Remove(
 }
 
 type RoleServiceUpdateRequest struct {
+	role   *RoleService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	role   *Role
 }
 
-func (p *RoleServiceUpdateRequest) Header(key, value string) {
+func (p *RoleServiceUpdateRequest) Header(key, value string) *RoleServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *RoleServiceUpdateRequest) Query(key, value string) {
+func (p *RoleServiceUpdateRequest) Query(key, value string) *RoleServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *RoleServiceUpdateRequest) Async(async bool) {
+func (p *RoleServiceUpdateRequest) Async(async bool) *RoleServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *RoleServiceUpdateRequest) Role(role *Role) {
+func (p *RoleServiceUpdateRequest) Role(role *Role) *RoleServiceUpdateRequest {
 	p.role = role
+	return p
+}
+func (p *RoleServiceUpdateRequest) send() *RoleServiceUpdateResponse {
+
 }
 
 //
@@ -5499,22 +6028,29 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 }
 
 type AssignedNetworkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedNetwork *AssignedNetworkService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *AssignedNetworkServiceGetRequest) Header(key, value string) {
+func (p *AssignedNetworkServiceGetRequest) Header(key, value string) *AssignedNetworkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedNetworkServiceGetRequest) Query(key, value string) {
+func (p *AssignedNetworkServiceGetRequest) Query(key, value string) *AssignedNetworkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedNetworkServiceGetRequest) send() *AssignedNetworkServiceGetResponse {
+
 }
 
 //
@@ -5541,27 +6077,34 @@ func (op *AssignedNetworkService) Get(
 }
 
 type AssignedNetworkServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	assignedNetwork *AssignedNetworkService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
-func (p *AssignedNetworkServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedNetworkServiceRemoveRequest) Header(key, value string) *AssignedNetworkServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedNetworkServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedNetworkServiceRemoveRequest) Query(key, value string) *AssignedNetworkServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedNetworkServiceRemoveRequest) Async(async bool) {
+func (p *AssignedNetworkServiceRemoveRequest) Async(async bool) *AssignedNetworkServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AssignedNetworkServiceRemoveRequest) send() *AssignedNetworkServiceRemoveResponse {
+
 }
 
 //
@@ -5588,31 +6131,39 @@ func (op *AssignedNetworkService) Remove(
 }
 
 type AssignedNetworkServiceUpdateRequest struct {
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	network *Network
+	assignedNetwork *AssignedNetworkService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
+	network         *Network
 }
 
-func (p *AssignedNetworkServiceUpdateRequest) Header(key, value string) {
+func (p *AssignedNetworkServiceUpdateRequest) Header(key, value string) *AssignedNetworkServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedNetworkServiceUpdateRequest) Query(key, value string) {
+func (p *AssignedNetworkServiceUpdateRequest) Query(key, value string) *AssignedNetworkServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedNetworkServiceUpdateRequest) Async(async bool) {
+func (p *AssignedNetworkServiceUpdateRequest) Async(async bool) *AssignedNetworkServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *AssignedNetworkServiceUpdateRequest) Network(network *Network) {
+func (p *AssignedNetworkServiceUpdateRequest) Network(network *Network) *AssignedNetworkServiceUpdateRequest {
 	p.network = network
+	return p
+}
+func (p *AssignedNetworkServiceUpdateRequest) send() *AssignedNetworkServiceUpdateResponse {
+
 }
 
 //
@@ -5670,22 +6221,29 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 }
 
 type StorageDomainVmDiskAttachmentServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainVmDiskAttachment *StorageDomainVmDiskAttachmentService
+	header                        map[string]string
+	query                         map[string]string
 }
 
-func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Header(key, value string) *StorageDomainVmDiskAttachmentServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string) *StorageDomainVmDiskAttachmentServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) send() *StorageDomainVmDiskAttachmentServiceGetResponse {
+
 }
 
 //
@@ -5741,27 +6299,34 @@ func NewHostNicsService(connection *Connection, path string) *HostNicsService {
 }
 
 type HostNicsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	hostNics *HostNicsService
+	header   map[string]string
+	query    map[string]string
+	max      *int64
 }
 
-func (p *HostNicsServiceListRequest) Header(key, value string) {
+func (p *HostNicsServiceListRequest) Header(key, value string) *HostNicsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostNicsServiceListRequest) Query(key, value string) {
+func (p *HostNicsServiceListRequest) Query(key, value string) *HostNicsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostNicsServiceListRequest) Max(max int64) {
+func (p *HostNicsServiceListRequest) Max(max int64) *HostNicsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *HostNicsServiceListRequest) send() *HostNicsServiceListResponse {
+
 }
 
 //
@@ -5833,22 +6398,29 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 }
 
 type VmNumaNodeServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmNumaNode *VmNumaNodeService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *VmNumaNodeServiceGetRequest) Header(key, value string) {
+func (p *VmNumaNodeServiceGetRequest) Header(key, value string) *VmNumaNodeServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNumaNodeServiceGetRequest) Query(key, value string) {
+func (p *VmNumaNodeServiceGetRequest) Query(key, value string) *VmNumaNodeServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmNumaNodeServiceGetRequest) send() *VmNumaNodeServiceGetResponse {
+
 }
 
 //
@@ -5875,27 +6447,34 @@ func (op *VmNumaNodeService) Get(
 }
 
 type VmNumaNodeServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmNumaNode *VmNumaNodeService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
-func (p *VmNumaNodeServiceRemoveRequest) Header(key, value string) {
+func (p *VmNumaNodeServiceRemoveRequest) Header(key, value string) *VmNumaNodeServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNumaNodeServiceRemoveRequest) Query(key, value string) {
+func (p *VmNumaNodeServiceRemoveRequest) Query(key, value string) *VmNumaNodeServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNumaNodeServiceRemoveRequest) Async(async bool) {
+func (p *VmNumaNodeServiceRemoveRequest) Async(async bool) *VmNumaNodeServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmNumaNodeServiceRemoveRequest) send() *VmNumaNodeServiceRemoveResponse {
+
 }
 
 //
@@ -5928,31 +6507,39 @@ func (op *VmNumaNodeService) Remove(
 }
 
 type VmNumaNodeServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	node   *VirtualNumaNode
+	vmNumaNode *VmNumaNodeService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	node       *VirtualNumaNode
 }
 
-func (p *VmNumaNodeServiceUpdateRequest) Header(key, value string) {
+func (p *VmNumaNodeServiceUpdateRequest) Header(key, value string) *VmNumaNodeServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNumaNodeServiceUpdateRequest) Query(key, value string) {
+func (p *VmNumaNodeServiceUpdateRequest) Query(key, value string) *VmNumaNodeServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNumaNodeServiceUpdateRequest) Async(async bool) {
+func (p *VmNumaNodeServiceUpdateRequest) Async(async bool) *VmNumaNodeServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmNumaNodeServiceUpdateRequest) Node(node *VirtualNumaNode) {
+func (p *VmNumaNodeServiceUpdateRequest) Node(node *VirtualNumaNode) *VmNumaNodeServiceUpdateRequest {
 	p.node = node
+	return p
+}
+func (p *VmNumaNodeServiceUpdateRequest) send() *VmNumaNodeServiceUpdateResponse {
+
 }
 
 //
@@ -6027,27 +6614,34 @@ func NewTemplateCdromsService(connection *Connection, path string) *TemplateCdro
 }
 
 type TemplateCdromsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	templateCdroms *TemplateCdromsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
-func (p *TemplateCdromsServiceListRequest) Header(key, value string) {
+func (p *TemplateCdromsServiceListRequest) Header(key, value string) *TemplateCdromsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateCdromsServiceListRequest) Query(key, value string) {
+func (p *TemplateCdromsServiceListRequest) Query(key, value string) *TemplateCdromsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateCdromsServiceListRequest) Max(max int64) {
+func (p *TemplateCdromsServiceListRequest) Max(max int64) *TemplateCdromsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TemplateCdromsServiceListRequest) send() *TemplateCdromsServiceListResponse {
+
 }
 
 //
@@ -6119,22 +6713,29 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 }
 
 type SnapshotServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	snapshot *SnapshotService
+	header   map[string]string
+	query    map[string]string
 }
 
-func (p *SnapshotServiceGetRequest) Header(key, value string) {
+func (p *SnapshotServiceGetRequest) Header(key, value string) *SnapshotServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotServiceGetRequest) Query(key, value string) {
+func (p *SnapshotServiceGetRequest) Query(key, value string) *SnapshotServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SnapshotServiceGetRequest) send() *SnapshotServiceGetResponse {
+
 }
 
 //
@@ -6161,31 +6762,39 @@ func (op *SnapshotService) Get(
 }
 
 type SnapshotServiceRemoveRequest struct {
+	snapshot   *SnapshotService
 	header     map[string]string
 	query      map[string]string
 	allContent *bool
 	async      *bool
 }
 
-func (p *SnapshotServiceRemoveRequest) Header(key, value string) {
+func (p *SnapshotServiceRemoveRequest) Header(key, value string) *SnapshotServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotServiceRemoveRequest) Query(key, value string) {
+func (p *SnapshotServiceRemoveRequest) Query(key, value string) *SnapshotServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotServiceRemoveRequest) AllContent(allContent bool) {
+func (p *SnapshotServiceRemoveRequest) AllContent(allContent bool) *SnapshotServiceRemoveRequest {
 	p.allContent = &allContent
+	return p
 }
-func (p *SnapshotServiceRemoveRequest) Async(async bool) {
+func (p *SnapshotServiceRemoveRequest) Async(async bool) *SnapshotServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *SnapshotServiceRemoveRequest) send() *SnapshotServiceRemoveResponse {
+
 }
 
 //
@@ -6221,6 +6830,7 @@ func (op *SnapshotService) Remove(
 }
 
 type SnapshotServiceRestoreRequest struct {
+	snapshot      *SnapshotService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -6228,28 +6838,36 @@ type SnapshotServiceRestoreRequest struct {
 	restoreMemory *bool
 }
 
-func (p *SnapshotServiceRestoreRequest) Header(key, value string) {
+func (p *SnapshotServiceRestoreRequest) Header(key, value string) *SnapshotServiceRestoreRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotServiceRestoreRequest) Query(key, value string) {
+func (p *SnapshotServiceRestoreRequest) Query(key, value string) *SnapshotServiceRestoreRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotServiceRestoreRequest) Async(async bool) {
+func (p *SnapshotServiceRestoreRequest) Async(async bool) *SnapshotServiceRestoreRequest {
 	p.async = &async
+	return p
 }
-func (p *SnapshotServiceRestoreRequest) Disks(disks []Disk) {
+func (p *SnapshotServiceRestoreRequest) Disks(disks []Disk) *SnapshotServiceRestoreRequest {
 	p.disks = disks
+	return p
 }
-func (p *SnapshotServiceRestoreRequest) RestoreMemory(restoreMemory bool) {
+func (p *SnapshotServiceRestoreRequest) RestoreMemory(restoreMemory bool) *SnapshotServiceRestoreRequest {
 	p.restoreMemory = &restoreMemory
+	return p
+}
+func (p *SnapshotServiceRestoreRequest) send() *SnapshotServiceRestoreResponse {
+
 }
 
 //
@@ -6354,27 +6972,34 @@ func NewSchedulingPoliciesService(connection *Connection, path string) *Scheduli
 }
 
 type SchedulingPoliciesServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	policy *SchedulingPolicy
+	schedulingPolicies *SchedulingPoliciesService
+	header             map[string]string
+	query              map[string]string
+	policy             *SchedulingPolicy
 }
 
-func (p *SchedulingPoliciesServiceAddRequest) Header(key, value string) {
+func (p *SchedulingPoliciesServiceAddRequest) Header(key, value string) *SchedulingPoliciesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPoliciesServiceAddRequest) Query(key, value string) {
+func (p *SchedulingPoliciesServiceAddRequest) Query(key, value string) *SchedulingPoliciesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPoliciesServiceAddRequest) Policy(policy *SchedulingPolicy) {
+func (p *SchedulingPoliciesServiceAddRequest) Policy(policy *SchedulingPolicy) *SchedulingPoliciesServiceAddRequest {
 	p.policy = policy
+	return p
+}
+func (p *SchedulingPoliciesServiceAddRequest) send() *SchedulingPoliciesServiceAddResponse {
+
 }
 
 //
@@ -6402,31 +7027,39 @@ func (op *SchedulingPoliciesService) Add(
 }
 
 type SchedulingPoliciesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	schedulingPolicies *SchedulingPoliciesService
+	header             map[string]string
+	query              map[string]string
+	filter             *bool
+	max                *int64
 }
 
-func (p *SchedulingPoliciesServiceListRequest) Header(key, value string) {
+func (p *SchedulingPoliciesServiceListRequest) Header(key, value string) *SchedulingPoliciesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPoliciesServiceListRequest) Query(key, value string) {
+func (p *SchedulingPoliciesServiceListRequest) Query(key, value string) *SchedulingPoliciesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPoliciesServiceListRequest) Filter(filter bool) {
+func (p *SchedulingPoliciesServiceListRequest) Filter(filter bool) *SchedulingPoliciesServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *SchedulingPoliciesServiceListRequest) Max(max int64) {
+func (p *SchedulingPoliciesServiceListRequest) Max(max int64) *SchedulingPoliciesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SchedulingPoliciesServiceListRequest) send() *SchedulingPoliciesServiceListResponse {
+
 }
 
 //
@@ -6500,27 +7133,34 @@ func NewWeightsService(connection *Connection, path string) *WeightsService {
 }
 
 type WeightsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	weight *Weight
+	weights *WeightsService
+	header  map[string]string
+	query   map[string]string
+	weight  *Weight
 }
 
-func (p *WeightsServiceAddRequest) Header(key, value string) {
+func (p *WeightsServiceAddRequest) Header(key, value string) *WeightsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *WeightsServiceAddRequest) Query(key, value string) {
+func (p *WeightsServiceAddRequest) Query(key, value string) *WeightsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *WeightsServiceAddRequest) Weight(weight *Weight) {
+func (p *WeightsServiceAddRequest) Weight(weight *Weight) *WeightsServiceAddRequest {
 	p.weight = weight
+	return p
+}
+func (p *WeightsServiceAddRequest) send() *WeightsServiceAddResponse {
+
 }
 
 //
@@ -6548,31 +7188,39 @@ func (op *WeightsService) Add(
 }
 
 type WeightsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	weights *WeightsService
+	header  map[string]string
+	query   map[string]string
+	filter  *bool
+	max     *int64
 }
 
-func (p *WeightsServiceListRequest) Header(key, value string) {
+func (p *WeightsServiceListRequest) Header(key, value string) *WeightsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *WeightsServiceListRequest) Query(key, value string) {
+func (p *WeightsServiceListRequest) Query(key, value string) *WeightsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *WeightsServiceListRequest) Filter(filter bool) {
+func (p *WeightsServiceListRequest) Filter(filter bool) *WeightsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *WeightsServiceListRequest) Max(max int64) {
+func (p *WeightsServiceListRequest) Max(max int64) *WeightsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *WeightsServiceListRequest) send() *WeightsServiceListResponse {
+
 }
 
 //
@@ -6647,27 +7295,34 @@ func NewVmHostDevicesService(connection *Connection, path string) *VmHostDevices
 }
 
 type VmHostDevicesServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	device *HostDevice
+	vmHostDevices *VmHostDevicesService
+	header        map[string]string
+	query         map[string]string
+	device        *HostDevice
 }
 
-func (p *VmHostDevicesServiceAddRequest) Header(key, value string) {
+func (p *VmHostDevicesServiceAddRequest) Header(key, value string) *VmHostDevicesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmHostDevicesServiceAddRequest) Query(key, value string) {
+func (p *VmHostDevicesServiceAddRequest) Query(key, value string) *VmHostDevicesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmHostDevicesServiceAddRequest) Device(device *HostDevice) {
+func (p *VmHostDevicesServiceAddRequest) Device(device *HostDevice) *VmHostDevicesServiceAddRequest {
 	p.device = device
+	return p
+}
+func (p *VmHostDevicesServiceAddRequest) send() *VmHostDevicesServiceAddResponse {
+
 }
 
 //
@@ -6718,27 +7373,34 @@ func (op *VmHostDevicesService) Add(
 }
 
 type VmHostDevicesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmHostDevices *VmHostDevicesService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *VmHostDevicesServiceListRequest) Header(key, value string) {
+func (p *VmHostDevicesServiceListRequest) Header(key, value string) *VmHostDevicesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmHostDevicesServiceListRequest) Query(key, value string) {
+func (p *VmHostDevicesServiceListRequest) Query(key, value string) *VmHostDevicesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmHostDevicesServiceListRequest) Max(max int64) {
+func (p *VmHostDevicesServiceListRequest) Max(max int64) *VmHostDevicesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmHostDevicesServiceListRequest) send() *VmHostDevicesServiceListResponse {
+
 }
 
 //
@@ -6811,22 +7473,29 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 }
 
 type AssignedCpuProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedCpuProfile *AssignedCpuProfileService
+	header             map[string]string
+	query              map[string]string
 }
 
-func (p *AssignedCpuProfileServiceGetRequest) Header(key, value string) {
+func (p *AssignedCpuProfileServiceGetRequest) Header(key, value string) *AssignedCpuProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) {
+func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) *AssignedCpuProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedCpuProfileServiceGetRequest) send() *AssignedCpuProfileServiceGetResponse {
+
 }
 
 //
@@ -6853,27 +7522,34 @@ func (op *AssignedCpuProfileService) Get(
 }
 
 type AssignedCpuProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	assignedCpuProfile *AssignedCpuProfileService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
-func (p *AssignedCpuProfileServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedCpuProfileServiceRemoveRequest) Header(key, value string) *AssignedCpuProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfileServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedCpuProfileServiceRemoveRequest) Query(key, value string) *AssignedCpuProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfileServiceRemoveRequest) Async(async bool) {
+func (p *AssignedCpuProfileServiceRemoveRequest) Async(async bool) *AssignedCpuProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AssignedCpuProfileServiceRemoveRequest) send() *AssignedCpuProfileServiceRemoveResponse {
+
 }
 
 //
@@ -6927,22 +7603,29 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 }
 
 type SnapshotNicServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	snapshotNic *SnapshotNicService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *SnapshotNicServiceGetRequest) Header(key, value string) {
+func (p *SnapshotNicServiceGetRequest) Header(key, value string) *SnapshotNicServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotNicServiceGetRequest) Query(key, value string) {
+func (p *SnapshotNicServiceGetRequest) Query(key, value string) *SnapshotNicServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SnapshotNicServiceGetRequest) send() *SnapshotNicServiceGetResponse {
+
 }
 
 //
@@ -6997,22 +7680,29 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 }
 
 type HostDeviceServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	hostDevice *HostDeviceService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *HostDeviceServiceGetRequest) Header(key, value string) {
+func (p *HostDeviceServiceGetRequest) Header(key, value string) *HostDeviceServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostDeviceServiceGetRequest) Query(key, value string) {
+func (p *HostDeviceServiceGetRequest) Query(key, value string) *HostDeviceServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *HostDeviceServiceGetRequest) send() *HostDeviceServiceGetResponse {
+
 }
 
 //
@@ -7086,27 +7776,34 @@ func NewImageTransfersService(connection *Connection, path string) *ImageTransfe
 }
 
 type ImageTransfersServiceAddRequest struct {
-	header        map[string]string
-	query         map[string]string
-	imageTransfer *ImageTransfer
+	imageTransfers *ImageTransfersService
+	header         map[string]string
+	query          map[string]string
+	imageTransfer  *ImageTransfer
 }
 
-func (p *ImageTransfersServiceAddRequest) Header(key, value string) {
+func (p *ImageTransfersServiceAddRequest) Header(key, value string) *ImageTransfersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransfersServiceAddRequest) Query(key, value string) {
+func (p *ImageTransfersServiceAddRequest) Query(key, value string) *ImageTransfersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ImageTransfersServiceAddRequest) ImageTransfer(imageTransfer *ImageTransfer) {
+func (p *ImageTransfersServiceAddRequest) ImageTransfer(imageTransfer *ImageTransfer) *ImageTransfersServiceAddRequest {
 	p.imageTransfer = imageTransfer
+	return p
+}
+func (p *ImageTransfersServiceAddRequest) send() *ImageTransfersServiceAddResponse {
+
 }
 
 //
@@ -7136,22 +7833,29 @@ func (op *ImageTransfersService) Add(
 }
 
 type ImageTransfersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfers *ImageTransfersService
+	header         map[string]string
+	query          map[string]string
 }
 
-func (p *ImageTransfersServiceListRequest) Header(key, value string) {
+func (p *ImageTransfersServiceListRequest) Header(key, value string) *ImageTransfersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransfersServiceListRequest) Query(key, value string) {
+func (p *ImageTransfersServiceListRequest) Query(key, value string) *ImageTransfersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransfersServiceListRequest) send() *ImageTransfersServiceListResponse {
+
 }
 
 //
@@ -7219,27 +7923,34 @@ func NewExternalProviderService(connection *Connection, path string) *ExternalPr
 }
 
 type ExternalProviderServiceImportCertificatesRequest struct {
-	header       map[string]string
-	query        map[string]string
-	certificates []Certificate
+	externalProvider *ExternalProviderService
+	header           map[string]string
+	query            map[string]string
+	certificates     []Certificate
 }
 
-func (p *ExternalProviderServiceImportCertificatesRequest) Header(key, value string) {
+func (p *ExternalProviderServiceImportCertificatesRequest) Header(key, value string) *ExternalProviderServiceImportCertificatesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalProviderServiceImportCertificatesRequest) Query(key, value string) {
+func (p *ExternalProviderServiceImportCertificatesRequest) Query(key, value string) *ExternalProviderServiceImportCertificatesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+func (p *ExternalProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) *ExternalProviderServiceImportCertificatesRequest {
 	p.certificates = certificates
+	return p
+}
+func (p *ExternalProviderServiceImportCertificatesRequest) send() *ExternalProviderServiceImportCertificatesResponse {
+
 }
 
 //
@@ -7260,27 +7971,34 @@ func (op *ExternalProviderService) ImportCertificates(
 }
 
 type ExternalProviderServiceTestConnectivityRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	externalProvider *ExternalProviderService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
 }
 
-func (p *ExternalProviderServiceTestConnectivityRequest) Header(key, value string) {
+func (p *ExternalProviderServiceTestConnectivityRequest) Header(key, value string) *ExternalProviderServiceTestConnectivityRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalProviderServiceTestConnectivityRequest) Query(key, value string) {
+func (p *ExternalProviderServiceTestConnectivityRequest) Query(key, value string) *ExternalProviderServiceTestConnectivityRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalProviderServiceTestConnectivityRequest) Async(async bool) {
+func (p *ExternalProviderServiceTestConnectivityRequest) Async(async bool) *ExternalProviderServiceTestConnectivityRequest {
 	p.async = &async
+	return p
+}
+func (p *ExternalProviderServiceTestConnectivityRequest) send() *ExternalProviderServiceTestConnectivityResponse {
+
 }
 
 //
@@ -7346,22 +8064,29 @@ func NewEventService(connection *Connection, path string) *EventService {
 }
 
 type EventServiceGetRequest struct {
+	event  *EventService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *EventServiceGetRequest) Header(key, value string) {
+func (p *EventServiceGetRequest) Header(key, value string) *EventServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EventServiceGetRequest) Query(key, value string) {
+func (p *EventServiceGetRequest) Query(key, value string) *EventServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *EventServiceGetRequest) send() *EventServiceGetResponse {
+
 }
 
 //
@@ -7413,27 +8138,34 @@ func (op *EventService) Get(
 }
 
 type EventServiceRemoveRequest struct {
+	event  *EventService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *EventServiceRemoveRequest) Header(key, value string) {
+func (p *EventServiceRemoveRequest) Header(key, value string) *EventServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EventServiceRemoveRequest) Query(key, value string) {
+func (p *EventServiceRemoveRequest) Query(key, value string) *EventServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *EventServiceRemoveRequest) Async(async bool) {
+func (p *EventServiceRemoveRequest) Async(async bool) *EventServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *EventServiceRemoveRequest) send() *EventServiceRemoveResponse {
+
 }
 
 //
@@ -7544,22 +8276,29 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 }
 
 type NetworkFiltersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkFilters *NetworkFiltersService
+	header         map[string]string
+	query          map[string]string
 }
 
-func (p *NetworkFiltersServiceListRequest) Header(key, value string) {
+func (p *NetworkFiltersServiceListRequest) Header(key, value string) *NetworkFiltersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFiltersServiceListRequest) Query(key, value string) {
+func (p *NetworkFiltersServiceListRequest) Query(key, value string) *NetworkFiltersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkFiltersServiceListRequest) send() *NetworkFiltersServiceListResponse {
+
 }
 
 //
@@ -7624,27 +8363,34 @@ func NewStatisticService(connection *Connection, path string) *StatisticService 
 }
 
 type StatisticServiceGetRequest struct {
+	statistic *StatisticService
 	header    map[string]string
 	query     map[string]string
 	statistic *Statistic
 }
 
-func (p *StatisticServiceGetRequest) Header(key, value string) {
+func (p *StatisticServiceGetRequest) Header(key, value string) *StatisticServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StatisticServiceGetRequest) Query(key, value string) {
+func (p *StatisticServiceGetRequest) Query(key, value string) *StatisticServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) {
+func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) *StatisticServiceGetRequest {
 	p.statistic = statistic
+	return p
+}
+func (p *StatisticServiceGetRequest) send() *StatisticServiceGetResponse {
+
 }
 
 //
@@ -7701,27 +8447,34 @@ func NewExternalVmImportsService(connection *Connection, path string) *ExternalV
 }
 
 type ExternalVmImportsServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	import_ *ExternalVmImport
+	externalVmImports *ExternalVmImportsService
+	header            map[string]string
+	query             map[string]string
+	import_           *ExternalVmImport
 }
 
-func (p *ExternalVmImportsServiceAddRequest) Header(key, value string) {
+func (p *ExternalVmImportsServiceAddRequest) Header(key, value string) *ExternalVmImportsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalVmImportsServiceAddRequest) Query(key, value string) {
+func (p *ExternalVmImportsServiceAddRequest) Query(key, value string) *ExternalVmImportsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalVmImportsServiceAddRequest) Import(import_ *ExternalVmImport) {
+func (p *ExternalVmImportsServiceAddRequest) Import(import_ *ExternalVmImport) *ExternalVmImportsServiceAddRequest {
 	p.import_ = import_
+	return p
+}
+func (p *ExternalVmImportsServiceAddRequest) send() *ExternalVmImportsServiceAddResponse {
+
 }
 
 //
@@ -7801,27 +8554,34 @@ func NewAssignedRolesService(connection *Connection, path string) *AssignedRoles
 }
 
 type AssignedRolesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedRoles *AssignedRolesService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *AssignedRolesServiceListRequest) Header(key, value string) {
+func (p *AssignedRolesServiceListRequest) Header(key, value string) *AssignedRolesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedRolesServiceListRequest) Query(key, value string) {
+func (p *AssignedRolesServiceListRequest) Query(key, value string) *AssignedRolesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedRolesServiceListRequest) Max(max int64) {
+func (p *AssignedRolesServiceListRequest) Max(max int64) *AssignedRolesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedRolesServiceListRequest) send() *AssignedRolesServiceListResponse {
+
 }
 
 //
@@ -7894,22 +8654,29 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 }
 
 type NetworkFilterParameterServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkFilterParameter *NetworkFilterParameterService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *NetworkFilterParameterServiceGetRequest) Header(key, value string) {
+func (p *NetworkFilterParameterServiceGetRequest) Header(key, value string) *NetworkFilterParameterServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) {
+func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) *NetworkFilterParameterServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkFilterParameterServiceGetRequest) send() *NetworkFilterParameterServiceGetResponse {
+
 }
 
 //
@@ -7937,22 +8704,29 @@ func (op *NetworkFilterParameterService) Get(
 }
 
 type NetworkFilterParameterServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkFilterParameter *NetworkFilterParameterService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *NetworkFilterParameterServiceRemoveRequest) Header(key, value string) {
+func (p *NetworkFilterParameterServiceRemoveRequest) Header(key, value string) *NetworkFilterParameterServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterParameterServiceRemoveRequest) Query(key, value string) {
+func (p *NetworkFilterParameterServiceRemoveRequest) Query(key, value string) *NetworkFilterParameterServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkFilterParameterServiceRemoveRequest) send() *NetworkFilterParameterServiceRemoveResponse {
+
 }
 
 //
@@ -7979,27 +8753,34 @@ func (op *NetworkFilterParameterService) Remove(
 }
 
 type NetworkFilterParameterServiceUpdateRequest struct {
-	header    map[string]string
-	query     map[string]string
-	parameter *NetworkFilterParameter
+	networkFilterParameter *NetworkFilterParameterService
+	header                 map[string]string
+	query                  map[string]string
+	parameter              *NetworkFilterParameter
 }
 
-func (p *NetworkFilterParameterServiceUpdateRequest) Header(key, value string) {
+func (p *NetworkFilterParameterServiceUpdateRequest) Header(key, value string) *NetworkFilterParameterServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterParameterServiceUpdateRequest) Query(key, value string) {
+func (p *NetworkFilterParameterServiceUpdateRequest) Query(key, value string) *NetworkFilterParameterServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkFilterParameterServiceUpdateRequest) Parameter(parameter *NetworkFilterParameter) {
+func (p *NetworkFilterParameterServiceUpdateRequest) Parameter(parameter *NetworkFilterParameter) *NetworkFilterParameterServiceUpdateRequest {
 	p.parameter = parameter
+	return p
+}
+func (p *NetworkFilterParameterServiceUpdateRequest) send() *NetworkFilterParameterServiceUpdateResponse {
+
 }
 
 //
@@ -8074,22 +8855,29 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 }
 
 type OpenstackImageProviderServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackImageProvider *OpenstackImageProviderService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *OpenstackImageProviderServiceGetRequest) Header(key, value string) {
+func (p *OpenstackImageProviderServiceGetRequest) Header(key, value string) *OpenstackImageProviderServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) {
+func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) *OpenstackImageProviderServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackImageProviderServiceGetRequest) send() *OpenstackImageProviderServiceGetResponse {
+
 }
 
 //
@@ -8116,27 +8904,34 @@ func (op *OpenstackImageProviderService) Get(
 }
 
 type OpenstackImageProviderServiceImportCertificatesRequest struct {
-	header       map[string]string
-	query        map[string]string
-	certificates []Certificate
+	openstackImageProvider *OpenstackImageProviderService
+	header                 map[string]string
+	query                  map[string]string
+	certificates           []Certificate
 }
 
-func (p *OpenstackImageProviderServiceImportCertificatesRequest) Header(key, value string) {
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackImageProviderServiceImportCertificatesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceImportCertificatesRequest) Query(key, value string) {
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Query(key, value string) *OpenstackImageProviderServiceImportCertificatesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) *OpenstackImageProviderServiceImportCertificatesRequest {
 	p.certificates = certificates
+	return p
+}
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) send() *OpenstackImageProviderServiceImportCertificatesResponse {
+
 }
 
 //
@@ -8157,27 +8952,34 @@ func (op *OpenstackImageProviderService) ImportCertificates(
 }
 
 type OpenstackImageProviderServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackImageProvider *OpenstackImageProviderService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
-func (p *OpenstackImageProviderServiceRemoveRequest) Header(key, value string) {
+func (p *OpenstackImageProviderServiceRemoveRequest) Header(key, value string) *OpenstackImageProviderServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceRemoveRequest) Query(key, value string) {
+func (p *OpenstackImageProviderServiceRemoveRequest) Query(key, value string) *OpenstackImageProviderServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceRemoveRequest) Async(async bool) {
+func (p *OpenstackImageProviderServiceRemoveRequest) Async(async bool) *OpenstackImageProviderServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackImageProviderServiceRemoveRequest) send() *OpenstackImageProviderServiceRemoveResponse {
+
 }
 
 //
@@ -8204,27 +9006,34 @@ func (op *OpenstackImageProviderService) Remove(
 }
 
 type OpenstackImageProviderServiceTestConnectivityRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackImageProvider *OpenstackImageProviderService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
-func (p *OpenstackImageProviderServiceTestConnectivityRequest) Header(key, value string) {
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackImageProviderServiceTestConnectivityRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceTestConnectivityRequest) Query(key, value string) {
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Query(key, value string) *OpenstackImageProviderServiceTestConnectivityRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceTestConnectivityRequest) Async(async bool) {
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Async(async bool) *OpenstackImageProviderServiceTestConnectivityRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) send() *OpenstackImageProviderServiceTestConnectivityResponse {
+
 }
 
 //
@@ -8250,31 +9059,39 @@ func (op *OpenstackImageProviderService) TestConnectivity(
 }
 
 type OpenstackImageProviderServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	provider *OpenStackImageProvider
+	openstackImageProvider *OpenstackImageProviderService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
+	provider               *OpenStackImageProvider
 }
 
-func (p *OpenstackImageProviderServiceUpdateRequest) Header(key, value string) {
+func (p *OpenstackImageProviderServiceUpdateRequest) Header(key, value string) *OpenstackImageProviderServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceUpdateRequest) Query(key, value string) {
+func (p *OpenstackImageProviderServiceUpdateRequest) Query(key, value string) *OpenstackImageProviderServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProviderServiceUpdateRequest) Async(async bool) {
+func (p *OpenstackImageProviderServiceUpdateRequest) Async(async bool) *OpenstackImageProviderServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *OpenstackImageProviderServiceUpdateRequest) Provider(provider *OpenStackImageProvider) {
+func (p *OpenstackImageProviderServiceUpdateRequest) Provider(provider *OpenStackImageProvider) *OpenstackImageProviderServiceUpdateRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackImageProviderServiceUpdateRequest) send() *OpenstackImageProviderServiceUpdateResponse {
+
 }
 
 //
@@ -8355,22 +9172,29 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 }
 
 type OpenstackNetworkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackNetwork *OpenstackNetworkService
+	header           map[string]string
+	query            map[string]string
 }
 
-func (p *OpenstackNetworkServiceGetRequest) Header(key, value string) {
+func (p *OpenstackNetworkServiceGetRequest) Header(key, value string) *OpenstackNetworkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) {
+func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) *OpenstackNetworkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackNetworkServiceGetRequest) send() *OpenstackNetworkServiceGetResponse {
+
 }
 
 //
@@ -8397,31 +9221,39 @@ func (op *OpenstackNetworkService) Get(
 }
 
 type OpenstackNetworkServiceImportRequest struct {
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	dataCenter *DataCenter
+	openstackNetwork *OpenstackNetworkService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	dataCenter       *DataCenter
 }
 
-func (p *OpenstackNetworkServiceImportRequest) Header(key, value string) {
+func (p *OpenstackNetworkServiceImportRequest) Header(key, value string) *OpenstackNetworkServiceImportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkServiceImportRequest) Query(key, value string) {
+func (p *OpenstackNetworkServiceImportRequest) Query(key, value string) *OpenstackNetworkServiceImportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkServiceImportRequest) Async(async bool) {
+func (p *OpenstackNetworkServiceImportRequest) Async(async bool) *OpenstackNetworkServiceImportRequest {
 	p.async = &async
+	return p
 }
-func (p *OpenstackNetworkServiceImportRequest) DataCenter(dataCenter *DataCenter) {
+func (p *OpenstackNetworkServiceImportRequest) DataCenter(dataCenter *DataCenter) *OpenstackNetworkServiceImportRequest {
 	p.dataCenter = dataCenter
+	return p
+}
+func (p *OpenstackNetworkServiceImportRequest) send() *OpenstackNetworkServiceImportResponse {
+
 }
 
 //
@@ -8494,27 +9326,34 @@ func NewOpenstackImageProvidersService(connection *Connection, path string) *Ope
 }
 
 type OpenstackImageProvidersServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	provider *OpenStackImageProvider
+	openstackImageProviders *OpenstackImageProvidersService
+	header                  map[string]string
+	query                   map[string]string
+	provider                *OpenStackImageProvider
 }
 
-func (p *OpenstackImageProvidersServiceAddRequest) Header(key, value string) {
+func (p *OpenstackImageProvidersServiceAddRequest) Header(key, value string) *OpenstackImageProvidersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProvidersServiceAddRequest) Query(key, value string) {
+func (p *OpenstackImageProvidersServiceAddRequest) Query(key, value string) *OpenstackImageProvidersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProvidersServiceAddRequest) Provider(provider *OpenStackImageProvider) {
+func (p *OpenstackImageProvidersServiceAddRequest) Provider(provider *OpenStackImageProvider) *OpenstackImageProvidersServiceAddRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackImageProvidersServiceAddRequest) send() *OpenstackImageProvidersServiceAddResponse {
+
 }
 
 //
@@ -8542,27 +9381,34 @@ func (op *OpenstackImageProvidersService) Add(
 }
 
 type OpenstackImageProvidersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackImageProviders *OpenstackImageProvidersService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
-func (p *OpenstackImageProvidersServiceListRequest) Header(key, value string) {
+func (p *OpenstackImageProvidersServiceListRequest) Header(key, value string) *OpenstackImageProvidersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageProvidersServiceListRequest) Query(key, value string) {
+func (p *OpenstackImageProvidersServiceListRequest) Query(key, value string) *OpenstackImageProvidersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) {
+func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) *OpenstackImageProvidersServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackImageProvidersServiceListRequest) send() *OpenstackImageProvidersServiceListResponse {
+
 }
 
 //
@@ -8633,22 +9479,29 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 }
 
 type OpenstackVolumeAuthenticationKeyServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
+	header                           map[string]string
+	query                            map[string]string
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Header(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value string) *OpenstackVolumeAuthenticationKeyServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) send() *OpenstackVolumeAuthenticationKeyServiceGetResponse {
+
 }
 
 //
@@ -8675,27 +9528,34 @@ func (op *OpenstackVolumeAuthenticationKeyService) Get(
 }
 
 type OpenstackVolumeAuthenticationKeyServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
+	header                           map[string]string
+	query                            map[string]string
+	async                            *bool
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Header(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Query(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Query(key, value string) *OpenstackVolumeAuthenticationKeyServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Async(async bool) {
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Async(async bool) *OpenstackVolumeAuthenticationKeyServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) send() *OpenstackVolumeAuthenticationKeyServiceRemoveResponse {
+
 }
 
 //
@@ -8722,27 +9582,34 @@ func (op *OpenstackVolumeAuthenticationKeyService) Remove(
 }
 
 type OpenstackVolumeAuthenticationKeyServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	key    *OpenstackVolumeAuthenticationKey
+	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
+	header                           map[string]string
+	query                            map[string]string
+	key                              *OpenstackVolumeAuthenticationKey
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Header(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Query(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Query(key, value string) *OpenstackVolumeAuthenticationKeyServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Key(key *OpenstackVolumeAuthenticationKey) {
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Key(key *OpenstackVolumeAuthenticationKey) *OpenstackVolumeAuthenticationKeyServiceUpdateRequest {
 	p.key = key
+	return p
+}
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) send() *OpenstackVolumeAuthenticationKeyServiceUpdateResponse {
+
 }
 
 //
@@ -8797,27 +9664,34 @@ func NewOpenstackImagesService(connection *Connection, path string) *OpenstackIm
 }
 
 type OpenstackImagesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackImages *OpenstackImagesService
+	header          map[string]string
+	query           map[string]string
+	max             *int64
 }
 
-func (p *OpenstackImagesServiceListRequest) Header(key, value string) {
+func (p *OpenstackImagesServiceListRequest) Header(key, value string) *OpenstackImagesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImagesServiceListRequest) Query(key, value string) {
+func (p *OpenstackImagesServiceListRequest) Query(key, value string) *OpenstackImagesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImagesServiceListRequest) Max(max int64) {
+func (p *OpenstackImagesServiceListRequest) Max(max int64) *OpenstackImagesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackImagesServiceListRequest) send() *OpenstackImagesServiceListResponse {
+
 }
 
 //
@@ -8891,27 +9765,34 @@ func NewOpenstackNetworkProvidersService(connection *Connection, path string) *O
 }
 
 type OpenstackNetworkProvidersServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	provider *OpenStackNetworkProvider
+	openstackNetworkProviders *OpenstackNetworkProvidersService
+	header                    map[string]string
+	query                     map[string]string
+	provider                  *OpenStackNetworkProvider
 }
 
-func (p *OpenstackNetworkProvidersServiceAddRequest) Header(key, value string) {
+func (p *OpenstackNetworkProvidersServiceAddRequest) Header(key, value string) *OpenstackNetworkProvidersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProvidersServiceAddRequest) Query(key, value string) {
+func (p *OpenstackNetworkProvidersServiceAddRequest) Query(key, value string) *OpenstackNetworkProvidersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProvidersServiceAddRequest) Provider(provider *OpenStackNetworkProvider) {
+func (p *OpenstackNetworkProvidersServiceAddRequest) Provider(provider *OpenStackNetworkProvider) *OpenstackNetworkProvidersServiceAddRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackNetworkProvidersServiceAddRequest) send() *OpenstackNetworkProvidersServiceAddResponse {
+
 }
 
 //
@@ -8941,27 +9822,34 @@ func (op *OpenstackNetworkProvidersService) Add(
 }
 
 type OpenstackNetworkProvidersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackNetworkProviders *OpenstackNetworkProvidersService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
-func (p *OpenstackNetworkProvidersServiceListRequest) Header(key, value string) {
+func (p *OpenstackNetworkProvidersServiceListRequest) Header(key, value string) *OpenstackNetworkProvidersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProvidersServiceListRequest) Query(key, value string) {
+func (p *OpenstackNetworkProvidersServiceListRequest) Query(key, value string) *OpenstackNetworkProvidersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) {
+func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) *OpenstackNetworkProvidersServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackNetworkProvidersServiceListRequest) send() *OpenstackNetworkProvidersServiceListResponse {
+
 }
 
 //
@@ -9033,27 +9921,34 @@ func NewOpenstackVolumeProvidersService(connection *Connection, path string) *Op
 }
 
 type OpenstackVolumeProvidersServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	provider *OpenStackVolumeProvider
+	openstackVolumeProviders *OpenstackVolumeProvidersService
+	header                   map[string]string
+	query                    map[string]string
+	provider                 *OpenStackVolumeProvider
 }
 
-func (p *OpenstackVolumeProvidersServiceAddRequest) Header(key, value string) {
+func (p *OpenstackVolumeProvidersServiceAddRequest) Header(key, value string) *OpenstackVolumeProvidersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProvidersServiceAddRequest) Query(key, value string) {
+func (p *OpenstackVolumeProvidersServiceAddRequest) Query(key, value string) *OpenstackVolumeProvidersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProvidersServiceAddRequest) Provider(provider *OpenStackVolumeProvider) {
+func (p *OpenstackVolumeProvidersServiceAddRequest) Provider(provider *OpenStackVolumeProvider) *OpenstackVolumeProvidersServiceAddRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackVolumeProvidersServiceAddRequest) send() *OpenstackVolumeProvidersServiceAddResponse {
+
 }
 
 //
@@ -9102,27 +9997,34 @@ func (op *OpenstackVolumeProvidersService) Add(
 }
 
 type OpenstackVolumeProvidersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackVolumeProviders *OpenstackVolumeProvidersService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
-func (p *OpenstackVolumeProvidersServiceListRequest) Header(key, value string) {
+func (p *OpenstackVolumeProvidersServiceListRequest) Header(key, value string) *OpenstackVolumeProvidersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProvidersServiceListRequest) Query(key, value string) {
+func (p *OpenstackVolumeProvidersServiceListRequest) Query(key, value string) *OpenstackVolumeProvidersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) {
+func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) *OpenstackVolumeProvidersServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackVolumeProvidersServiceListRequest) send() *OpenstackVolumeProvidersServiceListResponse {
+
 }
 
 //
@@ -9194,27 +10096,34 @@ func NewOpenstackNetworksService(connection *Connection, path string) *Openstack
 }
 
 type OpenstackNetworksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackNetworks *OpenstackNetworksService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
-func (p *OpenstackNetworksServiceListRequest) Header(key, value string) {
+func (p *OpenstackNetworksServiceListRequest) Header(key, value string) *OpenstackNetworksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworksServiceListRequest) Query(key, value string) {
+func (p *OpenstackNetworksServiceListRequest) Query(key, value string) *OpenstackNetworksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworksServiceListRequest) Max(max int64) {
+func (p *OpenstackNetworksServiceListRequest) Max(max int64) *OpenstackNetworksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackNetworksServiceListRequest) send() *OpenstackNetworksServiceListResponse {
+
 }
 
 //
@@ -9285,22 +10194,29 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 }
 
 type OpenstackVolumeProviderServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackVolumeProvider *OpenstackVolumeProviderService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *OpenstackVolumeProviderServiceGetRequest) Header(key, value string) {
+func (p *OpenstackVolumeProviderServiceGetRequest) Header(key, value string) *OpenstackVolumeProviderServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) {
+func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) *OpenstackVolumeProviderServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackVolumeProviderServiceGetRequest) send() *OpenstackVolumeProviderServiceGetResponse {
+
 }
 
 //
@@ -9327,27 +10243,34 @@ func (op *OpenstackVolumeProviderService) Get(
 }
 
 type OpenstackVolumeProviderServiceImportCertificatesRequest struct {
-	header       map[string]string
-	query        map[string]string
-	certificates []Certificate
+	openstackVolumeProvider *OpenstackVolumeProviderService
+	header                  map[string]string
+	query                   map[string]string
+	certificates            []Certificate
 }
 
-func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Header(key, value string) {
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackVolumeProviderServiceImportCertificatesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Query(key, value string) {
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Query(key, value string) *OpenstackVolumeProviderServiceImportCertificatesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) *OpenstackVolumeProviderServiceImportCertificatesRequest {
 	p.certificates = certificates
+	return p
+}
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) send() *OpenstackVolumeProviderServiceImportCertificatesResponse {
+
 }
 
 //
@@ -9368,27 +10291,34 @@ func (op *OpenstackVolumeProviderService) ImportCertificates(
 }
 
 type OpenstackVolumeProviderServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackVolumeProvider *OpenstackVolumeProviderService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
-func (p *OpenstackVolumeProviderServiceRemoveRequest) Header(key, value string) {
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Header(key, value string) *OpenstackVolumeProviderServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceRemoveRequest) Query(key, value string) {
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Query(key, value string) *OpenstackVolumeProviderServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceRemoveRequest) Async(async bool) {
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Async(async bool) *OpenstackVolumeProviderServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackVolumeProviderServiceRemoveRequest) send() *OpenstackVolumeProviderServiceRemoveResponse {
+
 }
 
 //
@@ -9415,27 +10345,34 @@ func (op *OpenstackVolumeProviderService) Remove(
 }
 
 type OpenstackVolumeProviderServiceTestConnectivityRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackVolumeProvider *OpenstackVolumeProviderService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
-func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Header(key, value string) {
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackVolumeProviderServiceTestConnectivityRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Query(key, value string) {
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Query(key, value string) *OpenstackVolumeProviderServiceTestConnectivityRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Async(async bool) {
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Async(async bool) *OpenstackVolumeProviderServiceTestConnectivityRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) send() *OpenstackVolumeProviderServiceTestConnectivityResponse {
+
 }
 
 //
@@ -9461,31 +10398,39 @@ func (op *OpenstackVolumeProviderService) TestConnectivity(
 }
 
 type OpenstackVolumeProviderServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	provider *OpenStackVolumeProvider
+	openstackVolumeProvider *OpenstackVolumeProviderService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	provider                *OpenStackVolumeProvider
 }
 
-func (p *OpenstackVolumeProviderServiceUpdateRequest) Header(key, value string) {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Header(key, value string) *OpenstackVolumeProviderServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceUpdateRequest) Query(key, value string) {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Query(key, value string) *OpenstackVolumeProviderServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeProviderServiceUpdateRequest) Async(async bool) {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Async(async bool) *OpenstackVolumeProviderServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *OpenstackVolumeProviderServiceUpdateRequest) Provider(provider *OpenStackVolumeProvider) {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Provider(provider *OpenStackVolumeProvider) *OpenstackVolumeProviderServiceUpdateRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackVolumeProviderServiceUpdateRequest) send() *OpenstackVolumeProviderServiceUpdateResponse {
+
 }
 
 //
@@ -9578,27 +10523,34 @@ func NewOpenstackVolumeTypesService(connection *Connection, path string) *Openst
 }
 
 type OpenstackVolumeTypesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackVolumeTypes *OpenstackVolumeTypesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
-func (p *OpenstackVolumeTypesServiceListRequest) Header(key, value string) {
+func (p *OpenstackVolumeTypesServiceListRequest) Header(key, value string) *OpenstackVolumeTypesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeTypesServiceListRequest) Query(key, value string) {
+func (p *OpenstackVolumeTypesServiceListRequest) Query(key, value string) *OpenstackVolumeTypesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) {
+func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) *OpenstackVolumeTypesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackVolumeTypesServiceListRequest) send() *OpenstackVolumeTypesServiceListResponse {
+
 }
 
 //
@@ -9669,27 +10621,34 @@ func NewOpenstackVolumeAuthenticationKeysService(connection *Connection, path st
 }
 
 type OpenstackVolumeAuthenticationKeysServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	key    *OpenstackVolumeAuthenticationKey
+	openstackVolumeAuthenticationKeys *OpenstackVolumeAuthenticationKeysService
+	header                            map[string]string
+	query                             map[string]string
+	key                               *OpenstackVolumeAuthenticationKey
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Header(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeysServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Query(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Query(key, value string) *OpenstackVolumeAuthenticationKeysServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Key(key *OpenstackVolumeAuthenticationKey) {
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Key(key *OpenstackVolumeAuthenticationKey) *OpenstackVolumeAuthenticationKeysServiceAddRequest {
 	p.key = key
+	return p
+}
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) send() *OpenstackVolumeAuthenticationKeysServiceAddResponse {
+
 }
 
 //
@@ -9717,27 +10676,34 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add(
 }
 
 type OpenstackVolumeAuthenticationKeysServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackVolumeAuthenticationKeys *OpenstackVolumeAuthenticationKeysService
+	header                            map[string]string
+	query                             map[string]string
+	max                               *int64
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Header(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeysServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Query(key, value string) {
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Query(key, value string) *OpenstackVolumeAuthenticationKeysServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) {
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) *OpenstackVolumeAuthenticationKeysServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) send() *OpenstackVolumeAuthenticationKeysServiceListResponse {
+
 }
 
 //
@@ -9808,22 +10774,29 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 }
 
 type OpenstackImageServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackImage *OpenstackImageService
+	header         map[string]string
+	query          map[string]string
 }
 
-func (p *OpenstackImageServiceGetRequest) Header(key, value string) {
+func (p *OpenstackImageServiceGetRequest) Header(key, value string) *OpenstackImageServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageServiceGetRequest) Query(key, value string) {
+func (p *OpenstackImageServiceGetRequest) Query(key, value string) *OpenstackImageServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackImageServiceGetRequest) send() *OpenstackImageServiceGetResponse {
+
 }
 
 //
@@ -9850,6 +10823,7 @@ func (op *OpenstackImageService) Get(
 }
 
 type OpenstackImageServiceImportRequest struct {
+	openstackImage   *OpenstackImageService
 	header           map[string]string
 	query            map[string]string
 	async            *bool
@@ -9860,37 +10834,48 @@ type OpenstackImageServiceImportRequest struct {
 	template         *Template
 }
 
-func (p *OpenstackImageServiceImportRequest) Header(key, value string) {
+func (p *OpenstackImageServiceImportRequest) Header(key, value string) *OpenstackImageServiceImportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackImageServiceImportRequest) Query(key, value string) {
+func (p *OpenstackImageServiceImportRequest) Query(key, value string) *OpenstackImageServiceImportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackImageServiceImportRequest) Async(async bool) {
+func (p *OpenstackImageServiceImportRequest) Async(async bool) *OpenstackImageServiceImportRequest {
 	p.async = &async
+	return p
 }
-func (p *OpenstackImageServiceImportRequest) Cluster(cluster *Cluster) {
+func (p *OpenstackImageServiceImportRequest) Cluster(cluster *Cluster) *OpenstackImageServiceImportRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *OpenstackImageServiceImportRequest) Disk(disk *Disk) {
+func (p *OpenstackImageServiceImportRequest) Disk(disk *Disk) *OpenstackImageServiceImportRequest {
 	p.disk = disk
+	return p
 }
-func (p *OpenstackImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) {
+func (p *OpenstackImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) *OpenstackImageServiceImportRequest {
 	p.importAsTemplate = &importAsTemplate
+	return p
 }
-func (p *OpenstackImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *OpenstackImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) *OpenstackImageServiceImportRequest {
 	p.storageDomain = storageDomain
+	return p
 }
-func (p *OpenstackImageServiceImportRequest) Template(template *Template) {
+func (p *OpenstackImageServiceImportRequest) Template(template *Template) *OpenstackImageServiceImportRequest {
 	p.template = template
+	return p
+}
+func (p *OpenstackImageServiceImportRequest) send() *OpenstackImageServiceImportResponse {
+
 }
 
 //
@@ -9975,22 +10960,29 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 }
 
 type OpenstackVolumeTypeServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackVolumeType *OpenstackVolumeTypeService
+	header              map[string]string
+	query               map[string]string
 }
 
-func (p *OpenstackVolumeTypeServiceGetRequest) Header(key, value string) {
+func (p *OpenstackVolumeTypeServiceGetRequest) Header(key, value string) *OpenstackVolumeTypeServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) {
+func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) *OpenstackVolumeTypeServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackVolumeTypeServiceGetRequest) send() *OpenstackVolumeTypeServiceGetResponse {
+
 }
 
 //
@@ -10044,22 +11036,29 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 }
 
 type OpenstackSubnetServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackSubnet *OpenstackSubnetService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *OpenstackSubnetServiceGetRequest) Header(key, value string) {
+func (p *OpenstackSubnetServiceGetRequest) Header(key, value string) *OpenstackSubnetServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) {
+func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) *OpenstackSubnetServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackSubnetServiceGetRequest) send() *OpenstackSubnetServiceGetResponse {
+
 }
 
 //
@@ -10086,27 +11085,34 @@ func (op *OpenstackSubnetService) Get(
 }
 
 type OpenstackSubnetServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackSubnet *OpenstackSubnetService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
-func (p *OpenstackSubnetServiceRemoveRequest) Header(key, value string) {
+func (p *OpenstackSubnetServiceRemoveRequest) Header(key, value string) *OpenstackSubnetServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetServiceRemoveRequest) Query(key, value string) {
+func (p *OpenstackSubnetServiceRemoveRequest) Query(key, value string) *OpenstackSubnetServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetServiceRemoveRequest) Async(async bool) {
+func (p *OpenstackSubnetServiceRemoveRequest) Async(async bool) *OpenstackSubnetServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackSubnetServiceRemoveRequest) send() *OpenstackSubnetServiceRemoveResponse {
+
 }
 
 //
@@ -10160,27 +11166,34 @@ func NewOpenstackSubnetsService(connection *Connection, path string) *OpenstackS
 }
 
 type OpenstackSubnetsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	subnet *OpenStackSubnet
+	openstackSubnets *OpenstackSubnetsService
+	header           map[string]string
+	query            map[string]string
+	subnet           *OpenStackSubnet
 }
 
-func (p *OpenstackSubnetsServiceAddRequest) Header(key, value string) {
+func (p *OpenstackSubnetsServiceAddRequest) Header(key, value string) *OpenstackSubnetsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetsServiceAddRequest) Query(key, value string) {
+func (p *OpenstackSubnetsServiceAddRequest) Query(key, value string) *OpenstackSubnetsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetsServiceAddRequest) Subnet(subnet *OpenStackSubnet) {
+func (p *OpenstackSubnetsServiceAddRequest) Subnet(subnet *OpenStackSubnet) *OpenstackSubnetsServiceAddRequest {
 	p.subnet = subnet
+	return p
+}
+func (p *OpenstackSubnetsServiceAddRequest) send() *OpenstackSubnetsServiceAddResponse {
+
 }
 
 //
@@ -10208,27 +11221,34 @@ func (op *OpenstackSubnetsService) Add(
 }
 
 type OpenstackSubnetsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	openstackSubnets *OpenstackSubnetsService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
-func (p *OpenstackSubnetsServiceListRequest) Header(key, value string) {
+func (p *OpenstackSubnetsServiceListRequest) Header(key, value string) *OpenstackSubnetsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetsServiceListRequest) Query(key, value string) {
+func (p *OpenstackSubnetsServiceListRequest) Query(key, value string) *OpenstackSubnetsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackSubnetsServiceListRequest) Max(max int64) {
+func (p *OpenstackSubnetsServiceListRequest) Max(max int64) *OpenstackSubnetsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OpenstackSubnetsServiceListRequest) send() *OpenstackSubnetsServiceListResponse {
+
 }
 
 //
@@ -10300,22 +11320,29 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 }
 
 type OpenstackNetworkProviderServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	openstackNetworkProvider *OpenstackNetworkProviderService
+	header                   map[string]string
+	query                    map[string]string
 }
 
-func (p *OpenstackNetworkProviderServiceGetRequest) Header(key, value string) {
+func (p *OpenstackNetworkProviderServiceGetRequest) Header(key, value string) *OpenstackNetworkProviderServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) {
+func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) *OpenstackNetworkProviderServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *OpenstackNetworkProviderServiceGetRequest) send() *OpenstackNetworkProviderServiceGetResponse {
+
 }
 
 //
@@ -10348,27 +11375,34 @@ func (op *OpenstackNetworkProviderService) Get(
 }
 
 type OpenstackNetworkProviderServiceImportCertificatesRequest struct {
-	header       map[string]string
-	query        map[string]string
-	certificates []Certificate
+	openstackNetworkProvider *OpenstackNetworkProviderService
+	header                   map[string]string
+	query                    map[string]string
+	certificates             []Certificate
 }
 
-func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Header(key, value string) {
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackNetworkProviderServiceImportCertificatesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Query(key, value string) {
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Query(key, value string) *OpenstackNetworkProviderServiceImportCertificatesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) *OpenstackNetworkProviderServiceImportCertificatesRequest {
 	p.certificates = certificates
+	return p
+}
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) send() *OpenstackNetworkProviderServiceImportCertificatesResponse {
+
 }
 
 //
@@ -10389,27 +11423,34 @@ func (op *OpenstackNetworkProviderService) ImportCertificates(
 }
 
 type OpenstackNetworkProviderServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackNetworkProvider *OpenstackNetworkProviderService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
-func (p *OpenstackNetworkProviderServiceRemoveRequest) Header(key, value string) {
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Header(key, value string) *OpenstackNetworkProviderServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceRemoveRequest) Query(key, value string) {
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Query(key, value string) *OpenstackNetworkProviderServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceRemoveRequest) Async(async bool) {
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Async(async bool) *OpenstackNetworkProviderServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackNetworkProviderServiceRemoveRequest) send() *OpenstackNetworkProviderServiceRemoveResponse {
+
 }
 
 //
@@ -10442,27 +11483,34 @@ func (op *OpenstackNetworkProviderService) Remove(
 }
 
 type OpenstackNetworkProviderServiceTestConnectivityRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	openstackNetworkProvider *OpenstackNetworkProviderService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
-func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Header(key, value string) {
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackNetworkProviderServiceTestConnectivityRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Query(key, value string) {
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Query(key, value string) *OpenstackNetworkProviderServiceTestConnectivityRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Async(async bool) {
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Async(async bool) *OpenstackNetworkProviderServiceTestConnectivityRequest {
 	p.async = &async
+	return p
+}
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) send() *OpenstackNetworkProviderServiceTestConnectivityResponse {
+
 }
 
 //
@@ -10488,31 +11536,39 @@ func (op *OpenstackNetworkProviderService) TestConnectivity(
 }
 
 type OpenstackNetworkProviderServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	provider *OpenStackNetworkProvider
+	openstackNetworkProvider *OpenstackNetworkProviderService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
+	provider                 *OpenStackNetworkProvider
 }
 
-func (p *OpenstackNetworkProviderServiceUpdateRequest) Header(key, value string) {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Header(key, value string) *OpenstackNetworkProviderServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceUpdateRequest) Query(key, value string) {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Query(key, value string) *OpenstackNetworkProviderServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OpenstackNetworkProviderServiceUpdateRequest) Async(async bool) {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Async(async bool) *OpenstackNetworkProviderServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *OpenstackNetworkProviderServiceUpdateRequest) Provider(provider *OpenStackNetworkProvider) {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Provider(provider *OpenStackNetworkProvider) *OpenstackNetworkProviderServiceUpdateRequest {
 	p.provider = provider
+	return p
+}
+func (p *OpenstackNetworkProviderServiceUpdateRequest) send() *OpenstackNetworkProviderServiceUpdateResponse {
+
 }
 
 //
@@ -10618,31 +11674,39 @@ func NewTemplateService(connection *Connection, path string) *TemplateService {
 }
 
 type TemplateServiceExportRequest struct {
+	template      *TemplateService
 	header        map[string]string
 	query         map[string]string
 	exclusive     *bool
 	storageDomain *StorageDomain
 }
 
-func (p *TemplateServiceExportRequest) Header(key, value string) {
+func (p *TemplateServiceExportRequest) Header(key, value string) *TemplateServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateServiceExportRequest) Query(key, value string) {
+func (p *TemplateServiceExportRequest) Query(key, value string) *TemplateServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateServiceExportRequest) Exclusive(exclusive bool) {
+func (p *TemplateServiceExportRequest) Exclusive(exclusive bool) *TemplateServiceExportRequest {
 	p.exclusive = &exclusive
+	return p
 }
-func (p *TemplateServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *TemplateServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *TemplateServiceExportRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *TemplateServiceExportRequest) send() *TemplateServiceExportResponse {
+
 }
 
 //
@@ -10687,27 +11751,34 @@ func (op *TemplateService) Export(
 }
 
 type TemplateServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	template *TemplateService
+	header   map[string]string
+	query    map[string]string
+	filter   *bool
 }
 
-func (p *TemplateServiceGetRequest) Header(key, value string) {
+func (p *TemplateServiceGetRequest) Header(key, value string) *TemplateServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateServiceGetRequest) Query(key, value string) {
+func (p *TemplateServiceGetRequest) Query(key, value string) *TemplateServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateServiceGetRequest) Filter(filter bool) {
+func (p *TemplateServiceGetRequest) Filter(filter bool) *TemplateServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *TemplateServiceGetRequest) send() *TemplateServiceGetResponse {
+
 }
 
 //
@@ -10742,27 +11813,34 @@ func (op *TemplateService) Get(
 }
 
 type TemplateServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	template *TemplateService
+	header   map[string]string
+	query    map[string]string
+	async    *bool
 }
 
-func (p *TemplateServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateServiceRemoveRequest) Header(key, value string) *TemplateServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateServiceRemoveRequest) Query(key, value string) *TemplateServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateServiceRemoveRequest) Async(async bool) {
+func (p *TemplateServiceRemoveRequest) Async(async bool) *TemplateServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TemplateServiceRemoveRequest) send() *TemplateServiceRemoveResponse {
+
 }
 
 //
@@ -10794,22 +11872,29 @@ func (op *TemplateService) Remove(
 }
 
 type TemplateServiceSealRequest struct {
-	header map[string]string
-	query  map[string]string
+	template *TemplateService
+	header   map[string]string
+	query    map[string]string
 }
 
-func (p *TemplateServiceSealRequest) Header(key, value string) {
+func (p *TemplateServiceSealRequest) Header(key, value string) *TemplateServiceSealRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateServiceSealRequest) Query(key, value string) {
+func (p *TemplateServiceSealRequest) Query(key, value string) *TemplateServiceSealRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateServiceSealRequest) send() *TemplateServiceSealResponse {
+
 }
 
 //
@@ -10833,31 +11918,39 @@ func (op *TemplateService) Seal(
 }
 
 type TemplateServiceUpdateRequest struct {
+	template *TemplateService
 	header   map[string]string
 	query    map[string]string
 	async    *bool
 	template *Template
 }
 
-func (p *TemplateServiceUpdateRequest) Header(key, value string) {
+func (p *TemplateServiceUpdateRequest) Header(key, value string) *TemplateServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateServiceUpdateRequest) Query(key, value string) {
+func (p *TemplateServiceUpdateRequest) Query(key, value string) *TemplateServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateServiceUpdateRequest) Async(async bool) {
+func (p *TemplateServiceUpdateRequest) Async(async bool) *TemplateServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *TemplateServiceUpdateRequest) Template(template *Template) {
+func (p *TemplateServiceUpdateRequest) Template(template *Template) *TemplateServiceUpdateRequest {
 	p.template = template
+	return p
+}
+func (p *TemplateServiceUpdateRequest) send() *TemplateServiceUpdateResponse {
+
 }
 
 //
@@ -11032,27 +12125,34 @@ func NewVmWatchdogsService(connection *Connection, path string) *VmWatchdogsServ
 }
 
 type VmWatchdogsServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	watchdog *Watchdog
+	vmWatchdogs *VmWatchdogsService
+	header      map[string]string
+	query       map[string]string
+	watchdog    *Watchdog
 }
 
-func (p *VmWatchdogsServiceAddRequest) Header(key, value string) {
+func (p *VmWatchdogsServiceAddRequest) Header(key, value string) *VmWatchdogsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmWatchdogsServiceAddRequest) Query(key, value string) {
+func (p *VmWatchdogsServiceAddRequest) Query(key, value string) *VmWatchdogsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+func (p *VmWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *VmWatchdogsServiceAddRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *VmWatchdogsServiceAddRequest) send() *VmWatchdogsServiceAddResponse {
+
 }
 
 //
@@ -11107,27 +12207,34 @@ func (op *VmWatchdogsService) Add(
 }
 
 type VmWatchdogsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmWatchdogs *VmWatchdogsService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
-func (p *VmWatchdogsServiceListRequest) Header(key, value string) {
+func (p *VmWatchdogsServiceListRequest) Header(key, value string) *VmWatchdogsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmWatchdogsServiceListRequest) Query(key, value string) {
+func (p *VmWatchdogsServiceListRequest) Query(key, value string) *VmWatchdogsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmWatchdogsServiceListRequest) Max(max int64) {
+func (p *VmWatchdogsServiceListRequest) Max(max int64) *VmWatchdogsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmWatchdogsServiceListRequest) send() *VmWatchdogsServiceListResponse {
+
 }
 
 //
@@ -11203,22 +12310,29 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 }
 
 type AffinityLabelVmServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelVm *AffinityLabelVmService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *AffinityLabelVmServiceGetRequest) Header(key, value string) {
+func (p *AffinityLabelVmServiceGetRequest) Header(key, value string) *AffinityLabelVmServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) {
+func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) *AffinityLabelVmServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelVmServiceGetRequest) send() *AffinityLabelVmServiceGetResponse {
+
 }
 
 //
@@ -11246,22 +12360,29 @@ func (op *AffinityLabelVmService) Get(
 }
 
 type AffinityLabelVmServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelVm *AffinityLabelVmService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *AffinityLabelVmServiceRemoveRequest) Header(key, value string) {
+func (p *AffinityLabelVmServiceRemoveRequest) Header(key, value string) *AffinityLabelVmServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelVmServiceRemoveRequest) Query(key, value string) {
+func (p *AffinityLabelVmServiceRemoveRequest) Query(key, value string) *AffinityLabelVmServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelVmServiceRemoveRequest) send() *AffinityLabelVmServiceRemoveResponse {
+
 }
 
 //
@@ -11309,27 +12430,34 @@ func NewVmService(connection *Connection, path string) *VmService {
 }
 
 type VmServiceCancelMigrationRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceCancelMigrationRequest) Header(key, value string) {
+func (p *VmServiceCancelMigrationRequest) Header(key, value string) *VmServiceCancelMigrationRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceCancelMigrationRequest) Query(key, value string) {
+func (p *VmServiceCancelMigrationRequest) Query(key, value string) *VmServiceCancelMigrationRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceCancelMigrationRequest) Async(async bool) {
+func (p *VmServiceCancelMigrationRequest) Async(async bool) *VmServiceCancelMigrationRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceCancelMigrationRequest) send() *VmServiceCancelMigrationResponse {
+
 }
 
 //
@@ -11366,31 +12494,39 @@ func (op *VmService) CancelMigration(
 }
 
 type VmServiceCloneRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	vm     *Vm
 }
 
-func (p *VmServiceCloneRequest) Header(key, value string) {
+func (p *VmServiceCloneRequest) Header(key, value string) *VmServiceCloneRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceCloneRequest) Query(key, value string) {
+func (p *VmServiceCloneRequest) Query(key, value string) *VmServiceCloneRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceCloneRequest) Async(async bool) {
+func (p *VmServiceCloneRequest) Async(async bool) *VmServiceCloneRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceCloneRequest) Vm(vm *Vm) {
+func (p *VmServiceCloneRequest) Vm(vm *Vm) *VmServiceCloneRequest {
 	p.vm = vm
+	return p
+}
+func (p *VmServiceCloneRequest) send() *VmServiceCloneResponse {
+
 }
 
 //
@@ -11418,27 +12554,34 @@ func (op *VmService) Clone(
 }
 
 type VmServiceCommitSnapshotRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceCommitSnapshotRequest) Header(key, value string) {
+func (p *VmServiceCommitSnapshotRequest) Header(key, value string) *VmServiceCommitSnapshotRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceCommitSnapshotRequest) Query(key, value string) {
+func (p *VmServiceCommitSnapshotRequest) Query(key, value string) *VmServiceCommitSnapshotRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceCommitSnapshotRequest) Async(async bool) {
+func (p *VmServiceCommitSnapshotRequest) Async(async bool) *VmServiceCommitSnapshotRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceCommitSnapshotRequest) send() *VmServiceCommitSnapshotResponse {
+
 }
 
 //
@@ -11464,27 +12607,34 @@ func (op *VmService) CommitSnapshot(
 }
 
 type VmServiceDetachRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceDetachRequest) Header(key, value string) {
+func (p *VmServiceDetachRequest) Header(key, value string) *VmServiceDetachRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceDetachRequest) Query(key, value string) {
+func (p *VmServiceDetachRequest) Query(key, value string) *VmServiceDetachRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceDetachRequest) Async(async bool) {
+func (p *VmServiceDetachRequest) Async(async bool) *VmServiceDetachRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceDetachRequest) send() *VmServiceDetachResponse {
+
 }
 
 //
@@ -11521,6 +12671,7 @@ func (op *VmService) Detach(
 }
 
 type VmServiceExportRequest struct {
+	vm               *VmService
 	header           map[string]string
 	query            map[string]string
 	async            *bool
@@ -11529,31 +12680,40 @@ type VmServiceExportRequest struct {
 	storageDomain    *StorageDomain
 }
 
-func (p *VmServiceExportRequest) Header(key, value string) {
+func (p *VmServiceExportRequest) Header(key, value string) *VmServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceExportRequest) Query(key, value string) {
+func (p *VmServiceExportRequest) Query(key, value string) *VmServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceExportRequest) Async(async bool) {
+func (p *VmServiceExportRequest) Async(async bool) *VmServiceExportRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceExportRequest) DiscardSnapshots(discardSnapshots bool) {
+func (p *VmServiceExportRequest) DiscardSnapshots(discardSnapshots bool) *VmServiceExportRequest {
 	p.discardSnapshots = &discardSnapshots
+	return p
 }
-func (p *VmServiceExportRequest) Exclusive(exclusive bool) {
+func (p *VmServiceExportRequest) Exclusive(exclusive bool) *VmServiceExportRequest {
 	p.exclusive = &exclusive
+	return p
 }
-func (p *VmServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *VmServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *VmServiceExportRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *VmServiceExportRequest) send() *VmServiceExportResponse {
+
 }
 
 //
@@ -11606,27 +12766,34 @@ func (op *VmService) Export(
 }
 
 type VmServiceFreezeFilesystemsRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceFreezeFilesystemsRequest) Header(key, value string) {
+func (p *VmServiceFreezeFilesystemsRequest) Header(key, value string) *VmServiceFreezeFilesystemsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceFreezeFilesystemsRequest) Query(key, value string) {
+func (p *VmServiceFreezeFilesystemsRequest) Query(key, value string) *VmServiceFreezeFilesystemsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceFreezeFilesystemsRequest) Async(async bool) {
+func (p *VmServiceFreezeFilesystemsRequest) Async(async bool) *VmServiceFreezeFilesystemsRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceFreezeFilesystemsRequest) send() *VmServiceFreezeFilesystemsResponse {
+
 }
 
 //
@@ -11665,6 +12832,7 @@ func (op *VmService) FreezeFilesystems(
 }
 
 type VmServiceGetRequest struct {
+	vm         *VmService
 	header     map[string]string
 	query      map[string]string
 	allContent *bool
@@ -11672,28 +12840,36 @@ type VmServiceGetRequest struct {
 	nextRun    *bool
 }
 
-func (p *VmServiceGetRequest) Header(key, value string) {
+func (p *VmServiceGetRequest) Header(key, value string) *VmServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceGetRequest) Query(key, value string) {
+func (p *VmServiceGetRequest) Query(key, value string) *VmServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceGetRequest) AllContent(allContent bool) {
+func (p *VmServiceGetRequest) AllContent(allContent bool) *VmServiceGetRequest {
 	p.allContent = &allContent
+	return p
 }
-func (p *VmServiceGetRequest) Filter(filter bool) {
+func (p *VmServiceGetRequest) Filter(filter bool) *VmServiceGetRequest {
 	p.filter = &filter
+	return p
 }
-func (p *VmServiceGetRequest) NextRun(nextRun bool) {
+func (p *VmServiceGetRequest) NextRun(nextRun bool) *VmServiceGetRequest {
 	p.nextRun = &nextRun
+	return p
+}
+func (p *VmServiceGetRequest) send() *VmServiceGetResponse {
+
 }
 
 //
@@ -11759,27 +12935,34 @@ func (op *VmService) Get(
 }
 
 type VmServiceLogonRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceLogonRequest) Header(key, value string) {
+func (p *VmServiceLogonRequest) Header(key, value string) *VmServiceLogonRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceLogonRequest) Query(key, value string) {
+func (p *VmServiceLogonRequest) Query(key, value string) *VmServiceLogonRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceLogonRequest) Async(async bool) {
+func (p *VmServiceLogonRequest) Async(async bool) *VmServiceLogonRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceLogonRequest) send() *VmServiceLogonResponse {
+
 }
 
 //
@@ -11820,31 +13003,39 @@ func (op *VmService) Logon(
 }
 
 type VmServiceMaintenanceRequest struct {
+	vm                 *VmService
 	header             map[string]string
 	query              map[string]string
 	async              *bool
 	maintenanceEnabled *bool
 }
 
-func (p *VmServiceMaintenanceRequest) Header(key, value string) {
+func (p *VmServiceMaintenanceRequest) Header(key, value string) *VmServiceMaintenanceRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceMaintenanceRequest) Query(key, value string) {
+func (p *VmServiceMaintenanceRequest) Query(key, value string) *VmServiceMaintenanceRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceMaintenanceRequest) Async(async bool) {
+func (p *VmServiceMaintenanceRequest) Async(async bool) *VmServiceMaintenanceRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceMaintenanceRequest) MaintenanceEnabled(maintenanceEnabled bool) {
+func (p *VmServiceMaintenanceRequest) MaintenanceEnabled(maintenanceEnabled bool) *VmServiceMaintenanceRequest {
 	p.maintenanceEnabled = &maintenanceEnabled
+	return p
+}
+func (p *VmServiceMaintenanceRequest) send() *VmServiceMaintenanceResponse {
+
 }
 
 //
@@ -11886,6 +13077,7 @@ func (op *VmService) Maintenance(
 }
 
 type VmServiceMigrateRequest struct {
+	vm      *VmService
 	header  map[string]string
 	query   map[string]string
 	async   *bool
@@ -11894,31 +13086,40 @@ type VmServiceMigrateRequest struct {
 	host    *Host
 }
 
-func (p *VmServiceMigrateRequest) Header(key, value string) {
+func (p *VmServiceMigrateRequest) Header(key, value string) *VmServiceMigrateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceMigrateRequest) Query(key, value string) {
+func (p *VmServiceMigrateRequest) Query(key, value string) *VmServiceMigrateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceMigrateRequest) Async(async bool) {
+func (p *VmServiceMigrateRequest) Async(async bool) *VmServiceMigrateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceMigrateRequest) Cluster(cluster *Cluster) {
+func (p *VmServiceMigrateRequest) Cluster(cluster *Cluster) *VmServiceMigrateRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *VmServiceMigrateRequest) Force(force bool) {
+func (p *VmServiceMigrateRequest) Force(force bool) *VmServiceMigrateRequest {
 	p.force = &force
+	return p
 }
-func (p *VmServiceMigrateRequest) Host(host *Host) {
+func (p *VmServiceMigrateRequest) Host(host *Host) *VmServiceMigrateRequest {
 	p.host = host
+	return p
+}
+func (p *VmServiceMigrateRequest) send() *VmServiceMigrateResponse {
+
 }
 
 //
@@ -11969,6 +13170,7 @@ func (op *VmService) Migrate(
 }
 
 type VmServicePreviewSnapshotRequest struct {
+	vm            *VmService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -11978,34 +13180,44 @@ type VmServicePreviewSnapshotRequest struct {
 	vm            *Vm
 }
 
-func (p *VmServicePreviewSnapshotRequest) Header(key, value string) {
+func (p *VmServicePreviewSnapshotRequest) Header(key, value string) *VmServicePreviewSnapshotRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServicePreviewSnapshotRequest) Query(key, value string) {
+func (p *VmServicePreviewSnapshotRequest) Query(key, value string) *VmServicePreviewSnapshotRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServicePreviewSnapshotRequest) Async(async bool) {
+func (p *VmServicePreviewSnapshotRequest) Async(async bool) *VmServicePreviewSnapshotRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServicePreviewSnapshotRequest) Disks(disks []Disk) {
+func (p *VmServicePreviewSnapshotRequest) Disks(disks []Disk) *VmServicePreviewSnapshotRequest {
 	p.disks = disks
+	return p
 }
-func (p *VmServicePreviewSnapshotRequest) RestoreMemory(restoreMemory bool) {
+func (p *VmServicePreviewSnapshotRequest) RestoreMemory(restoreMemory bool) *VmServicePreviewSnapshotRequest {
 	p.restoreMemory = &restoreMemory
+	return p
 }
-func (p *VmServicePreviewSnapshotRequest) Snapshot(snapshot *Snapshot) {
+func (p *VmServicePreviewSnapshotRequest) Snapshot(snapshot *Snapshot) *VmServicePreviewSnapshotRequest {
 	p.snapshot = snapshot
+	return p
 }
-func (p *VmServicePreviewSnapshotRequest) Vm(vm *Vm) {
+func (p *VmServicePreviewSnapshotRequest) Vm(vm *Vm) *VmServicePreviewSnapshotRequest {
 	p.vm = vm
+	return p
+}
+func (p *VmServicePreviewSnapshotRequest) send() *VmServicePreviewSnapshotResponse {
+
 }
 
 //
@@ -12039,27 +13251,34 @@ func (op *VmService) PreviewSnapshot(
 }
 
 type VmServiceRebootRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceRebootRequest) Header(key, value string) {
+func (p *VmServiceRebootRequest) Header(key, value string) *VmServiceRebootRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceRebootRequest) Query(key, value string) {
+func (p *VmServiceRebootRequest) Query(key, value string) *VmServiceRebootRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceRebootRequest) Async(async bool) {
+func (p *VmServiceRebootRequest) Async(async bool) *VmServiceRebootRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceRebootRequest) send() *VmServiceRebootResponse {
+
 }
 
 //
@@ -12096,6 +13315,7 @@ func (op *VmService) Reboot(
 }
 
 type VmServiceRemoveRequest struct {
+	vm         *VmService
 	header     map[string]string
 	query      map[string]string
 	async      *bool
@@ -12103,28 +13323,36 @@ type VmServiceRemoveRequest struct {
 	force      *bool
 }
 
-func (p *VmServiceRemoveRequest) Header(key, value string) {
+func (p *VmServiceRemoveRequest) Header(key, value string) *VmServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceRemoveRequest) Query(key, value string) {
+func (p *VmServiceRemoveRequest) Query(key, value string) *VmServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceRemoveRequest) Async(async bool) {
+func (p *VmServiceRemoveRequest) Async(async bool) *VmServiceRemoveRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceRemoveRequest) DetachOnly(detachOnly bool) {
+func (p *VmServiceRemoveRequest) DetachOnly(detachOnly bool) *VmServiceRemoveRequest {
 	p.detachOnly = &detachOnly
+	return p
 }
-func (p *VmServiceRemoveRequest) Force(force bool) {
+func (p *VmServiceRemoveRequest) Force(force bool) *VmServiceRemoveRequest {
 	p.force = &force
+	return p
+}
+func (p *VmServiceRemoveRequest) send() *VmServiceRemoveResponse {
+
 }
 
 //
@@ -12165,27 +13393,34 @@ func (op *VmService) Remove(
 }
 
 type VmServiceReorderMacAddressesRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceReorderMacAddressesRequest) Header(key, value string) {
+func (p *VmServiceReorderMacAddressesRequest) Header(key, value string) *VmServiceReorderMacAddressesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceReorderMacAddressesRequest) Query(key, value string) {
+func (p *VmServiceReorderMacAddressesRequest) Query(key, value string) *VmServiceReorderMacAddressesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceReorderMacAddressesRequest) Async(async bool) {
+func (p *VmServiceReorderMacAddressesRequest) Async(async bool) *VmServiceReorderMacAddressesRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceReorderMacAddressesRequest) send() *VmServiceReorderMacAddressesResponse {
+
 }
 
 //
@@ -12211,27 +13446,34 @@ func (op *VmService) ReorderMacAddresses(
 }
 
 type VmServiceShutdownRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceShutdownRequest) Header(key, value string) {
+func (p *VmServiceShutdownRequest) Header(key, value string) *VmServiceShutdownRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceShutdownRequest) Query(key, value string) {
+func (p *VmServiceShutdownRequest) Query(key, value string) *VmServiceShutdownRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceShutdownRequest) Async(async bool) {
+func (p *VmServiceShutdownRequest) Async(async bool) *VmServiceShutdownRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceShutdownRequest) send() *VmServiceShutdownResponse {
+
 }
 
 //
@@ -12268,6 +13510,7 @@ func (op *VmService) Shutdown(
 }
 
 type VmServiceStartRequest struct {
+	vm           *VmService
 	header       map[string]string
 	query        map[string]string
 	async        *bool
@@ -12278,37 +13521,48 @@ type VmServiceStartRequest struct {
 	vm           *Vm
 }
 
-func (p *VmServiceStartRequest) Header(key, value string) {
+func (p *VmServiceStartRequest) Header(key, value string) *VmServiceStartRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceStartRequest) Query(key, value string) {
+func (p *VmServiceStartRequest) Query(key, value string) *VmServiceStartRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceStartRequest) Async(async bool) {
+func (p *VmServiceStartRequest) Async(async bool) *VmServiceStartRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceStartRequest) Filter(filter bool) {
+func (p *VmServiceStartRequest) Filter(filter bool) *VmServiceStartRequest {
 	p.filter = &filter
+	return p
 }
-func (p *VmServiceStartRequest) Pause(pause bool) {
+func (p *VmServiceStartRequest) Pause(pause bool) *VmServiceStartRequest {
 	p.pause = &pause
+	return p
 }
-func (p *VmServiceStartRequest) UseCloudInit(useCloudInit bool) {
+func (p *VmServiceStartRequest) UseCloudInit(useCloudInit bool) *VmServiceStartRequest {
 	p.useCloudInit = &useCloudInit
+	return p
 }
-func (p *VmServiceStartRequest) UseSysprep(useSysprep bool) {
+func (p *VmServiceStartRequest) UseSysprep(useSysprep bool) *VmServiceStartRequest {
 	p.useSysprep = &useSysprep
+	return p
 }
-func (p *VmServiceStartRequest) Vm(vm *Vm) {
+func (p *VmServiceStartRequest) Vm(vm *Vm) *VmServiceStartRequest {
 	p.vm = vm
+	return p
+}
+func (p *VmServiceStartRequest) send() *VmServiceStartResponse {
+
 }
 
 //
@@ -12381,27 +13635,34 @@ func (op *VmService) Start(
 }
 
 type VmServiceStopRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceStopRequest) Header(key, value string) {
+func (p *VmServiceStopRequest) Header(key, value string) *VmServiceStopRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceStopRequest) Query(key, value string) {
+func (p *VmServiceStopRequest) Query(key, value string) *VmServiceStopRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceStopRequest) Async(async bool) {
+func (p *VmServiceStopRequest) Async(async bool) *VmServiceStopRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceStopRequest) send() *VmServiceStopResponse {
+
 }
 
 //
@@ -12438,27 +13699,34 @@ func (op *VmService) Stop(
 }
 
 type VmServiceSuspendRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceSuspendRequest) Header(key, value string) {
+func (p *VmServiceSuspendRequest) Header(key, value string) *VmServiceSuspendRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceSuspendRequest) Query(key, value string) {
+func (p *VmServiceSuspendRequest) Query(key, value string) *VmServiceSuspendRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceSuspendRequest) Async(async bool) {
+func (p *VmServiceSuspendRequest) Async(async bool) *VmServiceSuspendRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceSuspendRequest) send() *VmServiceSuspendResponse {
+
 }
 
 //
@@ -12496,27 +13764,34 @@ func (op *VmService) Suspend(
 }
 
 type VmServiceThawFilesystemsRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceThawFilesystemsRequest) Header(key, value string) {
+func (p *VmServiceThawFilesystemsRequest) Header(key, value string) *VmServiceThawFilesystemsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceThawFilesystemsRequest) Query(key, value string) {
+func (p *VmServiceThawFilesystemsRequest) Query(key, value string) *VmServiceThawFilesystemsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceThawFilesystemsRequest) Async(async bool) {
+func (p *VmServiceThawFilesystemsRequest) Async(async bool) *VmServiceThawFilesystemsRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceThawFilesystemsRequest) send() *VmServiceThawFilesystemsResponse {
+
 }
 
 //
@@ -12555,31 +13830,39 @@ func (op *VmService) ThawFilesystems(
 }
 
 type VmServiceTicketRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	ticket *Ticket
 }
 
-func (p *VmServiceTicketRequest) Header(key, value string) {
+func (p *VmServiceTicketRequest) Header(key, value string) *VmServiceTicketRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceTicketRequest) Query(key, value string) {
+func (p *VmServiceTicketRequest) Query(key, value string) *VmServiceTicketRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceTicketRequest) Async(async bool) {
+func (p *VmServiceTicketRequest) Async(async bool) *VmServiceTicketRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceTicketRequest) Ticket(ticket *Ticket) {
+func (p *VmServiceTicketRequest) Ticket(ticket *Ticket) *VmServiceTicketRequest {
 	p.ticket = ticket
+	return p
+}
+func (p *VmServiceTicketRequest) send() *VmServiceTicketResponse {
+
 }
 
 //
@@ -12646,27 +13929,34 @@ func (op *VmService) Ticket(
 }
 
 type VmServiceUndoSnapshotRequest struct {
+	vm     *VmService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmServiceUndoSnapshotRequest) Header(key, value string) {
+func (p *VmServiceUndoSnapshotRequest) Header(key, value string) *VmServiceUndoSnapshotRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceUndoSnapshotRequest) Query(key, value string) {
+func (p *VmServiceUndoSnapshotRequest) Query(key, value string) *VmServiceUndoSnapshotRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceUndoSnapshotRequest) Async(async bool) {
+func (p *VmServiceUndoSnapshotRequest) Async(async bool) *VmServiceUndoSnapshotRequest {
 	p.async = &async
+	return p
+}
+func (p *VmServiceUndoSnapshotRequest) send() *VmServiceUndoSnapshotResponse {
+
 }
 
 //
@@ -12692,6 +13982,7 @@ func (op *VmService) UndoSnapshot(
 }
 
 type VmServiceUpdateRequest struct {
+	vm      *VmService
 	header  map[string]string
 	query   map[string]string
 	async   *bool
@@ -12699,28 +13990,36 @@ type VmServiceUpdateRequest struct {
 	vm      *Vm
 }
 
-func (p *VmServiceUpdateRequest) Header(key, value string) {
+func (p *VmServiceUpdateRequest) Header(key, value string) *VmServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmServiceUpdateRequest) Query(key, value string) {
+func (p *VmServiceUpdateRequest) Query(key, value string) *VmServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmServiceUpdateRequest) Async(async bool) {
+func (p *VmServiceUpdateRequest) Async(async bool) *VmServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmServiceUpdateRequest) NextRun(nextRun bool) {
+func (p *VmServiceUpdateRequest) NextRun(nextRun bool) *VmServiceUpdateRequest {
 	p.nextRun = &nextRun
+	return p
 }
-func (p *VmServiceUpdateRequest) Vm(vm *Vm) {
+func (p *VmServiceUpdateRequest) Vm(vm *Vm) *VmServiceUpdateRequest {
 	p.vm = vm
+	return p
+}
+func (p *VmServiceUpdateRequest) send() *VmServiceUpdateResponse {
+
 }
 
 //
@@ -12976,27 +14275,34 @@ func NewInstanceTypeGraphicsConsolesService(connection *Connection, path string)
 }
 
 type InstanceTypeGraphicsConsolesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	console *GraphicsConsole
+	instanceTypeGraphicsConsoles *InstanceTypeGraphicsConsolesService
+	header                       map[string]string
+	query                        map[string]string
+	console                      *GraphicsConsole
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Header(key, value string) {
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Header(key, value string) *InstanceTypeGraphicsConsolesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Query(key, value string) {
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Query(key, value string) *InstanceTypeGraphicsConsolesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) *InstanceTypeGraphicsConsolesServiceAddRequest {
 	p.console = console
+	return p
+}
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) send() *InstanceTypeGraphicsConsolesServiceAddResponse {
+
 }
 
 //
@@ -13025,27 +14331,34 @@ func (op *InstanceTypeGraphicsConsolesService) Add(
 }
 
 type InstanceTypeGraphicsConsolesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	instanceTypeGraphicsConsoles *InstanceTypeGraphicsConsolesService
+	header                       map[string]string
+	query                        map[string]string
+	max                          *int64
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceListRequest) Header(key, value string) {
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Header(key, value string) *InstanceTypeGraphicsConsolesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceListRequest) Query(key, value string) {
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Query(key, value string) *InstanceTypeGraphicsConsolesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) {
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) *InstanceTypeGraphicsConsolesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) send() *InstanceTypeGraphicsConsolesServiceListResponse {
+
 }
 
 //
@@ -13118,22 +14431,29 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 }
 
 type StorageDomainVmServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainVm *StorageDomainVmService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *StorageDomainVmServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainVmServiceGetRequest) Header(key, value string) *StorageDomainVmServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainVmServiceGetRequest) Query(key, value string) *StorageDomainVmServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainVmServiceGetRequest) send() *StorageDomainVmServiceGetResponse {
+
 }
 
 //
@@ -13160,6 +14480,7 @@ func (op *StorageDomainVmService) Get(
 }
 
 type StorageDomainVmServiceImportRequest struct {
+	storageDomainVm   *StorageDomainVmService
 	header            map[string]string
 	query             map[string]string
 	async             *bool
@@ -13170,37 +14491,48 @@ type StorageDomainVmServiceImportRequest struct {
 	vm                *Vm
 }
 
-func (p *StorageDomainVmServiceImportRequest) Header(key, value string) {
+func (p *StorageDomainVmServiceImportRequest) Header(key, value string) *StorageDomainVmServiceImportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceImportRequest) Query(key, value string) {
+func (p *StorageDomainVmServiceImportRequest) Query(key, value string) *StorageDomainVmServiceImportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceImportRequest) Async(async bool) {
+func (p *StorageDomainVmServiceImportRequest) Async(async bool) *StorageDomainVmServiceImportRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainVmServiceImportRequest) Clone(clone bool) {
+func (p *StorageDomainVmServiceImportRequest) Clone(clone bool) *StorageDomainVmServiceImportRequest {
 	p.clone = &clone
+	return p
 }
-func (p *StorageDomainVmServiceImportRequest) Cluster(cluster *Cluster) {
+func (p *StorageDomainVmServiceImportRequest) Cluster(cluster *Cluster) *StorageDomainVmServiceImportRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *StorageDomainVmServiceImportRequest) CollapseSnapshots(collapseSnapshots bool) {
+func (p *StorageDomainVmServiceImportRequest) CollapseSnapshots(collapseSnapshots bool) *StorageDomainVmServiceImportRequest {
 	p.collapseSnapshots = &collapseSnapshots
+	return p
 }
-func (p *StorageDomainVmServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainVmServiceImportRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainVmServiceImportRequest {
 	p.storageDomain = storageDomain
+	return p
 }
-func (p *StorageDomainVmServiceImportRequest) Vm(vm *Vm) {
+func (p *StorageDomainVmServiceImportRequest) Vm(vm *Vm) *StorageDomainVmServiceImportRequest {
 	p.vm = vm
+	return p
+}
+func (p *StorageDomainVmServiceImportRequest) send() *StorageDomainVmServiceImportResponse {
+
 }
 
 //
@@ -13299,6 +14631,7 @@ func (op *StorageDomainVmService) Import(
 }
 
 type StorageDomainVmServiceRegisterRequest struct {
+	storageDomainVm     *StorageDomainVmService
 	header              map[string]string
 	query               map[string]string
 	allowPartialImport  *bool
@@ -13310,40 +14643,52 @@ type StorageDomainVmServiceRegisterRequest struct {
 	vnicProfileMappings []VnicProfileMapping
 }
 
-func (p *StorageDomainVmServiceRegisterRequest) Header(key, value string) {
+func (p *StorageDomainVmServiceRegisterRequest) Header(key, value string) *StorageDomainVmServiceRegisterRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceRegisterRequest) Query(key, value string) {
+func (p *StorageDomainVmServiceRegisterRequest) Query(key, value string) *StorageDomainVmServiceRegisterRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) {
+func (p *StorageDomainVmServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) *StorageDomainVmServiceRegisterRequest {
 	p.allowPartialImport = &allowPartialImport
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) Async(async bool) {
+func (p *StorageDomainVmServiceRegisterRequest) Async(async bool) *StorageDomainVmServiceRegisterRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) Clone(clone bool) {
+func (p *StorageDomainVmServiceRegisterRequest) Clone(clone bool) *StorageDomainVmServiceRegisterRequest {
 	p.clone = &clone
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) Cluster(cluster *Cluster) {
+func (p *StorageDomainVmServiceRegisterRequest) Cluster(cluster *Cluster) *StorageDomainVmServiceRegisterRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) ReassignBadMacs(reassignBadMacs bool) {
+func (p *StorageDomainVmServiceRegisterRequest) ReassignBadMacs(reassignBadMacs bool) *StorageDomainVmServiceRegisterRequest {
 	p.reassignBadMacs = &reassignBadMacs
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) Vm(vm *Vm) {
+func (p *StorageDomainVmServiceRegisterRequest) Vm(vm *Vm) *StorageDomainVmServiceRegisterRequest {
 	p.vm = vm
+	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) VnicProfileMappings(vnicProfileMappings []VnicProfileMapping) {
+func (p *StorageDomainVmServiceRegisterRequest) VnicProfileMappings(vnicProfileMappings []VnicProfileMapping) *StorageDomainVmServiceRegisterRequest {
 	p.vnicProfileMappings = vnicProfileMappings
+	return p
+}
+func (p *StorageDomainVmServiceRegisterRequest) send() *StorageDomainVmServiceRegisterResponse {
+
 }
 
 //
@@ -13391,27 +14736,34 @@ func (op *StorageDomainVmService) Register(
 }
 
 type StorageDomainVmServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	storageDomainVm *StorageDomainVmService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
-func (p *StorageDomainVmServiceRemoveRequest) Header(key, value string) {
+func (p *StorageDomainVmServiceRemoveRequest) Header(key, value string) *StorageDomainVmServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceRemoveRequest) Query(key, value string) {
+func (p *StorageDomainVmServiceRemoveRequest) Query(key, value string) *StorageDomainVmServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainVmServiceRemoveRequest) Async(async bool) {
+func (p *StorageDomainVmServiceRemoveRequest) Async(async bool) *StorageDomainVmServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *StorageDomainVmServiceRemoveRequest) send() *StorageDomainVmServiceRemoveResponse {
+
 }
 
 //
@@ -13497,27 +14849,34 @@ func NewClusterService(connection *Connection, path string) *ClusterService {
 }
 
 type ClusterServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	cluster *ClusterService
+	header  map[string]string
+	query   map[string]string
+	filter  *bool
 }
 
-func (p *ClusterServiceGetRequest) Header(key, value string) {
+func (p *ClusterServiceGetRequest) Header(key, value string) *ClusterServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterServiceGetRequest) Query(key, value string) {
+func (p *ClusterServiceGetRequest) Query(key, value string) *ClusterServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClusterServiceGetRequest) Filter(filter bool) {
+func (p *ClusterServiceGetRequest) Filter(filter bool) *ClusterServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *ClusterServiceGetRequest) send() *ClusterServiceGetResponse {
+
 }
 
 //
@@ -13627,27 +14986,34 @@ func (op *ClusterService) Get(
 }
 
 type ClusterServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	cluster *ClusterService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
 }
 
-func (p *ClusterServiceRemoveRequest) Header(key, value string) {
+func (p *ClusterServiceRemoveRequest) Header(key, value string) *ClusterServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterServiceRemoveRequest) Query(key, value string) {
+func (p *ClusterServiceRemoveRequest) Query(key, value string) *ClusterServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClusterServiceRemoveRequest) Async(async bool) {
+func (p *ClusterServiceRemoveRequest) Async(async bool) *ClusterServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *ClusterServiceRemoveRequest) send() *ClusterServiceRemoveResponse {
+
 }
 
 //
@@ -13679,27 +15045,34 @@ func (op *ClusterService) Remove(
 }
 
 type ClusterServiceResetEmulatedMachineRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	cluster *ClusterService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
 }
 
-func (p *ClusterServiceResetEmulatedMachineRequest) Header(key, value string) {
+func (p *ClusterServiceResetEmulatedMachineRequest) Header(key, value string) *ClusterServiceResetEmulatedMachineRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterServiceResetEmulatedMachineRequest) Query(key, value string) {
+func (p *ClusterServiceResetEmulatedMachineRequest) Query(key, value string) *ClusterServiceResetEmulatedMachineRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClusterServiceResetEmulatedMachineRequest) Async(async bool) {
+func (p *ClusterServiceResetEmulatedMachineRequest) Async(async bool) *ClusterServiceResetEmulatedMachineRequest {
 	p.async = &async
+	return p
+}
+func (p *ClusterServiceResetEmulatedMachineRequest) send() *ClusterServiceResetEmulatedMachineResponse {
+
 }
 
 //
@@ -13725,31 +15098,39 @@ func (op *ClusterService) ResetEmulatedMachine(
 }
 
 type ClusterServiceUpdateRequest struct {
+	cluster *ClusterService
 	header  map[string]string
 	query   map[string]string
 	async   *bool
 	cluster *Cluster
 }
 
-func (p *ClusterServiceUpdateRequest) Header(key, value string) {
+func (p *ClusterServiceUpdateRequest) Header(key, value string) *ClusterServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterServiceUpdateRequest) Query(key, value string) {
+func (p *ClusterServiceUpdateRequest) Query(key, value string) *ClusterServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClusterServiceUpdateRequest) Async(async bool) {
+func (p *ClusterServiceUpdateRequest) Async(async bool) *ClusterServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *ClusterServiceUpdateRequest) Cluster(cluster *Cluster) {
+func (p *ClusterServiceUpdateRequest) Cluster(cluster *Cluster) *ClusterServiceUpdateRequest {
 	p.cluster = cluster
+	return p
+}
+func (p *ClusterServiceUpdateRequest) send() *ClusterServiceUpdateResponse {
+
 }
 
 //
@@ -13913,27 +15294,34 @@ func NewSnapshotDisksService(connection *Connection, path string) *SnapshotDisks
 }
 
 type SnapshotDisksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	snapshotDisks *SnapshotDisksService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *SnapshotDisksServiceListRequest) Header(key, value string) {
+func (p *SnapshotDisksServiceListRequest) Header(key, value string) *SnapshotDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotDisksServiceListRequest) Query(key, value string) {
+func (p *SnapshotDisksServiceListRequest) Query(key, value string) *SnapshotDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotDisksServiceListRequest) Max(max int64) {
+func (p *SnapshotDisksServiceListRequest) Max(max int64) *SnapshotDisksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SnapshotDisksServiceListRequest) send() *SnapshotDisksServiceListResponse {
+
 }
 
 //
@@ -14004,27 +15392,34 @@ func NewTemplateGraphicsConsolesService(connection *Connection, path string) *Te
 }
 
 type TemplateGraphicsConsolesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	console *GraphicsConsole
+	templateGraphicsConsoles *TemplateGraphicsConsolesService
+	header                   map[string]string
+	query                    map[string]string
+	console                  *GraphicsConsole
 }
 
-func (p *TemplateGraphicsConsolesServiceAddRequest) Header(key, value string) {
+func (p *TemplateGraphicsConsolesServiceAddRequest) Header(key, value string) *TemplateGraphicsConsolesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsolesServiceAddRequest) Query(key, value string) {
+func (p *TemplateGraphicsConsolesServiceAddRequest) Query(key, value string) *TemplateGraphicsConsolesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+func (p *TemplateGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) *TemplateGraphicsConsolesServiceAddRequest {
 	p.console = console
+	return p
+}
+func (p *TemplateGraphicsConsolesServiceAddRequest) send() *TemplateGraphicsConsolesServiceAddResponse {
+
 }
 
 //
@@ -14053,27 +15448,34 @@ func (op *TemplateGraphicsConsolesService) Add(
 }
 
 type TemplateGraphicsConsolesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	templateGraphicsConsoles *TemplateGraphicsConsolesService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
-func (p *TemplateGraphicsConsolesServiceListRequest) Header(key, value string) {
+func (p *TemplateGraphicsConsolesServiceListRequest) Header(key, value string) *TemplateGraphicsConsolesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsolesServiceListRequest) Query(key, value string) {
+func (p *TemplateGraphicsConsolesServiceListRequest) Query(key, value string) *TemplateGraphicsConsolesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) {
+func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) *TemplateGraphicsConsolesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TemplateGraphicsConsolesServiceListRequest) send() *TemplateGraphicsConsolesServiceListResponse {
+
 }
 
 //
@@ -14147,27 +15549,34 @@ func NewVmPoolService(connection *Connection, path string) *VmPoolService {
 }
 
 type VmPoolServiceAllocateVmRequest struct {
+	vmPool *VmPoolService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmPoolServiceAllocateVmRequest) Header(key, value string) {
+func (p *VmPoolServiceAllocateVmRequest) Header(key, value string) *VmPoolServiceAllocateVmRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolServiceAllocateVmRequest) Query(key, value string) {
+func (p *VmPoolServiceAllocateVmRequest) Query(key, value string) *VmPoolServiceAllocateVmRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolServiceAllocateVmRequest) Async(async bool) {
+func (p *VmPoolServiceAllocateVmRequest) Async(async bool) *VmPoolServiceAllocateVmRequest {
 	p.async = &async
+	return p
+}
+func (p *VmPoolServiceAllocateVmRequest) send() *VmPoolServiceAllocateVmResponse {
+
 }
 
 //
@@ -14204,27 +15613,34 @@ func (op *VmPoolService) AllocateVm(
 }
 
 type VmPoolServiceGetRequest struct {
+	vmPool *VmPoolService
 	header map[string]string
 	query  map[string]string
 	filter *bool
 }
 
-func (p *VmPoolServiceGetRequest) Header(key, value string) {
+func (p *VmPoolServiceGetRequest) Header(key, value string) *VmPoolServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolServiceGetRequest) Query(key, value string) {
+func (p *VmPoolServiceGetRequest) Query(key, value string) *VmPoolServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolServiceGetRequest) Filter(filter bool) {
+func (p *VmPoolServiceGetRequest) Filter(filter bool) *VmPoolServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *VmPoolServiceGetRequest) send() *VmPoolServiceGetResponse {
+
 }
 
 //
@@ -14283,27 +15699,34 @@ func (op *VmPoolService) Get(
 }
 
 type VmPoolServiceRemoveRequest struct {
+	vmPool *VmPoolService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmPoolServiceRemoveRequest) Header(key, value string) {
+func (p *VmPoolServiceRemoveRequest) Header(key, value string) *VmPoolServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolServiceRemoveRequest) Query(key, value string) {
+func (p *VmPoolServiceRemoveRequest) Query(key, value string) *VmPoolServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolServiceRemoveRequest) Async(async bool) {
+func (p *VmPoolServiceRemoveRequest) Async(async bool) *VmPoolServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmPoolServiceRemoveRequest) send() *VmPoolServiceRemoveResponse {
+
 }
 
 //
@@ -14335,31 +15758,39 @@ func (op *VmPoolService) Remove(
 }
 
 type VmPoolServiceUpdateRequest struct {
+	vmPool *VmPoolService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	pool   *VmPool
 }
 
-func (p *VmPoolServiceUpdateRequest) Header(key, value string) {
+func (p *VmPoolServiceUpdateRequest) Header(key, value string) *VmPoolServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolServiceUpdateRequest) Query(key, value string) {
+func (p *VmPoolServiceUpdateRequest) Query(key, value string) *VmPoolServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolServiceUpdateRequest) Async(async bool) {
+func (p *VmPoolServiceUpdateRequest) Async(async bool) *VmPoolServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmPoolServiceUpdateRequest) Pool(pool *VmPool) {
+func (p *VmPoolServiceUpdateRequest) Pool(pool *VmPool) *VmPoolServiceUpdateRequest {
 	p.pool = pool
+	return p
+}
+func (p *VmPoolServiceUpdateRequest) send() *VmPoolServiceUpdateResponse {
+
 }
 
 //
@@ -14452,27 +15883,34 @@ func NewQuotasService(connection *Connection, path string) *QuotasService {
 }
 
 type QuotasServiceAddRequest struct {
+	quotas *QuotasService
 	header map[string]string
 	query  map[string]string
 	quota  *Quota
 }
 
-func (p *QuotasServiceAddRequest) Header(key, value string) {
+func (p *QuotasServiceAddRequest) Header(key, value string) *QuotasServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotasServiceAddRequest) Query(key, value string) {
+func (p *QuotasServiceAddRequest) Query(key, value string) *QuotasServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotasServiceAddRequest) Quota(quota *Quota) {
+func (p *QuotasServiceAddRequest) Quota(quota *Quota) *QuotasServiceAddRequest {
 	p.quota = quota
+	return p
+}
+func (p *QuotasServiceAddRequest) send() *QuotasServiceAddResponse {
+
 }
 
 //
@@ -14513,27 +15951,34 @@ func (op *QuotasService) Add(
 }
 
 type QuotasServiceListRequest struct {
+	quotas *QuotasService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *QuotasServiceListRequest) Header(key, value string) {
+func (p *QuotasServiceListRequest) Header(key, value string) *QuotasServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotasServiceListRequest) Query(key, value string) {
+func (p *QuotasServiceListRequest) Query(key, value string) *QuotasServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotasServiceListRequest) Max(max int64) {
+func (p *QuotasServiceListRequest) Max(max int64) *QuotasServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *QuotasServiceListRequest) send() *QuotasServiceListResponse {
+
 }
 
 //
@@ -14607,22 +16052,29 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 }
 
 type ClusterLevelServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	clusterLevel *ClusterLevelService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *ClusterLevelServiceGetRequest) Header(key, value string) {
+func (p *ClusterLevelServiceGetRequest) Header(key, value string) *ClusterLevelServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterLevelServiceGetRequest) Query(key, value string) {
+func (p *ClusterLevelServiceGetRequest) Query(key, value string) *ClusterLevelServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ClusterLevelServiceGetRequest) send() *ClusterLevelServiceGetResponse {
+
 }
 
 //
@@ -14704,27 +16156,34 @@ func NewStorageDomainContentDiskService(connection *Connection, path string) *St
 }
 
 type StorageDomainContentDiskServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	storageDomainContentDisk *StorageDomainContentDiskService
+	header                   map[string]string
+	query                    map[string]string
+	filter                   *bool
 }
 
-func (p *StorageDomainContentDiskServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainContentDiskServiceGetRequest) Header(key, value string) *StorageDomainContentDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainContentDiskServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainContentDiskServiceGetRequest) Query(key, value string) *StorageDomainContentDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) {
+func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) *StorageDomainContentDiskServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *StorageDomainContentDiskServiceGetRequest) send() *StorageDomainContentDiskServiceGetResponse {
+
 }
 
 //
@@ -14786,31 +16245,39 @@ func NewVmApplicationsService(connection *Connection, path string) *VmApplicatio
 }
 
 type VmApplicationsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	vmApplications *VmApplicationsService
+	header         map[string]string
+	query          map[string]string
+	filter         *bool
+	max            *int64
 }
 
-func (p *VmApplicationsServiceListRequest) Header(key, value string) {
+func (p *VmApplicationsServiceListRequest) Header(key, value string) *VmApplicationsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmApplicationsServiceListRequest) Query(key, value string) {
+func (p *VmApplicationsServiceListRequest) Query(key, value string) *VmApplicationsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmApplicationsServiceListRequest) Filter(filter bool) {
+func (p *VmApplicationsServiceListRequest) Filter(filter bool) *VmApplicationsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *VmApplicationsServiceListRequest) Max(max int64) {
+func (p *VmApplicationsServiceListRequest) Max(max int64) *VmApplicationsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmApplicationsServiceListRequest) send() *VmApplicationsServiceListResponse {
+
 }
 
 //
@@ -14890,6 +16357,7 @@ func NewFilesService(connection *Connection, path string) *FilesService {
 }
 
 type FilesServiceListRequest struct {
+	files         *FilesService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -14897,28 +16365,36 @@ type FilesServiceListRequest struct {
 	search        *string
 }
 
-func (p *FilesServiceListRequest) Header(key, value string) {
+func (p *FilesServiceListRequest) Header(key, value string) *FilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FilesServiceListRequest) Query(key, value string) {
+func (p *FilesServiceListRequest) Query(key, value string) *FilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FilesServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *FilesServiceListRequest) CaseSensitive(caseSensitive bool) *FilesServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *FilesServiceListRequest) Max(max int64) {
+func (p *FilesServiceListRequest) Max(max int64) *FilesServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *FilesServiceListRequest) Search(search string) {
+func (p *FilesServiceListRequest) Search(search string) *FilesServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *FilesServiceListRequest) send() *FilesServiceListResponse {
+
 }
 
 //
@@ -14998,27 +16474,34 @@ func NewAffinityGroupVmService(connection *Connection, path string) *AffinityGro
 }
 
 type AffinityGroupVmServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	affinityGroupVm *AffinityGroupVmService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
-func (p *AffinityGroupVmServiceRemoveRequest) Header(key, value string) {
+func (p *AffinityGroupVmServiceRemoveRequest) Header(key, value string) *AffinityGroupVmServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmServiceRemoveRequest) Query(key, value string) {
+func (p *AffinityGroupVmServiceRemoveRequest) Query(key, value string) *AffinityGroupVmServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupVmServiceRemoveRequest) Async(async bool) {
+func (p *AffinityGroupVmServiceRemoveRequest) Async(async bool) *AffinityGroupVmServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AffinityGroupVmServiceRemoveRequest) send() *AffinityGroupVmServiceRemoveResponse {
+
 }
 
 //
@@ -15076,27 +16559,34 @@ func NewVmCdromService(connection *Connection, path string) *VmCdromService {
 }
 
 type VmCdromServiceGetRequest struct {
+	vmCdrom *VmCdromService
 	header  map[string]string
 	query   map[string]string
 	current *bool
 }
 
-func (p *VmCdromServiceGetRequest) Header(key, value string) {
+func (p *VmCdromServiceGetRequest) Header(key, value string) *VmCdromServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmCdromServiceGetRequest) Query(key, value string) {
+func (p *VmCdromServiceGetRequest) Query(key, value string) *VmCdromServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmCdromServiceGetRequest) Current(current bool) {
+func (p *VmCdromServiceGetRequest) Current(current bool) *VmCdromServiceGetRequest {
 	p.current = &current
+	return p
+}
+func (p *VmCdromServiceGetRequest) send() *VmCdromServiceGetResponse {
+
 }
 
 //
@@ -15149,31 +16639,39 @@ func (op *VmCdromService) Get(
 }
 
 type VmCdromServiceUpdateRequest struct {
+	vmCdrom *VmCdromService
 	header  map[string]string
 	query   map[string]string
 	cdrom   *Cdrom
 	current *bool
 }
 
-func (p *VmCdromServiceUpdateRequest) Header(key, value string) {
+func (p *VmCdromServiceUpdateRequest) Header(key, value string) *VmCdromServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmCdromServiceUpdateRequest) Query(key, value string) {
+func (p *VmCdromServiceUpdateRequest) Query(key, value string) *VmCdromServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmCdromServiceUpdateRequest) Cdrom(cdrom *Cdrom) {
+func (p *VmCdromServiceUpdateRequest) Cdrom(cdrom *Cdrom) *VmCdromServiceUpdateRequest {
 	p.cdrom = cdrom
+	return p
 }
-func (p *VmCdromServiceUpdateRequest) Current(current bool) {
+func (p *VmCdromServiceUpdateRequest) Current(current bool) *VmCdromServiceUpdateRequest {
 	p.current = &current
+	return p
+}
+func (p *VmCdromServiceUpdateRequest) send() *VmCdromServiceUpdateResponse {
+
 }
 
 //
@@ -15275,22 +16773,29 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 }
 
 type QuotaClusterLimitServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	quotaClusterLimit *QuotaClusterLimitService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *QuotaClusterLimitServiceGetRequest) Header(key, value string) {
+func (p *QuotaClusterLimitServiceGetRequest) Header(key, value string) *QuotaClusterLimitServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) {
+func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) *QuotaClusterLimitServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *QuotaClusterLimitServiceGetRequest) send() *QuotaClusterLimitServiceGetResponse {
+
 }
 
 //
@@ -15317,27 +16822,34 @@ func (op *QuotaClusterLimitService) Get(
 }
 
 type QuotaClusterLimitServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	quotaClusterLimit *QuotaClusterLimitService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
-func (p *QuotaClusterLimitServiceRemoveRequest) Header(key, value string) {
+func (p *QuotaClusterLimitServiceRemoveRequest) Header(key, value string) *QuotaClusterLimitServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitServiceRemoveRequest) Query(key, value string) {
+func (p *QuotaClusterLimitServiceRemoveRequest) Query(key, value string) *QuotaClusterLimitServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaClusterLimitServiceRemoveRequest) Async(async bool) {
+func (p *QuotaClusterLimitServiceRemoveRequest) Async(async bool) *QuotaClusterLimitServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *QuotaClusterLimitServiceRemoveRequest) send() *QuotaClusterLimitServiceRemoveResponse {
+
 }
 
 //
@@ -15392,22 +16904,29 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 }
 
 type DiskAttachmentServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	diskAttachment *DiskAttachmentService
+	header         map[string]string
+	query          map[string]string
 }
 
-func (p *DiskAttachmentServiceGetRequest) Header(key, value string) {
+func (p *DiskAttachmentServiceGetRequest) Header(key, value string) *DiskAttachmentServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskAttachmentServiceGetRequest) Query(key, value string) {
+func (p *DiskAttachmentServiceGetRequest) Query(key, value string) *DiskAttachmentServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskAttachmentServiceGetRequest) send() *DiskAttachmentServiceGetResponse {
+
 }
 
 //
@@ -15450,27 +16969,34 @@ func (op *DiskAttachmentService) Get(
 }
 
 type DiskAttachmentServiceRemoveRequest struct {
-	header     map[string]string
-	query      map[string]string
-	detachOnly *bool
+	diskAttachment *DiskAttachmentService
+	header         map[string]string
+	query          map[string]string
+	detachOnly     *bool
 }
 
-func (p *DiskAttachmentServiceRemoveRequest) Header(key, value string) {
+func (p *DiskAttachmentServiceRemoveRequest) Header(key, value string) *DiskAttachmentServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskAttachmentServiceRemoveRequest) Query(key, value string) {
+func (p *DiskAttachmentServiceRemoveRequest) Query(key, value string) *DiskAttachmentServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskAttachmentServiceRemoveRequest) DetachOnly(detachOnly bool) {
+func (p *DiskAttachmentServiceRemoveRequest) DetachOnly(detachOnly bool) *DiskAttachmentServiceRemoveRequest {
 	p.detachOnly = &detachOnly
+	return p
+}
+func (p *DiskAttachmentServiceRemoveRequest) send() *DiskAttachmentServiceRemoveResponse {
+
 }
 
 //
@@ -15506,27 +17032,34 @@ func (op *DiskAttachmentService) Remove(
 }
 
 type DiskAttachmentServiceUpdateRequest struct {
+	diskAttachment *DiskAttachmentService
 	header         map[string]string
 	query          map[string]string
 	diskAttachment *DiskAttachment
 }
 
-func (p *DiskAttachmentServiceUpdateRequest) Header(key, value string) {
+func (p *DiskAttachmentServiceUpdateRequest) Header(key, value string) *DiskAttachmentServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskAttachmentServiceUpdateRequest) Query(key, value string) {
+func (p *DiskAttachmentServiceUpdateRequest) Query(key, value string) *DiskAttachmentServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskAttachmentServiceUpdateRequest) DiskAttachment(diskAttachment *DiskAttachment) {
+func (p *DiskAttachmentServiceUpdateRequest) DiskAttachment(diskAttachment *DiskAttachment) *DiskAttachmentServiceUpdateRequest {
 	p.diskAttachment = diskAttachment
+	return p
+}
+func (p *DiskAttachmentServiceUpdateRequest) send() *DiskAttachmentServiceUpdateResponse {
+
 }
 
 //
@@ -15597,22 +17130,29 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 }
 
 type BookmarkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	bookmark *BookmarkService
+	header   map[string]string
+	query    map[string]string
 }
 
-func (p *BookmarkServiceGetRequest) Header(key, value string) {
+func (p *BookmarkServiceGetRequest) Header(key, value string) *BookmarkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BookmarkServiceGetRequest) Query(key, value string) {
+func (p *BookmarkServiceGetRequest) Query(key, value string) *BookmarkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *BookmarkServiceGetRequest) send() *BookmarkServiceGetResponse {
+
 }
 
 //
@@ -15652,27 +17192,34 @@ func (op *BookmarkService) Get(
 }
 
 type BookmarkServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	bookmark *BookmarkService
+	header   map[string]string
+	query    map[string]string
+	async    *bool
 }
 
-func (p *BookmarkServiceRemoveRequest) Header(key, value string) {
+func (p *BookmarkServiceRemoveRequest) Header(key, value string) *BookmarkServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BookmarkServiceRemoveRequest) Query(key, value string) {
+func (p *BookmarkServiceRemoveRequest) Query(key, value string) *BookmarkServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BookmarkServiceRemoveRequest) Async(async bool) {
+func (p *BookmarkServiceRemoveRequest) Async(async bool) *BookmarkServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *BookmarkServiceRemoveRequest) send() *BookmarkServiceRemoveResponse {
+
 }
 
 //
@@ -15705,31 +17252,39 @@ func (op *BookmarkService) Remove(
 }
 
 type BookmarkServiceUpdateRequest struct {
+	bookmark *BookmarkService
 	header   map[string]string
 	query    map[string]string
 	async    *bool
 	bookmark *Bookmark
 }
 
-func (p *BookmarkServiceUpdateRequest) Header(key, value string) {
+func (p *BookmarkServiceUpdateRequest) Header(key, value string) *BookmarkServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BookmarkServiceUpdateRequest) Query(key, value string) {
+func (p *BookmarkServiceUpdateRequest) Query(key, value string) *BookmarkServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BookmarkServiceUpdateRequest) Async(async bool) {
+func (p *BookmarkServiceUpdateRequest) Async(async bool) *BookmarkServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *BookmarkServiceUpdateRequest) Bookmark(bookmark *Bookmark) {
+func (p *BookmarkServiceUpdateRequest) Bookmark(bookmark *Bookmark) *BookmarkServiceUpdateRequest {
 	p.bookmark = bookmark
+	return p
+}
+func (p *BookmarkServiceUpdateRequest) send() *BookmarkServiceUpdateResponse {
+
 }
 
 //
@@ -15805,22 +17360,29 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 }
 
 type InstanceTypeNicServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	instanceTypeNic *InstanceTypeNicService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *InstanceTypeNicServiceGetRequest) Header(key, value string) {
+func (p *InstanceTypeNicServiceGetRequest) Header(key, value string) *InstanceTypeNicServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) {
+func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) *InstanceTypeNicServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *InstanceTypeNicServiceGetRequest) send() *InstanceTypeNicServiceGetResponse {
+
 }
 
 //
@@ -15848,27 +17410,34 @@ func (op *InstanceTypeNicService) Get(
 }
 
 type InstanceTypeNicServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	instanceTypeNic *InstanceTypeNicService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
-func (p *InstanceTypeNicServiceRemoveRequest) Header(key, value string) {
+func (p *InstanceTypeNicServiceRemoveRequest) Header(key, value string) *InstanceTypeNicServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicServiceRemoveRequest) Query(key, value string) {
+func (p *InstanceTypeNicServiceRemoveRequest) Query(key, value string) *InstanceTypeNicServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicServiceRemoveRequest) Async(async bool) {
+func (p *InstanceTypeNicServiceRemoveRequest) Async(async bool) *InstanceTypeNicServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *InstanceTypeNicServiceRemoveRequest) send() *InstanceTypeNicServiceRemoveResponse {
+
 }
 
 //
@@ -15896,31 +17465,39 @@ func (op *InstanceTypeNicService) Remove(
 }
 
 type InstanceTypeNicServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	nic    *Nic
+	instanceTypeNic *InstanceTypeNicService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
+	nic             *Nic
 }
 
-func (p *InstanceTypeNicServiceUpdateRequest) Header(key, value string) {
+func (p *InstanceTypeNicServiceUpdateRequest) Header(key, value string) *InstanceTypeNicServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicServiceUpdateRequest) Query(key, value string) {
+func (p *InstanceTypeNicServiceUpdateRequest) Query(key, value string) *InstanceTypeNicServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicServiceUpdateRequest) Async(async bool) {
+func (p *InstanceTypeNicServiceUpdateRequest) Async(async bool) *InstanceTypeNicServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *InstanceTypeNicServiceUpdateRequest) Nic(nic *Nic) {
+func (p *InstanceTypeNicServiceUpdateRequest) Nic(nic *Nic) *InstanceTypeNicServiceUpdateRequest {
 	p.nic = nic
+	return p
+}
+func (p *InstanceTypeNicServiceUpdateRequest) send() *InstanceTypeNicServiceUpdateResponse {
+
 }
 
 //
@@ -15978,22 +17555,29 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 }
 
 type AssignedDiskProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedDiskProfile *AssignedDiskProfileService
+	header              map[string]string
+	query               map[string]string
 }
 
-func (p *AssignedDiskProfileServiceGetRequest) Header(key, value string) {
+func (p *AssignedDiskProfileServiceGetRequest) Header(key, value string) *AssignedDiskProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) {
+func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) *AssignedDiskProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedDiskProfileServiceGetRequest) send() *AssignedDiskProfileServiceGetResponse {
+
 }
 
 //
@@ -16020,27 +17604,34 @@ func (op *AssignedDiskProfileService) Get(
 }
 
 type AssignedDiskProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	assignedDiskProfile *AssignedDiskProfileService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
-func (p *AssignedDiskProfileServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedDiskProfileServiceRemoveRequest) Header(key, value string) *AssignedDiskProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfileServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedDiskProfileServiceRemoveRequest) Query(key, value string) *AssignedDiskProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfileServiceRemoveRequest) Async(async bool) {
+func (p *AssignedDiskProfileServiceRemoveRequest) Async(async bool) *AssignedDiskProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AssignedDiskProfileServiceRemoveRequest) send() *AssignedDiskProfileServiceRemoveResponse {
+
 }
 
 //
@@ -16094,27 +17685,34 @@ func NewNetworkLabelsService(connection *Connection, path string) *NetworkLabels
 }
 
 type NetworkLabelsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	label  *NetworkLabel
+	networkLabels *NetworkLabelsService
+	header        map[string]string
+	query         map[string]string
+	label         *NetworkLabel
 }
 
-func (p *NetworkLabelsServiceAddRequest) Header(key, value string) {
+func (p *NetworkLabelsServiceAddRequest) Header(key, value string) *NetworkLabelsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkLabelsServiceAddRequest) Query(key, value string) {
+func (p *NetworkLabelsServiceAddRequest) Query(key, value string) *NetworkLabelsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkLabelsServiceAddRequest) Label(label *NetworkLabel) {
+func (p *NetworkLabelsServiceAddRequest) Label(label *NetworkLabel) *NetworkLabelsServiceAddRequest {
 	p.label = label
+	return p
+}
+func (p *NetworkLabelsServiceAddRequest) send() *NetworkLabelsServiceAddResponse {
+
 }
 
 //
@@ -16155,27 +17753,34 @@ func (op *NetworkLabelsService) Add(
 }
 
 type NetworkLabelsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	networkLabels *NetworkLabelsService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *NetworkLabelsServiceListRequest) Header(key, value string) {
+func (p *NetworkLabelsServiceListRequest) Header(key, value string) *NetworkLabelsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkLabelsServiceListRequest) Query(key, value string) {
+func (p *NetworkLabelsServiceListRequest) Query(key, value string) *NetworkLabelsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkLabelsServiceListRequest) Max(max int64) {
+func (p *NetworkLabelsServiceListRequest) Max(max int64) *NetworkLabelsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *NetworkLabelsServiceListRequest) send() *NetworkLabelsServiceListResponse {
+
 }
 
 //
@@ -16246,27 +17851,34 @@ func NewStorageDomainService(connection *Connection, path string) *StorageDomain
 }
 
 type StorageDomainServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	filter        *bool
 }
 
-func (p *StorageDomainServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainServiceGetRequest) Header(key, value string) *StorageDomainServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainServiceGetRequest) Query(key, value string) *StorageDomainServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceGetRequest) Filter(filter bool) {
+func (p *StorageDomainServiceGetRequest) Filter(filter bool) *StorageDomainServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *StorageDomainServiceGetRequest) send() *StorageDomainServiceGetResponse {
+
 }
 
 //
@@ -16300,31 +17912,39 @@ func (op *StorageDomainService) Get(
 }
 
 type StorageDomainServiceIsAttachedRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	host   *Host
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	host          *Host
 }
 
-func (p *StorageDomainServiceIsAttachedRequest) Header(key, value string) {
+func (p *StorageDomainServiceIsAttachedRequest) Header(key, value string) *StorageDomainServiceIsAttachedRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceIsAttachedRequest) Query(key, value string) {
+func (p *StorageDomainServiceIsAttachedRequest) Query(key, value string) *StorageDomainServiceIsAttachedRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceIsAttachedRequest) Async(async bool) {
+func (p *StorageDomainServiceIsAttachedRequest) Async(async bool) *StorageDomainServiceIsAttachedRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainServiceIsAttachedRequest) Host(host *Host) {
+func (p *StorageDomainServiceIsAttachedRequest) Host(host *Host) *StorageDomainServiceIsAttachedRequest {
 	p.host = host
+	return p
+}
+func (p *StorageDomainServiceIsAttachedRequest) send() *StorageDomainServiceIsAttachedResponse {
+
 }
 
 //
@@ -16357,27 +17977,34 @@ func (op *StorageDomainService) IsAttached(
 }
 
 type StorageDomainServiceReduceLunsRequest struct {
-	header       map[string]string
-	query        map[string]string
-	logicalUnits []LogicalUnit
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	logicalUnits  []LogicalUnit
 }
 
-func (p *StorageDomainServiceReduceLunsRequest) Header(key, value string) {
+func (p *StorageDomainServiceReduceLunsRequest) Header(key, value string) *StorageDomainServiceReduceLunsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceReduceLunsRequest) Query(key, value string) {
+func (p *StorageDomainServiceReduceLunsRequest) Query(key, value string) *StorageDomainServiceReduceLunsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceReduceLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) {
+func (p *StorageDomainServiceReduceLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) *StorageDomainServiceReduceLunsRequest {
 	p.logicalUnits = logicalUnits
+	return p
+}
+func (p *StorageDomainServiceReduceLunsRequest) send() *StorageDomainServiceReduceLunsResponse {
+
 }
 
 //
@@ -16421,31 +18048,39 @@ func (op *StorageDomainService) ReduceLuns(
 }
 
 type StorageDomainServiceRefreshLunsRequest struct {
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	logicalUnits []LogicalUnit
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	logicalUnits  []LogicalUnit
 }
 
-func (p *StorageDomainServiceRefreshLunsRequest) Header(key, value string) {
+func (p *StorageDomainServiceRefreshLunsRequest) Header(key, value string) *StorageDomainServiceRefreshLunsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceRefreshLunsRequest) Query(key, value string) {
+func (p *StorageDomainServiceRefreshLunsRequest) Query(key, value string) *StorageDomainServiceRefreshLunsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceRefreshLunsRequest) Async(async bool) {
+func (p *StorageDomainServiceRefreshLunsRequest) Async(async bool) *StorageDomainServiceRefreshLunsRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainServiceRefreshLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) {
+func (p *StorageDomainServiceRefreshLunsRequest) LogicalUnits(logicalUnits []LogicalUnit) *StorageDomainServiceRefreshLunsRequest {
 	p.logicalUnits = logicalUnits
+	return p
+}
+func (p *StorageDomainServiceRefreshLunsRequest) send() *StorageDomainServiceRefreshLunsResponse {
+
 }
 
 //
@@ -16494,39 +18129,49 @@ func (op *StorageDomainService) RefreshLuns(
 }
 
 type StorageDomainServiceRemoveRequest struct {
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	destroy *bool
-	format  *bool
-	host    *string
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	destroy       *bool
+	format        *bool
+	host          *string
 }
 
-func (p *StorageDomainServiceRemoveRequest) Header(key, value string) {
+func (p *StorageDomainServiceRemoveRequest) Header(key, value string) *StorageDomainServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceRemoveRequest) Query(key, value string) {
+func (p *StorageDomainServiceRemoveRequest) Query(key, value string) *StorageDomainServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceRemoveRequest) Async(async bool) {
+func (p *StorageDomainServiceRemoveRequest) Async(async bool) *StorageDomainServiceRemoveRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainServiceRemoveRequest) Destroy(destroy bool) {
+func (p *StorageDomainServiceRemoveRequest) Destroy(destroy bool) *StorageDomainServiceRemoveRequest {
 	p.destroy = &destroy
+	return p
 }
-func (p *StorageDomainServiceRemoveRequest) Format(format bool) {
+func (p *StorageDomainServiceRemoveRequest) Format(format bool) *StorageDomainServiceRemoveRequest {
 	p.format = &format
+	return p
 }
-func (p *StorageDomainServiceRemoveRequest) Host(host string) {
+func (p *StorageDomainServiceRemoveRequest) Host(host string) *StorageDomainServiceRemoveRequest {
 	p.host = &host
+	return p
+}
+func (p *StorageDomainServiceRemoveRequest) send() *StorageDomainServiceRemoveResponse {
+
 }
 
 //
@@ -16588,31 +18233,39 @@ func (op *StorageDomainService) Remove(
 }
 
 type StorageDomainServiceUpdateRequest struct {
+	storageDomain *StorageDomainService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
 	storageDomain *StorageDomain
 }
 
-func (p *StorageDomainServiceUpdateRequest) Header(key, value string) {
+func (p *StorageDomainServiceUpdateRequest) Header(key, value string) *StorageDomainServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceUpdateRequest) Query(key, value string) {
+func (p *StorageDomainServiceUpdateRequest) Query(key, value string) *StorageDomainServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceUpdateRequest) Async(async bool) {
+func (p *StorageDomainServiceUpdateRequest) Async(async bool) *StorageDomainServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainServiceUpdateRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainServiceUpdateRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainServiceUpdateRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *StorageDomainServiceUpdateRequest) send() *StorageDomainServiceUpdateResponse {
+
 }
 
 //
@@ -16661,27 +18314,34 @@ func (op *StorageDomainService) Update(
 }
 
 type StorageDomainServiceUpdateOvfStoreRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	storageDomain *StorageDomainService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *StorageDomainServiceUpdateOvfStoreRequest) Header(key, value string) {
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Header(key, value string) *StorageDomainServiceUpdateOvfStoreRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceUpdateOvfStoreRequest) Query(key, value string) {
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Query(key, value string) *StorageDomainServiceUpdateOvfStoreRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServiceUpdateOvfStoreRequest) Async(async bool) {
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Async(async bool) *StorageDomainServiceUpdateOvfStoreRequest {
 	p.async = &async
+	return p
+}
+func (p *StorageDomainServiceUpdateOvfStoreRequest) send() *StorageDomainServiceUpdateOvfStoreResponse {
+
 }
 
 //
@@ -16859,27 +18519,34 @@ func NewDataCentersService(connection *Connection, path string) *DataCentersServ
 }
 
 type DataCentersServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	dataCenter *DataCenter
+	dataCenters *DataCentersService
+	header      map[string]string
+	query       map[string]string
+	dataCenter  *DataCenter
 }
 
-func (p *DataCentersServiceAddRequest) Header(key, value string) {
+func (p *DataCentersServiceAddRequest) Header(key, value string) *DataCentersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DataCentersServiceAddRequest) Query(key, value string) {
+func (p *DataCentersServiceAddRequest) Query(key, value string) *DataCentersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DataCentersServiceAddRequest) DataCenter(dataCenter *DataCenter) {
+func (p *DataCentersServiceAddRequest) DataCenter(dataCenter *DataCenter) *DataCentersServiceAddRequest {
 	p.dataCenter = dataCenter
+	return p
+}
+func (p *DataCentersServiceAddRequest) send() *DataCentersServiceAddResponse {
+
 }
 
 //
@@ -16927,6 +18594,7 @@ func (op *DataCentersService) Add(
 }
 
 type DataCentersServiceListRequest struct {
+	dataCenters   *DataCentersService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -16935,31 +18603,40 @@ type DataCentersServiceListRequest struct {
 	search        *string
 }
 
-func (p *DataCentersServiceListRequest) Header(key, value string) {
+func (p *DataCentersServiceListRequest) Header(key, value string) *DataCentersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DataCentersServiceListRequest) Query(key, value string) {
+func (p *DataCentersServiceListRequest) Query(key, value string) *DataCentersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DataCentersServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *DataCentersServiceListRequest) CaseSensitive(caseSensitive bool) *DataCentersServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *DataCentersServiceListRequest) Filter(filter bool) {
+func (p *DataCentersServiceListRequest) Filter(filter bool) *DataCentersServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *DataCentersServiceListRequest) Max(max int64) {
+func (p *DataCentersServiceListRequest) Max(max int64) *DataCentersServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *DataCentersServiceListRequest) Search(search string) {
+func (p *DataCentersServiceListRequest) Search(search string) *DataCentersServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *DataCentersServiceListRequest) send() *DataCentersServiceListResponse {
+
 }
 
 //
@@ -17092,27 +18769,34 @@ func NewVmApplicationService(connection *Connection, path string) *VmApplication
 }
 
 type VmApplicationServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	vmApplication *VmApplicationService
+	header        map[string]string
+	query         map[string]string
+	filter        *bool
 }
 
-func (p *VmApplicationServiceGetRequest) Header(key, value string) {
+func (p *VmApplicationServiceGetRequest) Header(key, value string) *VmApplicationServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmApplicationServiceGetRequest) Query(key, value string) {
+func (p *VmApplicationServiceGetRequest) Query(key, value string) *VmApplicationServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmApplicationServiceGetRequest) Filter(filter bool) {
+func (p *VmApplicationServiceGetRequest) Filter(filter bool) *VmApplicationServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *VmApplicationServiceGetRequest) send() *VmApplicationServiceGetResponse {
+
 }
 
 //
@@ -17174,27 +18858,34 @@ func NewQuotaStorageLimitsService(connection *Connection, path string) *QuotaSto
 }
 
 type QuotaStorageLimitsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	limit  *QuotaStorageLimit
+	quotaStorageLimits *QuotaStorageLimitsService
+	header             map[string]string
+	query              map[string]string
+	limit              *QuotaStorageLimit
 }
 
-func (p *QuotaStorageLimitsServiceAddRequest) Header(key, value string) {
+func (p *QuotaStorageLimitsServiceAddRequest) Header(key, value string) *QuotaStorageLimitsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitsServiceAddRequest) Query(key, value string) {
+func (p *QuotaStorageLimitsServiceAddRequest) Query(key, value string) *QuotaStorageLimitsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitsServiceAddRequest) Limit(limit *QuotaStorageLimit) {
+func (p *QuotaStorageLimitsServiceAddRequest) Limit(limit *QuotaStorageLimit) *QuotaStorageLimitsServiceAddRequest {
 	p.limit = limit
+	return p
+}
+func (p *QuotaStorageLimitsServiceAddRequest) send() *QuotaStorageLimitsServiceAddResponse {
+
 }
 
 //
@@ -17222,27 +18913,34 @@ func (op *QuotaStorageLimitsService) Add(
 }
 
 type QuotaStorageLimitsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	quotaStorageLimits *QuotaStorageLimitsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
-func (p *QuotaStorageLimitsServiceListRequest) Header(key, value string) {
+func (p *QuotaStorageLimitsServiceListRequest) Header(key, value string) *QuotaStorageLimitsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitsServiceListRequest) Query(key, value string) {
+func (p *QuotaStorageLimitsServiceListRequest) Query(key, value string) *QuotaStorageLimitsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) {
+func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) *QuotaStorageLimitsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *QuotaStorageLimitsServiceListRequest) send() *QuotaStorageLimitsServiceListResponse {
+
 }
 
 //
@@ -17313,22 +19011,29 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 }
 
 type TemplateNicServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateNic *TemplateNicService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *TemplateNicServiceGetRequest) Header(key, value string) {
+func (p *TemplateNicServiceGetRequest) Header(key, value string) *TemplateNicServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateNicServiceGetRequest) Query(key, value string) {
+func (p *TemplateNicServiceGetRequest) Query(key, value string) *TemplateNicServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateNicServiceGetRequest) send() *TemplateNicServiceGetResponse {
+
 }
 
 //
@@ -17355,27 +19060,34 @@ func (op *TemplateNicService) Get(
 }
 
 type TemplateNicServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	templateNic *TemplateNicService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *TemplateNicServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateNicServiceRemoveRequest) Header(key, value string) *TemplateNicServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateNicServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateNicServiceRemoveRequest) Query(key, value string) *TemplateNicServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateNicServiceRemoveRequest) Async(async bool) {
+func (p *TemplateNicServiceRemoveRequest) Async(async bool) *TemplateNicServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TemplateNicServiceRemoveRequest) send() *TemplateNicServiceRemoveResponse {
+
 }
 
 //
@@ -17402,31 +19114,39 @@ func (op *TemplateNicService) Remove(
 }
 
 type TemplateNicServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	nic    *Nic
+	templateNic *TemplateNicService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	nic         *Nic
 }
 
-func (p *TemplateNicServiceUpdateRequest) Header(key, value string) {
+func (p *TemplateNicServiceUpdateRequest) Header(key, value string) *TemplateNicServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateNicServiceUpdateRequest) Query(key, value string) {
+func (p *TemplateNicServiceUpdateRequest) Query(key, value string) *TemplateNicServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateNicServiceUpdateRequest) Async(async bool) {
+func (p *TemplateNicServiceUpdateRequest) Async(async bool) *TemplateNicServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *TemplateNicServiceUpdateRequest) Nic(nic *Nic) {
+func (p *TemplateNicServiceUpdateRequest) Nic(nic *Nic) *TemplateNicServiceUpdateRequest {
 	p.nic = nic
+	return p
+}
+func (p *TemplateNicServiceUpdateRequest) send() *TemplateNicServiceUpdateResponse {
+
 }
 
 //
@@ -17488,27 +19208,34 @@ func NewVmCdromsService(connection *Connection, path string) *VmCdromsService {
 }
 
 type VmCdromsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmCdroms *VmCdromsService
+	header   map[string]string
+	query    map[string]string
+	max      *int64
 }
 
-func (p *VmCdromsServiceListRequest) Header(key, value string) {
+func (p *VmCdromsServiceListRequest) Header(key, value string) *VmCdromsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmCdromsServiceListRequest) Query(key, value string) {
+func (p *VmCdromsServiceListRequest) Query(key, value string) *VmCdromsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmCdromsServiceListRequest) Max(max int64) {
+func (p *VmCdromsServiceListRequest) Max(max int64) *VmCdromsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmCdromsServiceListRequest) send() *VmCdromsServiceListResponse {
+
 }
 
 //
@@ -17582,27 +19309,34 @@ func NewVmSessionsService(connection *Connection, path string) *VmSessionsServic
 }
 
 type VmSessionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmSessions *VmSessionsService
+	header     map[string]string
+	query      map[string]string
+	max        *int64
 }
 
-func (p *VmSessionsServiceListRequest) Header(key, value string) {
+func (p *VmSessionsServiceListRequest) Header(key, value string) *VmSessionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmSessionsServiceListRequest) Query(key, value string) {
+func (p *VmSessionsServiceListRequest) Query(key, value string) *VmSessionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmSessionsServiceListRequest) Max(max int64) {
+func (p *VmSessionsServiceListRequest) Max(max int64) *VmSessionsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmSessionsServiceListRequest) send() *VmSessionsServiceListResponse {
+
 }
 
 //
@@ -17695,27 +19429,34 @@ func NewVmDiskService(connection *Connection, path string) *VmDiskService {
 }
 
 type VmDiskServiceActivateRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmDiskServiceActivateRequest) Header(key, value string) {
+func (p *VmDiskServiceActivateRequest) Header(key, value string) *VmDiskServiceActivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceActivateRequest) Query(key, value string) {
+func (p *VmDiskServiceActivateRequest) Query(key, value string) *VmDiskServiceActivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceActivateRequest) Async(async bool) {
+func (p *VmDiskServiceActivateRequest) Async(async bool) *VmDiskServiceActivateRequest {
 	p.async = &async
+	return p
+}
+func (p *VmDiskServiceActivateRequest) send() *VmDiskServiceActivateResponse {
+
 }
 
 //
@@ -17741,27 +19482,34 @@ func (op *VmDiskService) Activate(
 }
 
 type VmDiskServiceDeactivateRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmDiskServiceDeactivateRequest) Header(key, value string) {
+func (p *VmDiskServiceDeactivateRequest) Header(key, value string) *VmDiskServiceDeactivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceDeactivateRequest) Query(key, value string) {
+func (p *VmDiskServiceDeactivateRequest) Query(key, value string) *VmDiskServiceDeactivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceDeactivateRequest) Async(async bool) {
+func (p *VmDiskServiceDeactivateRequest) Async(async bool) *VmDiskServiceDeactivateRequest {
 	p.async = &async
+	return p
+}
+func (p *VmDiskServiceDeactivateRequest) send() *VmDiskServiceDeactivateResponse {
+
 }
 
 //
@@ -17787,31 +19535,39 @@ func (op *VmDiskService) Deactivate(
 }
 
 type VmDiskServiceExportRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	filter *bool
 }
 
-func (p *VmDiskServiceExportRequest) Header(key, value string) {
+func (p *VmDiskServiceExportRequest) Header(key, value string) *VmDiskServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceExportRequest) Query(key, value string) {
+func (p *VmDiskServiceExportRequest) Query(key, value string) *VmDiskServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceExportRequest) Async(async bool) {
+func (p *VmDiskServiceExportRequest) Async(async bool) *VmDiskServiceExportRequest {
 	p.async = &async
+	return p
 }
-func (p *VmDiskServiceExportRequest) Filter(filter bool) {
+func (p *VmDiskServiceExportRequest) Filter(filter bool) *VmDiskServiceExportRequest {
 	p.filter = &filter
+	return p
+}
+func (p *VmDiskServiceExportRequest) send() *VmDiskServiceExportResponse {
+
 }
 
 //
@@ -17840,22 +19596,29 @@ func (op *VmDiskService) Export(
 }
 
 type VmDiskServiceGetRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *VmDiskServiceGetRequest) Header(key, value string) {
+func (p *VmDiskServiceGetRequest) Header(key, value string) *VmDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceGetRequest) Query(key, value string) {
+func (p *VmDiskServiceGetRequest) Query(key, value string) *VmDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmDiskServiceGetRequest) send() *VmDiskServiceGetResponse {
+
 }
 
 //
@@ -17882,31 +19645,39 @@ func (op *VmDiskService) Get(
 }
 
 type VmDiskServiceMoveRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	filter *bool
 }
 
-func (p *VmDiskServiceMoveRequest) Header(key, value string) {
+func (p *VmDiskServiceMoveRequest) Header(key, value string) *VmDiskServiceMoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceMoveRequest) Query(key, value string) {
+func (p *VmDiskServiceMoveRequest) Query(key, value string) *VmDiskServiceMoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceMoveRequest) Async(async bool) {
+func (p *VmDiskServiceMoveRequest) Async(async bool) *VmDiskServiceMoveRequest {
 	p.async = &async
+	return p
 }
-func (p *VmDiskServiceMoveRequest) Filter(filter bool) {
+func (p *VmDiskServiceMoveRequest) Filter(filter bool) *VmDiskServiceMoveRequest {
 	p.filter = &filter
+	return p
+}
+func (p *VmDiskServiceMoveRequest) send() *VmDiskServiceMoveResponse {
+
 }
 
 //
@@ -17935,27 +19706,34 @@ func (op *VmDiskService) Move(
 }
 
 type VmDiskServiceRemoveRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmDiskServiceRemoveRequest) Header(key, value string) {
+func (p *VmDiskServiceRemoveRequest) Header(key, value string) *VmDiskServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceRemoveRequest) Query(key, value string) {
+func (p *VmDiskServiceRemoveRequest) Query(key, value string) *VmDiskServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceRemoveRequest) Async(async bool) {
+func (p *VmDiskServiceRemoveRequest) Async(async bool) *VmDiskServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmDiskServiceRemoveRequest) send() *VmDiskServiceRemoveResponse {
+
 }
 
 //
@@ -17986,31 +19764,39 @@ func (op *VmDiskService) Remove(
 }
 
 type VmDiskServiceUpdateRequest struct {
+	vmDisk *VmDiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	disk   *Disk
 }
 
-func (p *VmDiskServiceUpdateRequest) Header(key, value string) {
+func (p *VmDiskServiceUpdateRequest) Header(key, value string) *VmDiskServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDiskServiceUpdateRequest) Query(key, value string) {
+func (p *VmDiskServiceUpdateRequest) Query(key, value string) *VmDiskServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDiskServiceUpdateRequest) Async(async bool) {
+func (p *VmDiskServiceUpdateRequest) Async(async bool) *VmDiskServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmDiskServiceUpdateRequest) Disk(disk *Disk) {
+func (p *VmDiskServiceUpdateRequest) Disk(disk *Disk) *VmDiskServiceUpdateRequest {
 	p.disk = disk
+	return p
+}
+func (p *VmDiskServiceUpdateRequest) send() *VmDiskServiceUpdateResponse {
+
 }
 
 //
@@ -18091,22 +19877,29 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 }
 
 type StorageServerConnectionServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageServerConnection *StorageServerConnectionService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *StorageServerConnectionServiceGetRequest) Header(key, value string) {
+func (p *StorageServerConnectionServiceGetRequest) Header(key, value string) *StorageServerConnectionServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) {
+func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) *StorageServerConnectionServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageServerConnectionServiceGetRequest) send() *StorageServerConnectionServiceGetResponse {
+
 }
 
 //
@@ -18133,31 +19926,39 @@ func (op *StorageServerConnectionService) Get(
 }
 
 type StorageServerConnectionServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	host   *string
+	storageServerConnection *StorageServerConnectionService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	host                    *string
 }
 
-func (p *StorageServerConnectionServiceRemoveRequest) Header(key, value string) {
+func (p *StorageServerConnectionServiceRemoveRequest) Header(key, value string) *StorageServerConnectionServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionServiceRemoveRequest) Query(key, value string) {
+func (p *StorageServerConnectionServiceRemoveRequest) Query(key, value string) *StorageServerConnectionServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionServiceRemoveRequest) Async(async bool) {
+func (p *StorageServerConnectionServiceRemoveRequest) Async(async bool) *StorageServerConnectionServiceRemoveRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageServerConnectionServiceRemoveRequest) Host(host string) {
+func (p *StorageServerConnectionServiceRemoveRequest) Host(host string) *StorageServerConnectionServiceRemoveRequest {
 	p.host = &host
+	return p
+}
+func (p *StorageServerConnectionServiceRemoveRequest) send() *StorageServerConnectionServiceRemoveResponse {
+
 }
 
 //
@@ -18197,35 +19998,44 @@ func (op *StorageServerConnectionService) Remove(
 }
 
 type StorageServerConnectionServiceUpdateRequest struct {
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	connection *StorageConnection
-	force      *bool
+	storageServerConnection *StorageServerConnectionService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	connection              *StorageConnection
+	force                   *bool
 }
 
-func (p *StorageServerConnectionServiceUpdateRequest) Header(key, value string) {
+func (p *StorageServerConnectionServiceUpdateRequest) Header(key, value string) *StorageServerConnectionServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionServiceUpdateRequest) Query(key, value string) {
+func (p *StorageServerConnectionServiceUpdateRequest) Query(key, value string) *StorageServerConnectionServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionServiceUpdateRequest) Async(async bool) {
+func (p *StorageServerConnectionServiceUpdateRequest) Async(async bool) *StorageServerConnectionServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageServerConnectionServiceUpdateRequest) Connection(connection *StorageConnection) {
+func (p *StorageServerConnectionServiceUpdateRequest) Connection(connection *StorageConnection) *StorageServerConnectionServiceUpdateRequest {
 	p.connection = connection
+	return p
 }
-func (p *StorageServerConnectionServiceUpdateRequest) Force(force bool) {
+func (p *StorageServerConnectionServiceUpdateRequest) Force(force bool) *StorageServerConnectionServiceUpdateRequest {
 	p.force = &force
+	return p
+}
+func (p *StorageServerConnectionServiceUpdateRequest) send() *StorageServerConnectionServiceUpdateResponse {
+
 }
 
 //
@@ -18301,27 +20111,34 @@ func NewHostService(connection *Connection, path string) *HostService {
 }
 
 type HostServiceActivateRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceActivateRequest) Header(key, value string) {
+func (p *HostServiceActivateRequest) Header(key, value string) *HostServiceActivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceActivateRequest) Query(key, value string) {
+func (p *HostServiceActivateRequest) Query(key, value string) *HostServiceActivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceActivateRequest) Async(async bool) {
+func (p *HostServiceActivateRequest) Async(async bool) *HostServiceActivateRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceActivateRequest) send() *HostServiceActivateResponse {
+
 }
 
 //
@@ -18348,31 +20165,39 @@ func (op *HostService) Activate(
 }
 
 type HostServiceApproveRequest struct {
+	host    *HostService
 	header  map[string]string
 	query   map[string]string
 	async   *bool
 	cluster *Cluster
 }
 
-func (p *HostServiceApproveRequest) Header(key, value string) {
+func (p *HostServiceApproveRequest) Header(key, value string) *HostServiceApproveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceApproveRequest) Query(key, value string) {
+func (p *HostServiceApproveRequest) Query(key, value string) *HostServiceApproveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceApproveRequest) Async(async bool) {
+func (p *HostServiceApproveRequest) Async(async bool) *HostServiceApproveRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceApproveRequest) Cluster(cluster *Cluster) {
+func (p *HostServiceApproveRequest) Cluster(cluster *Cluster) *HostServiceApproveRequest {
 	p.cluster = cluster
+	return p
+}
+func (p *HostServiceApproveRequest) send() *HostServiceApproveResponse {
+
 }
 
 //
@@ -18402,27 +20227,34 @@ func (op *HostService) Approve(
 }
 
 type HostServiceCommitNetConfigRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceCommitNetConfigRequest) Header(key, value string) {
+func (p *HostServiceCommitNetConfigRequest) Header(key, value string) *HostServiceCommitNetConfigRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceCommitNetConfigRequest) Query(key, value string) {
+func (p *HostServiceCommitNetConfigRequest) Query(key, value string) *HostServiceCommitNetConfigRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceCommitNetConfigRequest) Async(async bool) {
+func (p *HostServiceCommitNetConfigRequest) Async(async bool) *HostServiceCommitNetConfigRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceCommitNetConfigRequest) send() *HostServiceCommitNetConfigResponse {
+
 }
 
 //
@@ -18464,6 +20296,7 @@ func (op *HostService) CommitNetConfig(
 }
 
 type HostServiceDeactivateRequest struct {
+	host               *HostService
 	header             map[string]string
 	query              map[string]string
 	async              *bool
@@ -18471,28 +20304,36 @@ type HostServiceDeactivateRequest struct {
 	stopGlusterService *bool
 }
 
-func (p *HostServiceDeactivateRequest) Header(key, value string) {
+func (p *HostServiceDeactivateRequest) Header(key, value string) *HostServiceDeactivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceDeactivateRequest) Query(key, value string) {
+func (p *HostServiceDeactivateRequest) Query(key, value string) *HostServiceDeactivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceDeactivateRequest) Async(async bool) {
+func (p *HostServiceDeactivateRequest) Async(async bool) *HostServiceDeactivateRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceDeactivateRequest) Reason(reason string) {
+func (p *HostServiceDeactivateRequest) Reason(reason string) *HostServiceDeactivateRequest {
 	p.reason = &reason
+	return p
 }
-func (p *HostServiceDeactivateRequest) StopGlusterService(stopGlusterService bool) {
+func (p *HostServiceDeactivateRequest) StopGlusterService(stopGlusterService bool) *HostServiceDeactivateRequest {
 	p.stopGlusterService = &stopGlusterService
+	return p
+}
+func (p *HostServiceDeactivateRequest) send() *HostServiceDeactivateResponse {
+
 }
 
 //
@@ -18525,27 +20366,34 @@ func (op *HostService) Deactivate(
 }
 
 type HostServiceEnrollCertificateRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceEnrollCertificateRequest) Header(key, value string) {
+func (p *HostServiceEnrollCertificateRequest) Header(key, value string) *HostServiceEnrollCertificateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceEnrollCertificateRequest) Query(key, value string) {
+func (p *HostServiceEnrollCertificateRequest) Query(key, value string) *HostServiceEnrollCertificateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceEnrollCertificateRequest) Async(async bool) {
+func (p *HostServiceEnrollCertificateRequest) Async(async bool) *HostServiceEnrollCertificateRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceEnrollCertificateRequest) send() *HostServiceEnrollCertificateResponse {
+
 }
 
 //
@@ -18572,31 +20420,39 @@ func (op *HostService) EnrollCertificate(
 }
 
 type HostServiceFenceRequest struct {
+	host      *HostService
 	header    map[string]string
 	query     map[string]string
 	async     *bool
 	fenceType *string
 }
 
-func (p *HostServiceFenceRequest) Header(key, value string) {
+func (p *HostServiceFenceRequest) Header(key, value string) *HostServiceFenceRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceFenceRequest) Query(key, value string) {
+func (p *HostServiceFenceRequest) Query(key, value string) *HostServiceFenceRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceFenceRequest) Async(async bool) {
+func (p *HostServiceFenceRequest) Async(async bool) *HostServiceFenceRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceFenceRequest) FenceType(fenceType string) {
+func (p *HostServiceFenceRequest) FenceType(fenceType string) *HostServiceFenceRequest {
 	p.fenceType = &fenceType
+	return p
+}
+func (p *HostServiceFenceRequest) send() *HostServiceFenceResponse {
+
 }
 
 //
@@ -18654,27 +20510,34 @@ func (op *HostService) Fence(
 }
 
 type HostServiceForceSelectSpmRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceForceSelectSpmRequest) Header(key, value string) {
+func (p *HostServiceForceSelectSpmRequest) Header(key, value string) *HostServiceForceSelectSpmRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceForceSelectSpmRequest) Query(key, value string) {
+func (p *HostServiceForceSelectSpmRequest) Query(key, value string) *HostServiceForceSelectSpmRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceForceSelectSpmRequest) Async(async bool) {
+func (p *HostServiceForceSelectSpmRequest) Async(async bool) *HostServiceForceSelectSpmRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceForceSelectSpmRequest) send() *HostServiceForceSelectSpmResponse {
+
 }
 
 //
@@ -18710,27 +20573,34 @@ func (op *HostService) ForceSelectSpm(
 }
 
 type HostServiceGetRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	filter *bool
 }
 
-func (p *HostServiceGetRequest) Header(key, value string) {
+func (p *HostServiceGetRequest) Header(key, value string) *HostServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceGetRequest) Query(key, value string) {
+func (p *HostServiceGetRequest) Query(key, value string) *HostServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceGetRequest) Filter(filter bool) {
+func (p *HostServiceGetRequest) Filter(filter bool) *HostServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *HostServiceGetRequest) send() *HostServiceGetResponse {
+
 }
 
 //
@@ -18765,6 +20635,7 @@ func (op *HostService) Get(
 }
 
 type HostServiceInstallRequest struct {
+	host                 *HostService
 	header               map[string]string
 	query                map[string]string
 	async                *bool
@@ -18776,40 +20647,52 @@ type HostServiceInstallRequest struct {
 	undeployHostedEngine *bool
 }
 
-func (p *HostServiceInstallRequest) Header(key, value string) {
+func (p *HostServiceInstallRequest) Header(key, value string) *HostServiceInstallRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceInstallRequest) Query(key, value string) {
+func (p *HostServiceInstallRequest) Query(key, value string) *HostServiceInstallRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceInstallRequest) Async(async bool) {
+func (p *HostServiceInstallRequest) Async(async bool) *HostServiceInstallRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceInstallRequest) DeployHostedEngine(deployHostedEngine bool) {
+func (p *HostServiceInstallRequest) DeployHostedEngine(deployHostedEngine bool) *HostServiceInstallRequest {
 	p.deployHostedEngine = &deployHostedEngine
+	return p
 }
-func (p *HostServiceInstallRequest) Host(host *Host) {
+func (p *HostServiceInstallRequest) Host(host *Host) *HostServiceInstallRequest {
 	p.host = host
+	return p
 }
-func (p *HostServiceInstallRequest) Image(image string) {
+func (p *HostServiceInstallRequest) Image(image string) *HostServiceInstallRequest {
 	p.image = &image
+	return p
 }
-func (p *HostServiceInstallRequest) RootPassword(rootPassword string) {
+func (p *HostServiceInstallRequest) RootPassword(rootPassword string) *HostServiceInstallRequest {
 	p.rootPassword = &rootPassword
+	return p
 }
-func (p *HostServiceInstallRequest) Ssh(ssh *Ssh) {
+func (p *HostServiceInstallRequest) Ssh(ssh *Ssh) *HostServiceInstallRequest {
 	p.ssh = ssh
+	return p
 }
-func (p *HostServiceInstallRequest) UndeployHostedEngine(undeployHostedEngine bool) {
+func (p *HostServiceInstallRequest) UndeployHostedEngine(undeployHostedEngine bool) *HostServiceInstallRequest {
 	p.undeployHostedEngine = &undeployHostedEngine
+	return p
+}
+func (p *HostServiceInstallRequest) send() *HostServiceInstallResponse {
+
 }
 
 //
@@ -18899,31 +20782,39 @@ func (op *HostService) Install(
 }
 
 type HostServiceIscsiDiscoverRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	iscsi  *IscsiDetails
 }
 
-func (p *HostServiceIscsiDiscoverRequest) Header(key, value string) {
+func (p *HostServiceIscsiDiscoverRequest) Header(key, value string) *HostServiceIscsiDiscoverRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceIscsiDiscoverRequest) Query(key, value string) {
+func (p *HostServiceIscsiDiscoverRequest) Query(key, value string) *HostServiceIscsiDiscoverRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceIscsiDiscoverRequest) Async(async bool) {
+func (p *HostServiceIscsiDiscoverRequest) Async(async bool) *HostServiceIscsiDiscoverRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceIscsiDiscoverRequest) Iscsi(iscsi *IscsiDetails) {
+func (p *HostServiceIscsiDiscoverRequest) Iscsi(iscsi *IscsiDetails) *HostServiceIscsiDiscoverRequest {
 	p.iscsi = iscsi
+	return p
+}
+func (p *HostServiceIscsiDiscoverRequest) send() *HostServiceIscsiDiscoverResponse {
+
 }
 
 //
@@ -18958,31 +20849,39 @@ func (op *HostService) IscsiDiscover(
 }
 
 type HostServiceIscsiLoginRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	iscsi  *IscsiDetails
 }
 
-func (p *HostServiceIscsiLoginRequest) Header(key, value string) {
+func (p *HostServiceIscsiLoginRequest) Header(key, value string) *HostServiceIscsiLoginRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceIscsiLoginRequest) Query(key, value string) {
+func (p *HostServiceIscsiLoginRequest) Query(key, value string) *HostServiceIscsiLoginRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceIscsiLoginRequest) Async(async bool) {
+func (p *HostServiceIscsiLoginRequest) Async(async bool) *HostServiceIscsiLoginRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceIscsiLoginRequest) Iscsi(iscsi *IscsiDetails) {
+func (p *HostServiceIscsiLoginRequest) Iscsi(iscsi *IscsiDetails) *HostServiceIscsiLoginRequest {
 	p.iscsi = iscsi
+	return p
+}
+func (p *HostServiceIscsiLoginRequest) send() *HostServiceIscsiLoginResponse {
+
 }
 
 //
@@ -19012,27 +20911,34 @@ func (op *HostService) IscsiLogin(
 }
 
 type HostServiceRefreshRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceRefreshRequest) Header(key, value string) {
+func (p *HostServiceRefreshRequest) Header(key, value string) *HostServiceRefreshRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceRefreshRequest) Query(key, value string) {
+func (p *HostServiceRefreshRequest) Query(key, value string) *HostServiceRefreshRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceRefreshRequest) Async(async bool) {
+func (p *HostServiceRefreshRequest) Async(async bool) *HostServiceRefreshRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceRefreshRequest) send() *HostServiceRefreshResponse {
+
 }
 
 //
@@ -19059,27 +20965,34 @@ func (op *HostService) Refresh(
 }
 
 type HostServiceRemoveRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceRemoveRequest) Header(key, value string) {
+func (p *HostServiceRemoveRequest) Header(key, value string) *HostServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceRemoveRequest) Query(key, value string) {
+func (p *HostServiceRemoveRequest) Query(key, value string) *HostServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceRemoveRequest) Async(async bool) {
+func (p *HostServiceRemoveRequest) Async(async bool) *HostServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceRemoveRequest) send() *HostServiceRemoveResponse {
+
 }
 
 //
@@ -19121,6 +21034,7 @@ func (op *HostService) Remove(
 }
 
 type HostServiceSetupNetworksRequest struct {
+	host                           *HostService
 	header                         map[string]string
 	query                          map[string]string
 	async                          *bool
@@ -19135,49 +21049,64 @@ type HostServiceSetupNetworksRequest struct {
 	synchronizedNetworkAttachments []NetworkAttachment
 }
 
-func (p *HostServiceSetupNetworksRequest) Header(key, value string) {
+func (p *HostServiceSetupNetworksRequest) Header(key, value string) *HostServiceSetupNetworksRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceSetupNetworksRequest) Query(key, value string) {
+func (p *HostServiceSetupNetworksRequest) Query(key, value string) *HostServiceSetupNetworksRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceSetupNetworksRequest) Async(async bool) {
+func (p *HostServiceSetupNetworksRequest) Async(async bool) *HostServiceSetupNetworksRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) CheckConnectivity(checkConnectivity bool) {
+func (p *HostServiceSetupNetworksRequest) CheckConnectivity(checkConnectivity bool) *HostServiceSetupNetworksRequest {
 	p.checkConnectivity = &checkConnectivity
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) ConnectivityTimeout(connectivityTimeout int64) {
+func (p *HostServiceSetupNetworksRequest) ConnectivityTimeout(connectivityTimeout int64) *HostServiceSetupNetworksRequest {
 	p.connectivityTimeout = &connectivityTimeout
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) ModifiedBonds(modifiedBonds []HostNic) {
+func (p *HostServiceSetupNetworksRequest) ModifiedBonds(modifiedBonds []HostNic) *HostServiceSetupNetworksRequest {
 	p.modifiedBonds = modifiedBonds
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) ModifiedLabels(modifiedLabels []NetworkLabel) {
+func (p *HostServiceSetupNetworksRequest) ModifiedLabels(modifiedLabels []NetworkLabel) *HostServiceSetupNetworksRequest {
 	p.modifiedLabels = modifiedLabels
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) ModifiedNetworkAttachments(modifiedNetworkAttachments []NetworkAttachment) {
+func (p *HostServiceSetupNetworksRequest) ModifiedNetworkAttachments(modifiedNetworkAttachments []NetworkAttachment) *HostServiceSetupNetworksRequest {
 	p.modifiedNetworkAttachments = modifiedNetworkAttachments
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) RemovedBonds(removedBonds []HostNic) {
+func (p *HostServiceSetupNetworksRequest) RemovedBonds(removedBonds []HostNic) *HostServiceSetupNetworksRequest {
 	p.removedBonds = removedBonds
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) RemovedLabels(removedLabels []NetworkLabel) {
+func (p *HostServiceSetupNetworksRequest) RemovedLabels(removedLabels []NetworkLabel) *HostServiceSetupNetworksRequest {
 	p.removedLabels = removedLabels
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) RemovedNetworkAttachments(removedNetworkAttachments []NetworkAttachment) {
+func (p *HostServiceSetupNetworksRequest) RemovedNetworkAttachments(removedNetworkAttachments []NetworkAttachment) *HostServiceSetupNetworksRequest {
 	p.removedNetworkAttachments = removedNetworkAttachments
+	return p
 }
-func (p *HostServiceSetupNetworksRequest) SynchronizedNetworkAttachments(synchronizedNetworkAttachments []NetworkAttachment) {
+func (p *HostServiceSetupNetworksRequest) SynchronizedNetworkAttachments(synchronizedNetworkAttachments []NetworkAttachment) *HostServiceSetupNetworksRequest {
 	p.synchronizedNetworkAttachments = synchronizedNetworkAttachments
+	return p
+}
+func (p *HostServiceSetupNetworksRequest) send() *HostServiceSetupNetworksResponse {
+
 }
 
 //
@@ -19372,31 +21301,39 @@ func (op *HostService) SetupNetworks(
 }
 
 type HostServiceUnregisteredStorageDomainsDiscoverRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	iscsi  *IscsiDetails
 }
 
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Header(key, value string) {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Header(key, value string) *HostServiceUnregisteredStorageDomainsDiscoverRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Query(key, value string) {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Query(key, value string) *HostServiceUnregisteredStorageDomainsDiscoverRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Async(async bool) {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Async(async bool) *HostServiceUnregisteredStorageDomainsDiscoverRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Iscsi(iscsi *IscsiDetails) {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Iscsi(iscsi *IscsiDetails) *HostServiceUnregisteredStorageDomainsDiscoverRequest {
 	p.iscsi = iscsi
+	return p
+}
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) send() *HostServiceUnregisteredStorageDomainsDiscoverResponse {
+
 }
 
 //
@@ -19431,31 +21368,39 @@ func (op *HostService) UnregisteredStorageDomainsDiscover(
 }
 
 type HostServiceUpdateRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	host   *Host
 }
 
-func (p *HostServiceUpdateRequest) Header(key, value string) {
+func (p *HostServiceUpdateRequest) Header(key, value string) *HostServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceUpdateRequest) Query(key, value string) {
+func (p *HostServiceUpdateRequest) Query(key, value string) *HostServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceUpdateRequest) Async(async bool) {
+func (p *HostServiceUpdateRequest) Async(async bool) *HostServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *HostServiceUpdateRequest) Host(host *Host) {
+func (p *HostServiceUpdateRequest) Host(host *Host) *HostServiceUpdateRequest {
 	p.host = host
+	return p
+}
+func (p *HostServiceUpdateRequest) send() *HostServiceUpdateResponse {
+
 }
 
 //
@@ -19500,27 +21445,34 @@ func (op *HostService) Update(
 }
 
 type HostServiceUpgradeRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *HostServiceUpgradeRequest) Header(key, value string) {
+func (p *HostServiceUpgradeRequest) Header(key, value string) *HostServiceUpgradeRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceUpgradeRequest) Query(key, value string) {
+func (p *HostServiceUpgradeRequest) Query(key, value string) *HostServiceUpgradeRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostServiceUpgradeRequest) Async(async bool) {
+func (p *HostServiceUpgradeRequest) Async(async bool) *HostServiceUpgradeRequest {
 	p.async = &async
+	return p
+}
+func (p *HostServiceUpgradeRequest) send() *HostServiceUpgradeResponse {
+
 }
 
 //
@@ -19547,22 +21499,29 @@ func (op *HostService) Upgrade(
 }
 
 type HostServiceUpgradeCheckRequest struct {
+	host   *HostService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *HostServiceUpgradeCheckRequest) Header(key, value string) {
+func (p *HostServiceUpgradeCheckRequest) Header(key, value string) *HostServiceUpgradeCheckRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostServiceUpgradeCheckRequest) Query(key, value string) {
+func (p *HostServiceUpgradeCheckRequest) Query(key, value string) *HostServiceUpgradeCheckRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *HostServiceUpgradeCheckRequest) send() *HostServiceUpgradeCheckResponse {
+
 }
 
 //
@@ -19800,27 +21759,34 @@ func NewExternalProviderCertificatesService(connection *Connection, path string)
 }
 
 type ExternalProviderCertificatesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalProviderCertificates *ExternalProviderCertificatesService
+	header                       map[string]string
+	query                        map[string]string
+	max                          *int64
 }
 
-func (p *ExternalProviderCertificatesServiceListRequest) Header(key, value string) {
+func (p *ExternalProviderCertificatesServiceListRequest) Header(key, value string) *ExternalProviderCertificatesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalProviderCertificatesServiceListRequest) Query(key, value string) {
+func (p *ExternalProviderCertificatesServiceListRequest) Query(key, value string) *ExternalProviderCertificatesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) {
+func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) *ExternalProviderCertificatesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalProviderCertificatesServiceListRequest) send() *ExternalProviderCertificatesServiceListResponse {
+
 }
 
 //
@@ -19892,22 +21858,29 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 }
 
 type VmHostDeviceServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmHostDevice *VmHostDeviceService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *VmHostDeviceServiceGetRequest) Header(key, value string) {
+func (p *VmHostDeviceServiceGetRequest) Header(key, value string) *VmHostDeviceServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmHostDeviceServiceGetRequest) Query(key, value string) {
+func (p *VmHostDeviceServiceGetRequest) Query(key, value string) *VmHostDeviceServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmHostDeviceServiceGetRequest) send() *VmHostDeviceServiceGetResponse {
+
 }
 
 //
@@ -19960,27 +21933,34 @@ func (op *VmHostDeviceService) Get(
 }
 
 type VmHostDeviceServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmHostDevice *VmHostDeviceService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *VmHostDeviceServiceRemoveRequest) Header(key, value string) {
+func (p *VmHostDeviceServiceRemoveRequest) Header(key, value string) *VmHostDeviceServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmHostDeviceServiceRemoveRequest) Query(key, value string) {
+func (p *VmHostDeviceServiceRemoveRequest) Query(key, value string) *VmHostDeviceServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmHostDeviceServiceRemoveRequest) Async(async bool) {
+func (p *VmHostDeviceServiceRemoveRequest) Async(async bool) *VmHostDeviceServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmHostDeviceServiceRemoveRequest) send() *VmHostDeviceServiceRemoveResponse {
+
 }
 
 //
@@ -20044,22 +22024,29 @@ func NewTagService(connection *Connection, path string) *TagService {
 }
 
 type TagServiceGetRequest struct {
+	tag    *TagService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *TagServiceGetRequest) Header(key, value string) {
+func (p *TagServiceGetRequest) Header(key, value string) *TagServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TagServiceGetRequest) Query(key, value string) {
+func (p *TagServiceGetRequest) Query(key, value string) *TagServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TagServiceGetRequest) send() *TagServiceGetResponse {
+
 }
 
 //
@@ -20098,27 +22085,34 @@ func (op *TagService) Get(
 }
 
 type TagServiceRemoveRequest struct {
+	tag    *TagService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *TagServiceRemoveRequest) Header(key, value string) {
+func (p *TagServiceRemoveRequest) Header(key, value string) *TagServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TagServiceRemoveRequest) Query(key, value string) {
+func (p *TagServiceRemoveRequest) Query(key, value string) *TagServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TagServiceRemoveRequest) Async(async bool) {
+func (p *TagServiceRemoveRequest) Async(async bool) *TagServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TagServiceRemoveRequest) send() *TagServiceRemoveResponse {
+
 }
 
 //
@@ -20150,31 +22144,39 @@ func (op *TagService) Remove(
 }
 
 type TagServiceUpdateRequest struct {
+	tag    *TagService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	tag    *Tag
 }
 
-func (p *TagServiceUpdateRequest) Header(key, value string) {
+func (p *TagServiceUpdateRequest) Header(key, value string) *TagServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TagServiceUpdateRequest) Query(key, value string) {
+func (p *TagServiceUpdateRequest) Query(key, value string) *TagServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TagServiceUpdateRequest) Async(async bool) {
+func (p *TagServiceUpdateRequest) Async(async bool) *TagServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *TagServiceUpdateRequest) Tag(tag *Tag) {
+func (p *TagServiceUpdateRequest) Tag(tag *Tag) *TagServiceUpdateRequest {
 	p.tag = tag
+	return p
+}
+func (p *TagServiceUpdateRequest) send() *TagServiceUpdateResponse {
+
 }
 
 //
@@ -20258,27 +22260,34 @@ func NewHostNumaNodesService(connection *Connection, path string) *HostNumaNodes
 }
 
 type HostNumaNodesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	hostNumaNodes *HostNumaNodesService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *HostNumaNodesServiceListRequest) Header(key, value string) {
+func (p *HostNumaNodesServiceListRequest) Header(key, value string) *HostNumaNodesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostNumaNodesServiceListRequest) Query(key, value string) {
+func (p *HostNumaNodesServiceListRequest) Query(key, value string) *HostNumaNodesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostNumaNodesServiceListRequest) Max(max int64) {
+func (p *HostNumaNodesServiceListRequest) Max(max int64) *HostNumaNodesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *HostNumaNodesServiceListRequest) send() *HostNumaNodesServiceListResponse {
+
 }
 
 //
@@ -20350,27 +22359,34 @@ func NewAssignedTagsService(connection *Connection, path string) *AssignedTagsSe
 }
 
 type AssignedTagsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	tag    *Tag
+	assignedTags *AssignedTagsService
+	header       map[string]string
+	query        map[string]string
+	tag          *Tag
 }
 
-func (p *AssignedTagsServiceAddRequest) Header(key, value string) {
+func (p *AssignedTagsServiceAddRequest) Header(key, value string) *AssignedTagsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedTagsServiceAddRequest) Query(key, value string) {
+func (p *AssignedTagsServiceAddRequest) Query(key, value string) *AssignedTagsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedTagsServiceAddRequest) Tag(tag *Tag) {
+func (p *AssignedTagsServiceAddRequest) Tag(tag *Tag) *AssignedTagsServiceAddRequest {
 	p.tag = tag
+	return p
+}
+func (p *AssignedTagsServiceAddRequest) send() *AssignedTagsServiceAddResponse {
+
 }
 
 //
@@ -20415,27 +22431,34 @@ func (op *AssignedTagsService) Add(
 }
 
 type AssignedTagsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedTags *AssignedTagsService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *AssignedTagsServiceListRequest) Header(key, value string) {
+func (p *AssignedTagsServiceListRequest) Header(key, value string) *AssignedTagsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedTagsServiceListRequest) Query(key, value string) {
+func (p *AssignedTagsServiceListRequest) Query(key, value string) *AssignedTagsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedTagsServiceListRequest) Max(max int64) {
+func (p *AssignedTagsServiceListRequest) Max(max int64) *AssignedTagsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedTagsServiceListRequest) send() *AssignedTagsServiceListResponse {
+
 }
 
 //
@@ -20523,27 +22546,34 @@ func NewJobService(connection *Connection, path string) *JobService {
 }
 
 type JobServiceClearRequest struct {
+	job    *JobService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *JobServiceClearRequest) Header(key, value string) {
+func (p *JobServiceClearRequest) Header(key, value string) *JobServiceClearRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *JobServiceClearRequest) Query(key, value string) {
+func (p *JobServiceClearRequest) Query(key, value string) *JobServiceClearRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *JobServiceClearRequest) Async(async bool) {
+func (p *JobServiceClearRequest) Async(async bool) *JobServiceClearRequest {
 	p.async = &async
+	return p
+}
+func (p *JobServiceClearRequest) send() *JobServiceClearResponse {
+
 }
 
 //
@@ -20580,6 +22610,7 @@ func (op *JobService) Clear(
 }
 
 type JobServiceEndRequest struct {
+	job       *JobService
 	header    map[string]string
 	query     map[string]string
 	async     *bool
@@ -20587,28 +22618,36 @@ type JobServiceEndRequest struct {
 	succeeded *bool
 }
 
-func (p *JobServiceEndRequest) Header(key, value string) {
+func (p *JobServiceEndRequest) Header(key, value string) *JobServiceEndRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *JobServiceEndRequest) Query(key, value string) {
+func (p *JobServiceEndRequest) Query(key, value string) *JobServiceEndRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *JobServiceEndRequest) Async(async bool) {
+func (p *JobServiceEndRequest) Async(async bool) *JobServiceEndRequest {
 	p.async = &async
+	return p
 }
-func (p *JobServiceEndRequest) Force(force bool) {
+func (p *JobServiceEndRequest) Force(force bool) *JobServiceEndRequest {
 	p.force = &force
+	return p
 }
-func (p *JobServiceEndRequest) Succeeded(succeeded bool) {
+func (p *JobServiceEndRequest) Succeeded(succeeded bool) *JobServiceEndRequest {
 	p.succeeded = &succeeded
+	return p
+}
+func (p *JobServiceEndRequest) send() *JobServiceEndResponse {
+
 }
 
 //
@@ -20655,22 +22694,29 @@ func (op *JobService) End(
 }
 
 type JobServiceGetRequest struct {
+	job    *JobService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *JobServiceGetRequest) Header(key, value string) {
+func (p *JobServiceGetRequest) Header(key, value string) *JobServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *JobServiceGetRequest) Query(key, value string) {
+func (p *JobServiceGetRequest) Query(key, value string) *JobServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *JobServiceGetRequest) send() *JobServiceGetResponse {
+
 }
 
 //
@@ -20761,22 +22807,29 @@ func NewFileService(connection *Connection, path string) *FileService {
 }
 
 type FileServiceGetRequest struct {
+	file   *FileService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *FileServiceGetRequest) Header(key, value string) {
+func (p *FileServiceGetRequest) Header(key, value string) *FileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FileServiceGetRequest) Query(key, value string) {
+func (p *FileServiceGetRequest) Query(key, value string) *FileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *FileServiceGetRequest) send() *FileServiceGetResponse {
+
 }
 
 //
@@ -20831,27 +22884,34 @@ func NewStepsService(connection *Connection, path string) *StepsService {
 }
 
 type StepsServiceAddRequest struct {
+	steps  *StepsService
 	header map[string]string
 	query  map[string]string
 	step   *Step
 }
 
-func (p *StepsServiceAddRequest) Header(key, value string) {
+func (p *StepsServiceAddRequest) Header(key, value string) *StepsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StepsServiceAddRequest) Query(key, value string) {
+func (p *StepsServiceAddRequest) Query(key, value string) *StepsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StepsServiceAddRequest) Step(step *Step) {
+func (p *StepsServiceAddRequest) Step(step *Step) *StepsServiceAddRequest {
 	p.step = step
+	return p
+}
+func (p *StepsServiceAddRequest) send() *StepsServiceAddResponse {
+
 }
 
 //
@@ -20918,27 +22978,34 @@ func (op *StepsService) Add(
 }
 
 type StepsServiceListRequest struct {
+	steps  *StepsService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *StepsServiceListRequest) Header(key, value string) {
+func (p *StepsServiceListRequest) Header(key, value string) *StepsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StepsServiceListRequest) Query(key, value string) {
+func (p *StepsServiceListRequest) Query(key, value string) *StepsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StepsServiceListRequest) Max(max int64) {
+func (p *StepsServiceListRequest) Max(max int64) *StepsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StepsServiceListRequest) send() *StepsServiceListResponse {
+
 }
 
 //
@@ -21035,22 +23102,29 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 }
 
 type StorageDomainServerConnectionServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainServerConnection *StorageDomainServerConnectionService
+	header                        map[string]string
+	query                         map[string]string
 }
 
-func (p *StorageDomainServerConnectionServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainServerConnectionServiceGetRequest) Header(key, value string) *StorageDomainServerConnectionServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string) *StorageDomainServerConnectionServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainServerConnectionServiceGetRequest) send() *StorageDomainServerConnectionServiceGetResponse {
+
 }
 
 //
@@ -21077,27 +23151,34 @@ func (op *StorageDomainServerConnectionService) Get(
 }
 
 type StorageDomainServerConnectionServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	storageDomainServerConnection *StorageDomainServerConnectionService
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
 }
 
-func (p *StorageDomainServerConnectionServiceRemoveRequest) Header(key, value string) {
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Header(key, value string) *StorageDomainServerConnectionServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionServiceRemoveRequest) Query(key, value string) {
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Query(key, value string) *StorageDomainServerConnectionServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionServiceRemoveRequest) Async(async bool) {
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Async(async bool) *StorageDomainServerConnectionServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *StorageDomainServerConnectionServiceRemoveRequest) send() *StorageDomainServerConnectionServiceRemoveResponse {
+
 }
 
 //
@@ -21153,27 +23234,34 @@ func NewRolesService(connection *Connection, path string) *RolesService {
 }
 
 type RolesServiceAddRequest struct {
+	roles  *RolesService
 	header map[string]string
 	query  map[string]string
 	role   *Role
 }
 
-func (p *RolesServiceAddRequest) Header(key, value string) {
+func (p *RolesServiceAddRequest) Header(key, value string) *RolesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *RolesServiceAddRequest) Query(key, value string) {
+func (p *RolesServiceAddRequest) Query(key, value string) *RolesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *RolesServiceAddRequest) Role(role *Role) {
+func (p *RolesServiceAddRequest) Role(role *Role) *RolesServiceAddRequest {
 	p.role = role
+	return p
+}
+func (p *RolesServiceAddRequest) send() *RolesServiceAddResponse {
+
 }
 
 //
@@ -21226,27 +23314,34 @@ func (op *RolesService) Add(
 }
 
 type RolesServiceListRequest struct {
+	roles  *RolesService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *RolesServiceListRequest) Header(key, value string) {
+func (p *RolesServiceListRequest) Header(key, value string) *RolesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *RolesServiceListRequest) Query(key, value string) {
+func (p *RolesServiceListRequest) Query(key, value string) *RolesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *RolesServiceListRequest) Max(max int64) {
+func (p *RolesServiceListRequest) Max(max int64) *RolesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *RolesServiceListRequest) send() *RolesServiceListResponse {
+
 }
 
 //
@@ -21482,22 +23577,29 @@ func NewImageTransferService(connection *Connection, path string) *ImageTransfer
 }
 
 type ImageTransferServiceExtendRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfer *ImageTransferService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ImageTransferServiceExtendRequest) Header(key, value string) {
+func (p *ImageTransferServiceExtendRequest) Header(key, value string) *ImageTransferServiceExtendRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransferServiceExtendRequest) Query(key, value string) {
+func (p *ImageTransferServiceExtendRequest) Query(key, value string) *ImageTransferServiceExtendRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransferServiceExtendRequest) send() *ImageTransferServiceExtendResponse {
+
 }
 
 //
@@ -21516,22 +23618,29 @@ func (op *ImageTransferService) Extend(
 }
 
 type ImageTransferServiceFinalizeRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfer *ImageTransferService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ImageTransferServiceFinalizeRequest) Header(key, value string) {
+func (p *ImageTransferServiceFinalizeRequest) Header(key, value string) *ImageTransferServiceFinalizeRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransferServiceFinalizeRequest) Query(key, value string) {
+func (p *ImageTransferServiceFinalizeRequest) Query(key, value string) *ImageTransferServiceFinalizeRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransferServiceFinalizeRequest) send() *ImageTransferServiceFinalizeResponse {
+
 }
 
 //
@@ -21554,22 +23663,29 @@ func (op *ImageTransferService) Finalize(
 }
 
 type ImageTransferServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfer *ImageTransferService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ImageTransferServiceGetRequest) Header(key, value string) {
+func (p *ImageTransferServiceGetRequest) Header(key, value string) *ImageTransferServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransferServiceGetRequest) Query(key, value string) {
+func (p *ImageTransferServiceGetRequest) Query(key, value string) *ImageTransferServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransferServiceGetRequest) send() *ImageTransferServiceGetResponse {
+
 }
 
 //
@@ -21597,22 +23713,29 @@ func (op *ImageTransferService) Get(
 }
 
 type ImageTransferServicePauseRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfer *ImageTransferService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ImageTransferServicePauseRequest) Header(key, value string) {
+func (p *ImageTransferServicePauseRequest) Header(key, value string) *ImageTransferServicePauseRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransferServicePauseRequest) Query(key, value string) {
+func (p *ImageTransferServicePauseRequest) Query(key, value string) *ImageTransferServicePauseRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransferServicePauseRequest) send() *ImageTransferServicePauseResponse {
+
 }
 
 //
@@ -21631,22 +23754,29 @@ func (op *ImageTransferService) Pause(
 }
 
 type ImageTransferServiceResumeRequest struct {
-	header map[string]string
-	query  map[string]string
+	imageTransfer *ImageTransferService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ImageTransferServiceResumeRequest) Header(key, value string) {
+func (p *ImageTransferServiceResumeRequest) Header(key, value string) *ImageTransferServiceResumeRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageTransferServiceResumeRequest) Query(key, value string) {
+func (p *ImageTransferServiceResumeRequest) Query(key, value string) *ImageTransferServiceResumeRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageTransferServiceResumeRequest) send() *ImageTransferServiceResumeResponse {
+
 }
 
 //
@@ -21702,22 +23832,29 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 }
 
 type AssignedVnicProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedVnicProfile *AssignedVnicProfileService
+	header              map[string]string
+	query               map[string]string
 }
 
-func (p *AssignedVnicProfileServiceGetRequest) Header(key, value string) {
+func (p *AssignedVnicProfileServiceGetRequest) Header(key, value string) *AssignedVnicProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) {
+func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) *AssignedVnicProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedVnicProfileServiceGetRequest) send() *AssignedVnicProfileServiceGetResponse {
+
 }
 
 //
@@ -21744,27 +23881,34 @@ func (op *AssignedVnicProfileService) Get(
 }
 
 type AssignedVnicProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	assignedVnicProfile *AssignedVnicProfileService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
-func (p *AssignedVnicProfileServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedVnicProfileServiceRemoveRequest) Header(key, value string) *AssignedVnicProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfileServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedVnicProfileServiceRemoveRequest) Query(key, value string) *AssignedVnicProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedVnicProfileServiceRemoveRequest) Async(async bool) {
+func (p *AssignedVnicProfileServiceRemoveRequest) Async(async bool) *AssignedVnicProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AssignedVnicProfileServiceRemoveRequest) send() *AssignedVnicProfileServiceRemoveResponse {
+
 }
 
 //
@@ -21830,22 +23974,29 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 }
 
 type TemplateWatchdogServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateWatchdog *TemplateWatchdogService
+	header           map[string]string
+	query            map[string]string
 }
 
-func (p *TemplateWatchdogServiceGetRequest) Header(key, value string) {
+func (p *TemplateWatchdogServiceGetRequest) Header(key, value string) *TemplateWatchdogServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) {
+func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) *TemplateWatchdogServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateWatchdogServiceGetRequest) send() *TemplateWatchdogServiceGetResponse {
+
 }
 
 //
@@ -21872,27 +24023,34 @@ func (op *TemplateWatchdogService) Get(
 }
 
 type TemplateWatchdogServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	templateWatchdog *TemplateWatchdogService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
 }
 
-func (p *TemplateWatchdogServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateWatchdogServiceRemoveRequest) Header(key, value string) *TemplateWatchdogServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateWatchdogServiceRemoveRequest) Query(key, value string) *TemplateWatchdogServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogServiceRemoveRequest) Async(async bool) {
+func (p *TemplateWatchdogServiceRemoveRequest) Async(async bool) *TemplateWatchdogServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TemplateWatchdogServiceRemoveRequest) send() *TemplateWatchdogServiceRemoveResponse {
+
 }
 
 //
@@ -21919,31 +24077,39 @@ func (op *TemplateWatchdogService) Remove(
 }
 
 type TemplateWatchdogServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	watchdog *Watchdog
+	templateWatchdog *TemplateWatchdogService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	watchdog         *Watchdog
 }
 
-func (p *TemplateWatchdogServiceUpdateRequest) Header(key, value string) {
+func (p *TemplateWatchdogServiceUpdateRequest) Header(key, value string) *TemplateWatchdogServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogServiceUpdateRequest) Query(key, value string) {
+func (p *TemplateWatchdogServiceUpdateRequest) Query(key, value string) *TemplateWatchdogServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogServiceUpdateRequest) Async(async bool) {
+func (p *TemplateWatchdogServiceUpdateRequest) Async(async bool) *TemplateWatchdogServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *TemplateWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) {
+func (p *TemplateWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *TemplateWatchdogServiceUpdateRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *TemplateWatchdogServiceUpdateRequest) send() *TemplateWatchdogServiceUpdateResponse {
+
 }
 
 //
@@ -22000,22 +24166,29 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 }
 
 type VmSessionServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmSession *VmSessionService
+	header    map[string]string
+	query     map[string]string
 }
 
-func (p *VmSessionServiceGetRequest) Header(key, value string) {
+func (p *VmSessionServiceGetRequest) Header(key, value string) *VmSessionServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmSessionServiceGetRequest) Query(key, value string) {
+func (p *VmSessionServiceGetRequest) Query(key, value string) *VmSessionServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmSessionServiceGetRequest) send() *VmSessionServiceGetResponse {
+
 }
 
 //
@@ -22069,27 +24242,34 @@ func NewVmNicService(connection *Connection, path string) *VmNicService {
 }
 
 type VmNicServiceActivateRequest struct {
+	vmNic  *VmNicService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmNicServiceActivateRequest) Header(key, value string) {
+func (p *VmNicServiceActivateRequest) Header(key, value string) *VmNicServiceActivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicServiceActivateRequest) Query(key, value string) {
+func (p *VmNicServiceActivateRequest) Query(key, value string) *VmNicServiceActivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicServiceActivateRequest) Async(async bool) {
+func (p *VmNicServiceActivateRequest) Async(async bool) *VmNicServiceActivateRequest {
 	p.async = &async
+	return p
+}
+func (p *VmNicServiceActivateRequest) send() *VmNicServiceActivateResponse {
+
 }
 
 //
@@ -22115,27 +24295,34 @@ func (op *VmNicService) Activate(
 }
 
 type VmNicServiceDeactivateRequest struct {
+	vmNic  *VmNicService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmNicServiceDeactivateRequest) Header(key, value string) {
+func (p *VmNicServiceDeactivateRequest) Header(key, value string) *VmNicServiceDeactivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicServiceDeactivateRequest) Query(key, value string) {
+func (p *VmNicServiceDeactivateRequest) Query(key, value string) *VmNicServiceDeactivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicServiceDeactivateRequest) Async(async bool) {
+func (p *VmNicServiceDeactivateRequest) Async(async bool) *VmNicServiceDeactivateRequest {
 	p.async = &async
+	return p
+}
+func (p *VmNicServiceDeactivateRequest) send() *VmNicServiceDeactivateResponse {
+
 }
 
 //
@@ -22161,22 +24348,29 @@ func (op *VmNicService) Deactivate(
 }
 
 type VmNicServiceGetRequest struct {
+	vmNic  *VmNicService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *VmNicServiceGetRequest) Header(key, value string) {
+func (p *VmNicServiceGetRequest) Header(key, value string) *VmNicServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicServiceGetRequest) Query(key, value string) {
+func (p *VmNicServiceGetRequest) Query(key, value string) *VmNicServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmNicServiceGetRequest) send() *VmNicServiceGetResponse {
+
 }
 
 //
@@ -22203,27 +24397,34 @@ func (op *VmNicService) Get(
 }
 
 type VmNicServiceRemoveRequest struct {
+	vmNic  *VmNicService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *VmNicServiceRemoveRequest) Header(key, value string) {
+func (p *VmNicServiceRemoveRequest) Header(key, value string) *VmNicServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicServiceRemoveRequest) Query(key, value string) {
+func (p *VmNicServiceRemoveRequest) Query(key, value string) *VmNicServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicServiceRemoveRequest) Async(async bool) {
+func (p *VmNicServiceRemoveRequest) Async(async bool) *VmNicServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmNicServiceRemoveRequest) send() *VmNicServiceRemoveResponse {
+
 }
 
 //
@@ -22265,31 +24466,39 @@ func (op *VmNicService) Remove(
 }
 
 type VmNicServiceUpdateRequest struct {
+	vmNic  *VmNicService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	nic    *Nic
 }
 
-func (p *VmNicServiceUpdateRequest) Header(key, value string) {
+func (p *VmNicServiceUpdateRequest) Header(key, value string) *VmNicServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicServiceUpdateRequest) Query(key, value string) {
+func (p *VmNicServiceUpdateRequest) Query(key, value string) *VmNicServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicServiceUpdateRequest) Async(async bool) {
+func (p *VmNicServiceUpdateRequest) Async(async bool) *VmNicServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VmNicServiceUpdateRequest) Nic(nic *Nic) {
+func (p *VmNicServiceUpdateRequest) Nic(nic *Nic) *VmNicServiceUpdateRequest {
 	p.nic = nic
+	return p
+}
+func (p *VmNicServiceUpdateRequest) send() *VmNicServiceUpdateResponse {
+
 }
 
 //
@@ -22409,27 +24618,34 @@ func NewSnapshotsService(connection *Connection, path string) *SnapshotsService 
 }
 
 type SnapshotsServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	snapshot *Snapshot
+	snapshots *SnapshotsService
+	header    map[string]string
+	query     map[string]string
+	snapshot  *Snapshot
 }
 
-func (p *SnapshotsServiceAddRequest) Header(key, value string) {
+func (p *SnapshotsServiceAddRequest) Header(key, value string) *SnapshotsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotsServiceAddRequest) Query(key, value string) {
+func (p *SnapshotsServiceAddRequest) Query(key, value string) *SnapshotsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotsServiceAddRequest) Snapshot(snapshot *Snapshot) {
+func (p *SnapshotsServiceAddRequest) Snapshot(snapshot *Snapshot) *SnapshotsServiceAddRequest {
 	p.snapshot = snapshot
+	return p
+}
+func (p *SnapshotsServiceAddRequest) send() *SnapshotsServiceAddResponse {
+
 }
 
 //
@@ -22470,31 +24686,39 @@ func (op *SnapshotsService) Add(
 }
 
 type SnapshotsServiceListRequest struct {
+	snapshots  *SnapshotsService
 	header     map[string]string
 	query      map[string]string
 	allContent *bool
 	max        *int64
 }
 
-func (p *SnapshotsServiceListRequest) Header(key, value string) {
+func (p *SnapshotsServiceListRequest) Header(key, value string) *SnapshotsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotsServiceListRequest) Query(key, value string) {
+func (p *SnapshotsServiceListRequest) Query(key, value string) *SnapshotsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotsServiceListRequest) AllContent(allContent bool) {
+func (p *SnapshotsServiceListRequest) AllContent(allContent bool) *SnapshotsServiceListRequest {
 	p.allContent = &allContent
+	return p
 }
-func (p *SnapshotsServiceListRequest) Max(max int64) {
+func (p *SnapshotsServiceListRequest) Max(max int64) *SnapshotsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SnapshotsServiceListRequest) send() *SnapshotsServiceListResponse {
+
 }
 
 //
@@ -22575,22 +24799,29 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 }
 
 type StorageDomainVmDiskAttachmentsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainVmDiskAttachments *StorageDomainVmDiskAttachmentsService
+	header                         map[string]string
+	query                          map[string]string
 }
 
-func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Header(key, value string) {
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Header(key, value string) *StorageDomainVmDiskAttachmentsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value string) {
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value string) *StorageDomainVmDiskAttachmentsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) send() *StorageDomainVmDiskAttachmentsServiceListResponse {
+
 }
 
 //
@@ -22656,22 +24887,29 @@ func NewImageService(connection *Connection, path string) *ImageService {
 }
 
 type ImageServiceGetRequest struct {
+	image  *ImageService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *ImageServiceGetRequest) Header(key, value string) {
+func (p *ImageServiceGetRequest) Header(key, value string) *ImageServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageServiceGetRequest) Query(key, value string) {
+func (p *ImageServiceGetRequest) Query(key, value string) *ImageServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ImageServiceGetRequest) send() *ImageServiceGetResponse {
+
 }
 
 //
@@ -22698,6 +24936,7 @@ func (op *ImageService) Get(
 }
 
 type ImageServiceImportRequest struct {
+	image            *ImageService
 	header           map[string]string
 	query            map[string]string
 	async            *bool
@@ -22708,37 +24947,48 @@ type ImageServiceImportRequest struct {
 	template         *Template
 }
 
-func (p *ImageServiceImportRequest) Header(key, value string) {
+func (p *ImageServiceImportRequest) Header(key, value string) *ImageServiceImportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImageServiceImportRequest) Query(key, value string) {
+func (p *ImageServiceImportRequest) Query(key, value string) *ImageServiceImportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ImageServiceImportRequest) Async(async bool) {
+func (p *ImageServiceImportRequest) Async(async bool) *ImageServiceImportRequest {
 	p.async = &async
+	return p
 }
-func (p *ImageServiceImportRequest) Cluster(cluster *Cluster) {
+func (p *ImageServiceImportRequest) Cluster(cluster *Cluster) *ImageServiceImportRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *ImageServiceImportRequest) Disk(disk *Disk) {
+func (p *ImageServiceImportRequest) Disk(disk *Disk) *ImageServiceImportRequest {
 	p.disk = disk
+	return p
 }
-func (p *ImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) {
+func (p *ImageServiceImportRequest) ImportAsTemplate(importAsTemplate bool) *ImageServiceImportRequest {
 	p.importAsTemplate = &importAsTemplate
+	return p
 }
-func (p *ImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *ImageServiceImportRequest) StorageDomain(storageDomain *StorageDomain) *ImageServiceImportRequest {
 	p.storageDomain = storageDomain
+	return p
 }
-func (p *ImageServiceImportRequest) Template(template *Template) {
+func (p *ImageServiceImportRequest) Template(template *Template) *ImageServiceImportRequest {
 	p.template = template
+	return p
+}
+func (p *ImageServiceImportRequest) send() *ImageServiceImportResponse {
+
 }
 
 //
@@ -22808,27 +25058,34 @@ func NewInstanceTypeNicsService(connection *Connection, path string) *InstanceTy
 }
 
 type InstanceTypeNicsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	nic    *Nic
+	instanceTypeNics *InstanceTypeNicsService
+	header           map[string]string
+	query            map[string]string
+	nic              *Nic
 }
 
-func (p *InstanceTypeNicsServiceAddRequest) Header(key, value string) {
+func (p *InstanceTypeNicsServiceAddRequest) Header(key, value string) *InstanceTypeNicsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicsServiceAddRequest) Query(key, value string) {
+func (p *InstanceTypeNicsServiceAddRequest) Query(key, value string) *InstanceTypeNicsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicsServiceAddRequest) Nic(nic *Nic) {
+func (p *InstanceTypeNicsServiceAddRequest) Nic(nic *Nic) *InstanceTypeNicsServiceAddRequest {
 	p.nic = nic
+	return p
+}
+func (p *InstanceTypeNicsServiceAddRequest) send() *InstanceTypeNicsServiceAddResponse {
+
 }
 
 //
@@ -22857,31 +25114,39 @@ func (op *InstanceTypeNicsService) Add(
 }
 
 type InstanceTypeNicsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
-	search *string
+	instanceTypeNics *InstanceTypeNicsService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
+	search           *string
 }
 
-func (p *InstanceTypeNicsServiceListRequest) Header(key, value string) {
+func (p *InstanceTypeNicsServiceListRequest) Header(key, value string) *InstanceTypeNicsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicsServiceListRequest) Query(key, value string) {
+func (p *InstanceTypeNicsServiceListRequest) Query(key, value string) *InstanceTypeNicsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeNicsServiceListRequest) Max(max int64) {
+func (p *InstanceTypeNicsServiceListRequest) Max(max int64) *InstanceTypeNicsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *InstanceTypeNicsServiceListRequest) Search(search string) {
+func (p *InstanceTypeNicsServiceListRequest) Search(search string) *InstanceTypeNicsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *InstanceTypeNicsServiceListRequest) send() *InstanceTypeNicsServiceListResponse {
+
 }
 
 //
@@ -22956,27 +25221,34 @@ func NewOperatingSystemsService(connection *Connection, path string) *OperatingS
 }
 
 type OperatingSystemsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	operatingSystems *OperatingSystemsService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
-func (p *OperatingSystemsServiceListRequest) Header(key, value string) {
+func (p *OperatingSystemsServiceListRequest) Header(key, value string) *OperatingSystemsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *OperatingSystemsServiceListRequest) Query(key, value string) {
+func (p *OperatingSystemsServiceListRequest) Query(key, value string) *OperatingSystemsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *OperatingSystemsServiceListRequest) Max(max int64) {
+func (p *OperatingSystemsServiceListRequest) Max(max int64) *OperatingSystemsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *OperatingSystemsServiceListRequest) send() *OperatingSystemsServiceListResponse {
+
 }
 
 //
@@ -23048,22 +25320,29 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 }
 
 type HostNicServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	hostNic *HostNicService
+	header  map[string]string
+	query   map[string]string
 }
 
-func (p *HostNicServiceGetRequest) Header(key, value string) {
+func (p *HostNicServiceGetRequest) Header(key, value string) *HostNicServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostNicServiceGetRequest) Query(key, value string) {
+func (p *HostNicServiceGetRequest) Query(key, value string) *HostNicServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *HostNicServiceGetRequest) send() *HostNicServiceGetResponse {
+
 }
 
 //
@@ -23090,31 +25369,39 @@ func (op *HostNicService) Get(
 }
 
 type HostNicServiceUpdateVirtualFunctionsConfigurationRequest struct {
+	hostNic                       *HostNicService
 	header                        map[string]string
 	query                         map[string]string
 	async                         *bool
 	virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration
 }
 
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Header(key, value string) {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Header(key, value string) *HostNicServiceUpdateVirtualFunctionsConfigurationRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Query(key, value string) {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Query(key, value string) *HostNicServiceUpdateVirtualFunctionsConfigurationRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Async(async bool) {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Async(async bool) *HostNicServiceUpdateVirtualFunctionsConfigurationRequest {
 	p.async = &async
+	return p
 }
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) *HostNicServiceUpdateVirtualFunctionsConfigurationRequest {
 	p.virtualFunctionsConfiguration = virtualFunctionsConfiguration
+	return p
+}
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) send() *HostNicServiceUpdateVirtualFunctionsConfigurationResponse {
+
 }
 
 //
@@ -23240,27 +25527,34 @@ func NewIscsiBondsService(connection *Connection, path string) *IscsiBondsServic
 }
 
 type IscsiBondsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	bond   *IscsiBond
+	iscsiBonds *IscsiBondsService
+	header     map[string]string
+	query      map[string]string
+	bond       *IscsiBond
 }
 
-func (p *IscsiBondsServiceAddRequest) Header(key, value string) {
+func (p *IscsiBondsServiceAddRequest) Header(key, value string) *IscsiBondsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IscsiBondsServiceAddRequest) Query(key, value string) {
+func (p *IscsiBondsServiceAddRequest) Query(key, value string) *IscsiBondsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *IscsiBondsServiceAddRequest) Bond(bond *IscsiBond) {
+func (p *IscsiBondsServiceAddRequest) Bond(bond *IscsiBond) *IscsiBondsServiceAddRequest {
 	p.bond = bond
+	return p
+}
+func (p *IscsiBondsServiceAddRequest) send() *IscsiBondsServiceAddResponse {
+
 }
 
 //
@@ -23309,27 +25603,34 @@ func (op *IscsiBondsService) Add(
 }
 
 type IscsiBondsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	iscsiBonds *IscsiBondsService
+	header     map[string]string
+	query      map[string]string
+	max        *int64
 }
 
-func (p *IscsiBondsServiceListRequest) Header(key, value string) {
+func (p *IscsiBondsServiceListRequest) Header(key, value string) *IscsiBondsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IscsiBondsServiceListRequest) Query(key, value string) {
+func (p *IscsiBondsServiceListRequest) Query(key, value string) *IscsiBondsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *IscsiBondsServiceListRequest) Max(max int64) {
+func (p *IscsiBondsServiceListRequest) Max(max int64) *IscsiBondsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *IscsiBondsServiceListRequest) send() *IscsiBondsServiceListResponse {
+
 }
 
 //
@@ -23401,27 +25702,34 @@ func NewUsersService(connection *Connection, path string) *UsersService {
 }
 
 type UsersServiceAddRequest struct {
+	users  *UsersService
 	header map[string]string
 	query  map[string]string
 	user   *User
 }
 
-func (p *UsersServiceAddRequest) Header(key, value string) {
+func (p *UsersServiceAddRequest) Header(key, value string) *UsersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UsersServiceAddRequest) Query(key, value string) {
+func (p *UsersServiceAddRequest) Query(key, value string) *UsersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *UsersServiceAddRequest) User(user *User) {
+func (p *UsersServiceAddRequest) User(user *User) *UsersServiceAddRequest {
 	p.user = user
+	return p
+}
+func (p *UsersServiceAddRequest) send() *UsersServiceAddResponse {
+
 }
 
 //
@@ -23481,6 +25789,7 @@ func (op *UsersService) Add(
 }
 
 type UsersServiceListRequest struct {
+	users         *UsersService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -23488,28 +25797,36 @@ type UsersServiceListRequest struct {
 	search        *string
 }
 
-func (p *UsersServiceListRequest) Header(key, value string) {
+func (p *UsersServiceListRequest) Header(key, value string) *UsersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UsersServiceListRequest) Query(key, value string) {
+func (p *UsersServiceListRequest) Query(key, value string) *UsersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *UsersServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *UsersServiceListRequest) CaseSensitive(caseSensitive bool) *UsersServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *UsersServiceListRequest) Max(max int64) {
+func (p *UsersServiceListRequest) Max(max int64) *UsersServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *UsersServiceListRequest) Search(search string) {
+func (p *UsersServiceListRequest) Search(search string) *UsersServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *UsersServiceListRequest) send() *UsersServiceListResponse {
+
 }
 
 //
@@ -23613,27 +25930,34 @@ func NewGroupsService(connection *Connection, path string) *GroupsService {
 }
 
 type GroupsServiceAddRequest struct {
+	groups *GroupsService
 	header map[string]string
 	query  map[string]string
 	group  *Group
 }
 
-func (p *GroupsServiceAddRequest) Header(key, value string) {
+func (p *GroupsServiceAddRequest) Header(key, value string) *GroupsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GroupsServiceAddRequest) Query(key, value string) {
+func (p *GroupsServiceAddRequest) Query(key, value string) *GroupsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GroupsServiceAddRequest) Group(group *Group) {
+func (p *GroupsServiceAddRequest) Group(group *Group) *GroupsServiceAddRequest {
 	p.group = group
+	return p
+}
+func (p *GroupsServiceAddRequest) send() *GroupsServiceAddResponse {
+
 }
 
 //
@@ -23678,6 +26002,7 @@ func (op *GroupsService) Add(
 }
 
 type GroupsServiceListRequest struct {
+	groups        *GroupsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -23685,28 +26010,36 @@ type GroupsServiceListRequest struct {
 	search        *string
 }
 
-func (p *GroupsServiceListRequest) Header(key, value string) {
+func (p *GroupsServiceListRequest) Header(key, value string) *GroupsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GroupsServiceListRequest) Query(key, value string) {
+func (p *GroupsServiceListRequest) Query(key, value string) *GroupsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GroupsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *GroupsServiceListRequest) CaseSensitive(caseSensitive bool) *GroupsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *GroupsServiceListRequest) Max(max int64) {
+func (p *GroupsServiceListRequest) Max(max int64) *GroupsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *GroupsServiceListRequest) Search(search string) {
+func (p *GroupsServiceListRequest) Search(search string) *GroupsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *GroupsServiceListRequest) send() *GroupsServiceListResponse {
+
 }
 
 //
@@ -23786,22 +26119,29 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 }
 
 type DomainServiceGetRequest struct {
+	domain *DomainService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *DomainServiceGetRequest) Header(key, value string) {
+func (p *DomainServiceGetRequest) Header(key, value string) *DomainServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainServiceGetRequest) Query(key, value string) {
+func (p *DomainServiceGetRequest) Query(key, value string) *DomainServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DomainServiceGetRequest) send() *DomainServiceGetResponse {
+
 }
 
 //
@@ -23897,27 +26237,34 @@ func NewSshPublicKeysService(connection *Connection, path string) *SshPublicKeys
 }
 
 type SshPublicKeysServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	key    *SshPublicKey
+	sshPublicKeys *SshPublicKeysService
+	header        map[string]string
+	query         map[string]string
+	key           *SshPublicKey
 }
 
-func (p *SshPublicKeysServiceAddRequest) Header(key, value string) {
+func (p *SshPublicKeysServiceAddRequest) Header(key, value string) *SshPublicKeysServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SshPublicKeysServiceAddRequest) Query(key, value string) {
+func (p *SshPublicKeysServiceAddRequest) Query(key, value string) *SshPublicKeysServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SshPublicKeysServiceAddRequest) Key(key *SshPublicKey) {
+func (p *SshPublicKeysServiceAddRequest) Key(key *SshPublicKey) *SshPublicKeysServiceAddRequest {
 	p.key = key
+	return p
+}
+func (p *SshPublicKeysServiceAddRequest) send() *SshPublicKeysServiceAddResponse {
+
 }
 
 //
@@ -23945,27 +26292,34 @@ func (op *SshPublicKeysService) Add(
 }
 
 type SshPublicKeysServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	sshPublicKeys *SshPublicKeysService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *SshPublicKeysServiceListRequest) Header(key, value string) {
+func (p *SshPublicKeysServiceListRequest) Header(key, value string) *SshPublicKeysServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SshPublicKeysServiceListRequest) Query(key, value string) {
+func (p *SshPublicKeysServiceListRequest) Query(key, value string) *SshPublicKeysServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SshPublicKeysServiceListRequest) Max(max int64) {
+func (p *SshPublicKeysServiceListRequest) Max(max int64) *SshPublicKeysServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SshPublicKeysServiceListRequest) send() *SshPublicKeysServiceListResponse {
+
 }
 
 //
@@ -24037,22 +26391,29 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 }
 
 type DomainUserServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	domainUser *DomainUserService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *DomainUserServiceGetRequest) Header(key, value string) {
+func (p *DomainUserServiceGetRequest) Header(key, value string) *DomainUserServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainUserServiceGetRequest) Query(key, value string) {
+func (p *DomainUserServiceGetRequest) Query(key, value string) *DomainUserServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DomainUserServiceGetRequest) send() *DomainUserServiceGetResponse {
+
 }
 
 //
@@ -24129,22 +26490,29 @@ func NewUserService(connection *Connection, path string) *UserService {
 }
 
 type UserServiceGetRequest struct {
+	user   *UserService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *UserServiceGetRequest) Header(key, value string) {
+func (p *UserServiceGetRequest) Header(key, value string) *UserServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UserServiceGetRequest) Query(key, value string) {
+func (p *UserServiceGetRequest) Query(key, value string) *UserServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *UserServiceGetRequest) send() *UserServiceGetResponse {
+
 }
 
 //
@@ -24197,27 +26565,34 @@ func (op *UserService) Get(
 }
 
 type UserServiceRemoveRequest struct {
+	user   *UserService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *UserServiceRemoveRequest) Header(key, value string) {
+func (p *UserServiceRemoveRequest) Header(key, value string) *UserServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UserServiceRemoveRequest) Query(key, value string) {
+func (p *UserServiceRemoveRequest) Query(key, value string) *UserServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *UserServiceRemoveRequest) Async(async bool) {
+func (p *UserServiceRemoveRequest) Async(async bool) *UserServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *UserServiceRemoveRequest) send() *UserServiceRemoveResponse {
+
 }
 
 //
@@ -24325,27 +26700,34 @@ func NewDomainsService(connection *Connection, path string) *DomainsService {
 }
 
 type DomainsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	domains *DomainsService
+	header  map[string]string
+	query   map[string]string
+	max     *int64
 }
 
-func (p *DomainsServiceListRequest) Header(key, value string) {
+func (p *DomainsServiceListRequest) Header(key, value string) *DomainsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainsServiceListRequest) Query(key, value string) {
+func (p *DomainsServiceListRequest) Query(key, value string) *DomainsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DomainsServiceListRequest) Max(max int64) {
+func (p *DomainsServiceListRequest) Max(max int64) *DomainsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *DomainsServiceListRequest) send() *DomainsServiceListResponse {
+
 }
 
 //
@@ -24436,6 +26818,7 @@ func NewDomainUsersService(connection *Connection, path string) *DomainUsersServ
 }
 
 type DomainUsersServiceListRequest struct {
+	domainUsers   *DomainUsersService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -24443,28 +26826,36 @@ type DomainUsersServiceListRequest struct {
 	search        *string
 }
 
-func (p *DomainUsersServiceListRequest) Header(key, value string) {
+func (p *DomainUsersServiceListRequest) Header(key, value string) *DomainUsersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainUsersServiceListRequest) Query(key, value string) {
+func (p *DomainUsersServiceListRequest) Query(key, value string) *DomainUsersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DomainUsersServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *DomainUsersServiceListRequest) CaseSensitive(caseSensitive bool) *DomainUsersServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *DomainUsersServiceListRequest) Max(max int64) {
+func (p *DomainUsersServiceListRequest) Max(max int64) *DomainUsersServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *DomainUsersServiceListRequest) Search(search string) {
+func (p *DomainUsersServiceListRequest) Search(search string) *DomainUsersServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *DomainUsersServiceListRequest) send() *DomainUsersServiceListResponse {
+
 }
 
 //
@@ -24565,6 +26956,7 @@ func NewDomainGroupsService(connection *Connection, path string) *DomainGroupsSe
 }
 
 type DomainGroupsServiceListRequest struct {
+	domainGroups  *DomainGroupsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -24572,28 +26964,36 @@ type DomainGroupsServiceListRequest struct {
 	search        *string
 }
 
-func (p *DomainGroupsServiceListRequest) Header(key, value string) {
+func (p *DomainGroupsServiceListRequest) Header(key, value string) *DomainGroupsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainGroupsServiceListRequest) Query(key, value string) {
+func (p *DomainGroupsServiceListRequest) Query(key, value string) *DomainGroupsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DomainGroupsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *DomainGroupsServiceListRequest) CaseSensitive(caseSensitive bool) *DomainGroupsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *DomainGroupsServiceListRequest) Max(max int64) {
+func (p *DomainGroupsServiceListRequest) Max(max int64) *DomainGroupsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *DomainGroupsServiceListRequest) Search(search string) {
+func (p *DomainGroupsServiceListRequest) Search(search string) *DomainGroupsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *DomainGroupsServiceListRequest) send() *DomainGroupsServiceListResponse {
+
 }
 
 //
@@ -24672,22 +27072,29 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 }
 
 type GroupServiceGetRequest struct {
+	group  *GroupService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *GroupServiceGetRequest) Header(key, value string) {
+func (p *GroupServiceGetRequest) Header(key, value string) *GroupServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GroupServiceGetRequest) Query(key, value string) {
+func (p *GroupServiceGetRequest) Query(key, value string) *GroupServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *GroupServiceGetRequest) send() *GroupServiceGetResponse {
+
 }
 
 //
@@ -24714,27 +27121,34 @@ func (op *GroupService) Get(
 }
 
 type GroupServiceRemoveRequest struct {
+	group  *GroupService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *GroupServiceRemoveRequest) Header(key, value string) {
+func (p *GroupServiceRemoveRequest) Header(key, value string) *GroupServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GroupServiceRemoveRequest) Query(key, value string) {
+func (p *GroupServiceRemoveRequest) Query(key, value string) *GroupServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GroupServiceRemoveRequest) Async(async bool) {
+func (p *GroupServiceRemoveRequest) Async(async bool) *GroupServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *GroupServiceRemoveRequest) send() *GroupServiceRemoveResponse {
+
 }
 
 //
@@ -24824,22 +27238,29 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 }
 
 type DomainGroupServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	domainGroup *DomainGroupService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *DomainGroupServiceGetRequest) Header(key, value string) {
+func (p *DomainGroupServiceGetRequest) Header(key, value string) *DomainGroupServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DomainGroupServiceGetRequest) Query(key, value string) {
+func (p *DomainGroupServiceGetRequest) Query(key, value string) *DomainGroupServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DomainGroupServiceGetRequest) send() *DomainGroupServiceGetResponse {
+
 }
 
 //
@@ -24893,22 +27314,29 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 }
 
 type SshPublicKeyServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	sshPublicKey *SshPublicKeyService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *SshPublicKeyServiceGetRequest) Header(key, value string) {
+func (p *SshPublicKeyServiceGetRequest) Header(key, value string) *SshPublicKeyServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SshPublicKeyServiceGetRequest) Query(key, value string) {
+func (p *SshPublicKeyServiceGetRequest) Query(key, value string) *SshPublicKeyServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SshPublicKeyServiceGetRequest) send() *SshPublicKeyServiceGetResponse {
+
 }
 
 //
@@ -24935,27 +27363,34 @@ func (op *SshPublicKeyService) Get(
 }
 
 type SshPublicKeyServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	sshPublicKey *SshPublicKeyService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *SshPublicKeyServiceRemoveRequest) Header(key, value string) {
+func (p *SshPublicKeyServiceRemoveRequest) Header(key, value string) *SshPublicKeyServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SshPublicKeyServiceRemoveRequest) Query(key, value string) {
+func (p *SshPublicKeyServiceRemoveRequest) Query(key, value string) *SshPublicKeyServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SshPublicKeyServiceRemoveRequest) Async(async bool) {
+func (p *SshPublicKeyServiceRemoveRequest) Async(async bool) *SshPublicKeyServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *SshPublicKeyServiceRemoveRequest) send() *SshPublicKeyServiceRemoveResponse {
+
 }
 
 //
@@ -24982,31 +27417,39 @@ func (op *SshPublicKeyService) Remove(
 }
 
 type SshPublicKeyServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	key    *SshPublicKey
+	sshPublicKey *SshPublicKeyService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	key          *SshPublicKey
 }
 
-func (p *SshPublicKeyServiceUpdateRequest) Header(key, value string) {
+func (p *SshPublicKeyServiceUpdateRequest) Header(key, value string) *SshPublicKeyServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SshPublicKeyServiceUpdateRequest) Query(key, value string) {
+func (p *SshPublicKeyServiceUpdateRequest) Query(key, value string) *SshPublicKeyServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SshPublicKeyServiceUpdateRequest) Async(async bool) {
+func (p *SshPublicKeyServiceUpdateRequest) Async(async bool) *SshPublicKeyServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *SshPublicKeyServiceUpdateRequest) Key(key *SshPublicKey) {
+func (p *SshPublicKeyServiceUpdateRequest) Key(key *SshPublicKey) *SshPublicKeyServiceUpdateRequest {
 	p.key = key
+	return p
+}
+func (p *SshPublicKeyServiceUpdateRequest) send() *SshPublicKeyServiceUpdateResponse {
+
 }
 
 //
@@ -25063,22 +27506,29 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 }
 
 type FenceAgentServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	fenceAgent *FenceAgentService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *FenceAgentServiceGetRequest) Header(key, value string) {
+func (p *FenceAgentServiceGetRequest) Header(key, value string) *FenceAgentServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FenceAgentServiceGetRequest) Query(key, value string) {
+func (p *FenceAgentServiceGetRequest) Query(key, value string) *FenceAgentServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *FenceAgentServiceGetRequest) send() *FenceAgentServiceGetResponse {
+
 }
 
 //
@@ -25105,27 +27555,34 @@ func (op *FenceAgentService) Get(
 }
 
 type FenceAgentServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	fenceAgent *FenceAgentService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
-func (p *FenceAgentServiceRemoveRequest) Header(key, value string) {
+func (p *FenceAgentServiceRemoveRequest) Header(key, value string) *FenceAgentServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FenceAgentServiceRemoveRequest) Query(key, value string) {
+func (p *FenceAgentServiceRemoveRequest) Query(key, value string) *FenceAgentServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FenceAgentServiceRemoveRequest) Async(async bool) {
+func (p *FenceAgentServiceRemoveRequest) Async(async bool) *FenceAgentServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *FenceAgentServiceRemoveRequest) send() *FenceAgentServiceRemoveResponse {
+
 }
 
 //
@@ -25152,31 +27609,39 @@ func (op *FenceAgentService) Remove(
 }
 
 type FenceAgentServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	agent  *Agent
-	async  *bool
+	fenceAgent *FenceAgentService
+	header     map[string]string
+	query      map[string]string
+	agent      *Agent
+	async      *bool
 }
 
-func (p *FenceAgentServiceUpdateRequest) Header(key, value string) {
+func (p *FenceAgentServiceUpdateRequest) Header(key, value string) *FenceAgentServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FenceAgentServiceUpdateRequest) Query(key, value string) {
+func (p *FenceAgentServiceUpdateRequest) Query(key, value string) *FenceAgentServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FenceAgentServiceUpdateRequest) Agent(agent *Agent) {
+func (p *FenceAgentServiceUpdateRequest) Agent(agent *Agent) *FenceAgentServiceUpdateRequest {
 	p.agent = agent
+	return p
 }
-func (p *FenceAgentServiceUpdateRequest) Async(async bool) {
+func (p *FenceAgentServiceUpdateRequest) Async(async bool) *FenceAgentServiceUpdateRequest {
 	p.async = &async
+	return p
+}
+func (p *FenceAgentServiceUpdateRequest) send() *FenceAgentServiceUpdateResponse {
+
 }
 
 //
@@ -25233,22 +27698,29 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 }
 
 type MacPoolServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	macPool *MacPoolService
+	header  map[string]string
+	query   map[string]string
 }
 
-func (p *MacPoolServiceGetRequest) Header(key, value string) {
+func (p *MacPoolServiceGetRequest) Header(key, value string) *MacPoolServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MacPoolServiceGetRequest) Query(key, value string) {
+func (p *MacPoolServiceGetRequest) Query(key, value string) *MacPoolServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *MacPoolServiceGetRequest) send() *MacPoolServiceGetResponse {
+
 }
 
 //
@@ -25275,27 +27747,34 @@ func (op *MacPoolService) Get(
 }
 
 type MacPoolServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	macPool *MacPoolService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
 }
 
-func (p *MacPoolServiceRemoveRequest) Header(key, value string) {
+func (p *MacPoolServiceRemoveRequest) Header(key, value string) *MacPoolServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MacPoolServiceRemoveRequest) Query(key, value string) {
+func (p *MacPoolServiceRemoveRequest) Query(key, value string) *MacPoolServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *MacPoolServiceRemoveRequest) Async(async bool) {
+func (p *MacPoolServiceRemoveRequest) Async(async bool) *MacPoolServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *MacPoolServiceRemoveRequest) send() *MacPoolServiceRemoveResponse {
+
 }
 
 //
@@ -25328,31 +27807,39 @@ func (op *MacPoolService) Remove(
 }
 
 type MacPoolServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	pool   *MacPool
+	macPool *MacPoolService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
+	pool    *MacPool
 }
 
-func (p *MacPoolServiceUpdateRequest) Header(key, value string) {
+func (p *MacPoolServiceUpdateRequest) Header(key, value string) *MacPoolServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MacPoolServiceUpdateRequest) Query(key, value string) {
+func (p *MacPoolServiceUpdateRequest) Query(key, value string) *MacPoolServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *MacPoolServiceUpdateRequest) Async(async bool) {
+func (p *MacPoolServiceUpdateRequest) Async(async bool) *MacPoolServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *MacPoolServiceUpdateRequest) Pool(pool *MacPool) {
+func (p *MacPoolServiceUpdateRequest) Pool(pool *MacPool) *MacPoolServiceUpdateRequest {
 	p.pool = pool
+	return p
+}
+func (p *MacPoolServiceUpdateRequest) send() *MacPoolServiceUpdateResponse {
+
 }
 
 //
@@ -25435,27 +27922,34 @@ func NewAssignedCpuProfilesService(connection *Connection, path string) *Assigne
 }
 
 type AssignedCpuProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *CpuProfile
+	assignedCpuProfiles *AssignedCpuProfilesService
+	header              map[string]string
+	query               map[string]string
+	profile             *CpuProfile
 }
 
-func (p *AssignedCpuProfilesServiceAddRequest) Header(key, value string) {
+func (p *AssignedCpuProfilesServiceAddRequest) Header(key, value string) *AssignedCpuProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfilesServiceAddRequest) Query(key, value string) {
+func (p *AssignedCpuProfilesServiceAddRequest) Query(key, value string) *AssignedCpuProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfilesServiceAddRequest) Profile(profile *CpuProfile) {
+func (p *AssignedCpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *AssignedCpuProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *AssignedCpuProfilesServiceAddRequest) send() *AssignedCpuProfilesServiceAddResponse {
+
 }
 
 //
@@ -25483,27 +27977,34 @@ func (op *AssignedCpuProfilesService) Add(
 }
 
 type AssignedCpuProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedCpuProfiles *AssignedCpuProfilesService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
-func (p *AssignedCpuProfilesServiceListRequest) Header(key, value string) {
+func (p *AssignedCpuProfilesServiceListRequest) Header(key, value string) *AssignedCpuProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfilesServiceListRequest) Query(key, value string) {
+func (p *AssignedCpuProfilesServiceListRequest) Query(key, value string) *AssignedCpuProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) {
+func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) *AssignedCpuProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedCpuProfilesServiceListRequest) send() *AssignedCpuProfilesServiceListResponse {
+
 }
 
 //
@@ -25574,27 +28075,34 @@ func NewStorageServerConnectionExtensionsService(connection *Connection, path st
 }
 
 type StorageServerConnectionExtensionsServiceAddRequest struct {
-	header    map[string]string
-	query     map[string]string
-	extension *StorageConnectionExtension
+	storageServerConnectionExtensions *StorageServerConnectionExtensionsService
+	header                            map[string]string
+	query                             map[string]string
+	extension                         *StorageConnectionExtension
 }
 
-func (p *StorageServerConnectionExtensionsServiceAddRequest) Header(key, value string) {
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Header(key, value string) *StorageServerConnectionExtensionsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionsServiceAddRequest) Query(key, value string) {
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Query(key, value string) *StorageServerConnectionExtensionsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionsServiceAddRequest) Extension(extension *StorageConnectionExtension) {
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Extension(extension *StorageConnectionExtension) *StorageServerConnectionExtensionsServiceAddRequest {
 	p.extension = extension
+	return p
+}
+func (p *StorageServerConnectionExtensionsServiceAddRequest) send() *StorageServerConnectionExtensionsServiceAddResponse {
+
 }
 
 //
@@ -25639,27 +28147,34 @@ func (op *StorageServerConnectionExtensionsService) Add(
 }
 
 type StorageServerConnectionExtensionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageServerConnectionExtensions *StorageServerConnectionExtensionsService
+	header                            map[string]string
+	query                             map[string]string
+	max                               *int64
 }
 
-func (p *StorageServerConnectionExtensionsServiceListRequest) Header(key, value string) {
+func (p *StorageServerConnectionExtensionsServiceListRequest) Header(key, value string) *StorageServerConnectionExtensionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionsServiceListRequest) Query(key, value string) {
+func (p *StorageServerConnectionExtensionsServiceListRequest) Query(key, value string) *StorageServerConnectionExtensionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) {
+func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) *StorageServerConnectionExtensionsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageServerConnectionExtensionsServiceListRequest) send() *StorageServerConnectionExtensionsServiceListResponse {
+
 }
 
 //
@@ -25730,22 +28245,29 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 }
 
 type PermissionServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	permission *PermissionService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *PermissionServiceGetRequest) Header(key, value string) {
+func (p *PermissionServiceGetRequest) Header(key, value string) *PermissionServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermissionServiceGetRequest) Query(key, value string) {
+func (p *PermissionServiceGetRequest) Query(key, value string) *PermissionServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *PermissionServiceGetRequest) send() *PermissionServiceGetResponse {
+
 }
 
 //
@@ -25772,27 +28294,34 @@ func (op *PermissionService) Get(
 }
 
 type PermissionServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	permission *PermissionService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
-func (p *PermissionServiceRemoveRequest) Header(key, value string) {
+func (p *PermissionServiceRemoveRequest) Header(key, value string) *PermissionServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermissionServiceRemoveRequest) Query(key, value string) {
+func (p *PermissionServiceRemoveRequest) Query(key, value string) *PermissionServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *PermissionServiceRemoveRequest) Async(async bool) {
+func (p *PermissionServiceRemoveRequest) Async(async bool) *PermissionServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *PermissionServiceRemoveRequest) send() *PermissionServiceRemoveResponse {
+
 }
 
 //
@@ -25846,22 +28375,29 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 }
 
 type DiskProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	diskProfile *DiskProfileService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *DiskProfileServiceGetRequest) Header(key, value string) {
+func (p *DiskProfileServiceGetRequest) Header(key, value string) *DiskProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskProfileServiceGetRequest) Query(key, value string) {
+func (p *DiskProfileServiceGetRequest) Query(key, value string) *DiskProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskProfileServiceGetRequest) send() *DiskProfileServiceGetResponse {
+
 }
 
 //
@@ -25888,27 +28424,34 @@ func (op *DiskProfileService) Get(
 }
 
 type DiskProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	diskProfile *DiskProfileService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *DiskProfileServiceRemoveRequest) Header(key, value string) {
+func (p *DiskProfileServiceRemoveRequest) Header(key, value string) *DiskProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskProfileServiceRemoveRequest) Query(key, value string) {
+func (p *DiskProfileServiceRemoveRequest) Query(key, value string) *DiskProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskProfileServiceRemoveRequest) Async(async bool) {
+func (p *DiskProfileServiceRemoveRequest) Async(async bool) *DiskProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *DiskProfileServiceRemoveRequest) send() *DiskProfileServiceRemoveResponse {
+
 }
 
 //
@@ -25935,31 +28478,39 @@ func (op *DiskProfileService) Remove(
 }
 
 type DiskProfileServiceUpdateRequest struct {
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	profile *DiskProfile
+	diskProfile *DiskProfileService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	profile     *DiskProfile
 }
 
-func (p *DiskProfileServiceUpdateRequest) Header(key, value string) {
+func (p *DiskProfileServiceUpdateRequest) Header(key, value string) *DiskProfileServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskProfileServiceUpdateRequest) Query(key, value string) {
+func (p *DiskProfileServiceUpdateRequest) Query(key, value string) *DiskProfileServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskProfileServiceUpdateRequest) Async(async bool) {
+func (p *DiskProfileServiceUpdateRequest) Async(async bool) *DiskProfileServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *DiskProfileServiceUpdateRequest) Profile(profile *DiskProfile) {
+func (p *DiskProfileServiceUpdateRequest) Profile(profile *DiskProfile) *DiskProfileServiceUpdateRequest {
 	p.profile = profile
+	return p
+}
+func (p *DiskProfileServiceUpdateRequest) send() *DiskProfileServiceUpdateResponse {
+
 }
 
 //
@@ -26029,22 +28580,29 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 }
 
 type AffinityGroupServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityGroup *AffinityGroupService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *AffinityGroupServiceGetRequest) Header(key, value string) {
+func (p *AffinityGroupServiceGetRequest) Header(key, value string) *AffinityGroupServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupServiceGetRequest) Query(key, value string) {
+func (p *AffinityGroupServiceGetRequest) Query(key, value string) *AffinityGroupServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityGroupServiceGetRequest) send() *AffinityGroupServiceGetResponse {
+
 }
 
 //
@@ -26081,27 +28639,34 @@ func (op *AffinityGroupService) Get(
 }
 
 type AffinityGroupServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	affinityGroup *AffinityGroupService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *AffinityGroupServiceRemoveRequest) Header(key, value string) {
+func (p *AffinityGroupServiceRemoveRequest) Header(key, value string) *AffinityGroupServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupServiceRemoveRequest) Query(key, value string) {
+func (p *AffinityGroupServiceRemoveRequest) Query(key, value string) *AffinityGroupServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupServiceRemoveRequest) Async(async bool) {
+func (p *AffinityGroupServiceRemoveRequest) Async(async bool) *AffinityGroupServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AffinityGroupServiceRemoveRequest) send() *AffinityGroupServiceRemoveResponse {
+
 }
 
 //
@@ -26133,31 +28698,39 @@ func (op *AffinityGroupService) Remove(
 }
 
 type AffinityGroupServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	group  *AffinityGroup
+	affinityGroup *AffinityGroupService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	group         *AffinityGroup
 }
 
-func (p *AffinityGroupServiceUpdateRequest) Header(key, value string) {
+func (p *AffinityGroupServiceUpdateRequest) Header(key, value string) *AffinityGroupServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityGroupServiceUpdateRequest) Query(key, value string) {
+func (p *AffinityGroupServiceUpdateRequest) Query(key, value string) *AffinityGroupServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityGroupServiceUpdateRequest) Async(async bool) {
+func (p *AffinityGroupServiceUpdateRequest) Async(async bool) *AffinityGroupServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *AffinityGroupServiceUpdateRequest) Group(group *AffinityGroup) {
+func (p *AffinityGroupServiceUpdateRequest) Group(group *AffinityGroup) *AffinityGroupServiceUpdateRequest {
 	p.group = group
+	return p
+}
+func (p *AffinityGroupServiceUpdateRequest) send() *AffinityGroupServiceUpdateResponse {
+
 }
 
 //
@@ -26235,27 +28808,34 @@ func NewUnmanagedNetworksService(connection *Connection, path string) *Unmanaged
 }
 
 type UnmanagedNetworksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	unmanagedNetworks *UnmanagedNetworksService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
-func (p *UnmanagedNetworksServiceListRequest) Header(key, value string) {
+func (p *UnmanagedNetworksServiceListRequest) Header(key, value string) *UnmanagedNetworksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UnmanagedNetworksServiceListRequest) Query(key, value string) {
+func (p *UnmanagedNetworksServiceListRequest) Query(key, value string) *UnmanagedNetworksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *UnmanagedNetworksServiceListRequest) Max(max int64) {
+func (p *UnmanagedNetworksServiceListRequest) Max(max int64) *UnmanagedNetworksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *UnmanagedNetworksServiceListRequest) send() *UnmanagedNetworksServiceListResponse {
+
 }
 
 //
@@ -26326,6 +28906,7 @@ func NewVmsService(connection *Connection, path string) *VmsService {
 }
 
 type VmsServiceAddRequest struct {
+	vms              *VmsService
 	header           map[string]string
 	query            map[string]string
 	clone            *bool
@@ -26333,28 +28914,36 @@ type VmsServiceAddRequest struct {
 	vm               *Vm
 }
 
-func (p *VmsServiceAddRequest) Header(key, value string) {
+func (p *VmsServiceAddRequest) Header(key, value string) *VmsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmsServiceAddRequest) Query(key, value string) {
+func (p *VmsServiceAddRequest) Query(key, value string) *VmsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmsServiceAddRequest) Clone(clone bool) {
+func (p *VmsServiceAddRequest) Clone(clone bool) *VmsServiceAddRequest {
 	p.clone = &clone
+	return p
 }
-func (p *VmsServiceAddRequest) ClonePermissions(clonePermissions bool) {
+func (p *VmsServiceAddRequest) ClonePermissions(clonePermissions bool) *VmsServiceAddRequest {
 	p.clonePermissions = &clonePermissions
+	return p
 }
-func (p *VmsServiceAddRequest) Vm(vm *Vm) {
+func (p *VmsServiceAddRequest) Vm(vm *Vm) *VmsServiceAddRequest {
 	p.vm = vm
+	return p
+}
+func (p *VmsServiceAddRequest) send() *VmsServiceAddResponse {
+
 }
 
 //
@@ -26521,6 +29110,7 @@ func (op *VmsService) Add(
 }
 
 type VmsServiceListRequest struct {
+	vms           *VmsService
 	header        map[string]string
 	query         map[string]string
 	allContent    *bool
@@ -26530,34 +29120,44 @@ type VmsServiceListRequest struct {
 	search        *string
 }
 
-func (p *VmsServiceListRequest) Header(key, value string) {
+func (p *VmsServiceListRequest) Header(key, value string) *VmsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmsServiceListRequest) Query(key, value string) {
+func (p *VmsServiceListRequest) Query(key, value string) *VmsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmsServiceListRequest) AllContent(allContent bool) {
+func (p *VmsServiceListRequest) AllContent(allContent bool) *VmsServiceListRequest {
 	p.allContent = &allContent
+	return p
 }
-func (p *VmsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *VmsServiceListRequest) CaseSensitive(caseSensitive bool) *VmsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *VmsServiceListRequest) Filter(filter bool) {
+func (p *VmsServiceListRequest) Filter(filter bool) *VmsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *VmsServiceListRequest) Max(max int64) {
+func (p *VmsServiceListRequest) Max(max int64) *VmsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *VmsServiceListRequest) Search(search string) {
+func (p *VmsServiceListRequest) Search(search string) *VmsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *VmsServiceListRequest) send() *VmsServiceListResponse {
+
 }
 
 //
@@ -26654,22 +29254,29 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 }
 
 type StorageDomainTemplateServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainTemplate *StorageDomainTemplateService
+	header                map[string]string
+	query                 map[string]string
 }
 
-func (p *StorageDomainTemplateServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainTemplateServiceGetRequest) Header(key, value string) *StorageDomainTemplateServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) *StorageDomainTemplateServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainTemplateServiceGetRequest) send() *StorageDomainTemplateServiceGetResponse {
+
 }
 
 //
@@ -26696,51 +29303,64 @@ func (op *StorageDomainTemplateService) Get(
 }
 
 type StorageDomainTemplateServiceImportRequest struct {
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	clone         *bool
-	cluster       *Cluster
-	exclusive     *bool
-	storageDomain *StorageDomain
-	template      *Template
-	vm            *Vm
+	storageDomainTemplate *StorageDomainTemplateService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
+	clone                 *bool
+	cluster               *Cluster
+	exclusive             *bool
+	storageDomain         *StorageDomain
+	template              *Template
+	vm                    *Vm
 }
 
-func (p *StorageDomainTemplateServiceImportRequest) Header(key, value string) {
+func (p *StorageDomainTemplateServiceImportRequest) Header(key, value string) *StorageDomainTemplateServiceImportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceImportRequest) Query(key, value string) {
+func (p *StorageDomainTemplateServiceImportRequest) Query(key, value string) *StorageDomainTemplateServiceImportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceImportRequest) Async(async bool) {
+func (p *StorageDomainTemplateServiceImportRequest) Async(async bool) *StorageDomainTemplateServiceImportRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Clone(clone bool) {
+func (p *StorageDomainTemplateServiceImportRequest) Clone(clone bool) *StorageDomainTemplateServiceImportRequest {
 	p.clone = &clone
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Cluster(cluster *Cluster) {
+func (p *StorageDomainTemplateServiceImportRequest) Cluster(cluster *Cluster) *StorageDomainTemplateServiceImportRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Exclusive(exclusive bool) {
+func (p *StorageDomainTemplateServiceImportRequest) Exclusive(exclusive bool) *StorageDomainTemplateServiceImportRequest {
 	p.exclusive = &exclusive
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainTemplateServiceImportRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainTemplateServiceImportRequest {
 	p.storageDomain = storageDomain
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Template(template *Template) {
+func (p *StorageDomainTemplateServiceImportRequest) Template(template *Template) *StorageDomainTemplateServiceImportRequest {
 	p.template = template
+	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Vm(vm *Vm) {
+func (p *StorageDomainTemplateServiceImportRequest) Vm(vm *Vm) *StorageDomainTemplateServiceImportRequest {
 	p.vm = vm
+	return p
+}
+func (p *StorageDomainTemplateServiceImportRequest) send() *StorageDomainTemplateServiceImportResponse {
+
 }
 
 //
@@ -26799,47 +29419,59 @@ func (op *StorageDomainTemplateService) Import(
 }
 
 type StorageDomainTemplateServiceRegisterRequest struct {
-	header             map[string]string
-	query              map[string]string
-	allowPartialImport *bool
-	async              *bool
-	clone              *bool
-	cluster            *Cluster
-	exclusive          *bool
-	template           *Template
+	storageDomainTemplate *StorageDomainTemplateService
+	header                map[string]string
+	query                 map[string]string
+	allowPartialImport    *bool
+	async                 *bool
+	clone                 *bool
+	cluster               *Cluster
+	exclusive             *bool
+	template              *Template
 }
 
-func (p *StorageDomainTemplateServiceRegisterRequest) Header(key, value string) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Header(key, value string) *StorageDomainTemplateServiceRegisterRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceRegisterRequest) Query(key, value string) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Query(key, value string) *StorageDomainTemplateServiceRegisterRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) {
+func (p *StorageDomainTemplateServiceRegisterRequest) AllowPartialImport(allowPartialImport bool) *StorageDomainTemplateServiceRegisterRequest {
 	p.allowPartialImport = &allowPartialImport
+	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Async(async bool) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Async(async bool) *StorageDomainTemplateServiceRegisterRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Clone(clone bool) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Clone(clone bool) *StorageDomainTemplateServiceRegisterRequest {
 	p.clone = &clone
+	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Cluster(cluster *Cluster) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Cluster(cluster *Cluster) *StorageDomainTemplateServiceRegisterRequest {
 	p.cluster = cluster
+	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Exclusive(exclusive bool) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Exclusive(exclusive bool) *StorageDomainTemplateServiceRegisterRequest {
 	p.exclusive = &exclusive
+	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Template(template *Template) {
+func (p *StorageDomainTemplateServiceRegisterRequest) Template(template *Template) *StorageDomainTemplateServiceRegisterRequest {
 	p.template = template
+	return p
+}
+func (p *StorageDomainTemplateServiceRegisterRequest) send() *StorageDomainTemplateServiceRegisterResponse {
+
 }
 
 //
@@ -26879,27 +29511,34 @@ func (op *StorageDomainTemplateService) Register(
 }
 
 type StorageDomainTemplateServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	storageDomainTemplate *StorageDomainTemplateService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
 }
 
-func (p *StorageDomainTemplateServiceRemoveRequest) Header(key, value string) {
+func (p *StorageDomainTemplateServiceRemoveRequest) Header(key, value string) *StorageDomainTemplateServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceRemoveRequest) Query(key, value string) {
+func (p *StorageDomainTemplateServiceRemoveRequest) Query(key, value string) *StorageDomainTemplateServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplateServiceRemoveRequest) Async(async bool) {
+func (p *StorageDomainTemplateServiceRemoveRequest) Async(async bool) *StorageDomainTemplateServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *StorageDomainTemplateServiceRemoveRequest) send() *StorageDomainTemplateServiceRemoveResponse {
+
 }
 
 //
@@ -26966,27 +29605,34 @@ func NewVmPoolsService(connection *Connection, path string) *VmPoolsService {
 }
 
 type VmPoolsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	pool   *VmPool
+	vmPools *VmPoolsService
+	header  map[string]string
+	query   map[string]string
+	pool    *VmPool
 }
 
-func (p *VmPoolsServiceAddRequest) Header(key, value string) {
+func (p *VmPoolsServiceAddRequest) Header(key, value string) *VmPoolsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolsServiceAddRequest) Query(key, value string) {
+func (p *VmPoolsServiceAddRequest) Query(key, value string) *VmPoolsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolsServiceAddRequest) Pool(pool *VmPool) {
+func (p *VmPoolsServiceAddRequest) Pool(pool *VmPool) *VmPoolsServiceAddRequest {
 	p.pool = pool
+	return p
+}
+func (p *VmPoolsServiceAddRequest) send() *VmPoolsServiceAddResponse {
+
 }
 
 //
@@ -27035,6 +29681,7 @@ func (op *VmPoolsService) Add(
 }
 
 type VmPoolsServiceListRequest struct {
+	vmPools       *VmPoolsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -27043,31 +29690,40 @@ type VmPoolsServiceListRequest struct {
 	search        *string
 }
 
-func (p *VmPoolsServiceListRequest) Header(key, value string) {
+func (p *VmPoolsServiceListRequest) Header(key, value string) *VmPoolsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmPoolsServiceListRequest) Query(key, value string) {
+func (p *VmPoolsServiceListRequest) Query(key, value string) *VmPoolsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmPoolsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *VmPoolsServiceListRequest) CaseSensitive(caseSensitive bool) *VmPoolsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *VmPoolsServiceListRequest) Filter(filter bool) {
+func (p *VmPoolsServiceListRequest) Filter(filter bool) *VmPoolsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *VmPoolsServiceListRequest) Max(max int64) {
+func (p *VmPoolsServiceListRequest) Max(max int64) *VmPoolsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *VmPoolsServiceListRequest) Search(search string) {
+func (p *VmPoolsServiceListRequest) Search(search string) *VmPoolsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *VmPoolsServiceListRequest) send() *VmPoolsServiceListResponse {
+
 }
 
 //
@@ -27165,27 +29821,34 @@ func NewAssignedDiskProfilesService(connection *Connection, path string) *Assign
 }
 
 type AssignedDiskProfilesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	profile *DiskProfile
+	assignedDiskProfiles *AssignedDiskProfilesService
+	header               map[string]string
+	query                map[string]string
+	profile              *DiskProfile
 }
 
-func (p *AssignedDiskProfilesServiceAddRequest) Header(key, value string) {
+func (p *AssignedDiskProfilesServiceAddRequest) Header(key, value string) *AssignedDiskProfilesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfilesServiceAddRequest) Query(key, value string) {
+func (p *AssignedDiskProfilesServiceAddRequest) Query(key, value string) *AssignedDiskProfilesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfilesServiceAddRequest) Profile(profile *DiskProfile) {
+func (p *AssignedDiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *AssignedDiskProfilesServiceAddRequest {
 	p.profile = profile
+	return p
+}
+func (p *AssignedDiskProfilesServiceAddRequest) send() *AssignedDiskProfilesServiceAddResponse {
+
 }
 
 //
@@ -27213,27 +29876,34 @@ func (op *AssignedDiskProfilesService) Add(
 }
 
 type AssignedDiskProfilesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedDiskProfiles *AssignedDiskProfilesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
-func (p *AssignedDiskProfilesServiceListRequest) Header(key, value string) {
+func (p *AssignedDiskProfilesServiceListRequest) Header(key, value string) *AssignedDiskProfilesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfilesServiceListRequest) Query(key, value string) {
+func (p *AssignedDiskProfilesServiceListRequest) Query(key, value string) *AssignedDiskProfilesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) {
+func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) *AssignedDiskProfilesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedDiskProfilesServiceListRequest) send() *AssignedDiskProfilesServiceListResponse {
+
 }
 
 //
@@ -27305,6 +29975,7 @@ func NewStepService(connection *Connection, path string) *StepService {
 }
 
 type StepServiceEndRequest struct {
+	step      *StepService
 	header    map[string]string
 	query     map[string]string
 	async     *bool
@@ -27312,28 +29983,36 @@ type StepServiceEndRequest struct {
 	succeeded *bool
 }
 
-func (p *StepServiceEndRequest) Header(key, value string) {
+func (p *StepServiceEndRequest) Header(key, value string) *StepServiceEndRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StepServiceEndRequest) Query(key, value string) {
+func (p *StepServiceEndRequest) Query(key, value string) *StepServiceEndRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StepServiceEndRequest) Async(async bool) {
+func (p *StepServiceEndRequest) Async(async bool) *StepServiceEndRequest {
 	p.async = &async
+	return p
 }
-func (p *StepServiceEndRequest) Force(force bool) {
+func (p *StepServiceEndRequest) Force(force bool) *StepServiceEndRequest {
 	p.force = &force
+	return p
 }
-func (p *StepServiceEndRequest) Succeeded(succeeded bool) {
+func (p *StepServiceEndRequest) Succeeded(succeeded bool) *StepServiceEndRequest {
 	p.succeeded = &succeeded
+	return p
+}
+func (p *StepServiceEndRequest) send() *StepServiceEndResponse {
+
 }
 
 //
@@ -27381,22 +30060,29 @@ func (op *StepService) End(
 }
 
 type StepServiceGetRequest struct {
+	step   *StepService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *StepServiceGetRequest) Header(key, value string) {
+func (p *StepServiceGetRequest) Header(key, value string) *StepServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StepServiceGetRequest) Query(key, value string) {
+func (p *StepServiceGetRequest) Query(key, value string) *StepServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StepServiceGetRequest) send() *StepServiceGetResponse {
+
 }
 
 //
@@ -27485,31 +30171,39 @@ func NewAttachedStorageDomainDisksService(connection *Connection, path string) *
 }
 
 type AttachedStorageDomainDisksServiceAddRequest struct {
-	header       map[string]string
-	query        map[string]string
-	disk         *Disk
-	unregistered *bool
+	attachedStorageDomainDisks *AttachedStorageDomainDisksService
+	header                     map[string]string
+	query                      map[string]string
+	disk                       *Disk
+	unregistered               *bool
 }
 
-func (p *AttachedStorageDomainDisksServiceAddRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Header(key, value string) *AttachedStorageDomainDisksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDisksServiceAddRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Query(key, value string) *AttachedStorageDomainDisksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDisksServiceAddRequest) Disk(disk *Disk) {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Disk(disk *Disk) *AttachedStorageDomainDisksServiceAddRequest {
 	p.disk = disk
+	return p
 }
-func (p *AttachedStorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) *AttachedStorageDomainDisksServiceAddRequest {
 	p.unregistered = &unregistered
+	return p
+}
+func (p *AttachedStorageDomainDisksServiceAddRequest) send() *AttachedStorageDomainDisksServiceAddResponse {
+
 }
 
 //
@@ -27550,27 +30244,34 @@ func (op *AttachedStorageDomainDisksService) Add(
 }
 
 type AttachedStorageDomainDisksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	attachedStorageDomainDisks *AttachedStorageDomainDisksService
+	header                     map[string]string
+	query                      map[string]string
+	max                        *int64
 }
 
-func (p *AttachedStorageDomainDisksServiceListRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDisksServiceListRequest) Header(key, value string) *AttachedStorageDomainDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDisksServiceListRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDisksServiceListRequest) Query(key, value string) *AttachedStorageDomainDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) {
+func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) *AttachedStorageDomainDisksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AttachedStorageDomainDisksServiceListRequest) send() *AttachedStorageDomainDisksServiceListResponse {
+
 }
 
 //
@@ -27657,22 +30358,29 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 }
 
 type NetworkFilterServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkFilter *NetworkFilterService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *NetworkFilterServiceGetRequest) Header(key, value string) {
+func (p *NetworkFilterServiceGetRequest) Header(key, value string) *NetworkFilterServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterServiceGetRequest) Query(key, value string) {
+func (p *NetworkFilterServiceGetRequest) Query(key, value string) *NetworkFilterServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkFilterServiceGetRequest) send() *NetworkFilterServiceGetResponse {
+
 }
 
 //
@@ -27727,27 +30435,34 @@ func NewVmDisksService(connection *Connection, path string) *VmDisksService {
 }
 
 type VmDisksServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	disk   *Disk
+	vmDisks *VmDisksService
+	header  map[string]string
+	query   map[string]string
+	disk    *Disk
 }
 
-func (p *VmDisksServiceAddRequest) Header(key, value string) {
+func (p *VmDisksServiceAddRequest) Header(key, value string) *VmDisksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDisksServiceAddRequest) Query(key, value string) {
+func (p *VmDisksServiceAddRequest) Query(key, value string) *VmDisksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDisksServiceAddRequest) Disk(disk *Disk) {
+func (p *VmDisksServiceAddRequest) Disk(disk *Disk) *VmDisksServiceAddRequest {
 	p.disk = disk
+	return p
+}
+func (p *VmDisksServiceAddRequest) send() *VmDisksServiceAddResponse {
+
 }
 
 //
@@ -27775,27 +30490,34 @@ func (op *VmDisksService) Add(
 }
 
 type VmDisksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmDisks *VmDisksService
+	header  map[string]string
+	query   map[string]string
+	max     *int64
 }
 
-func (p *VmDisksServiceListRequest) Header(key, value string) {
+func (p *VmDisksServiceListRequest) Header(key, value string) *VmDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmDisksServiceListRequest) Query(key, value string) {
+func (p *VmDisksServiceListRequest) Query(key, value string) *VmDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmDisksServiceListRequest) Max(max int64) {
+func (p *VmDisksServiceListRequest) Max(max int64) *VmDisksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmDisksServiceListRequest) send() *VmDisksServiceListResponse {
+
 }
 
 //
@@ -27869,27 +30591,34 @@ func NewDiskAttachmentsService(connection *Connection, path string) *DiskAttachm
 }
 
 type DiskAttachmentsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	attachment *DiskAttachment
+	diskAttachments *DiskAttachmentsService
+	header          map[string]string
+	query           map[string]string
+	attachment      *DiskAttachment
 }
 
-func (p *DiskAttachmentsServiceAddRequest) Header(key, value string) {
+func (p *DiskAttachmentsServiceAddRequest) Header(key, value string) *DiskAttachmentsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskAttachmentsServiceAddRequest) Query(key, value string) {
+func (p *DiskAttachmentsServiceAddRequest) Query(key, value string) *DiskAttachmentsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskAttachmentsServiceAddRequest) Attachment(attachment *DiskAttachment) {
+func (p *DiskAttachmentsServiceAddRequest) Attachment(attachment *DiskAttachment) *DiskAttachmentsServiceAddRequest {
 	p.attachment = attachment
+	return p
+}
+func (p *DiskAttachmentsServiceAddRequest) send() *DiskAttachmentsServiceAddResponse {
+
 }
 
 //
@@ -27954,22 +30683,29 @@ func (op *DiskAttachmentsService) Add(
 }
 
 type DiskAttachmentsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	diskAttachments *DiskAttachmentsService
+	header          map[string]string
+	query           map[string]string
 }
 
-func (p *DiskAttachmentsServiceListRequest) Header(key, value string) {
+func (p *DiskAttachmentsServiceListRequest) Header(key, value string) *DiskAttachmentsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskAttachmentsServiceListRequest) Query(key, value string) {
+func (p *DiskAttachmentsServiceListRequest) Query(key, value string) *DiskAttachmentsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskAttachmentsServiceListRequest) send() *DiskAttachmentsServiceListResponse {
+
 }
 
 //
@@ -28040,31 +30776,39 @@ func NewStorageDomainDiskService(connection *Connection, path string) *StorageDo
 }
 
 type StorageDomainDiskServiceCopyRequest struct {
-	header        map[string]string
-	query         map[string]string
-	disk          *Disk
-	storageDomain *StorageDomain
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
+	disk              *Disk
+	storageDomain     *StorageDomain
 }
 
-func (p *StorageDomainDiskServiceCopyRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceCopyRequest) Header(key, value string) *StorageDomainDiskServiceCopyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceCopyRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceCopyRequest) Query(key, value string) *StorageDomainDiskServiceCopyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceCopyRequest) Disk(disk *Disk) {
+func (p *StorageDomainDiskServiceCopyRequest) Disk(disk *Disk) *StorageDomainDiskServiceCopyRequest {
 	p.disk = disk
+	return p
 }
-func (p *StorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainDiskServiceCopyRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *StorageDomainDiskServiceCopyRequest) send() *StorageDomainDiskServiceCopyResponse {
+
 }
 
 //
@@ -28097,27 +30841,34 @@ func (op *StorageDomainDiskService) Copy(
 }
 
 type StorageDomainDiskServiceExportRequest struct {
-	header        map[string]string
-	query         map[string]string
-	storageDomain *StorageDomain
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
+	storageDomain     *StorageDomain
 }
 
-func (p *StorageDomainDiskServiceExportRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceExportRequest) Header(key, value string) *StorageDomainDiskServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceExportRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceExportRequest) Query(key, value string) *StorageDomainDiskServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainDiskServiceExportRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *StorageDomainDiskServiceExportRequest) send() *StorageDomainDiskServiceExportResponse {
+
 }
 
 //
@@ -28147,22 +30898,29 @@ func (op *StorageDomainDiskService) Export(
 }
 
 type StorageDomainDiskServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *StorageDomainDiskServiceGetRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceGetRequest) Header(key, value string) *StorageDomainDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) *StorageDomainDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainDiskServiceGetRequest) send() *StorageDomainDiskServiceGetResponse {
+
 }
 
 //
@@ -28190,35 +30948,44 @@ func (op *StorageDomainDiskService) Get(
 }
 
 type StorageDomainDiskServiceMoveRequest struct {
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	filter        *bool
-	storageDomain *StorageDomain
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	filter            *bool
+	storageDomain     *StorageDomain
 }
 
-func (p *StorageDomainDiskServiceMoveRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceMoveRequest) Header(key, value string) *StorageDomainDiskServiceMoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceMoveRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceMoveRequest) Query(key, value string) *StorageDomainDiskServiceMoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceMoveRequest) Async(async bool) {
+func (p *StorageDomainDiskServiceMoveRequest) Async(async bool) *StorageDomainDiskServiceMoveRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageDomainDiskServiceMoveRequest) Filter(filter bool) {
+func (p *StorageDomainDiskServiceMoveRequest) Filter(filter bool) *StorageDomainDiskServiceMoveRequest {
 	p.filter = &filter
+	return p
 }
-func (p *StorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainDiskServiceMoveRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *StorageDomainDiskServiceMoveRequest) send() *StorageDomainDiskServiceMoveResponse {
+
 }
 
 //
@@ -28254,22 +31021,29 @@ func (op *StorageDomainDiskService) Move(
 }
 
 type StorageDomainDiskServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *StorageDomainDiskServiceRemoveRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceRemoveRequest) Header(key, value string) *StorageDomainDiskServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceRemoveRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceRemoveRequest) Query(key, value string) *StorageDomainDiskServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainDiskServiceRemoveRequest) send() *StorageDomainDiskServiceRemoveResponse {
+
 }
 
 //
@@ -28293,22 +31067,29 @@ func (op *StorageDomainDiskService) Remove(
 }
 
 type StorageDomainDiskServiceSparsifyRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *StorageDomainDiskServiceSparsifyRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceSparsifyRequest) Header(key, value string) *StorageDomainDiskServiceSparsifyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceSparsifyRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceSparsifyRequest) Query(key, value string) *StorageDomainDiskServiceSparsifyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageDomainDiskServiceSparsifyRequest) send() *StorageDomainDiskServiceSparsifyResponse {
+
 }
 
 //
@@ -28330,27 +31111,34 @@ func (op *StorageDomainDiskService) Sparsify(
 }
 
 type StorageDomainDiskServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	disk   *Disk
+	storageDomainDisk *StorageDomainDiskService
+	header            map[string]string
+	query             map[string]string
+	disk              *Disk
 }
 
-func (p *StorageDomainDiskServiceUpdateRequest) Header(key, value string) {
+func (p *StorageDomainDiskServiceUpdateRequest) Header(key, value string) *StorageDomainDiskServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceUpdateRequest) Query(key, value string) {
+func (p *StorageDomainDiskServiceUpdateRequest) Query(key, value string) *StorageDomainDiskServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) {
+func (p *StorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *StorageDomainDiskServiceUpdateRequest {
 	p.disk = disk
+	return p
+}
+func (p *StorageDomainDiskServiceUpdateRequest) send() *StorageDomainDiskServiceUpdateResponse {
+
 }
 
 //
@@ -28439,27 +31227,34 @@ func NewHostHooksService(connection *Connection, path string) *HostHooksService 
 }
 
 type HostHooksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	hostHooks *HostHooksService
+	header    map[string]string
+	query     map[string]string
+	max       *int64
 }
 
-func (p *HostHooksServiceListRequest) Header(key, value string) {
+func (p *HostHooksServiceListRequest) Header(key, value string) *HostHooksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostHooksServiceListRequest) Query(key, value string) {
+func (p *HostHooksServiceListRequest) Query(key, value string) *HostHooksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostHooksServiceListRequest) Max(max int64) {
+func (p *HostHooksServiceListRequest) Max(max int64) *HostHooksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *HostHooksServiceListRequest) send() *HostHooksServiceListResponse {
+
 }
 
 //
@@ -28530,27 +31325,34 @@ func NewStorageDomainsService(connection *Connection, path string) *StorageDomai
 }
 
 type StorageDomainsServiceAddRequest struct {
-	header        map[string]string
-	query         map[string]string
-	storageDomain *StorageDomain
+	storageDomains *StorageDomainsService
+	header         map[string]string
+	query          map[string]string
+	storageDomain  *StorageDomain
 }
 
-func (p *StorageDomainsServiceAddRequest) Header(key, value string) {
+func (p *StorageDomainsServiceAddRequest) Header(key, value string) *StorageDomainsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainsServiceAddRequest) Query(key, value string) {
+func (p *StorageDomainsServiceAddRequest) Query(key, value string) *StorageDomainsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *StorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDomain) *StorageDomainsServiceAddRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *StorageDomainsServiceAddRequest) send() *StorageDomainsServiceAddResponse {
+
 }
 
 //
@@ -28640,39 +31442,49 @@ func (op *StorageDomainsService) Add(
 }
 
 type StorageDomainsServiceListRequest struct {
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	filter        *bool
-	max           *int64
-	search        *string
+	storageDomains *StorageDomainsService
+	header         map[string]string
+	query          map[string]string
+	caseSensitive  *bool
+	filter         *bool
+	max            *int64
+	search         *string
 }
 
-func (p *StorageDomainsServiceListRequest) Header(key, value string) {
+func (p *StorageDomainsServiceListRequest) Header(key, value string) *StorageDomainsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainsServiceListRequest) Query(key, value string) {
+func (p *StorageDomainsServiceListRequest) Query(key, value string) *StorageDomainsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *StorageDomainsServiceListRequest) CaseSensitive(caseSensitive bool) *StorageDomainsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *StorageDomainsServiceListRequest) Filter(filter bool) {
+func (p *StorageDomainsServiceListRequest) Filter(filter bool) *StorageDomainsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *StorageDomainsServiceListRequest) Max(max int64) {
+func (p *StorageDomainsServiceListRequest) Max(max int64) *StorageDomainsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *StorageDomainsServiceListRequest) Search(search string) {
+func (p *StorageDomainsServiceListRequest) Search(search string) *StorageDomainsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *StorageDomainsServiceListRequest) send() *StorageDomainsServiceListResponse {
+
 }
 
 //
@@ -28754,22 +31566,29 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 }
 
 type NetworkLabelServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkLabel *NetworkLabelService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *NetworkLabelServiceGetRequest) Header(key, value string) {
+func (p *NetworkLabelServiceGetRequest) Header(key, value string) *NetworkLabelServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkLabelServiceGetRequest) Query(key, value string) {
+func (p *NetworkLabelServiceGetRequest) Query(key, value string) *NetworkLabelServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkLabelServiceGetRequest) send() *NetworkLabelServiceGetResponse {
+
 }
 
 //
@@ -28796,27 +31615,34 @@ func (op *NetworkLabelService) Get(
 }
 
 type NetworkLabelServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	networkLabel *NetworkLabelService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *NetworkLabelServiceRemoveRequest) Header(key, value string) {
+func (p *NetworkLabelServiceRemoveRequest) Header(key, value string) *NetworkLabelServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkLabelServiceRemoveRequest) Query(key, value string) {
+func (p *NetworkLabelServiceRemoveRequest) Query(key, value string) *NetworkLabelServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkLabelServiceRemoveRequest) Async(async bool) {
+func (p *NetworkLabelServiceRemoveRequest) Async(async bool) *NetworkLabelServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *NetworkLabelServiceRemoveRequest) send() *NetworkLabelServiceRemoveResponse {
+
 }
 
 //
@@ -28876,27 +31702,34 @@ func NewInstanceTypesService(connection *Connection, path string) *InstanceTypes
 }
 
 type InstanceTypesServiceAddRequest struct {
-	header       map[string]string
-	query        map[string]string
-	instanceType *InstanceType
+	instanceTypes *InstanceTypesService
+	header        map[string]string
+	query         map[string]string
+	instanceType  *InstanceType
 }
 
-func (p *InstanceTypesServiceAddRequest) Header(key, value string) {
+func (p *InstanceTypesServiceAddRequest) Header(key, value string) *InstanceTypesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypesServiceAddRequest) Query(key, value string) {
+func (p *InstanceTypesServiceAddRequest) Query(key, value string) *InstanceTypesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypesServiceAddRequest) InstanceType(instanceType *InstanceType) {
+func (p *InstanceTypesServiceAddRequest) InstanceType(instanceType *InstanceType) *InstanceTypesServiceAddRequest {
 	p.instanceType = instanceType
+	return p
+}
+func (p *InstanceTypesServiceAddRequest) send() *InstanceTypesServiceAddResponse {
+
 }
 
 //
@@ -29003,6 +31836,7 @@ func (op *InstanceTypesService) Add(
 }
 
 type InstanceTypesServiceListRequest struct {
+	instanceTypes *InstanceTypesService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -29010,28 +31844,36 @@ type InstanceTypesServiceListRequest struct {
 	search        *string
 }
 
-func (p *InstanceTypesServiceListRequest) Header(key, value string) {
+func (p *InstanceTypesServiceListRequest) Header(key, value string) *InstanceTypesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypesServiceListRequest) Query(key, value string) {
+func (p *InstanceTypesServiceListRequest) Query(key, value string) *InstanceTypesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypesServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *InstanceTypesServiceListRequest) CaseSensitive(caseSensitive bool) *InstanceTypesServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *InstanceTypesServiceListRequest) Max(max int64) {
+func (p *InstanceTypesServiceListRequest) Max(max int64) *InstanceTypesServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *InstanceTypesServiceListRequest) Search(search string) {
+func (p *InstanceTypesServiceListRequest) Search(search string) *InstanceTypesServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *InstanceTypesServiceListRequest) send() *InstanceTypesServiceListResponse {
+
 }
 
 //
@@ -29112,27 +31954,34 @@ func NewStorageDomainServerConnectionsService(connection *Connection, path strin
 }
 
 type StorageDomainServerConnectionsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	connection *StorageConnection
+	storageDomainServerConnections *StorageDomainServerConnectionsService
+	header                         map[string]string
+	query                          map[string]string
+	connection                     *StorageConnection
 }
 
-func (p *StorageDomainServerConnectionsServiceAddRequest) Header(key, value string) {
+func (p *StorageDomainServerConnectionsServiceAddRequest) Header(key, value string) *StorageDomainServerConnectionsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionsServiceAddRequest) Query(key, value string) {
+func (p *StorageDomainServerConnectionsServiceAddRequest) Query(key, value string) *StorageDomainServerConnectionsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) {
+func (p *StorageDomainServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) *StorageDomainServerConnectionsServiceAddRequest {
 	p.connection = connection
+	return p
+}
+func (p *StorageDomainServerConnectionsServiceAddRequest) send() *StorageDomainServerConnectionsServiceAddResponse {
+
 }
 
 //
@@ -29160,27 +32009,34 @@ func (op *StorageDomainServerConnectionsService) Add(
 }
 
 type StorageDomainServerConnectionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageDomainServerConnections *StorageDomainServerConnectionsService
+	header                         map[string]string
+	query                          map[string]string
+	max                            *int64
 }
 
-func (p *StorageDomainServerConnectionsServiceListRequest) Header(key, value string) {
+func (p *StorageDomainServerConnectionsServiceListRequest) Header(key, value string) *StorageDomainServerConnectionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionsServiceListRequest) Query(key, value string) {
+func (p *StorageDomainServerConnectionsServiceListRequest) Query(key, value string) *StorageDomainServerConnectionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) {
+func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) *StorageDomainServerConnectionsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageDomainServerConnectionsServiceListRequest) send() *StorageDomainServerConnectionsServiceListResponse {
+
 }
 
 //
@@ -29251,22 +32107,29 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 }
 
 type InstanceTypeGraphicsConsoleServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	instanceTypeGraphicsConsole *InstanceTypeGraphicsConsoleService
+	header                      map[string]string
+	query                       map[string]string
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Header(key, value string) {
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Header(key, value string) *InstanceTypeGraphicsConsoleServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) {
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) *InstanceTypeGraphicsConsoleServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) send() *InstanceTypeGraphicsConsoleServiceGetResponse {
+
 }
 
 //
@@ -29294,27 +32157,34 @@ func (op *InstanceTypeGraphicsConsoleService) Get(
 }
 
 type InstanceTypeGraphicsConsoleServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	instanceTypeGraphicsConsole *InstanceTypeGraphicsConsoleService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Header(key, value string) *InstanceTypeGraphicsConsoleServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Query(key, value string) *InstanceTypeGraphicsConsoleServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Async(async bool) *InstanceTypeGraphicsConsoleServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) send() *InstanceTypeGraphicsConsoleServiceRemoveResponse {
+
 }
 
 //
@@ -29369,22 +32239,29 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 }
 
 type IscsiBondServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	iscsiBond *IscsiBondService
+	header    map[string]string
+	query     map[string]string
 }
 
-func (p *IscsiBondServiceGetRequest) Header(key, value string) {
+func (p *IscsiBondServiceGetRequest) Header(key, value string) *IscsiBondServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IscsiBondServiceGetRequest) Query(key, value string) {
+func (p *IscsiBondServiceGetRequest) Query(key, value string) *IscsiBondServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *IscsiBondServiceGetRequest) send() *IscsiBondServiceGetResponse {
+
 }
 
 //
@@ -29411,27 +32288,34 @@ func (op *IscsiBondService) Get(
 }
 
 type IscsiBondServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	iscsiBond *IscsiBondService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
-func (p *IscsiBondServiceRemoveRequest) Header(key, value string) {
+func (p *IscsiBondServiceRemoveRequest) Header(key, value string) *IscsiBondServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IscsiBondServiceRemoveRequest) Query(key, value string) {
+func (p *IscsiBondServiceRemoveRequest) Query(key, value string) *IscsiBondServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *IscsiBondServiceRemoveRequest) Async(async bool) {
+func (p *IscsiBondServiceRemoveRequest) Async(async bool) *IscsiBondServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *IscsiBondServiceRemoveRequest) send() *IscsiBondServiceRemoveResponse {
+
 }
 
 //
@@ -29464,31 +32348,39 @@ func (op *IscsiBondService) Remove(
 }
 
 type IscsiBondServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	bond   *IscsiBond
+	iscsiBond *IscsiBondService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	bond      *IscsiBond
 }
 
-func (p *IscsiBondServiceUpdateRequest) Header(key, value string) {
+func (p *IscsiBondServiceUpdateRequest) Header(key, value string) *IscsiBondServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IscsiBondServiceUpdateRequest) Query(key, value string) {
+func (p *IscsiBondServiceUpdateRequest) Query(key, value string) *IscsiBondServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *IscsiBondServiceUpdateRequest) Async(async bool) {
+func (p *IscsiBondServiceUpdateRequest) Async(async bool) *IscsiBondServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *IscsiBondServiceUpdateRequest) Bond(bond *IscsiBond) {
+func (p *IscsiBondServiceUpdateRequest) Bond(bond *IscsiBond) *IscsiBondServiceUpdateRequest {
 	p.bond = bond
+	return p
+}
+func (p *IscsiBondServiceUpdateRequest) send() *IscsiBondServiceUpdateResponse {
+
 }
 
 //
@@ -29585,22 +32477,29 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 }
 
 type TemplateDiskAttachmentServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateDiskAttachment *TemplateDiskAttachmentService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *TemplateDiskAttachmentServiceGetRequest) Header(key, value string) {
+func (p *TemplateDiskAttachmentServiceGetRequest) Header(key, value string) *TemplateDiskAttachmentServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) {
+func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) *TemplateDiskAttachmentServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateDiskAttachmentServiceGetRequest) send() *TemplateDiskAttachmentServiceGetResponse {
+
 }
 
 //
@@ -29628,31 +32527,39 @@ func (op *TemplateDiskAttachmentService) Get(
 }
 
 type TemplateDiskAttachmentServiceRemoveRequest struct {
-	header        map[string]string
-	query         map[string]string
-	force         *bool
-	storageDomain *string
+	templateDiskAttachment *TemplateDiskAttachmentService
+	header                 map[string]string
+	query                  map[string]string
+	force                  *bool
+	storageDomain          *string
 }
 
-func (p *TemplateDiskAttachmentServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Header(key, value string) *TemplateDiskAttachmentServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskAttachmentServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Query(key, value string) *TemplateDiskAttachmentServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateDiskAttachmentServiceRemoveRequest) Force(force bool) {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Force(force bool) *TemplateDiskAttachmentServiceRemoveRequest {
 	p.force = &force
+	return p
 }
-func (p *TemplateDiskAttachmentServiceRemoveRequest) StorageDomain(storageDomain string) {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) StorageDomain(storageDomain string) *TemplateDiskAttachmentServiceRemoveRequest {
 	p.storageDomain = &storageDomain
+	return p
+}
+func (p *TemplateDiskAttachmentServiceRemoveRequest) send() *TemplateDiskAttachmentServiceRemoveResponse {
+
 }
 
 //
@@ -29717,27 +32624,34 @@ func NewHostStorageService(connection *Connection, path string) *HostStorageServ
 }
 
 type HostStorageServiceListRequest struct {
+	hostStorage  *HostStorageService
 	header       map[string]string
 	query        map[string]string
 	reportStatus *bool
 }
 
-func (p *HostStorageServiceListRequest) Header(key, value string) {
+func (p *HostStorageServiceListRequest) Header(key, value string) *HostStorageServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostStorageServiceListRequest) Query(key, value string) {
+func (p *HostStorageServiceListRequest) Query(key, value string) *HostStorageServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) {
+func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) *HostStorageServiceListRequest {
 	p.reportStatus = &reportStatus
+	return p
+}
+func (p *HostStorageServiceListRequest) send() *HostStorageServiceListResponse {
+
 }
 
 //
@@ -29867,27 +32781,34 @@ func NewWeightService(connection *Connection, path string) *WeightService {
 }
 
 type WeightServiceGetRequest struct {
+	weight *WeightService
 	header map[string]string
 	query  map[string]string
 	filter *bool
 }
 
-func (p *WeightServiceGetRequest) Header(key, value string) {
+func (p *WeightServiceGetRequest) Header(key, value string) *WeightServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *WeightServiceGetRequest) Query(key, value string) {
+func (p *WeightServiceGetRequest) Query(key, value string) *WeightServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *WeightServiceGetRequest) Filter(filter bool) {
+func (p *WeightServiceGetRequest) Filter(filter bool) *WeightServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *WeightServiceGetRequest) send() *WeightServiceGetResponse {
+
 }
 
 //
@@ -29921,27 +32842,34 @@ func (op *WeightService) Get(
 }
 
 type WeightServiceRemoveRequest struct {
+	weight *WeightService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *WeightServiceRemoveRequest) Header(key, value string) {
+func (p *WeightServiceRemoveRequest) Header(key, value string) *WeightServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *WeightServiceRemoveRequest) Query(key, value string) {
+func (p *WeightServiceRemoveRequest) Query(key, value string) *WeightServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *WeightServiceRemoveRequest) Async(async bool) {
+func (p *WeightServiceRemoveRequest) Async(async bool) *WeightServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *WeightServiceRemoveRequest) send() *WeightServiceRemoveResponse {
+
 }
 
 //
@@ -29995,27 +32923,34 @@ func NewVmNumaNodesService(connection *Connection, path string) *VmNumaNodesServ
 }
 
 type VmNumaNodesServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	node   *VirtualNumaNode
+	vmNumaNodes *VmNumaNodesService
+	header      map[string]string
+	query       map[string]string
+	node        *VirtualNumaNode
 }
 
-func (p *VmNumaNodesServiceAddRequest) Header(key, value string) {
+func (p *VmNumaNodesServiceAddRequest) Header(key, value string) *VmNumaNodesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNumaNodesServiceAddRequest) Query(key, value string) {
+func (p *VmNumaNodesServiceAddRequest) Query(key, value string) *VmNumaNodesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNumaNodesServiceAddRequest) Node(node *VirtualNumaNode) {
+func (p *VmNumaNodesServiceAddRequest) Node(node *VirtualNumaNode) *VmNumaNodesServiceAddRequest {
 	p.node = node
+	return p
+}
+func (p *VmNumaNodesServiceAddRequest) send() *VmNumaNodesServiceAddResponse {
+
 }
 
 //
@@ -30066,27 +33001,34 @@ func (op *VmNumaNodesService) Add(
 }
 
 type VmNumaNodesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmNumaNodes *VmNumaNodesService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
-func (p *VmNumaNodesServiceListRequest) Header(key, value string) {
+func (p *VmNumaNodesServiceListRequest) Header(key, value string) *VmNumaNodesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNumaNodesServiceListRequest) Query(key, value string) {
+func (p *VmNumaNodesServiceListRequest) Query(key, value string) *VmNumaNodesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNumaNodesServiceListRequest) Max(max int64) {
+func (p *VmNumaNodesServiceListRequest) Max(max int64) *VmNumaNodesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmNumaNodesServiceListRequest) send() *VmNumaNodesServiceListResponse {
+
 }
 
 //
@@ -30158,27 +33100,34 @@ func NewTemplateWatchdogsService(connection *Connection, path string) *TemplateW
 }
 
 type TemplateWatchdogsServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	watchdog *Watchdog
+	templateWatchdogs *TemplateWatchdogsService
+	header            map[string]string
+	query             map[string]string
+	watchdog          *Watchdog
 }
 
-func (p *TemplateWatchdogsServiceAddRequest) Header(key, value string) {
+func (p *TemplateWatchdogsServiceAddRequest) Header(key, value string) *TemplateWatchdogsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogsServiceAddRequest) Query(key, value string) {
+func (p *TemplateWatchdogsServiceAddRequest) Query(key, value string) *TemplateWatchdogsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+func (p *TemplateWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *TemplateWatchdogsServiceAddRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *TemplateWatchdogsServiceAddRequest) send() *TemplateWatchdogsServiceAddResponse {
+
 }
 
 //
@@ -30206,27 +33155,34 @@ func (op *TemplateWatchdogsService) Add(
 }
 
 type TemplateWatchdogsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	templateWatchdogs *TemplateWatchdogsService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
-func (p *TemplateWatchdogsServiceListRequest) Header(key, value string) {
+func (p *TemplateWatchdogsServiceListRequest) Header(key, value string) *TemplateWatchdogsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogsServiceListRequest) Query(key, value string) {
+func (p *TemplateWatchdogsServiceListRequest) Query(key, value string) *TemplateWatchdogsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateWatchdogsServiceListRequest) Max(max int64) {
+func (p *TemplateWatchdogsServiceListRequest) Max(max int64) *TemplateWatchdogsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *TemplateWatchdogsServiceListRequest) send() *TemplateWatchdogsServiceListResponse {
+
 }
 
 //
@@ -30302,31 +33258,39 @@ func NewAttachedStorageDomainDiskService(connection *Connection, path string) *A
 }
 
 type AttachedStorageDomainDiskServiceCopyRequest struct {
-	header        map[string]string
-	query         map[string]string
-	disk          *Disk
-	storageDomain *StorageDomain
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
+	disk                      *Disk
+	storageDomain             *StorageDomain
 }
 
-func (p *AttachedStorageDomainDiskServiceCopyRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Header(key, value string) *AttachedStorageDomainDiskServiceCopyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceCopyRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Query(key, value string) *AttachedStorageDomainDiskServiceCopyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceCopyRequest) Disk(disk *Disk) {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Disk(disk *Disk) *AttachedStorageDomainDiskServiceCopyRequest {
 	p.disk = disk
+	return p
 }
-func (p *AttachedStorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) *AttachedStorageDomainDiskServiceCopyRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *AttachedStorageDomainDiskServiceCopyRequest) send() *AttachedStorageDomainDiskServiceCopyResponse {
+
 }
 
 //
@@ -30359,27 +33323,34 @@ func (op *AttachedStorageDomainDiskService) Copy(
 }
 
 type AttachedStorageDomainDiskServiceExportRequest struct {
-	header        map[string]string
-	query         map[string]string
-	storageDomain *StorageDomain
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
+	storageDomain             *StorageDomain
 }
 
-func (p *AttachedStorageDomainDiskServiceExportRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceExportRequest) Header(key, value string) *AttachedStorageDomainDiskServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceExportRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceExportRequest) Query(key, value string) *AttachedStorageDomainDiskServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *AttachedStorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *AttachedStorageDomainDiskServiceExportRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *AttachedStorageDomainDiskServiceExportRequest) send() *AttachedStorageDomainDiskServiceExportResponse {
+
 }
 
 //
@@ -30409,22 +33380,29 @@ func (op *AttachedStorageDomainDiskService) Export(
 }
 
 type AttachedStorageDomainDiskServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
 }
 
-func (p *AttachedStorageDomainDiskServiceGetRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceGetRequest) Header(key, value string) *AttachedStorageDomainDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) *AttachedStorageDomainDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AttachedStorageDomainDiskServiceGetRequest) send() *AttachedStorageDomainDiskServiceGetResponse {
+
 }
 
 //
@@ -30452,35 +33430,44 @@ func (op *AttachedStorageDomainDiskService) Get(
 }
 
 type AttachedStorageDomainDiskServiceMoveRequest struct {
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	filter        *bool
-	storageDomain *StorageDomain
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
+	async                     *bool
+	filter                    *bool
+	storageDomain             *StorageDomain
 }
 
-func (p *AttachedStorageDomainDiskServiceMoveRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Header(key, value string) *AttachedStorageDomainDiskServiceMoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceMoveRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Query(key, value string) *AttachedStorageDomainDiskServiceMoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceMoveRequest) Async(async bool) {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Async(async bool) *AttachedStorageDomainDiskServiceMoveRequest {
 	p.async = &async
+	return p
 }
-func (p *AttachedStorageDomainDiskServiceMoveRequest) Filter(filter bool) {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Filter(filter bool) *AttachedStorageDomainDiskServiceMoveRequest {
 	p.filter = &filter
+	return p
 }
-func (p *AttachedStorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) *AttachedStorageDomainDiskServiceMoveRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *AttachedStorageDomainDiskServiceMoveRequest) send() *AttachedStorageDomainDiskServiceMoveResponse {
+
 }
 
 //
@@ -30516,22 +33503,29 @@ func (op *AttachedStorageDomainDiskService) Move(
 }
 
 type AttachedStorageDomainDiskServiceRegisterRequest struct {
-	header map[string]string
-	query  map[string]string
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
 }
 
-func (p *AttachedStorageDomainDiskServiceRegisterRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Header(key, value string) *AttachedStorageDomainDiskServiceRegisterRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRegisterRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Query(key, value string) *AttachedStorageDomainDiskServiceRegisterRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) send() *AttachedStorageDomainDiskServiceRegisterResponse {
+
 }
 
 //
@@ -30550,22 +33544,29 @@ func (op *AttachedStorageDomainDiskService) Register(
 }
 
 type AttachedStorageDomainDiskServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
 }
 
-func (p *AttachedStorageDomainDiskServiceRemoveRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Header(key, value string) *AttachedStorageDomainDiskServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRemoveRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Query(key, value string) *AttachedStorageDomainDiskServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) send() *AttachedStorageDomainDiskServiceRemoveResponse {
+
 }
 
 //
@@ -30589,22 +33590,29 @@ func (op *AttachedStorageDomainDiskService) Remove(
 }
 
 type AttachedStorageDomainDiskServiceSparsifyRequest struct {
-	header map[string]string
-	query  map[string]string
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
 }
 
-func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Header(key, value string) *AttachedStorageDomainDiskServiceSparsifyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Query(key, value string) *AttachedStorageDomainDiskServiceSparsifyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) send() *AttachedStorageDomainDiskServiceSparsifyResponse {
+
 }
 
 //
@@ -30626,27 +33634,34 @@ func (op *AttachedStorageDomainDiskService) Sparsify(
 }
 
 type AttachedStorageDomainDiskServiceUpdateRequest struct {
-	header map[string]string
-	query  map[string]string
-	disk   *Disk
+	attachedStorageDomainDisk *AttachedStorageDomainDiskService
+	header                    map[string]string
+	query                     map[string]string
+	disk                      *Disk
 }
 
-func (p *AttachedStorageDomainDiskServiceUpdateRequest) Header(key, value string) {
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Header(key, value string) *AttachedStorageDomainDiskServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceUpdateRequest) Query(key, value string) {
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Query(key, value string) *AttachedStorageDomainDiskServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) {
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *AttachedStorageDomainDiskServiceUpdateRequest {
 	p.disk = disk
+	return p
+}
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) send() *AttachedStorageDomainDiskServiceUpdateResponse {
+
 }
 
 //
@@ -30736,22 +33751,29 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 }
 
 type VnicProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	vnicProfile *VnicProfileService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *VnicProfileServiceGetRequest) Header(key, value string) {
+func (p *VnicProfileServiceGetRequest) Header(key, value string) *VnicProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VnicProfileServiceGetRequest) Query(key, value string) {
+func (p *VnicProfileServiceGetRequest) Query(key, value string) *VnicProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VnicProfileServiceGetRequest) send() *VnicProfileServiceGetResponse {
+
 }
 
 //
@@ -30779,27 +33801,34 @@ func (op *VnicProfileService) Get(
 }
 
 type VnicProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vnicProfile *VnicProfileService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *VnicProfileServiceRemoveRequest) Header(key, value string) {
+func (p *VnicProfileServiceRemoveRequest) Header(key, value string) *VnicProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VnicProfileServiceRemoveRequest) Query(key, value string) {
+func (p *VnicProfileServiceRemoveRequest) Query(key, value string) *VnicProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VnicProfileServiceRemoveRequest) Async(async bool) {
+func (p *VnicProfileServiceRemoveRequest) Async(async bool) *VnicProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VnicProfileServiceRemoveRequest) send() *VnicProfileServiceRemoveResponse {
+
 }
 
 //
@@ -30827,31 +33856,39 @@ func (op *VnicProfileService) Remove(
 }
 
 type VnicProfileServiceUpdateRequest struct {
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	profile *VnicProfile
+	vnicProfile *VnicProfileService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	profile     *VnicProfile
 }
 
-func (p *VnicProfileServiceUpdateRequest) Header(key, value string) {
+func (p *VnicProfileServiceUpdateRequest) Header(key, value string) *VnicProfileServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VnicProfileServiceUpdateRequest) Query(key, value string) {
+func (p *VnicProfileServiceUpdateRequest) Query(key, value string) *VnicProfileServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VnicProfileServiceUpdateRequest) Async(async bool) {
+func (p *VnicProfileServiceUpdateRequest) Async(async bool) *VnicProfileServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *VnicProfileServiceUpdateRequest) Profile(profile *VnicProfile) {
+func (p *VnicProfileServiceUpdateRequest) Profile(profile *VnicProfile) *VnicProfileServiceUpdateRequest {
 	p.profile = profile
+	return p
+}
+func (p *VnicProfileServiceUpdateRequest) send() *VnicProfileServiceUpdateResponse {
+
 }
 
 //
@@ -30926,27 +33963,34 @@ func NewVmGraphicsConsolesService(connection *Connection, path string) *VmGraphi
 }
 
 type VmGraphicsConsolesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	console *GraphicsConsole
+	vmGraphicsConsoles *VmGraphicsConsolesService
+	header             map[string]string
+	query              map[string]string
+	console            *GraphicsConsole
 }
 
-func (p *VmGraphicsConsolesServiceAddRequest) Header(key, value string) {
+func (p *VmGraphicsConsolesServiceAddRequest) Header(key, value string) *VmGraphicsConsolesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsolesServiceAddRequest) Query(key, value string) {
+func (p *VmGraphicsConsolesServiceAddRequest) Query(key, value string) *VmGraphicsConsolesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) {
+func (p *VmGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) *VmGraphicsConsolesServiceAddRequest {
 	p.console = console
+	return p
+}
+func (p *VmGraphicsConsolesServiceAddRequest) send() *VmGraphicsConsolesServiceAddResponse {
+
 }
 
 //
@@ -30975,31 +34019,39 @@ func (op *VmGraphicsConsolesService) Add(
 }
 
 type VmGraphicsConsolesServiceListRequest struct {
-	header  map[string]string
-	query   map[string]string
-	current *bool
-	max     *int64
+	vmGraphicsConsoles *VmGraphicsConsolesService
+	header             map[string]string
+	query              map[string]string
+	current            *bool
+	max                *int64
 }
 
-func (p *VmGraphicsConsolesServiceListRequest) Header(key, value string) {
+func (p *VmGraphicsConsolesServiceListRequest) Header(key, value string) *VmGraphicsConsolesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsolesServiceListRequest) Query(key, value string) {
+func (p *VmGraphicsConsolesServiceListRequest) Query(key, value string) *VmGraphicsConsolesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsolesServiceListRequest) Current(current bool) {
+func (p *VmGraphicsConsolesServiceListRequest) Current(current bool) *VmGraphicsConsolesServiceListRequest {
 	p.current = &current
+	return p
 }
-func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) {
+func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) *VmGraphicsConsolesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmGraphicsConsolesServiceListRequest) send() *VmGraphicsConsolesServiceListResponse {
+
 }
 
 //
@@ -31081,22 +34133,29 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 }
 
 type PermitServiceGetRequest struct {
+	permit *PermitService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *PermitServiceGetRequest) Header(key, value string) {
+func (p *PermitServiceGetRequest) Header(key, value string) *PermitServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermitServiceGetRequest) Query(key, value string) {
+func (p *PermitServiceGetRequest) Query(key, value string) *PermitServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *PermitServiceGetRequest) send() *PermitServiceGetResponse {
+
 }
 
 //
@@ -31137,27 +34196,34 @@ func (op *PermitService) Get(
 }
 
 type PermitServiceRemoveRequest struct {
+	permit *PermitService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *PermitServiceRemoveRequest) Header(key, value string) {
+func (p *PermitServiceRemoveRequest) Header(key, value string) *PermitServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermitServiceRemoveRequest) Query(key, value string) {
+func (p *PermitServiceRemoveRequest) Query(key, value string) *PermitServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *PermitServiceRemoveRequest) Async(async bool) {
+func (p *PermitServiceRemoveRequest) Async(async bool) *PermitServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *PermitServiceRemoveRequest) send() *PermitServiceRemoveResponse {
+
 }
 
 //
@@ -31217,27 +34283,34 @@ func NewDataCenterService(connection *Connection, path string) *DataCenterServic
 }
 
 type DataCenterServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	dataCenter *DataCenterService
+	header     map[string]string
+	query      map[string]string
+	filter     *bool
 }
 
-func (p *DataCenterServiceGetRequest) Header(key, value string) {
+func (p *DataCenterServiceGetRequest) Header(key, value string) *DataCenterServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DataCenterServiceGetRequest) Query(key, value string) {
+func (p *DataCenterServiceGetRequest) Query(key, value string) *DataCenterServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DataCenterServiceGetRequest) Filter(filter bool) {
+func (p *DataCenterServiceGetRequest) Filter(filter bool) *DataCenterServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *DataCenterServiceGetRequest) send() *DataCenterServiceGetResponse {
+
 }
 
 //
@@ -31306,31 +34379,39 @@ func (op *DataCenterService) Get(
 }
 
 type DataCenterServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	force  *bool
+	dataCenter *DataCenterService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	force      *bool
 }
 
-func (p *DataCenterServiceRemoveRequest) Header(key, value string) {
+func (p *DataCenterServiceRemoveRequest) Header(key, value string) *DataCenterServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DataCenterServiceRemoveRequest) Query(key, value string) {
+func (p *DataCenterServiceRemoveRequest) Query(key, value string) *DataCenterServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DataCenterServiceRemoveRequest) Async(async bool) {
+func (p *DataCenterServiceRemoveRequest) Async(async bool) *DataCenterServiceRemoveRequest {
 	p.async = &async
+	return p
 }
-func (p *DataCenterServiceRemoveRequest) Force(force bool) {
+func (p *DataCenterServiceRemoveRequest) Force(force bool) *DataCenterServiceRemoveRequest {
 	p.force = &force
+	return p
+}
+func (p *DataCenterServiceRemoveRequest) send() *DataCenterServiceRemoveResponse {
+
 }
 
 //
@@ -31373,31 +34454,39 @@ func (op *DataCenterService) Remove(
 }
 
 type DataCenterServiceUpdateRequest struct {
+	dataCenter *DataCenterService
 	header     map[string]string
 	query      map[string]string
 	async      *bool
 	dataCenter *DataCenter
 }
 
-func (p *DataCenterServiceUpdateRequest) Header(key, value string) {
+func (p *DataCenterServiceUpdateRequest) Header(key, value string) *DataCenterServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DataCenterServiceUpdateRequest) Query(key, value string) {
+func (p *DataCenterServiceUpdateRequest) Query(key, value string) *DataCenterServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DataCenterServiceUpdateRequest) Async(async bool) {
+func (p *DataCenterServiceUpdateRequest) Async(async bool) *DataCenterServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *DataCenterServiceUpdateRequest) DataCenter(dataCenter *DataCenter) {
+func (p *DataCenterServiceUpdateRequest) DataCenter(dataCenter *DataCenter) *DataCenterServiceUpdateRequest {
 	p.dataCenter = dataCenter
+	return p
+}
+func (p *DataCenterServiceUpdateRequest) send() *DataCenterServiceUpdateResponse {
+
 }
 
 //
@@ -31581,27 +34670,34 @@ func NewStatisticsService(connection *Connection, path string) *StatisticsServic
 }
 
 type StatisticsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	statistics *StatisticsService
+	header     map[string]string
+	query      map[string]string
+	max        *int64
 }
 
-func (p *StatisticsServiceListRequest) Header(key, value string) {
+func (p *StatisticsServiceListRequest) Header(key, value string) *StatisticsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StatisticsServiceListRequest) Query(key, value string) {
+func (p *StatisticsServiceListRequest) Query(key, value string) *StatisticsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StatisticsServiceListRequest) Max(max int64) {
+func (p *StatisticsServiceListRequest) Max(max int64) *StatisticsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StatisticsServiceListRequest) send() *StatisticsServiceListResponse {
+
 }
 
 //
@@ -31721,31 +34817,39 @@ func NewSchedulingPolicyUnitsService(connection *Connection, path string) *Sched
 }
 
 type SchedulingPolicyUnitsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	schedulingPolicyUnits *SchedulingPolicyUnitsService
+	header                map[string]string
+	query                 map[string]string
+	filter                *bool
+	max                   *int64
 }
 
-func (p *SchedulingPolicyUnitsServiceListRequest) Header(key, value string) {
+func (p *SchedulingPolicyUnitsServiceListRequest) Header(key, value string) *SchedulingPolicyUnitsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitsServiceListRequest) Query(key, value string) {
+func (p *SchedulingPolicyUnitsServiceListRequest) Query(key, value string) *SchedulingPolicyUnitsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SchedulingPolicyUnitsServiceListRequest) Filter(filter bool) {
+func (p *SchedulingPolicyUnitsServiceListRequest) Filter(filter bool) *SchedulingPolicyUnitsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) {
+func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) *SchedulingPolicyUnitsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SchedulingPolicyUnitsServiceListRequest) send() *SchedulingPolicyUnitsServiceListResponse {
+
 }
 
 //
@@ -31819,31 +34923,39 @@ func NewTemplateDiskService(connection *Connection, path string) *TemplateDiskSe
 }
 
 type TemplateDiskServiceCopyRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	filter *bool
+	templateDisk *TemplateDiskService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	filter       *bool
 }
 
-func (p *TemplateDiskServiceCopyRequest) Header(key, value string) {
+func (p *TemplateDiskServiceCopyRequest) Header(key, value string) *TemplateDiskServiceCopyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceCopyRequest) Query(key, value string) {
+func (p *TemplateDiskServiceCopyRequest) Query(key, value string) *TemplateDiskServiceCopyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceCopyRequest) Async(async bool) {
+func (p *TemplateDiskServiceCopyRequest) Async(async bool) *TemplateDiskServiceCopyRequest {
 	p.async = &async
+	return p
 }
-func (p *TemplateDiskServiceCopyRequest) Filter(filter bool) {
+func (p *TemplateDiskServiceCopyRequest) Filter(filter bool) *TemplateDiskServiceCopyRequest {
 	p.filter = &filter
+	return p
+}
+func (p *TemplateDiskServiceCopyRequest) send() *TemplateDiskServiceCopyResponse {
+
 }
 
 //
@@ -31872,31 +34984,39 @@ func (op *TemplateDiskService) Copy(
 }
 
 type TemplateDiskServiceExportRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	filter *bool
+	templateDisk *TemplateDiskService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	filter       *bool
 }
 
-func (p *TemplateDiskServiceExportRequest) Header(key, value string) {
+func (p *TemplateDiskServiceExportRequest) Header(key, value string) *TemplateDiskServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceExportRequest) Query(key, value string) {
+func (p *TemplateDiskServiceExportRequest) Query(key, value string) *TemplateDiskServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceExportRequest) Async(async bool) {
+func (p *TemplateDiskServiceExportRequest) Async(async bool) *TemplateDiskServiceExportRequest {
 	p.async = &async
+	return p
 }
-func (p *TemplateDiskServiceExportRequest) Filter(filter bool) {
+func (p *TemplateDiskServiceExportRequest) Filter(filter bool) *TemplateDiskServiceExportRequest {
 	p.filter = &filter
+	return p
+}
+func (p *TemplateDiskServiceExportRequest) send() *TemplateDiskServiceExportResponse {
+
 }
 
 //
@@ -31925,22 +35045,29 @@ func (op *TemplateDiskService) Export(
 }
 
 type TemplateDiskServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateDisk *TemplateDiskService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *TemplateDiskServiceGetRequest) Header(key, value string) {
+func (p *TemplateDiskServiceGetRequest) Header(key, value string) *TemplateDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceGetRequest) Query(key, value string) {
+func (p *TemplateDiskServiceGetRequest) Query(key, value string) *TemplateDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateDiskServiceGetRequest) send() *TemplateDiskServiceGetResponse {
+
 }
 
 //
@@ -31967,27 +35094,34 @@ func (op *TemplateDiskService) Get(
 }
 
 type TemplateDiskServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	templateDisk *TemplateDiskService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *TemplateDiskServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateDiskServiceRemoveRequest) Header(key, value string) *TemplateDiskServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateDiskServiceRemoveRequest) Query(key, value string) *TemplateDiskServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateDiskServiceRemoveRequest) Async(async bool) {
+func (p *TemplateDiskServiceRemoveRequest) Async(async bool) *TemplateDiskServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TemplateDiskServiceRemoveRequest) send() *TemplateDiskServiceRemoveResponse {
+
 }
 
 //
@@ -32044,27 +35178,34 @@ func NewAffinityLabelVmsService(connection *Connection, path string) *AffinityLa
 }
 
 type AffinityLabelVmsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	vm     *Vm
+	affinityLabelVms *AffinityLabelVmsService
+	header           map[string]string
+	query            map[string]string
+	vm               *Vm
 }
 
-func (p *AffinityLabelVmsServiceAddRequest) Header(key, value string) {
+func (p *AffinityLabelVmsServiceAddRequest) Header(key, value string) *AffinityLabelVmsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelVmsServiceAddRequest) Query(key, value string) {
+func (p *AffinityLabelVmsServiceAddRequest) Query(key, value string) *AffinityLabelVmsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityLabelVmsServiceAddRequest) Vm(vm *Vm) {
+func (p *AffinityLabelVmsServiceAddRequest) Vm(vm *Vm) *AffinityLabelVmsServiceAddRequest {
 	p.vm = vm
+	return p
+}
+func (p *AffinityLabelVmsServiceAddRequest) send() *AffinityLabelVmsServiceAddResponse {
+
 }
 
 //
@@ -32093,22 +35234,29 @@ func (op *AffinityLabelVmsService) Add(
 }
 
 type AffinityLabelVmsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelVms *AffinityLabelVmsService
+	header           map[string]string
+	query            map[string]string
 }
 
-func (p *AffinityLabelVmsServiceListRequest) Header(key, value string) {
+func (p *AffinityLabelVmsServiceListRequest) Header(key, value string) *AffinityLabelVmsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) {
+func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) *AffinityLabelVmsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelVmsServiceListRequest) send() *AffinityLabelVmsServiceListResponse {
+
 }
 
 //
@@ -32175,27 +35323,34 @@ func NewCopyableService(connection *Connection, path string) *CopyableService {
 }
 
 type CopyableServiceCopyRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	copyable *CopyableService
+	header   map[string]string
+	query    map[string]string
+	async    *bool
 }
 
-func (p *CopyableServiceCopyRequest) Header(key, value string) {
+func (p *CopyableServiceCopyRequest) Header(key, value string) *CopyableServiceCopyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CopyableServiceCopyRequest) Query(key, value string) {
+func (p *CopyableServiceCopyRequest) Query(key, value string) *CopyableServiceCopyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *CopyableServiceCopyRequest) Async(async bool) {
+func (p *CopyableServiceCopyRequest) Async(async bool) *CopyableServiceCopyRequest {
 	p.async = &async
+	return p
+}
+func (p *CopyableServiceCopyRequest) send() *CopyableServiceCopyResponse {
+
 }
 
 //
@@ -32249,27 +35404,34 @@ func NewAffinityLabelsService(connection *Connection, path string) *AffinityLabe
 }
 
 type AffinityLabelsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	label  *AffinityLabel
+	affinityLabels *AffinityLabelsService
+	header         map[string]string
+	query          map[string]string
+	label          *AffinityLabel
 }
 
-func (p *AffinityLabelsServiceAddRequest) Header(key, value string) {
+func (p *AffinityLabelsServiceAddRequest) Header(key, value string) *AffinityLabelsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelsServiceAddRequest) Query(key, value string) {
+func (p *AffinityLabelsServiceAddRequest) Query(key, value string) *AffinityLabelsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityLabelsServiceAddRequest) Label(label *AffinityLabel) {
+func (p *AffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *AffinityLabelsServiceAddRequest {
 	p.label = label
+	return p
+}
+func (p *AffinityLabelsServiceAddRequest) send() *AffinityLabelsServiceAddResponse {
+
 }
 
 //
@@ -32299,27 +35461,34 @@ func (op *AffinityLabelsService) Add(
 }
 
 type AffinityLabelsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	affinityLabels *AffinityLabelsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
-func (p *AffinityLabelsServiceListRequest) Header(key, value string) {
+func (p *AffinityLabelsServiceListRequest) Header(key, value string) *AffinityLabelsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelsServiceListRequest) Query(key, value string) {
+func (p *AffinityLabelsServiceListRequest) Query(key, value string) *AffinityLabelsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityLabelsServiceListRequest) Max(max int64) {
+func (p *AffinityLabelsServiceListRequest) Max(max int64) *AffinityLabelsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AffinityLabelsServiceListRequest) send() *AffinityLabelsServiceListResponse {
+
 }
 
 //
@@ -32392,27 +35561,34 @@ func NewVmGraphicsConsoleService(connection *Connection, path string) *VmGraphic
 }
 
 type VmGraphicsConsoleServiceGetRequest struct {
-	header  map[string]string
-	query   map[string]string
-	current *bool
+	vmGraphicsConsole *VmGraphicsConsoleService
+	header            map[string]string
+	query             map[string]string
+	current           *bool
 }
 
-func (p *VmGraphicsConsoleServiceGetRequest) Header(key, value string) {
+func (p *VmGraphicsConsoleServiceGetRequest) Header(key, value string) *VmGraphicsConsoleServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceGetRequest) Query(key, value string) {
+func (p *VmGraphicsConsoleServiceGetRequest) Query(key, value string) *VmGraphicsConsoleServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) {
+func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) *VmGraphicsConsoleServiceGetRequest {
 	p.current = &current
+	return p
+}
+func (p *VmGraphicsConsoleServiceGetRequest) send() *VmGraphicsConsoleServiceGetResponse {
+
 }
 
 //
@@ -32452,27 +35628,34 @@ func (op *VmGraphicsConsoleService) Get(
 }
 
 type VmGraphicsConsoleServiceProxyTicketRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmGraphicsConsole *VmGraphicsConsoleService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
-func (p *VmGraphicsConsoleServiceProxyTicketRequest) Header(key, value string) {
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Header(key, value string) *VmGraphicsConsoleServiceProxyTicketRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceProxyTicketRequest) Query(key, value string) {
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Query(key, value string) *VmGraphicsConsoleServiceProxyTicketRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceProxyTicketRequest) Async(async bool) {
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Async(async bool) *VmGraphicsConsoleServiceProxyTicketRequest {
 	p.async = &async
+	return p
+}
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) send() *VmGraphicsConsoleServiceProxyTicketResponse {
+
 }
 
 //
@@ -32505,22 +35688,29 @@ func (op *VmGraphicsConsoleService) ProxyTicket(
 }
 
 type VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest struct {
-	header map[string]string
-	query  map[string]string
+	vmGraphicsConsole *VmGraphicsConsoleService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Header(key, value string) {
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Header(key, value string) *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Query(key, value string) {
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Query(key, value string) *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) send() *VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse {
+
 }
 
 //
@@ -32608,27 +35798,34 @@ func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
 }
 
 type VmGraphicsConsoleServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmGraphicsConsole *VmGraphicsConsoleService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
-func (p *VmGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+func (p *VmGraphicsConsoleServiceRemoveRequest) Header(key, value string) *VmGraphicsConsoleServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+func (p *VmGraphicsConsoleServiceRemoveRequest) Query(key, value string) *VmGraphicsConsoleServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+func (p *VmGraphicsConsoleServiceRemoveRequest) Async(async bool) *VmGraphicsConsoleServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *VmGraphicsConsoleServiceRemoveRequest) send() *VmGraphicsConsoleServiceRemoveResponse {
+
 }
 
 //
@@ -32656,27 +35853,34 @@ func (op *VmGraphicsConsoleService) Remove(
 }
 
 type VmGraphicsConsoleServiceTicketRequest struct {
-	header map[string]string
-	query  map[string]string
-	ticket *Ticket
+	vmGraphicsConsole *VmGraphicsConsoleService
+	header            map[string]string
+	query             map[string]string
+	ticket            *Ticket
 }
 
-func (p *VmGraphicsConsoleServiceTicketRequest) Header(key, value string) {
+func (p *VmGraphicsConsoleServiceTicketRequest) Header(key, value string) *VmGraphicsConsoleServiceTicketRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceTicketRequest) Query(key, value string) {
+func (p *VmGraphicsConsoleServiceTicketRequest) Query(key, value string) *VmGraphicsConsoleServiceTicketRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmGraphicsConsoleServiceTicketRequest) Ticket(ticket *Ticket) {
+func (p *VmGraphicsConsoleServiceTicketRequest) Ticket(ticket *Ticket) *VmGraphicsConsoleServiceTicketRequest {
 	p.ticket = ticket
+	return p
+}
+func (p *VmGraphicsConsoleServiceTicketRequest) send() *VmGraphicsConsoleServiceTicketResponse {
+
 }
 
 //
@@ -32755,22 +35959,29 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 }
 
 type AffinityLabelHostServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelHost *AffinityLabelHostService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *AffinityLabelHostServiceGetRequest) Header(key, value string) {
+func (p *AffinityLabelHostServiceGetRequest) Header(key, value string) *AffinityLabelHostServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) {
+func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) *AffinityLabelHostServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelHostServiceGetRequest) send() *AffinityLabelHostServiceGetResponse {
+
 }
 
 //
@@ -32798,22 +36009,29 @@ func (op *AffinityLabelHostService) Get(
 }
 
 type AffinityLabelHostServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelHost *AffinityLabelHostService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *AffinityLabelHostServiceRemoveRequest) Header(key, value string) {
+func (p *AffinityLabelHostServiceRemoveRequest) Header(key, value string) *AffinityLabelHostServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelHostServiceRemoveRequest) Query(key, value string) {
+func (p *AffinityLabelHostServiceRemoveRequest) Query(key, value string) *AffinityLabelHostServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelHostServiceRemoveRequest) send() *AffinityLabelHostServiceRemoveResponse {
+
 }
 
 //
@@ -32862,22 +36080,29 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 }
 
 type AssignedTagServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedTag *AssignedTagService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *AssignedTagServiceGetRequest) Header(key, value string) {
+func (p *AssignedTagServiceGetRequest) Header(key, value string) *AssignedTagServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedTagServiceGetRequest) Query(key, value string) {
+func (p *AssignedTagServiceGetRequest) Query(key, value string) *AssignedTagServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedTagServiceGetRequest) send() *AssignedTagServiceGetResponse {
+
 }
 
 //
@@ -32918,27 +36143,34 @@ func (op *AssignedTagService) Get(
 }
 
 type AssignedTagServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	assignedTag *AssignedTagService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *AssignedTagServiceRemoveRequest) Header(key, value string) {
+func (p *AssignedTagServiceRemoveRequest) Header(key, value string) *AssignedTagServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedTagServiceRemoveRequest) Query(key, value string) {
+func (p *AssignedTagServiceRemoveRequest) Query(key, value string) *AssignedTagServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedTagServiceRemoveRequest) Async(async bool) {
+func (p *AssignedTagServiceRemoveRequest) Async(async bool) *AssignedTagServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *AssignedTagServiceRemoveRequest) send() *AssignedTagServiceRemoveResponse {
+
 }
 
 //
@@ -32998,6 +36230,7 @@ func NewDiskService(connection *Connection, path string) *DiskService {
 }
 
 type DiskServiceCopyRequest struct {
+	disk          *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -33006,31 +36239,40 @@ type DiskServiceCopyRequest struct {
 	storageDomain *StorageDomain
 }
 
-func (p *DiskServiceCopyRequest) Header(key, value string) {
+func (p *DiskServiceCopyRequest) Header(key, value string) *DiskServiceCopyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceCopyRequest) Query(key, value string) {
+func (p *DiskServiceCopyRequest) Query(key, value string) *DiskServiceCopyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskServiceCopyRequest) Async(async bool) {
+func (p *DiskServiceCopyRequest) Async(async bool) *DiskServiceCopyRequest {
 	p.async = &async
+	return p
 }
-func (p *DiskServiceCopyRequest) Disk(disk *Disk) {
+func (p *DiskServiceCopyRequest) Disk(disk *Disk) *DiskServiceCopyRequest {
 	p.disk = disk
+	return p
 }
-func (p *DiskServiceCopyRequest) Filter(filter bool) {
+func (p *DiskServiceCopyRequest) Filter(filter bool) *DiskServiceCopyRequest {
 	p.filter = &filter
+	return p
 }
-func (p *DiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *DiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) *DiskServiceCopyRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *DiskServiceCopyRequest) send() *DiskServiceCopyResponse {
+
 }
 
 //
@@ -33109,6 +36351,7 @@ func (op *DiskService) Copy(
 }
 
 type DiskServiceExportRequest struct {
+	disk          *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -33116,28 +36359,36 @@ type DiskServiceExportRequest struct {
 	storageDomain *StorageDomain
 }
 
-func (p *DiskServiceExportRequest) Header(key, value string) {
+func (p *DiskServiceExportRequest) Header(key, value string) *DiskServiceExportRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceExportRequest) Query(key, value string) {
+func (p *DiskServiceExportRequest) Query(key, value string) *DiskServiceExportRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskServiceExportRequest) Async(async bool) {
+func (p *DiskServiceExportRequest) Async(async bool) *DiskServiceExportRequest {
 	p.async = &async
+	return p
 }
-func (p *DiskServiceExportRequest) Filter(filter bool) {
+func (p *DiskServiceExportRequest) Filter(filter bool) *DiskServiceExportRequest {
 	p.filter = &filter
+	return p
 }
-func (p *DiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *DiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *DiskServiceExportRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *DiskServiceExportRequest) send() *DiskServiceExportResponse {
+
 }
 
 //
@@ -33170,22 +36421,29 @@ func (op *DiskService) Export(
 }
 
 type DiskServiceGetRequest struct {
+	disk   *DiskService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *DiskServiceGetRequest) Header(key, value string) {
+func (p *DiskServiceGetRequest) Header(key, value string) *DiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceGetRequest) Query(key, value string) {
+func (p *DiskServiceGetRequest) Query(key, value string) *DiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskServiceGetRequest) send() *DiskServiceGetResponse {
+
 }
 
 //
@@ -33213,6 +36471,7 @@ func (op *DiskService) Get(
 }
 
 type DiskServiceMoveRequest struct {
+	disk          *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -33220,28 +36479,36 @@ type DiskServiceMoveRequest struct {
 	storageDomain *StorageDomain
 }
 
-func (p *DiskServiceMoveRequest) Header(key, value string) {
+func (p *DiskServiceMoveRequest) Header(key, value string) *DiskServiceMoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceMoveRequest) Query(key, value string) {
+func (p *DiskServiceMoveRequest) Query(key, value string) *DiskServiceMoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskServiceMoveRequest) Async(async bool) {
+func (p *DiskServiceMoveRequest) Async(async bool) *DiskServiceMoveRequest {
 	p.async = &async
+	return p
 }
-func (p *DiskServiceMoveRequest) Filter(filter bool) {
+func (p *DiskServiceMoveRequest) Filter(filter bool) *DiskServiceMoveRequest {
 	p.filter = &filter
+	return p
 }
-func (p *DiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) {
+func (p *DiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) *DiskServiceMoveRequest {
 	p.storageDomain = storageDomain
+	return p
+}
+func (p *DiskServiceMoveRequest) send() *DiskServiceMoveResponse {
+
 }
 
 //
@@ -33287,27 +36554,34 @@ func (op *DiskService) Move(
 }
 
 type DiskServiceRemoveRequest struct {
+	disk   *DiskService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *DiskServiceRemoveRequest) Header(key, value string) {
+func (p *DiskServiceRemoveRequest) Header(key, value string) *DiskServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceRemoveRequest) Query(key, value string) {
+func (p *DiskServiceRemoveRequest) Query(key, value string) *DiskServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskServiceRemoveRequest) Async(async bool) {
+func (p *DiskServiceRemoveRequest) Async(async bool) *DiskServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *DiskServiceRemoveRequest) send() *DiskServiceRemoveResponse {
+
 }
 
 //
@@ -33335,22 +36609,29 @@ func (op *DiskService) Remove(
 }
 
 type DiskServiceSparsifyRequest struct {
+	disk   *DiskService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *DiskServiceSparsifyRequest) Header(key, value string) {
+func (p *DiskServiceSparsifyRequest) Header(key, value string) *DiskServiceSparsifyRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceSparsifyRequest) Query(key, value string) {
+func (p *DiskServiceSparsifyRequest) Query(key, value string) *DiskServiceSparsifyRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *DiskServiceSparsifyRequest) send() *DiskServiceSparsifyResponse {
+
 }
 
 //
@@ -33373,27 +36654,34 @@ func (op *DiskService) Sparsify(
 }
 
 type DiskServiceUpdateRequest struct {
+	disk   *DiskService
 	header map[string]string
 	query  map[string]string
 	disk   *Disk
 }
 
-func (p *DiskServiceUpdateRequest) Header(key, value string) {
+func (p *DiskServiceUpdateRequest) Header(key, value string) *DiskServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskServiceUpdateRequest) Query(key, value string) {
+func (p *DiskServiceUpdateRequest) Query(key, value string) *DiskServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskServiceUpdateRequest) Disk(disk *Disk) {
+func (p *DiskServiceUpdateRequest) Disk(disk *Disk) *DiskServiceUpdateRequest {
 	p.disk = disk
+	return p
+}
+func (p *DiskServiceUpdateRequest) send() *DiskServiceUpdateResponse {
+
 }
 
 //
@@ -33496,22 +36784,29 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 }
 
 type TemplateDiskAttachmentsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateDiskAttachments *TemplateDiskAttachmentsService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *TemplateDiskAttachmentsServiceListRequest) Header(key, value string) {
+func (p *TemplateDiskAttachmentsServiceListRequest) Header(key, value string) *TemplateDiskAttachmentsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) {
+func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) *TemplateDiskAttachmentsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateDiskAttachmentsServiceListRequest) send() *TemplateDiskAttachmentsServiceListResponse {
+
 }
 
 //
@@ -33577,35 +36872,44 @@ func NewStorageDomainContentDisksService(connection *Connection, path string) *S
 }
 
 type StorageDomainContentDisksServiceListRequest struct {
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	storageDomainContentDisks *StorageDomainContentDisksService
+	header                    map[string]string
+	query                     map[string]string
+	caseSensitive             *bool
+	max                       *int64
+	search                    *string
 }
 
-func (p *StorageDomainContentDisksServiceListRequest) Header(key, value string) {
+func (p *StorageDomainContentDisksServiceListRequest) Header(key, value string) *StorageDomainContentDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainContentDisksServiceListRequest) Query(key, value string) {
+func (p *StorageDomainContentDisksServiceListRequest) Query(key, value string) *StorageDomainContentDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainContentDisksServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *StorageDomainContentDisksServiceListRequest) CaseSensitive(caseSensitive bool) *StorageDomainContentDisksServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *StorageDomainContentDisksServiceListRequest) Max(max int64) {
+func (p *StorageDomainContentDisksServiceListRequest) Max(max int64) *StorageDomainContentDisksServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *StorageDomainContentDisksServiceListRequest) Search(search string) {
+func (p *StorageDomainContentDisksServiceListRequest) Search(search string) *StorageDomainContentDisksServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *StorageDomainContentDisksServiceListRequest) send() *StorageDomainContentDisksServiceListResponse {
+
 }
 
 //
@@ -33685,27 +36989,34 @@ func NewHostDevicesService(connection *Connection, path string) *HostDevicesServ
 }
 
 type HostDevicesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	hostDevices *HostDevicesService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
-func (p *HostDevicesServiceListRequest) Header(key, value string) {
+func (p *HostDevicesServiceListRequest) Header(key, value string) *HostDevicesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostDevicesServiceListRequest) Query(key, value string) {
+func (p *HostDevicesServiceListRequest) Query(key, value string) *HostDevicesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostDevicesServiceListRequest) Max(max int64) {
+func (p *HostDevicesServiceListRequest) Max(max int64) *HostDevicesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *HostDevicesServiceListRequest) send() *HostDevicesServiceListResponse {
+
 }
 
 //
@@ -33778,27 +37089,34 @@ func NewAssignedNetworksService(connection *Connection, path string) *AssignedNe
 }
 
 type AssignedNetworksServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	network *Network
+	assignedNetworks *AssignedNetworksService
+	header           map[string]string
+	query            map[string]string
+	network          *Network
 }
 
-func (p *AssignedNetworksServiceAddRequest) Header(key, value string) {
+func (p *AssignedNetworksServiceAddRequest) Header(key, value string) *AssignedNetworksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedNetworksServiceAddRequest) Query(key, value string) {
+func (p *AssignedNetworksServiceAddRequest) Query(key, value string) *AssignedNetworksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedNetworksServiceAddRequest) Network(network *Network) {
+func (p *AssignedNetworksServiceAddRequest) Network(network *Network) *AssignedNetworksServiceAddRequest {
 	p.network = network
+	return p
+}
+func (p *AssignedNetworksServiceAddRequest) send() *AssignedNetworksServiceAddResponse {
+
 }
 
 //
@@ -33826,27 +37144,34 @@ func (op *AssignedNetworksService) Add(
 }
 
 type AssignedNetworksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	assignedNetworks *AssignedNetworksService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
-func (p *AssignedNetworksServiceListRequest) Header(key, value string) {
+func (p *AssignedNetworksServiceListRequest) Header(key, value string) *AssignedNetworksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedNetworksServiceListRequest) Query(key, value string) {
+func (p *AssignedNetworksServiceListRequest) Query(key, value string) *AssignedNetworksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedNetworksServiceListRequest) Max(max int64) {
+func (p *AssignedNetworksServiceListRequest) Max(max int64) *AssignedNetworksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *AssignedNetworksServiceListRequest) send() *AssignedNetworksServiceListResponse {
+
 }
 
 //
@@ -33917,27 +37242,34 @@ func NewStorageService(connection *Connection, path string) *StorageService {
 }
 
 type StorageServiceGetRequest struct {
+	storage      *StorageService
 	header       map[string]string
 	query        map[string]string
 	reportStatus *bool
 }
 
-func (p *StorageServiceGetRequest) Header(key, value string) {
+func (p *StorageServiceGetRequest) Header(key, value string) *StorageServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServiceGetRequest) Query(key, value string) {
+func (p *StorageServiceGetRequest) Query(key, value string) *StorageServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) {
+func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) *StorageServiceGetRequest {
 	p.reportStatus = &reportStatus
+	return p
+}
+func (p *StorageServiceGetRequest) send() *StorageServiceGetResponse {
+
 }
 
 //
@@ -34041,22 +37373,29 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 }
 
 type UnmanagedNetworkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	unmanagedNetwork *UnmanagedNetworkService
+	header           map[string]string
+	query            map[string]string
 }
 
-func (p *UnmanagedNetworkServiceGetRequest) Header(key, value string) {
+func (p *UnmanagedNetworkServiceGetRequest) Header(key, value string) *UnmanagedNetworkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) {
+func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) *UnmanagedNetworkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *UnmanagedNetworkServiceGetRequest) send() *UnmanagedNetworkServiceGetResponse {
+
 }
 
 //
@@ -34083,27 +37422,34 @@ func (op *UnmanagedNetworkService) Get(
 }
 
 type UnmanagedNetworkServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	unmanagedNetwork *UnmanagedNetworkService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
 }
 
-func (p *UnmanagedNetworkServiceRemoveRequest) Header(key, value string) {
+func (p *UnmanagedNetworkServiceRemoveRequest) Header(key, value string) *UnmanagedNetworkServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *UnmanagedNetworkServiceRemoveRequest) Query(key, value string) {
+func (p *UnmanagedNetworkServiceRemoveRequest) Query(key, value string) *UnmanagedNetworkServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *UnmanagedNetworkServiceRemoveRequest) Async(async bool) {
+func (p *UnmanagedNetworkServiceRemoveRequest) Async(async bool) *UnmanagedNetworkServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *UnmanagedNetworkServiceRemoveRequest) send() *UnmanagedNetworkServiceRemoveResponse {
+
 }
 
 //
@@ -34157,22 +37503,29 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 }
 
 type QuotaServiceGetRequest struct {
+	quota  *QuotaService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *QuotaServiceGetRequest) Header(key, value string) {
+func (p *QuotaServiceGetRequest) Header(key, value string) *QuotaServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaServiceGetRequest) Query(key, value string) {
+func (p *QuotaServiceGetRequest) Query(key, value string) *QuotaServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *QuotaServiceGetRequest) send() *QuotaServiceGetResponse {
+
 }
 
 //
@@ -34216,27 +37569,34 @@ func (op *QuotaService) Get(
 }
 
 type QuotaServiceRemoveRequest struct {
+	quota  *QuotaService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *QuotaServiceRemoveRequest) Header(key, value string) {
+func (p *QuotaServiceRemoveRequest) Header(key, value string) *QuotaServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaServiceRemoveRequest) Query(key, value string) {
+func (p *QuotaServiceRemoveRequest) Query(key, value string) *QuotaServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaServiceRemoveRequest) Async(async bool) {
+func (p *QuotaServiceRemoveRequest) Async(async bool) *QuotaServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *QuotaServiceRemoveRequest) send() *QuotaServiceRemoveResponse {
+
 }
 
 //
@@ -34272,31 +37632,39 @@ func (op *QuotaService) Remove(
 }
 
 type QuotaServiceUpdateRequest struct {
+	quota  *QuotaService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 	quota  *Quota
 }
 
-func (p *QuotaServiceUpdateRequest) Header(key, value string) {
+func (p *QuotaServiceUpdateRequest) Header(key, value string) *QuotaServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QuotaServiceUpdateRequest) Query(key, value string) {
+func (p *QuotaServiceUpdateRequest) Query(key, value string) *QuotaServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QuotaServiceUpdateRequest) Async(async bool) {
+func (p *QuotaServiceUpdateRequest) Async(async bool) *QuotaServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *QuotaServiceUpdateRequest) Quota(quota *Quota) {
+func (p *QuotaServiceUpdateRequest) Quota(quota *Quota) *QuotaServiceUpdateRequest {
 	p.quota = quota
+	return p
+}
+func (p *QuotaServiceUpdateRequest) send() *QuotaServiceUpdateResponse {
+
 }
 
 //
@@ -34404,22 +37772,29 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 }
 
 type SnapshotDiskServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	snapshotDisk *SnapshotDiskService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *SnapshotDiskServiceGetRequest) Header(key, value string) {
+func (p *SnapshotDiskServiceGetRequest) Header(key, value string) *SnapshotDiskServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotDiskServiceGetRequest) Query(key, value string) {
+func (p *SnapshotDiskServiceGetRequest) Query(key, value string) *SnapshotDiskServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SnapshotDiskServiceGetRequest) send() *SnapshotDiskServiceGetResponse {
+
 }
 
 //
@@ -34473,27 +37848,34 @@ func NewQossService(connection *Connection, path string) *QossService {
 }
 
 type QossServiceAddRequest struct {
+	qoss   *QossService
 	header map[string]string
 	query  map[string]string
 	qos    *Qos
 }
 
-func (p *QossServiceAddRequest) Header(key, value string) {
+func (p *QossServiceAddRequest) Header(key, value string) *QossServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QossServiceAddRequest) Query(key, value string) {
+func (p *QossServiceAddRequest) Query(key, value string) *QossServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QossServiceAddRequest) Qos(qos *Qos) {
+func (p *QossServiceAddRequest) Qos(qos *Qos) *QossServiceAddRequest {
 	p.qos = qos
+	return p
+}
+func (p *QossServiceAddRequest) send() *QossServiceAddResponse {
+
 }
 
 //
@@ -34521,27 +37903,34 @@ func (op *QossService) Add(
 }
 
 type QossServiceListRequest struct {
+	qoss   *QossService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *QossServiceListRequest) Header(key, value string) {
+func (p *QossServiceListRequest) Header(key, value string) *QossServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *QossServiceListRequest) Query(key, value string) {
+func (p *QossServiceListRequest) Query(key, value string) *QossServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *QossServiceListRequest) Max(max int64) {
+func (p *QossServiceListRequest) Max(max int64) *QossServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *QossServiceListRequest) send() *QossServiceListResponse {
+
 }
 
 //
@@ -34613,22 +38002,29 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 }
 
 type NetworkServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	network *NetworkService
+	header  map[string]string
+	query   map[string]string
 }
 
-func (p *NetworkServiceGetRequest) Header(key, value string) {
+func (p *NetworkServiceGetRequest) Header(key, value string) *NetworkServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkServiceGetRequest) Query(key, value string) {
+func (p *NetworkServiceGetRequest) Query(key, value string) *NetworkServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkServiceGetRequest) send() *NetworkServiceGetResponse {
+
 }
 
 //
@@ -34678,27 +38074,34 @@ func (op *NetworkService) Get(
 }
 
 type NetworkServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	network *NetworkService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
 }
 
-func (p *NetworkServiceRemoveRequest) Header(key, value string) {
+func (p *NetworkServiceRemoveRequest) Header(key, value string) *NetworkServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkServiceRemoveRequest) Query(key, value string) {
+func (p *NetworkServiceRemoveRequest) Query(key, value string) *NetworkServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkServiceRemoveRequest) Async(async bool) {
+func (p *NetworkServiceRemoveRequest) Async(async bool) *NetworkServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *NetworkServiceRemoveRequest) send() *NetworkServiceRemoveResponse {
+
 }
 
 //
@@ -34739,31 +38142,39 @@ func (op *NetworkService) Remove(
 }
 
 type NetworkServiceUpdateRequest struct {
+	network *NetworkService
 	header  map[string]string
 	query   map[string]string
 	async   *bool
 	network *Network
 }
 
-func (p *NetworkServiceUpdateRequest) Header(key, value string) {
+func (p *NetworkServiceUpdateRequest) Header(key, value string) *NetworkServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkServiceUpdateRequest) Query(key, value string) {
+func (p *NetworkServiceUpdateRequest) Query(key, value string) *NetworkServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkServiceUpdateRequest) Async(async bool) {
+func (p *NetworkServiceUpdateRequest) Async(async bool) *NetworkServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *NetworkServiceUpdateRequest) Network(network *Network) {
+func (p *NetworkServiceUpdateRequest) Network(network *Network) *NetworkServiceUpdateRequest {
 	p.network = network
+	return p
+}
+func (p *NetworkServiceUpdateRequest) send() *NetworkServiceUpdateResponse {
+
 }
 
 //
@@ -34887,22 +38298,29 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 }
 
 type InstanceTypeServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	instanceType *InstanceTypeService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *InstanceTypeServiceGetRequest) Header(key, value string) {
+func (p *InstanceTypeServiceGetRequest) Header(key, value string) *InstanceTypeServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeServiceGetRequest) Query(key, value string) {
+func (p *InstanceTypeServiceGetRequest) Query(key, value string) *InstanceTypeServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *InstanceTypeServiceGetRequest) send() *InstanceTypeServiceGetResponse {
+
 }
 
 //
@@ -34934,27 +38352,34 @@ func (op *InstanceTypeService) Get(
 }
 
 type InstanceTypeServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	instanceType *InstanceTypeService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *InstanceTypeServiceRemoveRequest) Header(key, value string) {
+func (p *InstanceTypeServiceRemoveRequest) Header(key, value string) *InstanceTypeServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeServiceRemoveRequest) Query(key, value string) {
+func (p *InstanceTypeServiceRemoveRequest) Query(key, value string) *InstanceTypeServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeServiceRemoveRequest) Async(async bool) {
+func (p *InstanceTypeServiceRemoveRequest) Async(async bool) *InstanceTypeServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *InstanceTypeServiceRemoveRequest) send() *InstanceTypeServiceRemoveResponse {
+
 }
 
 //
@@ -34988,31 +38413,39 @@ func (op *InstanceTypeService) Remove(
 }
 
 type InstanceTypeServiceUpdateRequest struct {
+	instanceType *InstanceTypeService
 	header       map[string]string
 	query        map[string]string
 	async        *bool
 	instanceType *InstanceType
 }
 
-func (p *InstanceTypeServiceUpdateRequest) Header(key, value string) {
+func (p *InstanceTypeServiceUpdateRequest) Header(key, value string) *InstanceTypeServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeServiceUpdateRequest) Query(key, value string) {
+func (p *InstanceTypeServiceUpdateRequest) Query(key, value string) *InstanceTypeServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeServiceUpdateRequest) Async(async bool) {
+func (p *InstanceTypeServiceUpdateRequest) Async(async bool) *InstanceTypeServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *InstanceTypeServiceUpdateRequest) InstanceType(instanceType *InstanceType) {
+func (p *InstanceTypeServiceUpdateRequest) InstanceType(instanceType *InstanceType) *InstanceTypeServiceUpdateRequest {
 	p.instanceType = instanceType
+	return p
+}
+func (p *InstanceTypeServiceUpdateRequest) send() *InstanceTypeServiceUpdateResponse {
+
 }
 
 //
@@ -35133,27 +38566,34 @@ func NewVirtualFunctionAllowedNetworksService(connection *Connection, path strin
 }
 
 type VirtualFunctionAllowedNetworksServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	network *Network
+	virtualFunctionAllowedNetworks *VirtualFunctionAllowedNetworksService
+	header                         map[string]string
+	query                          map[string]string
+	network                        *Network
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Header(key, value string) {
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Header(key, value string) *VirtualFunctionAllowedNetworksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Query(key, value string) {
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Query(key, value string) *VirtualFunctionAllowedNetworksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Network(network *Network) {
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Network(network *Network) *VirtualFunctionAllowedNetworksServiceAddRequest {
 	p.network = network
+	return p
+}
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) send() *VirtualFunctionAllowedNetworksServiceAddResponse {
+
 }
 
 //
@@ -35181,27 +38621,34 @@ func (op *VirtualFunctionAllowedNetworksService) Add(
 }
 
 type VirtualFunctionAllowedNetworksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	virtualFunctionAllowedNetworks *VirtualFunctionAllowedNetworksService
+	header                         map[string]string
+	query                          map[string]string
+	max                            *int64
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceListRequest) Header(key, value string) {
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Header(key, value string) *VirtualFunctionAllowedNetworksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceListRequest) Query(key, value string) {
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Query(key, value string) *VirtualFunctionAllowedNetworksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) {
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) *VirtualFunctionAllowedNetworksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) send() *VirtualFunctionAllowedNetworksServiceListResponse {
+
 }
 
 //
@@ -35272,22 +38719,29 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 }
 
 type HostHookServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	hostHook *HostHookService
+	header   map[string]string
+	query    map[string]string
 }
 
-func (p *HostHookServiceGetRequest) Header(key, value string) {
+func (p *HostHookServiceGetRequest) Header(key, value string) *HostHookServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostHookServiceGetRequest) Query(key, value string) {
+func (p *HostHookServiceGetRequest) Query(key, value string) *HostHookServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *HostHookServiceGetRequest) send() *HostHookServiceGetResponse {
+
 }
 
 //
@@ -35341,27 +38795,34 @@ func NewImagesService(connection *Connection, path string) *ImagesService {
 }
 
 type ImagesServiceListRequest struct {
+	images *ImagesService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *ImagesServiceListRequest) Header(key, value string) {
+func (p *ImagesServiceListRequest) Header(key, value string) *ImagesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ImagesServiceListRequest) Query(key, value string) {
+func (p *ImagesServiceListRequest) Query(key, value string) *ImagesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ImagesServiceListRequest) Max(max int64) {
+func (p *ImagesServiceListRequest) Max(max int64) *ImagesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ImagesServiceListRequest) send() *ImagesServiceListResponse {
+
 }
 
 //
@@ -35432,27 +38893,34 @@ func NewSnapshotCdromsService(connection *Connection, path string) *SnapshotCdro
 }
 
 type SnapshotCdromsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	snapshotCdroms *SnapshotCdromsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
-func (p *SnapshotCdromsServiceListRequest) Header(key, value string) {
+func (p *SnapshotCdromsServiceListRequest) Header(key, value string) *SnapshotCdromsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotCdromsServiceListRequest) Query(key, value string) {
+func (p *SnapshotCdromsServiceListRequest) Query(key, value string) *SnapshotCdromsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SnapshotCdromsServiceListRequest) Max(max int64) {
+func (p *SnapshotCdromsServiceListRequest) Max(max int64) *SnapshotCdromsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *SnapshotCdromsServiceListRequest) send() *SnapshotCdromsServiceListResponse {
+
 }
 
 //
@@ -35523,27 +38991,34 @@ func NewBalancesService(connection *Connection, path string) *BalancesService {
 }
 
 type BalancesServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	balance *Balance
+	balances *BalancesService
+	header   map[string]string
+	query    map[string]string
+	balance  *Balance
 }
 
-func (p *BalancesServiceAddRequest) Header(key, value string) {
+func (p *BalancesServiceAddRequest) Header(key, value string) *BalancesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BalancesServiceAddRequest) Query(key, value string) {
+func (p *BalancesServiceAddRequest) Query(key, value string) *BalancesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BalancesServiceAddRequest) Balance(balance *Balance) {
+func (p *BalancesServiceAddRequest) Balance(balance *Balance) *BalancesServiceAddRequest {
 	p.balance = balance
+	return p
+}
+func (p *BalancesServiceAddRequest) send() *BalancesServiceAddResponse {
+
 }
 
 //
@@ -35571,31 +39046,39 @@ func (op *BalancesService) Add(
 }
 
 type BalancesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	balances *BalancesService
+	header   map[string]string
+	query    map[string]string
+	filter   *bool
+	max      *int64
 }
 
-func (p *BalancesServiceListRequest) Header(key, value string) {
+func (p *BalancesServiceListRequest) Header(key, value string) *BalancesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BalancesServiceListRequest) Query(key, value string) {
+func (p *BalancesServiceListRequest) Query(key, value string) *BalancesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BalancesServiceListRequest) Filter(filter bool) {
+func (p *BalancesServiceListRequest) Filter(filter bool) *BalancesServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *BalancesServiceListRequest) Max(max int64) {
+func (p *BalancesServiceListRequest) Max(max int64) *BalancesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *BalancesServiceListRequest) send() *BalancesServiceListResponse {
+
 }
 
 //
@@ -35670,22 +39153,29 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 }
 
 type TemplateCdromServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateCdrom *TemplateCdromService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *TemplateCdromServiceGetRequest) Header(key, value string) {
+func (p *TemplateCdromServiceGetRequest) Header(key, value string) *TemplateCdromServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateCdromServiceGetRequest) Query(key, value string) {
+func (p *TemplateCdromServiceGetRequest) Query(key, value string) *TemplateCdromServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateCdromServiceGetRequest) send() *TemplateCdromServiceGetResponse {
+
 }
 
 //
@@ -35745,27 +39235,34 @@ func NewMoveableService(connection *Connection, path string) *MoveableService {
 }
 
 type MoveableServiceMoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	moveable *MoveableService
+	header   map[string]string
+	query    map[string]string
+	async    *bool
 }
 
-func (p *MoveableServiceMoveRequest) Header(key, value string) {
+func (p *MoveableServiceMoveRequest) Header(key, value string) *MoveableServiceMoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *MoveableServiceMoveRequest) Query(key, value string) {
+func (p *MoveableServiceMoveRequest) Query(key, value string) *MoveableServiceMoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *MoveableServiceMoveRequest) Async(async bool) {
+func (p *MoveableServiceMoveRequest) Async(async bool) *MoveableServiceMoveRequest {
 	p.async = &async
+	return p
+}
+func (p *MoveableServiceMoveRequest) send() *MoveableServiceMoveResponse {
+
 }
 
 //
@@ -35818,22 +39315,29 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 }
 
 type CpuProfileServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	cpuProfile *CpuProfileService
+	header     map[string]string
+	query      map[string]string
 }
 
-func (p *CpuProfileServiceGetRequest) Header(key, value string) {
+func (p *CpuProfileServiceGetRequest) Header(key, value string) *CpuProfileServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CpuProfileServiceGetRequest) Query(key, value string) {
+func (p *CpuProfileServiceGetRequest) Query(key, value string) *CpuProfileServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *CpuProfileServiceGetRequest) send() *CpuProfileServiceGetResponse {
+
 }
 
 //
@@ -35860,27 +39364,34 @@ func (op *CpuProfileService) Get(
 }
 
 type CpuProfileServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	cpuProfile *CpuProfileService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
-func (p *CpuProfileServiceRemoveRequest) Header(key, value string) {
+func (p *CpuProfileServiceRemoveRequest) Header(key, value string) *CpuProfileServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CpuProfileServiceRemoveRequest) Query(key, value string) {
+func (p *CpuProfileServiceRemoveRequest) Query(key, value string) *CpuProfileServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *CpuProfileServiceRemoveRequest) Async(async bool) {
+func (p *CpuProfileServiceRemoveRequest) Async(async bool) *CpuProfileServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *CpuProfileServiceRemoveRequest) send() *CpuProfileServiceRemoveResponse {
+
 }
 
 //
@@ -35907,31 +39418,39 @@ func (op *CpuProfileService) Remove(
 }
 
 type CpuProfileServiceUpdateRequest struct {
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	profile *CpuProfile
+	cpuProfile *CpuProfileService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	profile    *CpuProfile
 }
 
-func (p *CpuProfileServiceUpdateRequest) Header(key, value string) {
+func (p *CpuProfileServiceUpdateRequest) Header(key, value string) *CpuProfileServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *CpuProfileServiceUpdateRequest) Query(key, value string) {
+func (p *CpuProfileServiceUpdateRequest) Query(key, value string) *CpuProfileServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *CpuProfileServiceUpdateRequest) Async(async bool) {
+func (p *CpuProfileServiceUpdateRequest) Async(async bool) *CpuProfileServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *CpuProfileServiceUpdateRequest) Profile(profile *CpuProfile) {
+func (p *CpuProfileServiceUpdateRequest) Profile(profile *CpuProfile) *CpuProfileServiceUpdateRequest {
 	p.profile = profile
+	return p
+}
+func (p *CpuProfileServiceUpdateRequest) send() *CpuProfileServiceUpdateResponse {
+
 }
 
 //
@@ -36039,22 +39558,29 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 }
 
 type StorageServerConnectionExtensionServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	storageServerConnectionExtension *StorageServerConnectionExtensionService
+	header                           map[string]string
+	query                            map[string]string
 }
 
-func (p *StorageServerConnectionExtensionServiceGetRequest) Header(key, value string) {
+func (p *StorageServerConnectionExtensionServiceGetRequest) Header(key, value string) *StorageServerConnectionExtensionServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value string) {
+func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value string) *StorageServerConnectionExtensionServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *StorageServerConnectionExtensionServiceGetRequest) send() *StorageServerConnectionExtensionServiceGetResponse {
+
 }
 
 //
@@ -36081,27 +39607,34 @@ func (op *StorageServerConnectionExtensionService) Get(
 }
 
 type StorageServerConnectionExtensionServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	storageServerConnectionExtension *StorageServerConnectionExtensionService
+	header                           map[string]string
+	query                            map[string]string
+	async                            *bool
 }
 
-func (p *StorageServerConnectionExtensionServiceRemoveRequest) Header(key, value string) {
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Header(key, value string) *StorageServerConnectionExtensionServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceRemoveRequest) Query(key, value string) {
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Query(key, value string) *StorageServerConnectionExtensionServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceRemoveRequest) Async(async bool) {
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Async(async bool) *StorageServerConnectionExtensionServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) send() *StorageServerConnectionExtensionServiceRemoveResponse {
+
 }
 
 //
@@ -36128,31 +39661,39 @@ func (op *StorageServerConnectionExtensionService) Remove(
 }
 
 type StorageServerConnectionExtensionServiceUpdateRequest struct {
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	extension *StorageConnectionExtension
+	storageServerConnectionExtension *StorageServerConnectionExtensionService
+	header                           map[string]string
+	query                            map[string]string
+	async                            *bool
+	extension                        *StorageConnectionExtension
 }
 
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) Header(key, value string) {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Header(key, value string) *StorageServerConnectionExtensionServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) Query(key, value string) {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Query(key, value string) *StorageServerConnectionExtensionServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) Async(async bool) {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Async(async bool) *StorageServerConnectionExtensionServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) Extension(extension *StorageConnectionExtension) {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Extension(extension *StorageConnectionExtension) *StorageServerConnectionExtensionServiceUpdateRequest {
 	p.extension = extension
+	return p
+}
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) send() *StorageServerConnectionExtensionServiceUpdateResponse {
+
 }
 
 //
@@ -36227,22 +39768,29 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 }
 
 type ClusterLevelsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	clusterLevels *ClusterLevelsService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *ClusterLevelsServiceListRequest) Header(key, value string) {
+func (p *ClusterLevelsServiceListRequest) Header(key, value string) *ClusterLevelsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClusterLevelsServiceListRequest) Query(key, value string) {
+func (p *ClusterLevelsServiceListRequest) Query(key, value string) *ClusterLevelsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ClusterLevelsServiceListRequest) send() *ClusterLevelsServiceListResponse {
+
 }
 
 //
@@ -36323,27 +39871,34 @@ func NewNetworkFilterParametersService(connection *Connection, path string) *Net
 }
 
 type NetworkFilterParametersServiceAddRequest struct {
-	header    map[string]string
-	query     map[string]string
-	parameter *NetworkFilterParameter
+	networkFilterParameters *NetworkFilterParametersService
+	header                  map[string]string
+	query                   map[string]string
+	parameter               *NetworkFilterParameter
 }
 
-func (p *NetworkFilterParametersServiceAddRequest) Header(key, value string) {
+func (p *NetworkFilterParametersServiceAddRequest) Header(key, value string) *NetworkFilterParametersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterParametersServiceAddRequest) Query(key, value string) {
+func (p *NetworkFilterParametersServiceAddRequest) Query(key, value string) *NetworkFilterParametersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *NetworkFilterParametersServiceAddRequest) Parameter(parameter *NetworkFilterParameter) {
+func (p *NetworkFilterParametersServiceAddRequest) Parameter(parameter *NetworkFilterParameter) *NetworkFilterParametersServiceAddRequest {
 	p.parameter = parameter
+	return p
+}
+func (p *NetworkFilterParametersServiceAddRequest) send() *NetworkFilterParametersServiceAddResponse {
+
 }
 
 //
@@ -36391,22 +39946,29 @@ func (op *NetworkFilterParametersService) Add(
 }
 
 type NetworkFilterParametersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	networkFilterParameters *NetworkFilterParametersService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *NetworkFilterParametersServiceListRequest) Header(key, value string) {
+func (p *NetworkFilterParametersServiceListRequest) Header(key, value string) *NetworkFilterParametersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) {
+func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) *NetworkFilterParametersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *NetworkFilterParametersServiceListRequest) send() *NetworkFilterParametersServiceListResponse {
+
 }
 
 //
@@ -36472,27 +40034,34 @@ func NewVmNicsService(connection *Connection, path string) *VmNicsService {
 }
 
 type VmNicsServiceAddRequest struct {
+	vmNics *VmNicsService
 	header map[string]string
 	query  map[string]string
 	nic    *Nic
 }
 
-func (p *VmNicsServiceAddRequest) Header(key, value string) {
+func (p *VmNicsServiceAddRequest) Header(key, value string) *VmNicsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicsServiceAddRequest) Query(key, value string) {
+func (p *VmNicsServiceAddRequest) Query(key, value string) *VmNicsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicsServiceAddRequest) Nic(nic *Nic) {
+func (p *VmNicsServiceAddRequest) Nic(nic *Nic) *VmNicsServiceAddRequest {
 	p.nic = nic
+	return p
+}
+func (p *VmNicsServiceAddRequest) send() *VmNicsServiceAddResponse {
+
 }
 
 //
@@ -36566,27 +40135,34 @@ func (op *VmNicsService) Add(
 }
 
 type VmNicsServiceListRequest struct {
+	vmNics *VmNicsService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *VmNicsServiceListRequest) Header(key, value string) {
+func (p *VmNicsServiceListRequest) Header(key, value string) *VmNicsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmNicsServiceListRequest) Query(key, value string) {
+func (p *VmNicsServiceListRequest) Query(key, value string) *VmNicsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmNicsServiceListRequest) Max(max int64) {
+func (p *VmNicsServiceListRequest) Max(max int64) *VmNicsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmNicsServiceListRequest) send() *VmNicsServiceListResponse {
+
 }
 
 //
@@ -36657,27 +40233,34 @@ func NewVmReportedDevicesService(connection *Connection, path string) *VmReporte
 }
 
 type VmReportedDevicesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmReportedDevices *VmReportedDevicesService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
-func (p *VmReportedDevicesServiceListRequest) Header(key, value string) {
+func (p *VmReportedDevicesServiceListRequest) Header(key, value string) *VmReportedDevicesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *VmReportedDevicesServiceListRequest) Query(key, value string) {
+func (p *VmReportedDevicesServiceListRequest) Query(key, value string) *VmReportedDevicesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *VmReportedDevicesServiceListRequest) Max(max int64) {
+func (p *VmReportedDevicesServiceListRequest) Max(max int64) *VmReportedDevicesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *VmReportedDevicesServiceListRequest) send() *VmReportedDevicesServiceListResponse {
+
 }
 
 //
@@ -36748,27 +40331,34 @@ func NewBalanceService(connection *Connection, path string) *BalanceService {
 }
 
 type BalanceServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	balance *BalanceService
+	header  map[string]string
+	query   map[string]string
+	filter  *bool
 }
 
-func (p *BalanceServiceGetRequest) Header(key, value string) {
+func (p *BalanceServiceGetRequest) Header(key, value string) *BalanceServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BalanceServiceGetRequest) Query(key, value string) {
+func (p *BalanceServiceGetRequest) Query(key, value string) *BalanceServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BalanceServiceGetRequest) Filter(filter bool) {
+func (p *BalanceServiceGetRequest) Filter(filter bool) *BalanceServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *BalanceServiceGetRequest) send() *BalanceServiceGetResponse {
+
 }
 
 //
@@ -36802,27 +40392,34 @@ func (op *BalanceService) Get(
 }
 
 type BalanceServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	balance *BalanceService
+	header  map[string]string
+	query   map[string]string
+	async   *bool
 }
 
-func (p *BalanceServiceRemoveRequest) Header(key, value string) {
+func (p *BalanceServiceRemoveRequest) Header(key, value string) *BalanceServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *BalanceServiceRemoveRequest) Query(key, value string) {
+func (p *BalanceServiceRemoveRequest) Query(key, value string) *BalanceServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *BalanceServiceRemoveRequest) Async(async bool) {
+func (p *BalanceServiceRemoveRequest) Async(async bool) *BalanceServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *BalanceServiceRemoveRequest) send() *BalanceServiceRemoveResponse {
+
 }
 
 //
@@ -36877,27 +40474,34 @@ func NewPermitsService(connection *Connection, path string) *PermitsService {
 }
 
 type PermitsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	permit *Permit
+	permits *PermitsService
+	header  map[string]string
+	query   map[string]string
+	permit  *Permit
 }
 
-func (p *PermitsServiceAddRequest) Header(key, value string) {
+func (p *PermitsServiceAddRequest) Header(key, value string) *PermitsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermitsServiceAddRequest) Query(key, value string) {
+func (p *PermitsServiceAddRequest) Query(key, value string) *PermitsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *PermitsServiceAddRequest) Permit(permit *Permit) {
+func (p *PermitsServiceAddRequest) Permit(permit *Permit) *PermitsServiceAddRequest {
 	p.permit = permit
+	return p
+}
+func (p *PermitsServiceAddRequest) send() *PermitsServiceAddResponse {
+
 }
 
 //
@@ -36942,27 +40546,34 @@ func (op *PermitsService) Add(
 }
 
 type PermitsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	permits *PermitsService
+	header  map[string]string
+	query   map[string]string
+	max     *int64
 }
 
-func (p *PermitsServiceListRequest) Header(key, value string) {
+func (p *PermitsServiceListRequest) Header(key, value string) *PermitsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *PermitsServiceListRequest) Query(key, value string) {
+func (p *PermitsServiceListRequest) Query(key, value string) *PermitsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *PermitsServiceListRequest) Max(max int64) {
+func (p *PermitsServiceListRequest) Max(max int64) *PermitsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *PermitsServiceListRequest) send() *PermitsServiceListResponse {
+
 }
 
 //
@@ -37054,27 +40665,34 @@ func NewStorageDomainTemplatesService(connection *Connection, path string) *Stor
 }
 
 type StorageDomainTemplatesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageDomainTemplates *StorageDomainTemplatesService
+	header                 map[string]string
+	query                  map[string]string
+	max                    *int64
 }
 
-func (p *StorageDomainTemplatesServiceListRequest) Header(key, value string) {
+func (p *StorageDomainTemplatesServiceListRequest) Header(key, value string) *StorageDomainTemplatesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplatesServiceListRequest) Query(key, value string) {
+func (p *StorageDomainTemplatesServiceListRequest) Query(key, value string) *StorageDomainTemplatesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) {
+func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) *StorageDomainTemplatesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageDomainTemplatesServiceListRequest) send() *StorageDomainTemplatesServiceListResponse {
+
 }
 
 //
@@ -37145,22 +40763,29 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 }
 
 type SystemServiceGetRequest struct {
+	system *SystemService
 	header map[string]string
 	query  map[string]string
 }
 
-func (p *SystemServiceGetRequest) Header(key, value string) {
+func (p *SystemServiceGetRequest) Header(key, value string) *SystemServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SystemServiceGetRequest) Query(key, value string) {
+func (p *SystemServiceGetRequest) Query(key, value string) *SystemServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SystemServiceGetRequest) send() *SystemServiceGetResponse {
+
 }
 
 //
@@ -37261,27 +40886,34 @@ func (op *SystemService) Get(
 }
 
 type SystemServiceReloadConfigurationsRequest struct {
+	system *SystemService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *SystemServiceReloadConfigurationsRequest) Header(key, value string) {
+func (p *SystemServiceReloadConfigurationsRequest) Header(key, value string) *SystemServiceReloadConfigurationsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SystemServiceReloadConfigurationsRequest) Query(key, value string) {
+func (p *SystemServiceReloadConfigurationsRequest) Query(key, value string) *SystemServiceReloadConfigurationsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *SystemServiceReloadConfigurationsRequest) Async(async bool) {
+func (p *SystemServiceReloadConfigurationsRequest) Async(async bool) *SystemServiceReloadConfigurationsRequest {
 	p.async = &async
+	return p
+}
+func (p *SystemServiceReloadConfigurationsRequest) send() *SystemServiceReloadConfigurationsResponse {
+
 }
 
 //
@@ -37798,22 +41430,29 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 }
 
 type ExternalHostServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalHost *ExternalHostService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *ExternalHostServiceGetRequest) Header(key, value string) {
+func (p *ExternalHostServiceGetRequest) Header(key, value string) *ExternalHostServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostServiceGetRequest) Query(key, value string) {
+func (p *ExternalHostServiceGetRequest) Query(key, value string) *ExternalHostServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalHostServiceGetRequest) send() *ExternalHostServiceGetResponse {
+
 }
 
 //
@@ -37867,22 +41506,29 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 }
 
 type ExternalHostGroupServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalHostGroup *ExternalHostGroupService
+	header            map[string]string
+	query             map[string]string
 }
 
-func (p *ExternalHostGroupServiceGetRequest) Header(key, value string) {
+func (p *ExternalHostGroupServiceGetRequest) Header(key, value string) *ExternalHostGroupServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) {
+func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) *ExternalHostGroupServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalHostGroupServiceGetRequest) send() *ExternalHostGroupServiceGetResponse {
+
 }
 
 //
@@ -37937,22 +41583,29 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 }
 
 type KatelloErratumServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	katelloErratum *KatelloErratumService
+	header         map[string]string
+	query          map[string]string
 }
 
-func (p *KatelloErratumServiceGetRequest) Header(key, value string) {
+func (p *KatelloErratumServiceGetRequest) Header(key, value string) *KatelloErratumServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *KatelloErratumServiceGetRequest) Query(key, value string) {
+func (p *KatelloErratumServiceGetRequest) Query(key, value string) *KatelloErratumServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *KatelloErratumServiceGetRequest) send() *KatelloErratumServiceGetResponse {
+
 }
 
 //
@@ -38030,22 +41683,29 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 }
 
 type ExternalDiscoveredHostServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalDiscoveredHost *ExternalDiscoveredHostService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *ExternalDiscoveredHostServiceGetRequest) Header(key, value string) {
+func (p *ExternalDiscoveredHostServiceGetRequest) Header(key, value string) *ExternalDiscoveredHostServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) {
+func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) *ExternalDiscoveredHostServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalDiscoveredHostServiceGetRequest) send() *ExternalDiscoveredHostServiceGetResponse {
+
 }
 
 //
@@ -38101,27 +41761,34 @@ func NewEngineKatelloErrataService(connection *Connection, path string) *EngineK
 }
 
 type EngineKatelloErrataServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	engineKatelloErrata *EngineKatelloErrataService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
-func (p *EngineKatelloErrataServiceListRequest) Header(key, value string) {
+func (p *EngineKatelloErrataServiceListRequest) Header(key, value string) *EngineKatelloErrataServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *EngineKatelloErrataServiceListRequest) Query(key, value string) {
+func (p *EngineKatelloErrataServiceListRequest) Query(key, value string) *EngineKatelloErrataServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *EngineKatelloErrataServiceListRequest) Max(max int64) {
+func (p *EngineKatelloErrataServiceListRequest) Max(max int64) *EngineKatelloErrataServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *EngineKatelloErrataServiceListRequest) send() *EngineKatelloErrataServiceListResponse {
+
 }
 
 //
@@ -38221,22 +41888,29 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 }
 
 type ExternalComputeResourceServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalComputeResource *ExternalComputeResourceService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *ExternalComputeResourceServiceGetRequest) Header(key, value string) {
+func (p *ExternalComputeResourceServiceGetRequest) Header(key, value string) *ExternalComputeResourceServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) {
+func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) *ExternalComputeResourceServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalComputeResourceServiceGetRequest) send() *ExternalComputeResourceServiceGetResponse {
+
 }
 
 //
@@ -38290,27 +41964,34 @@ func NewExternalHostGroupsService(connection *Connection, path string) *External
 }
 
 type ExternalHostGroupsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalHostGroups *ExternalHostGroupsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
-func (p *ExternalHostGroupsServiceListRequest) Header(key, value string) {
+func (p *ExternalHostGroupsServiceListRequest) Header(key, value string) *ExternalHostGroupsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostGroupsServiceListRequest) Query(key, value string) {
+func (p *ExternalHostGroupsServiceListRequest) Query(key, value string) *ExternalHostGroupsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostGroupsServiceListRequest) Max(max int64) {
+func (p *ExternalHostGroupsServiceListRequest) Max(max int64) *ExternalHostGroupsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalHostGroupsServiceListRequest) send() *ExternalHostGroupsServiceListResponse {
+
 }
 
 //
@@ -38381,22 +42062,29 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 }
 
 type ExternalHostProviderServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	externalHostProvider *ExternalHostProviderService
+	header               map[string]string
+	query                map[string]string
 }
 
-func (p *ExternalHostProviderServiceGetRequest) Header(key, value string) {
+func (p *ExternalHostProviderServiceGetRequest) Header(key, value string) *ExternalHostProviderServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) {
+func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) *ExternalHostProviderServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *ExternalHostProviderServiceGetRequest) send() *ExternalHostProviderServiceGetResponse {
+
 }
 
 //
@@ -38423,27 +42111,34 @@ func (op *ExternalHostProviderService) Get(
 }
 
 type ExternalHostProviderServiceImportCertificatesRequest struct {
-	header       map[string]string
-	query        map[string]string
-	certificates []Certificate
+	externalHostProvider *ExternalHostProviderService
+	header               map[string]string
+	query                map[string]string
+	certificates         []Certificate
 }
 
-func (p *ExternalHostProviderServiceImportCertificatesRequest) Header(key, value string) {
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Header(key, value string) *ExternalHostProviderServiceImportCertificatesRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceImportCertificatesRequest) Query(key, value string) {
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Query(key, value string) *ExternalHostProviderServiceImportCertificatesRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) {
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Certificates(certificates []Certificate) *ExternalHostProviderServiceImportCertificatesRequest {
 	p.certificates = certificates
+	return p
+}
+func (p *ExternalHostProviderServiceImportCertificatesRequest) send() *ExternalHostProviderServiceImportCertificatesResponse {
+
 }
 
 //
@@ -38464,27 +42159,34 @@ func (op *ExternalHostProviderService) ImportCertificates(
 }
 
 type ExternalHostProviderServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	externalHostProvider *ExternalHostProviderService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
-func (p *ExternalHostProviderServiceRemoveRequest) Header(key, value string) {
+func (p *ExternalHostProviderServiceRemoveRequest) Header(key, value string) *ExternalHostProviderServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceRemoveRequest) Query(key, value string) {
+func (p *ExternalHostProviderServiceRemoveRequest) Query(key, value string) *ExternalHostProviderServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceRemoveRequest) Async(async bool) {
+func (p *ExternalHostProviderServiceRemoveRequest) Async(async bool) *ExternalHostProviderServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *ExternalHostProviderServiceRemoveRequest) send() *ExternalHostProviderServiceRemoveResponse {
+
 }
 
 //
@@ -38511,27 +42213,34 @@ func (op *ExternalHostProviderService) Remove(
 }
 
 type ExternalHostProviderServiceTestConnectivityRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	externalHostProvider *ExternalHostProviderService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
-func (p *ExternalHostProviderServiceTestConnectivityRequest) Header(key, value string) {
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Header(key, value string) *ExternalHostProviderServiceTestConnectivityRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceTestConnectivityRequest) Query(key, value string) {
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Query(key, value string) *ExternalHostProviderServiceTestConnectivityRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceTestConnectivityRequest) Async(async bool) {
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Async(async bool) *ExternalHostProviderServiceTestConnectivityRequest {
 	p.async = &async
+	return p
+}
+func (p *ExternalHostProviderServiceTestConnectivityRequest) send() *ExternalHostProviderServiceTestConnectivityResponse {
+
 }
 
 //
@@ -38557,31 +42266,39 @@ func (op *ExternalHostProviderService) TestConnectivity(
 }
 
 type ExternalHostProviderServiceUpdateRequest struct {
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	provider *ExternalHostProvider
+	externalHostProvider *ExternalHostProviderService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	provider             *ExternalHostProvider
 }
 
-func (p *ExternalHostProviderServiceUpdateRequest) Header(key, value string) {
+func (p *ExternalHostProviderServiceUpdateRequest) Header(key, value string) *ExternalHostProviderServiceUpdateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceUpdateRequest) Query(key, value string) {
+func (p *ExternalHostProviderServiceUpdateRequest) Query(key, value string) *ExternalHostProviderServiceUpdateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProviderServiceUpdateRequest) Async(async bool) {
+func (p *ExternalHostProviderServiceUpdateRequest) Async(async bool) *ExternalHostProviderServiceUpdateRequest {
 	p.async = &async
+	return p
 }
-func (p *ExternalHostProviderServiceUpdateRequest) Provider(provider *ExternalHostProvider) {
+func (p *ExternalHostProviderServiceUpdateRequest) Provider(provider *ExternalHostProvider) *ExternalHostProviderServiceUpdateRequest {
 	p.provider = provider
+	return p
+}
+func (p *ExternalHostProviderServiceUpdateRequest) send() *ExternalHostProviderServiceUpdateResponse {
+
 }
 
 //
@@ -38700,27 +42417,34 @@ func NewKatelloErrataService(connection *Connection, path string) *KatelloErrata
 }
 
 type KatelloErrataServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	katelloErrata *KatelloErrataService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *KatelloErrataServiceListRequest) Header(key, value string) {
+func (p *KatelloErrataServiceListRequest) Header(key, value string) *KatelloErrataServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *KatelloErrataServiceListRequest) Query(key, value string) {
+func (p *KatelloErrataServiceListRequest) Query(key, value string) *KatelloErrataServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *KatelloErrataServiceListRequest) Max(max int64) {
+func (p *KatelloErrataServiceListRequest) Max(max int64) *KatelloErrataServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *KatelloErrataServiceListRequest) send() *KatelloErrataServiceListResponse {
+
 }
 
 //
@@ -38820,27 +42544,34 @@ func NewExternalDiscoveredHostsService(connection *Connection, path string) *Ext
 }
 
 type ExternalDiscoveredHostsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalDiscoveredHosts *ExternalDiscoveredHostsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
-func (p *ExternalDiscoveredHostsServiceListRequest) Header(key, value string) {
+func (p *ExternalDiscoveredHostsServiceListRequest) Header(key, value string) *ExternalDiscoveredHostsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalDiscoveredHostsServiceListRequest) Query(key, value string) {
+func (p *ExternalDiscoveredHostsServiceListRequest) Query(key, value string) *ExternalDiscoveredHostsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) {
+func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) *ExternalDiscoveredHostsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalDiscoveredHostsServiceListRequest) send() *ExternalDiscoveredHostsServiceListResponse {
+
 }
 
 //
@@ -38911,27 +42642,34 @@ func NewExternalHostsService(connection *Connection, path string) *ExternalHosts
 }
 
 type ExternalHostsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalHosts *ExternalHostsService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *ExternalHostsServiceListRequest) Header(key, value string) {
+func (p *ExternalHostsServiceListRequest) Header(key, value string) *ExternalHostsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostsServiceListRequest) Query(key, value string) {
+func (p *ExternalHostsServiceListRequest) Query(key, value string) *ExternalHostsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostsServiceListRequest) Max(max int64) {
+func (p *ExternalHostsServiceListRequest) Max(max int64) *ExternalHostsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalHostsServiceListRequest) send() *ExternalHostsServiceListResponse {
+
 }
 
 //
@@ -39002,27 +42740,34 @@ func NewExternalComputeResourcesService(connection *Connection, path string) *Ex
 }
 
 type ExternalComputeResourcesServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalComputeResources *ExternalComputeResourcesService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
-func (p *ExternalComputeResourcesServiceListRequest) Header(key, value string) {
+func (p *ExternalComputeResourcesServiceListRequest) Header(key, value string) *ExternalComputeResourcesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalComputeResourcesServiceListRequest) Query(key, value string) {
+func (p *ExternalComputeResourcesServiceListRequest) Query(key, value string) *ExternalComputeResourcesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) {
+func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) *ExternalComputeResourcesServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalComputeResourcesServiceListRequest) send() *ExternalComputeResourcesServiceListResponse {
+
 }
 
 //
@@ -39093,27 +42838,34 @@ func NewExternalHostProvidersService(connection *Connection, path string) *Exter
 }
 
 type ExternalHostProvidersServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	provider *ExternalHostProvider
+	externalHostProviders *ExternalHostProvidersService
+	header                map[string]string
+	query                 map[string]string
+	provider              *ExternalHostProvider
 }
 
-func (p *ExternalHostProvidersServiceAddRequest) Header(key, value string) {
+func (p *ExternalHostProvidersServiceAddRequest) Header(key, value string) *ExternalHostProvidersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProvidersServiceAddRequest) Query(key, value string) {
+func (p *ExternalHostProvidersServiceAddRequest) Query(key, value string) *ExternalHostProvidersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProvidersServiceAddRequest) Provider(provider *ExternalHostProvider) {
+func (p *ExternalHostProvidersServiceAddRequest) Provider(provider *ExternalHostProvider) *ExternalHostProvidersServiceAddRequest {
 	p.provider = provider
+	return p
+}
+func (p *ExternalHostProvidersServiceAddRequest) send() *ExternalHostProvidersServiceAddResponse {
+
 }
 
 //
@@ -39141,27 +42893,34 @@ func (op *ExternalHostProvidersService) Add(
 }
 
 type ExternalHostProvidersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	externalHostProviders *ExternalHostProvidersService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
 }
 
-func (p *ExternalHostProvidersServiceListRequest) Header(key, value string) {
+func (p *ExternalHostProvidersServiceListRequest) Header(key, value string) *ExternalHostProvidersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ExternalHostProvidersServiceListRequest) Query(key, value string) {
+func (p *ExternalHostProvidersServiceListRequest) Query(key, value string) *ExternalHostProvidersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ExternalHostProvidersServiceListRequest) Max(max int64) {
+func (p *ExternalHostProvidersServiceListRequest) Max(max int64) *ExternalHostProvidersServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *ExternalHostProvidersServiceListRequest) send() *ExternalHostProvidersServiceListResponse {
+
 }
 
 //
@@ -39233,22 +42992,29 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 }
 
 type GlusterBrickServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	glusterBrick *GlusterBrickService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *GlusterBrickServiceGetRequest) Header(key, value string) {
+func (p *GlusterBrickServiceGetRequest) Header(key, value string) *GlusterBrickServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBrickServiceGetRequest) Query(key, value string) {
+func (p *GlusterBrickServiceGetRequest) Query(key, value string) *GlusterBrickServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *GlusterBrickServiceGetRequest) send() *GlusterBrickServiceGetResponse {
+
 }
 
 //
@@ -39318,27 +43084,34 @@ func (op *GlusterBrickService) Get(
 }
 
 type GlusterBrickServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterBrick *GlusterBrickService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
-func (p *GlusterBrickServiceRemoveRequest) Header(key, value string) {
+func (p *GlusterBrickServiceRemoveRequest) Header(key, value string) *GlusterBrickServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBrickServiceRemoveRequest) Query(key, value string) {
+func (p *GlusterBrickServiceRemoveRequest) Query(key, value string) *GlusterBrickServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBrickServiceRemoveRequest) Async(async bool) {
+func (p *GlusterBrickServiceRemoveRequest) Async(async bool) *GlusterBrickServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterBrickServiceRemoveRequest) send() *GlusterBrickServiceRemoveResponse {
+
 }
 
 //
@@ -39374,31 +43147,39 @@ func (op *GlusterBrickService) Remove(
 }
 
 type GlusterBrickServiceReplaceRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	force  *bool
+	glusterBrick *GlusterBrickService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	force        *bool
 }
 
-func (p *GlusterBrickServiceReplaceRequest) Header(key, value string) {
+func (p *GlusterBrickServiceReplaceRequest) Header(key, value string) *GlusterBrickServiceReplaceRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBrickServiceReplaceRequest) Query(key, value string) {
+func (p *GlusterBrickServiceReplaceRequest) Query(key, value string) *GlusterBrickServiceReplaceRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBrickServiceReplaceRequest) Async(async bool) {
+func (p *GlusterBrickServiceReplaceRequest) Async(async bool) *GlusterBrickServiceReplaceRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterBrickServiceReplaceRequest) Force(force bool) {
+func (p *GlusterBrickServiceReplaceRequest) Force(force bool) *GlusterBrickServiceReplaceRequest {
 	p.force = &force
+	return p
+}
+func (p *GlusterBrickServiceReplaceRequest) send() *GlusterBrickServiceReplaceResponse {
+
 }
 
 //
@@ -39470,27 +43251,34 @@ func NewGlusterVolumesService(connection *Connection, path string) *GlusterVolum
 }
 
 type GlusterVolumesServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	volume *GlusterVolume
+	glusterVolumes *GlusterVolumesService
+	header         map[string]string
+	query          map[string]string
+	volume         *GlusterVolume
 }
 
-func (p *GlusterVolumesServiceAddRequest) Header(key, value string) {
+func (p *GlusterVolumesServiceAddRequest) Header(key, value string) *GlusterVolumesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumesServiceAddRequest) Query(key, value string) {
+func (p *GlusterVolumesServiceAddRequest) Query(key, value string) *GlusterVolumesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumesServiceAddRequest) Volume(volume *GlusterVolume) {
+func (p *GlusterVolumesServiceAddRequest) Volume(volume *GlusterVolume) *GlusterVolumesServiceAddRequest {
 	p.volume = volume
+	return p
+}
+func (p *GlusterVolumesServiceAddRequest) send() *GlusterVolumesServiceAddResponse {
+
 }
 
 //
@@ -39555,35 +43343,44 @@ func (op *GlusterVolumesService) Add(
 }
 
 type GlusterVolumesServiceListRequest struct {
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	glusterVolumes *GlusterVolumesService
+	header         map[string]string
+	query          map[string]string
+	caseSensitive  *bool
+	max            *int64
+	search         *string
 }
 
-func (p *GlusterVolumesServiceListRequest) Header(key, value string) {
+func (p *GlusterVolumesServiceListRequest) Header(key, value string) *GlusterVolumesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumesServiceListRequest) Query(key, value string) {
+func (p *GlusterVolumesServiceListRequest) Query(key, value string) *GlusterVolumesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumesServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *GlusterVolumesServiceListRequest) CaseSensitive(caseSensitive bool) *GlusterVolumesServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *GlusterVolumesServiceListRequest) Max(max int64) {
+func (p *GlusterVolumesServiceListRequest) Max(max int64) *GlusterVolumesServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *GlusterVolumesServiceListRequest) Search(search string) {
+func (p *GlusterVolumesServiceListRequest) Search(search string) *GlusterVolumesServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *GlusterVolumesServiceListRequest) send() *GlusterVolumesServiceListResponse {
+
 }
 
 //
@@ -39671,22 +43468,29 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 }
 
 type GlusterVolumeServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *GlusterVolumeServiceGetRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceGetRequest) Header(key, value string) *GlusterVolumeServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceGetRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceGetRequest) Query(key, value string) *GlusterVolumeServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *GlusterVolumeServiceGetRequest) send() *GlusterVolumeServiceGetResponse {
+
 }
 
 //
@@ -39750,22 +43554,29 @@ func (op *GlusterVolumeService) Get(
 }
 
 type GlusterVolumeServiceGetProfileStatisticsRequest struct {
-	header map[string]string
-	query  map[string]string
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Header(key, value string) *GlusterVolumeServiceGetProfileStatisticsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Query(key, value string) *GlusterVolumeServiceGetProfileStatisticsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) send() *GlusterVolumeServiceGetProfileStatisticsResponse {
+
 }
 
 //
@@ -39797,35 +43608,44 @@ func (op *GlusterVolumeService) GetProfileStatistics(
 }
 
 type GlusterVolumeServiceRebalanceRequest struct {
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	fixLayout *bool
-	force     *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	fixLayout     *bool
+	force         *bool
 }
 
-func (p *GlusterVolumeServiceRebalanceRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceRebalanceRequest) Header(key, value string) *GlusterVolumeServiceRebalanceRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceRebalanceRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceRebalanceRequest) Query(key, value string) *GlusterVolumeServiceRebalanceRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceRebalanceRequest) Async(async bool) {
+func (p *GlusterVolumeServiceRebalanceRequest) Async(async bool) *GlusterVolumeServiceRebalanceRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterVolumeServiceRebalanceRequest) FixLayout(fixLayout bool) {
+func (p *GlusterVolumeServiceRebalanceRequest) FixLayout(fixLayout bool) *GlusterVolumeServiceRebalanceRequest {
 	p.fixLayout = &fixLayout
+	return p
 }
-func (p *GlusterVolumeServiceRebalanceRequest) Force(force bool) {
+func (p *GlusterVolumeServiceRebalanceRequest) Force(force bool) *GlusterVolumeServiceRebalanceRequest {
 	p.force = &force
+	return p
+}
+func (p *GlusterVolumeServiceRebalanceRequest) send() *GlusterVolumeServiceRebalanceResponse {
+
 }
 
 //
@@ -39870,27 +43690,34 @@ func (op *GlusterVolumeService) Rebalance(
 }
 
 type GlusterVolumeServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *GlusterVolumeServiceRemoveRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceRemoveRequest) Header(key, value string) *GlusterVolumeServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceRemoveRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceRemoveRequest) Query(key, value string) *GlusterVolumeServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceRemoveRequest) Async(async bool) {
+func (p *GlusterVolumeServiceRemoveRequest) Async(async bool) *GlusterVolumeServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterVolumeServiceRemoveRequest) send() *GlusterVolumeServiceRemoveResponse {
+
 }
 
 //
@@ -39923,27 +43750,34 @@ func (op *GlusterVolumeService) Remove(
 }
 
 type GlusterVolumeServiceResetAllOptionsRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *GlusterVolumeServiceResetAllOptionsRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Header(key, value string) *GlusterVolumeServiceResetAllOptionsRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceResetAllOptionsRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Query(key, value string) *GlusterVolumeServiceResetAllOptionsRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceResetAllOptionsRequest) Async(async bool) {
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Async(async bool) *GlusterVolumeServiceResetAllOptionsRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterVolumeServiceResetAllOptionsRequest) send() *GlusterVolumeServiceResetAllOptionsResponse {
+
 }
 
 //
@@ -39976,35 +43810,44 @@ func (op *GlusterVolumeService) ResetAllOptions(
 }
 
 type GlusterVolumeServiceResetOptionRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	force  *bool
-	option *Option
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	force         *bool
+	option        *Option
 }
 
-func (p *GlusterVolumeServiceResetOptionRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceResetOptionRequest) Header(key, value string) *GlusterVolumeServiceResetOptionRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceResetOptionRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceResetOptionRequest) Query(key, value string) *GlusterVolumeServiceResetOptionRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceResetOptionRequest) Async(async bool) {
+func (p *GlusterVolumeServiceResetOptionRequest) Async(async bool) *GlusterVolumeServiceResetOptionRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterVolumeServiceResetOptionRequest) Force(force bool) {
+func (p *GlusterVolumeServiceResetOptionRequest) Force(force bool) *GlusterVolumeServiceResetOptionRequest {
 	p.force = &force
+	return p
 }
-func (p *GlusterVolumeServiceResetOptionRequest) Option(option *Option) {
+func (p *GlusterVolumeServiceResetOptionRequest) Option(option *Option) *GlusterVolumeServiceResetOptionRequest {
 	p.option = option
+	return p
+}
+func (p *GlusterVolumeServiceResetOptionRequest) send() *GlusterVolumeServiceResetOptionResponse {
+
 }
 
 //
@@ -40049,31 +43892,39 @@ func (op *GlusterVolumeService) ResetOption(
 }
 
 type GlusterVolumeServiceSetOptionRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	option *Option
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	option        *Option
 }
 
-func (p *GlusterVolumeServiceSetOptionRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceSetOptionRequest) Header(key, value string) *GlusterVolumeServiceSetOptionRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceSetOptionRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceSetOptionRequest) Query(key, value string) *GlusterVolumeServiceSetOptionRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceSetOptionRequest) Async(async bool) {
+func (p *GlusterVolumeServiceSetOptionRequest) Async(async bool) *GlusterVolumeServiceSetOptionRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterVolumeServiceSetOptionRequest) Option(option *Option) {
+func (p *GlusterVolumeServiceSetOptionRequest) Option(option *Option) *GlusterVolumeServiceSetOptionRequest {
 	p.option = option
+	return p
+}
+func (p *GlusterVolumeServiceSetOptionRequest) send() *GlusterVolumeServiceSetOptionResponse {
+
 }
 
 //
@@ -40116,31 +43967,39 @@ func (op *GlusterVolumeService) SetOption(
 }
 
 type GlusterVolumeServiceStartRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	force  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	force         *bool
 }
 
-func (p *GlusterVolumeServiceStartRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceStartRequest) Header(key, value string) *GlusterVolumeServiceStartRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStartRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceStartRequest) Query(key, value string) *GlusterVolumeServiceStartRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStartRequest) Async(async bool) {
+func (p *GlusterVolumeServiceStartRequest) Async(async bool) *GlusterVolumeServiceStartRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterVolumeServiceStartRequest) Force(force bool) {
+func (p *GlusterVolumeServiceStartRequest) Force(force bool) *GlusterVolumeServiceStartRequest {
 	p.force = &force
+	return p
+}
+func (p *GlusterVolumeServiceStartRequest) send() *GlusterVolumeServiceStartResponse {
+
 }
 
 //
@@ -40177,27 +44036,34 @@ func (op *GlusterVolumeService) Start(
 }
 
 type GlusterVolumeServiceStartProfileRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *GlusterVolumeServiceStartProfileRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceStartProfileRequest) Header(key, value string) *GlusterVolumeServiceStartProfileRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStartProfileRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceStartProfileRequest) Query(key, value string) *GlusterVolumeServiceStartProfileRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStartProfileRequest) Async(async bool) {
+func (p *GlusterVolumeServiceStartProfileRequest) Async(async bool) *GlusterVolumeServiceStartProfileRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterVolumeServiceStartProfileRequest) send() *GlusterVolumeServiceStartProfileResponse {
+
 }
 
 //
@@ -40229,31 +44095,39 @@ func (op *GlusterVolumeService) StartProfile(
 }
 
 type GlusterVolumeServiceStopRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	force  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	force         *bool
 }
 
-func (p *GlusterVolumeServiceStopRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceStopRequest) Header(key, value string) *GlusterVolumeServiceStopRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceStopRequest) Query(key, value string) *GlusterVolumeServiceStopRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopRequest) Async(async bool) {
+func (p *GlusterVolumeServiceStopRequest) Async(async bool) *GlusterVolumeServiceStopRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterVolumeServiceStopRequest) Force(force bool) {
+func (p *GlusterVolumeServiceStopRequest) Force(force bool) *GlusterVolumeServiceStopRequest {
 	p.force = &force
+	return p
+}
+func (p *GlusterVolumeServiceStopRequest) send() *GlusterVolumeServiceStopResponse {
+
 }
 
 //
@@ -40288,27 +44162,34 @@ func (op *GlusterVolumeService) Stop(
 }
 
 type GlusterVolumeServiceStopProfileRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *GlusterVolumeServiceStopProfileRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceStopProfileRequest) Header(key, value string) *GlusterVolumeServiceStopProfileRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopProfileRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceStopProfileRequest) Query(key, value string) *GlusterVolumeServiceStopProfileRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopProfileRequest) Async(async bool) {
+func (p *GlusterVolumeServiceStopProfileRequest) Async(async bool) *GlusterVolumeServiceStopProfileRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterVolumeServiceStopProfileRequest) send() *GlusterVolumeServiceStopProfileResponse {
+
 }
 
 //
@@ -40340,27 +44221,34 @@ func (op *GlusterVolumeService) StopProfile(
 }
 
 type GlusterVolumeServiceStopRebalanceRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterVolume *GlusterVolumeService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
-func (p *GlusterVolumeServiceStopRebalanceRequest) Header(key, value string) {
+func (p *GlusterVolumeServiceStopRebalanceRequest) Header(key, value string) *GlusterVolumeServiceStopRebalanceRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopRebalanceRequest) Query(key, value string) {
+func (p *GlusterVolumeServiceStopRebalanceRequest) Query(key, value string) *GlusterVolumeServiceStopRebalanceRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterVolumeServiceStopRebalanceRequest) Async(async bool) {
+func (p *GlusterVolumeServiceStopRebalanceRequest) Async(async bool) *GlusterVolumeServiceStopRebalanceRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterVolumeServiceStopRebalanceRequest) send() *GlusterVolumeServiceStopRebalanceResponse {
+
 }
 
 //
@@ -40445,27 +44333,34 @@ func NewGlusterHookService(connection *Connection, path string) *GlusterHookServ
 }
 
 type GlusterHookServiceDisableRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterHook *GlusterHookService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *GlusterHookServiceDisableRequest) Header(key, value string) {
+func (p *GlusterHookServiceDisableRequest) Header(key, value string) *GlusterHookServiceDisableRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceDisableRequest) Query(key, value string) {
+func (p *GlusterHookServiceDisableRequest) Query(key, value string) *GlusterHookServiceDisableRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceDisableRequest) Async(async bool) {
+func (p *GlusterHookServiceDisableRequest) Async(async bool) *GlusterHookServiceDisableRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterHookServiceDisableRequest) send() *GlusterHookServiceDisableResponse {
+
 }
 
 //
@@ -40493,27 +44388,34 @@ func (op *GlusterHookService) Disable(
 }
 
 type GlusterHookServiceEnableRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterHook *GlusterHookService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *GlusterHookServiceEnableRequest) Header(key, value string) {
+func (p *GlusterHookServiceEnableRequest) Header(key, value string) *GlusterHookServiceEnableRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceEnableRequest) Query(key, value string) {
+func (p *GlusterHookServiceEnableRequest) Query(key, value string) *GlusterHookServiceEnableRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceEnableRequest) Async(async bool) {
+func (p *GlusterHookServiceEnableRequest) Async(async bool) *GlusterHookServiceEnableRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterHookServiceEnableRequest) send() *GlusterHookServiceEnableResponse {
+
 }
 
 //
@@ -40541,22 +44443,29 @@ func (op *GlusterHookService) Enable(
 }
 
 type GlusterHookServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	glusterHook *GlusterHookService
+	header      map[string]string
+	query       map[string]string
 }
 
-func (p *GlusterHookServiceGetRequest) Header(key, value string) {
+func (p *GlusterHookServiceGetRequest) Header(key, value string) *GlusterHookServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceGetRequest) Query(key, value string) {
+func (p *GlusterHookServiceGetRequest) Query(key, value string) *GlusterHookServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *GlusterHookServiceGetRequest) send() *GlusterHookServiceGetResponse {
+
 }
 
 //
@@ -40583,27 +44492,34 @@ func (op *GlusterHookService) Get(
 }
 
 type GlusterHookServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	glusterHook *GlusterHookService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
-func (p *GlusterHookServiceRemoveRequest) Header(key, value string) {
+func (p *GlusterHookServiceRemoveRequest) Header(key, value string) *GlusterHookServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceRemoveRequest) Query(key, value string) {
+func (p *GlusterHookServiceRemoveRequest) Query(key, value string) *GlusterHookServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceRemoveRequest) Async(async bool) {
+func (p *GlusterHookServiceRemoveRequest) Async(async bool) *GlusterHookServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *GlusterHookServiceRemoveRequest) send() *GlusterHookServiceRemoveResponse {
+
 }
 
 //
@@ -40631,6 +44547,7 @@ func (op *GlusterHookService) Remove(
 }
 
 type GlusterHookServiceResolveRequest struct {
+	glusterHook    *GlusterHookService
 	header         map[string]string
 	query          map[string]string
 	async          *bool
@@ -40638,28 +44555,36 @@ type GlusterHookServiceResolveRequest struct {
 	resolutionType *string
 }
 
-func (p *GlusterHookServiceResolveRequest) Header(key, value string) {
+func (p *GlusterHookServiceResolveRequest) Header(key, value string) *GlusterHookServiceResolveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceResolveRequest) Query(key, value string) {
+func (p *GlusterHookServiceResolveRequest) Query(key, value string) *GlusterHookServiceResolveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterHookServiceResolveRequest) Async(async bool) {
+func (p *GlusterHookServiceResolveRequest) Async(async bool) *GlusterHookServiceResolveRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterHookServiceResolveRequest) Host(host *Host) {
+func (p *GlusterHookServiceResolveRequest) Host(host *Host) *GlusterHookServiceResolveRequest {
 	p.host = host
+	return p
 }
-func (p *GlusterHookServiceResolveRequest) ResolutionType(resolutionType string) {
+func (p *GlusterHookServiceResolveRequest) ResolutionType(resolutionType string) *GlusterHookServiceResolveRequest {
 	p.resolutionType = &resolutionType
+	return p
+}
+func (p *GlusterHookServiceResolveRequest) send() *GlusterHookServiceResolveResponse {
+
 }
 
 //
@@ -40724,31 +44649,39 @@ func NewGlusterBricksService(connection *Connection, path string) *GlusterBricks
 }
 
 type GlusterBricksServiceActivateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	bricks []GlusterBrick
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	bricks        []GlusterBrick
 }
 
-func (p *GlusterBricksServiceActivateRequest) Header(key, value string) {
+func (p *GlusterBricksServiceActivateRequest) Header(key, value string) *GlusterBricksServiceActivateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceActivateRequest) Query(key, value string) {
+func (p *GlusterBricksServiceActivateRequest) Query(key, value string) *GlusterBricksServiceActivateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceActivateRequest) Async(async bool) {
+func (p *GlusterBricksServiceActivateRequest) Async(async bool) *GlusterBricksServiceActivateRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterBricksServiceActivateRequest) Bricks(bricks []GlusterBrick) {
+func (p *GlusterBricksServiceActivateRequest) Bricks(bricks []GlusterBrick) *GlusterBricksServiceActivateRequest {
 	p.bricks = bricks
+	return p
+}
+func (p *GlusterBricksServiceActivateRequest) send() *GlusterBricksServiceActivateResponse {
+
 }
 
 //
@@ -40797,35 +44730,44 @@ func (op *GlusterBricksService) Activate(
 }
 
 type GlusterBricksServiceAddRequest struct {
-	header       map[string]string
-	query        map[string]string
-	bricks       []GlusterBrick
-	replicaCount *int64
-	stripeCount  *int64
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	bricks        []GlusterBrick
+	replicaCount  *int64
+	stripeCount   *int64
 }
 
-func (p *GlusterBricksServiceAddRequest) Header(key, value string) {
+func (p *GlusterBricksServiceAddRequest) Header(key, value string) *GlusterBricksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceAddRequest) Query(key, value string) {
+func (p *GlusterBricksServiceAddRequest) Query(key, value string) *GlusterBricksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceAddRequest) Bricks(bricks []GlusterBrick) {
+func (p *GlusterBricksServiceAddRequest) Bricks(bricks []GlusterBrick) *GlusterBricksServiceAddRequest {
 	p.bricks = bricks
+	return p
 }
-func (p *GlusterBricksServiceAddRequest) ReplicaCount(replicaCount int64) {
+func (p *GlusterBricksServiceAddRequest) ReplicaCount(replicaCount int64) *GlusterBricksServiceAddRequest {
 	p.replicaCount = &replicaCount
+	return p
 }
-func (p *GlusterBricksServiceAddRequest) StripeCount(stripeCount int64) {
+func (p *GlusterBricksServiceAddRequest) StripeCount(stripeCount int64) *GlusterBricksServiceAddRequest {
 	p.stripeCount = &stripeCount
+	return p
+}
+func (p *GlusterBricksServiceAddRequest) send() *GlusterBricksServiceAddResponse {
+
 }
 
 //
@@ -40881,27 +44823,34 @@ func (op *GlusterBricksService) Add(
 }
 
 type GlusterBricksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *GlusterBricksServiceListRequest) Header(key, value string) {
+func (p *GlusterBricksServiceListRequest) Header(key, value string) *GlusterBricksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceListRequest) Query(key, value string) {
+func (p *GlusterBricksServiceListRequest) Query(key, value string) *GlusterBricksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceListRequest) Max(max int64) {
+func (p *GlusterBricksServiceListRequest) Max(max int64) *GlusterBricksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *GlusterBricksServiceListRequest) send() *GlusterBricksServiceListResponse {
+
 }
 
 //
@@ -40959,31 +44908,39 @@ func (op *GlusterBricksService) List(
 }
 
 type GlusterBricksServiceMigrateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	bricks []GlusterBrick
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	bricks        []GlusterBrick
 }
 
-func (p *GlusterBricksServiceMigrateRequest) Header(key, value string) {
+func (p *GlusterBricksServiceMigrateRequest) Header(key, value string) *GlusterBricksServiceMigrateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceMigrateRequest) Query(key, value string) {
+func (p *GlusterBricksServiceMigrateRequest) Query(key, value string) *GlusterBricksServiceMigrateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceMigrateRequest) Async(async bool) {
+func (p *GlusterBricksServiceMigrateRequest) Async(async bool) *GlusterBricksServiceMigrateRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterBricksServiceMigrateRequest) Bricks(bricks []GlusterBrick) {
+func (p *GlusterBricksServiceMigrateRequest) Bricks(bricks []GlusterBrick) *GlusterBricksServiceMigrateRequest {
 	p.bricks = bricks
+	return p
+}
+func (p *GlusterBricksServiceMigrateRequest) send() *GlusterBricksServiceMigrateResponse {
+
 }
 
 //
@@ -41035,35 +44992,44 @@ func (op *GlusterBricksService) Migrate(
 }
 
 type GlusterBricksServiceRemoveRequest struct {
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	bricks       []GlusterBrick
-	replicaCount *int64
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	bricks        []GlusterBrick
+	replicaCount  *int64
 }
 
-func (p *GlusterBricksServiceRemoveRequest) Header(key, value string) {
+func (p *GlusterBricksServiceRemoveRequest) Header(key, value string) *GlusterBricksServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceRemoveRequest) Query(key, value string) {
+func (p *GlusterBricksServiceRemoveRequest) Query(key, value string) *GlusterBricksServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceRemoveRequest) Async(async bool) {
+func (p *GlusterBricksServiceRemoveRequest) Async(async bool) *GlusterBricksServiceRemoveRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterBricksServiceRemoveRequest) Bricks(bricks []GlusterBrick) {
+func (p *GlusterBricksServiceRemoveRequest) Bricks(bricks []GlusterBrick) *GlusterBricksServiceRemoveRequest {
 	p.bricks = bricks
+	return p
 }
-func (p *GlusterBricksServiceRemoveRequest) ReplicaCount(replicaCount int64) {
+func (p *GlusterBricksServiceRemoveRequest) ReplicaCount(replicaCount int64) *GlusterBricksServiceRemoveRequest {
 	p.replicaCount = &replicaCount
+	return p
+}
+func (p *GlusterBricksServiceRemoveRequest) send() *GlusterBricksServiceRemoveResponse {
+
 }
 
 //
@@ -41114,31 +45080,39 @@ func (op *GlusterBricksService) Remove(
 }
 
 type GlusterBricksServiceStopMigrateRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	bricks []GlusterBrick
+	glusterBricks *GlusterBricksService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	bricks        []GlusterBrick
 }
 
-func (p *GlusterBricksServiceStopMigrateRequest) Header(key, value string) {
+func (p *GlusterBricksServiceStopMigrateRequest) Header(key, value string) *GlusterBricksServiceStopMigrateRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceStopMigrateRequest) Query(key, value string) {
+func (p *GlusterBricksServiceStopMigrateRequest) Query(key, value string) *GlusterBricksServiceStopMigrateRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterBricksServiceStopMigrateRequest) Async(async bool) {
+func (p *GlusterBricksServiceStopMigrateRequest) Async(async bool) *GlusterBricksServiceStopMigrateRequest {
 	p.async = &async
+	return p
 }
-func (p *GlusterBricksServiceStopMigrateRequest) Bricks(bricks []GlusterBrick) {
+func (p *GlusterBricksServiceStopMigrateRequest) Bricks(bricks []GlusterBrick) *GlusterBricksServiceStopMigrateRequest {
 	p.bricks = bricks
+	return p
+}
+func (p *GlusterBricksServiceStopMigrateRequest) send() *GlusterBricksServiceStopMigrateResponse {
+
 }
 
 //
@@ -41224,27 +45198,34 @@ func NewGlusterHooksService(connection *Connection, path string) *GlusterHooksSe
 }
 
 type GlusterHooksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	glusterHooks *GlusterHooksService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
-func (p *GlusterHooksServiceListRequest) Header(key, value string) {
+func (p *GlusterHooksServiceListRequest) Header(key, value string) *GlusterHooksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *GlusterHooksServiceListRequest) Query(key, value string) {
+func (p *GlusterHooksServiceListRequest) Query(key, value string) *GlusterHooksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *GlusterHooksServiceListRequest) Max(max int64) {
+func (p *GlusterHooksServiceListRequest) Max(max int64) *GlusterHooksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *GlusterHooksServiceListRequest) send() *GlusterHooksServiceListResponse {
+
 }
 
 //
@@ -41316,27 +45297,34 @@ func NewDisksService(connection *Connection, path string) *DisksService {
 }
 
 type DisksServiceAddRequest struct {
+	disks  *DisksService
 	header map[string]string
 	query  map[string]string
 	disk   *Disk
 }
 
-func (p *DisksServiceAddRequest) Header(key, value string) {
+func (p *DisksServiceAddRequest) Header(key, value string) *DisksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DisksServiceAddRequest) Query(key, value string) {
+func (p *DisksServiceAddRequest) Query(key, value string) *DisksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DisksServiceAddRequest) Disk(disk *Disk) {
+func (p *DisksServiceAddRequest) Disk(disk *Disk) *DisksServiceAddRequest {
 	p.disk = disk
+	return p
+}
+func (p *DisksServiceAddRequest) send() *DisksServiceAddResponse {
+
 }
 
 //
@@ -41448,6 +45436,7 @@ func (op *DisksService) Add(
 }
 
 type DisksServiceListRequest struct {
+	disks         *DisksService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -41455,28 +45444,36 @@ type DisksServiceListRequest struct {
 	search        *string
 }
 
-func (p *DisksServiceListRequest) Header(key, value string) {
+func (p *DisksServiceListRequest) Header(key, value string) *DisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DisksServiceListRequest) Query(key, value string) {
+func (p *DisksServiceListRequest) Query(key, value string) *DisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DisksServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *DisksServiceListRequest) CaseSensitive(caseSensitive bool) *DisksServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *DisksServiceListRequest) Max(max int64) {
+func (p *DisksServiceListRequest) Max(max int64) *DisksServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *DisksServiceListRequest) Search(search string) {
+func (p *DisksServiceListRequest) Search(search string) *DisksServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *DisksServiceListRequest) send() *DisksServiceListResponse {
+
 }
 
 //
@@ -41584,27 +45581,34 @@ func NewInstanceTypeWatchdogsService(connection *Connection, path string) *Insta
 }
 
 type InstanceTypeWatchdogsServiceAddRequest struct {
-	header   map[string]string
-	query    map[string]string
-	watchdog *Watchdog
+	instanceTypeWatchdogs *InstanceTypeWatchdogsService
+	header                map[string]string
+	query                 map[string]string
+	watchdog              *Watchdog
 }
 
-func (p *InstanceTypeWatchdogsServiceAddRequest) Header(key, value string) {
+func (p *InstanceTypeWatchdogsServiceAddRequest) Header(key, value string) *InstanceTypeWatchdogsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogsServiceAddRequest) Query(key, value string) {
+func (p *InstanceTypeWatchdogsServiceAddRequest) Query(key, value string) *InstanceTypeWatchdogsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) {
+func (p *InstanceTypeWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *InstanceTypeWatchdogsServiceAddRequest {
 	p.watchdog = watchdog
+	return p
+}
+func (p *InstanceTypeWatchdogsServiceAddRequest) send() *InstanceTypeWatchdogsServiceAddResponse {
+
 }
 
 //
@@ -41633,31 +45637,39 @@ func (op *InstanceTypeWatchdogsService) Add(
 }
 
 type InstanceTypeWatchdogsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
-	search *string
+	instanceTypeWatchdogs *InstanceTypeWatchdogsService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
+	search                *string
 }
 
-func (p *InstanceTypeWatchdogsServiceListRequest) Header(key, value string) {
+func (p *InstanceTypeWatchdogsServiceListRequest) Header(key, value string) *InstanceTypeWatchdogsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogsServiceListRequest) Query(key, value string) {
+func (p *InstanceTypeWatchdogsServiceListRequest) Query(key, value string) *InstanceTypeWatchdogsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *InstanceTypeWatchdogsServiceListRequest) Max(max int64) {
+func (p *InstanceTypeWatchdogsServiceListRequest) Max(max int64) *InstanceTypeWatchdogsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) {
+func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) *InstanceTypeWatchdogsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *InstanceTypeWatchdogsServiceListRequest) send() *InstanceTypeWatchdogsServiceListResponse {
+
 }
 
 //
@@ -41734,27 +45746,34 @@ func NewJobsService(connection *Connection, path string) *JobsService {
 }
 
 type JobsServiceAddRequest struct {
+	jobs   *JobsService
 	header map[string]string
 	query  map[string]string
 	job    *Job
 }
 
-func (p *JobsServiceAddRequest) Header(key, value string) {
+func (p *JobsServiceAddRequest) Header(key, value string) *JobsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *JobsServiceAddRequest) Query(key, value string) {
+func (p *JobsServiceAddRequest) Query(key, value string) *JobsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *JobsServiceAddRequest) Job(job *Job) {
+func (p *JobsServiceAddRequest) Job(job *Job) *JobsServiceAddRequest {
 	p.job = job
+	return p
+}
+func (p *JobsServiceAddRequest) send() *JobsServiceAddResponse {
+
 }
 
 //
@@ -41819,27 +45838,34 @@ func (op *JobsService) Add(
 }
 
 type JobsServiceListRequest struct {
+	jobs   *JobsService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *JobsServiceListRequest) Header(key, value string) {
+func (p *JobsServiceListRequest) Header(key, value string) *JobsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *JobsServiceListRequest) Query(key, value string) {
+func (p *JobsServiceListRequest) Query(key, value string) *JobsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *JobsServiceListRequest) Max(max int64) {
+func (p *JobsServiceListRequest) Max(max int64) *JobsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *JobsServiceListRequest) send() *JobsServiceListResponse {
+
 }
 
 //
@@ -41939,27 +45965,34 @@ func NewIconsService(connection *Connection, path string) *IconsService {
 }
 
 type IconsServiceListRequest struct {
+	icons  *IconsService
 	header map[string]string
 	query  map[string]string
 	max    *int64
 }
 
-func (p *IconsServiceListRequest) Header(key, value string) {
+func (p *IconsServiceListRequest) Header(key, value string) *IconsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *IconsServiceListRequest) Query(key, value string) {
+func (p *IconsServiceListRequest) Query(key, value string) *IconsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *IconsServiceListRequest) Max(max int64) {
+func (p *IconsServiceListRequest) Max(max int64) *IconsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *IconsServiceListRequest) send() *IconsServiceListResponse {
+
 }
 
 //
@@ -42048,31 +46081,39 @@ func NewTemplatesService(connection *Connection, path string) *TemplatesService 
 }
 
 type TemplatesServiceAddRequest struct {
+	templates        *TemplatesService
 	header           map[string]string
 	query            map[string]string
 	clonePermissions *bool
 	template         *Template
 }
 
-func (p *TemplatesServiceAddRequest) Header(key, value string) {
+func (p *TemplatesServiceAddRequest) Header(key, value string) *TemplatesServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplatesServiceAddRequest) Query(key, value string) {
+func (p *TemplatesServiceAddRequest) Query(key, value string) *TemplatesServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplatesServiceAddRequest) ClonePermissions(clonePermissions bool) {
+func (p *TemplatesServiceAddRequest) ClonePermissions(clonePermissions bool) *TemplatesServiceAddRequest {
 	p.clonePermissions = &clonePermissions
+	return p
 }
-func (p *TemplatesServiceAddRequest) Template(template *Template) {
+func (p *TemplatesServiceAddRequest) Template(template *Template) *TemplatesServiceAddRequest {
 	p.template = template
+	return p
+}
+func (p *TemplatesServiceAddRequest) send() *TemplatesServiceAddResponse {
+
 }
 
 //
@@ -42136,6 +46177,7 @@ func (op *TemplatesService) Add(
 }
 
 type TemplatesServiceListRequest struct {
+	templates     *TemplatesService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -42144,31 +46186,40 @@ type TemplatesServiceListRequest struct {
 	search        *string
 }
 
-func (p *TemplatesServiceListRequest) Header(key, value string) {
+func (p *TemplatesServiceListRequest) Header(key, value string) *TemplatesServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplatesServiceListRequest) Query(key, value string) {
+func (p *TemplatesServiceListRequest) Query(key, value string) *TemplatesServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplatesServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *TemplatesServiceListRequest) CaseSensitive(caseSensitive bool) *TemplatesServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *TemplatesServiceListRequest) Filter(filter bool) {
+func (p *TemplatesServiceListRequest) Filter(filter bool) *TemplatesServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *TemplatesServiceListRequest) Max(max int64) {
+func (p *TemplatesServiceListRequest) Max(max int64) *TemplatesServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *TemplatesServiceListRequest) Search(search string) {
+func (p *TemplatesServiceListRequest) Search(search string) *TemplatesServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *TemplatesServiceListRequest) send() *TemplatesServiceListResponse {
+
 }
 
 //
@@ -42258,27 +46309,34 @@ func NewFilterService(connection *Connection, path string) *FilterService {
 }
 
 type FilterServiceGetRequest struct {
+	filter *FilterService
 	header map[string]string
 	query  map[string]string
 	filter *bool
 }
 
-func (p *FilterServiceGetRequest) Header(key, value string) {
+func (p *FilterServiceGetRequest) Header(key, value string) *FilterServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FilterServiceGetRequest) Query(key, value string) {
+func (p *FilterServiceGetRequest) Query(key, value string) *FilterServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FilterServiceGetRequest) Filter(filter bool) {
+func (p *FilterServiceGetRequest) Filter(filter bool) *FilterServiceGetRequest {
 	p.filter = &filter
+	return p
+}
+func (p *FilterServiceGetRequest) send() *FilterServiceGetResponse {
+
 }
 
 //
@@ -42312,27 +46370,34 @@ func (op *FilterService) Get(
 }
 
 type FilterServiceRemoveRequest struct {
+	filter *FilterService
 	header map[string]string
 	query  map[string]string
 	async  *bool
 }
 
-func (p *FilterServiceRemoveRequest) Header(key, value string) {
+func (p *FilterServiceRemoveRequest) Header(key, value string) *FilterServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FilterServiceRemoveRequest) Query(key, value string) {
+func (p *FilterServiceRemoveRequest) Query(key, value string) *FilterServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FilterServiceRemoveRequest) Async(async bool) {
+func (p *FilterServiceRemoveRequest) Async(async bool) *FilterServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *FilterServiceRemoveRequest) send() *FilterServiceRemoveResponse {
+
 }
 
 //
@@ -42388,27 +46453,34 @@ func NewAssignedAffinityLabelsService(connection *Connection, path string) *Assi
 }
 
 type AssignedAffinityLabelsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	label  *AffinityLabel
+	assignedAffinityLabels *AssignedAffinityLabelsService
+	header                 map[string]string
+	query                  map[string]string
+	label                  *AffinityLabel
 }
 
-func (p *AssignedAffinityLabelsServiceAddRequest) Header(key, value string) {
+func (p *AssignedAffinityLabelsServiceAddRequest) Header(key, value string) *AssignedAffinityLabelsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedAffinityLabelsServiceAddRequest) Query(key, value string) {
+func (p *AssignedAffinityLabelsServiceAddRequest) Query(key, value string) *AssignedAffinityLabelsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedAffinityLabelsServiceAddRequest) Label(label *AffinityLabel) {
+func (p *AssignedAffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *AssignedAffinityLabelsServiceAddRequest {
 	p.label = label
+	return p
+}
+func (p *AssignedAffinityLabelsServiceAddRequest) send() *AssignedAffinityLabelsServiceAddResponse {
+
 }
 
 //
@@ -42437,22 +46509,29 @@ func (op *AssignedAffinityLabelsService) Add(
 }
 
 type AssignedAffinityLabelsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedAffinityLabels *AssignedAffinityLabelsService
+	header                 map[string]string
+	query                  map[string]string
 }
 
-func (p *AssignedAffinityLabelsServiceListRequest) Header(key, value string) {
+func (p *AssignedAffinityLabelsServiceListRequest) Header(key, value string) *AssignedAffinityLabelsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) {
+func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) *AssignedAffinityLabelsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedAffinityLabelsServiceListRequest) send() *AssignedAffinityLabelsServiceListResponse {
+
 }
 
 //
@@ -42519,22 +46598,29 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 }
 
 type SnapshotCdromServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	snapshotCdrom *SnapshotCdromService
+	header        map[string]string
+	query         map[string]string
 }
 
-func (p *SnapshotCdromServiceGetRequest) Header(key, value string) {
+func (p *SnapshotCdromServiceGetRequest) Header(key, value string) *SnapshotCdromServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *SnapshotCdromServiceGetRequest) Query(key, value string) {
+func (p *SnapshotCdromServiceGetRequest) Query(key, value string) *SnapshotCdromServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *SnapshotCdromServiceGetRequest) send() *SnapshotCdromServiceGetResponse {
+
 }
 
 //
@@ -42588,22 +46674,29 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 }
 
 type HostNumaNodeServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	hostNumaNode *HostNumaNodeService
+	header       map[string]string
+	query        map[string]string
 }
 
-func (p *HostNumaNodeServiceGetRequest) Header(key, value string) {
+func (p *HostNumaNodeServiceGetRequest) Header(key, value string) *HostNumaNodeServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostNumaNodeServiceGetRequest) Query(key, value string) {
+func (p *HostNumaNodeServiceGetRequest) Query(key, value string) *HostNumaNodeServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *HostNumaNodeServiceGetRequest) send() *HostNumaNodeServiceGetResponse {
+
 }
 
 //
@@ -42669,22 +46762,29 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 }
 
 type TemplateGraphicsConsoleServiceGetRequest struct {
-	header map[string]string
-	query  map[string]string
+	templateGraphicsConsole *TemplateGraphicsConsoleService
+	header                  map[string]string
+	query                   map[string]string
 }
 
-func (p *TemplateGraphicsConsoleServiceGetRequest) Header(key, value string) {
+func (p *TemplateGraphicsConsoleServiceGetRequest) Header(key, value string) *TemplateGraphicsConsoleServiceGetRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) {
+func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) *TemplateGraphicsConsoleServiceGetRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *TemplateGraphicsConsoleServiceGetRequest) send() *TemplateGraphicsConsoleServiceGetResponse {
+
 }
 
 //
@@ -42712,27 +46812,34 @@ func (op *TemplateGraphicsConsoleService) Get(
 }
 
 type TemplateGraphicsConsoleServiceRemoveRequest struct {
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	templateGraphicsConsole *TemplateGraphicsConsoleService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
-func (p *TemplateGraphicsConsoleServiceRemoveRequest) Header(key, value string) {
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Header(key, value string) *TemplateGraphicsConsoleServiceRemoveRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsoleServiceRemoveRequest) Query(key, value string) {
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Query(key, value string) *TemplateGraphicsConsoleServiceRemoveRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *TemplateGraphicsConsoleServiceRemoveRequest) Async(async bool) {
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Async(async bool) *TemplateGraphicsConsoleServiceRemoveRequest {
 	p.async = &async
+	return p
+}
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) send() *TemplateGraphicsConsoleServiceRemoveResponse {
+
 }
 
 //
@@ -42790,27 +46897,34 @@ func NewAffinityLabelHostsService(connection *Connection, path string) *Affinity
 }
 
 type AffinityLabelHostsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	host   *Host
+	affinityLabelHosts *AffinityLabelHostsService
+	header             map[string]string
+	query              map[string]string
+	host               *Host
 }
 
-func (p *AffinityLabelHostsServiceAddRequest) Header(key, value string) {
+func (p *AffinityLabelHostsServiceAddRequest) Header(key, value string) *AffinityLabelHostsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelHostsServiceAddRequest) Query(key, value string) {
+func (p *AffinityLabelHostsServiceAddRequest) Query(key, value string) *AffinityLabelHostsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AffinityLabelHostsServiceAddRequest) Host(host *Host) {
+func (p *AffinityLabelHostsServiceAddRequest) Host(host *Host) *AffinityLabelHostsServiceAddRequest {
 	p.host = host
+	return p
+}
+func (p *AffinityLabelHostsServiceAddRequest) send() *AffinityLabelHostsServiceAddResponse {
+
 }
 
 //
@@ -42839,22 +46953,29 @@ func (op *AffinityLabelHostsService) Add(
 }
 
 type AffinityLabelHostsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	affinityLabelHosts *AffinityLabelHostsService
+	header             map[string]string
+	query              map[string]string
 }
 
-func (p *AffinityLabelHostsServiceListRequest) Header(key, value string) {
+func (p *AffinityLabelHostsServiceListRequest) Header(key, value string) *AffinityLabelHostsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) {
+func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) *AffinityLabelHostsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AffinityLabelHostsServiceListRequest) send() *AffinityLabelHostsServiceListResponse {
+
 }
 
 //
@@ -42921,27 +47042,34 @@ func NewDiskSnapshotsService(connection *Connection, path string) *DiskSnapshots
 }
 
 type DiskSnapshotsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	diskSnapshots *DiskSnapshotsService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
-func (p *DiskSnapshotsServiceListRequest) Header(key, value string) {
+func (p *DiskSnapshotsServiceListRequest) Header(key, value string) *DiskSnapshotsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *DiskSnapshotsServiceListRequest) Query(key, value string) {
+func (p *DiskSnapshotsServiceListRequest) Query(key, value string) *DiskSnapshotsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *DiskSnapshotsServiceListRequest) Max(max int64) {
+func (p *DiskSnapshotsServiceListRequest) Max(max int64) *DiskSnapshotsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *DiskSnapshotsServiceListRequest) send() *DiskSnapshotsServiceListResponse {
+
 }
 
 //
@@ -43037,27 +47165,34 @@ func NewStorageDomainVmsService(connection *Connection, path string) *StorageDom
 }
 
 type StorageDomainVmsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageDomainVms *StorageDomainVmsService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
-func (p *StorageDomainVmsServiceListRequest) Header(key, value string) {
+func (p *StorageDomainVmsServiceListRequest) Header(key, value string) *StorageDomainVmsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainVmsServiceListRequest) Query(key, value string) {
+func (p *StorageDomainVmsServiceListRequest) Query(key, value string) *StorageDomainVmsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainVmsServiceListRequest) Max(max int64) {
+func (p *StorageDomainVmsServiceListRequest) Max(max int64) *StorageDomainVmsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageDomainVmsServiceListRequest) send() *StorageDomainVmsServiceListResponse {
+
 }
 
 //
@@ -43130,6 +47265,7 @@ func NewHostsService(connection *Connection, path string) *HostsService {
 }
 
 type HostsServiceAddRequest struct {
+	hosts                *HostsService
 	header               map[string]string
 	query                map[string]string
 	deployHostedEngine   *bool
@@ -43137,28 +47273,36 @@ type HostsServiceAddRequest struct {
 	undeployHostedEngine *bool
 }
 
-func (p *HostsServiceAddRequest) Header(key, value string) {
+func (p *HostsServiceAddRequest) Header(key, value string) *HostsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostsServiceAddRequest) Query(key, value string) {
+func (p *HostsServiceAddRequest) Query(key, value string) *HostsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostsServiceAddRequest) DeployHostedEngine(deployHostedEngine bool) {
+func (p *HostsServiceAddRequest) DeployHostedEngine(deployHostedEngine bool) *HostsServiceAddRequest {
 	p.deployHostedEngine = &deployHostedEngine
+	return p
 }
-func (p *HostsServiceAddRequest) Host(host *Host) {
+func (p *HostsServiceAddRequest) Host(host *Host) *HostsServiceAddRequest {
 	p.host = host
+	return p
 }
-func (p *HostsServiceAddRequest) UndeployHostedEngine(undeployHostedEngine bool) {
+func (p *HostsServiceAddRequest) UndeployHostedEngine(undeployHostedEngine bool) *HostsServiceAddRequest {
 	p.undeployHostedEngine = &undeployHostedEngine
+	return p
+}
+func (p *HostsServiceAddRequest) send() *HostsServiceAddResponse {
+
 }
 
 //
@@ -43220,6 +47364,7 @@ func (op *HostsService) Add(
 }
 
 type HostsServiceListRequest struct {
+	hosts         *HostsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -43228,31 +47373,40 @@ type HostsServiceListRequest struct {
 	search        *string
 }
 
-func (p *HostsServiceListRequest) Header(key, value string) {
+func (p *HostsServiceListRequest) Header(key, value string) *HostsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *HostsServiceListRequest) Query(key, value string) {
+func (p *HostsServiceListRequest) Query(key, value string) *HostsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *HostsServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *HostsServiceListRequest) CaseSensitive(caseSensitive bool) *HostsServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *HostsServiceListRequest) Filter(filter bool) {
+func (p *HostsServiceListRequest) Filter(filter bool) *HostsServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *HostsServiceListRequest) Max(max int64) {
+func (p *HostsServiceListRequest) Max(max int64) *HostsServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *HostsServiceListRequest) Search(search string) {
+func (p *HostsServiceListRequest) Search(search string) *HostsServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *HostsServiceListRequest) send() *HostsServiceListResponse {
+
 }
 
 //
@@ -43354,31 +47508,39 @@ func NewStorageDomainDisksService(connection *Connection, path string) *StorageD
 }
 
 type StorageDomainDisksServiceAddRequest struct {
-	header       map[string]string
-	query        map[string]string
-	disk         *Disk
-	unregistered *bool
+	storageDomainDisks *StorageDomainDisksService
+	header             map[string]string
+	query              map[string]string
+	disk               *Disk
+	unregistered       *bool
 }
 
-func (p *StorageDomainDisksServiceAddRequest) Header(key, value string) {
+func (p *StorageDomainDisksServiceAddRequest) Header(key, value string) *StorageDomainDisksServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDisksServiceAddRequest) Query(key, value string) {
+func (p *StorageDomainDisksServiceAddRequest) Query(key, value string) *StorageDomainDisksServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDisksServiceAddRequest) Disk(disk *Disk) {
+func (p *StorageDomainDisksServiceAddRequest) Disk(disk *Disk) *StorageDomainDisksServiceAddRequest {
 	p.disk = disk
+	return p
 }
-func (p *StorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) {
+func (p *StorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) *StorageDomainDisksServiceAddRequest {
 	p.unregistered = &unregistered
+	return p
+}
+func (p *StorageDomainDisksServiceAddRequest) send() *StorageDomainDisksServiceAddResponse {
+
 }
 
 //
@@ -43419,27 +47581,34 @@ func (op *StorageDomainDisksService) Add(
 }
 
 type StorageDomainDisksServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageDomainDisks *StorageDomainDisksService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
-func (p *StorageDomainDisksServiceListRequest) Header(key, value string) {
+func (p *StorageDomainDisksServiceListRequest) Header(key, value string) *StorageDomainDisksServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageDomainDisksServiceListRequest) Query(key, value string) {
+func (p *StorageDomainDisksServiceListRequest) Query(key, value string) *StorageDomainDisksServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageDomainDisksServiceListRequest) Max(max int64) {
+func (p *StorageDomainDisksServiceListRequest) Max(max int64) *StorageDomainDisksServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageDomainDisksServiceListRequest) send() *StorageDomainDisksServiceListResponse {
+
 }
 
 //
@@ -43512,27 +47681,34 @@ func NewFiltersService(connection *Connection, path string) *FiltersService {
 }
 
 type FiltersServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *Filter
+	filters *FiltersService
+	header  map[string]string
+	query   map[string]string
+	filter  *Filter
 }
 
-func (p *FiltersServiceAddRequest) Header(key, value string) {
+func (p *FiltersServiceAddRequest) Header(key, value string) *FiltersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FiltersServiceAddRequest) Query(key, value string) {
+func (p *FiltersServiceAddRequest) Query(key, value string) *FiltersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FiltersServiceAddRequest) Filter(filter *Filter) {
+func (p *FiltersServiceAddRequest) Filter(filter *Filter) *FiltersServiceAddRequest {
 	p.filter = filter
+	return p
+}
+func (p *FiltersServiceAddRequest) send() *FiltersServiceAddResponse {
+
 }
 
 //
@@ -43560,31 +47736,39 @@ func (op *FiltersService) Add(
 }
 
 type FiltersServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	filter *bool
-	max    *int64
+	filters *FiltersService
+	header  map[string]string
+	query   map[string]string
+	filter  *bool
+	max     *int64
 }
 
-func (p *FiltersServiceListRequest) Header(key, value string) {
+func (p *FiltersServiceListRequest) Header(key, value string) *FiltersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FiltersServiceListRequest) Query(key, value string) {
+func (p *FiltersServiceListRequest) Query(key, value string) *FiltersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FiltersServiceListRequest) Filter(filter bool) {
+func (p *FiltersServiceListRequest) Filter(filter bool) *FiltersServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *FiltersServiceListRequest) Max(max int64) {
+func (p *FiltersServiceListRequest) Max(max int64) *FiltersServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *FiltersServiceListRequest) send() *FiltersServiceListResponse {
+
 }
 
 //
@@ -43658,27 +47842,34 @@ func NewStorageServerConnectionsService(connection *Connection, path string) *St
 }
 
 type StorageServerConnectionsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	connection *StorageConnection
+	storageServerConnections *StorageServerConnectionsService
+	header                   map[string]string
+	query                    map[string]string
+	connection               *StorageConnection
 }
 
-func (p *StorageServerConnectionsServiceAddRequest) Header(key, value string) {
+func (p *StorageServerConnectionsServiceAddRequest) Header(key, value string) *StorageServerConnectionsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionsServiceAddRequest) Query(key, value string) {
+func (p *StorageServerConnectionsServiceAddRequest) Query(key, value string) *StorageServerConnectionsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) {
+func (p *StorageServerConnectionsServiceAddRequest) Connection(connection *StorageConnection) *StorageServerConnectionsServiceAddRequest {
 	p.connection = connection
+	return p
+}
+func (p *StorageServerConnectionsServiceAddRequest) send() *StorageServerConnectionsServiceAddResponse {
+
 }
 
 //
@@ -43725,27 +47916,34 @@ func (op *StorageServerConnectionsService) Add(
 }
 
 type StorageServerConnectionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	storageServerConnections *StorageServerConnectionsService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
-func (p *StorageServerConnectionsServiceListRequest) Header(key, value string) {
+func (p *StorageServerConnectionsServiceListRequest) Header(key, value string) *StorageServerConnectionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionsServiceListRequest) Query(key, value string) {
+func (p *StorageServerConnectionsServiceListRequest) Query(key, value string) *StorageServerConnectionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *StorageServerConnectionsServiceListRequest) Max(max int64) {
+func (p *StorageServerConnectionsServiceListRequest) Max(max int64) *StorageServerConnectionsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *StorageServerConnectionsServiceListRequest) send() *StorageServerConnectionsServiceListResponse {
+
 }
 
 //
@@ -43816,27 +48014,34 @@ func NewFenceAgentsService(connection *Connection, path string) *FenceAgentsServ
 }
 
 type FenceAgentsServiceAddRequest struct {
-	header map[string]string
-	query  map[string]string
-	agent  *Agent
+	fenceAgents *FenceAgentsService
+	header      map[string]string
+	query       map[string]string
+	agent       *Agent
 }
 
-func (p *FenceAgentsServiceAddRequest) Header(key, value string) {
+func (p *FenceAgentsServiceAddRequest) Header(key, value string) *FenceAgentsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FenceAgentsServiceAddRequest) Query(key, value string) {
+func (p *FenceAgentsServiceAddRequest) Query(key, value string) *FenceAgentsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FenceAgentsServiceAddRequest) Agent(agent *Agent) {
+func (p *FenceAgentsServiceAddRequest) Agent(agent *Agent) *FenceAgentsServiceAddRequest {
 	p.agent = agent
+	return p
+}
+func (p *FenceAgentsServiceAddRequest) send() *FenceAgentsServiceAddResponse {
+
 }
 
 //
@@ -43864,27 +48069,34 @@ func (op *FenceAgentsService) Add(
 }
 
 type FenceAgentsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	fenceAgents *FenceAgentsService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
-func (p *FenceAgentsServiceListRequest) Header(key, value string) {
+func (p *FenceAgentsServiceListRequest) Header(key, value string) *FenceAgentsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *FenceAgentsServiceListRequest) Query(key, value string) {
+func (p *FenceAgentsServiceListRequest) Query(key, value string) *FenceAgentsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *FenceAgentsServiceListRequest) Max(max int64) {
+func (p *FenceAgentsServiceListRequest) Max(max int64) *FenceAgentsServiceListRequest {
 	p.max = &max
+	return p
+}
+func (p *FenceAgentsServiceListRequest) send() *FenceAgentsServiceListResponse {
+
 }
 
 //
@@ -43956,27 +48168,34 @@ func NewClustersService(connection *Connection, path string) *ClustersService {
 }
 
 type ClustersServiceAddRequest struct {
-	header  map[string]string
-	query   map[string]string
-	cluster *Cluster
+	clusters *ClustersService
+	header   map[string]string
+	query    map[string]string
+	cluster  *Cluster
 }
 
-func (p *ClustersServiceAddRequest) Header(key, value string) {
+func (p *ClustersServiceAddRequest) Header(key, value string) *ClustersServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClustersServiceAddRequest) Query(key, value string) {
+func (p *ClustersServiceAddRequest) Query(key, value string) *ClustersServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClustersServiceAddRequest) Cluster(cluster *Cluster) {
+func (p *ClustersServiceAddRequest) Cluster(cluster *Cluster) *ClustersServiceAddRequest {
 	p.cluster = cluster
+	return p
+}
+func (p *ClustersServiceAddRequest) send() *ClustersServiceAddResponse {
+
 }
 
 //
@@ -44022,6 +48241,7 @@ func (op *ClustersService) Add(
 }
 
 type ClustersServiceListRequest struct {
+	clusters      *ClustersService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -44030,31 +48250,40 @@ type ClustersServiceListRequest struct {
 	search        *string
 }
 
-func (p *ClustersServiceListRequest) Header(key, value string) {
+func (p *ClustersServiceListRequest) Header(key, value string) *ClustersServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *ClustersServiceListRequest) Query(key, value string) {
+func (p *ClustersServiceListRequest) Query(key, value string) *ClustersServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *ClustersServiceListRequest) CaseSensitive(caseSensitive bool) {
+func (p *ClustersServiceListRequest) CaseSensitive(caseSensitive bool) *ClustersServiceListRequest {
 	p.caseSensitive = &caseSensitive
+	return p
 }
-func (p *ClustersServiceListRequest) Filter(filter bool) {
+func (p *ClustersServiceListRequest) Filter(filter bool) *ClustersServiceListRequest {
 	p.filter = &filter
+	return p
 }
-func (p *ClustersServiceListRequest) Max(max int64) {
+func (p *ClustersServiceListRequest) Max(max int64) *ClustersServiceListRequest {
 	p.max = &max
+	return p
 }
-func (p *ClustersServiceListRequest) Search(search string) {
+func (p *ClustersServiceListRequest) Search(search string) *ClustersServiceListRequest {
 	p.search = &search
+	return p
+}
+func (p *ClustersServiceListRequest) send() *ClustersServiceListResponse {
+
 }
 
 //
@@ -44138,27 +48367,34 @@ func NewAssignedPermissionsService(connection *Connection, path string) *Assigne
 }
 
 type AssignedPermissionsServiceAddRequest struct {
-	header     map[string]string
-	query      map[string]string
-	permission *Permission
+	assignedPermissions *AssignedPermissionsService
+	header              map[string]string
+	query               map[string]string
+	permission          *Permission
 }
 
-func (p *AssignedPermissionsServiceAddRequest) Header(key, value string) {
+func (p *AssignedPermissionsServiceAddRequest) Header(key, value string) *AssignedPermissionsServiceAddRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedPermissionsServiceAddRequest) Query(key, value string) {
+func (p *AssignedPermissionsServiceAddRequest) Query(key, value string) *AssignedPermissionsServiceAddRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
 }
 
-func (p *AssignedPermissionsServiceAddRequest) Permission(permission *Permission) {
+func (p *AssignedPermissionsServiceAddRequest) Permission(permission *Permission) *AssignedPermissionsServiceAddRequest {
 	p.permission = permission
+	return p
+}
+func (p *AssignedPermissionsServiceAddRequest) send() *AssignedPermissionsServiceAddResponse {
+
 }
 
 //
@@ -44237,22 +48473,29 @@ func (op *AssignedPermissionsService) Add(
 }
 
 type AssignedPermissionsServiceListRequest struct {
-	header map[string]string
-	query  map[string]string
+	assignedPermissions *AssignedPermissionsService
+	header              map[string]string
+	query               map[string]string
 }
 
-func (p *AssignedPermissionsServiceListRequest) Header(key, value string) {
+func (p *AssignedPermissionsServiceListRequest) Header(key, value string) *AssignedPermissionsServiceListRequest {
 	if p.header == nil {
 		p.header = make(map[string]string)
 	}
 	p.header[key] = value
+	return p
 }
 
-func (p *AssignedPermissionsServiceListRequest) Query(key, value string) {
+func (p *AssignedPermissionsServiceListRequest) Query(key, value string) *AssignedPermissionsServiceListRequest {
 	if p.query == nil {
 		p.query = make(map[string]string)
 	}
 	p.query[key] = value
+	return p
+}
+
+func (p *AssignedPermissionsServiceListRequest) send() *AssignedPermissionsServiceListResponse {
+
 }
 
 //

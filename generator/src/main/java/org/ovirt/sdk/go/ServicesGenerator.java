@@ -180,12 +180,16 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateRequest(Method method, Service service) {
         // Begin class
-        Name name = method.getName();
+        Name methodName = method.getName();
         String request = getRequestClassName(method, service);
         String response = getResponseClassName(method, service);
 
         buffer.addLine("type %1$s struct {", request);
         buffer.startBlock();
+        // Service itself
+        buffer.addLine("%1$s *%2$s", 
+            goNames.getPrivateMemberStyleName(service.getName()),
+            goNames.getServiceName(service).getClassName());
 
         //      Generate common parameters
         generateRequestCommonParameter();
@@ -209,6 +213,32 @@ public class ServicesGenerator implements GoGenerator {
         for (Parameter para : parameterList) {
             generateRequestParameterMethod(para, request);
         }
+
+        // Generate send method:
+        buffer.addLine("func (p *%1$s) send() *%2$s {",
+            request, getResponseClassName(method, service));
+        buffer.addLine();
+        // Generate method code based on response type:
+        // if (ADD.equals(methodName)) {
+        //     generateAddRequestImplementation(method);
+        // }
+        // else if (GET.equals(methodName) || LIST.equals(methodName)) {
+        //     generateListRequestImplementation(method);
+        // }
+        // else if (REMOVE.equals(methodName)) {
+        //     generateRemoveRequestImplementation(method);
+        // }
+        // else if (UPDATE.equals(methodName)) {
+        //     generateUpdateRequestImplementation(method);
+        // }
+        // else {
+        //     generateActionRequestImplementation(method);
+        // }
+
+        // End send method:
+        buffer.addLine("}");
+        buffer.addLine();
+
     }
 
     private void generateRequestCommonParameter() {
@@ -221,7 +251,7 @@ public class ServicesGenerator implements GoGenerator {
         String[] commonParameters = new String[]{"header", "query"};
 
         for (String para : commonParameters) {
-            buffer.addLine("func (p *%1$s) %2$s(key, value string) {",
+            buffer.addLine("func (p *%1$s) %2$s(key, value string) *%1$s {",
                 requestClassName, GoNames.capitalize(para));
             buffer.startBlock();
             buffer.addLine("if p.%1$s == nil {", para);
@@ -230,6 +260,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine("p.%1$s[key] = value", para);
+            buffer.addLine("return p");
             buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine();
@@ -255,7 +286,7 @@ public class ServicesGenerator implements GoGenerator {
         String paraName = goNames.getParameterStyleName(parameter.getName());
         String paraMethodName = goNames.getPublicMethodStyleName(parameter.getName());
 
-        buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) {",
+        buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
         buffer.startBlock();
         if (GoTypes.isGoPrimitiveType(paraType)) {
@@ -263,9 +294,94 @@ public class ServicesGenerator implements GoGenerator {
         } else {
             buffer.addLine("p.%1$s = %1$s", paraName);
         }
+        buffer.addLine("return p");
         
         buffer.endBlock();
         buffer.addLine("}");
+    }
+
+    private void generateAddRequestImplementation(Method method, Service service) {
+        // 
+
+// func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
+// 	var result OvResponse
+
+// 	// Build the URL:
+// 	useRawURL := c.buildRawURL(r.Path, r.Query)
+
+// 	// Validate the method selected:
+// 	if Contains(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
+// 		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST", r.Method)
+// 	}
+
+// 	// Build the net/http request:
+// 	req, err := http.NewRequest(r.Method, useRawURL, nil)
+// 	if err != nil {
+// 		return &result, err
+// 	}
+
+// 	// Add request headers:
+// 	for reqHK, reqHV := range r.Headers {
+// 		req.Header.Add(reqHK, reqHV)
+// 	}
+// 	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+// 	req.Header.Add("Version", "4")
+// 	req.Header.Add("Content-Type", "application/xml")
+// 	req.Header.Add("Accept", "application/xml")
+// 	// 		Generate base64(username:password)
+// 	rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
+// 	req.Header.Add("Authorization",
+// 		fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
+
+// 	// Send the request and wait for the response:
+// 	resp, err := c.client.Do(req)
+// 	if err != nil {
+// 		return &result, err
+// 	}
+
+// 	// Return the response:
+// 	defer resp.Body.Close()
+// 	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+// 	result.Body = string(respBodyBytes)
+// 	if err != nil {
+// 		return &result, err
+// 	}
+// 	result.Code = resp.StatusCode
+// 	result.Headers = make(map[string]string)
+// 	for respHK, respHV := range resp.Header {
+// 		result.Headers[respHK] = respHV[0]
+// 	}
+
+// 	return &result, nil
+
+
+	// Send the request and get the response
+	// ovResp, err := op.internalAdd(nic, headers, query, wait)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// var nicVar Nic
+	// xml.Unmarshal([]byte(ovResp.Body), &nicVar)
+	// return &nicVar, nil
+
+	// req := NewOvRequest("POST", service.Path, headers, query, "")
+	// xmlBytes, err := xml.Marshal(object)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// req.Body = string(xmlBytes)
+	// res, err := service.Connection.Send(req)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// // If Add succeed
+	// if Contains(res.Code, []int{200, 201, 202}) {
+	// 	return res, nil
+	// }
+	// // Add failed
+	// return nil, checkFault(res)
+
+
     }
 
     private void generateResponse(Method method, Service service) {
@@ -911,7 +1027,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private String getResponseClassName(Method method, Service service) {
-        return goNames.getServiceName(service) + 
+        return goNames.getServiceName(service).getClassName() + 
             goNames.getClassStyleName(method.getName()) + "Response";
     }
 
