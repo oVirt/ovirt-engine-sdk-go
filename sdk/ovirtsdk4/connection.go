@@ -32,7 +32,7 @@ import (
 	"time"
 )
 
-// Connection ... This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
+// Connection represents an HTTP connection to the engine server.
 // It is intended as the entry point for the SDK, and it provides access to the `system` service and, from there,
 // to the rest of the services provided by the API.
 type Connection struct {
@@ -49,17 +49,17 @@ type Connection struct {
 	client *http.Client
 }
 
-// URL ... Returns the base URL of this connection.
+// URL returns the base URL of this connection.
 func (c *Connection) URL() string {
 	return c.url.String()
 }
 
-// SystemService : Returns a reference to the root of the services tree.
+// SystemService returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
 	return NewSystemService(c, "")
 }
 
-// Send : Sends an HTTP request and waits for the response.
+// Send sends an HTTP request and waits for the response.
 func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	var result OvResponse
 
@@ -112,18 +112,18 @@ func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
 	return &result, nil
 }
 
-// NewConnectionBuilder : Create the `ConnectionBuilder struct instance
+// NewConnectionBuilder creates the `ConnectionBuilder struct instance
 func NewConnectionBuilder() *ConnectionBuilder {
 	return &ConnectionBuilder{conn: &Connection{}, err: nil}
 }
 
-// ConnectionBuilder :  Builds the `Connection` struct
+// ConnectionBuilder represents a builder for the `Connection` struct
 type ConnectionBuilder struct {
 	conn *Connection
 	err  error
 }
 
-// URL : Set the url field for `Connection` instance
+// URL sets the url field for `Connection` instance
 func (connBuilder *ConnectionBuilder) URL(inputRawURL string) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -140,7 +140,7 @@ func (connBuilder *ConnectionBuilder) URL(inputRawURL string) *ConnectionBuilder
 	return connBuilder
 }
 
-// Username : Set the username field for `Connection` instance
+// Username sets the username field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -151,7 +151,7 @@ func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuild
 	return connBuilder
 }
 
-// Password : Set the password field for `Connection` instance
+// Password sets the password field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -162,7 +162,7 @@ func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuild
 	return connBuilder
 }
 
-// Insecure : Set the insecure field for `Connection` instance
+// Insecure sets the insecure field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Insecure(insecure bool) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -172,7 +172,7 @@ func (connBuilder *ConnectionBuilder) Insecure(insecure bool) *ConnectionBuilder
 	return connBuilder
 }
 
-// Timeout : Set the timeout field for `Connection` instance
+// Timeout sets the timeout field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Timeout(timeout time.Duration) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -182,7 +182,7 @@ func (connBuilder *ConnectionBuilder) Timeout(timeout time.Duration) *Connection
 	return connBuilder
 }
 
-// CAFile : Set the caFile field for `Connection` instance
+// CAFile sets the caFile field for `Connection` instance
 func (connBuilder *ConnectionBuilder) CAFile(caFilePath string) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -192,7 +192,7 @@ func (connBuilder *ConnectionBuilder) CAFile(caFilePath string) *ConnectionBuild
 	return connBuilder
 }
 
-// Kerberos : Set the kerberos field for `Connection` instance
+// Kerberos sets the kerberos field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Kerberos(kerbros bool) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -207,7 +207,7 @@ func (connBuilder *ConnectionBuilder) Kerberos(kerbros bool) *ConnectionBuilder 
 	return connBuilder
 }
 
-// Compress : Set the compress field for `Connection` instance
+// Compress sets the compress field for `Connection` instance
 func (connBuilder *ConnectionBuilder) Compress(compress bool) *ConnectionBuilder {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -217,7 +217,7 @@ func (connBuilder *ConnectionBuilder) Compress(compress bool) *ConnectionBuilder
 	return connBuilder
 }
 
-// Build : Contruct the `Connection` instance
+// Build contructs the `Connection` instance
 func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 	// If already has errors, just return
 	if connBuilder.err != nil {
@@ -234,6 +234,7 @@ func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 	if len(connBuilder.conn.password) == 0 {
 		return nil, errors.New("The Password must not be empty")
 	}
+
 	// Construct http.Client
 	var tlsConfig *tls.Config
 	if connBuilder.conn.url.Scheme == "https" {
@@ -266,25 +267,25 @@ func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 	return connBuilder.conn, nil
 }
 
-// Tests the connectivity with the server. If connectivity works correctly it returns a nil error. If there is any
+// Test tests the connectivity with the server. If connectivity works correctly it returns a nil error. If there is any
 // connectivity problem it will return an error containing the reason as the message.
 func (c *Connection) Test() error {
 	return nil
 }
 
-// Indicates if the given object is a link. An object is a link if it has an `href` attribute.
+// IsLink indicates if the given object is a link. An object is a link if it has an `href` attribute.
 func (c *Connection) IsLink(object string) bool {
 	// TODO: implement
 	return false
 }
 
-// Follows the `href` attribute of the given object, retrieves the target object and returns it.
+// FollowLink follows the `href` attribute of the given object, retrieves the target object and returns it.
 func (c *Connection) FollowLink(object string) error {
 	// TODO: implement
 	return nil
 }
 
-// Close : Releases the resources used by this connection.
+// Close releases the resources used by this connection.
 func (c *Connection) Close() {
 }
 

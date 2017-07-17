@@ -21,7 +21,7 @@ import (
 	"fmt"
 )
 
-// BaseService : This is the base for all the services of the SDK. It contains the
+// BaseService represents the base for all the services of the SDK. It contains the
 // utility methods used by all of them.
 type BaseService struct {
 	Connection *Connection

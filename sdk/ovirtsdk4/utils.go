@@ -4,6 +4,7 @@ import (
 	"reflect"
 )
 
+// Contains returns if target contains the obj parameter
 func Contains(obj interface{}, target interface{}) bool {
 	targetValue := reflect.ValueOf(target)
 	switch reflect.TypeOf(target).Kind() {
