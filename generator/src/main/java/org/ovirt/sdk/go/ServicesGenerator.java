@@ -91,24 +91,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateServices(Model model) {
-        // The declarations of the services need to appear in inheritance order, otherwise some symbols won't be
-        // defined and that will produce errors. To order them correctly we need first to sort them by name, and
-        // then sort again so that bases are before extensions.
-        Deque<Service> pending = model.services()
-            .sorted()
-            .collect(toCollection(ArrayDeque::new));
-        Deque<Service> sorted = new ArrayDeque<>(pending.size());
-        while (!pending.isEmpty()) {
-            Service current = pending.removeFirst();
-            Service base = current.getBase();
-            if (base == null || sorted.contains(base)) {
-                sorted.addLast(current);
-            }
-            else {
-                pending.addLast(current);
-            }
-        }
-        sorted.forEach(this::generateService);
+        model.services().forEach(this::generateService);
     }
 
     private void generateService(Service service) {
@@ -124,7 +107,6 @@ public class ServicesGenerator implements GoGenerator {
         // Generate struct members definition
         buffer.startBlock();
         //      with Service struct mixin
-        // buffer.addLine(baseName.getClassName());
         buffer.addLine("BaseService");
         buffer.addLine();
         //      members
