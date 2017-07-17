@@ -34,167 +34,11 @@ import (
 	"time"
 )
 
-// NewConnectionBuilder : Create the `ConnectionBuilder struct instance
-func NewConnectionBuilder() *ConnectionBuilder {
-	return &ConnectionBuilder{conn: &Connection{}, err: nil}
-}
-
-// ConnectionBuilder :  Builds the `Connection` struct
-type ConnectionBuilder struct {
-	conn *Connection
-	err  error
-}
-
-// URL : Set the url field for `Connection` instance
-func (connBuilder *ConnectionBuilder) URL(inputRawURL string) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	// Check parameters
-	if len(inputRawURL) == 0 {
-		connBuilder.err = errors.New("The URL must not be empty")
-		return connBuilder
-	}
-
-	// Save the URL:
-	useURL, err := url.Parse(inputRawURL)
-	if err != nil {
-		connBuilder.err = err
-		return connBuilder
-	}
-	connBuilder.conn.url = *useURL
-	return connBuilder
-}
-
-// Username : Set the username field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	// Check parameters
-	if len(username) == 0 {
-		connBuilder.err = errors.New("The Username must not be empty")
-		return connBuilder
-	}
-	connBuilder.conn.username = username
-	return connBuilder
-}
-
-// Password : Set the password field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	// Check parameters
-	if len(password) == 0 {
-		connBuilder.err = errors.New("The Password must not be empty")
-		return connBuilder
-	}
-	connBuilder.conn.password = password
-	return connBuilder
-}
-
-// Insecure : Set the insecure field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Insecure(insecure bool) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	connBuilder.conn.insecure = insecure
-	return connBuilder
-}
-
-// Timeout : Set the timeout field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Timeout(timeout time.Duration) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	connBuilder.conn.timeout = timeout
-	return connBuilder
-}
-
-// CAFile : Set the caFile field for `Connection` instance
-func (connBuilder *ConnectionBuilder) CAFile(caFilePath string) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	connBuilder.conn.caFile = caFilePath
-	return connBuilder
-}
-
-// Kerberos : Set the kerberos field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Kerberos(kerbros bool) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	// TODO: kerbros==true is not implemented
-	if kerbros == true {
-		connBuilder.err = errors.New("Kerberos is not currently implemented")
-		return connBuilder
-	}
-	connBuilder.conn.kerberos = kerbros
-	return connBuilder
-}
-
-// Compress : Set the compress field for `Connection` instance
-func (connBuilder *ConnectionBuilder) Compress(compress bool) *ConnectionBuilder {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return connBuilder
-	}
-	connBuilder.conn.compress = compress
-	return connBuilder
-}
-
-// Build : Contruct the `Connection` instance
-func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
-	// If already has errors, just return
-	if connBuilder.err != nil {
-		return nil, connBuilder.err
-	}
-	// Construct http.Client
-	var tlsConfig *tls.Config
-	if connBuilder.conn.url.Scheme == "https" {
-		tlsConfig = &tls.Config{
-			InsecureSkipVerify: connBuilder.conn.insecure,
-		}
-		if len(connBuilder.conn.caFile) > 0 {
-			// Check if the CA File specified exists.
-			if _, err := os.Stat(connBuilder.conn.caFile); os.IsNotExist(err) {
-				return nil, fmt.Errorf("The ca file '%s' doesn't exist", connBuilder.conn.caFile)
-			}
-			pool := x509.NewCertPool()
-			caCerts, err := ioutil.ReadFile(connBuilder.conn.caFile)
-			if err != nil {
-				return nil, err
-			}
-			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
-				return nil, fmt.Errorf("Failed to parse CA Certificate in file '%s'", connBuilder.conn.caFile)
-			}
-			tlsConfig.RootCAs = pool
-		}
-	}
-	connBuilder.conn.client = &http.Client{
-		Timeout: connBuilder.conn.timeout,
-		Transport: &http.Transport{
-			DisableCompression: !connBuilder.conn.compress,
-			TLSClientConfig:    tlsConfig,
-		},
-	}
-	return connBuilder.conn, nil
-}
-
 // Connection ... This type (and its attached functions) are responsible for managing an HTTP connection to the engine server.
 // It is intended as the entry point for the SDK, and it provides access to the `system` service and, from there,
 // to the rest of the services provided by the API.
 type Connection struct {
-	url      url.URL
+	url      *url.URL
 	username string
 	password string
 	token    string
@@ -303,6 +147,160 @@ func (c *Connection) revokeAccessToken() error {
 		return fmt.Errorf("Error during SSO revoke %s: %s", response.ssoErrorCode, response.ssoError)
 	}
 	return nil
+}
+
+// NewConnectionBuilder : Create the `ConnectionBuilder struct instance
+func NewConnectionBuilder() *ConnectionBuilder {
+	return &ConnectionBuilder{conn: &Connection{}, err: nil}
+}
+
+// ConnectionBuilder :  Builds the `Connection` struct
+type ConnectionBuilder struct {
+	conn *Connection
+	err  error
+}
+
+// URL : Set the url field for `Connection` instance
+func (connBuilder *ConnectionBuilder) URL(inputRawURL string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+
+	// Save the URL:
+	useURL, err := url.Parse(inputRawURL)
+	if err != nil {
+		connBuilder.err = err
+		return connBuilder
+	}
+	connBuilder.conn.url = useURL
+	return connBuilder
+}
+
+// Username : Set the username field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Username(username string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+
+	connBuilder.conn.username = username
+	return connBuilder
+}
+
+// Password : Set the password field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Password(password string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+
+	connBuilder.conn.password = password
+	return connBuilder
+}
+
+// Insecure : Set the insecure field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Insecure(insecure bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.insecure = insecure
+	return connBuilder
+}
+
+// Timeout : Set the timeout field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Timeout(timeout time.Duration) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.timeout = timeout
+	return connBuilder
+}
+
+// CAFile : Set the caFile field for `Connection` instance
+func (connBuilder *ConnectionBuilder) CAFile(caFilePath string) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.caFile = caFilePath
+	return connBuilder
+}
+
+// Kerberos : Set the kerberos field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Kerberos(kerbros bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	// TODO: kerbros==true is not implemented
+	if kerbros == true {
+		connBuilder.err = errors.New("Kerberos is not currently implemented")
+		return connBuilder
+	}
+	connBuilder.conn.kerberos = kerbros
+	return connBuilder
+}
+
+// Compress : Set the compress field for `Connection` instance
+func (connBuilder *ConnectionBuilder) Compress(compress bool) *ConnectionBuilder {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return connBuilder
+	}
+	connBuilder.conn.compress = compress
+	return connBuilder
+}
+
+// Build : Contruct the `Connection` instance
+func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
+	// If already has errors, just return
+	if connBuilder.err != nil {
+		return nil, connBuilder.err
+	}
+
+	// Check parameters
+	if connBuilder.conn.url == nil {
+		return nil, errors.New("The URL must not be empty")
+	}
+	if len(connBuilder.conn.username) == 0 {
+		return nil, errors.New("The Username must not be empty")
+	}
+	if len(connBuilder.conn.password) == 0 {
+		return nil, errors.New("The Password must not be empty")
+	}
+	// Construct http.Client
+	var tlsConfig *tls.Config
+	if connBuilder.conn.url.Scheme == "https" {
+		tlsConfig = &tls.Config{
+			InsecureSkipVerify: connBuilder.conn.insecure,
+		}
+		if len(connBuilder.conn.caFile) > 0 {
+			// Check if the CA File specified exists.
+			if _, err := os.Stat(connBuilder.conn.caFile); os.IsNotExist(err) {
+				return nil, fmt.Errorf("The ca file '%s' doesn't exist", connBuilder.conn.caFile)
+			}
+			pool := x509.NewCertPool()
+			caCerts, err := ioutil.ReadFile(connBuilder.conn.caFile)
+			if err != nil {
+				return nil, err
+			}
+			if ok := pool.AppendCertsFromPEM(caCerts); ok == false {
+				return nil, fmt.Errorf("Failed to parse CA Certificate in file '%s'", connBuilder.conn.caFile)
+			}
+			tlsConfig.RootCAs = pool
+		}
+	}
+	connBuilder.conn.client = &http.Client{
+		Timeout: connBuilder.conn.timeout,
+		Transport: &http.Transport{
+			DisableCompression: !connBuilder.conn.compress,
+			TLSClientConfig:    tlsConfig,
+		},
+	}
+	return connBuilder.conn, nil
 }
 
 type ssoResponseJSONParent struct {
