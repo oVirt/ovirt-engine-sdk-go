@@ -18,6 +18,7 @@ package ovirtsdk4
 import (
 	"encoding/xml"
 	"fmt"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -74,10 +75,10 @@ func NewVnicProfilesService(connection *Connection, path string) *VnicProfilesSe
 }
 
 type VnicProfilesServiceAddRequest struct {
-	vnicProfiles *VnicProfilesService
-	header       map[string]string
-	query        map[string]string
-	profile      *VnicProfile
+	vnicProfilesService *VnicProfilesService
+	header              map[string]string
+	query               map[string]string
+	profile             *VnicProfile
 }
 
 func (p *VnicProfilesServiceAddRequest) Header(key, value string) *VnicProfilesServiceAddRequest {
@@ -100,8 +101,10 @@ func (p *VnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *VnicProfi
 	p.profile = profile
 	return p
 }
-func (p *VnicProfilesServiceAddRequest) send() *VnicProfilesServiceAddResponse {
+func (p *VnicProfilesServiceAddRequest) Send() *VnicProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vnicProfilesService.Connection.URL(), p.vnicProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -187,10 +190,10 @@ func (op *VnicProfilesService) Add(
 }
 
 type VnicProfilesServiceListRequest struct {
-	vnicProfiles *VnicProfilesService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	vnicProfilesService *VnicProfilesService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *VnicProfilesServiceListRequest) Header(key, value string) *VnicProfilesServiceListRequest {
@@ -213,7 +216,7 @@ func (p *VnicProfilesServiceListRequest) Max(max int64) *VnicProfilesServiceList
 	p.max = &max
 	return p
 }
-func (p *VnicProfilesServiceListRequest) send() *VnicProfilesServiceListResponse {
+func (p *VnicProfilesServiceListRequest) Send() *VnicProfilesServiceListResponse {
 
 }
 
@@ -286,10 +289,10 @@ func NewSchedulingPolicyUnitService(connection *Connection, path string) *Schedu
 }
 
 type SchedulingPolicyUnitServiceGetRequest struct {
-	schedulingPolicyUnit *SchedulingPolicyUnitService
-	header               map[string]string
-	query                map[string]string
-	filter               *bool
+	schedulingPolicyUnitService *SchedulingPolicyUnitService
+	header                      map[string]string
+	query                       map[string]string
+	filter                      *bool
 }
 
 func (p *SchedulingPolicyUnitServiceGetRequest) Header(key, value string) *SchedulingPolicyUnitServiceGetRequest {
@@ -312,7 +315,7 @@ func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) *SchedulingP
 	p.filter = &filter
 	return p
 }
-func (p *SchedulingPolicyUnitServiceGetRequest) send() *SchedulingPolicyUnitServiceGetResponse {
+func (p *SchedulingPolicyUnitServiceGetRequest) Send() *SchedulingPolicyUnitServiceGetResponse {
 
 }
 
@@ -347,10 +350,10 @@ func (op *SchedulingPolicyUnitService) Get(
 }
 
 type SchedulingPolicyUnitServiceRemoveRequest struct {
-	schedulingPolicyUnit *SchedulingPolicyUnitService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
+	schedulingPolicyUnitService *SchedulingPolicyUnitService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
 }
 
 func (p *SchedulingPolicyUnitServiceRemoveRequest) Header(key, value string) *SchedulingPolicyUnitServiceRemoveRequest {
@@ -373,7 +376,7 @@ func (p *SchedulingPolicyUnitServiceRemoveRequest) Async(async bool) *Scheduling
 	p.async = &async
 	return p
 }
-func (p *SchedulingPolicyUnitServiceRemoveRequest) send() *SchedulingPolicyUnitServiceRemoveResponse {
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Send() *SchedulingPolicyUnitServiceRemoveResponse {
 
 }
 
@@ -428,9 +431,9 @@ func NewVirtualFunctionAllowedNetworkService(connection *Connection, path string
 }
 
 type VirtualFunctionAllowedNetworkServiceGetRequest struct {
-	virtualFunctionAllowedNetwork *VirtualFunctionAllowedNetworkService
-	header                        map[string]string
-	query                         map[string]string
+	virtualFunctionAllowedNetworkService *VirtualFunctionAllowedNetworkService
+	header                               map[string]string
+	query                                map[string]string
 }
 
 func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Header(key, value string) *VirtualFunctionAllowedNetworkServiceGetRequest {
@@ -449,7 +452,7 @@ func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceGetRequest) send() *VirtualFunctionAllowedNetworkServiceGetResponse {
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Send() *VirtualFunctionAllowedNetworkServiceGetResponse {
 
 }
 
@@ -477,10 +480,10 @@ func (op *VirtualFunctionAllowedNetworkService) Get(
 }
 
 type VirtualFunctionAllowedNetworkServiceRemoveRequest struct {
-	virtualFunctionAllowedNetwork *VirtualFunctionAllowedNetworkService
-	header                        map[string]string
-	query                         map[string]string
-	async                         *bool
+	virtualFunctionAllowedNetworkService *VirtualFunctionAllowedNetworkService
+	header                               map[string]string
+	query                                map[string]string
+	async                                *bool
 }
 
 func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Header(key, value string) *VirtualFunctionAllowedNetworkServiceRemoveRequest {
@@ -503,7 +506,7 @@ func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Async(async bool) *V
 	p.async = &async
 	return p
 }
-func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) send() *VirtualFunctionAllowedNetworkServiceRemoveResponse {
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Send() *VirtualFunctionAllowedNetworkServiceRemoveResponse {
 
 }
 
@@ -558,10 +561,10 @@ func NewTemplateNicsService(connection *Connection, path string) *TemplateNicsSe
 }
 
 type TemplateNicsServiceAddRequest struct {
-	templateNics *TemplateNicsService
-	header       map[string]string
-	query        map[string]string
-	nic          *Nic
+	templateNicsService *TemplateNicsService
+	header              map[string]string
+	query               map[string]string
+	nic                 *Nic
 }
 
 func (p *TemplateNicsServiceAddRequest) Header(key, value string) *TemplateNicsServiceAddRequest {
@@ -584,8 +587,10 @@ func (p *TemplateNicsServiceAddRequest) Nic(nic *Nic) *TemplateNicsServiceAddReq
 	p.nic = nic
 	return p
 }
-func (p *TemplateNicsServiceAddRequest) send() *TemplateNicsServiceAddResponse {
+func (p *TemplateNicsServiceAddRequest) Send() *TemplateNicsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.templateNicsService.Connection.URL(), p.templateNicsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -613,10 +618,10 @@ func (op *TemplateNicsService) Add(
 }
 
 type TemplateNicsServiceListRequest struct {
-	templateNics *TemplateNicsService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	templateNicsService *TemplateNicsService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *TemplateNicsServiceListRequest) Header(key, value string) *TemplateNicsServiceListRequest {
@@ -639,7 +644,7 @@ func (p *TemplateNicsServiceListRequest) Max(max int64) *TemplateNicsServiceList
 	p.max = &max
 	return p
 }
-func (p *TemplateNicsServiceListRequest) send() *TemplateNicsServiceListResponse {
+func (p *TemplateNicsServiceListRequest) Send() *TemplateNicsServiceListResponse {
 
 }
 
@@ -712,9 +717,9 @@ func NewAffinityLabelService(connection *Connection, path string) *AffinityLabel
 }
 
 type AffinityLabelServiceGetRequest struct {
-	affinityLabel *AffinityLabelService
-	header        map[string]string
-	query         map[string]string
+	affinityLabelService *AffinityLabelService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *AffinityLabelServiceGetRequest) Header(key, value string) *AffinityLabelServiceGetRequest {
@@ -733,7 +738,7 @@ func (p *AffinityLabelServiceGetRequest) Query(key, value string) *AffinityLabel
 	return p
 }
 
-func (p *AffinityLabelServiceGetRequest) send() *AffinityLabelServiceGetResponse {
+func (p *AffinityLabelServiceGetRequest) Send() *AffinityLabelServiceGetResponse {
 
 }
 
@@ -762,9 +767,9 @@ func (op *AffinityLabelService) Get(
 }
 
 type AffinityLabelServiceRemoveRequest struct {
-	affinityLabel *AffinityLabelService
-	header        map[string]string
-	query         map[string]string
+	affinityLabelService *AffinityLabelService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *AffinityLabelServiceRemoveRequest) Header(key, value string) *AffinityLabelServiceRemoveRequest {
@@ -783,7 +788,7 @@ func (p *AffinityLabelServiceRemoveRequest) Query(key, value string) *AffinityLa
 	return p
 }
 
-func (p *AffinityLabelServiceRemoveRequest) send() *AffinityLabelServiceRemoveResponse {
+func (p *AffinityLabelServiceRemoveRequest) Send() *AffinityLabelServiceRemoveResponse {
 
 }
 
@@ -806,10 +811,10 @@ func (op *AffinityLabelService) Remove(
 }
 
 type AffinityLabelServiceUpdateRequest struct {
-	affinityLabel *AffinityLabelService
-	header        map[string]string
-	query         map[string]string
-	label         *AffinityLabel
+	affinityLabelService *AffinityLabelService
+	header               map[string]string
+	query                map[string]string
+	label                *AffinityLabel
 }
 
 func (p *AffinityLabelServiceUpdateRequest) Header(key, value string) *AffinityLabelServiceUpdateRequest {
@@ -832,7 +837,7 @@ func (p *AffinityLabelServiceUpdateRequest) Label(label *AffinityLabel) *Affinit
 	p.label = label
 	return p
 }
-func (p *AffinityLabelServiceUpdateRequest) send() *AffinityLabelServiceUpdateResponse {
+func (p *AffinityLabelServiceUpdateRequest) Send() *AffinityLabelServiceUpdateResponse {
 
 }
 
@@ -917,10 +922,10 @@ func NewBookmarksService(connection *Connection, path string) *BookmarksService 
 }
 
 type BookmarksServiceAddRequest struct {
-	bookmarks *BookmarksService
-	header    map[string]string
-	query     map[string]string
-	bookmark  *Bookmark
+	bookmarksService *BookmarksService
+	header           map[string]string
+	query            map[string]string
+	bookmark         *Bookmark
 }
 
 func (p *BookmarksServiceAddRequest) Header(key, value string) *BookmarksServiceAddRequest {
@@ -943,8 +948,10 @@ func (p *BookmarksServiceAddRequest) Bookmark(bookmark *Bookmark) *BookmarksServ
 	p.bookmark = bookmark
 	return p
 }
-func (p *BookmarksServiceAddRequest) send() *BookmarksServiceAddResponse {
+func (p *BookmarksServiceAddRequest) Send() *BookmarksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.bookmarksService.Connection.URL(), p.bookmarksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -990,10 +997,10 @@ func (op *BookmarksService) Add(
 }
 
 type BookmarksServiceListRequest struct {
-	bookmarks *BookmarksService
-	header    map[string]string
-	query     map[string]string
-	max       *int64
+	bookmarksService *BookmarksService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
 func (p *BookmarksServiceListRequest) Header(key, value string) *BookmarksServiceListRequest {
@@ -1016,7 +1023,7 @@ func (p *BookmarksServiceListRequest) Max(max int64) *BookmarksServiceListReques
 	p.max = &max
 	return p
 }
-func (p *BookmarksServiceListRequest) send() *BookmarksServiceListResponse {
+func (p *BookmarksServiceListRequest) Send() *BookmarksServiceListResponse {
 
 }
 
@@ -1108,10 +1115,10 @@ func NewNetworkAttachmentsService(connection *Connection, path string) *NetworkA
 }
 
 type NetworkAttachmentsServiceAddRequest struct {
-	networkAttachments *NetworkAttachmentsService
-	header             map[string]string
-	query              map[string]string
-	attachment         *NetworkAttachment
+	networkAttachmentsService *NetworkAttachmentsService
+	header                    map[string]string
+	query                     map[string]string
+	attachment                *NetworkAttachment
 }
 
 func (p *NetworkAttachmentsServiceAddRequest) Header(key, value string) *NetworkAttachmentsServiceAddRequest {
@@ -1134,8 +1141,10 @@ func (p *NetworkAttachmentsServiceAddRequest) Attachment(attachment *NetworkAtta
 	p.attachment = attachment
 	return p
 }
-func (p *NetworkAttachmentsServiceAddRequest) send() *NetworkAttachmentsServiceAddResponse {
+func (p *NetworkAttachmentsServiceAddRequest) Send() *NetworkAttachmentsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.networkAttachmentsService.Connection.URL(), p.networkAttachmentsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -1163,10 +1172,10 @@ func (op *NetworkAttachmentsService) Add(
 }
 
 type NetworkAttachmentsServiceListRequest struct {
-	networkAttachments *NetworkAttachmentsService
-	header             map[string]string
-	query              map[string]string
-	max                *int64
+	networkAttachmentsService *NetworkAttachmentsService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
 func (p *NetworkAttachmentsServiceListRequest) Header(key, value string) *NetworkAttachmentsServiceListRequest {
@@ -1189,7 +1198,7 @@ func (p *NetworkAttachmentsServiceListRequest) Max(max int64) *NetworkAttachment
 	p.max = &max
 	return p
 }
-func (p *NetworkAttachmentsServiceListRequest) send() *NetworkAttachmentsServiceListResponse {
+func (p *NetworkAttachmentsServiceListRequest) Send() *NetworkAttachmentsServiceListResponse {
 
 }
 
@@ -1261,9 +1270,9 @@ func NewOperatingSystemService(connection *Connection, path string) *OperatingSy
 }
 
 type OperatingSystemServiceGetRequest struct {
-	operatingSystem *OperatingSystemService
-	header          map[string]string
-	query           map[string]string
+	operatingSystemService *OperatingSystemService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *OperatingSystemServiceGetRequest) Header(key, value string) *OperatingSystemServiceGetRequest {
@@ -1282,7 +1291,7 @@ func (p *OperatingSystemServiceGetRequest) Query(key, value string) *OperatingSy
 	return p
 }
 
-func (p *OperatingSystemServiceGetRequest) send() *OperatingSystemServiceGetResponse {
+func (p *OperatingSystemServiceGetRequest) Send() *OperatingSystemServiceGetResponse {
 
 }
 
@@ -1337,10 +1346,10 @@ func NewTemplateDisksService(connection *Connection, path string) *TemplateDisks
 }
 
 type TemplateDisksServiceListRequest struct {
-	templateDisks *TemplateDisksService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	templateDisksService *TemplateDisksService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *TemplateDisksServiceListRequest) Header(key, value string) *TemplateDisksServiceListRequest {
@@ -1363,7 +1372,7 @@ func (p *TemplateDisksServiceListRequest) Max(max int64) *TemplateDisksServiceLi
 	p.max = &max
 	return p
 }
-func (p *TemplateDisksServiceListRequest) send() *TemplateDisksServiceListResponse {
+func (p *TemplateDisksServiceListRequest) Send() *TemplateDisksServiceListResponse {
 
 }
 
@@ -1437,10 +1446,10 @@ func NewSystemPermissionsService(connection *Connection, path string) *SystemPer
 }
 
 type SystemPermissionsServiceAddRequest struct {
-	systemPermissions *SystemPermissionsService
-	header            map[string]string
-	query             map[string]string
-	permission        *Permission
+	systemPermissionsService *SystemPermissionsService
+	header                   map[string]string
+	query                    map[string]string
+	permission               *Permission
 }
 
 func (p *SystemPermissionsServiceAddRequest) Header(key, value string) *SystemPermissionsServiceAddRequest {
@@ -1463,8 +1472,10 @@ func (p *SystemPermissionsServiceAddRequest) Permission(permission *Permission) 
 	p.permission = permission
 	return p
 }
-func (p *SystemPermissionsServiceAddRequest) send() *SystemPermissionsServiceAddResponse {
+func (p *SystemPermissionsServiceAddRequest) Send() *SystemPermissionsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.systemPermissionsService.Connection.URL(), p.systemPermissionsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -1543,9 +1554,9 @@ func (op *SystemPermissionsService) Add(
 }
 
 type SystemPermissionsServiceListRequest struct {
-	systemPermissions *SystemPermissionsService
-	header            map[string]string
-	query             map[string]string
+	systemPermissionsService *SystemPermissionsService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *SystemPermissionsServiceListRequest) Header(key, value string) *SystemPermissionsServiceListRequest {
@@ -1564,7 +1575,7 @@ func (p *SystemPermissionsServiceListRequest) Query(key, value string) *SystemPe
 	return p
 }
 
-func (p *SystemPermissionsServiceListRequest) send() *SystemPermissionsServiceListResponse {
+func (p *SystemPermissionsServiceListRequest) Send() *SystemPermissionsServiceListResponse {
 
 }
 
@@ -1651,9 +1662,9 @@ func NewVmReportedDeviceService(connection *Connection, path string) *VmReported
 }
 
 type VmReportedDeviceServiceGetRequest struct {
-	vmReportedDevice *VmReportedDeviceService
-	header           map[string]string
-	query            map[string]string
+	vmReportedDeviceService *VmReportedDeviceService
+	header                  map[string]string
+	query                   map[string]string
 }
 
 func (p *VmReportedDeviceServiceGetRequest) Header(key, value string) *VmReportedDeviceServiceGetRequest {
@@ -1672,7 +1683,7 @@ func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) *VmReported
 	return p
 }
 
-func (p *VmReportedDeviceServiceGetRequest) send() *VmReportedDeviceServiceGetResponse {
+func (p *VmReportedDeviceServiceGetRequest) Send() *VmReportedDeviceServiceGetResponse {
 
 }
 
@@ -1727,10 +1738,10 @@ func NewSnapshotNicsService(connection *Connection, path string) *SnapshotNicsSe
 }
 
 type SnapshotNicsServiceListRequest struct {
-	snapshotNics *SnapshotNicsService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	snapshotNicsService *SnapshotNicsService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *SnapshotNicsServiceListRequest) Header(key, value string) *SnapshotNicsServiceListRequest {
@@ -1753,7 +1764,7 @@ func (p *SnapshotNicsServiceListRequest) Max(max int64) *SnapshotNicsServiceList
 	p.max = &max
 	return p
 }
-func (p *SnapshotNicsServiceListRequest) send() *SnapshotNicsServiceListResponse {
+func (p *SnapshotNicsServiceListRequest) Send() *SnapshotNicsServiceListResponse {
 
 }
 
@@ -1825,10 +1836,10 @@ func NewAssignedVnicProfilesService(connection *Connection, path string) *Assign
 }
 
 type AssignedVnicProfilesServiceAddRequest struct {
-	assignedVnicProfiles *AssignedVnicProfilesService
-	header               map[string]string
-	query                map[string]string
-	profile              *VnicProfile
+	assignedVnicProfilesService *AssignedVnicProfilesService
+	header                      map[string]string
+	query                       map[string]string
+	profile                     *VnicProfile
 }
 
 func (p *AssignedVnicProfilesServiceAddRequest) Header(key, value string) *AssignedVnicProfilesServiceAddRequest {
@@ -1851,8 +1862,10 @@ func (p *AssignedVnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *A
 	p.profile = profile
 	return p
 }
-func (p *AssignedVnicProfilesServiceAddRequest) send() *AssignedVnicProfilesServiceAddResponse {
+func (p *AssignedVnicProfilesServiceAddRequest) Send() *AssignedVnicProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedVnicProfilesService.Connection.URL(), p.assignedVnicProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -1880,10 +1893,10 @@ func (op *AssignedVnicProfilesService) Add(
 }
 
 type AssignedVnicProfilesServiceListRequest struct {
-	assignedVnicProfiles *AssignedVnicProfilesService
-	header               map[string]string
-	query                map[string]string
-	max                  *int64
+	assignedVnicProfilesService *AssignedVnicProfilesService
+	header                      map[string]string
+	query                       map[string]string
+	max                         *int64
 }
 
 func (p *AssignedVnicProfilesServiceListRequest) Header(key, value string) *AssignedVnicProfilesServiceListRequest {
@@ -1906,7 +1919,7 @@ func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) *AssignedVnicPro
 	p.max = &max
 	return p
 }
-func (p *AssignedVnicProfilesServiceListRequest) send() *AssignedVnicProfilesServiceListResponse {
+func (p *AssignedVnicProfilesServiceListRequest) Send() *AssignedVnicProfilesServiceListResponse {
 
 }
 
@@ -1978,10 +1991,10 @@ func NewQuotaClusterLimitsService(connection *Connection, path string) *QuotaClu
 }
 
 type QuotaClusterLimitsServiceAddRequest struct {
-	quotaClusterLimits *QuotaClusterLimitsService
-	header             map[string]string
-	query              map[string]string
-	limit              *QuotaClusterLimit
+	quotaClusterLimitsService *QuotaClusterLimitsService
+	header                    map[string]string
+	query                     map[string]string
+	limit                     *QuotaClusterLimit
 }
 
 func (p *QuotaClusterLimitsServiceAddRequest) Header(key, value string) *QuotaClusterLimitsServiceAddRequest {
@@ -2004,8 +2017,10 @@ func (p *QuotaClusterLimitsServiceAddRequest) Limit(limit *QuotaClusterLimit) *Q
 	p.limit = limit
 	return p
 }
-func (p *QuotaClusterLimitsServiceAddRequest) send() *QuotaClusterLimitsServiceAddResponse {
+func (p *QuotaClusterLimitsServiceAddRequest) Send() *QuotaClusterLimitsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.quotaClusterLimitsService.Connection.URL(), p.quotaClusterLimitsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -2033,10 +2048,10 @@ func (op *QuotaClusterLimitsService) Add(
 }
 
 type QuotaClusterLimitsServiceListRequest struct {
-	quotaClusterLimits *QuotaClusterLimitsService
-	header             map[string]string
-	query              map[string]string
-	max                *int64
+	quotaClusterLimitsService *QuotaClusterLimitsService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
 func (p *QuotaClusterLimitsServiceListRequest) Header(key, value string) *QuotaClusterLimitsServiceListRequest {
@@ -2059,7 +2074,7 @@ func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) *QuotaClusterLimit
 	p.max = &max
 	return p
 }
-func (p *QuotaClusterLimitsServiceListRequest) send() *QuotaClusterLimitsServiceListResponse {
+func (p *QuotaClusterLimitsServiceListRequest) Send() *QuotaClusterLimitsServiceListResponse {
 
 }
 
@@ -2135,10 +2150,10 @@ func NewNetworksService(connection *Connection, path string) *NetworksService {
 }
 
 type NetworksServiceAddRequest struct {
-	networks *NetworksService
-	header   map[string]string
-	query    map[string]string
-	network  *Network
+	networksService *NetworksService
+	header          map[string]string
+	query           map[string]string
+	network         *Network
 }
 
 func (p *NetworksServiceAddRequest) Header(key, value string) *NetworksServiceAddRequest {
@@ -2161,8 +2176,10 @@ func (p *NetworksServiceAddRequest) Network(network *Network) *NetworksServiceAd
 	p.network = network
 	return p
 }
-func (p *NetworksServiceAddRequest) send() *NetworksServiceAddResponse {
+func (p *NetworksServiceAddRequest) Send() *NetworksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.networksService.Connection.URL(), p.networksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -2217,12 +2234,12 @@ func (op *NetworksService) Add(
 }
 
 type NetworksServiceListRequest struct {
-	networks      *NetworksService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	networksService *NetworksService
+	header          map[string]string
+	query           map[string]string
+	caseSensitive   *bool
+	max             *int64
+	search          *string
 }
 
 func (p *NetworksServiceListRequest) Header(key, value string) *NetworksServiceListRequest {
@@ -2253,7 +2270,7 @@ func (p *NetworksServiceListRequest) Search(search string) *NetworksServiceListR
 	p.search = &search
 	return p
 }
-func (p *NetworksServiceListRequest) send() *NetworksServiceListResponse {
+func (p *NetworksServiceListRequest) Send() *NetworksServiceListResponse {
 
 }
 
@@ -2361,10 +2378,10 @@ func NewAffinityGroupsService(connection *Connection, path string) *AffinityGrou
 }
 
 type AffinityGroupsServiceAddRequest struct {
-	affinityGroups *AffinityGroupsService
-	header         map[string]string
-	query          map[string]string
-	group          *AffinityGroup
+	affinityGroupsService *AffinityGroupsService
+	header                map[string]string
+	query                 map[string]string
+	group                 *AffinityGroup
 }
 
 func (p *AffinityGroupsServiceAddRequest) Header(key, value string) *AffinityGroupsServiceAddRequest {
@@ -2387,8 +2404,10 @@ func (p *AffinityGroupsServiceAddRequest) Group(group *AffinityGroup) *AffinityG
 	p.group = group
 	return p
 }
-func (p *AffinityGroupsServiceAddRequest) send() *AffinityGroupsServiceAddResponse {
+func (p *AffinityGroupsServiceAddRequest) Send() *AffinityGroupsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.affinityGroupsService.Connection.URL(), p.affinityGroupsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -2436,10 +2455,10 @@ func (op *AffinityGroupsService) Add(
 }
 
 type AffinityGroupsServiceListRequest struct {
-	affinityGroups *AffinityGroupsService
-	header         map[string]string
-	query          map[string]string
-	max            *int64
+	affinityGroupsService *AffinityGroupsService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
 }
 
 func (p *AffinityGroupsServiceListRequest) Header(key, value string) *AffinityGroupsServiceListRequest {
@@ -2462,7 +2481,7 @@ func (p *AffinityGroupsServiceListRequest) Max(max int64) *AffinityGroupsService
 	p.max = &max
 	return p
 }
-func (p *AffinityGroupsServiceListRequest) send() *AffinityGroupsServiceListResponse {
+func (p *AffinityGroupsServiceListRequest) Send() *AffinityGroupsServiceListResponse {
 
 }
 
@@ -2536,9 +2555,9 @@ func NewDiskSnapshotService(connection *Connection, path string) *DiskSnapshotSe
 }
 
 type DiskSnapshotServiceGetRequest struct {
-	diskSnapshot *DiskSnapshotService
-	header       map[string]string
-	query        map[string]string
+	diskSnapshotService *DiskSnapshotService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *DiskSnapshotServiceGetRequest) Header(key, value string) *DiskSnapshotServiceGetRequest {
@@ -2557,7 +2576,7 @@ func (p *DiskSnapshotServiceGetRequest) Query(key, value string) *DiskSnapshotSe
 	return p
 }
 
-func (p *DiskSnapshotServiceGetRequest) send() *DiskSnapshotServiceGetResponse {
+func (p *DiskSnapshotServiceGetRequest) Send() *DiskSnapshotServiceGetResponse {
 
 }
 
@@ -2585,10 +2604,10 @@ func (op *DiskSnapshotService) Get(
 }
 
 type DiskSnapshotServiceRemoveRequest struct {
-	diskSnapshot *DiskSnapshotService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	diskSnapshotService *DiskSnapshotService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *DiskSnapshotServiceRemoveRequest) Header(key, value string) *DiskSnapshotServiceRemoveRequest {
@@ -2611,7 +2630,7 @@ func (p *DiskSnapshotServiceRemoveRequest) Async(async bool) *DiskSnapshotServic
 	p.async = &async
 	return p
 }
-func (p *DiskSnapshotServiceRemoveRequest) send() *DiskSnapshotServiceRemoveResponse {
+func (p *DiskSnapshotServiceRemoveRequest) Send() *DiskSnapshotServiceRemoveResponse {
 
 }
 
@@ -2666,10 +2685,10 @@ func NewSchedulingPolicyService(connection *Connection, path string) *Scheduling
 }
 
 type SchedulingPolicyServiceGetRequest struct {
-	schedulingPolicy *SchedulingPolicyService
-	header           map[string]string
-	query            map[string]string
-	filter           *bool
+	schedulingPolicyService *SchedulingPolicyService
+	header                  map[string]string
+	query                   map[string]string
+	filter                  *bool
 }
 
 func (p *SchedulingPolicyServiceGetRequest) Header(key, value string) *SchedulingPolicyServiceGetRequest {
@@ -2692,7 +2711,7 @@ func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) *SchedulingPolic
 	p.filter = &filter
 	return p
 }
-func (p *SchedulingPolicyServiceGetRequest) send() *SchedulingPolicyServiceGetResponse {
+func (p *SchedulingPolicyServiceGetRequest) Send() *SchedulingPolicyServiceGetResponse {
 
 }
 
@@ -2727,10 +2746,10 @@ func (op *SchedulingPolicyService) Get(
 }
 
 type SchedulingPolicyServiceRemoveRequest struct {
-	schedulingPolicy *SchedulingPolicyService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
+	schedulingPolicyService *SchedulingPolicyService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
 func (p *SchedulingPolicyServiceRemoveRequest) Header(key, value string) *SchedulingPolicyServiceRemoveRequest {
@@ -2753,7 +2772,7 @@ func (p *SchedulingPolicyServiceRemoveRequest) Async(async bool) *SchedulingPoli
 	p.async = &async
 	return p
 }
-func (p *SchedulingPolicyServiceRemoveRequest) send() *SchedulingPolicyServiceRemoveResponse {
+func (p *SchedulingPolicyServiceRemoveRequest) Send() *SchedulingPolicyServiceRemoveResponse {
 
 }
 
@@ -2781,11 +2800,11 @@ func (op *SchedulingPolicyService) Remove(
 }
 
 type SchedulingPolicyServiceUpdateRequest struct {
-	schedulingPolicy *SchedulingPolicyService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
-	policy           *SchedulingPolicy
+	schedulingPolicyService *SchedulingPolicyService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	policy                  *SchedulingPolicy
 }
 
 func (p *SchedulingPolicyServiceUpdateRequest) Header(key, value string) *SchedulingPolicyServiceUpdateRequest {
@@ -2812,7 +2831,7 @@ func (p *SchedulingPolicyServiceUpdateRequest) Policy(policy *SchedulingPolicy) 
 	p.policy = policy
 	return p
 }
-func (p *SchedulingPolicyServiceUpdateRequest) send() *SchedulingPolicyServiceUpdateResponse {
+func (p *SchedulingPolicyServiceUpdateRequest) Send() *SchedulingPolicyServiceUpdateResponse {
 
 }
 
@@ -2906,9 +2925,9 @@ func NewNetworkAttachmentService(connection *Connection, path string) *NetworkAt
 }
 
 type NetworkAttachmentServiceGetRequest struct {
-	networkAttachment *NetworkAttachmentService
-	header            map[string]string
-	query             map[string]string
+	networkAttachmentService *NetworkAttachmentService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *NetworkAttachmentServiceGetRequest) Header(key, value string) *NetworkAttachmentServiceGetRequest {
@@ -2927,7 +2946,7 @@ func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) *NetworkAt
 	return p
 }
 
-func (p *NetworkAttachmentServiceGetRequest) send() *NetworkAttachmentServiceGetResponse {
+func (p *NetworkAttachmentServiceGetRequest) Send() *NetworkAttachmentServiceGetResponse {
 
 }
 
@@ -2955,10 +2974,10 @@ func (op *NetworkAttachmentService) Get(
 }
 
 type NetworkAttachmentServiceRemoveRequest struct {
-	networkAttachment *NetworkAttachmentService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
+	networkAttachmentService *NetworkAttachmentService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
 func (p *NetworkAttachmentServiceRemoveRequest) Header(key, value string) *NetworkAttachmentServiceRemoveRequest {
@@ -2981,7 +3000,7 @@ func (p *NetworkAttachmentServiceRemoveRequest) Async(async bool) *NetworkAttach
 	p.async = &async
 	return p
 }
-func (p *NetworkAttachmentServiceRemoveRequest) send() *NetworkAttachmentServiceRemoveResponse {
+func (p *NetworkAttachmentServiceRemoveRequest) Send() *NetworkAttachmentServiceRemoveResponse {
 
 }
 
@@ -3009,11 +3028,11 @@ func (op *NetworkAttachmentService) Remove(
 }
 
 type NetworkAttachmentServiceUpdateRequest struct {
-	networkAttachment *NetworkAttachmentService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
-	attachment        *NetworkAttachment
+	networkAttachmentService *NetworkAttachmentService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
+	attachment               *NetworkAttachment
 }
 
 func (p *NetworkAttachmentServiceUpdateRequest) Header(key, value string) *NetworkAttachmentServiceUpdateRequest {
@@ -3040,7 +3059,7 @@ func (p *NetworkAttachmentServiceUpdateRequest) Attachment(attachment *NetworkAt
 	p.attachment = attachment
 	return p
 }
-func (p *NetworkAttachmentServiceUpdateRequest) send() *NetworkAttachmentServiceUpdateResponse {
+func (p *NetworkAttachmentServiceUpdateRequest) Send() *NetworkAttachmentServiceUpdateResponse {
 
 }
 
@@ -3098,10 +3117,10 @@ func NewDiskProfilesService(connection *Connection, path string) *DiskProfilesSe
 }
 
 type DiskProfilesServiceAddRequest struct {
-	diskProfiles *DiskProfilesService
-	header       map[string]string
-	query        map[string]string
-	profile      *DiskProfile
+	diskProfilesService *DiskProfilesService
+	header              map[string]string
+	query               map[string]string
+	profile             *DiskProfile
 }
 
 func (p *DiskProfilesServiceAddRequest) Header(key, value string) *DiskProfilesServiceAddRequest {
@@ -3124,8 +3143,10 @@ func (p *DiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *DiskProfi
 	p.profile = profile
 	return p
 }
-func (p *DiskProfilesServiceAddRequest) send() *DiskProfilesServiceAddResponse {
+func (p *DiskProfilesServiceAddRequest) Send() *DiskProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.diskProfilesService.Connection.URL(), p.diskProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -3153,10 +3174,10 @@ func (op *DiskProfilesService) Add(
 }
 
 type DiskProfilesServiceListRequest struct {
-	diskProfiles *DiskProfilesService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	diskProfilesService *DiskProfilesService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *DiskProfilesServiceListRequest) Header(key, value string) *DiskProfilesServiceListRequest {
@@ -3179,7 +3200,7 @@ func (p *DiskProfilesServiceListRequest) Max(max int64) *DiskProfilesServiceList
 	p.max = &max
 	return p
 }
-func (p *DiskProfilesServiceListRequest) send() *DiskProfilesServiceListResponse {
+func (p *DiskProfilesServiceListRequest) Send() *DiskProfilesServiceListResponse {
 
 }
 
@@ -3252,9 +3273,9 @@ func NewIconService(connection *Connection, path string) *IconService {
 }
 
 type IconServiceGetRequest struct {
-	icon   *IconService
-	header map[string]string
-	query  map[string]string
+	iconService *IconService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *IconServiceGetRequest) Header(key, value string) *IconServiceGetRequest {
@@ -3273,7 +3294,7 @@ func (p *IconServiceGetRequest) Query(key, value string) *IconServiceGetRequest 
 	return p
 }
 
-func (p *IconServiceGetRequest) send() *IconServiceGetResponse {
+func (p *IconServiceGetRequest) Send() *IconServiceGetResponse {
 
 }
 
@@ -3343,9 +3364,9 @@ func NewAssignedAffinityLabelService(connection *Connection, path string) *Assig
 }
 
 type AssignedAffinityLabelServiceGetRequest struct {
-	assignedAffinityLabel *AssignedAffinityLabelService
-	header                map[string]string
-	query                 map[string]string
+	assignedAffinityLabelService *AssignedAffinityLabelService
+	header                       map[string]string
+	query                        map[string]string
 }
 
 func (p *AssignedAffinityLabelServiceGetRequest) Header(key, value string) *AssignedAffinityLabelServiceGetRequest {
@@ -3364,7 +3385,7 @@ func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) *Assig
 	return p
 }
 
-func (p *AssignedAffinityLabelServiceGetRequest) send() *AssignedAffinityLabelServiceGetResponse {
+func (p *AssignedAffinityLabelServiceGetRequest) Send() *AssignedAffinityLabelServiceGetResponse {
 
 }
 
@@ -3393,9 +3414,9 @@ func (op *AssignedAffinityLabelService) Get(
 }
 
 type AssignedAffinityLabelServiceRemoveRequest struct {
-	assignedAffinityLabel *AssignedAffinityLabelService
-	header                map[string]string
-	query                 map[string]string
+	assignedAffinityLabelService *AssignedAffinityLabelService
+	header                       map[string]string
+	query                        map[string]string
 }
 
 func (p *AssignedAffinityLabelServiceRemoveRequest) Header(key, value string) *AssignedAffinityLabelServiceRemoveRequest {
@@ -3414,7 +3435,7 @@ func (p *AssignedAffinityLabelServiceRemoveRequest) Query(key, value string) *As
 	return p
 }
 
-func (p *AssignedAffinityLabelServiceRemoveRequest) send() *AssignedAffinityLabelServiceRemoveResponse {
+func (p *AssignedAffinityLabelServiceRemoveRequest) Send() *AssignedAffinityLabelServiceRemoveResponse {
 
 }
 
@@ -3463,10 +3484,10 @@ func NewCpuProfilesService(connection *Connection, path string) *CpuProfilesServ
 }
 
 type CpuProfilesServiceAddRequest struct {
-	cpuProfiles *CpuProfilesService
-	header      map[string]string
-	query       map[string]string
-	profile     *CpuProfile
+	cpuProfilesService *CpuProfilesService
+	header             map[string]string
+	query              map[string]string
+	profile            *CpuProfile
 }
 
 func (p *CpuProfilesServiceAddRequest) Header(key, value string) *CpuProfilesServiceAddRequest {
@@ -3489,8 +3510,10 @@ func (p *CpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *CpuProfiles
 	p.profile = profile
 	return p
 }
-func (p *CpuProfilesServiceAddRequest) send() *CpuProfilesServiceAddResponse {
+func (p *CpuProfilesServiceAddRequest) Send() *CpuProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.cpuProfilesService.Connection.URL(), p.cpuProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -3518,10 +3541,10 @@ func (op *CpuProfilesService) Add(
 }
 
 type CpuProfilesServiceListRequest struct {
-	cpuProfiles *CpuProfilesService
-	header      map[string]string
-	query       map[string]string
-	max         *int64
+	cpuProfilesService *CpuProfilesService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
 func (p *CpuProfilesServiceListRequest) Header(key, value string) *CpuProfilesServiceListRequest {
@@ -3544,7 +3567,7 @@ func (p *CpuProfilesServiceListRequest) Max(max int64) *CpuProfilesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *CpuProfilesServiceListRequest) send() *CpuProfilesServiceListResponse {
+func (p *CpuProfilesServiceListRequest) Send() *CpuProfilesServiceListResponse {
 
 }
 
@@ -3616,10 +3639,10 @@ func NewMacPoolsService(connection *Connection, path string) *MacPoolsService {
 }
 
 type MacPoolsServiceAddRequest struct {
-	macPools *MacPoolsService
-	header   map[string]string
-	query    map[string]string
-	pool     *MacPool
+	macPoolsService *MacPoolsService
+	header          map[string]string
+	query           map[string]string
+	pool            *MacPool
 }
 
 func (p *MacPoolsServiceAddRequest) Header(key, value string) *MacPoolsServiceAddRequest {
@@ -3642,8 +3665,10 @@ func (p *MacPoolsServiceAddRequest) Pool(pool *MacPool) *MacPoolsServiceAddReque
 	p.pool = pool
 	return p
 }
-func (p *MacPoolsServiceAddRequest) send() *MacPoolsServiceAddResponse {
+func (p *MacPoolsServiceAddRequest) Send() *MacPoolsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.macPoolsService.Connection.URL(), p.macPoolsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -3694,10 +3719,10 @@ func (op *MacPoolsService) Add(
 }
 
 type MacPoolsServiceListRequest struct {
-	macPools *MacPoolsService
-	header   map[string]string
-	query    map[string]string
-	max      *int64
+	macPoolsService *MacPoolsService
+	header          map[string]string
+	query           map[string]string
+	max             *int64
 }
 
 func (p *MacPoolsServiceListRequest) Header(key, value string) *MacPoolsServiceListRequest {
@@ -3720,7 +3745,7 @@ func (p *MacPoolsServiceListRequest) Max(max int64) *MacPoolsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *MacPoolsServiceListRequest) send() *MacPoolsServiceListResponse {
+func (p *MacPoolsServiceListRequest) Send() *MacPoolsServiceListResponse {
 
 }
 
@@ -3793,10 +3818,10 @@ func NewAffinityGroupVmsService(connection *Connection, path string) *AffinityGr
 }
 
 type AffinityGroupVmsServiceAddRequest struct {
-	affinityGroupVms *AffinityGroupVmsService
-	header           map[string]string
-	query            map[string]string
-	vm               *Vm
+	affinityGroupVmsService *AffinityGroupVmsService
+	header                  map[string]string
+	query                   map[string]string
+	vm                      *Vm
 }
 
 func (p *AffinityGroupVmsServiceAddRequest) Header(key, value string) *AffinityGroupVmsServiceAddRequest {
@@ -3819,8 +3844,10 @@ func (p *AffinityGroupVmsServiceAddRequest) Vm(vm *Vm) *AffinityGroupVmsServiceA
 	p.vm = vm
 	return p
 }
-func (p *AffinityGroupVmsServiceAddRequest) send() *AffinityGroupVmsServiceAddResponse {
+func (p *AffinityGroupVmsServiceAddRequest) Send() *AffinityGroupVmsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.affinityGroupVmsService.Connection.URL(), p.affinityGroupVmsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -3859,10 +3886,10 @@ func (op *AffinityGroupVmsService) Add(
 }
 
 type AffinityGroupVmsServiceListRequest struct {
-	affinityGroupVms *AffinityGroupVmsService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
+	affinityGroupVmsService *AffinityGroupVmsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
 func (p *AffinityGroupVmsServiceListRequest) Header(key, value string) *AffinityGroupVmsServiceListRequest {
@@ -3885,7 +3912,7 @@ func (p *AffinityGroupVmsServiceListRequest) Max(max int64) *AffinityGroupVmsSer
 	p.max = &max
 	return p
 }
-func (p *AffinityGroupVmsServiceListRequest) send() *AffinityGroupVmsServiceListResponse {
+func (p *AffinityGroupVmsServiceListRequest) Send() *AffinityGroupVmsServiceListResponse {
 
 }
 
@@ -3960,9 +3987,9 @@ func NewQosService(connection *Connection, path string) *QosService {
 }
 
 type QosServiceGetRequest struct {
-	qos    *QosService
-	header map[string]string
-	query  map[string]string
+	qosService *QosService
+	header     map[string]string
+	query      map[string]string
 }
 
 func (p *QosServiceGetRequest) Header(key, value string) *QosServiceGetRequest {
@@ -3981,7 +4008,7 @@ func (p *QosServiceGetRequest) Query(key, value string) *QosServiceGetRequest {
 	return p
 }
 
-func (p *QosServiceGetRequest) send() *QosServiceGetResponse {
+func (p *QosServiceGetRequest) Send() *QosServiceGetResponse {
 
 }
 
@@ -4009,10 +4036,10 @@ func (op *QosService) Get(
 }
 
 type QosServiceRemoveRequest struct {
-	qos    *QosService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	qosService *QosService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
 func (p *QosServiceRemoveRequest) Header(key, value string) *QosServiceRemoveRequest {
@@ -4035,7 +4062,7 @@ func (p *QosServiceRemoveRequest) Async(async bool) *QosServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *QosServiceRemoveRequest) send() *QosServiceRemoveResponse {
+func (p *QosServiceRemoveRequest) Send() *QosServiceRemoveResponse {
 
 }
 
@@ -4063,11 +4090,11 @@ func (op *QosService) Remove(
 }
 
 type QosServiceUpdateRequest struct {
-	qos    *QosService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	qos    *Qos
+	qosService *QosService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	qos        *Qos
 }
 
 func (p *QosServiceUpdateRequest) Header(key, value string) *QosServiceUpdateRequest {
@@ -4094,7 +4121,7 @@ func (p *QosServiceUpdateRequest) Qos(qos *Qos) *QosServiceUpdateRequest {
 	p.qos = qos
 	return p
 }
-func (p *QosServiceUpdateRequest) send() *QosServiceUpdateResponse {
+func (p *QosServiceUpdateRequest) Send() *QosServiceUpdateResponse {
 
 }
 
@@ -4153,10 +4180,10 @@ func NewTagsService(connection *Connection, path string) *TagsService {
 }
 
 type TagsServiceAddRequest struct {
-	tags   *TagsService
-	header map[string]string
-	query  map[string]string
-	tag    *Tag
+	tagsService *TagsService
+	header      map[string]string
+	query       map[string]string
+	tag         *Tag
 }
 
 func (p *TagsServiceAddRequest) Header(key, value string) *TagsServiceAddRequest {
@@ -4179,8 +4206,10 @@ func (p *TagsServiceAddRequest) Tag(tag *Tag) *TagsServiceAddRequest {
 	p.tag = tag
 	return p
 }
-func (p *TagsServiceAddRequest) send() *TagsServiceAddResponse {
+func (p *TagsServiceAddRequest) Send() *TagsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.tagsService.Connection.URL(), p.tagsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -4237,10 +4266,10 @@ func (op *TagsService) Add(
 }
 
 type TagsServiceListRequest struct {
-	tags   *TagsService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	tagsService *TagsService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
 func (p *TagsServiceListRequest) Header(key, value string) *TagsServiceListRequest {
@@ -4263,7 +4292,7 @@ func (p *TagsServiceListRequest) Max(max int64) *TagsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *TagsServiceListRequest) send() *TagsServiceListResponse {
+func (p *TagsServiceListRequest) Send() *TagsServiceListResponse {
 
 }
 
@@ -4366,9 +4395,9 @@ func NewExternalProviderCertificateService(connection *Connection, path string) 
 }
 
 type ExternalProviderCertificateServiceGetRequest struct {
-	externalProviderCertificate *ExternalProviderCertificateService
-	header                      map[string]string
-	query                       map[string]string
+	externalProviderCertificateService *ExternalProviderCertificateService
+	header                             map[string]string
+	query                              map[string]string
 }
 
 func (p *ExternalProviderCertificateServiceGetRequest) Header(key, value string) *ExternalProviderCertificateServiceGetRequest {
@@ -4387,7 +4416,7 @@ func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) 
 	return p
 }
 
-func (p *ExternalProviderCertificateServiceGetRequest) send() *ExternalProviderCertificateServiceGetResponse {
+func (p *ExternalProviderCertificateServiceGetRequest) Send() *ExternalProviderCertificateServiceGetResponse {
 
 }
 
@@ -4443,10 +4472,10 @@ func NewEventsService(connection *Connection, path string) *EventsService {
 }
 
 type EventsServiceAddRequest struct {
-	events *EventsService
-	header map[string]string
-	query  map[string]string
-	event  *Event
+	eventsService *EventsService
+	header        map[string]string
+	query         map[string]string
+	event         *Event
 }
 
 func (p *EventsServiceAddRequest) Header(key, value string) *EventsServiceAddRequest {
@@ -4469,8 +4498,10 @@ func (p *EventsServiceAddRequest) Event(event *Event) *EventsServiceAddRequest {
 	p.event = event
 	return p
 }
-func (p *EventsServiceAddRequest) send() *EventsServiceAddResponse {
+func (p *EventsServiceAddRequest) Send() *EventsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.eventsService.Connection.URL(), p.eventsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -4528,7 +4559,7 @@ func (op *EventsService) Add(
 }
 
 type EventsServiceListRequest struct {
-	events        *EventsService
+	eventsService *EventsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -4569,7 +4600,7 @@ func (p *EventsServiceListRequest) Search(search string) *EventsServiceListReque
 	p.search = &search
 	return p
 }
-func (p *EventsServiceListRequest) send() *EventsServiceListResponse {
+func (p *EventsServiceListRequest) Send() *EventsServiceListResponse {
 
 }
 
@@ -4711,10 +4742,10 @@ func (op *EventsService) List(
 }
 
 type EventsServiceUndeleteRequest struct {
-	events *EventsService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	eventsService *EventsService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *EventsServiceUndeleteRequest) Header(key, value string) *EventsServiceUndeleteRequest {
@@ -4737,7 +4768,7 @@ func (p *EventsServiceUndeleteRequest) Async(async bool) *EventsServiceUndeleteR
 	p.async = &async
 	return p
 }
-func (p *EventsServiceUndeleteRequest) send() *EventsServiceUndeleteResponse {
+func (p *EventsServiceUndeleteRequest) Send() *EventsServiceUndeleteResponse {
 
 }
 
@@ -4803,9 +4834,9 @@ func NewVmWatchdogService(connection *Connection, path string) *VmWatchdogServic
 }
 
 type VmWatchdogServiceGetRequest struct {
-	vmWatchdog *VmWatchdogService
-	header     map[string]string
-	query      map[string]string
+	vmWatchdogService *VmWatchdogService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *VmWatchdogServiceGetRequest) Header(key, value string) *VmWatchdogServiceGetRequest {
@@ -4824,7 +4855,7 @@ func (p *VmWatchdogServiceGetRequest) Query(key, value string) *VmWatchdogServic
 	return p
 }
 
-func (p *VmWatchdogServiceGetRequest) send() *VmWatchdogServiceGetResponse {
+func (p *VmWatchdogServiceGetRequest) Send() *VmWatchdogServiceGetResponse {
 
 }
 
@@ -4853,10 +4884,10 @@ func (op *VmWatchdogService) Get(
 }
 
 type VmWatchdogServiceRemoveRequest struct {
-	vmWatchdog *VmWatchdogService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
+	vmWatchdogService *VmWatchdogService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
 func (p *VmWatchdogServiceRemoveRequest) Header(key, value string) *VmWatchdogServiceRemoveRequest {
@@ -4879,7 +4910,7 @@ func (p *VmWatchdogServiceRemoveRequest) Async(async bool) *VmWatchdogServiceRem
 	p.async = &async
 	return p
 }
-func (p *VmWatchdogServiceRemoveRequest) send() *VmWatchdogServiceRemoveResponse {
+func (p *VmWatchdogServiceRemoveRequest) Send() *VmWatchdogServiceRemoveResponse {
 
 }
 
@@ -4913,11 +4944,11 @@ func (op *VmWatchdogService) Remove(
 }
 
 type VmWatchdogServiceUpdateRequest struct {
-	vmWatchdog *VmWatchdogService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	watchdog   *Watchdog
+	vmWatchdogService *VmWatchdogService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	watchdog          *Watchdog
 }
 
 func (p *VmWatchdogServiceUpdateRequest) Header(key, value string) *VmWatchdogServiceUpdateRequest {
@@ -4944,7 +4975,7 @@ func (p *VmWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *VmWatchdo
 	p.watchdog = watchdog
 	return p
 }
-func (p *VmWatchdogServiceUpdateRequest) send() *VmWatchdogServiceUpdateResponse {
+func (p *VmWatchdogServiceUpdateRequest) Send() *VmWatchdogServiceUpdateResponse {
 
 }
 
@@ -5029,10 +5060,10 @@ func NewAttachedStorageDomainService(connection *Connection, path string) *Attac
 }
 
 type AttachedStorageDomainServiceActivateRequest struct {
-	attachedStorageDomain *AttachedStorageDomainService
-	header                map[string]string
-	query                 map[string]string
-	async                 *bool
+	attachedStorageDomainService *AttachedStorageDomainService
+	header                       map[string]string
+	query                        map[string]string
+	async                        *bool
 }
 
 func (p *AttachedStorageDomainServiceActivateRequest) Header(key, value string) *AttachedStorageDomainServiceActivateRequest {
@@ -5055,7 +5086,7 @@ func (p *AttachedStorageDomainServiceActivateRequest) Async(async bool) *Attache
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceActivateRequest) send() *AttachedStorageDomainServiceActivateResponse {
+func (p *AttachedStorageDomainServiceActivateRequest) Send() *AttachedStorageDomainServiceActivateResponse {
 
 }
 
@@ -5094,10 +5125,10 @@ func (op *AttachedStorageDomainService) Activate(
 }
 
 type AttachedStorageDomainServiceDeactivateRequest struct {
-	attachedStorageDomain *AttachedStorageDomainService
-	header                map[string]string
-	query                 map[string]string
-	async                 *bool
+	attachedStorageDomainService *AttachedStorageDomainService
+	header                       map[string]string
+	query                        map[string]string
+	async                        *bool
 }
 
 func (p *AttachedStorageDomainServiceDeactivateRequest) Header(key, value string) *AttachedStorageDomainServiceDeactivateRequest {
@@ -5120,7 +5151,7 @@ func (p *AttachedStorageDomainServiceDeactivateRequest) Async(async bool) *Attac
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceDeactivateRequest) send() *AttachedStorageDomainServiceDeactivateResponse {
+func (p *AttachedStorageDomainServiceDeactivateRequest) Send() *AttachedStorageDomainServiceDeactivateResponse {
 
 }
 
@@ -5159,9 +5190,9 @@ func (op *AttachedStorageDomainService) Deactivate(
 }
 
 type AttachedStorageDomainServiceGetRequest struct {
-	attachedStorageDomain *AttachedStorageDomainService
-	header                map[string]string
-	query                 map[string]string
+	attachedStorageDomainService *AttachedStorageDomainService
+	header                       map[string]string
+	query                        map[string]string
 }
 
 func (p *AttachedStorageDomainServiceGetRequest) Header(key, value string) *AttachedStorageDomainServiceGetRequest {
@@ -5180,7 +5211,7 @@ func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) *Attac
 	return p
 }
 
-func (p *AttachedStorageDomainServiceGetRequest) send() *AttachedStorageDomainServiceGetResponse {
+func (p *AttachedStorageDomainServiceGetRequest) Send() *AttachedStorageDomainServiceGetResponse {
 
 }
 
@@ -5208,10 +5239,10 @@ func (op *AttachedStorageDomainService) Get(
 }
 
 type AttachedStorageDomainServiceRemoveRequest struct {
-	attachedStorageDomain *AttachedStorageDomainService
-	header                map[string]string
-	query                 map[string]string
-	async                 *bool
+	attachedStorageDomainService *AttachedStorageDomainService
+	header                       map[string]string
+	query                        map[string]string
+	async                        *bool
 }
 
 func (p *AttachedStorageDomainServiceRemoveRequest) Header(key, value string) *AttachedStorageDomainServiceRemoveRequest {
@@ -5234,7 +5265,7 @@ func (p *AttachedStorageDomainServiceRemoveRequest) Async(async bool) *AttachedS
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceRemoveRequest) send() *AttachedStorageDomainServiceRemoveResponse {
+func (p *AttachedStorageDomainServiceRemoveRequest) Send() *AttachedStorageDomainServiceRemoveResponse {
 
 }
 
@@ -5301,10 +5332,10 @@ func NewAttachedStorageDomainsService(connection *Connection, path string) *Atta
 }
 
 type AttachedStorageDomainsServiceAddRequest struct {
-	attachedStorageDomains *AttachedStorageDomainsService
-	header                 map[string]string
-	query                  map[string]string
-	storageDomain          *StorageDomain
+	attachedStorageDomainsService *AttachedStorageDomainsService
+	header                        map[string]string
+	query                         map[string]string
+	storageDomain                 *StorageDomain
 }
 
 func (p *AttachedStorageDomainsServiceAddRequest) Header(key, value string) *AttachedStorageDomainsServiceAddRequest {
@@ -5327,8 +5358,10 @@ func (p *AttachedStorageDomainsServiceAddRequest) StorageDomain(storageDomain *S
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainsServiceAddRequest) send() *AttachedStorageDomainsServiceAddResponse {
+func (p *AttachedStorageDomainsServiceAddRequest) Send() *AttachedStorageDomainsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainsService.Connection.URL(), p.attachedStorageDomainsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -5356,10 +5389,10 @@ func (op *AttachedStorageDomainsService) Add(
 }
 
 type AttachedStorageDomainsServiceListRequest struct {
-	attachedStorageDomains *AttachedStorageDomainsService
-	header                 map[string]string
-	query                  map[string]string
-	max                    *int64
+	attachedStorageDomainsService *AttachedStorageDomainsService
+	header                        map[string]string
+	query                         map[string]string
+	max                           *int64
 }
 
 func (p *AttachedStorageDomainsServiceListRequest) Header(key, value string) *AttachedStorageDomainsServiceListRequest {
@@ -5382,7 +5415,7 @@ func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) *AttachedStora
 	p.max = &max
 	return p
 }
-func (p *AttachedStorageDomainsServiceListRequest) send() *AttachedStorageDomainsServiceListResponse {
+func (p *AttachedStorageDomainsServiceListRequest) Send() *AttachedStorageDomainsServiceListResponse {
 
 }
 
@@ -5454,9 +5487,9 @@ func NewInstanceTypeWatchdogService(connection *Connection, path string) *Instan
 }
 
 type InstanceTypeWatchdogServiceGetRequest struct {
-	instanceTypeWatchdog *InstanceTypeWatchdogService
-	header               map[string]string
-	query                map[string]string
+	instanceTypeWatchdogService *InstanceTypeWatchdogService
+	header                      map[string]string
+	query                       map[string]string
 }
 
 func (p *InstanceTypeWatchdogServiceGetRequest) Header(key, value string) *InstanceTypeWatchdogServiceGetRequest {
@@ -5475,7 +5508,7 @@ func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) *Instan
 	return p
 }
 
-func (p *InstanceTypeWatchdogServiceGetRequest) send() *InstanceTypeWatchdogServiceGetResponse {
+func (p *InstanceTypeWatchdogServiceGetRequest) Send() *InstanceTypeWatchdogServiceGetResponse {
 
 }
 
@@ -5504,10 +5537,10 @@ func (op *InstanceTypeWatchdogService) Get(
 }
 
 type InstanceTypeWatchdogServiceRemoveRequest struct {
-	instanceTypeWatchdog *InstanceTypeWatchdogService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
+	instanceTypeWatchdogService *InstanceTypeWatchdogService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
 }
 
 func (p *InstanceTypeWatchdogServiceRemoveRequest) Header(key, value string) *InstanceTypeWatchdogServiceRemoveRequest {
@@ -5530,7 +5563,7 @@ func (p *InstanceTypeWatchdogServiceRemoveRequest) Async(async bool) *InstanceTy
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeWatchdogServiceRemoveRequest) send() *InstanceTypeWatchdogServiceRemoveResponse {
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Send() *InstanceTypeWatchdogServiceRemoveResponse {
 
 }
 
@@ -5559,11 +5592,11 @@ func (op *InstanceTypeWatchdogService) Remove(
 }
 
 type InstanceTypeWatchdogServiceUpdateRequest struct {
-	instanceTypeWatchdog *InstanceTypeWatchdogService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
-	watchdog             *Watchdog
+	instanceTypeWatchdogService *InstanceTypeWatchdogService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
+	watchdog                    *Watchdog
 }
 
 func (p *InstanceTypeWatchdogServiceUpdateRequest) Header(key, value string) *InstanceTypeWatchdogServiceUpdateRequest {
@@ -5590,7 +5623,7 @@ func (p *InstanceTypeWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) 
 	p.watchdog = watchdog
 	return p
 }
-func (p *InstanceTypeWatchdogServiceUpdateRequest) send() *InstanceTypeWatchdogServiceUpdateResponse {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Send() *InstanceTypeWatchdogServiceUpdateResponse {
 
 }
 
@@ -5649,9 +5682,9 @@ func NewQuotaStorageLimitService(connection *Connection, path string) *QuotaStor
 }
 
 type QuotaStorageLimitServiceGetRequest struct {
-	quotaStorageLimit *QuotaStorageLimitService
-	header            map[string]string
-	query             map[string]string
+	quotaStorageLimitService *QuotaStorageLimitService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *QuotaStorageLimitServiceGetRequest) Header(key, value string) *QuotaStorageLimitServiceGetRequest {
@@ -5670,7 +5703,7 @@ func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) *QuotaStor
 	return p
 }
 
-func (p *QuotaStorageLimitServiceGetRequest) send() *QuotaStorageLimitServiceGetResponse {
+func (p *QuotaStorageLimitServiceGetRequest) Send() *QuotaStorageLimitServiceGetResponse {
 
 }
 
@@ -5698,10 +5731,10 @@ func (op *QuotaStorageLimitService) Get(
 }
 
 type QuotaStorageLimitServiceRemoveRequest struct {
-	quotaStorageLimit *QuotaStorageLimitService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
+	quotaStorageLimitService *QuotaStorageLimitService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
 func (p *QuotaStorageLimitServiceRemoveRequest) Header(key, value string) *QuotaStorageLimitServiceRemoveRequest {
@@ -5724,7 +5757,7 @@ func (p *QuotaStorageLimitServiceRemoveRequest) Async(async bool) *QuotaStorageL
 	p.async = &async
 	return p
 }
-func (p *QuotaStorageLimitServiceRemoveRequest) send() *QuotaStorageLimitServiceRemoveResponse {
+func (p *QuotaStorageLimitServiceRemoveRequest) Send() *QuotaStorageLimitServiceRemoveResponse {
 
 }
 
@@ -5779,9 +5812,9 @@ func NewRoleService(connection *Connection, path string) *RoleService {
 }
 
 type RoleServiceGetRequest struct {
-	role   *RoleService
-	header map[string]string
-	query  map[string]string
+	roleService *RoleService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *RoleServiceGetRequest) Header(key, value string) *RoleServiceGetRequest {
@@ -5800,7 +5833,7 @@ func (p *RoleServiceGetRequest) Query(key, value string) *RoleServiceGetRequest 
 	return p
 }
 
-func (p *RoleServiceGetRequest) send() *RoleServiceGetResponse {
+func (p *RoleServiceGetRequest) Send() *RoleServiceGetResponse {
 
 }
 
@@ -5844,10 +5877,10 @@ func (op *RoleService) Get(
 }
 
 type RoleServiceRemoveRequest struct {
-	role   *RoleService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	roleService *RoleService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *RoleServiceRemoveRequest) Header(key, value string) *RoleServiceRemoveRequest {
@@ -5870,7 +5903,7 @@ func (p *RoleServiceRemoveRequest) Async(async bool) *RoleServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *RoleServiceRemoveRequest) send() *RoleServiceRemoveResponse {
+func (p *RoleServiceRemoveRequest) Send() *RoleServiceRemoveResponse {
 
 }
 
@@ -5904,11 +5937,11 @@ func (op *RoleService) Remove(
 }
 
 type RoleServiceUpdateRequest struct {
-	role   *RoleService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	role   *Role
+	roleService *RoleService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	role        *Role
 }
 
 func (p *RoleServiceUpdateRequest) Header(key, value string) *RoleServiceUpdateRequest {
@@ -5935,7 +5968,7 @@ func (p *RoleServiceUpdateRequest) Role(role *Role) *RoleServiceUpdateRequest {
 	p.role = role
 	return p
 }
-func (p *RoleServiceUpdateRequest) send() *RoleServiceUpdateResponse {
+func (p *RoleServiceUpdateRequest) Send() *RoleServiceUpdateResponse {
 
 }
 
@@ -6028,9 +6061,9 @@ func NewAssignedNetworkService(connection *Connection, path string) *AssignedNet
 }
 
 type AssignedNetworkServiceGetRequest struct {
-	assignedNetwork *AssignedNetworkService
-	header          map[string]string
-	query           map[string]string
+	assignedNetworkService *AssignedNetworkService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *AssignedNetworkServiceGetRequest) Header(key, value string) *AssignedNetworkServiceGetRequest {
@@ -6049,7 +6082,7 @@ func (p *AssignedNetworkServiceGetRequest) Query(key, value string) *AssignedNet
 	return p
 }
 
-func (p *AssignedNetworkServiceGetRequest) send() *AssignedNetworkServiceGetResponse {
+func (p *AssignedNetworkServiceGetRequest) Send() *AssignedNetworkServiceGetResponse {
 
 }
 
@@ -6077,10 +6110,10 @@ func (op *AssignedNetworkService) Get(
 }
 
 type AssignedNetworkServiceRemoveRequest struct {
-	assignedNetwork *AssignedNetworkService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
+	assignedNetworkService *AssignedNetworkService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
 func (p *AssignedNetworkServiceRemoveRequest) Header(key, value string) *AssignedNetworkServiceRemoveRequest {
@@ -6103,7 +6136,7 @@ func (p *AssignedNetworkServiceRemoveRequest) Async(async bool) *AssignedNetwork
 	p.async = &async
 	return p
 }
-func (p *AssignedNetworkServiceRemoveRequest) send() *AssignedNetworkServiceRemoveResponse {
+func (p *AssignedNetworkServiceRemoveRequest) Send() *AssignedNetworkServiceRemoveResponse {
 
 }
 
@@ -6131,11 +6164,11 @@ func (op *AssignedNetworkService) Remove(
 }
 
 type AssignedNetworkServiceUpdateRequest struct {
-	assignedNetwork *AssignedNetworkService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
-	network         *Network
+	assignedNetworkService *AssignedNetworkService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
+	network                *Network
 }
 
 func (p *AssignedNetworkServiceUpdateRequest) Header(key, value string) *AssignedNetworkServiceUpdateRequest {
@@ -6162,7 +6195,7 @@ func (p *AssignedNetworkServiceUpdateRequest) Network(network *Network) *Assigne
 	p.network = network
 	return p
 }
-func (p *AssignedNetworkServiceUpdateRequest) send() *AssignedNetworkServiceUpdateResponse {
+func (p *AssignedNetworkServiceUpdateRequest) Send() *AssignedNetworkServiceUpdateResponse {
 
 }
 
@@ -6221,9 +6254,9 @@ func NewStorageDomainVmDiskAttachmentService(connection *Connection, path string
 }
 
 type StorageDomainVmDiskAttachmentServiceGetRequest struct {
-	storageDomainVmDiskAttachment *StorageDomainVmDiskAttachmentService
-	header                        map[string]string
-	query                         map[string]string
+	storageDomainVmDiskAttachmentService *StorageDomainVmDiskAttachmentService
+	header                               map[string]string
+	query                                map[string]string
 }
 
 func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Header(key, value string) *StorageDomainVmDiskAttachmentServiceGetRequest {
@@ -6242,7 +6275,7 @@ func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentServiceGetRequest) send() *StorageDomainVmDiskAttachmentServiceGetResponse {
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Send() *StorageDomainVmDiskAttachmentServiceGetResponse {
 
 }
 
@@ -6299,10 +6332,10 @@ func NewHostNicsService(connection *Connection, path string) *HostNicsService {
 }
 
 type HostNicsServiceListRequest struct {
-	hostNics *HostNicsService
-	header   map[string]string
-	query    map[string]string
-	max      *int64
+	hostNicsService *HostNicsService
+	header          map[string]string
+	query           map[string]string
+	max             *int64
 }
 
 func (p *HostNicsServiceListRequest) Header(key, value string) *HostNicsServiceListRequest {
@@ -6325,7 +6358,7 @@ func (p *HostNicsServiceListRequest) Max(max int64) *HostNicsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *HostNicsServiceListRequest) send() *HostNicsServiceListResponse {
+func (p *HostNicsServiceListRequest) Send() *HostNicsServiceListResponse {
 
 }
 
@@ -6398,9 +6431,9 @@ func NewVmNumaNodeService(connection *Connection, path string) *VmNumaNodeServic
 }
 
 type VmNumaNodeServiceGetRequest struct {
-	vmNumaNode *VmNumaNodeService
-	header     map[string]string
-	query      map[string]string
+	vmNumaNodeService *VmNumaNodeService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *VmNumaNodeServiceGetRequest) Header(key, value string) *VmNumaNodeServiceGetRequest {
@@ -6419,7 +6452,7 @@ func (p *VmNumaNodeServiceGetRequest) Query(key, value string) *VmNumaNodeServic
 	return p
 }
 
-func (p *VmNumaNodeServiceGetRequest) send() *VmNumaNodeServiceGetResponse {
+func (p *VmNumaNodeServiceGetRequest) Send() *VmNumaNodeServiceGetResponse {
 
 }
 
@@ -6447,10 +6480,10 @@ func (op *VmNumaNodeService) Get(
 }
 
 type VmNumaNodeServiceRemoveRequest struct {
-	vmNumaNode *VmNumaNodeService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
+	vmNumaNodeService *VmNumaNodeService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
 func (p *VmNumaNodeServiceRemoveRequest) Header(key, value string) *VmNumaNodeServiceRemoveRequest {
@@ -6473,7 +6506,7 @@ func (p *VmNumaNodeServiceRemoveRequest) Async(async bool) *VmNumaNodeServiceRem
 	p.async = &async
 	return p
 }
-func (p *VmNumaNodeServiceRemoveRequest) send() *VmNumaNodeServiceRemoveResponse {
+func (p *VmNumaNodeServiceRemoveRequest) Send() *VmNumaNodeServiceRemoveResponse {
 
 }
 
@@ -6507,11 +6540,11 @@ func (op *VmNumaNodeService) Remove(
 }
 
 type VmNumaNodeServiceUpdateRequest struct {
-	vmNumaNode *VmNumaNodeService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	node       *VirtualNumaNode
+	vmNumaNodeService *VmNumaNodeService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	node              *VirtualNumaNode
 }
 
 func (p *VmNumaNodeServiceUpdateRequest) Header(key, value string) *VmNumaNodeServiceUpdateRequest {
@@ -6538,7 +6571,7 @@ func (p *VmNumaNodeServiceUpdateRequest) Node(node *VirtualNumaNode) *VmNumaNode
 	p.node = node
 	return p
 }
-func (p *VmNumaNodeServiceUpdateRequest) send() *VmNumaNodeServiceUpdateResponse {
+func (p *VmNumaNodeServiceUpdateRequest) Send() *VmNumaNodeServiceUpdateResponse {
 
 }
 
@@ -6614,10 +6647,10 @@ func NewTemplateCdromsService(connection *Connection, path string) *TemplateCdro
 }
 
 type TemplateCdromsServiceListRequest struct {
-	templateCdroms *TemplateCdromsService
-	header         map[string]string
-	query          map[string]string
-	max            *int64
+	templateCdromsService *TemplateCdromsService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
 }
 
 func (p *TemplateCdromsServiceListRequest) Header(key, value string) *TemplateCdromsServiceListRequest {
@@ -6640,7 +6673,7 @@ func (p *TemplateCdromsServiceListRequest) Max(max int64) *TemplateCdromsService
 	p.max = &max
 	return p
 }
-func (p *TemplateCdromsServiceListRequest) send() *TemplateCdromsServiceListResponse {
+func (p *TemplateCdromsServiceListRequest) Send() *TemplateCdromsServiceListResponse {
 
 }
 
@@ -6713,9 +6746,9 @@ func NewSnapshotService(connection *Connection, path string) *SnapshotService {
 }
 
 type SnapshotServiceGetRequest struct {
-	snapshot *SnapshotService
-	header   map[string]string
-	query    map[string]string
+	snapshotService *SnapshotService
+	header          map[string]string
+	query           map[string]string
 }
 
 func (p *SnapshotServiceGetRequest) Header(key, value string) *SnapshotServiceGetRequest {
@@ -6734,7 +6767,7 @@ func (p *SnapshotServiceGetRequest) Query(key, value string) *SnapshotServiceGet
 	return p
 }
 
-func (p *SnapshotServiceGetRequest) send() *SnapshotServiceGetResponse {
+func (p *SnapshotServiceGetRequest) Send() *SnapshotServiceGetResponse {
 
 }
 
@@ -6762,11 +6795,11 @@ func (op *SnapshotService) Get(
 }
 
 type SnapshotServiceRemoveRequest struct {
-	snapshot   *SnapshotService
-	header     map[string]string
-	query      map[string]string
-	allContent *bool
-	async      *bool
+	snapshotService *SnapshotService
+	header          map[string]string
+	query           map[string]string
+	allContent      *bool
+	async           *bool
 }
 
 func (p *SnapshotServiceRemoveRequest) Header(key, value string) *SnapshotServiceRemoveRequest {
@@ -6793,7 +6826,7 @@ func (p *SnapshotServiceRemoveRequest) Async(async bool) *SnapshotServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *SnapshotServiceRemoveRequest) send() *SnapshotServiceRemoveResponse {
+func (p *SnapshotServiceRemoveRequest) Send() *SnapshotServiceRemoveResponse {
 
 }
 
@@ -6830,12 +6863,12 @@ func (op *SnapshotService) Remove(
 }
 
 type SnapshotServiceRestoreRequest struct {
-	snapshot      *SnapshotService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	disks         []Disk
-	restoreMemory *bool
+	snapshotService *SnapshotService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
+	disks           []Disk
+	restoreMemory   *bool
 }
 
 func (p *SnapshotServiceRestoreRequest) Header(key, value string) *SnapshotServiceRestoreRequest {
@@ -6866,7 +6899,7 @@ func (p *SnapshotServiceRestoreRequest) RestoreMemory(restoreMemory bool) *Snaps
 	p.restoreMemory = &restoreMemory
 	return p
 }
-func (p *SnapshotServiceRestoreRequest) send() *SnapshotServiceRestoreResponse {
+func (p *SnapshotServiceRestoreRequest) Send() *SnapshotServiceRestoreResponse {
 
 }
 
@@ -6972,10 +7005,10 @@ func NewSchedulingPoliciesService(connection *Connection, path string) *Scheduli
 }
 
 type SchedulingPoliciesServiceAddRequest struct {
-	schedulingPolicies *SchedulingPoliciesService
-	header             map[string]string
-	query              map[string]string
-	policy             *SchedulingPolicy
+	schedulingPoliciesService *SchedulingPoliciesService
+	header                    map[string]string
+	query                     map[string]string
+	policy                    *SchedulingPolicy
 }
 
 func (p *SchedulingPoliciesServiceAddRequest) Header(key, value string) *SchedulingPoliciesServiceAddRequest {
@@ -6998,8 +7031,10 @@ func (p *SchedulingPoliciesServiceAddRequest) Policy(policy *SchedulingPolicy) *
 	p.policy = policy
 	return p
 }
-func (p *SchedulingPoliciesServiceAddRequest) send() *SchedulingPoliciesServiceAddResponse {
+func (p *SchedulingPoliciesServiceAddRequest) Send() *SchedulingPoliciesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.schedulingPoliciesService.Connection.URL(), p.schedulingPoliciesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -7027,11 +7062,11 @@ func (op *SchedulingPoliciesService) Add(
 }
 
 type SchedulingPoliciesServiceListRequest struct {
-	schedulingPolicies *SchedulingPoliciesService
-	header             map[string]string
-	query              map[string]string
-	filter             *bool
-	max                *int64
+	schedulingPoliciesService *SchedulingPoliciesService
+	header                    map[string]string
+	query                     map[string]string
+	filter                    *bool
+	max                       *int64
 }
 
 func (p *SchedulingPoliciesServiceListRequest) Header(key, value string) *SchedulingPoliciesServiceListRequest {
@@ -7058,7 +7093,7 @@ func (p *SchedulingPoliciesServiceListRequest) Max(max int64) *SchedulingPolicie
 	p.max = &max
 	return p
 }
-func (p *SchedulingPoliciesServiceListRequest) send() *SchedulingPoliciesServiceListResponse {
+func (p *SchedulingPoliciesServiceListRequest) Send() *SchedulingPoliciesServiceListResponse {
 
 }
 
@@ -7133,10 +7168,10 @@ func NewWeightsService(connection *Connection, path string) *WeightsService {
 }
 
 type WeightsServiceAddRequest struct {
-	weights *WeightsService
-	header  map[string]string
-	query   map[string]string
-	weight  *Weight
+	weightsService *WeightsService
+	header         map[string]string
+	query          map[string]string
+	weight         *Weight
 }
 
 func (p *WeightsServiceAddRequest) Header(key, value string) *WeightsServiceAddRequest {
@@ -7159,8 +7194,10 @@ func (p *WeightsServiceAddRequest) Weight(weight *Weight) *WeightsServiceAddRequ
 	p.weight = weight
 	return p
 }
-func (p *WeightsServiceAddRequest) send() *WeightsServiceAddResponse {
+func (p *WeightsServiceAddRequest) Send() *WeightsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.weightsService.Connection.URL(), p.weightsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -7188,11 +7225,11 @@ func (op *WeightsService) Add(
 }
 
 type WeightsServiceListRequest struct {
-	weights *WeightsService
-	header  map[string]string
-	query   map[string]string
-	filter  *bool
-	max     *int64
+	weightsService *WeightsService
+	header         map[string]string
+	query          map[string]string
+	filter         *bool
+	max            *int64
 }
 
 func (p *WeightsServiceListRequest) Header(key, value string) *WeightsServiceListRequest {
@@ -7219,7 +7256,7 @@ func (p *WeightsServiceListRequest) Max(max int64) *WeightsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *WeightsServiceListRequest) send() *WeightsServiceListResponse {
+func (p *WeightsServiceListRequest) Send() *WeightsServiceListResponse {
 
 }
 
@@ -7295,10 +7332,10 @@ func NewVmHostDevicesService(connection *Connection, path string) *VmHostDevices
 }
 
 type VmHostDevicesServiceAddRequest struct {
-	vmHostDevices *VmHostDevicesService
-	header        map[string]string
-	query         map[string]string
-	device        *HostDevice
+	vmHostDevicesService *VmHostDevicesService
+	header               map[string]string
+	query                map[string]string
+	device               *HostDevice
 }
 
 func (p *VmHostDevicesServiceAddRequest) Header(key, value string) *VmHostDevicesServiceAddRequest {
@@ -7321,8 +7358,10 @@ func (p *VmHostDevicesServiceAddRequest) Device(device *HostDevice) *VmHostDevic
 	p.device = device
 	return p
 }
-func (p *VmHostDevicesServiceAddRequest) send() *VmHostDevicesServiceAddResponse {
+func (p *VmHostDevicesServiceAddRequest) Send() *VmHostDevicesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmHostDevicesService.Connection.URL(), p.vmHostDevicesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -7373,10 +7412,10 @@ func (op *VmHostDevicesService) Add(
 }
 
 type VmHostDevicesServiceListRequest struct {
-	vmHostDevices *VmHostDevicesService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	vmHostDevicesService *VmHostDevicesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *VmHostDevicesServiceListRequest) Header(key, value string) *VmHostDevicesServiceListRequest {
@@ -7399,7 +7438,7 @@ func (p *VmHostDevicesServiceListRequest) Max(max int64) *VmHostDevicesServiceLi
 	p.max = &max
 	return p
 }
-func (p *VmHostDevicesServiceListRequest) send() *VmHostDevicesServiceListResponse {
+func (p *VmHostDevicesServiceListRequest) Send() *VmHostDevicesServiceListResponse {
 
 }
 
@@ -7473,9 +7512,9 @@ func NewAssignedCpuProfileService(connection *Connection, path string) *Assigned
 }
 
 type AssignedCpuProfileServiceGetRequest struct {
-	assignedCpuProfile *AssignedCpuProfileService
-	header             map[string]string
-	query              map[string]string
+	assignedCpuProfileService *AssignedCpuProfileService
+	header                    map[string]string
+	query                     map[string]string
 }
 
 func (p *AssignedCpuProfileServiceGetRequest) Header(key, value string) *AssignedCpuProfileServiceGetRequest {
@@ -7494,7 +7533,7 @@ func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) *Assigned
 	return p
 }
 
-func (p *AssignedCpuProfileServiceGetRequest) send() *AssignedCpuProfileServiceGetResponse {
+func (p *AssignedCpuProfileServiceGetRequest) Send() *AssignedCpuProfileServiceGetResponse {
 
 }
 
@@ -7522,10 +7561,10 @@ func (op *AssignedCpuProfileService) Get(
 }
 
 type AssignedCpuProfileServiceRemoveRequest struct {
-	assignedCpuProfile *AssignedCpuProfileService
-	header             map[string]string
-	query              map[string]string
-	async              *bool
+	assignedCpuProfileService *AssignedCpuProfileService
+	header                    map[string]string
+	query                     map[string]string
+	async                     *bool
 }
 
 func (p *AssignedCpuProfileServiceRemoveRequest) Header(key, value string) *AssignedCpuProfileServiceRemoveRequest {
@@ -7548,7 +7587,7 @@ func (p *AssignedCpuProfileServiceRemoveRequest) Async(async bool) *AssignedCpuP
 	p.async = &async
 	return p
 }
-func (p *AssignedCpuProfileServiceRemoveRequest) send() *AssignedCpuProfileServiceRemoveResponse {
+func (p *AssignedCpuProfileServiceRemoveRequest) Send() *AssignedCpuProfileServiceRemoveResponse {
 
 }
 
@@ -7603,9 +7642,9 @@ func NewSnapshotNicService(connection *Connection, path string) *SnapshotNicServ
 }
 
 type SnapshotNicServiceGetRequest struct {
-	snapshotNic *SnapshotNicService
-	header      map[string]string
-	query       map[string]string
+	snapshotNicService *SnapshotNicService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *SnapshotNicServiceGetRequest) Header(key, value string) *SnapshotNicServiceGetRequest {
@@ -7624,7 +7663,7 @@ func (p *SnapshotNicServiceGetRequest) Query(key, value string) *SnapshotNicServ
 	return p
 }
 
-func (p *SnapshotNicServiceGetRequest) send() *SnapshotNicServiceGetResponse {
+func (p *SnapshotNicServiceGetRequest) Send() *SnapshotNicServiceGetResponse {
 
 }
 
@@ -7680,9 +7719,9 @@ func NewHostDeviceService(connection *Connection, path string) *HostDeviceServic
 }
 
 type HostDeviceServiceGetRequest struct {
-	hostDevice *HostDeviceService
-	header     map[string]string
-	query      map[string]string
+	hostDeviceService *HostDeviceService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *HostDeviceServiceGetRequest) Header(key, value string) *HostDeviceServiceGetRequest {
@@ -7701,7 +7740,7 @@ func (p *HostDeviceServiceGetRequest) Query(key, value string) *HostDeviceServic
 	return p
 }
 
-func (p *HostDeviceServiceGetRequest) send() *HostDeviceServiceGetResponse {
+func (p *HostDeviceServiceGetRequest) Send() *HostDeviceServiceGetResponse {
 
 }
 
@@ -7776,10 +7815,10 @@ func NewImageTransfersService(connection *Connection, path string) *ImageTransfe
 }
 
 type ImageTransfersServiceAddRequest struct {
-	imageTransfers *ImageTransfersService
-	header         map[string]string
-	query          map[string]string
-	imageTransfer  *ImageTransfer
+	imageTransfersService *ImageTransfersService
+	header                map[string]string
+	query                 map[string]string
+	imageTransfer         *ImageTransfer
 }
 
 func (p *ImageTransfersServiceAddRequest) Header(key, value string) *ImageTransfersServiceAddRequest {
@@ -7802,8 +7841,10 @@ func (p *ImageTransfersServiceAddRequest) ImageTransfer(imageTransfer *ImageTran
 	p.imageTransfer = imageTransfer
 	return p
 }
-func (p *ImageTransfersServiceAddRequest) send() *ImageTransfersServiceAddResponse {
+func (p *ImageTransfersServiceAddRequest) Send() *ImageTransfersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.imageTransfersService.Connection.URL(), p.imageTransfersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -7833,9 +7874,9 @@ func (op *ImageTransfersService) Add(
 }
 
 type ImageTransfersServiceListRequest struct {
-	imageTransfers *ImageTransfersService
-	header         map[string]string
-	query          map[string]string
+	imageTransfersService *ImageTransfersService
+	header                map[string]string
+	query                 map[string]string
 }
 
 func (p *ImageTransfersServiceListRequest) Header(key, value string) *ImageTransfersServiceListRequest {
@@ -7854,7 +7895,7 @@ func (p *ImageTransfersServiceListRequest) Query(key, value string) *ImageTransf
 	return p
 }
 
-func (p *ImageTransfersServiceListRequest) send() *ImageTransfersServiceListResponse {
+func (p *ImageTransfersServiceListRequest) Send() *ImageTransfersServiceListResponse {
 
 }
 
@@ -7923,10 +7964,10 @@ func NewExternalProviderService(connection *Connection, path string) *ExternalPr
 }
 
 type ExternalProviderServiceImportCertificatesRequest struct {
-	externalProvider *ExternalProviderService
-	header           map[string]string
-	query            map[string]string
-	certificates     []Certificate
+	externalProviderService *ExternalProviderService
+	header                  map[string]string
+	query                   map[string]string
+	certificates            []Certificate
 }
 
 func (p *ExternalProviderServiceImportCertificatesRequest) Header(key, value string) *ExternalProviderServiceImportCertificatesRequest {
@@ -7949,7 +7990,7 @@ func (p *ExternalProviderServiceImportCertificatesRequest) Certificates(certific
 	p.certificates = certificates
 	return p
 }
-func (p *ExternalProviderServiceImportCertificatesRequest) send() *ExternalProviderServiceImportCertificatesResponse {
+func (p *ExternalProviderServiceImportCertificatesRequest) Send() *ExternalProviderServiceImportCertificatesResponse {
 
 }
 
@@ -7971,10 +8012,10 @@ func (op *ExternalProviderService) ImportCertificates(
 }
 
 type ExternalProviderServiceTestConnectivityRequest struct {
-	externalProvider *ExternalProviderService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
+	externalProviderService *ExternalProviderService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
 func (p *ExternalProviderServiceTestConnectivityRequest) Header(key, value string) *ExternalProviderServiceTestConnectivityRequest {
@@ -7997,7 +8038,7 @@ func (p *ExternalProviderServiceTestConnectivityRequest) Async(async bool) *Exte
 	p.async = &async
 	return p
 }
-func (p *ExternalProviderServiceTestConnectivityRequest) send() *ExternalProviderServiceTestConnectivityResponse {
+func (p *ExternalProviderServiceTestConnectivityRequest) Send() *ExternalProviderServiceTestConnectivityResponse {
 
 }
 
@@ -8064,9 +8105,9 @@ func NewEventService(connection *Connection, path string) *EventService {
 }
 
 type EventServiceGetRequest struct {
-	event  *EventService
-	header map[string]string
-	query  map[string]string
+	eventService *EventService
+	header       map[string]string
+	query        map[string]string
 }
 
 func (p *EventServiceGetRequest) Header(key, value string) *EventServiceGetRequest {
@@ -8085,7 +8126,7 @@ func (p *EventServiceGetRequest) Query(key, value string) *EventServiceGetReques
 	return p
 }
 
-func (p *EventServiceGetRequest) send() *EventServiceGetResponse {
+func (p *EventServiceGetRequest) Send() *EventServiceGetResponse {
 
 }
 
@@ -8138,10 +8179,10 @@ func (op *EventService) Get(
 }
 
 type EventServiceRemoveRequest struct {
-	event  *EventService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	eventService *EventService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *EventServiceRemoveRequest) Header(key, value string) *EventServiceRemoveRequest {
@@ -8164,7 +8205,7 @@ func (p *EventServiceRemoveRequest) Async(async bool) *EventServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *EventServiceRemoveRequest) send() *EventServiceRemoveResponse {
+func (p *EventServiceRemoveRequest) Send() *EventServiceRemoveResponse {
 
 }
 
@@ -8276,9 +8317,9 @@ func NewNetworkFiltersService(connection *Connection, path string) *NetworkFilte
 }
 
 type NetworkFiltersServiceListRequest struct {
-	networkFilters *NetworkFiltersService
-	header         map[string]string
-	query          map[string]string
+	networkFiltersService *NetworkFiltersService
+	header                map[string]string
+	query                 map[string]string
 }
 
 func (p *NetworkFiltersServiceListRequest) Header(key, value string) *NetworkFiltersServiceListRequest {
@@ -8297,7 +8338,7 @@ func (p *NetworkFiltersServiceListRequest) Query(key, value string) *NetworkFilt
 	return p
 }
 
-func (p *NetworkFiltersServiceListRequest) send() *NetworkFiltersServiceListResponse {
+func (p *NetworkFiltersServiceListRequest) Send() *NetworkFiltersServiceListResponse {
 
 }
 
@@ -8363,10 +8404,10 @@ func NewStatisticService(connection *Connection, path string) *StatisticService 
 }
 
 type StatisticServiceGetRequest struct {
-	statistic *StatisticService
-	header    map[string]string
-	query     map[string]string
-	statistic *Statistic
+	statisticService *StatisticService
+	header           map[string]string
+	query            map[string]string
+	statistic        *Statistic
 }
 
 func (p *StatisticServiceGetRequest) Header(key, value string) *StatisticServiceGetRequest {
@@ -8389,7 +8430,7 @@ func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) *StatisticS
 	p.statistic = statistic
 	return p
 }
-func (p *StatisticServiceGetRequest) send() *StatisticServiceGetResponse {
+func (p *StatisticServiceGetRequest) Send() *StatisticServiceGetResponse {
 
 }
 
@@ -8447,10 +8488,10 @@ func NewExternalVmImportsService(connection *Connection, path string) *ExternalV
 }
 
 type ExternalVmImportsServiceAddRequest struct {
-	externalVmImports *ExternalVmImportsService
-	header            map[string]string
-	query             map[string]string
-	import_           *ExternalVmImport
+	externalVmImportsService *ExternalVmImportsService
+	header                   map[string]string
+	query                    map[string]string
+	import_                  *ExternalVmImport
 }
 
 func (p *ExternalVmImportsServiceAddRequest) Header(key, value string) *ExternalVmImportsServiceAddRequest {
@@ -8473,8 +8514,10 @@ func (p *ExternalVmImportsServiceAddRequest) Import(import_ *ExternalVmImport) *
 	p.import_ = import_
 	return p
 }
-func (p *ExternalVmImportsServiceAddRequest) send() *ExternalVmImportsServiceAddResponse {
+func (p *ExternalVmImportsServiceAddRequest) Send() *ExternalVmImportsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.externalVmImportsService.Connection.URL(), p.externalVmImportsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -8554,10 +8597,10 @@ func NewAssignedRolesService(connection *Connection, path string) *AssignedRoles
 }
 
 type AssignedRolesServiceListRequest struct {
-	assignedRoles *AssignedRolesService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	assignedRolesService *AssignedRolesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *AssignedRolesServiceListRequest) Header(key, value string) *AssignedRolesServiceListRequest {
@@ -8580,7 +8623,7 @@ func (p *AssignedRolesServiceListRequest) Max(max int64) *AssignedRolesServiceLi
 	p.max = &max
 	return p
 }
-func (p *AssignedRolesServiceListRequest) send() *AssignedRolesServiceListResponse {
+func (p *AssignedRolesServiceListRequest) Send() *AssignedRolesServiceListResponse {
 
 }
 
@@ -8654,9 +8697,9 @@ func NewNetworkFilterParameterService(connection *Connection, path string) *Netw
 }
 
 type NetworkFilterParameterServiceGetRequest struct {
-	networkFilterParameter *NetworkFilterParameterService
-	header                 map[string]string
-	query                  map[string]string
+	networkFilterParameterService *NetworkFilterParameterService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *NetworkFilterParameterServiceGetRequest) Header(key, value string) *NetworkFilterParameterServiceGetRequest {
@@ -8675,7 +8718,7 @@ func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) *Netw
 	return p
 }
 
-func (p *NetworkFilterParameterServiceGetRequest) send() *NetworkFilterParameterServiceGetResponse {
+func (p *NetworkFilterParameterServiceGetRequest) Send() *NetworkFilterParameterServiceGetResponse {
 
 }
 
@@ -8704,9 +8747,9 @@ func (op *NetworkFilterParameterService) Get(
 }
 
 type NetworkFilterParameterServiceRemoveRequest struct {
-	networkFilterParameter *NetworkFilterParameterService
-	header                 map[string]string
-	query                  map[string]string
+	networkFilterParameterService *NetworkFilterParameterService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *NetworkFilterParameterServiceRemoveRequest) Header(key, value string) *NetworkFilterParameterServiceRemoveRequest {
@@ -8725,7 +8768,7 @@ func (p *NetworkFilterParameterServiceRemoveRequest) Query(key, value string) *N
 	return p
 }
 
-func (p *NetworkFilterParameterServiceRemoveRequest) send() *NetworkFilterParameterServiceRemoveResponse {
+func (p *NetworkFilterParameterServiceRemoveRequest) Send() *NetworkFilterParameterServiceRemoveResponse {
 
 }
 
@@ -8753,10 +8796,10 @@ func (op *NetworkFilterParameterService) Remove(
 }
 
 type NetworkFilterParameterServiceUpdateRequest struct {
-	networkFilterParameter *NetworkFilterParameterService
-	header                 map[string]string
-	query                  map[string]string
-	parameter              *NetworkFilterParameter
+	networkFilterParameterService *NetworkFilterParameterService
+	header                        map[string]string
+	query                         map[string]string
+	parameter                     *NetworkFilterParameter
 }
 
 func (p *NetworkFilterParameterServiceUpdateRequest) Header(key, value string) *NetworkFilterParameterServiceUpdateRequest {
@@ -8779,7 +8822,7 @@ func (p *NetworkFilterParameterServiceUpdateRequest) Parameter(parameter *Networ
 	p.parameter = parameter
 	return p
 }
-func (p *NetworkFilterParameterServiceUpdateRequest) send() *NetworkFilterParameterServiceUpdateResponse {
+func (p *NetworkFilterParameterServiceUpdateRequest) Send() *NetworkFilterParameterServiceUpdateResponse {
 
 }
 
@@ -8855,9 +8898,9 @@ func NewOpenstackImageProviderService(connection *Connection, path string) *Open
 }
 
 type OpenstackImageProviderServiceGetRequest struct {
-	openstackImageProvider *OpenstackImageProviderService
-	header                 map[string]string
-	query                  map[string]string
+	openstackImageProviderService *OpenstackImageProviderService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *OpenstackImageProviderServiceGetRequest) Header(key, value string) *OpenstackImageProviderServiceGetRequest {
@@ -8876,7 +8919,7 @@ func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) *Open
 	return p
 }
 
-func (p *OpenstackImageProviderServiceGetRequest) send() *OpenstackImageProviderServiceGetResponse {
+func (p *OpenstackImageProviderServiceGetRequest) Send() *OpenstackImageProviderServiceGetResponse {
 
 }
 
@@ -8904,10 +8947,10 @@ func (op *OpenstackImageProviderService) Get(
 }
 
 type OpenstackImageProviderServiceImportCertificatesRequest struct {
-	openstackImageProvider *OpenstackImageProviderService
-	header                 map[string]string
-	query                  map[string]string
-	certificates           []Certificate
+	openstackImageProviderService *OpenstackImageProviderService
+	header                        map[string]string
+	query                         map[string]string
+	certificates                  []Certificate
 }
 
 func (p *OpenstackImageProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackImageProviderServiceImportCertificatesRequest {
@@ -8930,7 +8973,7 @@ func (p *OpenstackImageProviderServiceImportCertificatesRequest) Certificates(ce
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackImageProviderServiceImportCertificatesRequest) send() *OpenstackImageProviderServiceImportCertificatesResponse {
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Send() *OpenstackImageProviderServiceImportCertificatesResponse {
 
 }
 
@@ -8952,10 +8995,10 @@ func (op *OpenstackImageProviderService) ImportCertificates(
 }
 
 type OpenstackImageProviderServiceRemoveRequest struct {
-	openstackImageProvider *OpenstackImageProviderService
-	header                 map[string]string
-	query                  map[string]string
-	async                  *bool
+	openstackImageProviderService *OpenstackImageProviderService
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
 }
 
 func (p *OpenstackImageProviderServiceRemoveRequest) Header(key, value string) *OpenstackImageProviderServiceRemoveRequest {
@@ -8978,7 +9021,7 @@ func (p *OpenstackImageProviderServiceRemoveRequest) Async(async bool) *Openstac
 	p.async = &async
 	return p
 }
-func (p *OpenstackImageProviderServiceRemoveRequest) send() *OpenstackImageProviderServiceRemoveResponse {
+func (p *OpenstackImageProviderServiceRemoveRequest) Send() *OpenstackImageProviderServiceRemoveResponse {
 
 }
 
@@ -9006,10 +9049,10 @@ func (op *OpenstackImageProviderService) Remove(
 }
 
 type OpenstackImageProviderServiceTestConnectivityRequest struct {
-	openstackImageProvider *OpenstackImageProviderService
-	header                 map[string]string
-	query                  map[string]string
-	async                  *bool
+	openstackImageProviderService *OpenstackImageProviderService
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
 }
 
 func (p *OpenstackImageProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackImageProviderServiceTestConnectivityRequest {
@@ -9032,7 +9075,7 @@ func (p *OpenstackImageProviderServiceTestConnectivityRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *OpenstackImageProviderServiceTestConnectivityRequest) send() *OpenstackImageProviderServiceTestConnectivityResponse {
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Send() *OpenstackImageProviderServiceTestConnectivityResponse {
 
 }
 
@@ -9059,11 +9102,11 @@ func (op *OpenstackImageProviderService) TestConnectivity(
 }
 
 type OpenstackImageProviderServiceUpdateRequest struct {
-	openstackImageProvider *OpenstackImageProviderService
-	header                 map[string]string
-	query                  map[string]string
-	async                  *bool
-	provider               *OpenStackImageProvider
+	openstackImageProviderService *OpenstackImageProviderService
+	header                        map[string]string
+	query                         map[string]string
+	async                         *bool
+	provider                      *OpenStackImageProvider
 }
 
 func (p *OpenstackImageProviderServiceUpdateRequest) Header(key, value string) *OpenstackImageProviderServiceUpdateRequest {
@@ -9090,7 +9133,7 @@ func (p *OpenstackImageProviderServiceUpdateRequest) Provider(provider *OpenStac
 	p.provider = provider
 	return p
 }
-func (p *OpenstackImageProviderServiceUpdateRequest) send() *OpenstackImageProviderServiceUpdateResponse {
+func (p *OpenstackImageProviderServiceUpdateRequest) Send() *OpenstackImageProviderServiceUpdateResponse {
 
 }
 
@@ -9172,9 +9215,9 @@ func NewOpenstackNetworkService(connection *Connection, path string) *OpenstackN
 }
 
 type OpenstackNetworkServiceGetRequest struct {
-	openstackNetwork *OpenstackNetworkService
-	header           map[string]string
-	query            map[string]string
+	openstackNetworkService *OpenstackNetworkService
+	header                  map[string]string
+	query                   map[string]string
 }
 
 func (p *OpenstackNetworkServiceGetRequest) Header(key, value string) *OpenstackNetworkServiceGetRequest {
@@ -9193,7 +9236,7 @@ func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) *OpenstackN
 	return p
 }
 
-func (p *OpenstackNetworkServiceGetRequest) send() *OpenstackNetworkServiceGetResponse {
+func (p *OpenstackNetworkServiceGetRequest) Send() *OpenstackNetworkServiceGetResponse {
 
 }
 
@@ -9221,11 +9264,11 @@ func (op *OpenstackNetworkService) Get(
 }
 
 type OpenstackNetworkServiceImportRequest struct {
-	openstackNetwork *OpenstackNetworkService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
-	dataCenter       *DataCenter
+	openstackNetworkService *OpenstackNetworkService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	dataCenter              *DataCenter
 }
 
 func (p *OpenstackNetworkServiceImportRequest) Header(key, value string) *OpenstackNetworkServiceImportRequest {
@@ -9252,7 +9295,7 @@ func (p *OpenstackNetworkServiceImportRequest) DataCenter(dataCenter *DataCenter
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *OpenstackNetworkServiceImportRequest) send() *OpenstackNetworkServiceImportResponse {
+func (p *OpenstackNetworkServiceImportRequest) Send() *OpenstackNetworkServiceImportResponse {
 
 }
 
@@ -9326,10 +9369,10 @@ func NewOpenstackImageProvidersService(connection *Connection, path string) *Ope
 }
 
 type OpenstackImageProvidersServiceAddRequest struct {
-	openstackImageProviders *OpenstackImageProvidersService
-	header                  map[string]string
-	query                   map[string]string
-	provider                *OpenStackImageProvider
+	openstackImageProvidersService *OpenstackImageProvidersService
+	header                         map[string]string
+	query                          map[string]string
+	provider                       *OpenStackImageProvider
 }
 
 func (p *OpenstackImageProvidersServiceAddRequest) Header(key, value string) *OpenstackImageProvidersServiceAddRequest {
@@ -9352,8 +9395,10 @@ func (p *OpenstackImageProvidersServiceAddRequest) Provider(provider *OpenStackI
 	p.provider = provider
 	return p
 }
-func (p *OpenstackImageProvidersServiceAddRequest) send() *OpenstackImageProvidersServiceAddResponse {
+func (p *OpenstackImageProvidersServiceAddRequest) Send() *OpenstackImageProvidersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.openstackImageProvidersService.Connection.URL(), p.openstackImageProvidersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -9381,10 +9426,10 @@ func (op *OpenstackImageProvidersService) Add(
 }
 
 type OpenstackImageProvidersServiceListRequest struct {
-	openstackImageProviders *OpenstackImageProvidersService
-	header                  map[string]string
-	query                   map[string]string
-	max                     *int64
+	openstackImageProvidersService *OpenstackImageProvidersService
+	header                         map[string]string
+	query                          map[string]string
+	max                            *int64
 }
 
 func (p *OpenstackImageProvidersServiceListRequest) Header(key, value string) *OpenstackImageProvidersServiceListRequest {
@@ -9407,7 +9452,7 @@ func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) *OpenstackIma
 	p.max = &max
 	return p
 }
-func (p *OpenstackImageProvidersServiceListRequest) send() *OpenstackImageProvidersServiceListResponse {
+func (p *OpenstackImageProvidersServiceListRequest) Send() *OpenstackImageProvidersServiceListResponse {
 
 }
 
@@ -9479,9 +9524,9 @@ func NewOpenstackVolumeAuthenticationKeyService(connection *Connection, path str
 }
 
 type OpenstackVolumeAuthenticationKeyServiceGetRequest struct {
-	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
-	header                           map[string]string
-	query                            map[string]string
+	openstackVolumeAuthenticationKeyService *OpenstackVolumeAuthenticationKeyService
+	header                                  map[string]string
+	query                                   map[string]string
 }
 
 func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceGetRequest {
@@ -9500,7 +9545,7 @@ func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value str
 	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) send() *OpenstackVolumeAuthenticationKeyServiceGetResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Send() *OpenstackVolumeAuthenticationKeyServiceGetResponse {
 
 }
 
@@ -9528,10 +9573,10 @@ func (op *OpenstackVolumeAuthenticationKeyService) Get(
 }
 
 type OpenstackVolumeAuthenticationKeyServiceRemoveRequest struct {
-	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
-	header                           map[string]string
-	query                            map[string]string
-	async                            *bool
+	openstackVolumeAuthenticationKeyService *OpenstackVolumeAuthenticationKeyService
+	header                                  map[string]string
+	query                                   map[string]string
+	async                                   *bool
 }
 
 func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceRemoveRequest {
@@ -9554,7 +9599,7 @@ func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) send() *OpenstackVolumeAuthenticationKeyServiceRemoveResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Send() *OpenstackVolumeAuthenticationKeyServiceRemoveResponse {
 
 }
 
@@ -9582,10 +9627,10 @@ func (op *OpenstackVolumeAuthenticationKeyService) Remove(
 }
 
 type OpenstackVolumeAuthenticationKeyServiceUpdateRequest struct {
-	openstackVolumeAuthenticationKey *OpenstackVolumeAuthenticationKeyService
-	header                           map[string]string
-	query                            map[string]string
-	key                              *OpenstackVolumeAuthenticationKey
+	openstackVolumeAuthenticationKeyService *OpenstackVolumeAuthenticationKeyService
+	header                                  map[string]string
+	query                                   map[string]string
+	key                                     *OpenstackVolumeAuthenticationKey
 }
 
 func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeyServiceUpdateRequest {
@@ -9608,7 +9653,7 @@ func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Key(key *Openstac
 	p.key = key
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) send() *OpenstackVolumeAuthenticationKeyServiceUpdateResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Send() *OpenstackVolumeAuthenticationKeyServiceUpdateResponse {
 
 }
 
@@ -9664,10 +9709,10 @@ func NewOpenstackImagesService(connection *Connection, path string) *OpenstackIm
 }
 
 type OpenstackImagesServiceListRequest struct {
-	openstackImages *OpenstackImagesService
-	header          map[string]string
-	query           map[string]string
-	max             *int64
+	openstackImagesService *OpenstackImagesService
+	header                 map[string]string
+	query                  map[string]string
+	max                    *int64
 }
 
 func (p *OpenstackImagesServiceListRequest) Header(key, value string) *OpenstackImagesServiceListRequest {
@@ -9690,7 +9735,7 @@ func (p *OpenstackImagesServiceListRequest) Max(max int64) *OpenstackImagesServi
 	p.max = &max
 	return p
 }
-func (p *OpenstackImagesServiceListRequest) send() *OpenstackImagesServiceListResponse {
+func (p *OpenstackImagesServiceListRequest) Send() *OpenstackImagesServiceListResponse {
 
 }
 
@@ -9765,10 +9810,10 @@ func NewOpenstackNetworkProvidersService(connection *Connection, path string) *O
 }
 
 type OpenstackNetworkProvidersServiceAddRequest struct {
-	openstackNetworkProviders *OpenstackNetworkProvidersService
-	header                    map[string]string
-	query                     map[string]string
-	provider                  *OpenStackNetworkProvider
+	openstackNetworkProvidersService *OpenstackNetworkProvidersService
+	header                           map[string]string
+	query                            map[string]string
+	provider                         *OpenStackNetworkProvider
 }
 
 func (p *OpenstackNetworkProvidersServiceAddRequest) Header(key, value string) *OpenstackNetworkProvidersServiceAddRequest {
@@ -9791,8 +9836,10 @@ func (p *OpenstackNetworkProvidersServiceAddRequest) Provider(provider *OpenStac
 	p.provider = provider
 	return p
 }
-func (p *OpenstackNetworkProvidersServiceAddRequest) send() *OpenstackNetworkProvidersServiceAddResponse {
+func (p *OpenstackNetworkProvidersServiceAddRequest) Send() *OpenstackNetworkProvidersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.openstackNetworkProvidersService.Connection.URL(), p.openstackNetworkProvidersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -9822,10 +9869,10 @@ func (op *OpenstackNetworkProvidersService) Add(
 }
 
 type OpenstackNetworkProvidersServiceListRequest struct {
-	openstackNetworkProviders *OpenstackNetworkProvidersService
-	header                    map[string]string
-	query                     map[string]string
-	max                       *int64
+	openstackNetworkProvidersService *OpenstackNetworkProvidersService
+	header                           map[string]string
+	query                            map[string]string
+	max                              *int64
 }
 
 func (p *OpenstackNetworkProvidersServiceListRequest) Header(key, value string) *OpenstackNetworkProvidersServiceListRequest {
@@ -9848,7 +9895,7 @@ func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) *OpenstackN
 	p.max = &max
 	return p
 }
-func (p *OpenstackNetworkProvidersServiceListRequest) send() *OpenstackNetworkProvidersServiceListResponse {
+func (p *OpenstackNetworkProvidersServiceListRequest) Send() *OpenstackNetworkProvidersServiceListResponse {
 
 }
 
@@ -9921,10 +9968,10 @@ func NewOpenstackVolumeProvidersService(connection *Connection, path string) *Op
 }
 
 type OpenstackVolumeProvidersServiceAddRequest struct {
-	openstackVolumeProviders *OpenstackVolumeProvidersService
-	header                   map[string]string
-	query                    map[string]string
-	provider                 *OpenStackVolumeProvider
+	openstackVolumeProvidersService *OpenstackVolumeProvidersService
+	header                          map[string]string
+	query                           map[string]string
+	provider                        *OpenStackVolumeProvider
 }
 
 func (p *OpenstackVolumeProvidersServiceAddRequest) Header(key, value string) *OpenstackVolumeProvidersServiceAddRequest {
@@ -9947,8 +9994,10 @@ func (p *OpenstackVolumeProvidersServiceAddRequest) Provider(provider *OpenStack
 	p.provider = provider
 	return p
 }
-func (p *OpenstackVolumeProvidersServiceAddRequest) send() *OpenstackVolumeProvidersServiceAddResponse {
+func (p *OpenstackVolumeProvidersServiceAddRequest) Send() *OpenstackVolumeProvidersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeProvidersService.Connection.URL(), p.openstackVolumeProvidersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -9997,10 +10046,10 @@ func (op *OpenstackVolumeProvidersService) Add(
 }
 
 type OpenstackVolumeProvidersServiceListRequest struct {
-	openstackVolumeProviders *OpenstackVolumeProvidersService
-	header                   map[string]string
-	query                    map[string]string
-	max                      *int64
+	openstackVolumeProvidersService *OpenstackVolumeProvidersService
+	header                          map[string]string
+	query                           map[string]string
+	max                             *int64
 }
 
 func (p *OpenstackVolumeProvidersServiceListRequest) Header(key, value string) *OpenstackVolumeProvidersServiceListRequest {
@@ -10023,7 +10072,7 @@ func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) *OpenstackVo
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeProvidersServiceListRequest) send() *OpenstackVolumeProvidersServiceListResponse {
+func (p *OpenstackVolumeProvidersServiceListRequest) Send() *OpenstackVolumeProvidersServiceListResponse {
 
 }
 
@@ -10096,10 +10145,10 @@ func NewOpenstackNetworksService(connection *Connection, path string) *Openstack
 }
 
 type OpenstackNetworksServiceListRequest struct {
-	openstackNetworks *OpenstackNetworksService
-	header            map[string]string
-	query             map[string]string
-	max               *int64
+	openstackNetworksService *OpenstackNetworksService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
 func (p *OpenstackNetworksServiceListRequest) Header(key, value string) *OpenstackNetworksServiceListRequest {
@@ -10122,7 +10171,7 @@ func (p *OpenstackNetworksServiceListRequest) Max(max int64) *OpenstackNetworksS
 	p.max = &max
 	return p
 }
-func (p *OpenstackNetworksServiceListRequest) send() *OpenstackNetworksServiceListResponse {
+func (p *OpenstackNetworksServiceListRequest) Send() *OpenstackNetworksServiceListResponse {
 
 }
 
@@ -10194,9 +10243,9 @@ func NewOpenstackVolumeProviderService(connection *Connection, path string) *Ope
 }
 
 type OpenstackVolumeProviderServiceGetRequest struct {
-	openstackVolumeProvider *OpenstackVolumeProviderService
-	header                  map[string]string
-	query                   map[string]string
+	openstackVolumeProviderService *OpenstackVolumeProviderService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *OpenstackVolumeProviderServiceGetRequest) Header(key, value string) *OpenstackVolumeProviderServiceGetRequest {
@@ -10215,7 +10264,7 @@ func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) *Ope
 	return p
 }
 
-func (p *OpenstackVolumeProviderServiceGetRequest) send() *OpenstackVolumeProviderServiceGetResponse {
+func (p *OpenstackVolumeProviderServiceGetRequest) Send() *OpenstackVolumeProviderServiceGetResponse {
 
 }
 
@@ -10243,10 +10292,10 @@ func (op *OpenstackVolumeProviderService) Get(
 }
 
 type OpenstackVolumeProviderServiceImportCertificatesRequest struct {
-	openstackVolumeProvider *OpenstackVolumeProviderService
-	header                  map[string]string
-	query                   map[string]string
-	certificates            []Certificate
+	openstackVolumeProviderService *OpenstackVolumeProviderService
+	header                         map[string]string
+	query                          map[string]string
+	certificates                   []Certificate
 }
 
 func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackVolumeProviderServiceImportCertificatesRequest {
@@ -10269,7 +10318,7 @@ func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Certificates(c
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) send() *OpenstackVolumeProviderServiceImportCertificatesResponse {
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Send() *OpenstackVolumeProviderServiceImportCertificatesResponse {
 
 }
 
@@ -10291,10 +10340,10 @@ func (op *OpenstackVolumeProviderService) ImportCertificates(
 }
 
 type OpenstackVolumeProviderServiceRemoveRequest struct {
-	openstackVolumeProvider *OpenstackVolumeProviderService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
+	openstackVolumeProviderService *OpenstackVolumeProviderService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
 }
 
 func (p *OpenstackVolumeProviderServiceRemoveRequest) Header(key, value string) *OpenstackVolumeProviderServiceRemoveRequest {
@@ -10317,7 +10366,7 @@ func (p *OpenstackVolumeProviderServiceRemoveRequest) Async(async bool) *Opensta
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeProviderServiceRemoveRequest) send() *OpenstackVolumeProviderServiceRemoveResponse {
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Send() *OpenstackVolumeProviderServiceRemoveResponse {
 
 }
 
@@ -10345,10 +10394,10 @@ func (op *OpenstackVolumeProviderService) Remove(
 }
 
 type OpenstackVolumeProviderServiceTestConnectivityRequest struct {
-	openstackVolumeProvider *OpenstackVolumeProviderService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
+	openstackVolumeProviderService *OpenstackVolumeProviderService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
 }
 
 func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackVolumeProviderServiceTestConnectivityRequest {
@@ -10371,7 +10420,7 @@ func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Async(async bool
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) send() *OpenstackVolumeProviderServiceTestConnectivityResponse {
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Send() *OpenstackVolumeProviderServiceTestConnectivityResponse {
 
 }
 
@@ -10398,11 +10447,11 @@ func (op *OpenstackVolumeProviderService) TestConnectivity(
 }
 
 type OpenstackVolumeProviderServiceUpdateRequest struct {
-	openstackVolumeProvider *OpenstackVolumeProviderService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
-	provider                *OpenStackVolumeProvider
+	openstackVolumeProviderService *OpenstackVolumeProviderService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
+	provider                       *OpenStackVolumeProvider
 }
 
 func (p *OpenstackVolumeProviderServiceUpdateRequest) Header(key, value string) *OpenstackVolumeProviderServiceUpdateRequest {
@@ -10429,7 +10478,7 @@ func (p *OpenstackVolumeProviderServiceUpdateRequest) Provider(provider *OpenSta
 	p.provider = provider
 	return p
 }
-func (p *OpenstackVolumeProviderServiceUpdateRequest) send() *OpenstackVolumeProviderServiceUpdateResponse {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Send() *OpenstackVolumeProviderServiceUpdateResponse {
 
 }
 
@@ -10523,10 +10572,10 @@ func NewOpenstackVolumeTypesService(connection *Connection, path string) *Openst
 }
 
 type OpenstackVolumeTypesServiceListRequest struct {
-	openstackVolumeTypes *OpenstackVolumeTypesService
-	header               map[string]string
-	query                map[string]string
-	max                  *int64
+	openstackVolumeTypesService *OpenstackVolumeTypesService
+	header                      map[string]string
+	query                       map[string]string
+	max                         *int64
 }
 
 func (p *OpenstackVolumeTypesServiceListRequest) Header(key, value string) *OpenstackVolumeTypesServiceListRequest {
@@ -10549,7 +10598,7 @@ func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) *OpenstackVolume
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeTypesServiceListRequest) send() *OpenstackVolumeTypesServiceListResponse {
+func (p *OpenstackVolumeTypesServiceListRequest) Send() *OpenstackVolumeTypesServiceListResponse {
 
 }
 
@@ -10621,10 +10670,10 @@ func NewOpenstackVolumeAuthenticationKeysService(connection *Connection, path st
 }
 
 type OpenstackVolumeAuthenticationKeysServiceAddRequest struct {
-	openstackVolumeAuthenticationKeys *OpenstackVolumeAuthenticationKeysService
-	header                            map[string]string
-	query                             map[string]string
-	key                               *OpenstackVolumeAuthenticationKey
+	openstackVolumeAuthenticationKeysService *OpenstackVolumeAuthenticationKeysService
+	header                                   map[string]string
+	query                                    map[string]string
+	key                                      *OpenstackVolumeAuthenticationKey
 }
 
 func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeysServiceAddRequest {
@@ -10647,8 +10696,10 @@ func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Key(key *OpenstackV
 	p.key = key
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) send() *OpenstackVolumeAuthenticationKeysServiceAddResponse {
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Send() *OpenstackVolumeAuthenticationKeysServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeAuthenticationKeysService.Connection.URL(), p.openstackVolumeAuthenticationKeysService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -10676,10 +10727,10 @@ func (op *OpenstackVolumeAuthenticationKeysService) Add(
 }
 
 type OpenstackVolumeAuthenticationKeysServiceListRequest struct {
-	openstackVolumeAuthenticationKeys *OpenstackVolumeAuthenticationKeysService
-	header                            map[string]string
-	query                             map[string]string
-	max                               *int64
+	openstackVolumeAuthenticationKeysService *OpenstackVolumeAuthenticationKeysService
+	header                                   map[string]string
+	query                                    map[string]string
+	max                                      *int64
 }
 
 func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Header(key, value string) *OpenstackVolumeAuthenticationKeysServiceListRequest {
@@ -10702,7 +10753,7 @@ func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) *Op
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) send() *OpenstackVolumeAuthenticationKeysServiceListResponse {
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Send() *OpenstackVolumeAuthenticationKeysServiceListResponse {
 
 }
 
@@ -10774,9 +10825,9 @@ func NewOpenstackImageService(connection *Connection, path string) *OpenstackIma
 }
 
 type OpenstackImageServiceGetRequest struct {
-	openstackImage *OpenstackImageService
-	header         map[string]string
-	query          map[string]string
+	openstackImageService *OpenstackImageService
+	header                map[string]string
+	query                 map[string]string
 }
 
 func (p *OpenstackImageServiceGetRequest) Header(key, value string) *OpenstackImageServiceGetRequest {
@@ -10795,7 +10846,7 @@ func (p *OpenstackImageServiceGetRequest) Query(key, value string) *OpenstackIma
 	return p
 }
 
-func (p *OpenstackImageServiceGetRequest) send() *OpenstackImageServiceGetResponse {
+func (p *OpenstackImageServiceGetRequest) Send() *OpenstackImageServiceGetResponse {
 
 }
 
@@ -10823,15 +10874,15 @@ func (op *OpenstackImageService) Get(
 }
 
 type OpenstackImageServiceImportRequest struct {
-	openstackImage   *OpenstackImageService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
-	cluster          *Cluster
-	disk             *Disk
-	importAsTemplate *bool
-	storageDomain    *StorageDomain
-	template         *Template
+	openstackImageService *OpenstackImageService
+	header                map[string]string
+	query                 map[string]string
+	async                 *bool
+	cluster               *Cluster
+	disk                  *Disk
+	importAsTemplate      *bool
+	storageDomain         *StorageDomain
+	template              *Template
 }
 
 func (p *OpenstackImageServiceImportRequest) Header(key, value string) *OpenstackImageServiceImportRequest {
@@ -10874,7 +10925,7 @@ func (p *OpenstackImageServiceImportRequest) Template(template *Template) *Opens
 	p.template = template
 	return p
 }
-func (p *OpenstackImageServiceImportRequest) send() *OpenstackImageServiceImportResponse {
+func (p *OpenstackImageServiceImportRequest) Send() *OpenstackImageServiceImportResponse {
 
 }
 
@@ -10960,9 +11011,9 @@ func NewOpenstackVolumeTypeService(connection *Connection, path string) *Opensta
 }
 
 type OpenstackVolumeTypeServiceGetRequest struct {
-	openstackVolumeType *OpenstackVolumeTypeService
-	header              map[string]string
-	query               map[string]string
+	openstackVolumeTypeService *OpenstackVolumeTypeService
+	header                     map[string]string
+	query                      map[string]string
 }
 
 func (p *OpenstackVolumeTypeServiceGetRequest) Header(key, value string) *OpenstackVolumeTypeServiceGetRequest {
@@ -10981,7 +11032,7 @@ func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) *Opensta
 	return p
 }
 
-func (p *OpenstackVolumeTypeServiceGetRequest) send() *OpenstackVolumeTypeServiceGetResponse {
+func (p *OpenstackVolumeTypeServiceGetRequest) Send() *OpenstackVolumeTypeServiceGetResponse {
 
 }
 
@@ -11036,9 +11087,9 @@ func NewOpenstackSubnetService(connection *Connection, path string) *OpenstackSu
 }
 
 type OpenstackSubnetServiceGetRequest struct {
-	openstackSubnet *OpenstackSubnetService
-	header          map[string]string
-	query           map[string]string
+	openstackSubnetService *OpenstackSubnetService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *OpenstackSubnetServiceGetRequest) Header(key, value string) *OpenstackSubnetServiceGetRequest {
@@ -11057,7 +11108,7 @@ func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) *OpenstackSu
 	return p
 }
 
-func (p *OpenstackSubnetServiceGetRequest) send() *OpenstackSubnetServiceGetResponse {
+func (p *OpenstackSubnetServiceGetRequest) Send() *OpenstackSubnetServiceGetResponse {
 
 }
 
@@ -11085,10 +11136,10 @@ func (op *OpenstackSubnetService) Get(
 }
 
 type OpenstackSubnetServiceRemoveRequest struct {
-	openstackSubnet *OpenstackSubnetService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
+	openstackSubnetService *OpenstackSubnetService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
 func (p *OpenstackSubnetServiceRemoveRequest) Header(key, value string) *OpenstackSubnetServiceRemoveRequest {
@@ -11111,7 +11162,7 @@ func (p *OpenstackSubnetServiceRemoveRequest) Async(async bool) *OpenstackSubnet
 	p.async = &async
 	return p
 }
-func (p *OpenstackSubnetServiceRemoveRequest) send() *OpenstackSubnetServiceRemoveResponse {
+func (p *OpenstackSubnetServiceRemoveRequest) Send() *OpenstackSubnetServiceRemoveResponse {
 
 }
 
@@ -11166,10 +11217,10 @@ func NewOpenstackSubnetsService(connection *Connection, path string) *OpenstackS
 }
 
 type OpenstackSubnetsServiceAddRequest struct {
-	openstackSubnets *OpenstackSubnetsService
-	header           map[string]string
-	query            map[string]string
-	subnet           *OpenStackSubnet
+	openstackSubnetsService *OpenstackSubnetsService
+	header                  map[string]string
+	query                   map[string]string
+	subnet                  *OpenStackSubnet
 }
 
 func (p *OpenstackSubnetsServiceAddRequest) Header(key, value string) *OpenstackSubnetsServiceAddRequest {
@@ -11192,8 +11243,10 @@ func (p *OpenstackSubnetsServiceAddRequest) Subnet(subnet *OpenStackSubnet) *Ope
 	p.subnet = subnet
 	return p
 }
-func (p *OpenstackSubnetsServiceAddRequest) send() *OpenstackSubnetsServiceAddResponse {
+func (p *OpenstackSubnetsServiceAddRequest) Send() *OpenstackSubnetsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.openstackSubnetsService.Connection.URL(), p.openstackSubnetsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -11221,10 +11274,10 @@ func (op *OpenstackSubnetsService) Add(
 }
 
 type OpenstackSubnetsServiceListRequest struct {
-	openstackSubnets *OpenstackSubnetsService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
+	openstackSubnetsService *OpenstackSubnetsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
 func (p *OpenstackSubnetsServiceListRequest) Header(key, value string) *OpenstackSubnetsServiceListRequest {
@@ -11247,7 +11300,7 @@ func (p *OpenstackSubnetsServiceListRequest) Max(max int64) *OpenstackSubnetsSer
 	p.max = &max
 	return p
 }
-func (p *OpenstackSubnetsServiceListRequest) send() *OpenstackSubnetsServiceListResponse {
+func (p *OpenstackSubnetsServiceListRequest) Send() *OpenstackSubnetsServiceListResponse {
 
 }
 
@@ -11320,9 +11373,9 @@ func NewOpenstackNetworkProviderService(connection *Connection, path string) *Op
 }
 
 type OpenstackNetworkProviderServiceGetRequest struct {
-	openstackNetworkProvider *OpenstackNetworkProviderService
-	header                   map[string]string
-	query                    map[string]string
+	openstackNetworkProviderService *OpenstackNetworkProviderService
+	header                          map[string]string
+	query                           map[string]string
 }
 
 func (p *OpenstackNetworkProviderServiceGetRequest) Header(key, value string) *OpenstackNetworkProviderServiceGetRequest {
@@ -11341,7 +11394,7 @@ func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) *Op
 	return p
 }
 
-func (p *OpenstackNetworkProviderServiceGetRequest) send() *OpenstackNetworkProviderServiceGetResponse {
+func (p *OpenstackNetworkProviderServiceGetRequest) Send() *OpenstackNetworkProviderServiceGetResponse {
 
 }
 
@@ -11375,10 +11428,10 @@ func (op *OpenstackNetworkProviderService) Get(
 }
 
 type OpenstackNetworkProviderServiceImportCertificatesRequest struct {
-	openstackNetworkProvider *OpenstackNetworkProviderService
-	header                   map[string]string
-	query                    map[string]string
-	certificates             []Certificate
+	openstackNetworkProviderService *OpenstackNetworkProviderService
+	header                          map[string]string
+	query                           map[string]string
+	certificates                    []Certificate
 }
 
 func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Header(key, value string) *OpenstackNetworkProviderServiceImportCertificatesRequest {
@@ -11401,7 +11454,7 @@ func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Certificates(
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) send() *OpenstackNetworkProviderServiceImportCertificatesResponse {
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Send() *OpenstackNetworkProviderServiceImportCertificatesResponse {
 
 }
 
@@ -11423,10 +11476,10 @@ func (op *OpenstackNetworkProviderService) ImportCertificates(
 }
 
 type OpenstackNetworkProviderServiceRemoveRequest struct {
-	openstackNetworkProvider *OpenstackNetworkProviderService
-	header                   map[string]string
-	query                    map[string]string
-	async                    *bool
+	openstackNetworkProviderService *OpenstackNetworkProviderService
+	header                          map[string]string
+	query                           map[string]string
+	async                           *bool
 }
 
 func (p *OpenstackNetworkProviderServiceRemoveRequest) Header(key, value string) *OpenstackNetworkProviderServiceRemoveRequest {
@@ -11449,7 +11502,7 @@ func (p *OpenstackNetworkProviderServiceRemoveRequest) Async(async bool) *Openst
 	p.async = &async
 	return p
 }
-func (p *OpenstackNetworkProviderServiceRemoveRequest) send() *OpenstackNetworkProviderServiceRemoveResponse {
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Send() *OpenstackNetworkProviderServiceRemoveResponse {
 
 }
 
@@ -11483,10 +11536,10 @@ func (op *OpenstackNetworkProviderService) Remove(
 }
 
 type OpenstackNetworkProviderServiceTestConnectivityRequest struct {
-	openstackNetworkProvider *OpenstackNetworkProviderService
-	header                   map[string]string
-	query                    map[string]string
-	async                    *bool
+	openstackNetworkProviderService *OpenstackNetworkProviderService
+	header                          map[string]string
+	query                           map[string]string
+	async                           *bool
 }
 
 func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Header(key, value string) *OpenstackNetworkProviderServiceTestConnectivityRequest {
@@ -11509,7 +11562,7 @@ func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Async(async boo
 	p.async = &async
 	return p
 }
-func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) send() *OpenstackNetworkProviderServiceTestConnectivityResponse {
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Send() *OpenstackNetworkProviderServiceTestConnectivityResponse {
 
 }
 
@@ -11536,11 +11589,11 @@ func (op *OpenstackNetworkProviderService) TestConnectivity(
 }
 
 type OpenstackNetworkProviderServiceUpdateRequest struct {
-	openstackNetworkProvider *OpenstackNetworkProviderService
-	header                   map[string]string
-	query                    map[string]string
-	async                    *bool
-	provider                 *OpenStackNetworkProvider
+	openstackNetworkProviderService *OpenstackNetworkProviderService
+	header                          map[string]string
+	query                           map[string]string
+	async                           *bool
+	provider                        *OpenStackNetworkProvider
 }
 
 func (p *OpenstackNetworkProviderServiceUpdateRequest) Header(key, value string) *OpenstackNetworkProviderServiceUpdateRequest {
@@ -11567,7 +11620,7 @@ func (p *OpenstackNetworkProviderServiceUpdateRequest) Provider(provider *OpenSt
 	p.provider = provider
 	return p
 }
-func (p *OpenstackNetworkProviderServiceUpdateRequest) send() *OpenstackNetworkProviderServiceUpdateResponse {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Send() *OpenstackNetworkProviderServiceUpdateResponse {
 
 }
 
@@ -11674,11 +11727,11 @@ func NewTemplateService(connection *Connection, path string) *TemplateService {
 }
 
 type TemplateServiceExportRequest struct {
-	template      *TemplateService
-	header        map[string]string
-	query         map[string]string
-	exclusive     *bool
-	storageDomain *StorageDomain
+	templateService *TemplateService
+	header          map[string]string
+	query           map[string]string
+	exclusive       *bool
+	storageDomain   *StorageDomain
 }
 
 func (p *TemplateServiceExportRequest) Header(key, value string) *TemplateServiceExportRequest {
@@ -11705,7 +11758,7 @@ func (p *TemplateServiceExportRequest) StorageDomain(storageDomain *StorageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *TemplateServiceExportRequest) send() *TemplateServiceExportResponse {
+func (p *TemplateServiceExportRequest) Send() *TemplateServiceExportResponse {
 
 }
 
@@ -11751,10 +11804,10 @@ func (op *TemplateService) Export(
 }
 
 type TemplateServiceGetRequest struct {
-	template *TemplateService
-	header   map[string]string
-	query    map[string]string
-	filter   *bool
+	templateService *TemplateService
+	header          map[string]string
+	query           map[string]string
+	filter          *bool
 }
 
 func (p *TemplateServiceGetRequest) Header(key, value string) *TemplateServiceGetRequest {
@@ -11777,7 +11830,7 @@ func (p *TemplateServiceGetRequest) Filter(filter bool) *TemplateServiceGetReque
 	p.filter = &filter
 	return p
 }
-func (p *TemplateServiceGetRequest) send() *TemplateServiceGetResponse {
+func (p *TemplateServiceGetRequest) Send() *TemplateServiceGetResponse {
 
 }
 
@@ -11813,10 +11866,10 @@ func (op *TemplateService) Get(
 }
 
 type TemplateServiceRemoveRequest struct {
-	template *TemplateService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
+	templateService *TemplateService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
 func (p *TemplateServiceRemoveRequest) Header(key, value string) *TemplateServiceRemoveRequest {
@@ -11839,7 +11892,7 @@ func (p *TemplateServiceRemoveRequest) Async(async bool) *TemplateServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *TemplateServiceRemoveRequest) send() *TemplateServiceRemoveResponse {
+func (p *TemplateServiceRemoveRequest) Send() *TemplateServiceRemoveResponse {
 
 }
 
@@ -11872,9 +11925,9 @@ func (op *TemplateService) Remove(
 }
 
 type TemplateServiceSealRequest struct {
-	template *TemplateService
-	header   map[string]string
-	query    map[string]string
+	templateService *TemplateService
+	header          map[string]string
+	query           map[string]string
 }
 
 func (p *TemplateServiceSealRequest) Header(key, value string) *TemplateServiceSealRequest {
@@ -11893,7 +11946,7 @@ func (p *TemplateServiceSealRequest) Query(key, value string) *TemplateServiceSe
 	return p
 }
 
-func (p *TemplateServiceSealRequest) send() *TemplateServiceSealResponse {
+func (p *TemplateServiceSealRequest) Send() *TemplateServiceSealResponse {
 
 }
 
@@ -11918,11 +11971,11 @@ func (op *TemplateService) Seal(
 }
 
 type TemplateServiceUpdateRequest struct {
-	template *TemplateService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	template *Template
+	templateService *TemplateService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
+	template        *Template
 }
 
 func (p *TemplateServiceUpdateRequest) Header(key, value string) *TemplateServiceUpdateRequest {
@@ -11949,7 +12002,7 @@ func (p *TemplateServiceUpdateRequest) Template(template *Template) *TemplateSer
 	p.template = template
 	return p
 }
-func (p *TemplateServiceUpdateRequest) send() *TemplateServiceUpdateResponse {
+func (p *TemplateServiceUpdateRequest) Send() *TemplateServiceUpdateResponse {
 
 }
 
@@ -12125,10 +12178,10 @@ func NewVmWatchdogsService(connection *Connection, path string) *VmWatchdogsServ
 }
 
 type VmWatchdogsServiceAddRequest struct {
-	vmWatchdogs *VmWatchdogsService
-	header      map[string]string
-	query       map[string]string
-	watchdog    *Watchdog
+	vmWatchdogsService *VmWatchdogsService
+	header             map[string]string
+	query              map[string]string
+	watchdog           *Watchdog
 }
 
 func (p *VmWatchdogsServiceAddRequest) Header(key, value string) *VmWatchdogsServiceAddRequest {
@@ -12151,8 +12204,10 @@ func (p *VmWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *VmWatchdogs
 	p.watchdog = watchdog
 	return p
 }
-func (p *VmWatchdogsServiceAddRequest) send() *VmWatchdogsServiceAddResponse {
+func (p *VmWatchdogsServiceAddRequest) Send() *VmWatchdogsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmWatchdogsService.Connection.URL(), p.vmWatchdogsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -12207,10 +12262,10 @@ func (op *VmWatchdogsService) Add(
 }
 
 type VmWatchdogsServiceListRequest struct {
-	vmWatchdogs *VmWatchdogsService
-	header      map[string]string
-	query       map[string]string
-	max         *int64
+	vmWatchdogsService *VmWatchdogsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
 func (p *VmWatchdogsServiceListRequest) Header(key, value string) *VmWatchdogsServiceListRequest {
@@ -12233,7 +12288,7 @@ func (p *VmWatchdogsServiceListRequest) Max(max int64) *VmWatchdogsServiceListRe
 	p.max = &max
 	return p
 }
-func (p *VmWatchdogsServiceListRequest) send() *VmWatchdogsServiceListResponse {
+func (p *VmWatchdogsServiceListRequest) Send() *VmWatchdogsServiceListResponse {
 
 }
 
@@ -12310,9 +12365,9 @@ func NewAffinityLabelVmService(connection *Connection, path string) *AffinityLab
 }
 
 type AffinityLabelVmServiceGetRequest struct {
-	affinityLabelVm *AffinityLabelVmService
-	header          map[string]string
-	query           map[string]string
+	affinityLabelVmService *AffinityLabelVmService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *AffinityLabelVmServiceGetRequest) Header(key, value string) *AffinityLabelVmServiceGetRequest {
@@ -12331,7 +12386,7 @@ func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) *AffinityLab
 	return p
 }
 
-func (p *AffinityLabelVmServiceGetRequest) send() *AffinityLabelVmServiceGetResponse {
+func (p *AffinityLabelVmServiceGetRequest) Send() *AffinityLabelVmServiceGetResponse {
 
 }
 
@@ -12360,9 +12415,9 @@ func (op *AffinityLabelVmService) Get(
 }
 
 type AffinityLabelVmServiceRemoveRequest struct {
-	affinityLabelVm *AffinityLabelVmService
-	header          map[string]string
-	query           map[string]string
+	affinityLabelVmService *AffinityLabelVmService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *AffinityLabelVmServiceRemoveRequest) Header(key, value string) *AffinityLabelVmServiceRemoveRequest {
@@ -12381,7 +12436,7 @@ func (p *AffinityLabelVmServiceRemoveRequest) Query(key, value string) *Affinity
 	return p
 }
 
-func (p *AffinityLabelVmServiceRemoveRequest) send() *AffinityLabelVmServiceRemoveResponse {
+func (p *AffinityLabelVmServiceRemoveRequest) Send() *AffinityLabelVmServiceRemoveResponse {
 
 }
 
@@ -12430,10 +12485,10 @@ func NewVmService(connection *Connection, path string) *VmService {
 }
 
 type VmServiceCancelMigrationRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceCancelMigrationRequest) Header(key, value string) *VmServiceCancelMigrationRequest {
@@ -12456,7 +12511,7 @@ func (p *VmServiceCancelMigrationRequest) Async(async bool) *VmServiceCancelMigr
 	p.async = &async
 	return p
 }
-func (p *VmServiceCancelMigrationRequest) send() *VmServiceCancelMigrationResponse {
+func (p *VmServiceCancelMigrationRequest) Send() *VmServiceCancelMigrationResponse {
 
 }
 
@@ -12494,11 +12549,11 @@ func (op *VmService) CancelMigration(
 }
 
 type VmServiceCloneRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	vm     *Vm
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	vm        *Vm
 }
 
 func (p *VmServiceCloneRequest) Header(key, value string) *VmServiceCloneRequest {
@@ -12525,7 +12580,7 @@ func (p *VmServiceCloneRequest) Vm(vm *Vm) *VmServiceCloneRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceCloneRequest) send() *VmServiceCloneResponse {
+func (p *VmServiceCloneRequest) Send() *VmServiceCloneResponse {
 
 }
 
@@ -12554,10 +12609,10 @@ func (op *VmService) Clone(
 }
 
 type VmServiceCommitSnapshotRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceCommitSnapshotRequest) Header(key, value string) *VmServiceCommitSnapshotRequest {
@@ -12580,7 +12635,7 @@ func (p *VmServiceCommitSnapshotRequest) Async(async bool) *VmServiceCommitSnaps
 	p.async = &async
 	return p
 }
-func (p *VmServiceCommitSnapshotRequest) send() *VmServiceCommitSnapshotResponse {
+func (p *VmServiceCommitSnapshotRequest) Send() *VmServiceCommitSnapshotResponse {
 
 }
 
@@ -12607,10 +12662,10 @@ func (op *VmService) CommitSnapshot(
 }
 
 type VmServiceDetachRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceDetachRequest) Header(key, value string) *VmServiceDetachRequest {
@@ -12633,7 +12688,7 @@ func (p *VmServiceDetachRequest) Async(async bool) *VmServiceDetachRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceDetachRequest) send() *VmServiceDetachResponse {
+func (p *VmServiceDetachRequest) Send() *VmServiceDetachResponse {
 
 }
 
@@ -12671,7 +12726,7 @@ func (op *VmService) Detach(
 }
 
 type VmServiceExportRequest struct {
-	vm               *VmService
+	vmService        *VmService
 	header           map[string]string
 	query            map[string]string
 	async            *bool
@@ -12712,7 +12767,7 @@ func (p *VmServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *Vm
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *VmServiceExportRequest) send() *VmServiceExportResponse {
+func (p *VmServiceExportRequest) Send() *VmServiceExportResponse {
 
 }
 
@@ -12766,10 +12821,10 @@ func (op *VmService) Export(
 }
 
 type VmServiceFreezeFilesystemsRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceFreezeFilesystemsRequest) Header(key, value string) *VmServiceFreezeFilesystemsRequest {
@@ -12792,7 +12847,7 @@ func (p *VmServiceFreezeFilesystemsRequest) Async(async bool) *VmServiceFreezeFi
 	p.async = &async
 	return p
 }
-func (p *VmServiceFreezeFilesystemsRequest) send() *VmServiceFreezeFilesystemsResponse {
+func (p *VmServiceFreezeFilesystemsRequest) Send() *VmServiceFreezeFilesystemsResponse {
 
 }
 
@@ -12832,7 +12887,7 @@ func (op *VmService) FreezeFilesystems(
 }
 
 type VmServiceGetRequest struct {
-	vm         *VmService
+	vmService  *VmService
 	header     map[string]string
 	query      map[string]string
 	allContent *bool
@@ -12868,7 +12923,7 @@ func (p *VmServiceGetRequest) NextRun(nextRun bool) *VmServiceGetRequest {
 	p.nextRun = &nextRun
 	return p
 }
-func (p *VmServiceGetRequest) send() *VmServiceGetResponse {
+func (p *VmServiceGetRequest) Send() *VmServiceGetResponse {
 
 }
 
@@ -12935,10 +12990,10 @@ func (op *VmService) Get(
 }
 
 type VmServiceLogonRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceLogonRequest) Header(key, value string) *VmServiceLogonRequest {
@@ -12961,7 +13016,7 @@ func (p *VmServiceLogonRequest) Async(async bool) *VmServiceLogonRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceLogonRequest) send() *VmServiceLogonResponse {
+func (p *VmServiceLogonRequest) Send() *VmServiceLogonResponse {
 
 }
 
@@ -13003,7 +13058,7 @@ func (op *VmService) Logon(
 }
 
 type VmServiceMaintenanceRequest struct {
-	vm                 *VmService
+	vmService          *VmService
 	header             map[string]string
 	query              map[string]string
 	async              *bool
@@ -13034,7 +13089,7 @@ func (p *VmServiceMaintenanceRequest) MaintenanceEnabled(maintenanceEnabled bool
 	p.maintenanceEnabled = &maintenanceEnabled
 	return p
 }
-func (p *VmServiceMaintenanceRequest) send() *VmServiceMaintenanceResponse {
+func (p *VmServiceMaintenanceRequest) Send() *VmServiceMaintenanceResponse {
 
 }
 
@@ -13077,13 +13132,13 @@ func (op *VmService) Maintenance(
 }
 
 type VmServiceMigrateRequest struct {
-	vm      *VmService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	cluster *Cluster
-	force   *bool
-	host    *Host
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	cluster   *Cluster
+	force     *bool
+	host      *Host
 }
 
 func (p *VmServiceMigrateRequest) Header(key, value string) *VmServiceMigrateRequest {
@@ -13118,7 +13173,7 @@ func (p *VmServiceMigrateRequest) Host(host *Host) *VmServiceMigrateRequest {
 	p.host = host
 	return p
 }
-func (p *VmServiceMigrateRequest) send() *VmServiceMigrateResponse {
+func (p *VmServiceMigrateRequest) Send() *VmServiceMigrateResponse {
 
 }
 
@@ -13170,7 +13225,7 @@ func (op *VmService) Migrate(
 }
 
 type VmServicePreviewSnapshotRequest struct {
-	vm            *VmService
+	vmService     *VmService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -13216,7 +13271,7 @@ func (p *VmServicePreviewSnapshotRequest) Vm(vm *Vm) *VmServicePreviewSnapshotRe
 	p.vm = vm
 	return p
 }
-func (p *VmServicePreviewSnapshotRequest) send() *VmServicePreviewSnapshotResponse {
+func (p *VmServicePreviewSnapshotRequest) Send() *VmServicePreviewSnapshotResponse {
 
 }
 
@@ -13251,10 +13306,10 @@ func (op *VmService) PreviewSnapshot(
 }
 
 type VmServiceRebootRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceRebootRequest) Header(key, value string) *VmServiceRebootRequest {
@@ -13277,7 +13332,7 @@ func (p *VmServiceRebootRequest) Async(async bool) *VmServiceRebootRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceRebootRequest) send() *VmServiceRebootResponse {
+func (p *VmServiceRebootRequest) Send() *VmServiceRebootResponse {
 
 }
 
@@ -13315,7 +13370,7 @@ func (op *VmService) Reboot(
 }
 
 type VmServiceRemoveRequest struct {
-	vm         *VmService
+	vmService  *VmService
 	header     map[string]string
 	query      map[string]string
 	async      *bool
@@ -13351,7 +13406,7 @@ func (p *VmServiceRemoveRequest) Force(force bool) *VmServiceRemoveRequest {
 	p.force = &force
 	return p
 }
-func (p *VmServiceRemoveRequest) send() *VmServiceRemoveResponse {
+func (p *VmServiceRemoveRequest) Send() *VmServiceRemoveResponse {
 
 }
 
@@ -13393,10 +13448,10 @@ func (op *VmService) Remove(
 }
 
 type VmServiceReorderMacAddressesRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceReorderMacAddressesRequest) Header(key, value string) *VmServiceReorderMacAddressesRequest {
@@ -13419,7 +13474,7 @@ func (p *VmServiceReorderMacAddressesRequest) Async(async bool) *VmServiceReorde
 	p.async = &async
 	return p
 }
-func (p *VmServiceReorderMacAddressesRequest) send() *VmServiceReorderMacAddressesResponse {
+func (p *VmServiceReorderMacAddressesRequest) Send() *VmServiceReorderMacAddressesResponse {
 
 }
 
@@ -13446,10 +13501,10 @@ func (op *VmService) ReorderMacAddresses(
 }
 
 type VmServiceShutdownRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceShutdownRequest) Header(key, value string) *VmServiceShutdownRequest {
@@ -13472,7 +13527,7 @@ func (p *VmServiceShutdownRequest) Async(async bool) *VmServiceShutdownRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceShutdownRequest) send() *VmServiceShutdownResponse {
+func (p *VmServiceShutdownRequest) Send() *VmServiceShutdownResponse {
 
 }
 
@@ -13510,7 +13565,7 @@ func (op *VmService) Shutdown(
 }
 
 type VmServiceStartRequest struct {
-	vm           *VmService
+	vmService    *VmService
 	header       map[string]string
 	query        map[string]string
 	async        *bool
@@ -13561,7 +13616,7 @@ func (p *VmServiceStartRequest) Vm(vm *Vm) *VmServiceStartRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceStartRequest) send() *VmServiceStartResponse {
+func (p *VmServiceStartRequest) Send() *VmServiceStartResponse {
 
 }
 
@@ -13635,10 +13690,10 @@ func (op *VmService) Start(
 }
 
 type VmServiceStopRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceStopRequest) Header(key, value string) *VmServiceStopRequest {
@@ -13661,7 +13716,7 @@ func (p *VmServiceStopRequest) Async(async bool) *VmServiceStopRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceStopRequest) send() *VmServiceStopResponse {
+func (p *VmServiceStopRequest) Send() *VmServiceStopResponse {
 
 }
 
@@ -13699,10 +13754,10 @@ func (op *VmService) Stop(
 }
 
 type VmServiceSuspendRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceSuspendRequest) Header(key, value string) *VmServiceSuspendRequest {
@@ -13725,7 +13780,7 @@ func (p *VmServiceSuspendRequest) Async(async bool) *VmServiceSuspendRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceSuspendRequest) send() *VmServiceSuspendResponse {
+func (p *VmServiceSuspendRequest) Send() *VmServiceSuspendResponse {
 
 }
 
@@ -13764,10 +13819,10 @@ func (op *VmService) Suspend(
 }
 
 type VmServiceThawFilesystemsRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceThawFilesystemsRequest) Header(key, value string) *VmServiceThawFilesystemsRequest {
@@ -13790,7 +13845,7 @@ func (p *VmServiceThawFilesystemsRequest) Async(async bool) *VmServiceThawFilesy
 	p.async = &async
 	return p
 }
-func (p *VmServiceThawFilesystemsRequest) send() *VmServiceThawFilesystemsResponse {
+func (p *VmServiceThawFilesystemsRequest) Send() *VmServiceThawFilesystemsResponse {
 
 }
 
@@ -13830,11 +13885,11 @@ func (op *VmService) ThawFilesystems(
 }
 
 type VmServiceTicketRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	ticket *Ticket
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	ticket    *Ticket
 }
 
 func (p *VmServiceTicketRequest) Header(key, value string) *VmServiceTicketRequest {
@@ -13861,7 +13916,7 @@ func (p *VmServiceTicketRequest) Ticket(ticket *Ticket) *VmServiceTicketRequest 
 	p.ticket = ticket
 	return p
 }
-func (p *VmServiceTicketRequest) send() *VmServiceTicketResponse {
+func (p *VmServiceTicketRequest) Send() *VmServiceTicketResponse {
 
 }
 
@@ -13929,10 +13984,10 @@ func (op *VmService) Ticket(
 }
 
 type VmServiceUndoSnapshotRequest struct {
-	vm     *VmService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
 }
 
 func (p *VmServiceUndoSnapshotRequest) Header(key, value string) *VmServiceUndoSnapshotRequest {
@@ -13955,7 +14010,7 @@ func (p *VmServiceUndoSnapshotRequest) Async(async bool) *VmServiceUndoSnapshotR
 	p.async = &async
 	return p
 }
-func (p *VmServiceUndoSnapshotRequest) send() *VmServiceUndoSnapshotResponse {
+func (p *VmServiceUndoSnapshotRequest) Send() *VmServiceUndoSnapshotResponse {
 
 }
 
@@ -13982,12 +14037,12 @@ func (op *VmService) UndoSnapshot(
 }
 
 type VmServiceUpdateRequest struct {
-	vm      *VmService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	nextRun *bool
-	vm      *Vm
+	vmService *VmService
+	header    map[string]string
+	query     map[string]string
+	async     *bool
+	nextRun   *bool
+	vm        *Vm
 }
 
 func (p *VmServiceUpdateRequest) Header(key, value string) *VmServiceUpdateRequest {
@@ -14018,7 +14073,7 @@ func (p *VmServiceUpdateRequest) Vm(vm *Vm) *VmServiceUpdateRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceUpdateRequest) send() *VmServiceUpdateResponse {
+func (p *VmServiceUpdateRequest) Send() *VmServiceUpdateResponse {
 
 }
 
@@ -14275,10 +14330,10 @@ func NewInstanceTypeGraphicsConsolesService(connection *Connection, path string)
 }
 
 type InstanceTypeGraphicsConsolesServiceAddRequest struct {
-	instanceTypeGraphicsConsoles *InstanceTypeGraphicsConsolesService
-	header                       map[string]string
-	query                        map[string]string
-	console                      *GraphicsConsole
+	instanceTypeGraphicsConsolesService *InstanceTypeGraphicsConsolesService
+	header                              map[string]string
+	query                               map[string]string
+	console                             *GraphicsConsole
 }
 
 func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Header(key, value string) *InstanceTypeGraphicsConsolesServiceAddRequest {
@@ -14301,8 +14356,10 @@ func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Console(console *Graphic
 	p.console = console
 	return p
 }
-func (p *InstanceTypeGraphicsConsolesServiceAddRequest) send() *InstanceTypeGraphicsConsolesServiceAddResponse {
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Send() *InstanceTypeGraphicsConsolesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeGraphicsConsolesService.Connection.URL(), p.instanceTypeGraphicsConsolesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -14331,10 +14388,10 @@ func (op *InstanceTypeGraphicsConsolesService) Add(
 }
 
 type InstanceTypeGraphicsConsolesServiceListRequest struct {
-	instanceTypeGraphicsConsoles *InstanceTypeGraphicsConsolesService
-	header                       map[string]string
-	query                        map[string]string
-	max                          *int64
+	instanceTypeGraphicsConsolesService *InstanceTypeGraphicsConsolesService
+	header                              map[string]string
+	query                               map[string]string
+	max                                 *int64
 }
 
 func (p *InstanceTypeGraphicsConsolesServiceListRequest) Header(key, value string) *InstanceTypeGraphicsConsolesServiceListRequest {
@@ -14357,7 +14414,7 @@ func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) *Instanc
 	p.max = &max
 	return p
 }
-func (p *InstanceTypeGraphicsConsolesServiceListRequest) send() *InstanceTypeGraphicsConsolesServiceListResponse {
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Send() *InstanceTypeGraphicsConsolesServiceListResponse {
 
 }
 
@@ -14431,9 +14488,9 @@ func NewStorageDomainVmService(connection *Connection, path string) *StorageDoma
 }
 
 type StorageDomainVmServiceGetRequest struct {
-	storageDomainVm *StorageDomainVmService
-	header          map[string]string
-	query           map[string]string
+	storageDomainVmService *StorageDomainVmService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *StorageDomainVmServiceGetRequest) Header(key, value string) *StorageDomainVmServiceGetRequest {
@@ -14452,7 +14509,7 @@ func (p *StorageDomainVmServiceGetRequest) Query(key, value string) *StorageDoma
 	return p
 }
 
-func (p *StorageDomainVmServiceGetRequest) send() *StorageDomainVmServiceGetResponse {
+func (p *StorageDomainVmServiceGetRequest) Send() *StorageDomainVmServiceGetResponse {
 
 }
 
@@ -14480,15 +14537,15 @@ func (op *StorageDomainVmService) Get(
 }
 
 type StorageDomainVmServiceImportRequest struct {
-	storageDomainVm   *StorageDomainVmService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
-	clone             *bool
-	cluster           *Cluster
-	collapseSnapshots *bool
-	storageDomain     *StorageDomain
-	vm                *Vm
+	storageDomainVmService *StorageDomainVmService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
+	clone                  *bool
+	cluster                *Cluster
+	collapseSnapshots      *bool
+	storageDomain          *StorageDomain
+	vm                     *Vm
 }
 
 func (p *StorageDomainVmServiceImportRequest) Header(key, value string) *StorageDomainVmServiceImportRequest {
@@ -14531,7 +14588,7 @@ func (p *StorageDomainVmServiceImportRequest) Vm(vm *Vm) *StorageDomainVmService
 	p.vm = vm
 	return p
 }
-func (p *StorageDomainVmServiceImportRequest) send() *StorageDomainVmServiceImportResponse {
+func (p *StorageDomainVmServiceImportRequest) Send() *StorageDomainVmServiceImportResponse {
 
 }
 
@@ -14631,16 +14688,16 @@ func (op *StorageDomainVmService) Import(
 }
 
 type StorageDomainVmServiceRegisterRequest struct {
-	storageDomainVm     *StorageDomainVmService
-	header              map[string]string
-	query               map[string]string
-	allowPartialImport  *bool
-	async               *bool
-	clone               *bool
-	cluster             *Cluster
-	reassignBadMacs     *bool
-	vm                  *Vm
-	vnicProfileMappings []VnicProfileMapping
+	storageDomainVmService *StorageDomainVmService
+	header                 map[string]string
+	query                  map[string]string
+	allowPartialImport     *bool
+	async                  *bool
+	clone                  *bool
+	cluster                *Cluster
+	reassignBadMacs        *bool
+	vm                     *Vm
+	vnicProfileMappings    []VnicProfileMapping
 }
 
 func (p *StorageDomainVmServiceRegisterRequest) Header(key, value string) *StorageDomainVmServiceRegisterRequest {
@@ -14687,7 +14744,7 @@ func (p *StorageDomainVmServiceRegisterRequest) VnicProfileMappings(vnicProfileM
 	p.vnicProfileMappings = vnicProfileMappings
 	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) send() *StorageDomainVmServiceRegisterResponse {
+func (p *StorageDomainVmServiceRegisterRequest) Send() *StorageDomainVmServiceRegisterResponse {
 
 }
 
@@ -14736,10 +14793,10 @@ func (op *StorageDomainVmService) Register(
 }
 
 type StorageDomainVmServiceRemoveRequest struct {
-	storageDomainVm *StorageDomainVmService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
+	storageDomainVmService *StorageDomainVmService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
 func (p *StorageDomainVmServiceRemoveRequest) Header(key, value string) *StorageDomainVmServiceRemoveRequest {
@@ -14762,7 +14819,7 @@ func (p *StorageDomainVmServiceRemoveRequest) Async(async bool) *StorageDomainVm
 	p.async = &async
 	return p
 }
-func (p *StorageDomainVmServiceRemoveRequest) send() *StorageDomainVmServiceRemoveResponse {
+func (p *StorageDomainVmServiceRemoveRequest) Send() *StorageDomainVmServiceRemoveResponse {
 
 }
 
@@ -14849,10 +14906,10 @@ func NewClusterService(connection *Connection, path string) *ClusterService {
 }
 
 type ClusterServiceGetRequest struct {
-	cluster *ClusterService
-	header  map[string]string
-	query   map[string]string
-	filter  *bool
+	clusterService *ClusterService
+	header         map[string]string
+	query          map[string]string
+	filter         *bool
 }
 
 func (p *ClusterServiceGetRequest) Header(key, value string) *ClusterServiceGetRequest {
@@ -14875,7 +14932,7 @@ func (p *ClusterServiceGetRequest) Filter(filter bool) *ClusterServiceGetRequest
 	p.filter = &filter
 	return p
 }
-func (p *ClusterServiceGetRequest) send() *ClusterServiceGetResponse {
+func (p *ClusterServiceGetRequest) Send() *ClusterServiceGetResponse {
 
 }
 
@@ -14986,10 +15043,10 @@ func (op *ClusterService) Get(
 }
 
 type ClusterServiceRemoveRequest struct {
-	cluster *ClusterService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
+	clusterService *ClusterService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
 }
 
 func (p *ClusterServiceRemoveRequest) Header(key, value string) *ClusterServiceRemoveRequest {
@@ -15012,7 +15069,7 @@ func (p *ClusterServiceRemoveRequest) Async(async bool) *ClusterServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *ClusterServiceRemoveRequest) send() *ClusterServiceRemoveResponse {
+func (p *ClusterServiceRemoveRequest) Send() *ClusterServiceRemoveResponse {
 
 }
 
@@ -15045,10 +15102,10 @@ func (op *ClusterService) Remove(
 }
 
 type ClusterServiceResetEmulatedMachineRequest struct {
-	cluster *ClusterService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
+	clusterService *ClusterService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
 }
 
 func (p *ClusterServiceResetEmulatedMachineRequest) Header(key, value string) *ClusterServiceResetEmulatedMachineRequest {
@@ -15071,7 +15128,7 @@ func (p *ClusterServiceResetEmulatedMachineRequest) Async(async bool) *ClusterSe
 	p.async = &async
 	return p
 }
-func (p *ClusterServiceResetEmulatedMachineRequest) send() *ClusterServiceResetEmulatedMachineResponse {
+func (p *ClusterServiceResetEmulatedMachineRequest) Send() *ClusterServiceResetEmulatedMachineResponse {
 
 }
 
@@ -15098,11 +15155,11 @@ func (op *ClusterService) ResetEmulatedMachine(
 }
 
 type ClusterServiceUpdateRequest struct {
-	cluster *ClusterService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	cluster *Cluster
+	clusterService *ClusterService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
+	cluster        *Cluster
 }
 
 func (p *ClusterServiceUpdateRequest) Header(key, value string) *ClusterServiceUpdateRequest {
@@ -15129,7 +15186,7 @@ func (p *ClusterServiceUpdateRequest) Cluster(cluster *Cluster) *ClusterServiceU
 	p.cluster = cluster
 	return p
 }
-func (p *ClusterServiceUpdateRequest) send() *ClusterServiceUpdateResponse {
+func (p *ClusterServiceUpdateRequest) Send() *ClusterServiceUpdateResponse {
 
 }
 
@@ -15294,10 +15351,10 @@ func NewSnapshotDisksService(connection *Connection, path string) *SnapshotDisks
 }
 
 type SnapshotDisksServiceListRequest struct {
-	snapshotDisks *SnapshotDisksService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	snapshotDisksService *SnapshotDisksService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *SnapshotDisksServiceListRequest) Header(key, value string) *SnapshotDisksServiceListRequest {
@@ -15320,7 +15377,7 @@ func (p *SnapshotDisksServiceListRequest) Max(max int64) *SnapshotDisksServiceLi
 	p.max = &max
 	return p
 }
-func (p *SnapshotDisksServiceListRequest) send() *SnapshotDisksServiceListResponse {
+func (p *SnapshotDisksServiceListRequest) Send() *SnapshotDisksServiceListResponse {
 
 }
 
@@ -15392,10 +15449,10 @@ func NewTemplateGraphicsConsolesService(connection *Connection, path string) *Te
 }
 
 type TemplateGraphicsConsolesServiceAddRequest struct {
-	templateGraphicsConsoles *TemplateGraphicsConsolesService
-	header                   map[string]string
-	query                    map[string]string
-	console                  *GraphicsConsole
+	templateGraphicsConsolesService *TemplateGraphicsConsolesService
+	header                          map[string]string
+	query                           map[string]string
+	console                         *GraphicsConsole
 }
 
 func (p *TemplateGraphicsConsolesServiceAddRequest) Header(key, value string) *TemplateGraphicsConsolesServiceAddRequest {
@@ -15418,8 +15475,10 @@ func (p *TemplateGraphicsConsolesServiceAddRequest) Console(console *GraphicsCon
 	p.console = console
 	return p
 }
-func (p *TemplateGraphicsConsolesServiceAddRequest) send() *TemplateGraphicsConsolesServiceAddResponse {
+func (p *TemplateGraphicsConsolesServiceAddRequest) Send() *TemplateGraphicsConsolesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.templateGraphicsConsolesService.Connection.URL(), p.templateGraphicsConsolesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -15448,10 +15507,10 @@ func (op *TemplateGraphicsConsolesService) Add(
 }
 
 type TemplateGraphicsConsolesServiceListRequest struct {
-	templateGraphicsConsoles *TemplateGraphicsConsolesService
-	header                   map[string]string
-	query                    map[string]string
-	max                      *int64
+	templateGraphicsConsolesService *TemplateGraphicsConsolesService
+	header                          map[string]string
+	query                           map[string]string
+	max                             *int64
 }
 
 func (p *TemplateGraphicsConsolesServiceListRequest) Header(key, value string) *TemplateGraphicsConsolesServiceListRequest {
@@ -15474,7 +15533,7 @@ func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) *TemplateGra
 	p.max = &max
 	return p
 }
-func (p *TemplateGraphicsConsolesServiceListRequest) send() *TemplateGraphicsConsolesServiceListResponse {
+func (p *TemplateGraphicsConsolesServiceListRequest) Send() *TemplateGraphicsConsolesServiceListResponse {
 
 }
 
@@ -15549,10 +15608,10 @@ func NewVmPoolService(connection *Connection, path string) *VmPoolService {
 }
 
 type VmPoolServiceAllocateVmRequest struct {
-	vmPool *VmPoolService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmPoolService *VmPoolService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *VmPoolServiceAllocateVmRequest) Header(key, value string) *VmPoolServiceAllocateVmRequest {
@@ -15575,7 +15634,7 @@ func (p *VmPoolServiceAllocateVmRequest) Async(async bool) *VmPoolServiceAllocat
 	p.async = &async
 	return p
 }
-func (p *VmPoolServiceAllocateVmRequest) send() *VmPoolServiceAllocateVmResponse {
+func (p *VmPoolServiceAllocateVmRequest) Send() *VmPoolServiceAllocateVmResponse {
 
 }
 
@@ -15613,10 +15672,10 @@ func (op *VmPoolService) AllocateVm(
 }
 
 type VmPoolServiceGetRequest struct {
-	vmPool *VmPoolService
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	vmPoolService *VmPoolService
+	header        map[string]string
+	query         map[string]string
+	filter        *bool
 }
 
 func (p *VmPoolServiceGetRequest) Header(key, value string) *VmPoolServiceGetRequest {
@@ -15639,7 +15698,7 @@ func (p *VmPoolServiceGetRequest) Filter(filter bool) *VmPoolServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *VmPoolServiceGetRequest) send() *VmPoolServiceGetResponse {
+func (p *VmPoolServiceGetRequest) Send() *VmPoolServiceGetResponse {
 
 }
 
@@ -15699,10 +15758,10 @@ func (op *VmPoolService) Get(
 }
 
 type VmPoolServiceRemoveRequest struct {
-	vmPool *VmPoolService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmPoolService *VmPoolService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *VmPoolServiceRemoveRequest) Header(key, value string) *VmPoolServiceRemoveRequest {
@@ -15725,7 +15784,7 @@ func (p *VmPoolServiceRemoveRequest) Async(async bool) *VmPoolServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *VmPoolServiceRemoveRequest) send() *VmPoolServiceRemoveResponse {
+func (p *VmPoolServiceRemoveRequest) Send() *VmPoolServiceRemoveResponse {
 
 }
 
@@ -15758,11 +15817,11 @@ func (op *VmPoolService) Remove(
 }
 
 type VmPoolServiceUpdateRequest struct {
-	vmPool *VmPoolService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	pool   *VmPool
+	vmPoolService *VmPoolService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	pool          *VmPool
 }
 
 func (p *VmPoolServiceUpdateRequest) Header(key, value string) *VmPoolServiceUpdateRequest {
@@ -15789,7 +15848,7 @@ func (p *VmPoolServiceUpdateRequest) Pool(pool *VmPool) *VmPoolServiceUpdateRequ
 	p.pool = pool
 	return p
 }
-func (p *VmPoolServiceUpdateRequest) send() *VmPoolServiceUpdateResponse {
+func (p *VmPoolServiceUpdateRequest) Send() *VmPoolServiceUpdateResponse {
 
 }
 
@@ -15883,10 +15942,10 @@ func NewQuotasService(connection *Connection, path string) *QuotasService {
 }
 
 type QuotasServiceAddRequest struct {
-	quotas *QuotasService
-	header map[string]string
-	query  map[string]string
-	quota  *Quota
+	quotasService *QuotasService
+	header        map[string]string
+	query         map[string]string
+	quota         *Quota
 }
 
 func (p *QuotasServiceAddRequest) Header(key, value string) *QuotasServiceAddRequest {
@@ -15909,8 +15968,10 @@ func (p *QuotasServiceAddRequest) Quota(quota *Quota) *QuotasServiceAddRequest {
 	p.quota = quota
 	return p
 }
-func (p *QuotasServiceAddRequest) send() *QuotasServiceAddResponse {
+func (p *QuotasServiceAddRequest) Send() *QuotasServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.quotasService.Connection.URL(), p.quotasService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -15951,10 +16012,10 @@ func (op *QuotasService) Add(
 }
 
 type QuotasServiceListRequest struct {
-	quotas *QuotasService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	quotasService *QuotasService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
 func (p *QuotasServiceListRequest) Header(key, value string) *QuotasServiceListRequest {
@@ -15977,7 +16038,7 @@ func (p *QuotasServiceListRequest) Max(max int64) *QuotasServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *QuotasServiceListRequest) send() *QuotasServiceListResponse {
+func (p *QuotasServiceListRequest) Send() *QuotasServiceListResponse {
 
 }
 
@@ -16052,9 +16113,9 @@ func NewClusterLevelService(connection *Connection, path string) *ClusterLevelSe
 }
 
 type ClusterLevelServiceGetRequest struct {
-	clusterLevel *ClusterLevelService
-	header       map[string]string
-	query        map[string]string
+	clusterLevelService *ClusterLevelService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *ClusterLevelServiceGetRequest) Header(key, value string) *ClusterLevelServiceGetRequest {
@@ -16073,7 +16134,7 @@ func (p *ClusterLevelServiceGetRequest) Query(key, value string) *ClusterLevelSe
 	return p
 }
 
-func (p *ClusterLevelServiceGetRequest) send() *ClusterLevelServiceGetResponse {
+func (p *ClusterLevelServiceGetRequest) Send() *ClusterLevelServiceGetResponse {
 
 }
 
@@ -16156,10 +16217,10 @@ func NewStorageDomainContentDiskService(connection *Connection, path string) *St
 }
 
 type StorageDomainContentDiskServiceGetRequest struct {
-	storageDomainContentDisk *StorageDomainContentDiskService
-	header                   map[string]string
-	query                    map[string]string
-	filter                   *bool
+	storageDomainContentDiskService *StorageDomainContentDiskService
+	header                          map[string]string
+	query                           map[string]string
+	filter                          *bool
 }
 
 func (p *StorageDomainContentDiskServiceGetRequest) Header(key, value string) *StorageDomainContentDiskServiceGetRequest {
@@ -16182,7 +16243,7 @@ func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) *Storage
 	p.filter = &filter
 	return p
 }
-func (p *StorageDomainContentDiskServiceGetRequest) send() *StorageDomainContentDiskServiceGetResponse {
+func (p *StorageDomainContentDiskServiceGetRequest) Send() *StorageDomainContentDiskServiceGetResponse {
 
 }
 
@@ -16245,11 +16306,11 @@ func NewVmApplicationsService(connection *Connection, path string) *VmApplicatio
 }
 
 type VmApplicationsServiceListRequest struct {
-	vmApplications *VmApplicationsService
-	header         map[string]string
-	query          map[string]string
-	filter         *bool
-	max            *int64
+	vmApplicationsService *VmApplicationsService
+	header                map[string]string
+	query                 map[string]string
+	filter                *bool
+	max                   *int64
 }
 
 func (p *VmApplicationsServiceListRequest) Header(key, value string) *VmApplicationsServiceListRequest {
@@ -16276,7 +16337,7 @@ func (p *VmApplicationsServiceListRequest) Max(max int64) *VmApplicationsService
 	p.max = &max
 	return p
 }
-func (p *VmApplicationsServiceListRequest) send() *VmApplicationsServiceListResponse {
+func (p *VmApplicationsServiceListRequest) Send() *VmApplicationsServiceListResponse {
 
 }
 
@@ -16357,7 +16418,7 @@ func NewFilesService(connection *Connection, path string) *FilesService {
 }
 
 type FilesServiceListRequest struct {
-	files         *FilesService
+	filesService  *FilesService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -16393,7 +16454,7 @@ func (p *FilesServiceListRequest) Search(search string) *FilesServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *FilesServiceListRequest) send() *FilesServiceListResponse {
+func (p *FilesServiceListRequest) Send() *FilesServiceListResponse {
 
 }
 
@@ -16474,10 +16535,10 @@ func NewAffinityGroupVmService(connection *Connection, path string) *AffinityGro
 }
 
 type AffinityGroupVmServiceRemoveRequest struct {
-	affinityGroupVm *AffinityGroupVmService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
+	affinityGroupVmService *AffinityGroupVmService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
 func (p *AffinityGroupVmServiceRemoveRequest) Header(key, value string) *AffinityGroupVmServiceRemoveRequest {
@@ -16500,7 +16561,7 @@ func (p *AffinityGroupVmServiceRemoveRequest) Async(async bool) *AffinityGroupVm
 	p.async = &async
 	return p
 }
-func (p *AffinityGroupVmServiceRemoveRequest) send() *AffinityGroupVmServiceRemoveResponse {
+func (p *AffinityGroupVmServiceRemoveRequest) Send() *AffinityGroupVmServiceRemoveResponse {
 
 }
 
@@ -16559,10 +16620,10 @@ func NewVmCdromService(connection *Connection, path string) *VmCdromService {
 }
 
 type VmCdromServiceGetRequest struct {
-	vmCdrom *VmCdromService
-	header  map[string]string
-	query   map[string]string
-	current *bool
+	vmCdromService *VmCdromService
+	header         map[string]string
+	query          map[string]string
+	current        *bool
 }
 
 func (p *VmCdromServiceGetRequest) Header(key, value string) *VmCdromServiceGetRequest {
@@ -16585,7 +16646,7 @@ func (p *VmCdromServiceGetRequest) Current(current bool) *VmCdromServiceGetReque
 	p.current = &current
 	return p
 }
-func (p *VmCdromServiceGetRequest) send() *VmCdromServiceGetResponse {
+func (p *VmCdromServiceGetRequest) Send() *VmCdromServiceGetResponse {
 
 }
 
@@ -16639,11 +16700,11 @@ func (op *VmCdromService) Get(
 }
 
 type VmCdromServiceUpdateRequest struct {
-	vmCdrom *VmCdromService
-	header  map[string]string
-	query   map[string]string
-	cdrom   *Cdrom
-	current *bool
+	vmCdromService *VmCdromService
+	header         map[string]string
+	query          map[string]string
+	cdrom          *Cdrom
+	current        *bool
 }
 
 func (p *VmCdromServiceUpdateRequest) Header(key, value string) *VmCdromServiceUpdateRequest {
@@ -16670,7 +16731,7 @@ func (p *VmCdromServiceUpdateRequest) Current(current bool) *VmCdromServiceUpdat
 	p.current = &current
 	return p
 }
-func (p *VmCdromServiceUpdateRequest) send() *VmCdromServiceUpdateResponse {
+func (p *VmCdromServiceUpdateRequest) Send() *VmCdromServiceUpdateResponse {
 
 }
 
@@ -16773,9 +16834,9 @@ func NewQuotaClusterLimitService(connection *Connection, path string) *QuotaClus
 }
 
 type QuotaClusterLimitServiceGetRequest struct {
-	quotaClusterLimit *QuotaClusterLimitService
-	header            map[string]string
-	query             map[string]string
+	quotaClusterLimitService *QuotaClusterLimitService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *QuotaClusterLimitServiceGetRequest) Header(key, value string) *QuotaClusterLimitServiceGetRequest {
@@ -16794,7 +16855,7 @@ func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) *QuotaClus
 	return p
 }
 
-func (p *QuotaClusterLimitServiceGetRequest) send() *QuotaClusterLimitServiceGetResponse {
+func (p *QuotaClusterLimitServiceGetRequest) Send() *QuotaClusterLimitServiceGetResponse {
 
 }
 
@@ -16822,10 +16883,10 @@ func (op *QuotaClusterLimitService) Get(
 }
 
 type QuotaClusterLimitServiceRemoveRequest struct {
-	quotaClusterLimit *QuotaClusterLimitService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
+	quotaClusterLimitService *QuotaClusterLimitService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
 func (p *QuotaClusterLimitServiceRemoveRequest) Header(key, value string) *QuotaClusterLimitServiceRemoveRequest {
@@ -16848,7 +16909,7 @@ func (p *QuotaClusterLimitServiceRemoveRequest) Async(async bool) *QuotaClusterL
 	p.async = &async
 	return p
 }
-func (p *QuotaClusterLimitServiceRemoveRequest) send() *QuotaClusterLimitServiceRemoveResponse {
+func (p *QuotaClusterLimitServiceRemoveRequest) Send() *QuotaClusterLimitServiceRemoveResponse {
 
 }
 
@@ -16904,9 +16965,9 @@ func NewDiskAttachmentService(connection *Connection, path string) *DiskAttachme
 }
 
 type DiskAttachmentServiceGetRequest struct {
-	diskAttachment *DiskAttachmentService
-	header         map[string]string
-	query          map[string]string
+	diskAttachmentService *DiskAttachmentService
+	header                map[string]string
+	query                 map[string]string
 }
 
 func (p *DiskAttachmentServiceGetRequest) Header(key, value string) *DiskAttachmentServiceGetRequest {
@@ -16925,7 +16986,7 @@ func (p *DiskAttachmentServiceGetRequest) Query(key, value string) *DiskAttachme
 	return p
 }
 
-func (p *DiskAttachmentServiceGetRequest) send() *DiskAttachmentServiceGetResponse {
+func (p *DiskAttachmentServiceGetRequest) Send() *DiskAttachmentServiceGetResponse {
 
 }
 
@@ -16969,10 +17030,10 @@ func (op *DiskAttachmentService) Get(
 }
 
 type DiskAttachmentServiceRemoveRequest struct {
-	diskAttachment *DiskAttachmentService
-	header         map[string]string
-	query          map[string]string
-	detachOnly     *bool
+	diskAttachmentService *DiskAttachmentService
+	header                map[string]string
+	query                 map[string]string
+	detachOnly            *bool
 }
 
 func (p *DiskAttachmentServiceRemoveRequest) Header(key, value string) *DiskAttachmentServiceRemoveRequest {
@@ -16995,7 +17056,7 @@ func (p *DiskAttachmentServiceRemoveRequest) DetachOnly(detachOnly bool) *DiskAt
 	p.detachOnly = &detachOnly
 	return p
 }
-func (p *DiskAttachmentServiceRemoveRequest) send() *DiskAttachmentServiceRemoveResponse {
+func (p *DiskAttachmentServiceRemoveRequest) Send() *DiskAttachmentServiceRemoveResponse {
 
 }
 
@@ -17032,10 +17093,10 @@ func (op *DiskAttachmentService) Remove(
 }
 
 type DiskAttachmentServiceUpdateRequest struct {
-	diskAttachment *DiskAttachmentService
-	header         map[string]string
-	query          map[string]string
-	diskAttachment *DiskAttachment
+	diskAttachmentService *DiskAttachmentService
+	header                map[string]string
+	query                 map[string]string
+	diskAttachment        *DiskAttachment
 }
 
 func (p *DiskAttachmentServiceUpdateRequest) Header(key, value string) *DiskAttachmentServiceUpdateRequest {
@@ -17058,7 +17119,7 @@ func (p *DiskAttachmentServiceUpdateRequest) DiskAttachment(diskAttachment *Disk
 	p.diskAttachment = diskAttachment
 	return p
 }
-func (p *DiskAttachmentServiceUpdateRequest) send() *DiskAttachmentServiceUpdateResponse {
+func (p *DiskAttachmentServiceUpdateRequest) Send() *DiskAttachmentServiceUpdateResponse {
 
 }
 
@@ -17130,9 +17191,9 @@ func NewBookmarkService(connection *Connection, path string) *BookmarkService {
 }
 
 type BookmarkServiceGetRequest struct {
-	bookmark *BookmarkService
-	header   map[string]string
-	query    map[string]string
+	bookmarkService *BookmarkService
+	header          map[string]string
+	query           map[string]string
 }
 
 func (p *BookmarkServiceGetRequest) Header(key, value string) *BookmarkServiceGetRequest {
@@ -17151,7 +17212,7 @@ func (p *BookmarkServiceGetRequest) Query(key, value string) *BookmarkServiceGet
 	return p
 }
 
-func (p *BookmarkServiceGetRequest) send() *BookmarkServiceGetResponse {
+func (p *BookmarkServiceGetRequest) Send() *BookmarkServiceGetResponse {
 
 }
 
@@ -17192,10 +17253,10 @@ func (op *BookmarkService) Get(
 }
 
 type BookmarkServiceRemoveRequest struct {
-	bookmark *BookmarkService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
+	bookmarkService *BookmarkService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
 func (p *BookmarkServiceRemoveRequest) Header(key, value string) *BookmarkServiceRemoveRequest {
@@ -17218,7 +17279,7 @@ func (p *BookmarkServiceRemoveRequest) Async(async bool) *BookmarkServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *BookmarkServiceRemoveRequest) send() *BookmarkServiceRemoveResponse {
+func (p *BookmarkServiceRemoveRequest) Send() *BookmarkServiceRemoveResponse {
 
 }
 
@@ -17252,11 +17313,11 @@ func (op *BookmarkService) Remove(
 }
 
 type BookmarkServiceUpdateRequest struct {
-	bookmark *BookmarkService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
-	bookmark *Bookmark
+	bookmarkService *BookmarkService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
+	bookmark        *Bookmark
 }
 
 func (p *BookmarkServiceUpdateRequest) Header(key, value string) *BookmarkServiceUpdateRequest {
@@ -17283,7 +17344,7 @@ func (p *BookmarkServiceUpdateRequest) Bookmark(bookmark *Bookmark) *BookmarkSer
 	p.bookmark = bookmark
 	return p
 }
-func (p *BookmarkServiceUpdateRequest) send() *BookmarkServiceUpdateResponse {
+func (p *BookmarkServiceUpdateRequest) Send() *BookmarkServiceUpdateResponse {
 
 }
 
@@ -17360,9 +17421,9 @@ func NewInstanceTypeNicService(connection *Connection, path string) *InstanceTyp
 }
 
 type InstanceTypeNicServiceGetRequest struct {
-	instanceTypeNic *InstanceTypeNicService
-	header          map[string]string
-	query           map[string]string
+	instanceTypeNicService *InstanceTypeNicService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *InstanceTypeNicServiceGetRequest) Header(key, value string) *InstanceTypeNicServiceGetRequest {
@@ -17381,7 +17442,7 @@ func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) *InstanceTyp
 	return p
 }
 
-func (p *InstanceTypeNicServiceGetRequest) send() *InstanceTypeNicServiceGetResponse {
+func (p *InstanceTypeNicServiceGetRequest) Send() *InstanceTypeNicServiceGetResponse {
 
 }
 
@@ -17410,10 +17471,10 @@ func (op *InstanceTypeNicService) Get(
 }
 
 type InstanceTypeNicServiceRemoveRequest struct {
-	instanceTypeNic *InstanceTypeNicService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
+	instanceTypeNicService *InstanceTypeNicService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
 }
 
 func (p *InstanceTypeNicServiceRemoveRequest) Header(key, value string) *InstanceTypeNicServiceRemoveRequest {
@@ -17436,7 +17497,7 @@ func (p *InstanceTypeNicServiceRemoveRequest) Async(async bool) *InstanceTypeNic
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeNicServiceRemoveRequest) send() *InstanceTypeNicServiceRemoveResponse {
+func (p *InstanceTypeNicServiceRemoveRequest) Send() *InstanceTypeNicServiceRemoveResponse {
 
 }
 
@@ -17465,11 +17526,11 @@ func (op *InstanceTypeNicService) Remove(
 }
 
 type InstanceTypeNicServiceUpdateRequest struct {
-	instanceTypeNic *InstanceTypeNicService
-	header          map[string]string
-	query           map[string]string
-	async           *bool
-	nic             *Nic
+	instanceTypeNicService *InstanceTypeNicService
+	header                 map[string]string
+	query                  map[string]string
+	async                  *bool
+	nic                    *Nic
 }
 
 func (p *InstanceTypeNicServiceUpdateRequest) Header(key, value string) *InstanceTypeNicServiceUpdateRequest {
@@ -17496,7 +17557,7 @@ func (p *InstanceTypeNicServiceUpdateRequest) Nic(nic *Nic) *InstanceTypeNicServ
 	p.nic = nic
 	return p
 }
-func (p *InstanceTypeNicServiceUpdateRequest) send() *InstanceTypeNicServiceUpdateResponse {
+func (p *InstanceTypeNicServiceUpdateRequest) Send() *InstanceTypeNicServiceUpdateResponse {
 
 }
 
@@ -17555,9 +17616,9 @@ func NewAssignedDiskProfileService(connection *Connection, path string) *Assigne
 }
 
 type AssignedDiskProfileServiceGetRequest struct {
-	assignedDiskProfile *AssignedDiskProfileService
-	header              map[string]string
-	query               map[string]string
+	assignedDiskProfileService *AssignedDiskProfileService
+	header                     map[string]string
+	query                      map[string]string
 }
 
 func (p *AssignedDiskProfileServiceGetRequest) Header(key, value string) *AssignedDiskProfileServiceGetRequest {
@@ -17576,7 +17637,7 @@ func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) *Assigne
 	return p
 }
 
-func (p *AssignedDiskProfileServiceGetRequest) send() *AssignedDiskProfileServiceGetResponse {
+func (p *AssignedDiskProfileServiceGetRequest) Send() *AssignedDiskProfileServiceGetResponse {
 
 }
 
@@ -17604,10 +17665,10 @@ func (op *AssignedDiskProfileService) Get(
 }
 
 type AssignedDiskProfileServiceRemoveRequest struct {
-	assignedDiskProfile *AssignedDiskProfileService
-	header              map[string]string
-	query               map[string]string
-	async               *bool
+	assignedDiskProfileService *AssignedDiskProfileService
+	header                     map[string]string
+	query                      map[string]string
+	async                      *bool
 }
 
 func (p *AssignedDiskProfileServiceRemoveRequest) Header(key, value string) *AssignedDiskProfileServiceRemoveRequest {
@@ -17630,7 +17691,7 @@ func (p *AssignedDiskProfileServiceRemoveRequest) Async(async bool) *AssignedDis
 	p.async = &async
 	return p
 }
-func (p *AssignedDiskProfileServiceRemoveRequest) send() *AssignedDiskProfileServiceRemoveResponse {
+func (p *AssignedDiskProfileServiceRemoveRequest) Send() *AssignedDiskProfileServiceRemoveResponse {
 
 }
 
@@ -17685,10 +17746,10 @@ func NewNetworkLabelsService(connection *Connection, path string) *NetworkLabels
 }
 
 type NetworkLabelsServiceAddRequest struct {
-	networkLabels *NetworkLabelsService
-	header        map[string]string
-	query         map[string]string
-	label         *NetworkLabel
+	networkLabelsService *NetworkLabelsService
+	header               map[string]string
+	query                map[string]string
+	label                *NetworkLabel
 }
 
 func (p *NetworkLabelsServiceAddRequest) Header(key, value string) *NetworkLabelsServiceAddRequest {
@@ -17711,8 +17772,10 @@ func (p *NetworkLabelsServiceAddRequest) Label(label *NetworkLabel) *NetworkLabe
 	p.label = label
 	return p
 }
-func (p *NetworkLabelsServiceAddRequest) send() *NetworkLabelsServiceAddResponse {
+func (p *NetworkLabelsServiceAddRequest) Send() *NetworkLabelsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.networkLabelsService.Connection.URL(), p.networkLabelsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -17753,10 +17816,10 @@ func (op *NetworkLabelsService) Add(
 }
 
 type NetworkLabelsServiceListRequest struct {
-	networkLabels *NetworkLabelsService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	networkLabelsService *NetworkLabelsService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *NetworkLabelsServiceListRequest) Header(key, value string) *NetworkLabelsServiceListRequest {
@@ -17779,7 +17842,7 @@ func (p *NetworkLabelsServiceListRequest) Max(max int64) *NetworkLabelsServiceLi
 	p.max = &max
 	return p
 }
-func (p *NetworkLabelsServiceListRequest) send() *NetworkLabelsServiceListResponse {
+func (p *NetworkLabelsServiceListRequest) Send() *NetworkLabelsServiceListResponse {
 
 }
 
@@ -17851,10 +17914,10 @@ func NewStorageDomainService(connection *Connection, path string) *StorageDomain
 }
 
 type StorageDomainServiceGetRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	filter        *bool
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	filter               *bool
 }
 
 func (p *StorageDomainServiceGetRequest) Header(key, value string) *StorageDomainServiceGetRequest {
@@ -17877,7 +17940,7 @@ func (p *StorageDomainServiceGetRequest) Filter(filter bool) *StorageDomainServi
 	p.filter = &filter
 	return p
 }
-func (p *StorageDomainServiceGetRequest) send() *StorageDomainServiceGetResponse {
+func (p *StorageDomainServiceGetRequest) Send() *StorageDomainServiceGetResponse {
 
 }
 
@@ -17912,11 +17975,11 @@ func (op *StorageDomainService) Get(
 }
 
 type StorageDomainServiceIsAttachedRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	host          *Host
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	host                 *Host
 }
 
 func (p *StorageDomainServiceIsAttachedRequest) Header(key, value string) *StorageDomainServiceIsAttachedRequest {
@@ -17943,7 +18006,7 @@ func (p *StorageDomainServiceIsAttachedRequest) Host(host *Host) *StorageDomainS
 	p.host = host
 	return p
 }
-func (p *StorageDomainServiceIsAttachedRequest) send() *StorageDomainServiceIsAttachedResponse {
+func (p *StorageDomainServiceIsAttachedRequest) Send() *StorageDomainServiceIsAttachedResponse {
 
 }
 
@@ -17977,10 +18040,10 @@ func (op *StorageDomainService) IsAttached(
 }
 
 type StorageDomainServiceReduceLunsRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	logicalUnits  []LogicalUnit
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	logicalUnits         []LogicalUnit
 }
 
 func (p *StorageDomainServiceReduceLunsRequest) Header(key, value string) *StorageDomainServiceReduceLunsRequest {
@@ -18003,7 +18066,7 @@ func (p *StorageDomainServiceReduceLunsRequest) LogicalUnits(logicalUnits []Logi
 	p.logicalUnits = logicalUnits
 	return p
 }
-func (p *StorageDomainServiceReduceLunsRequest) send() *StorageDomainServiceReduceLunsResponse {
+func (p *StorageDomainServiceReduceLunsRequest) Send() *StorageDomainServiceReduceLunsResponse {
 
 }
 
@@ -18048,11 +18111,11 @@ func (op *StorageDomainService) ReduceLuns(
 }
 
 type StorageDomainServiceRefreshLunsRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	logicalUnits  []LogicalUnit
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	logicalUnits         []LogicalUnit
 }
 
 func (p *StorageDomainServiceRefreshLunsRequest) Header(key, value string) *StorageDomainServiceRefreshLunsRequest {
@@ -18079,7 +18142,7 @@ func (p *StorageDomainServiceRefreshLunsRequest) LogicalUnits(logicalUnits []Log
 	p.logicalUnits = logicalUnits
 	return p
 }
-func (p *StorageDomainServiceRefreshLunsRequest) send() *StorageDomainServiceRefreshLunsResponse {
+func (p *StorageDomainServiceRefreshLunsRequest) Send() *StorageDomainServiceRefreshLunsResponse {
 
 }
 
@@ -18129,13 +18192,13 @@ func (op *StorageDomainService) RefreshLuns(
 }
 
 type StorageDomainServiceRemoveRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	destroy       *bool
-	format        *bool
-	host          *string
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	destroy              *bool
+	format               *bool
+	host                 *string
 }
 
 func (p *StorageDomainServiceRemoveRequest) Header(key, value string) *StorageDomainServiceRemoveRequest {
@@ -18170,7 +18233,7 @@ func (p *StorageDomainServiceRemoveRequest) Host(host string) *StorageDomainServ
 	p.host = &host
 	return p
 }
-func (p *StorageDomainServiceRemoveRequest) send() *StorageDomainServiceRemoveResponse {
+func (p *StorageDomainServiceRemoveRequest) Send() *StorageDomainServiceRemoveResponse {
 
 }
 
@@ -18233,11 +18296,11 @@ func (op *StorageDomainService) Remove(
 }
 
 type StorageDomainServiceUpdateRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	storageDomain *StorageDomain
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	storageDomain        *StorageDomain
 }
 
 func (p *StorageDomainServiceUpdateRequest) Header(key, value string) *StorageDomainServiceUpdateRequest {
@@ -18264,7 +18327,7 @@ func (p *StorageDomainServiceUpdateRequest) StorageDomain(storageDomain *Storage
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainServiceUpdateRequest) send() *StorageDomainServiceUpdateResponse {
+func (p *StorageDomainServiceUpdateRequest) Send() *StorageDomainServiceUpdateResponse {
 
 }
 
@@ -18314,10 +18377,10 @@ func (op *StorageDomainService) Update(
 }
 
 type StorageDomainServiceUpdateOvfStoreRequest struct {
-	storageDomain *StorageDomainService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	storageDomainService *StorageDomainService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *StorageDomainServiceUpdateOvfStoreRequest) Header(key, value string) *StorageDomainServiceUpdateOvfStoreRequest {
@@ -18340,7 +18403,7 @@ func (p *StorageDomainServiceUpdateOvfStoreRequest) Async(async bool) *StorageDo
 	p.async = &async
 	return p
 }
-func (p *StorageDomainServiceUpdateOvfStoreRequest) send() *StorageDomainServiceUpdateOvfStoreResponse {
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Send() *StorageDomainServiceUpdateOvfStoreResponse {
 
 }
 
@@ -18519,10 +18582,10 @@ func NewDataCentersService(connection *Connection, path string) *DataCentersServ
 }
 
 type DataCentersServiceAddRequest struct {
-	dataCenters *DataCentersService
-	header      map[string]string
-	query       map[string]string
-	dataCenter  *DataCenter
+	dataCentersService *DataCentersService
+	header             map[string]string
+	query              map[string]string
+	dataCenter         *DataCenter
 }
 
 func (p *DataCentersServiceAddRequest) Header(key, value string) *DataCentersServiceAddRequest {
@@ -18545,8 +18608,10 @@ func (p *DataCentersServiceAddRequest) DataCenter(dataCenter *DataCenter) *DataC
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *DataCentersServiceAddRequest) send() *DataCentersServiceAddResponse {
+func (p *DataCentersServiceAddRequest) Send() *DataCentersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.dataCentersService.Connection.URL(), p.dataCentersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -18594,13 +18659,13 @@ func (op *DataCentersService) Add(
 }
 
 type DataCentersServiceListRequest struct {
-	dataCenters   *DataCentersService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	filter        *bool
-	max           *int64
-	search        *string
+	dataCentersService *DataCentersService
+	header             map[string]string
+	query              map[string]string
+	caseSensitive      *bool
+	filter             *bool
+	max                *int64
+	search             *string
 }
 
 func (p *DataCentersServiceListRequest) Header(key, value string) *DataCentersServiceListRequest {
@@ -18635,7 +18700,7 @@ func (p *DataCentersServiceListRequest) Search(search string) *DataCentersServic
 	p.search = &search
 	return p
 }
-func (p *DataCentersServiceListRequest) send() *DataCentersServiceListResponse {
+func (p *DataCentersServiceListRequest) Send() *DataCentersServiceListResponse {
 
 }
 
@@ -18769,10 +18834,10 @@ func NewVmApplicationService(connection *Connection, path string) *VmApplication
 }
 
 type VmApplicationServiceGetRequest struct {
-	vmApplication *VmApplicationService
-	header        map[string]string
-	query         map[string]string
-	filter        *bool
+	vmApplicationService *VmApplicationService
+	header               map[string]string
+	query                map[string]string
+	filter               *bool
 }
 
 func (p *VmApplicationServiceGetRequest) Header(key, value string) *VmApplicationServiceGetRequest {
@@ -18795,7 +18860,7 @@ func (p *VmApplicationServiceGetRequest) Filter(filter bool) *VmApplicationServi
 	p.filter = &filter
 	return p
 }
-func (p *VmApplicationServiceGetRequest) send() *VmApplicationServiceGetResponse {
+func (p *VmApplicationServiceGetRequest) Send() *VmApplicationServiceGetResponse {
 
 }
 
@@ -18858,10 +18923,10 @@ func NewQuotaStorageLimitsService(connection *Connection, path string) *QuotaSto
 }
 
 type QuotaStorageLimitsServiceAddRequest struct {
-	quotaStorageLimits *QuotaStorageLimitsService
-	header             map[string]string
-	query              map[string]string
-	limit              *QuotaStorageLimit
+	quotaStorageLimitsService *QuotaStorageLimitsService
+	header                    map[string]string
+	query                     map[string]string
+	limit                     *QuotaStorageLimit
 }
 
 func (p *QuotaStorageLimitsServiceAddRequest) Header(key, value string) *QuotaStorageLimitsServiceAddRequest {
@@ -18884,8 +18949,10 @@ func (p *QuotaStorageLimitsServiceAddRequest) Limit(limit *QuotaStorageLimit) *Q
 	p.limit = limit
 	return p
 }
-func (p *QuotaStorageLimitsServiceAddRequest) send() *QuotaStorageLimitsServiceAddResponse {
+func (p *QuotaStorageLimitsServiceAddRequest) Send() *QuotaStorageLimitsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.quotaStorageLimitsService.Connection.URL(), p.quotaStorageLimitsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -18913,10 +18980,10 @@ func (op *QuotaStorageLimitsService) Add(
 }
 
 type QuotaStorageLimitsServiceListRequest struct {
-	quotaStorageLimits *QuotaStorageLimitsService
-	header             map[string]string
-	query              map[string]string
-	max                *int64
+	quotaStorageLimitsService *QuotaStorageLimitsService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
 func (p *QuotaStorageLimitsServiceListRequest) Header(key, value string) *QuotaStorageLimitsServiceListRequest {
@@ -18939,7 +19006,7 @@ func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) *QuotaStorageLimit
 	p.max = &max
 	return p
 }
-func (p *QuotaStorageLimitsServiceListRequest) send() *QuotaStorageLimitsServiceListResponse {
+func (p *QuotaStorageLimitsServiceListRequest) Send() *QuotaStorageLimitsServiceListResponse {
 
 }
 
@@ -19011,9 +19078,9 @@ func NewTemplateNicService(connection *Connection, path string) *TemplateNicServ
 }
 
 type TemplateNicServiceGetRequest struct {
-	templateNic *TemplateNicService
-	header      map[string]string
-	query       map[string]string
+	templateNicService *TemplateNicService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *TemplateNicServiceGetRequest) Header(key, value string) *TemplateNicServiceGetRequest {
@@ -19032,7 +19099,7 @@ func (p *TemplateNicServiceGetRequest) Query(key, value string) *TemplateNicServ
 	return p
 }
 
-func (p *TemplateNicServiceGetRequest) send() *TemplateNicServiceGetResponse {
+func (p *TemplateNicServiceGetRequest) Send() *TemplateNicServiceGetResponse {
 
 }
 
@@ -19060,10 +19127,10 @@ func (op *TemplateNicService) Get(
 }
 
 type TemplateNicServiceRemoveRequest struct {
-	templateNic *TemplateNicService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	templateNicService *TemplateNicService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *TemplateNicServiceRemoveRequest) Header(key, value string) *TemplateNicServiceRemoveRequest {
@@ -19086,7 +19153,7 @@ func (p *TemplateNicServiceRemoveRequest) Async(async bool) *TemplateNicServiceR
 	p.async = &async
 	return p
 }
-func (p *TemplateNicServiceRemoveRequest) send() *TemplateNicServiceRemoveResponse {
+func (p *TemplateNicServiceRemoveRequest) Send() *TemplateNicServiceRemoveResponse {
 
 }
 
@@ -19114,11 +19181,11 @@ func (op *TemplateNicService) Remove(
 }
 
 type TemplateNicServiceUpdateRequest struct {
-	templateNic *TemplateNicService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
-	nic         *Nic
+	templateNicService *TemplateNicService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	nic                *Nic
 }
 
 func (p *TemplateNicServiceUpdateRequest) Header(key, value string) *TemplateNicServiceUpdateRequest {
@@ -19145,7 +19212,7 @@ func (p *TemplateNicServiceUpdateRequest) Nic(nic *Nic) *TemplateNicServiceUpdat
 	p.nic = nic
 	return p
 }
-func (p *TemplateNicServiceUpdateRequest) send() *TemplateNicServiceUpdateResponse {
+func (p *TemplateNicServiceUpdateRequest) Send() *TemplateNicServiceUpdateResponse {
 
 }
 
@@ -19208,10 +19275,10 @@ func NewVmCdromsService(connection *Connection, path string) *VmCdromsService {
 }
 
 type VmCdromsServiceListRequest struct {
-	vmCdroms *VmCdromsService
-	header   map[string]string
-	query    map[string]string
-	max      *int64
+	vmCdromsService *VmCdromsService
+	header          map[string]string
+	query           map[string]string
+	max             *int64
 }
 
 func (p *VmCdromsServiceListRequest) Header(key, value string) *VmCdromsServiceListRequest {
@@ -19234,7 +19301,7 @@ func (p *VmCdromsServiceListRequest) Max(max int64) *VmCdromsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *VmCdromsServiceListRequest) send() *VmCdromsServiceListResponse {
+func (p *VmCdromsServiceListRequest) Send() *VmCdromsServiceListResponse {
 
 }
 
@@ -19309,10 +19376,10 @@ func NewVmSessionsService(connection *Connection, path string) *VmSessionsServic
 }
 
 type VmSessionsServiceListRequest struct {
-	vmSessions *VmSessionsService
-	header     map[string]string
-	query      map[string]string
-	max        *int64
+	vmSessionsService *VmSessionsService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
 func (p *VmSessionsServiceListRequest) Header(key, value string) *VmSessionsServiceListRequest {
@@ -19335,7 +19402,7 @@ func (p *VmSessionsServiceListRequest) Max(max int64) *VmSessionsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *VmSessionsServiceListRequest) send() *VmSessionsServiceListResponse {
+func (p *VmSessionsServiceListRequest) Send() *VmSessionsServiceListResponse {
 
 }
 
@@ -19429,10 +19496,10 @@ func NewVmDiskService(connection *Connection, path string) *VmDiskService {
 }
 
 type VmDiskServiceActivateRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *VmDiskServiceActivateRequest) Header(key, value string) *VmDiskServiceActivateRequest {
@@ -19455,7 +19522,7 @@ func (p *VmDiskServiceActivateRequest) Async(async bool) *VmDiskServiceActivateR
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceActivateRequest) send() *VmDiskServiceActivateResponse {
+func (p *VmDiskServiceActivateRequest) Send() *VmDiskServiceActivateResponse {
 
 }
 
@@ -19482,10 +19549,10 @@ func (op *VmDiskService) Activate(
 }
 
 type VmDiskServiceDeactivateRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *VmDiskServiceDeactivateRequest) Header(key, value string) *VmDiskServiceDeactivateRequest {
@@ -19508,7 +19575,7 @@ func (p *VmDiskServiceDeactivateRequest) Async(async bool) *VmDiskServiceDeactiv
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceDeactivateRequest) send() *VmDiskServiceDeactivateResponse {
+func (p *VmDiskServiceDeactivateRequest) Send() *VmDiskServiceDeactivateResponse {
 
 }
 
@@ -19535,11 +19602,11 @@ func (op *VmDiskService) Deactivate(
 }
 
 type VmDiskServiceExportRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	filter *bool
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
 }
 
 func (p *VmDiskServiceExportRequest) Header(key, value string) *VmDiskServiceExportRequest {
@@ -19566,7 +19633,7 @@ func (p *VmDiskServiceExportRequest) Filter(filter bool) *VmDiskServiceExportReq
 	p.filter = &filter
 	return p
 }
-func (p *VmDiskServiceExportRequest) send() *VmDiskServiceExportResponse {
+func (p *VmDiskServiceExportRequest) Send() *VmDiskServiceExportResponse {
 
 }
 
@@ -19596,9 +19663,9 @@ func (op *VmDiskService) Export(
 }
 
 type VmDiskServiceGetRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
 }
 
 func (p *VmDiskServiceGetRequest) Header(key, value string) *VmDiskServiceGetRequest {
@@ -19617,7 +19684,7 @@ func (p *VmDiskServiceGetRequest) Query(key, value string) *VmDiskServiceGetRequ
 	return p
 }
 
-func (p *VmDiskServiceGetRequest) send() *VmDiskServiceGetResponse {
+func (p *VmDiskServiceGetRequest) Send() *VmDiskServiceGetResponse {
 
 }
 
@@ -19645,11 +19712,11 @@ func (op *VmDiskService) Get(
 }
 
 type VmDiskServiceMoveRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	filter *bool
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	filter        *bool
 }
 
 func (p *VmDiskServiceMoveRequest) Header(key, value string) *VmDiskServiceMoveRequest {
@@ -19676,7 +19743,7 @@ func (p *VmDiskServiceMoveRequest) Filter(filter bool) *VmDiskServiceMoveRequest
 	p.filter = &filter
 	return p
 }
-func (p *VmDiskServiceMoveRequest) send() *VmDiskServiceMoveResponse {
+func (p *VmDiskServiceMoveRequest) Send() *VmDiskServiceMoveResponse {
 
 }
 
@@ -19706,10 +19773,10 @@ func (op *VmDiskService) Move(
 }
 
 type VmDiskServiceRemoveRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *VmDiskServiceRemoveRequest) Header(key, value string) *VmDiskServiceRemoveRequest {
@@ -19732,7 +19799,7 @@ func (p *VmDiskServiceRemoveRequest) Async(async bool) *VmDiskServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceRemoveRequest) send() *VmDiskServiceRemoveResponse {
+func (p *VmDiskServiceRemoveRequest) Send() *VmDiskServiceRemoveResponse {
 
 }
 
@@ -19764,11 +19831,11 @@ func (op *VmDiskService) Remove(
 }
 
 type VmDiskServiceUpdateRequest struct {
-	vmDisk *VmDiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	disk   *Disk
+	vmDiskService *VmDiskService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
+	disk          *Disk
 }
 
 func (p *VmDiskServiceUpdateRequest) Header(key, value string) *VmDiskServiceUpdateRequest {
@@ -19795,7 +19862,7 @@ func (p *VmDiskServiceUpdateRequest) Disk(disk *Disk) *VmDiskServiceUpdateReques
 	p.disk = disk
 	return p
 }
-func (p *VmDiskServiceUpdateRequest) send() *VmDiskServiceUpdateResponse {
+func (p *VmDiskServiceUpdateRequest) Send() *VmDiskServiceUpdateResponse {
 
 }
 
@@ -19877,9 +19944,9 @@ func NewStorageServerConnectionService(connection *Connection, path string) *Sto
 }
 
 type StorageServerConnectionServiceGetRequest struct {
-	storageServerConnection *StorageServerConnectionService
-	header                  map[string]string
-	query                   map[string]string
+	storageServerConnectionService *StorageServerConnectionService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *StorageServerConnectionServiceGetRequest) Header(key, value string) *StorageServerConnectionServiceGetRequest {
@@ -19898,7 +19965,7 @@ func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) *Sto
 	return p
 }
 
-func (p *StorageServerConnectionServiceGetRequest) send() *StorageServerConnectionServiceGetResponse {
+func (p *StorageServerConnectionServiceGetRequest) Send() *StorageServerConnectionServiceGetResponse {
 
 }
 
@@ -19926,11 +19993,11 @@ func (op *StorageServerConnectionService) Get(
 }
 
 type StorageServerConnectionServiceRemoveRequest struct {
-	storageServerConnection *StorageServerConnectionService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
-	host                    *string
+	storageServerConnectionService *StorageServerConnectionService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
+	host                           *string
 }
 
 func (p *StorageServerConnectionServiceRemoveRequest) Header(key, value string) *StorageServerConnectionServiceRemoveRequest {
@@ -19957,7 +20024,7 @@ func (p *StorageServerConnectionServiceRemoveRequest) Host(host string) *Storage
 	p.host = &host
 	return p
 }
-func (p *StorageServerConnectionServiceRemoveRequest) send() *StorageServerConnectionServiceRemoveResponse {
+func (p *StorageServerConnectionServiceRemoveRequest) Send() *StorageServerConnectionServiceRemoveResponse {
 
 }
 
@@ -19998,12 +20065,12 @@ func (op *StorageServerConnectionService) Remove(
 }
 
 type StorageServerConnectionServiceUpdateRequest struct {
-	storageServerConnection *StorageServerConnectionService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
-	connection              *StorageConnection
-	force                   *bool
+	storageServerConnectionService *StorageServerConnectionService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
+	connection                     *StorageConnection
+	force                          *bool
 }
 
 func (p *StorageServerConnectionServiceUpdateRequest) Header(key, value string) *StorageServerConnectionServiceUpdateRequest {
@@ -20034,7 +20101,7 @@ func (p *StorageServerConnectionServiceUpdateRequest) Force(force bool) *Storage
 	p.force = &force
 	return p
 }
-func (p *StorageServerConnectionServiceUpdateRequest) send() *StorageServerConnectionServiceUpdateResponse {
+func (p *StorageServerConnectionServiceUpdateRequest) Send() *StorageServerConnectionServiceUpdateResponse {
 
 }
 
@@ -20111,10 +20178,10 @@ func NewHostService(connection *Connection, path string) *HostService {
 }
 
 type HostServiceActivateRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceActivateRequest) Header(key, value string) *HostServiceActivateRequest {
@@ -20137,7 +20204,7 @@ func (p *HostServiceActivateRequest) Async(async bool) *HostServiceActivateReque
 	p.async = &async
 	return p
 }
-func (p *HostServiceActivateRequest) send() *HostServiceActivateResponse {
+func (p *HostServiceActivateRequest) Send() *HostServiceActivateResponse {
 
 }
 
@@ -20165,11 +20232,11 @@ func (op *HostService) Activate(
 }
 
 type HostServiceApproveRequest struct {
-	host    *HostService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	cluster *Cluster
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	cluster     *Cluster
 }
 
 func (p *HostServiceApproveRequest) Header(key, value string) *HostServiceApproveRequest {
@@ -20196,7 +20263,7 @@ func (p *HostServiceApproveRequest) Cluster(cluster *Cluster) *HostServiceApprov
 	p.cluster = cluster
 	return p
 }
-func (p *HostServiceApproveRequest) send() *HostServiceApproveResponse {
+func (p *HostServiceApproveRequest) Send() *HostServiceApproveResponse {
 
 }
 
@@ -20227,10 +20294,10 @@ func (op *HostService) Approve(
 }
 
 type HostServiceCommitNetConfigRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceCommitNetConfigRequest) Header(key, value string) *HostServiceCommitNetConfigRequest {
@@ -20253,7 +20320,7 @@ func (p *HostServiceCommitNetConfigRequest) Async(async bool) *HostServiceCommit
 	p.async = &async
 	return p
 }
-func (p *HostServiceCommitNetConfigRequest) send() *HostServiceCommitNetConfigResponse {
+func (p *HostServiceCommitNetConfigRequest) Send() *HostServiceCommitNetConfigResponse {
 
 }
 
@@ -20296,7 +20363,7 @@ func (op *HostService) CommitNetConfig(
 }
 
 type HostServiceDeactivateRequest struct {
-	host               *HostService
+	hostService        *HostService
 	header             map[string]string
 	query              map[string]string
 	async              *bool
@@ -20332,7 +20399,7 @@ func (p *HostServiceDeactivateRequest) StopGlusterService(stopGlusterService boo
 	p.stopGlusterService = &stopGlusterService
 	return p
 }
-func (p *HostServiceDeactivateRequest) send() *HostServiceDeactivateResponse {
+func (p *HostServiceDeactivateRequest) Send() *HostServiceDeactivateResponse {
 
 }
 
@@ -20366,10 +20433,10 @@ func (op *HostService) Deactivate(
 }
 
 type HostServiceEnrollCertificateRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceEnrollCertificateRequest) Header(key, value string) *HostServiceEnrollCertificateRequest {
@@ -20392,7 +20459,7 @@ func (p *HostServiceEnrollCertificateRequest) Async(async bool) *HostServiceEnro
 	p.async = &async
 	return p
 }
-func (p *HostServiceEnrollCertificateRequest) send() *HostServiceEnrollCertificateResponse {
+func (p *HostServiceEnrollCertificateRequest) Send() *HostServiceEnrollCertificateResponse {
 
 }
 
@@ -20420,11 +20487,11 @@ func (op *HostService) EnrollCertificate(
 }
 
 type HostServiceFenceRequest struct {
-	host      *HostService
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	fenceType *string
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	fenceType   *string
 }
 
 func (p *HostServiceFenceRequest) Header(key, value string) *HostServiceFenceRequest {
@@ -20451,7 +20518,7 @@ func (p *HostServiceFenceRequest) FenceType(fenceType string) *HostServiceFenceR
 	p.fenceType = &fenceType
 	return p
 }
-func (p *HostServiceFenceRequest) send() *HostServiceFenceResponse {
+func (p *HostServiceFenceRequest) Send() *HostServiceFenceResponse {
 
 }
 
@@ -20510,10 +20577,10 @@ func (op *HostService) Fence(
 }
 
 type HostServiceForceSelectSpmRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceForceSelectSpmRequest) Header(key, value string) *HostServiceForceSelectSpmRequest {
@@ -20536,7 +20603,7 @@ func (p *HostServiceForceSelectSpmRequest) Async(async bool) *HostServiceForceSe
 	p.async = &async
 	return p
 }
-func (p *HostServiceForceSelectSpmRequest) send() *HostServiceForceSelectSpmResponse {
+func (p *HostServiceForceSelectSpmRequest) Send() *HostServiceForceSelectSpmResponse {
 
 }
 
@@ -20573,10 +20640,10 @@ func (op *HostService) ForceSelectSpm(
 }
 
 type HostServiceGetRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	filter      *bool
 }
 
 func (p *HostServiceGetRequest) Header(key, value string) *HostServiceGetRequest {
@@ -20599,7 +20666,7 @@ func (p *HostServiceGetRequest) Filter(filter bool) *HostServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *HostServiceGetRequest) send() *HostServiceGetResponse {
+func (p *HostServiceGetRequest) Send() *HostServiceGetResponse {
 
 }
 
@@ -20635,7 +20702,7 @@ func (op *HostService) Get(
 }
 
 type HostServiceInstallRequest struct {
-	host                 *HostService
+	hostService          *HostService
 	header               map[string]string
 	query                map[string]string
 	async                *bool
@@ -20691,7 +20758,7 @@ func (p *HostServiceInstallRequest) UndeployHostedEngine(undeployHostedEngine bo
 	p.undeployHostedEngine = &undeployHostedEngine
 	return p
 }
-func (p *HostServiceInstallRequest) send() *HostServiceInstallResponse {
+func (p *HostServiceInstallRequest) Send() *HostServiceInstallResponse {
 
 }
 
@@ -20782,11 +20849,11 @@ func (op *HostService) Install(
 }
 
 type HostServiceIscsiDiscoverRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	iscsi  *IscsiDetails
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	iscsi       *IscsiDetails
 }
 
 func (p *HostServiceIscsiDiscoverRequest) Header(key, value string) *HostServiceIscsiDiscoverRequest {
@@ -20813,7 +20880,7 @@ func (p *HostServiceIscsiDiscoverRequest) Iscsi(iscsi *IscsiDetails) *HostServic
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceIscsiDiscoverRequest) send() *HostServiceIscsiDiscoverResponse {
+func (p *HostServiceIscsiDiscoverRequest) Send() *HostServiceIscsiDiscoverResponse {
 
 }
 
@@ -20849,11 +20916,11 @@ func (op *HostService) IscsiDiscover(
 }
 
 type HostServiceIscsiLoginRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	iscsi  *IscsiDetails
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	iscsi       *IscsiDetails
 }
 
 func (p *HostServiceIscsiLoginRequest) Header(key, value string) *HostServiceIscsiLoginRequest {
@@ -20880,7 +20947,7 @@ func (p *HostServiceIscsiLoginRequest) Iscsi(iscsi *IscsiDetails) *HostServiceIs
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceIscsiLoginRequest) send() *HostServiceIscsiLoginResponse {
+func (p *HostServiceIscsiLoginRequest) Send() *HostServiceIscsiLoginResponse {
 
 }
 
@@ -20911,10 +20978,10 @@ func (op *HostService) IscsiLogin(
 }
 
 type HostServiceRefreshRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceRefreshRequest) Header(key, value string) *HostServiceRefreshRequest {
@@ -20937,7 +21004,7 @@ func (p *HostServiceRefreshRequest) Async(async bool) *HostServiceRefreshRequest
 	p.async = &async
 	return p
 }
-func (p *HostServiceRefreshRequest) send() *HostServiceRefreshResponse {
+func (p *HostServiceRefreshRequest) Send() *HostServiceRefreshResponse {
 
 }
 
@@ -20965,10 +21032,10 @@ func (op *HostService) Refresh(
 }
 
 type HostServiceRemoveRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceRemoveRequest) Header(key, value string) *HostServiceRemoveRequest {
@@ -20991,7 +21058,7 @@ func (p *HostServiceRemoveRequest) Async(async bool) *HostServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *HostServiceRemoveRequest) send() *HostServiceRemoveResponse {
+func (p *HostServiceRemoveRequest) Send() *HostServiceRemoveResponse {
 
 }
 
@@ -21034,7 +21101,7 @@ func (op *HostService) Remove(
 }
 
 type HostServiceSetupNetworksRequest struct {
-	host                           *HostService
+	hostService                    *HostService
 	header                         map[string]string
 	query                          map[string]string
 	async                          *bool
@@ -21105,7 +21172,7 @@ func (p *HostServiceSetupNetworksRequest) SynchronizedNetworkAttachments(synchro
 	p.synchronizedNetworkAttachments = synchronizedNetworkAttachments
 	return p
 }
-func (p *HostServiceSetupNetworksRequest) send() *HostServiceSetupNetworksResponse {
+func (p *HostServiceSetupNetworksRequest) Send() *HostServiceSetupNetworksResponse {
 
 }
 
@@ -21301,11 +21368,11 @@ func (op *HostService) SetupNetworks(
 }
 
 type HostServiceUnregisteredStorageDomainsDiscoverRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	iscsi  *IscsiDetails
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	iscsi       *IscsiDetails
 }
 
 func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Header(key, value string) *HostServiceUnregisteredStorageDomainsDiscoverRequest {
@@ -21332,7 +21399,7 @@ func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Iscsi(iscsi *Iscs
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) send() *HostServiceUnregisteredStorageDomainsDiscoverResponse {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Send() *HostServiceUnregisteredStorageDomainsDiscoverResponse {
 
 }
 
@@ -21368,11 +21435,11 @@ func (op *HostService) UnregisteredStorageDomainsDiscover(
 }
 
 type HostServiceUpdateRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	host   *Host
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	host        *Host
 }
 
 func (p *HostServiceUpdateRequest) Header(key, value string) *HostServiceUpdateRequest {
@@ -21399,7 +21466,7 @@ func (p *HostServiceUpdateRequest) Host(host *Host) *HostServiceUpdateRequest {
 	p.host = host
 	return p
 }
-func (p *HostServiceUpdateRequest) send() *HostServiceUpdateResponse {
+func (p *HostServiceUpdateRequest) Send() *HostServiceUpdateResponse {
 
 }
 
@@ -21445,10 +21512,10 @@ func (op *HostService) Update(
 }
 
 type HostServiceUpgradeRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *HostServiceUpgradeRequest) Header(key, value string) *HostServiceUpgradeRequest {
@@ -21471,7 +21538,7 @@ func (p *HostServiceUpgradeRequest) Async(async bool) *HostServiceUpgradeRequest
 	p.async = &async
 	return p
 }
-func (p *HostServiceUpgradeRequest) send() *HostServiceUpgradeResponse {
+func (p *HostServiceUpgradeRequest) Send() *HostServiceUpgradeResponse {
 
 }
 
@@ -21499,9 +21566,9 @@ func (op *HostService) Upgrade(
 }
 
 type HostServiceUpgradeCheckRequest struct {
-	host   *HostService
-	header map[string]string
-	query  map[string]string
+	hostService *HostService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *HostServiceUpgradeCheckRequest) Header(key, value string) *HostServiceUpgradeCheckRequest {
@@ -21520,7 +21587,7 @@ func (p *HostServiceUpgradeCheckRequest) Query(key, value string) *HostServiceUp
 	return p
 }
 
-func (p *HostServiceUpgradeCheckRequest) send() *HostServiceUpgradeCheckResponse {
+func (p *HostServiceUpgradeCheckRequest) Send() *HostServiceUpgradeCheckResponse {
 
 }
 
@@ -21759,10 +21826,10 @@ func NewExternalProviderCertificatesService(connection *Connection, path string)
 }
 
 type ExternalProviderCertificatesServiceListRequest struct {
-	externalProviderCertificates *ExternalProviderCertificatesService
-	header                       map[string]string
-	query                        map[string]string
-	max                          *int64
+	externalProviderCertificatesService *ExternalProviderCertificatesService
+	header                              map[string]string
+	query                               map[string]string
+	max                                 *int64
 }
 
 func (p *ExternalProviderCertificatesServiceListRequest) Header(key, value string) *ExternalProviderCertificatesServiceListRequest {
@@ -21785,7 +21852,7 @@ func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) *Externa
 	p.max = &max
 	return p
 }
-func (p *ExternalProviderCertificatesServiceListRequest) send() *ExternalProviderCertificatesServiceListResponse {
+func (p *ExternalProviderCertificatesServiceListRequest) Send() *ExternalProviderCertificatesServiceListResponse {
 
 }
 
@@ -21858,9 +21925,9 @@ func NewVmHostDeviceService(connection *Connection, path string) *VmHostDeviceSe
 }
 
 type VmHostDeviceServiceGetRequest struct {
-	vmHostDevice *VmHostDeviceService
-	header       map[string]string
-	query        map[string]string
+	vmHostDeviceService *VmHostDeviceService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *VmHostDeviceServiceGetRequest) Header(key, value string) *VmHostDeviceServiceGetRequest {
@@ -21879,7 +21946,7 @@ func (p *VmHostDeviceServiceGetRequest) Query(key, value string) *VmHostDeviceSe
 	return p
 }
 
-func (p *VmHostDeviceServiceGetRequest) send() *VmHostDeviceServiceGetResponse {
+func (p *VmHostDeviceServiceGetRequest) Send() *VmHostDeviceServiceGetResponse {
 
 }
 
@@ -21933,10 +22000,10 @@ func (op *VmHostDeviceService) Get(
 }
 
 type VmHostDeviceServiceRemoveRequest struct {
-	vmHostDevice *VmHostDeviceService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	vmHostDeviceService *VmHostDeviceService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *VmHostDeviceServiceRemoveRequest) Header(key, value string) *VmHostDeviceServiceRemoveRequest {
@@ -21959,7 +22026,7 @@ func (p *VmHostDeviceServiceRemoveRequest) Async(async bool) *VmHostDeviceServic
 	p.async = &async
 	return p
 }
-func (p *VmHostDeviceServiceRemoveRequest) send() *VmHostDeviceServiceRemoveResponse {
+func (p *VmHostDeviceServiceRemoveRequest) Send() *VmHostDeviceServiceRemoveResponse {
 
 }
 
@@ -22024,9 +22091,9 @@ func NewTagService(connection *Connection, path string) *TagService {
 }
 
 type TagServiceGetRequest struct {
-	tag    *TagService
-	header map[string]string
-	query  map[string]string
+	tagService *TagService
+	header     map[string]string
+	query      map[string]string
 }
 
 func (p *TagServiceGetRequest) Header(key, value string) *TagServiceGetRequest {
@@ -22045,7 +22112,7 @@ func (p *TagServiceGetRequest) Query(key, value string) *TagServiceGetRequest {
 	return p
 }
 
-func (p *TagServiceGetRequest) send() *TagServiceGetResponse {
+func (p *TagServiceGetRequest) Send() *TagServiceGetResponse {
 
 }
 
@@ -22085,10 +22152,10 @@ func (op *TagService) Get(
 }
 
 type TagServiceRemoveRequest struct {
-	tag    *TagService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	tagService *TagService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
 func (p *TagServiceRemoveRequest) Header(key, value string) *TagServiceRemoveRequest {
@@ -22111,7 +22178,7 @@ func (p *TagServiceRemoveRequest) Async(async bool) *TagServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *TagServiceRemoveRequest) send() *TagServiceRemoveResponse {
+func (p *TagServiceRemoveRequest) Send() *TagServiceRemoveResponse {
 
 }
 
@@ -22144,11 +22211,11 @@ func (op *TagService) Remove(
 }
 
 type TagServiceUpdateRequest struct {
-	tag    *TagService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	tag    *Tag
+	tagService *TagService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	tag        *Tag
 }
 
 func (p *TagServiceUpdateRequest) Header(key, value string) *TagServiceUpdateRequest {
@@ -22175,7 +22242,7 @@ func (p *TagServiceUpdateRequest) Tag(tag *Tag) *TagServiceUpdateRequest {
 	p.tag = tag
 	return p
 }
-func (p *TagServiceUpdateRequest) send() *TagServiceUpdateResponse {
+func (p *TagServiceUpdateRequest) Send() *TagServiceUpdateResponse {
 
 }
 
@@ -22260,10 +22327,10 @@ func NewHostNumaNodesService(connection *Connection, path string) *HostNumaNodes
 }
 
 type HostNumaNodesServiceListRequest struct {
-	hostNumaNodes *HostNumaNodesService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	hostNumaNodesService *HostNumaNodesService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *HostNumaNodesServiceListRequest) Header(key, value string) *HostNumaNodesServiceListRequest {
@@ -22286,7 +22353,7 @@ func (p *HostNumaNodesServiceListRequest) Max(max int64) *HostNumaNodesServiceLi
 	p.max = &max
 	return p
 }
-func (p *HostNumaNodesServiceListRequest) send() *HostNumaNodesServiceListResponse {
+func (p *HostNumaNodesServiceListRequest) Send() *HostNumaNodesServiceListResponse {
 
 }
 
@@ -22359,10 +22426,10 @@ func NewAssignedTagsService(connection *Connection, path string) *AssignedTagsSe
 }
 
 type AssignedTagsServiceAddRequest struct {
-	assignedTags *AssignedTagsService
-	header       map[string]string
-	query        map[string]string
-	tag          *Tag
+	assignedTagsService *AssignedTagsService
+	header              map[string]string
+	query               map[string]string
+	tag                 *Tag
 }
 
 func (p *AssignedTagsServiceAddRequest) Header(key, value string) *AssignedTagsServiceAddRequest {
@@ -22385,8 +22452,10 @@ func (p *AssignedTagsServiceAddRequest) Tag(tag *Tag) *AssignedTagsServiceAddReq
 	p.tag = tag
 	return p
 }
-func (p *AssignedTagsServiceAddRequest) send() *AssignedTagsServiceAddResponse {
+func (p *AssignedTagsServiceAddRequest) Send() *AssignedTagsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedTagsService.Connection.URL(), p.assignedTagsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -22431,10 +22500,10 @@ func (op *AssignedTagsService) Add(
 }
 
 type AssignedTagsServiceListRequest struct {
-	assignedTags *AssignedTagsService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	assignedTagsService *AssignedTagsService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *AssignedTagsServiceListRequest) Header(key, value string) *AssignedTagsServiceListRequest {
@@ -22457,7 +22526,7 @@ func (p *AssignedTagsServiceListRequest) Max(max int64) *AssignedTagsServiceList
 	p.max = &max
 	return p
 }
-func (p *AssignedTagsServiceListRequest) send() *AssignedTagsServiceListResponse {
+func (p *AssignedTagsServiceListRequest) Send() *AssignedTagsServiceListResponse {
 
 }
 
@@ -22546,10 +22615,10 @@ func NewJobService(connection *Connection, path string) *JobService {
 }
 
 type JobServiceClearRequest struct {
-	job    *JobService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	jobService *JobService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
 }
 
 func (p *JobServiceClearRequest) Header(key, value string) *JobServiceClearRequest {
@@ -22572,7 +22641,7 @@ func (p *JobServiceClearRequest) Async(async bool) *JobServiceClearRequest {
 	p.async = &async
 	return p
 }
-func (p *JobServiceClearRequest) send() *JobServiceClearResponse {
+func (p *JobServiceClearRequest) Send() *JobServiceClearResponse {
 
 }
 
@@ -22610,12 +22679,12 @@ func (op *JobService) Clear(
 }
 
 type JobServiceEndRequest struct {
-	job       *JobService
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	force     *bool
-	succeeded *bool
+	jobService *JobService
+	header     map[string]string
+	query      map[string]string
+	async      *bool
+	force      *bool
+	succeeded  *bool
 }
 
 func (p *JobServiceEndRequest) Header(key, value string) *JobServiceEndRequest {
@@ -22646,7 +22715,7 @@ func (p *JobServiceEndRequest) Succeeded(succeeded bool) *JobServiceEndRequest {
 	p.succeeded = &succeeded
 	return p
 }
-func (p *JobServiceEndRequest) send() *JobServiceEndResponse {
+func (p *JobServiceEndRequest) Send() *JobServiceEndResponse {
 
 }
 
@@ -22694,9 +22763,9 @@ func (op *JobService) End(
 }
 
 type JobServiceGetRequest struct {
-	job    *JobService
-	header map[string]string
-	query  map[string]string
+	jobService *JobService
+	header     map[string]string
+	query      map[string]string
 }
 
 func (p *JobServiceGetRequest) Header(key, value string) *JobServiceGetRequest {
@@ -22715,7 +22784,7 @@ func (p *JobServiceGetRequest) Query(key, value string) *JobServiceGetRequest {
 	return p
 }
 
-func (p *JobServiceGetRequest) send() *JobServiceGetResponse {
+func (p *JobServiceGetRequest) Send() *JobServiceGetResponse {
 
 }
 
@@ -22807,9 +22876,9 @@ func NewFileService(connection *Connection, path string) *FileService {
 }
 
 type FileServiceGetRequest struct {
-	file   *FileService
-	header map[string]string
-	query  map[string]string
+	fileService *FileService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *FileServiceGetRequest) Header(key, value string) *FileServiceGetRequest {
@@ -22828,7 +22897,7 @@ func (p *FileServiceGetRequest) Query(key, value string) *FileServiceGetRequest 
 	return p
 }
 
-func (p *FileServiceGetRequest) send() *FileServiceGetResponse {
+func (p *FileServiceGetRequest) Send() *FileServiceGetResponse {
 
 }
 
@@ -22884,10 +22953,10 @@ func NewStepsService(connection *Connection, path string) *StepsService {
 }
 
 type StepsServiceAddRequest struct {
-	steps  *StepsService
-	header map[string]string
-	query  map[string]string
-	step   *Step
+	stepsService *StepsService
+	header       map[string]string
+	query        map[string]string
+	step         *Step
 }
 
 func (p *StepsServiceAddRequest) Header(key, value string) *StepsServiceAddRequest {
@@ -22910,8 +22979,10 @@ func (p *StepsServiceAddRequest) Step(step *Step) *StepsServiceAddRequest {
 	p.step = step
 	return p
 }
-func (p *StepsServiceAddRequest) send() *StepsServiceAddResponse {
+func (p *StepsServiceAddRequest) Send() *StepsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.stepsService.Connection.URL(), p.stepsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -22978,10 +23049,10 @@ func (op *StepsService) Add(
 }
 
 type StepsServiceListRequest struct {
-	steps  *StepsService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	stepsService *StepsService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
 func (p *StepsServiceListRequest) Header(key, value string) *StepsServiceListRequest {
@@ -23004,7 +23075,7 @@ func (p *StepsServiceListRequest) Max(max int64) *StepsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *StepsServiceListRequest) send() *StepsServiceListResponse {
+func (p *StepsServiceListRequest) Send() *StepsServiceListResponse {
 
 }
 
@@ -23102,9 +23173,9 @@ func NewStorageDomainServerConnectionService(connection *Connection, path string
 }
 
 type StorageDomainServerConnectionServiceGetRequest struct {
-	storageDomainServerConnection *StorageDomainServerConnectionService
-	header                        map[string]string
-	query                         map[string]string
+	storageDomainServerConnectionService *StorageDomainServerConnectionService
+	header                               map[string]string
+	query                                map[string]string
 }
 
 func (p *StorageDomainServerConnectionServiceGetRequest) Header(key, value string) *StorageDomainServerConnectionServiceGetRequest {
@@ -23123,7 +23194,7 @@ func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *StorageDomainServerConnectionServiceGetRequest) send() *StorageDomainServerConnectionServiceGetResponse {
+func (p *StorageDomainServerConnectionServiceGetRequest) Send() *StorageDomainServerConnectionServiceGetResponse {
 
 }
 
@@ -23151,10 +23222,10 @@ func (op *StorageDomainServerConnectionService) Get(
 }
 
 type StorageDomainServerConnectionServiceRemoveRequest struct {
-	storageDomainServerConnection *StorageDomainServerConnectionService
-	header                        map[string]string
-	query                         map[string]string
-	async                         *bool
+	storageDomainServerConnectionService *StorageDomainServerConnectionService
+	header                               map[string]string
+	query                                map[string]string
+	async                                *bool
 }
 
 func (p *StorageDomainServerConnectionServiceRemoveRequest) Header(key, value string) *StorageDomainServerConnectionServiceRemoveRequest {
@@ -23177,7 +23248,7 @@ func (p *StorageDomainServerConnectionServiceRemoveRequest) Async(async bool) *S
 	p.async = &async
 	return p
 }
-func (p *StorageDomainServerConnectionServiceRemoveRequest) send() *StorageDomainServerConnectionServiceRemoveResponse {
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Send() *StorageDomainServerConnectionServiceRemoveResponse {
 
 }
 
@@ -23234,10 +23305,10 @@ func NewRolesService(connection *Connection, path string) *RolesService {
 }
 
 type RolesServiceAddRequest struct {
-	roles  *RolesService
-	header map[string]string
-	query  map[string]string
-	role   *Role
+	rolesService *RolesService
+	header       map[string]string
+	query        map[string]string
+	role         *Role
 }
 
 func (p *RolesServiceAddRequest) Header(key, value string) *RolesServiceAddRequest {
@@ -23260,8 +23331,10 @@ func (p *RolesServiceAddRequest) Role(role *Role) *RolesServiceAddRequest {
 	p.role = role
 	return p
 }
-func (p *RolesServiceAddRequest) send() *RolesServiceAddResponse {
+func (p *RolesServiceAddRequest) Send() *RolesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.rolesService.Connection.URL(), p.rolesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -23314,10 +23387,10 @@ func (op *RolesService) Add(
 }
 
 type RolesServiceListRequest struct {
-	roles  *RolesService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	rolesService *RolesService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
 func (p *RolesServiceListRequest) Header(key, value string) *RolesServiceListRequest {
@@ -23340,7 +23413,7 @@ func (p *RolesServiceListRequest) Max(max int64) *RolesServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *RolesServiceListRequest) send() *RolesServiceListResponse {
+func (p *RolesServiceListRequest) Send() *RolesServiceListResponse {
 
 }
 
@@ -23577,9 +23650,9 @@ func NewImageTransferService(connection *Connection, path string) *ImageTransfer
 }
 
 type ImageTransferServiceExtendRequest struct {
-	imageTransfer *ImageTransferService
-	header        map[string]string
-	query         map[string]string
+	imageTransferService *ImageTransferService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ImageTransferServiceExtendRequest) Header(key, value string) *ImageTransferServiceExtendRequest {
@@ -23598,7 +23671,7 @@ func (p *ImageTransferServiceExtendRequest) Query(key, value string) *ImageTrans
 	return p
 }
 
-func (p *ImageTransferServiceExtendRequest) send() *ImageTransferServiceExtendResponse {
+func (p *ImageTransferServiceExtendRequest) Send() *ImageTransferServiceExtendResponse {
 
 }
 
@@ -23618,9 +23691,9 @@ func (op *ImageTransferService) Extend(
 }
 
 type ImageTransferServiceFinalizeRequest struct {
-	imageTransfer *ImageTransferService
-	header        map[string]string
-	query         map[string]string
+	imageTransferService *ImageTransferService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ImageTransferServiceFinalizeRequest) Header(key, value string) *ImageTransferServiceFinalizeRequest {
@@ -23639,7 +23712,7 @@ func (p *ImageTransferServiceFinalizeRequest) Query(key, value string) *ImageTra
 	return p
 }
 
-func (p *ImageTransferServiceFinalizeRequest) send() *ImageTransferServiceFinalizeResponse {
+func (p *ImageTransferServiceFinalizeRequest) Send() *ImageTransferServiceFinalizeResponse {
 
 }
 
@@ -23663,9 +23736,9 @@ func (op *ImageTransferService) Finalize(
 }
 
 type ImageTransferServiceGetRequest struct {
-	imageTransfer *ImageTransferService
-	header        map[string]string
-	query         map[string]string
+	imageTransferService *ImageTransferService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ImageTransferServiceGetRequest) Header(key, value string) *ImageTransferServiceGetRequest {
@@ -23684,7 +23757,7 @@ func (p *ImageTransferServiceGetRequest) Query(key, value string) *ImageTransfer
 	return p
 }
 
-func (p *ImageTransferServiceGetRequest) send() *ImageTransferServiceGetResponse {
+func (p *ImageTransferServiceGetRequest) Send() *ImageTransferServiceGetResponse {
 
 }
 
@@ -23713,9 +23786,9 @@ func (op *ImageTransferService) Get(
 }
 
 type ImageTransferServicePauseRequest struct {
-	imageTransfer *ImageTransferService
-	header        map[string]string
-	query         map[string]string
+	imageTransferService *ImageTransferService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ImageTransferServicePauseRequest) Header(key, value string) *ImageTransferServicePauseRequest {
@@ -23734,7 +23807,7 @@ func (p *ImageTransferServicePauseRequest) Query(key, value string) *ImageTransf
 	return p
 }
 
-func (p *ImageTransferServicePauseRequest) send() *ImageTransferServicePauseResponse {
+func (p *ImageTransferServicePauseRequest) Send() *ImageTransferServicePauseResponse {
 
 }
 
@@ -23754,9 +23827,9 @@ func (op *ImageTransferService) Pause(
 }
 
 type ImageTransferServiceResumeRequest struct {
-	imageTransfer *ImageTransferService
-	header        map[string]string
-	query         map[string]string
+	imageTransferService *ImageTransferService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ImageTransferServiceResumeRequest) Header(key, value string) *ImageTransferServiceResumeRequest {
@@ -23775,7 +23848,7 @@ func (p *ImageTransferServiceResumeRequest) Query(key, value string) *ImageTrans
 	return p
 }
 
-func (p *ImageTransferServiceResumeRequest) send() *ImageTransferServiceResumeResponse {
+func (p *ImageTransferServiceResumeRequest) Send() *ImageTransferServiceResumeResponse {
 
 }
 
@@ -23832,9 +23905,9 @@ func NewAssignedVnicProfileService(connection *Connection, path string) *Assigne
 }
 
 type AssignedVnicProfileServiceGetRequest struct {
-	assignedVnicProfile *AssignedVnicProfileService
-	header              map[string]string
-	query               map[string]string
+	assignedVnicProfileService *AssignedVnicProfileService
+	header                     map[string]string
+	query                      map[string]string
 }
 
 func (p *AssignedVnicProfileServiceGetRequest) Header(key, value string) *AssignedVnicProfileServiceGetRequest {
@@ -23853,7 +23926,7 @@ func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) *Assigne
 	return p
 }
 
-func (p *AssignedVnicProfileServiceGetRequest) send() *AssignedVnicProfileServiceGetResponse {
+func (p *AssignedVnicProfileServiceGetRequest) Send() *AssignedVnicProfileServiceGetResponse {
 
 }
 
@@ -23881,10 +23954,10 @@ func (op *AssignedVnicProfileService) Get(
 }
 
 type AssignedVnicProfileServiceRemoveRequest struct {
-	assignedVnicProfile *AssignedVnicProfileService
-	header              map[string]string
-	query               map[string]string
-	async               *bool
+	assignedVnicProfileService *AssignedVnicProfileService
+	header                     map[string]string
+	query                      map[string]string
+	async                      *bool
 }
 
 func (p *AssignedVnicProfileServiceRemoveRequest) Header(key, value string) *AssignedVnicProfileServiceRemoveRequest {
@@ -23907,7 +23980,7 @@ func (p *AssignedVnicProfileServiceRemoveRequest) Async(async bool) *AssignedVni
 	p.async = &async
 	return p
 }
-func (p *AssignedVnicProfileServiceRemoveRequest) send() *AssignedVnicProfileServiceRemoveResponse {
+func (p *AssignedVnicProfileServiceRemoveRequest) Send() *AssignedVnicProfileServiceRemoveResponse {
 
 }
 
@@ -23974,9 +24047,9 @@ func NewTemplateWatchdogService(connection *Connection, path string) *TemplateWa
 }
 
 type TemplateWatchdogServiceGetRequest struct {
-	templateWatchdog *TemplateWatchdogService
-	header           map[string]string
-	query            map[string]string
+	templateWatchdogService *TemplateWatchdogService
+	header                  map[string]string
+	query                   map[string]string
 }
 
 func (p *TemplateWatchdogServiceGetRequest) Header(key, value string) *TemplateWatchdogServiceGetRequest {
@@ -23995,7 +24068,7 @@ func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) *TemplateWa
 	return p
 }
 
-func (p *TemplateWatchdogServiceGetRequest) send() *TemplateWatchdogServiceGetResponse {
+func (p *TemplateWatchdogServiceGetRequest) Send() *TemplateWatchdogServiceGetResponse {
 
 }
 
@@ -24023,10 +24096,10 @@ func (op *TemplateWatchdogService) Get(
 }
 
 type TemplateWatchdogServiceRemoveRequest struct {
-	templateWatchdog *TemplateWatchdogService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
+	templateWatchdogService *TemplateWatchdogService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
 func (p *TemplateWatchdogServiceRemoveRequest) Header(key, value string) *TemplateWatchdogServiceRemoveRequest {
@@ -24049,7 +24122,7 @@ func (p *TemplateWatchdogServiceRemoveRequest) Async(async bool) *TemplateWatchd
 	p.async = &async
 	return p
 }
-func (p *TemplateWatchdogServiceRemoveRequest) send() *TemplateWatchdogServiceRemoveResponse {
+func (p *TemplateWatchdogServiceRemoveRequest) Send() *TemplateWatchdogServiceRemoveResponse {
 
 }
 
@@ -24077,11 +24150,11 @@ func (op *TemplateWatchdogService) Remove(
 }
 
 type TemplateWatchdogServiceUpdateRequest struct {
-	templateWatchdog *TemplateWatchdogService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
-	watchdog         *Watchdog
+	templateWatchdogService *TemplateWatchdogService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
+	watchdog                *Watchdog
 }
 
 func (p *TemplateWatchdogServiceUpdateRequest) Header(key, value string) *TemplateWatchdogServiceUpdateRequest {
@@ -24108,7 +24181,7 @@ func (p *TemplateWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *Tem
 	p.watchdog = watchdog
 	return p
 }
-func (p *TemplateWatchdogServiceUpdateRequest) send() *TemplateWatchdogServiceUpdateResponse {
+func (p *TemplateWatchdogServiceUpdateRequest) Send() *TemplateWatchdogServiceUpdateResponse {
 
 }
 
@@ -24166,9 +24239,9 @@ func NewVmSessionService(connection *Connection, path string) *VmSessionService 
 }
 
 type VmSessionServiceGetRequest struct {
-	vmSession *VmSessionService
-	header    map[string]string
-	query     map[string]string
+	vmSessionService *VmSessionService
+	header           map[string]string
+	query            map[string]string
 }
 
 func (p *VmSessionServiceGetRequest) Header(key, value string) *VmSessionServiceGetRequest {
@@ -24187,7 +24260,7 @@ func (p *VmSessionServiceGetRequest) Query(key, value string) *VmSessionServiceG
 	return p
 }
 
-func (p *VmSessionServiceGetRequest) send() *VmSessionServiceGetResponse {
+func (p *VmSessionServiceGetRequest) Send() *VmSessionServiceGetResponse {
 
 }
 
@@ -24242,10 +24315,10 @@ func NewVmNicService(connection *Connection, path string) *VmNicService {
 }
 
 type VmNicServiceActivateRequest struct {
-	vmNic  *VmNicService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmNicService *VmNicService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *VmNicServiceActivateRequest) Header(key, value string) *VmNicServiceActivateRequest {
@@ -24268,7 +24341,7 @@ func (p *VmNicServiceActivateRequest) Async(async bool) *VmNicServiceActivateReq
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceActivateRequest) send() *VmNicServiceActivateResponse {
+func (p *VmNicServiceActivateRequest) Send() *VmNicServiceActivateResponse {
 
 }
 
@@ -24295,10 +24368,10 @@ func (op *VmNicService) Activate(
 }
 
 type VmNicServiceDeactivateRequest struct {
-	vmNic  *VmNicService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmNicService *VmNicService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *VmNicServiceDeactivateRequest) Header(key, value string) *VmNicServiceDeactivateRequest {
@@ -24321,7 +24394,7 @@ func (p *VmNicServiceDeactivateRequest) Async(async bool) *VmNicServiceDeactivat
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceDeactivateRequest) send() *VmNicServiceDeactivateResponse {
+func (p *VmNicServiceDeactivateRequest) Send() *VmNicServiceDeactivateResponse {
 
 }
 
@@ -24348,9 +24421,9 @@ func (op *VmNicService) Deactivate(
 }
 
 type VmNicServiceGetRequest struct {
-	vmNic  *VmNicService
-	header map[string]string
-	query  map[string]string
+	vmNicService *VmNicService
+	header       map[string]string
+	query        map[string]string
 }
 
 func (p *VmNicServiceGetRequest) Header(key, value string) *VmNicServiceGetRequest {
@@ -24369,7 +24442,7 @@ func (p *VmNicServiceGetRequest) Query(key, value string) *VmNicServiceGetReques
 	return p
 }
 
-func (p *VmNicServiceGetRequest) send() *VmNicServiceGetResponse {
+func (p *VmNicServiceGetRequest) Send() *VmNicServiceGetResponse {
 
 }
 
@@ -24397,10 +24470,10 @@ func (op *VmNicService) Get(
 }
 
 type VmNicServiceRemoveRequest struct {
-	vmNic  *VmNicService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	vmNicService *VmNicService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *VmNicServiceRemoveRequest) Header(key, value string) *VmNicServiceRemoveRequest {
@@ -24423,7 +24496,7 @@ func (p *VmNicServiceRemoveRequest) Async(async bool) *VmNicServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceRemoveRequest) send() *VmNicServiceRemoveResponse {
+func (p *VmNicServiceRemoveRequest) Send() *VmNicServiceRemoveResponse {
 
 }
 
@@ -24466,11 +24539,11 @@ func (op *VmNicService) Remove(
 }
 
 type VmNicServiceUpdateRequest struct {
-	vmNic  *VmNicService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	nic    *Nic
+	vmNicService *VmNicService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	nic          *Nic
 }
 
 func (p *VmNicServiceUpdateRequest) Header(key, value string) *VmNicServiceUpdateRequest {
@@ -24497,7 +24570,7 @@ func (p *VmNicServiceUpdateRequest) Nic(nic *Nic) *VmNicServiceUpdateRequest {
 	p.nic = nic
 	return p
 }
-func (p *VmNicServiceUpdateRequest) send() *VmNicServiceUpdateResponse {
+func (p *VmNicServiceUpdateRequest) Send() *VmNicServiceUpdateResponse {
 
 }
 
@@ -24618,10 +24691,10 @@ func NewSnapshotsService(connection *Connection, path string) *SnapshotsService 
 }
 
 type SnapshotsServiceAddRequest struct {
-	snapshots *SnapshotsService
-	header    map[string]string
-	query     map[string]string
-	snapshot  *Snapshot
+	snapshotsService *SnapshotsService
+	header           map[string]string
+	query            map[string]string
+	snapshot         *Snapshot
 }
 
 func (p *SnapshotsServiceAddRequest) Header(key, value string) *SnapshotsServiceAddRequest {
@@ -24644,8 +24717,10 @@ func (p *SnapshotsServiceAddRequest) Snapshot(snapshot *Snapshot) *SnapshotsServ
 	p.snapshot = snapshot
 	return p
 }
-func (p *SnapshotsServiceAddRequest) send() *SnapshotsServiceAddResponse {
+func (p *SnapshotsServiceAddRequest) Send() *SnapshotsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.snapshotsService.Connection.URL(), p.snapshotsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -24686,11 +24761,11 @@ func (op *SnapshotsService) Add(
 }
 
 type SnapshotsServiceListRequest struct {
-	snapshots  *SnapshotsService
-	header     map[string]string
-	query      map[string]string
-	allContent *bool
-	max        *int64
+	snapshotsService *SnapshotsService
+	header           map[string]string
+	query            map[string]string
+	allContent       *bool
+	max              *int64
 }
 
 func (p *SnapshotsServiceListRequest) Header(key, value string) *SnapshotsServiceListRequest {
@@ -24717,7 +24792,7 @@ func (p *SnapshotsServiceListRequest) Max(max int64) *SnapshotsServiceListReques
 	p.max = &max
 	return p
 }
-func (p *SnapshotsServiceListRequest) send() *SnapshotsServiceListResponse {
+func (p *SnapshotsServiceListRequest) Send() *SnapshotsServiceListResponse {
 
 }
 
@@ -24799,9 +24874,9 @@ func NewStorageDomainVmDiskAttachmentsService(connection *Connection, path strin
 }
 
 type StorageDomainVmDiskAttachmentsServiceListRequest struct {
-	storageDomainVmDiskAttachments *StorageDomainVmDiskAttachmentsService
-	header                         map[string]string
-	query                          map[string]string
+	storageDomainVmDiskAttachmentsService *StorageDomainVmDiskAttachmentsService
+	header                                map[string]string
+	query                                 map[string]string
 }
 
 func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Header(key, value string) *StorageDomainVmDiskAttachmentsServiceListRequest {
@@ -24820,7 +24895,7 @@ func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value stri
 	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentsServiceListRequest) send() *StorageDomainVmDiskAttachmentsServiceListResponse {
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Send() *StorageDomainVmDiskAttachmentsServiceListResponse {
 
 }
 
@@ -24887,9 +24962,9 @@ func NewImageService(connection *Connection, path string) *ImageService {
 }
 
 type ImageServiceGetRequest struct {
-	image  *ImageService
-	header map[string]string
-	query  map[string]string
+	imageService *ImageService
+	header       map[string]string
+	query        map[string]string
 }
 
 func (p *ImageServiceGetRequest) Header(key, value string) *ImageServiceGetRequest {
@@ -24908,7 +24983,7 @@ func (p *ImageServiceGetRequest) Query(key, value string) *ImageServiceGetReques
 	return p
 }
 
-func (p *ImageServiceGetRequest) send() *ImageServiceGetResponse {
+func (p *ImageServiceGetRequest) Send() *ImageServiceGetResponse {
 
 }
 
@@ -24936,7 +25011,7 @@ func (op *ImageService) Get(
 }
 
 type ImageServiceImportRequest struct {
-	image            *ImageService
+	imageService     *ImageService
 	header           map[string]string
 	query            map[string]string
 	async            *bool
@@ -24987,7 +25062,7 @@ func (p *ImageServiceImportRequest) Template(template *Template) *ImageServiceIm
 	p.template = template
 	return p
 }
-func (p *ImageServiceImportRequest) send() *ImageServiceImportResponse {
+func (p *ImageServiceImportRequest) Send() *ImageServiceImportResponse {
 
 }
 
@@ -25058,10 +25133,10 @@ func NewInstanceTypeNicsService(connection *Connection, path string) *InstanceTy
 }
 
 type InstanceTypeNicsServiceAddRequest struct {
-	instanceTypeNics *InstanceTypeNicsService
-	header           map[string]string
-	query            map[string]string
-	nic              *Nic
+	instanceTypeNicsService *InstanceTypeNicsService
+	header                  map[string]string
+	query                   map[string]string
+	nic                     *Nic
 }
 
 func (p *InstanceTypeNicsServiceAddRequest) Header(key, value string) *InstanceTypeNicsServiceAddRequest {
@@ -25084,8 +25159,10 @@ func (p *InstanceTypeNicsServiceAddRequest) Nic(nic *Nic) *InstanceTypeNicsServi
 	p.nic = nic
 	return p
 }
-func (p *InstanceTypeNicsServiceAddRequest) send() *InstanceTypeNicsServiceAddResponse {
+func (p *InstanceTypeNicsServiceAddRequest) Send() *InstanceTypeNicsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeNicsService.Connection.URL(), p.instanceTypeNicsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -25114,11 +25191,11 @@ func (op *InstanceTypeNicsService) Add(
 }
 
 type InstanceTypeNicsServiceListRequest struct {
-	instanceTypeNics *InstanceTypeNicsService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
-	search           *string
+	instanceTypeNicsService *InstanceTypeNicsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
+	search                  *string
 }
 
 func (p *InstanceTypeNicsServiceListRequest) Header(key, value string) *InstanceTypeNicsServiceListRequest {
@@ -25145,7 +25222,7 @@ func (p *InstanceTypeNicsServiceListRequest) Search(search string) *InstanceType
 	p.search = &search
 	return p
 }
-func (p *InstanceTypeNicsServiceListRequest) send() *InstanceTypeNicsServiceListResponse {
+func (p *InstanceTypeNicsServiceListRequest) Send() *InstanceTypeNicsServiceListResponse {
 
 }
 
@@ -25221,10 +25298,10 @@ func NewOperatingSystemsService(connection *Connection, path string) *OperatingS
 }
 
 type OperatingSystemsServiceListRequest struct {
-	operatingSystems *OperatingSystemsService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
+	operatingSystemsService *OperatingSystemsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
 func (p *OperatingSystemsServiceListRequest) Header(key, value string) *OperatingSystemsServiceListRequest {
@@ -25247,7 +25324,7 @@ func (p *OperatingSystemsServiceListRequest) Max(max int64) *OperatingSystemsSer
 	p.max = &max
 	return p
 }
-func (p *OperatingSystemsServiceListRequest) send() *OperatingSystemsServiceListResponse {
+func (p *OperatingSystemsServiceListRequest) Send() *OperatingSystemsServiceListResponse {
 
 }
 
@@ -25320,9 +25397,9 @@ func NewHostNicService(connection *Connection, path string) *HostNicService {
 }
 
 type HostNicServiceGetRequest struct {
-	hostNic *HostNicService
-	header  map[string]string
-	query   map[string]string
+	hostNicService *HostNicService
+	header         map[string]string
+	query          map[string]string
 }
 
 func (p *HostNicServiceGetRequest) Header(key, value string) *HostNicServiceGetRequest {
@@ -25341,7 +25418,7 @@ func (p *HostNicServiceGetRequest) Query(key, value string) *HostNicServiceGetRe
 	return p
 }
 
-func (p *HostNicServiceGetRequest) send() *HostNicServiceGetResponse {
+func (p *HostNicServiceGetRequest) Send() *HostNicServiceGetResponse {
 
 }
 
@@ -25369,7 +25446,7 @@ func (op *HostNicService) Get(
 }
 
 type HostNicServiceUpdateVirtualFunctionsConfigurationRequest struct {
-	hostNic                       *HostNicService
+	hostNicService                *HostNicService
 	header                        map[string]string
 	query                         map[string]string
 	async                         *bool
@@ -25400,7 +25477,7 @@ func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) VirtualFuncti
 	p.virtualFunctionsConfiguration = virtualFunctionsConfiguration
 	return p
 }
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) send() *HostNicServiceUpdateVirtualFunctionsConfigurationResponse {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Send() *HostNicServiceUpdateVirtualFunctionsConfigurationResponse {
 
 }
 
@@ -25527,10 +25604,10 @@ func NewIscsiBondsService(connection *Connection, path string) *IscsiBondsServic
 }
 
 type IscsiBondsServiceAddRequest struct {
-	iscsiBonds *IscsiBondsService
-	header     map[string]string
-	query      map[string]string
-	bond       *IscsiBond
+	iscsiBondsService *IscsiBondsService
+	header            map[string]string
+	query             map[string]string
+	bond              *IscsiBond
 }
 
 func (p *IscsiBondsServiceAddRequest) Header(key, value string) *IscsiBondsServiceAddRequest {
@@ -25553,8 +25630,10 @@ func (p *IscsiBondsServiceAddRequest) Bond(bond *IscsiBond) *IscsiBondsServiceAd
 	p.bond = bond
 	return p
 }
-func (p *IscsiBondsServiceAddRequest) send() *IscsiBondsServiceAddResponse {
+func (p *IscsiBondsServiceAddRequest) Send() *IscsiBondsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.iscsiBondsService.Connection.URL(), p.iscsiBondsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -25603,10 +25682,10 @@ func (op *IscsiBondsService) Add(
 }
 
 type IscsiBondsServiceListRequest struct {
-	iscsiBonds *IscsiBondsService
-	header     map[string]string
-	query      map[string]string
-	max        *int64
+	iscsiBondsService *IscsiBondsService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
 func (p *IscsiBondsServiceListRequest) Header(key, value string) *IscsiBondsServiceListRequest {
@@ -25629,7 +25708,7 @@ func (p *IscsiBondsServiceListRequest) Max(max int64) *IscsiBondsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *IscsiBondsServiceListRequest) send() *IscsiBondsServiceListResponse {
+func (p *IscsiBondsServiceListRequest) Send() *IscsiBondsServiceListResponse {
 
 }
 
@@ -25702,10 +25781,10 @@ func NewUsersService(connection *Connection, path string) *UsersService {
 }
 
 type UsersServiceAddRequest struct {
-	users  *UsersService
-	header map[string]string
-	query  map[string]string
-	user   *User
+	usersService *UsersService
+	header       map[string]string
+	query        map[string]string
+	user         *User
 }
 
 func (p *UsersServiceAddRequest) Header(key, value string) *UsersServiceAddRequest {
@@ -25728,8 +25807,10 @@ func (p *UsersServiceAddRequest) User(user *User) *UsersServiceAddRequest {
 	p.user = user
 	return p
 }
-func (p *UsersServiceAddRequest) send() *UsersServiceAddResponse {
+func (p *UsersServiceAddRequest) Send() *UsersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.usersService.Connection.URL(), p.usersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -25789,7 +25870,7 @@ func (op *UsersService) Add(
 }
 
 type UsersServiceListRequest struct {
-	users         *UsersService
+	usersService  *UsersService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -25825,7 +25906,7 @@ func (p *UsersServiceListRequest) Search(search string) *UsersServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *UsersServiceListRequest) send() *UsersServiceListResponse {
+func (p *UsersServiceListRequest) Send() *UsersServiceListResponse {
 
 }
 
@@ -25930,10 +26011,10 @@ func NewGroupsService(connection *Connection, path string) *GroupsService {
 }
 
 type GroupsServiceAddRequest struct {
-	groups *GroupsService
-	header map[string]string
-	query  map[string]string
-	group  *Group
+	groupsService *GroupsService
+	header        map[string]string
+	query         map[string]string
+	group         *Group
 }
 
 func (p *GroupsServiceAddRequest) Header(key, value string) *GroupsServiceAddRequest {
@@ -25956,8 +26037,10 @@ func (p *GroupsServiceAddRequest) Group(group *Group) *GroupsServiceAddRequest {
 	p.group = group
 	return p
 }
-func (p *GroupsServiceAddRequest) send() *GroupsServiceAddResponse {
+func (p *GroupsServiceAddRequest) Send() *GroupsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.groupsService.Connection.URL(), p.groupsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -26002,7 +26085,7 @@ func (op *GroupsService) Add(
 }
 
 type GroupsServiceListRequest struct {
-	groups        *GroupsService
+	groupsService *GroupsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -26038,7 +26121,7 @@ func (p *GroupsServiceListRequest) Search(search string) *GroupsServiceListReque
 	p.search = &search
 	return p
 }
-func (p *GroupsServiceListRequest) send() *GroupsServiceListResponse {
+func (p *GroupsServiceListRequest) Send() *GroupsServiceListResponse {
 
 }
 
@@ -26119,9 +26202,9 @@ func NewDomainService(connection *Connection, path string) *DomainService {
 }
 
 type DomainServiceGetRequest struct {
-	domain *DomainService
-	header map[string]string
-	query  map[string]string
+	domainService *DomainService
+	header        map[string]string
+	query         map[string]string
 }
 
 func (p *DomainServiceGetRequest) Header(key, value string) *DomainServiceGetRequest {
@@ -26140,7 +26223,7 @@ func (p *DomainServiceGetRequest) Query(key, value string) *DomainServiceGetRequ
 	return p
 }
 
-func (p *DomainServiceGetRequest) send() *DomainServiceGetResponse {
+func (p *DomainServiceGetRequest) Send() *DomainServiceGetResponse {
 
 }
 
@@ -26237,10 +26320,10 @@ func NewSshPublicKeysService(connection *Connection, path string) *SshPublicKeys
 }
 
 type SshPublicKeysServiceAddRequest struct {
-	sshPublicKeys *SshPublicKeysService
-	header        map[string]string
-	query         map[string]string
-	key           *SshPublicKey
+	sshPublicKeysService *SshPublicKeysService
+	header               map[string]string
+	query                map[string]string
+	key                  *SshPublicKey
 }
 
 func (p *SshPublicKeysServiceAddRequest) Header(key, value string) *SshPublicKeysServiceAddRequest {
@@ -26263,8 +26346,10 @@ func (p *SshPublicKeysServiceAddRequest) Key(key *SshPublicKey) *SshPublicKeysSe
 	p.key = key
 	return p
 }
-func (p *SshPublicKeysServiceAddRequest) send() *SshPublicKeysServiceAddResponse {
+func (p *SshPublicKeysServiceAddRequest) Send() *SshPublicKeysServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.sshPublicKeysService.Connection.URL(), p.sshPublicKeysService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -26292,10 +26377,10 @@ func (op *SshPublicKeysService) Add(
 }
 
 type SshPublicKeysServiceListRequest struct {
-	sshPublicKeys *SshPublicKeysService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	sshPublicKeysService *SshPublicKeysService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *SshPublicKeysServiceListRequest) Header(key, value string) *SshPublicKeysServiceListRequest {
@@ -26318,7 +26403,7 @@ func (p *SshPublicKeysServiceListRequest) Max(max int64) *SshPublicKeysServiceLi
 	p.max = &max
 	return p
 }
-func (p *SshPublicKeysServiceListRequest) send() *SshPublicKeysServiceListResponse {
+func (p *SshPublicKeysServiceListRequest) Send() *SshPublicKeysServiceListResponse {
 
 }
 
@@ -26391,9 +26476,9 @@ func NewDomainUserService(connection *Connection, path string) *DomainUserServic
 }
 
 type DomainUserServiceGetRequest struct {
-	domainUser *DomainUserService
-	header     map[string]string
-	query      map[string]string
+	domainUserService *DomainUserService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *DomainUserServiceGetRequest) Header(key, value string) *DomainUserServiceGetRequest {
@@ -26412,7 +26497,7 @@ func (p *DomainUserServiceGetRequest) Query(key, value string) *DomainUserServic
 	return p
 }
 
-func (p *DomainUserServiceGetRequest) send() *DomainUserServiceGetResponse {
+func (p *DomainUserServiceGetRequest) Send() *DomainUserServiceGetResponse {
 
 }
 
@@ -26490,9 +26575,9 @@ func NewUserService(connection *Connection, path string) *UserService {
 }
 
 type UserServiceGetRequest struct {
-	user   *UserService
-	header map[string]string
-	query  map[string]string
+	userService *UserService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *UserServiceGetRequest) Header(key, value string) *UserServiceGetRequest {
@@ -26511,7 +26596,7 @@ func (p *UserServiceGetRequest) Query(key, value string) *UserServiceGetRequest 
 	return p
 }
 
-func (p *UserServiceGetRequest) send() *UserServiceGetResponse {
+func (p *UserServiceGetRequest) Send() *UserServiceGetResponse {
 
 }
 
@@ -26565,10 +26650,10 @@ func (op *UserService) Get(
 }
 
 type UserServiceRemoveRequest struct {
-	user   *UserService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	userService *UserService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *UserServiceRemoveRequest) Header(key, value string) *UserServiceRemoveRequest {
@@ -26591,7 +26676,7 @@ func (p *UserServiceRemoveRequest) Async(async bool) *UserServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *UserServiceRemoveRequest) send() *UserServiceRemoveResponse {
+func (p *UserServiceRemoveRequest) Send() *UserServiceRemoveResponse {
 
 }
 
@@ -26700,10 +26785,10 @@ func NewDomainsService(connection *Connection, path string) *DomainsService {
 }
 
 type DomainsServiceListRequest struct {
-	domains *DomainsService
-	header  map[string]string
-	query   map[string]string
-	max     *int64
+	domainsService *DomainsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
 func (p *DomainsServiceListRequest) Header(key, value string) *DomainsServiceListRequest {
@@ -26726,7 +26811,7 @@ func (p *DomainsServiceListRequest) Max(max int64) *DomainsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *DomainsServiceListRequest) send() *DomainsServiceListResponse {
+func (p *DomainsServiceListRequest) Send() *DomainsServiceListResponse {
 
 }
 
@@ -26818,12 +26903,12 @@ func NewDomainUsersService(connection *Connection, path string) *DomainUsersServ
 }
 
 type DomainUsersServiceListRequest struct {
-	domainUsers   *DomainUsersService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	domainUsersService *DomainUsersService
+	header             map[string]string
+	query              map[string]string
+	caseSensitive      *bool
+	max                *int64
+	search             *string
 }
 
 func (p *DomainUsersServiceListRequest) Header(key, value string) *DomainUsersServiceListRequest {
@@ -26854,7 +26939,7 @@ func (p *DomainUsersServiceListRequest) Search(search string) *DomainUsersServic
 	p.search = &search
 	return p
 }
-func (p *DomainUsersServiceListRequest) send() *DomainUsersServiceListResponse {
+func (p *DomainUsersServiceListRequest) Send() *DomainUsersServiceListResponse {
 
 }
 
@@ -26956,12 +27041,12 @@ func NewDomainGroupsService(connection *Connection, path string) *DomainGroupsSe
 }
 
 type DomainGroupsServiceListRequest struct {
-	domainGroups  *DomainGroupsService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	domainGroupsService *DomainGroupsService
+	header              map[string]string
+	query               map[string]string
+	caseSensitive       *bool
+	max                 *int64
+	search              *string
 }
 
 func (p *DomainGroupsServiceListRequest) Header(key, value string) *DomainGroupsServiceListRequest {
@@ -26992,7 +27077,7 @@ func (p *DomainGroupsServiceListRequest) Search(search string) *DomainGroupsServ
 	p.search = &search
 	return p
 }
-func (p *DomainGroupsServiceListRequest) send() *DomainGroupsServiceListResponse {
+func (p *DomainGroupsServiceListRequest) Send() *DomainGroupsServiceListResponse {
 
 }
 
@@ -27072,9 +27157,9 @@ func NewGroupService(connection *Connection, path string) *GroupService {
 }
 
 type GroupServiceGetRequest struct {
-	group  *GroupService
-	header map[string]string
-	query  map[string]string
+	groupService *GroupService
+	header       map[string]string
+	query        map[string]string
 }
 
 func (p *GroupServiceGetRequest) Header(key, value string) *GroupServiceGetRequest {
@@ -27093,7 +27178,7 @@ func (p *GroupServiceGetRequest) Query(key, value string) *GroupServiceGetReques
 	return p
 }
 
-func (p *GroupServiceGetRequest) send() *GroupServiceGetResponse {
+func (p *GroupServiceGetRequest) Send() *GroupServiceGetResponse {
 
 }
 
@@ -27121,10 +27206,10 @@ func (op *GroupService) Get(
 }
 
 type GroupServiceRemoveRequest struct {
-	group  *GroupService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	groupService *GroupService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *GroupServiceRemoveRequest) Header(key, value string) *GroupServiceRemoveRequest {
@@ -27147,7 +27232,7 @@ func (p *GroupServiceRemoveRequest) Async(async bool) *GroupServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *GroupServiceRemoveRequest) send() *GroupServiceRemoveResponse {
+func (p *GroupServiceRemoveRequest) Send() *GroupServiceRemoveResponse {
 
 }
 
@@ -27238,9 +27323,9 @@ func NewDomainGroupService(connection *Connection, path string) *DomainGroupServ
 }
 
 type DomainGroupServiceGetRequest struct {
-	domainGroup *DomainGroupService
-	header      map[string]string
-	query       map[string]string
+	domainGroupService *DomainGroupService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *DomainGroupServiceGetRequest) Header(key, value string) *DomainGroupServiceGetRequest {
@@ -27259,7 +27344,7 @@ func (p *DomainGroupServiceGetRequest) Query(key, value string) *DomainGroupServ
 	return p
 }
 
-func (p *DomainGroupServiceGetRequest) send() *DomainGroupServiceGetResponse {
+func (p *DomainGroupServiceGetRequest) Send() *DomainGroupServiceGetResponse {
 
 }
 
@@ -27314,9 +27399,9 @@ func NewSshPublicKeyService(connection *Connection, path string) *SshPublicKeySe
 }
 
 type SshPublicKeyServiceGetRequest struct {
-	sshPublicKey *SshPublicKeyService
-	header       map[string]string
-	query        map[string]string
+	sshPublicKeyService *SshPublicKeyService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *SshPublicKeyServiceGetRequest) Header(key, value string) *SshPublicKeyServiceGetRequest {
@@ -27335,7 +27420,7 @@ func (p *SshPublicKeyServiceGetRequest) Query(key, value string) *SshPublicKeySe
 	return p
 }
 
-func (p *SshPublicKeyServiceGetRequest) send() *SshPublicKeyServiceGetResponse {
+func (p *SshPublicKeyServiceGetRequest) Send() *SshPublicKeyServiceGetResponse {
 
 }
 
@@ -27363,10 +27448,10 @@ func (op *SshPublicKeyService) Get(
 }
 
 type SshPublicKeyServiceRemoveRequest struct {
-	sshPublicKey *SshPublicKeyService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	sshPublicKeyService *SshPublicKeyService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *SshPublicKeyServiceRemoveRequest) Header(key, value string) *SshPublicKeyServiceRemoveRequest {
@@ -27389,7 +27474,7 @@ func (p *SshPublicKeyServiceRemoveRequest) Async(async bool) *SshPublicKeyServic
 	p.async = &async
 	return p
 }
-func (p *SshPublicKeyServiceRemoveRequest) send() *SshPublicKeyServiceRemoveResponse {
+func (p *SshPublicKeyServiceRemoveRequest) Send() *SshPublicKeyServiceRemoveResponse {
 
 }
 
@@ -27417,11 +27502,11 @@ func (op *SshPublicKeyService) Remove(
 }
 
 type SshPublicKeyServiceUpdateRequest struct {
-	sshPublicKey *SshPublicKeyService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	key          *SshPublicKey
+	sshPublicKeyService *SshPublicKeyService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
+	key                 *SshPublicKey
 }
 
 func (p *SshPublicKeyServiceUpdateRequest) Header(key, value string) *SshPublicKeyServiceUpdateRequest {
@@ -27448,7 +27533,7 @@ func (p *SshPublicKeyServiceUpdateRequest) Key(key *SshPublicKey) *SshPublicKeyS
 	p.key = key
 	return p
 }
-func (p *SshPublicKeyServiceUpdateRequest) send() *SshPublicKeyServiceUpdateResponse {
+func (p *SshPublicKeyServiceUpdateRequest) Send() *SshPublicKeyServiceUpdateResponse {
 
 }
 
@@ -27506,9 +27591,9 @@ func NewFenceAgentService(connection *Connection, path string) *FenceAgentServic
 }
 
 type FenceAgentServiceGetRequest struct {
-	fenceAgent *FenceAgentService
-	header     map[string]string
-	query      map[string]string
+	fenceAgentService *FenceAgentService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *FenceAgentServiceGetRequest) Header(key, value string) *FenceAgentServiceGetRequest {
@@ -27527,7 +27612,7 @@ func (p *FenceAgentServiceGetRequest) Query(key, value string) *FenceAgentServic
 	return p
 }
 
-func (p *FenceAgentServiceGetRequest) send() *FenceAgentServiceGetResponse {
+func (p *FenceAgentServiceGetRequest) Send() *FenceAgentServiceGetResponse {
 
 }
 
@@ -27555,10 +27640,10 @@ func (op *FenceAgentService) Get(
 }
 
 type FenceAgentServiceRemoveRequest struct {
-	fenceAgent *FenceAgentService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
+	fenceAgentService *FenceAgentService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
 func (p *FenceAgentServiceRemoveRequest) Header(key, value string) *FenceAgentServiceRemoveRequest {
@@ -27581,7 +27666,7 @@ func (p *FenceAgentServiceRemoveRequest) Async(async bool) *FenceAgentServiceRem
 	p.async = &async
 	return p
 }
-func (p *FenceAgentServiceRemoveRequest) send() *FenceAgentServiceRemoveResponse {
+func (p *FenceAgentServiceRemoveRequest) Send() *FenceAgentServiceRemoveResponse {
 
 }
 
@@ -27609,11 +27694,11 @@ func (op *FenceAgentService) Remove(
 }
 
 type FenceAgentServiceUpdateRequest struct {
-	fenceAgent *FenceAgentService
-	header     map[string]string
-	query      map[string]string
-	agent      *Agent
-	async      *bool
+	fenceAgentService *FenceAgentService
+	header            map[string]string
+	query             map[string]string
+	agent             *Agent
+	async             *bool
 }
 
 func (p *FenceAgentServiceUpdateRequest) Header(key, value string) *FenceAgentServiceUpdateRequest {
@@ -27640,7 +27725,7 @@ func (p *FenceAgentServiceUpdateRequest) Async(async bool) *FenceAgentServiceUpd
 	p.async = &async
 	return p
 }
-func (p *FenceAgentServiceUpdateRequest) send() *FenceAgentServiceUpdateResponse {
+func (p *FenceAgentServiceUpdateRequest) Send() *FenceAgentServiceUpdateResponse {
 
 }
 
@@ -27698,9 +27783,9 @@ func NewMacPoolService(connection *Connection, path string) *MacPoolService {
 }
 
 type MacPoolServiceGetRequest struct {
-	macPool *MacPoolService
-	header  map[string]string
-	query   map[string]string
+	macPoolService *MacPoolService
+	header         map[string]string
+	query          map[string]string
 }
 
 func (p *MacPoolServiceGetRequest) Header(key, value string) *MacPoolServiceGetRequest {
@@ -27719,7 +27804,7 @@ func (p *MacPoolServiceGetRequest) Query(key, value string) *MacPoolServiceGetRe
 	return p
 }
 
-func (p *MacPoolServiceGetRequest) send() *MacPoolServiceGetResponse {
+func (p *MacPoolServiceGetRequest) Send() *MacPoolServiceGetResponse {
 
 }
 
@@ -27747,10 +27832,10 @@ func (op *MacPoolService) Get(
 }
 
 type MacPoolServiceRemoveRequest struct {
-	macPool *MacPoolService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
+	macPoolService *MacPoolService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
 }
 
 func (p *MacPoolServiceRemoveRequest) Header(key, value string) *MacPoolServiceRemoveRequest {
@@ -27773,7 +27858,7 @@ func (p *MacPoolServiceRemoveRequest) Async(async bool) *MacPoolServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *MacPoolServiceRemoveRequest) send() *MacPoolServiceRemoveResponse {
+func (p *MacPoolServiceRemoveRequest) Send() *MacPoolServiceRemoveResponse {
 
 }
 
@@ -27807,11 +27892,11 @@ func (op *MacPoolService) Remove(
 }
 
 type MacPoolServiceUpdateRequest struct {
-	macPool *MacPoolService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	pool    *MacPool
+	macPoolService *MacPoolService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
+	pool           *MacPool
 }
 
 func (p *MacPoolServiceUpdateRequest) Header(key, value string) *MacPoolServiceUpdateRequest {
@@ -27838,7 +27923,7 @@ func (p *MacPoolServiceUpdateRequest) Pool(pool *MacPool) *MacPoolServiceUpdateR
 	p.pool = pool
 	return p
 }
-func (p *MacPoolServiceUpdateRequest) send() *MacPoolServiceUpdateResponse {
+func (p *MacPoolServiceUpdateRequest) Send() *MacPoolServiceUpdateResponse {
 
 }
 
@@ -27922,10 +28007,10 @@ func NewAssignedCpuProfilesService(connection *Connection, path string) *Assigne
 }
 
 type AssignedCpuProfilesServiceAddRequest struct {
-	assignedCpuProfiles *AssignedCpuProfilesService
-	header              map[string]string
-	query               map[string]string
-	profile             *CpuProfile
+	assignedCpuProfilesService *AssignedCpuProfilesService
+	header                     map[string]string
+	query                      map[string]string
+	profile                    *CpuProfile
 }
 
 func (p *AssignedCpuProfilesServiceAddRequest) Header(key, value string) *AssignedCpuProfilesServiceAddRequest {
@@ -27948,8 +28033,10 @@ func (p *AssignedCpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *Ass
 	p.profile = profile
 	return p
 }
-func (p *AssignedCpuProfilesServiceAddRequest) send() *AssignedCpuProfilesServiceAddResponse {
+func (p *AssignedCpuProfilesServiceAddRequest) Send() *AssignedCpuProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedCpuProfilesService.Connection.URL(), p.assignedCpuProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -27977,10 +28064,10 @@ func (op *AssignedCpuProfilesService) Add(
 }
 
 type AssignedCpuProfilesServiceListRequest struct {
-	assignedCpuProfiles *AssignedCpuProfilesService
-	header              map[string]string
-	query               map[string]string
-	max                 *int64
+	assignedCpuProfilesService *AssignedCpuProfilesService
+	header                     map[string]string
+	query                      map[string]string
+	max                        *int64
 }
 
 func (p *AssignedCpuProfilesServiceListRequest) Header(key, value string) *AssignedCpuProfilesServiceListRequest {
@@ -28003,7 +28090,7 @@ func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) *AssignedCpuProfi
 	p.max = &max
 	return p
 }
-func (p *AssignedCpuProfilesServiceListRequest) send() *AssignedCpuProfilesServiceListResponse {
+func (p *AssignedCpuProfilesServiceListRequest) Send() *AssignedCpuProfilesServiceListResponse {
 
 }
 
@@ -28075,10 +28162,10 @@ func NewStorageServerConnectionExtensionsService(connection *Connection, path st
 }
 
 type StorageServerConnectionExtensionsServiceAddRequest struct {
-	storageServerConnectionExtensions *StorageServerConnectionExtensionsService
-	header                            map[string]string
-	query                             map[string]string
-	extension                         *StorageConnectionExtension
+	storageServerConnectionExtensionsService *StorageServerConnectionExtensionsService
+	header                                   map[string]string
+	query                                    map[string]string
+	extension                                *StorageConnectionExtension
 }
 
 func (p *StorageServerConnectionExtensionsServiceAddRequest) Header(key, value string) *StorageServerConnectionExtensionsServiceAddRequest {
@@ -28101,8 +28188,10 @@ func (p *StorageServerConnectionExtensionsServiceAddRequest) Extension(extension
 	p.extension = extension
 	return p
 }
-func (p *StorageServerConnectionExtensionsServiceAddRequest) send() *StorageServerConnectionExtensionsServiceAddResponse {
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Send() *StorageServerConnectionExtensionsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionExtensionsService.Connection.URL(), p.storageServerConnectionExtensionsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -28147,10 +28236,10 @@ func (op *StorageServerConnectionExtensionsService) Add(
 }
 
 type StorageServerConnectionExtensionsServiceListRequest struct {
-	storageServerConnectionExtensions *StorageServerConnectionExtensionsService
-	header                            map[string]string
-	query                             map[string]string
-	max                               *int64
+	storageServerConnectionExtensionsService *StorageServerConnectionExtensionsService
+	header                                   map[string]string
+	query                                    map[string]string
+	max                                      *int64
 }
 
 func (p *StorageServerConnectionExtensionsServiceListRequest) Header(key, value string) *StorageServerConnectionExtensionsServiceListRequest {
@@ -28173,7 +28262,7 @@ func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) *St
 	p.max = &max
 	return p
 }
-func (p *StorageServerConnectionExtensionsServiceListRequest) send() *StorageServerConnectionExtensionsServiceListResponse {
+func (p *StorageServerConnectionExtensionsServiceListRequest) Send() *StorageServerConnectionExtensionsServiceListResponse {
 
 }
 
@@ -28245,9 +28334,9 @@ func NewPermissionService(connection *Connection, path string) *PermissionServic
 }
 
 type PermissionServiceGetRequest struct {
-	permission *PermissionService
-	header     map[string]string
-	query      map[string]string
+	permissionService *PermissionService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *PermissionServiceGetRequest) Header(key, value string) *PermissionServiceGetRequest {
@@ -28266,7 +28355,7 @@ func (p *PermissionServiceGetRequest) Query(key, value string) *PermissionServic
 	return p
 }
 
-func (p *PermissionServiceGetRequest) send() *PermissionServiceGetResponse {
+func (p *PermissionServiceGetRequest) Send() *PermissionServiceGetResponse {
 
 }
 
@@ -28294,10 +28383,10 @@ func (op *PermissionService) Get(
 }
 
 type PermissionServiceRemoveRequest struct {
-	permission *PermissionService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
+	permissionService *PermissionService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
 func (p *PermissionServiceRemoveRequest) Header(key, value string) *PermissionServiceRemoveRequest {
@@ -28320,7 +28409,7 @@ func (p *PermissionServiceRemoveRequest) Async(async bool) *PermissionServiceRem
 	p.async = &async
 	return p
 }
-func (p *PermissionServiceRemoveRequest) send() *PermissionServiceRemoveResponse {
+func (p *PermissionServiceRemoveRequest) Send() *PermissionServiceRemoveResponse {
 
 }
 
@@ -28375,9 +28464,9 @@ func NewDiskProfileService(connection *Connection, path string) *DiskProfileServ
 }
 
 type DiskProfileServiceGetRequest struct {
-	diskProfile *DiskProfileService
-	header      map[string]string
-	query       map[string]string
+	diskProfileService *DiskProfileService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *DiskProfileServiceGetRequest) Header(key, value string) *DiskProfileServiceGetRequest {
@@ -28396,7 +28485,7 @@ func (p *DiskProfileServiceGetRequest) Query(key, value string) *DiskProfileServ
 	return p
 }
 
-func (p *DiskProfileServiceGetRequest) send() *DiskProfileServiceGetResponse {
+func (p *DiskProfileServiceGetRequest) Send() *DiskProfileServiceGetResponse {
 
 }
 
@@ -28424,10 +28513,10 @@ func (op *DiskProfileService) Get(
 }
 
 type DiskProfileServiceRemoveRequest struct {
-	diskProfile *DiskProfileService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	diskProfileService *DiskProfileService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *DiskProfileServiceRemoveRequest) Header(key, value string) *DiskProfileServiceRemoveRequest {
@@ -28450,7 +28539,7 @@ func (p *DiskProfileServiceRemoveRequest) Async(async bool) *DiskProfileServiceR
 	p.async = &async
 	return p
 }
-func (p *DiskProfileServiceRemoveRequest) send() *DiskProfileServiceRemoveResponse {
+func (p *DiskProfileServiceRemoveRequest) Send() *DiskProfileServiceRemoveResponse {
 
 }
 
@@ -28478,11 +28567,11 @@ func (op *DiskProfileService) Remove(
 }
 
 type DiskProfileServiceUpdateRequest struct {
-	diskProfile *DiskProfileService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
-	profile     *DiskProfile
+	diskProfileService *DiskProfileService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	profile            *DiskProfile
 }
 
 func (p *DiskProfileServiceUpdateRequest) Header(key, value string) *DiskProfileServiceUpdateRequest {
@@ -28509,7 +28598,7 @@ func (p *DiskProfileServiceUpdateRequest) Profile(profile *DiskProfile) *DiskPro
 	p.profile = profile
 	return p
 }
-func (p *DiskProfileServiceUpdateRequest) send() *DiskProfileServiceUpdateResponse {
+func (p *DiskProfileServiceUpdateRequest) Send() *DiskProfileServiceUpdateResponse {
 
 }
 
@@ -28580,9 +28669,9 @@ func NewAffinityGroupService(connection *Connection, path string) *AffinityGroup
 }
 
 type AffinityGroupServiceGetRequest struct {
-	affinityGroup *AffinityGroupService
-	header        map[string]string
-	query         map[string]string
+	affinityGroupService *AffinityGroupService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *AffinityGroupServiceGetRequest) Header(key, value string) *AffinityGroupServiceGetRequest {
@@ -28601,7 +28690,7 @@ func (p *AffinityGroupServiceGetRequest) Query(key, value string) *AffinityGroup
 	return p
 }
 
-func (p *AffinityGroupServiceGetRequest) send() *AffinityGroupServiceGetResponse {
+func (p *AffinityGroupServiceGetRequest) Send() *AffinityGroupServiceGetResponse {
 
 }
 
@@ -28639,10 +28728,10 @@ func (op *AffinityGroupService) Get(
 }
 
 type AffinityGroupServiceRemoveRequest struct {
-	affinityGroup *AffinityGroupService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	affinityGroupService *AffinityGroupService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *AffinityGroupServiceRemoveRequest) Header(key, value string) *AffinityGroupServiceRemoveRequest {
@@ -28665,7 +28754,7 @@ func (p *AffinityGroupServiceRemoveRequest) Async(async bool) *AffinityGroupServ
 	p.async = &async
 	return p
 }
-func (p *AffinityGroupServiceRemoveRequest) send() *AffinityGroupServiceRemoveResponse {
+func (p *AffinityGroupServiceRemoveRequest) Send() *AffinityGroupServiceRemoveResponse {
 
 }
 
@@ -28698,11 +28787,11 @@ func (op *AffinityGroupService) Remove(
 }
 
 type AffinityGroupServiceUpdateRequest struct {
-	affinityGroup *AffinityGroupService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	group         *AffinityGroup
+	affinityGroupService *AffinityGroupService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	group                *AffinityGroup
 }
 
 func (p *AffinityGroupServiceUpdateRequest) Header(key, value string) *AffinityGroupServiceUpdateRequest {
@@ -28729,7 +28818,7 @@ func (p *AffinityGroupServiceUpdateRequest) Group(group *AffinityGroup) *Affinit
 	p.group = group
 	return p
 }
-func (p *AffinityGroupServiceUpdateRequest) send() *AffinityGroupServiceUpdateResponse {
+func (p *AffinityGroupServiceUpdateRequest) Send() *AffinityGroupServiceUpdateResponse {
 
 }
 
@@ -28808,10 +28897,10 @@ func NewUnmanagedNetworksService(connection *Connection, path string) *Unmanaged
 }
 
 type UnmanagedNetworksServiceListRequest struct {
-	unmanagedNetworks *UnmanagedNetworksService
-	header            map[string]string
-	query             map[string]string
-	max               *int64
+	unmanagedNetworksService *UnmanagedNetworksService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
 func (p *UnmanagedNetworksServiceListRequest) Header(key, value string) *UnmanagedNetworksServiceListRequest {
@@ -28834,7 +28923,7 @@ func (p *UnmanagedNetworksServiceListRequest) Max(max int64) *UnmanagedNetworksS
 	p.max = &max
 	return p
 }
-func (p *UnmanagedNetworksServiceListRequest) send() *UnmanagedNetworksServiceListResponse {
+func (p *UnmanagedNetworksServiceListRequest) Send() *UnmanagedNetworksServiceListResponse {
 
 }
 
@@ -28906,7 +28995,7 @@ func NewVmsService(connection *Connection, path string) *VmsService {
 }
 
 type VmsServiceAddRequest struct {
-	vms              *VmsService
+	vmsService       *VmsService
 	header           map[string]string
 	query            map[string]string
 	clone            *bool
@@ -28942,8 +29031,16 @@ func (p *VmsServiceAddRequest) Vm(vm *Vm) *VmsServiceAddRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmsServiceAddRequest) send() *VmsServiceAddResponse {
+func (p *VmsServiceAddRequest) Send() *VmsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmsService.Connection.URL(), p.vmsService.Path)
+	values := make(url.Values)
+	if clone != null {
+		fmt.Println("test")
+	}
+	if clonePermissions != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -29110,7 +29207,7 @@ func (op *VmsService) Add(
 }
 
 type VmsServiceListRequest struct {
-	vms           *VmsService
+	vmsService    *VmsService
 	header        map[string]string
 	query         map[string]string
 	allContent    *bool
@@ -29156,7 +29253,7 @@ func (p *VmsServiceListRequest) Search(search string) *VmsServiceListRequest {
 	p.search = &search
 	return p
 }
-func (p *VmsServiceListRequest) send() *VmsServiceListResponse {
+func (p *VmsServiceListRequest) Send() *VmsServiceListResponse {
 
 }
 
@@ -29254,9 +29351,9 @@ func NewStorageDomainTemplateService(connection *Connection, path string) *Stora
 }
 
 type StorageDomainTemplateServiceGetRequest struct {
-	storageDomainTemplate *StorageDomainTemplateService
-	header                map[string]string
-	query                 map[string]string
+	storageDomainTemplateService *StorageDomainTemplateService
+	header                       map[string]string
+	query                        map[string]string
 }
 
 func (p *StorageDomainTemplateServiceGetRequest) Header(key, value string) *StorageDomainTemplateServiceGetRequest {
@@ -29275,7 +29372,7 @@ func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) *Stora
 	return p
 }
 
-func (p *StorageDomainTemplateServiceGetRequest) send() *StorageDomainTemplateServiceGetResponse {
+func (p *StorageDomainTemplateServiceGetRequest) Send() *StorageDomainTemplateServiceGetResponse {
 
 }
 
@@ -29303,16 +29400,16 @@ func (op *StorageDomainTemplateService) Get(
 }
 
 type StorageDomainTemplateServiceImportRequest struct {
-	storageDomainTemplate *StorageDomainTemplateService
-	header                map[string]string
-	query                 map[string]string
-	async                 *bool
-	clone                 *bool
-	cluster               *Cluster
-	exclusive             *bool
-	storageDomain         *StorageDomain
-	template              *Template
-	vm                    *Vm
+	storageDomainTemplateService *StorageDomainTemplateService
+	header                       map[string]string
+	query                        map[string]string
+	async                        *bool
+	clone                        *bool
+	cluster                      *Cluster
+	exclusive                    *bool
+	storageDomain                *StorageDomain
+	template                     *Template
+	vm                           *Vm
 }
 
 func (p *StorageDomainTemplateServiceImportRequest) Header(key, value string) *StorageDomainTemplateServiceImportRequest {
@@ -29359,7 +29456,7 @@ func (p *StorageDomainTemplateServiceImportRequest) Vm(vm *Vm) *StorageDomainTem
 	p.vm = vm
 	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) send() *StorageDomainTemplateServiceImportResponse {
+func (p *StorageDomainTemplateServiceImportRequest) Send() *StorageDomainTemplateServiceImportResponse {
 
 }
 
@@ -29419,15 +29516,15 @@ func (op *StorageDomainTemplateService) Import(
 }
 
 type StorageDomainTemplateServiceRegisterRequest struct {
-	storageDomainTemplate *StorageDomainTemplateService
-	header                map[string]string
-	query                 map[string]string
-	allowPartialImport    *bool
-	async                 *bool
-	clone                 *bool
-	cluster               *Cluster
-	exclusive             *bool
-	template              *Template
+	storageDomainTemplateService *StorageDomainTemplateService
+	header                       map[string]string
+	query                        map[string]string
+	allowPartialImport           *bool
+	async                        *bool
+	clone                        *bool
+	cluster                      *Cluster
+	exclusive                    *bool
+	template                     *Template
 }
 
 func (p *StorageDomainTemplateServiceRegisterRequest) Header(key, value string) *StorageDomainTemplateServiceRegisterRequest {
@@ -29470,7 +29567,7 @@ func (p *StorageDomainTemplateServiceRegisterRequest) Template(template *Templat
 	p.template = template
 	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) send() *StorageDomainTemplateServiceRegisterResponse {
+func (p *StorageDomainTemplateServiceRegisterRequest) Send() *StorageDomainTemplateServiceRegisterResponse {
 
 }
 
@@ -29511,10 +29608,10 @@ func (op *StorageDomainTemplateService) Register(
 }
 
 type StorageDomainTemplateServiceRemoveRequest struct {
-	storageDomainTemplate *StorageDomainTemplateService
-	header                map[string]string
-	query                 map[string]string
-	async                 *bool
+	storageDomainTemplateService *StorageDomainTemplateService
+	header                       map[string]string
+	query                        map[string]string
+	async                        *bool
 }
 
 func (p *StorageDomainTemplateServiceRemoveRequest) Header(key, value string) *StorageDomainTemplateServiceRemoveRequest {
@@ -29537,7 +29634,7 @@ func (p *StorageDomainTemplateServiceRemoveRequest) Async(async bool) *StorageDo
 	p.async = &async
 	return p
 }
-func (p *StorageDomainTemplateServiceRemoveRequest) send() *StorageDomainTemplateServiceRemoveResponse {
+func (p *StorageDomainTemplateServiceRemoveRequest) Send() *StorageDomainTemplateServiceRemoveResponse {
 
 }
 
@@ -29605,10 +29702,10 @@ func NewVmPoolsService(connection *Connection, path string) *VmPoolsService {
 }
 
 type VmPoolsServiceAddRequest struct {
-	vmPools *VmPoolsService
-	header  map[string]string
-	query   map[string]string
-	pool    *VmPool
+	vmPoolsService *VmPoolsService
+	header         map[string]string
+	query          map[string]string
+	pool           *VmPool
 }
 
 func (p *VmPoolsServiceAddRequest) Header(key, value string) *VmPoolsServiceAddRequest {
@@ -29631,8 +29728,10 @@ func (p *VmPoolsServiceAddRequest) Pool(pool *VmPool) *VmPoolsServiceAddRequest 
 	p.pool = pool
 	return p
 }
-func (p *VmPoolsServiceAddRequest) send() *VmPoolsServiceAddResponse {
+func (p *VmPoolsServiceAddRequest) Send() *VmPoolsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmPoolsService.Connection.URL(), p.vmPoolsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -29681,13 +29780,13 @@ func (op *VmPoolsService) Add(
 }
 
 type VmPoolsServiceListRequest struct {
-	vmPools       *VmPoolsService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	filter        *bool
-	max           *int64
-	search        *string
+	vmPoolsService *VmPoolsService
+	header         map[string]string
+	query          map[string]string
+	caseSensitive  *bool
+	filter         *bool
+	max            *int64
+	search         *string
 }
 
 func (p *VmPoolsServiceListRequest) Header(key, value string) *VmPoolsServiceListRequest {
@@ -29722,7 +29821,7 @@ func (p *VmPoolsServiceListRequest) Search(search string) *VmPoolsServiceListReq
 	p.search = &search
 	return p
 }
-func (p *VmPoolsServiceListRequest) send() *VmPoolsServiceListResponse {
+func (p *VmPoolsServiceListRequest) Send() *VmPoolsServiceListResponse {
 
 }
 
@@ -29821,10 +29920,10 @@ func NewAssignedDiskProfilesService(connection *Connection, path string) *Assign
 }
 
 type AssignedDiskProfilesServiceAddRequest struct {
-	assignedDiskProfiles *AssignedDiskProfilesService
-	header               map[string]string
-	query                map[string]string
-	profile              *DiskProfile
+	assignedDiskProfilesService *AssignedDiskProfilesService
+	header                      map[string]string
+	query                       map[string]string
+	profile                     *DiskProfile
 }
 
 func (p *AssignedDiskProfilesServiceAddRequest) Header(key, value string) *AssignedDiskProfilesServiceAddRequest {
@@ -29847,8 +29946,10 @@ func (p *AssignedDiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *A
 	p.profile = profile
 	return p
 }
-func (p *AssignedDiskProfilesServiceAddRequest) send() *AssignedDiskProfilesServiceAddResponse {
+func (p *AssignedDiskProfilesServiceAddRequest) Send() *AssignedDiskProfilesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedDiskProfilesService.Connection.URL(), p.assignedDiskProfilesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -29876,10 +29977,10 @@ func (op *AssignedDiskProfilesService) Add(
 }
 
 type AssignedDiskProfilesServiceListRequest struct {
-	assignedDiskProfiles *AssignedDiskProfilesService
-	header               map[string]string
-	query                map[string]string
-	max                  *int64
+	assignedDiskProfilesService *AssignedDiskProfilesService
+	header                      map[string]string
+	query                       map[string]string
+	max                         *int64
 }
 
 func (p *AssignedDiskProfilesServiceListRequest) Header(key, value string) *AssignedDiskProfilesServiceListRequest {
@@ -29902,7 +30003,7 @@ func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) *AssignedDiskPro
 	p.max = &max
 	return p
 }
-func (p *AssignedDiskProfilesServiceListRequest) send() *AssignedDiskProfilesServiceListResponse {
+func (p *AssignedDiskProfilesServiceListRequest) Send() *AssignedDiskProfilesServiceListResponse {
 
 }
 
@@ -29975,12 +30076,12 @@ func NewStepService(connection *Connection, path string) *StepService {
 }
 
 type StepServiceEndRequest struct {
-	step      *StepService
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	force     *bool
-	succeeded *bool
+	stepService *StepService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
+	force       *bool
+	succeeded   *bool
 }
 
 func (p *StepServiceEndRequest) Header(key, value string) *StepServiceEndRequest {
@@ -30011,7 +30112,7 @@ func (p *StepServiceEndRequest) Succeeded(succeeded bool) *StepServiceEndRequest
 	p.succeeded = &succeeded
 	return p
 }
-func (p *StepServiceEndRequest) send() *StepServiceEndResponse {
+func (p *StepServiceEndRequest) Send() *StepServiceEndResponse {
 
 }
 
@@ -30060,9 +30161,9 @@ func (op *StepService) End(
 }
 
 type StepServiceGetRequest struct {
-	step   *StepService
-	header map[string]string
-	query  map[string]string
+	stepService *StepService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *StepServiceGetRequest) Header(key, value string) *StepServiceGetRequest {
@@ -30081,7 +30182,7 @@ func (p *StepServiceGetRequest) Query(key, value string) *StepServiceGetRequest 
 	return p
 }
 
-func (p *StepServiceGetRequest) send() *StepServiceGetResponse {
+func (p *StepServiceGetRequest) Send() *StepServiceGetResponse {
 
 }
 
@@ -30171,11 +30272,11 @@ func NewAttachedStorageDomainDisksService(connection *Connection, path string) *
 }
 
 type AttachedStorageDomainDisksServiceAddRequest struct {
-	attachedStorageDomainDisks *AttachedStorageDomainDisksService
-	header                     map[string]string
-	query                      map[string]string
-	disk                       *Disk
-	unregistered               *bool
+	attachedStorageDomainDisksService *AttachedStorageDomainDisksService
+	header                            map[string]string
+	query                             map[string]string
+	disk                              *Disk
+	unregistered                      *bool
 }
 
 func (p *AttachedStorageDomainDisksServiceAddRequest) Header(key, value string) *AttachedStorageDomainDisksServiceAddRequest {
@@ -30202,8 +30303,13 @@ func (p *AttachedStorageDomainDisksServiceAddRequest) Unregistered(unregistered 
 	p.unregistered = &unregistered
 	return p
 }
-func (p *AttachedStorageDomainDisksServiceAddRequest) send() *AttachedStorageDomainDisksServiceAddResponse {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Send() *AttachedStorageDomainDisksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainDisksService.Connection.URL(), p.attachedStorageDomainDisksService.Path)
+	values := make(url.Values)
+	if unregistered != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -30244,10 +30350,10 @@ func (op *AttachedStorageDomainDisksService) Add(
 }
 
 type AttachedStorageDomainDisksServiceListRequest struct {
-	attachedStorageDomainDisks *AttachedStorageDomainDisksService
-	header                     map[string]string
-	query                      map[string]string
-	max                        *int64
+	attachedStorageDomainDisksService *AttachedStorageDomainDisksService
+	header                            map[string]string
+	query                             map[string]string
+	max                               *int64
 }
 
 func (p *AttachedStorageDomainDisksServiceListRequest) Header(key, value string) *AttachedStorageDomainDisksServiceListRequest {
@@ -30270,7 +30376,7 @@ func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) *AttachedS
 	p.max = &max
 	return p
 }
-func (p *AttachedStorageDomainDisksServiceListRequest) send() *AttachedStorageDomainDisksServiceListResponse {
+func (p *AttachedStorageDomainDisksServiceListRequest) Send() *AttachedStorageDomainDisksServiceListResponse {
 
 }
 
@@ -30358,9 +30464,9 @@ func NewNetworkFilterService(connection *Connection, path string) *NetworkFilter
 }
 
 type NetworkFilterServiceGetRequest struct {
-	networkFilter *NetworkFilterService
-	header        map[string]string
-	query         map[string]string
+	networkFilterService *NetworkFilterService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *NetworkFilterServiceGetRequest) Header(key, value string) *NetworkFilterServiceGetRequest {
@@ -30379,7 +30485,7 @@ func (p *NetworkFilterServiceGetRequest) Query(key, value string) *NetworkFilter
 	return p
 }
 
-func (p *NetworkFilterServiceGetRequest) send() *NetworkFilterServiceGetResponse {
+func (p *NetworkFilterServiceGetRequest) Send() *NetworkFilterServiceGetResponse {
 
 }
 
@@ -30435,10 +30541,10 @@ func NewVmDisksService(connection *Connection, path string) *VmDisksService {
 }
 
 type VmDisksServiceAddRequest struct {
-	vmDisks *VmDisksService
-	header  map[string]string
-	query   map[string]string
-	disk    *Disk
+	vmDisksService *VmDisksService
+	header         map[string]string
+	query          map[string]string
+	disk           *Disk
 }
 
 func (p *VmDisksServiceAddRequest) Header(key, value string) *VmDisksServiceAddRequest {
@@ -30461,8 +30567,10 @@ func (p *VmDisksServiceAddRequest) Disk(disk *Disk) *VmDisksServiceAddRequest {
 	p.disk = disk
 	return p
 }
-func (p *VmDisksServiceAddRequest) send() *VmDisksServiceAddResponse {
+func (p *VmDisksServiceAddRequest) Send() *VmDisksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmDisksService.Connection.URL(), p.vmDisksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -30490,10 +30598,10 @@ func (op *VmDisksService) Add(
 }
 
 type VmDisksServiceListRequest struct {
-	vmDisks *VmDisksService
-	header  map[string]string
-	query   map[string]string
-	max     *int64
+	vmDisksService *VmDisksService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
 func (p *VmDisksServiceListRequest) Header(key, value string) *VmDisksServiceListRequest {
@@ -30516,7 +30624,7 @@ func (p *VmDisksServiceListRequest) Max(max int64) *VmDisksServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *VmDisksServiceListRequest) send() *VmDisksServiceListResponse {
+func (p *VmDisksServiceListRequest) Send() *VmDisksServiceListResponse {
 
 }
 
@@ -30591,10 +30699,10 @@ func NewDiskAttachmentsService(connection *Connection, path string) *DiskAttachm
 }
 
 type DiskAttachmentsServiceAddRequest struct {
-	diskAttachments *DiskAttachmentsService
-	header          map[string]string
-	query           map[string]string
-	attachment      *DiskAttachment
+	diskAttachmentsService *DiskAttachmentsService
+	header                 map[string]string
+	query                  map[string]string
+	attachment             *DiskAttachment
 }
 
 func (p *DiskAttachmentsServiceAddRequest) Header(key, value string) *DiskAttachmentsServiceAddRequest {
@@ -30617,8 +30725,10 @@ func (p *DiskAttachmentsServiceAddRequest) Attachment(attachment *DiskAttachment
 	p.attachment = attachment
 	return p
 }
-func (p *DiskAttachmentsServiceAddRequest) send() *DiskAttachmentsServiceAddResponse {
+func (p *DiskAttachmentsServiceAddRequest) Send() *DiskAttachmentsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.diskAttachmentsService.Connection.URL(), p.diskAttachmentsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -30683,9 +30793,9 @@ func (op *DiskAttachmentsService) Add(
 }
 
 type DiskAttachmentsServiceListRequest struct {
-	diskAttachments *DiskAttachmentsService
-	header          map[string]string
-	query           map[string]string
+	diskAttachmentsService *DiskAttachmentsService
+	header                 map[string]string
+	query                  map[string]string
 }
 
 func (p *DiskAttachmentsServiceListRequest) Header(key, value string) *DiskAttachmentsServiceListRequest {
@@ -30704,7 +30814,7 @@ func (p *DiskAttachmentsServiceListRequest) Query(key, value string) *DiskAttach
 	return p
 }
 
-func (p *DiskAttachmentsServiceListRequest) send() *DiskAttachmentsServiceListResponse {
+func (p *DiskAttachmentsServiceListRequest) Send() *DiskAttachmentsServiceListResponse {
 
 }
 
@@ -30776,11 +30886,11 @@ func NewStorageDomainDiskService(connection *Connection, path string) *StorageDo
 }
 
 type StorageDomainDiskServiceCopyRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
-	disk              *Disk
-	storageDomain     *StorageDomain
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
+	disk                     *Disk
+	storageDomain            *StorageDomain
 }
 
 func (p *StorageDomainDiskServiceCopyRequest) Header(key, value string) *StorageDomainDiskServiceCopyRequest {
@@ -30807,7 +30917,7 @@ func (p *StorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *Stora
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceCopyRequest) send() *StorageDomainDiskServiceCopyResponse {
+func (p *StorageDomainDiskServiceCopyRequest) Send() *StorageDomainDiskServiceCopyResponse {
 
 }
 
@@ -30841,10 +30951,10 @@ func (op *StorageDomainDiskService) Copy(
 }
 
 type StorageDomainDiskServiceExportRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
-	storageDomain     *StorageDomain
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
+	storageDomain            *StorageDomain
 }
 
 func (p *StorageDomainDiskServiceExportRequest) Header(key, value string) *StorageDomainDiskServiceExportRequest {
@@ -30867,7 +30977,7 @@ func (p *StorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *Sto
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceExportRequest) send() *StorageDomainDiskServiceExportResponse {
+func (p *StorageDomainDiskServiceExportRequest) Send() *StorageDomainDiskServiceExportResponse {
 
 }
 
@@ -30898,9 +31008,9 @@ func (op *StorageDomainDiskService) Export(
 }
 
 type StorageDomainDiskServiceGetRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *StorageDomainDiskServiceGetRequest) Header(key, value string) *StorageDomainDiskServiceGetRequest {
@@ -30919,7 +31029,7 @@ func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) *StorageDo
 	return p
 }
 
-func (p *StorageDomainDiskServiceGetRequest) send() *StorageDomainDiskServiceGetResponse {
+func (p *StorageDomainDiskServiceGetRequest) Send() *StorageDomainDiskServiceGetResponse {
 
 }
 
@@ -30948,12 +31058,12 @@ func (op *StorageDomainDiskService) Get(
 }
 
 type StorageDomainDiskServiceMoveRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
-	filter            *bool
-	storageDomain     *StorageDomain
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
+	filter                   *bool
+	storageDomain            *StorageDomain
 }
 
 func (p *StorageDomainDiskServiceMoveRequest) Header(key, value string) *StorageDomainDiskServiceMoveRequest {
@@ -30984,7 +31094,7 @@ func (p *StorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *Stora
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceMoveRequest) send() *StorageDomainDiskServiceMoveResponse {
+func (p *StorageDomainDiskServiceMoveRequest) Send() *StorageDomainDiskServiceMoveResponse {
 
 }
 
@@ -31021,9 +31131,9 @@ func (op *StorageDomainDiskService) Move(
 }
 
 type StorageDomainDiskServiceRemoveRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *StorageDomainDiskServiceRemoveRequest) Header(key, value string) *StorageDomainDiskServiceRemoveRequest {
@@ -31042,7 +31152,7 @@ func (p *StorageDomainDiskServiceRemoveRequest) Query(key, value string) *Storag
 	return p
 }
 
-func (p *StorageDomainDiskServiceRemoveRequest) send() *StorageDomainDiskServiceRemoveResponse {
+func (p *StorageDomainDiskServiceRemoveRequest) Send() *StorageDomainDiskServiceRemoveResponse {
 
 }
 
@@ -31067,9 +31177,9 @@ func (op *StorageDomainDiskService) Remove(
 }
 
 type StorageDomainDiskServiceSparsifyRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *StorageDomainDiskServiceSparsifyRequest) Header(key, value string) *StorageDomainDiskServiceSparsifyRequest {
@@ -31088,7 +31198,7 @@ func (p *StorageDomainDiskServiceSparsifyRequest) Query(key, value string) *Stor
 	return p
 }
 
-func (p *StorageDomainDiskServiceSparsifyRequest) send() *StorageDomainDiskServiceSparsifyResponse {
+func (p *StorageDomainDiskServiceSparsifyRequest) Send() *StorageDomainDiskServiceSparsifyResponse {
 
 }
 
@@ -31111,10 +31221,10 @@ func (op *StorageDomainDiskService) Sparsify(
 }
 
 type StorageDomainDiskServiceUpdateRequest struct {
-	storageDomainDisk *StorageDomainDiskService
-	header            map[string]string
-	query             map[string]string
-	disk              *Disk
+	storageDomainDiskService *StorageDomainDiskService
+	header                   map[string]string
+	query                    map[string]string
+	disk                     *Disk
 }
 
 func (p *StorageDomainDiskServiceUpdateRequest) Header(key, value string) *StorageDomainDiskServiceUpdateRequest {
@@ -31137,7 +31247,7 @@ func (p *StorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *StorageDomainD
 	p.disk = disk
 	return p
 }
-func (p *StorageDomainDiskServiceUpdateRequest) send() *StorageDomainDiskServiceUpdateResponse {
+func (p *StorageDomainDiskServiceUpdateRequest) Send() *StorageDomainDiskServiceUpdateResponse {
 
 }
 
@@ -31227,10 +31337,10 @@ func NewHostHooksService(connection *Connection, path string) *HostHooksService 
 }
 
 type HostHooksServiceListRequest struct {
-	hostHooks *HostHooksService
-	header    map[string]string
-	query     map[string]string
-	max       *int64
+	hostHooksService *HostHooksService
+	header           map[string]string
+	query            map[string]string
+	max              *int64
 }
 
 func (p *HostHooksServiceListRequest) Header(key, value string) *HostHooksServiceListRequest {
@@ -31253,7 +31363,7 @@ func (p *HostHooksServiceListRequest) Max(max int64) *HostHooksServiceListReques
 	p.max = &max
 	return p
 }
-func (p *HostHooksServiceListRequest) send() *HostHooksServiceListResponse {
+func (p *HostHooksServiceListRequest) Send() *HostHooksServiceListResponse {
 
 }
 
@@ -31325,10 +31435,10 @@ func NewStorageDomainsService(connection *Connection, path string) *StorageDomai
 }
 
 type StorageDomainsServiceAddRequest struct {
-	storageDomains *StorageDomainsService
-	header         map[string]string
-	query          map[string]string
-	storageDomain  *StorageDomain
+	storageDomainsService *StorageDomainsService
+	header                map[string]string
+	query                 map[string]string
+	storageDomain         *StorageDomain
 }
 
 func (p *StorageDomainsServiceAddRequest) Header(key, value string) *StorageDomainsServiceAddRequest {
@@ -31351,8 +31461,10 @@ func (p *StorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDo
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainsServiceAddRequest) send() *StorageDomainsServiceAddResponse {
+func (p *StorageDomainsServiceAddRequest) Send() *StorageDomainsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainsService.Connection.URL(), p.storageDomainsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -31442,13 +31554,13 @@ func (op *StorageDomainsService) Add(
 }
 
 type StorageDomainsServiceListRequest struct {
-	storageDomains *StorageDomainsService
-	header         map[string]string
-	query          map[string]string
-	caseSensitive  *bool
-	filter         *bool
-	max            *int64
-	search         *string
+	storageDomainsService *StorageDomainsService
+	header                map[string]string
+	query                 map[string]string
+	caseSensitive         *bool
+	filter                *bool
+	max                   *int64
+	search                *string
 }
 
 func (p *StorageDomainsServiceListRequest) Header(key, value string) *StorageDomainsServiceListRequest {
@@ -31483,7 +31595,7 @@ func (p *StorageDomainsServiceListRequest) Search(search string) *StorageDomains
 	p.search = &search
 	return p
 }
-func (p *StorageDomainsServiceListRequest) send() *StorageDomainsServiceListResponse {
+func (p *StorageDomainsServiceListRequest) Send() *StorageDomainsServiceListResponse {
 
 }
 
@@ -31566,9 +31678,9 @@ func NewNetworkLabelService(connection *Connection, path string) *NetworkLabelSe
 }
 
 type NetworkLabelServiceGetRequest struct {
-	networkLabel *NetworkLabelService
-	header       map[string]string
-	query        map[string]string
+	networkLabelService *NetworkLabelService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *NetworkLabelServiceGetRequest) Header(key, value string) *NetworkLabelServiceGetRequest {
@@ -31587,7 +31699,7 @@ func (p *NetworkLabelServiceGetRequest) Query(key, value string) *NetworkLabelSe
 	return p
 }
 
-func (p *NetworkLabelServiceGetRequest) send() *NetworkLabelServiceGetResponse {
+func (p *NetworkLabelServiceGetRequest) Send() *NetworkLabelServiceGetResponse {
 
 }
 
@@ -31615,10 +31727,10 @@ func (op *NetworkLabelService) Get(
 }
 
 type NetworkLabelServiceRemoveRequest struct {
-	networkLabel *NetworkLabelService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	networkLabelService *NetworkLabelService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *NetworkLabelServiceRemoveRequest) Header(key, value string) *NetworkLabelServiceRemoveRequest {
@@ -31641,7 +31753,7 @@ func (p *NetworkLabelServiceRemoveRequest) Async(async bool) *NetworkLabelServic
 	p.async = &async
 	return p
 }
-func (p *NetworkLabelServiceRemoveRequest) send() *NetworkLabelServiceRemoveResponse {
+func (p *NetworkLabelServiceRemoveRequest) Send() *NetworkLabelServiceRemoveResponse {
 
 }
 
@@ -31702,10 +31814,10 @@ func NewInstanceTypesService(connection *Connection, path string) *InstanceTypes
 }
 
 type InstanceTypesServiceAddRequest struct {
-	instanceTypes *InstanceTypesService
-	header        map[string]string
-	query         map[string]string
-	instanceType  *InstanceType
+	instanceTypesService *InstanceTypesService
+	header               map[string]string
+	query                map[string]string
+	instanceType         *InstanceType
 }
 
 func (p *InstanceTypesServiceAddRequest) Header(key, value string) *InstanceTypesServiceAddRequest {
@@ -31728,8 +31840,10 @@ func (p *InstanceTypesServiceAddRequest) InstanceType(instanceType *InstanceType
 	p.instanceType = instanceType
 	return p
 }
-func (p *InstanceTypesServiceAddRequest) send() *InstanceTypesServiceAddResponse {
+func (p *InstanceTypesServiceAddRequest) Send() *InstanceTypesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypesService.Connection.URL(), p.instanceTypesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -31836,12 +31950,12 @@ func (op *InstanceTypesService) Add(
 }
 
 type InstanceTypesServiceListRequest struct {
-	instanceTypes *InstanceTypesService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	max           *int64
-	search        *string
+	instanceTypesService *InstanceTypesService
+	header               map[string]string
+	query                map[string]string
+	caseSensitive        *bool
+	max                  *int64
+	search               *string
 }
 
 func (p *InstanceTypesServiceListRequest) Header(key, value string) *InstanceTypesServiceListRequest {
@@ -31872,7 +31986,7 @@ func (p *InstanceTypesServiceListRequest) Search(search string) *InstanceTypesSe
 	p.search = &search
 	return p
 }
-func (p *InstanceTypesServiceListRequest) send() *InstanceTypesServiceListResponse {
+func (p *InstanceTypesServiceListRequest) Send() *InstanceTypesServiceListResponse {
 
 }
 
@@ -31954,10 +32068,10 @@ func NewStorageDomainServerConnectionsService(connection *Connection, path strin
 }
 
 type StorageDomainServerConnectionsServiceAddRequest struct {
-	storageDomainServerConnections *StorageDomainServerConnectionsService
-	header                         map[string]string
-	query                          map[string]string
-	connection                     *StorageConnection
+	storageDomainServerConnectionsService *StorageDomainServerConnectionsService
+	header                                map[string]string
+	query                                 map[string]string
+	connection                            *StorageConnection
 }
 
 func (p *StorageDomainServerConnectionsServiceAddRequest) Header(key, value string) *StorageDomainServerConnectionsServiceAddRequest {
@@ -31980,8 +32094,10 @@ func (p *StorageDomainServerConnectionsServiceAddRequest) Connection(connection 
 	p.connection = connection
 	return p
 }
-func (p *StorageDomainServerConnectionsServiceAddRequest) send() *StorageDomainServerConnectionsServiceAddResponse {
+func (p *StorageDomainServerConnectionsServiceAddRequest) Send() *StorageDomainServerConnectionsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainServerConnectionsService.Connection.URL(), p.storageDomainServerConnectionsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -32009,10 +32125,10 @@ func (op *StorageDomainServerConnectionsService) Add(
 }
 
 type StorageDomainServerConnectionsServiceListRequest struct {
-	storageDomainServerConnections *StorageDomainServerConnectionsService
-	header                         map[string]string
-	query                          map[string]string
-	max                            *int64
+	storageDomainServerConnectionsService *StorageDomainServerConnectionsService
+	header                                map[string]string
+	query                                 map[string]string
+	max                                   *int64
 }
 
 func (p *StorageDomainServerConnectionsServiceListRequest) Header(key, value string) *StorageDomainServerConnectionsServiceListRequest {
@@ -32035,7 +32151,7 @@ func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) *Stora
 	p.max = &max
 	return p
 }
-func (p *StorageDomainServerConnectionsServiceListRequest) send() *StorageDomainServerConnectionsServiceListResponse {
+func (p *StorageDomainServerConnectionsServiceListRequest) Send() *StorageDomainServerConnectionsServiceListResponse {
 
 }
 
@@ -32107,9 +32223,9 @@ func NewInstanceTypeGraphicsConsoleService(connection *Connection, path string) 
 }
 
 type InstanceTypeGraphicsConsoleServiceGetRequest struct {
-	instanceTypeGraphicsConsole *InstanceTypeGraphicsConsoleService
-	header                      map[string]string
-	query                       map[string]string
+	instanceTypeGraphicsConsoleService *InstanceTypeGraphicsConsoleService
+	header                             map[string]string
+	query                              map[string]string
 }
 
 func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Header(key, value string) *InstanceTypeGraphicsConsoleServiceGetRequest {
@@ -32128,7 +32244,7 @@ func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) 
 	return p
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceGetRequest) send() *InstanceTypeGraphicsConsoleServiceGetResponse {
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Send() *InstanceTypeGraphicsConsoleServiceGetResponse {
 
 }
 
@@ -32157,10 +32273,10 @@ func (op *InstanceTypeGraphicsConsoleService) Get(
 }
 
 type InstanceTypeGraphicsConsoleServiceRemoveRequest struct {
-	instanceTypeGraphicsConsole *InstanceTypeGraphicsConsoleService
-	header                      map[string]string
-	query                       map[string]string
-	async                       *bool
+	instanceTypeGraphicsConsoleService *InstanceTypeGraphicsConsoleService
+	header                             map[string]string
+	query                              map[string]string
+	async                              *bool
 }
 
 func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Header(key, value string) *InstanceTypeGraphicsConsoleServiceRemoveRequest {
@@ -32183,7 +32299,7 @@ func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Async(async bool) *Ins
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) send() *InstanceTypeGraphicsConsoleServiceRemoveResponse {
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Send() *InstanceTypeGraphicsConsoleServiceRemoveResponse {
 
 }
 
@@ -32239,9 +32355,9 @@ func NewIscsiBondService(connection *Connection, path string) *IscsiBondService 
 }
 
 type IscsiBondServiceGetRequest struct {
-	iscsiBond *IscsiBondService
-	header    map[string]string
-	query     map[string]string
+	iscsiBondService *IscsiBondService
+	header           map[string]string
+	query            map[string]string
 }
 
 func (p *IscsiBondServiceGetRequest) Header(key, value string) *IscsiBondServiceGetRequest {
@@ -32260,7 +32376,7 @@ func (p *IscsiBondServiceGetRequest) Query(key, value string) *IscsiBondServiceG
 	return p
 }
 
-func (p *IscsiBondServiceGetRequest) send() *IscsiBondServiceGetResponse {
+func (p *IscsiBondServiceGetRequest) Send() *IscsiBondServiceGetResponse {
 
 }
 
@@ -32288,10 +32404,10 @@ func (op *IscsiBondService) Get(
 }
 
 type IscsiBondServiceRemoveRequest struct {
-	iscsiBond *IscsiBondService
-	header    map[string]string
-	query     map[string]string
-	async     *bool
+	iscsiBondService *IscsiBondService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
 }
 
 func (p *IscsiBondServiceRemoveRequest) Header(key, value string) *IscsiBondServiceRemoveRequest {
@@ -32314,7 +32430,7 @@ func (p *IscsiBondServiceRemoveRequest) Async(async bool) *IscsiBondServiceRemov
 	p.async = &async
 	return p
 }
-func (p *IscsiBondServiceRemoveRequest) send() *IscsiBondServiceRemoveResponse {
+func (p *IscsiBondServiceRemoveRequest) Send() *IscsiBondServiceRemoveResponse {
 
 }
 
@@ -32348,11 +32464,11 @@ func (op *IscsiBondService) Remove(
 }
 
 type IscsiBondServiceUpdateRequest struct {
-	iscsiBond *IscsiBondService
-	header    map[string]string
-	query     map[string]string
-	async     *bool
-	bond      *IscsiBond
+	iscsiBondService *IscsiBondService
+	header           map[string]string
+	query            map[string]string
+	async            *bool
+	bond             *IscsiBond
 }
 
 func (p *IscsiBondServiceUpdateRequest) Header(key, value string) *IscsiBondServiceUpdateRequest {
@@ -32379,7 +32495,7 @@ func (p *IscsiBondServiceUpdateRequest) Bond(bond *IscsiBond) *IscsiBondServiceU
 	p.bond = bond
 	return p
 }
-func (p *IscsiBondServiceUpdateRequest) send() *IscsiBondServiceUpdateResponse {
+func (p *IscsiBondServiceUpdateRequest) Send() *IscsiBondServiceUpdateResponse {
 
 }
 
@@ -32477,9 +32593,9 @@ func NewTemplateDiskAttachmentService(connection *Connection, path string) *Temp
 }
 
 type TemplateDiskAttachmentServiceGetRequest struct {
-	templateDiskAttachment *TemplateDiskAttachmentService
-	header                 map[string]string
-	query                  map[string]string
+	templateDiskAttachmentService *TemplateDiskAttachmentService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *TemplateDiskAttachmentServiceGetRequest) Header(key, value string) *TemplateDiskAttachmentServiceGetRequest {
@@ -32498,7 +32614,7 @@ func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) *Temp
 	return p
 }
 
-func (p *TemplateDiskAttachmentServiceGetRequest) send() *TemplateDiskAttachmentServiceGetResponse {
+func (p *TemplateDiskAttachmentServiceGetRequest) Send() *TemplateDiskAttachmentServiceGetResponse {
 
 }
 
@@ -32527,11 +32643,11 @@ func (op *TemplateDiskAttachmentService) Get(
 }
 
 type TemplateDiskAttachmentServiceRemoveRequest struct {
-	templateDiskAttachment *TemplateDiskAttachmentService
-	header                 map[string]string
-	query                  map[string]string
-	force                  *bool
-	storageDomain          *string
+	templateDiskAttachmentService *TemplateDiskAttachmentService
+	header                        map[string]string
+	query                         map[string]string
+	force                         *bool
+	storageDomain                 *string
 }
 
 func (p *TemplateDiskAttachmentServiceRemoveRequest) Header(key, value string) *TemplateDiskAttachmentServiceRemoveRequest {
@@ -32558,7 +32674,7 @@ func (p *TemplateDiskAttachmentServiceRemoveRequest) StorageDomain(storageDomain
 	p.storageDomain = &storageDomain
 	return p
 }
-func (p *TemplateDiskAttachmentServiceRemoveRequest) send() *TemplateDiskAttachmentServiceRemoveResponse {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Send() *TemplateDiskAttachmentServiceRemoveResponse {
 
 }
 
@@ -32624,10 +32740,10 @@ func NewHostStorageService(connection *Connection, path string) *HostStorageServ
 }
 
 type HostStorageServiceListRequest struct {
-	hostStorage  *HostStorageService
-	header       map[string]string
-	query        map[string]string
-	reportStatus *bool
+	hostStorageService *HostStorageService
+	header             map[string]string
+	query              map[string]string
+	reportStatus       *bool
 }
 
 func (p *HostStorageServiceListRequest) Header(key, value string) *HostStorageServiceListRequest {
@@ -32650,7 +32766,7 @@ func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) *HostSto
 	p.reportStatus = &reportStatus
 	return p
 }
-func (p *HostStorageServiceListRequest) send() *HostStorageServiceListResponse {
+func (p *HostStorageServiceListRequest) Send() *HostStorageServiceListResponse {
 
 }
 
@@ -32781,10 +32897,10 @@ func NewWeightService(connection *Connection, path string) *WeightService {
 }
 
 type WeightServiceGetRequest struct {
-	weight *WeightService
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	weightService *WeightService
+	header        map[string]string
+	query         map[string]string
+	filter        *bool
 }
 
 func (p *WeightServiceGetRequest) Header(key, value string) *WeightServiceGetRequest {
@@ -32807,7 +32923,7 @@ func (p *WeightServiceGetRequest) Filter(filter bool) *WeightServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *WeightServiceGetRequest) send() *WeightServiceGetResponse {
+func (p *WeightServiceGetRequest) Send() *WeightServiceGetResponse {
 
 }
 
@@ -32842,10 +32958,10 @@ func (op *WeightService) Get(
 }
 
 type WeightServiceRemoveRequest struct {
-	weight *WeightService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	weightService *WeightService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *WeightServiceRemoveRequest) Header(key, value string) *WeightServiceRemoveRequest {
@@ -32868,7 +32984,7 @@ func (p *WeightServiceRemoveRequest) Async(async bool) *WeightServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *WeightServiceRemoveRequest) send() *WeightServiceRemoveResponse {
+func (p *WeightServiceRemoveRequest) Send() *WeightServiceRemoveResponse {
 
 }
 
@@ -32923,10 +33039,10 @@ func NewVmNumaNodesService(connection *Connection, path string) *VmNumaNodesServ
 }
 
 type VmNumaNodesServiceAddRequest struct {
-	vmNumaNodes *VmNumaNodesService
-	header      map[string]string
-	query       map[string]string
-	node        *VirtualNumaNode
+	vmNumaNodesService *VmNumaNodesService
+	header             map[string]string
+	query              map[string]string
+	node               *VirtualNumaNode
 }
 
 func (p *VmNumaNodesServiceAddRequest) Header(key, value string) *VmNumaNodesServiceAddRequest {
@@ -32949,8 +33065,10 @@ func (p *VmNumaNodesServiceAddRequest) Node(node *VirtualNumaNode) *VmNumaNodesS
 	p.node = node
 	return p
 }
-func (p *VmNumaNodesServiceAddRequest) send() *VmNumaNodesServiceAddResponse {
+func (p *VmNumaNodesServiceAddRequest) Send() *VmNumaNodesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmNumaNodesService.Connection.URL(), p.vmNumaNodesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -33001,10 +33119,10 @@ func (op *VmNumaNodesService) Add(
 }
 
 type VmNumaNodesServiceListRequest struct {
-	vmNumaNodes *VmNumaNodesService
-	header      map[string]string
-	query       map[string]string
-	max         *int64
+	vmNumaNodesService *VmNumaNodesService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
 func (p *VmNumaNodesServiceListRequest) Header(key, value string) *VmNumaNodesServiceListRequest {
@@ -33027,7 +33145,7 @@ func (p *VmNumaNodesServiceListRequest) Max(max int64) *VmNumaNodesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *VmNumaNodesServiceListRequest) send() *VmNumaNodesServiceListResponse {
+func (p *VmNumaNodesServiceListRequest) Send() *VmNumaNodesServiceListResponse {
 
 }
 
@@ -33100,10 +33218,10 @@ func NewTemplateWatchdogsService(connection *Connection, path string) *TemplateW
 }
 
 type TemplateWatchdogsServiceAddRequest struct {
-	templateWatchdogs *TemplateWatchdogsService
-	header            map[string]string
-	query             map[string]string
-	watchdog          *Watchdog
+	templateWatchdogsService *TemplateWatchdogsService
+	header                   map[string]string
+	query                    map[string]string
+	watchdog                 *Watchdog
 }
 
 func (p *TemplateWatchdogsServiceAddRequest) Header(key, value string) *TemplateWatchdogsServiceAddRequest {
@@ -33126,8 +33244,10 @@ func (p *TemplateWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *Templ
 	p.watchdog = watchdog
 	return p
 }
-func (p *TemplateWatchdogsServiceAddRequest) send() *TemplateWatchdogsServiceAddResponse {
+func (p *TemplateWatchdogsServiceAddRequest) Send() *TemplateWatchdogsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.templateWatchdogsService.Connection.URL(), p.templateWatchdogsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -33155,10 +33275,10 @@ func (op *TemplateWatchdogsService) Add(
 }
 
 type TemplateWatchdogsServiceListRequest struct {
-	templateWatchdogs *TemplateWatchdogsService
-	header            map[string]string
-	query             map[string]string
-	max               *int64
+	templateWatchdogsService *TemplateWatchdogsService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
 func (p *TemplateWatchdogsServiceListRequest) Header(key, value string) *TemplateWatchdogsServiceListRequest {
@@ -33181,7 +33301,7 @@ func (p *TemplateWatchdogsServiceListRequest) Max(max int64) *TemplateWatchdogsS
 	p.max = &max
 	return p
 }
-func (p *TemplateWatchdogsServiceListRequest) send() *TemplateWatchdogsServiceListResponse {
+func (p *TemplateWatchdogsServiceListRequest) Send() *TemplateWatchdogsServiceListResponse {
 
 }
 
@@ -33258,11 +33378,11 @@ func NewAttachedStorageDomainDiskService(connection *Connection, path string) *A
 }
 
 type AttachedStorageDomainDiskServiceCopyRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
-	disk                      *Disk
-	storageDomain             *StorageDomain
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
+	disk                             *Disk
+	storageDomain                    *StorageDomain
 }
 
 func (p *AttachedStorageDomainDiskServiceCopyRequest) Header(key, value string) *AttachedStorageDomainDiskServiceCopyRequest {
@@ -33289,7 +33409,7 @@ func (p *AttachedStorageDomainDiskServiceCopyRequest) StorageDomain(storageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceCopyRequest) send() *AttachedStorageDomainDiskServiceCopyResponse {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Send() *AttachedStorageDomainDiskServiceCopyResponse {
 
 }
 
@@ -33323,10 +33443,10 @@ func (op *AttachedStorageDomainDiskService) Copy(
 }
 
 type AttachedStorageDomainDiskServiceExportRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
-	storageDomain             *StorageDomain
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
+	storageDomain                    *StorageDomain
 }
 
 func (p *AttachedStorageDomainDiskServiceExportRequest) Header(key, value string) *AttachedStorageDomainDiskServiceExportRequest {
@@ -33349,7 +33469,7 @@ func (p *AttachedStorageDomainDiskServiceExportRequest) StorageDomain(storageDom
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceExportRequest) send() *AttachedStorageDomainDiskServiceExportResponse {
+func (p *AttachedStorageDomainDiskServiceExportRequest) Send() *AttachedStorageDomainDiskServiceExportResponse {
 
 }
 
@@ -33380,9 +33500,9 @@ func (op *AttachedStorageDomainDiskService) Export(
 }
 
 type AttachedStorageDomainDiskServiceGetRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
 }
 
 func (p *AttachedStorageDomainDiskServiceGetRequest) Header(key, value string) *AttachedStorageDomainDiskServiceGetRequest {
@@ -33401,7 +33521,7 @@ func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) *A
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceGetRequest) send() *AttachedStorageDomainDiskServiceGetResponse {
+func (p *AttachedStorageDomainDiskServiceGetRequest) Send() *AttachedStorageDomainDiskServiceGetResponse {
 
 }
 
@@ -33430,12 +33550,12 @@ func (op *AttachedStorageDomainDiskService) Get(
 }
 
 type AttachedStorageDomainDiskServiceMoveRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
-	async                     *bool
-	filter                    *bool
-	storageDomain             *StorageDomain
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
+	async                            *bool
+	filter                           *bool
+	storageDomain                    *StorageDomain
 }
 
 func (p *AttachedStorageDomainDiskServiceMoveRequest) Header(key, value string) *AttachedStorageDomainDiskServiceMoveRequest {
@@ -33466,7 +33586,7 @@ func (p *AttachedStorageDomainDiskServiceMoveRequest) StorageDomain(storageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceMoveRequest) send() *AttachedStorageDomainDiskServiceMoveResponse {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Send() *AttachedStorageDomainDiskServiceMoveResponse {
 
 }
 
@@ -33503,9 +33623,9 @@ func (op *AttachedStorageDomainDiskService) Move(
 }
 
 type AttachedStorageDomainDiskServiceRegisterRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
 }
 
 func (p *AttachedStorageDomainDiskServiceRegisterRequest) Header(key, value string) *AttachedStorageDomainDiskServiceRegisterRequest {
@@ -33524,7 +33644,7 @@ func (p *AttachedStorageDomainDiskServiceRegisterRequest) Query(key, value strin
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRegisterRequest) send() *AttachedStorageDomainDiskServiceRegisterResponse {
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Send() *AttachedStorageDomainDiskServiceRegisterResponse {
 
 }
 
@@ -33544,9 +33664,9 @@ func (op *AttachedStorageDomainDiskService) Register(
 }
 
 type AttachedStorageDomainDiskServiceRemoveRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
 }
 
 func (p *AttachedStorageDomainDiskServiceRemoveRequest) Header(key, value string) *AttachedStorageDomainDiskServiceRemoveRequest {
@@ -33565,7 +33685,7 @@ func (p *AttachedStorageDomainDiskServiceRemoveRequest) Query(key, value string)
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRemoveRequest) send() *AttachedStorageDomainDiskServiceRemoveResponse {
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Send() *AttachedStorageDomainDiskServiceRemoveResponse {
 
 }
 
@@ -33590,9 +33710,9 @@ func (op *AttachedStorageDomainDiskService) Remove(
 }
 
 type AttachedStorageDomainDiskServiceSparsifyRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
 }
 
 func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Header(key, value string) *AttachedStorageDomainDiskServiceSparsifyRequest {
@@ -33611,7 +33731,7 @@ func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Query(key, value strin
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceSparsifyRequest) send() *AttachedStorageDomainDiskServiceSparsifyResponse {
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Send() *AttachedStorageDomainDiskServiceSparsifyResponse {
 
 }
 
@@ -33634,10 +33754,10 @@ func (op *AttachedStorageDomainDiskService) Sparsify(
 }
 
 type AttachedStorageDomainDiskServiceUpdateRequest struct {
-	attachedStorageDomainDisk *AttachedStorageDomainDiskService
-	header                    map[string]string
-	query                     map[string]string
-	disk                      *Disk
+	attachedStorageDomainDiskService *AttachedStorageDomainDiskService
+	header                           map[string]string
+	query                            map[string]string
+	disk                             *Disk
 }
 
 func (p *AttachedStorageDomainDiskServiceUpdateRequest) Header(key, value string) *AttachedStorageDomainDiskServiceUpdateRequest {
@@ -33660,7 +33780,7 @@ func (p *AttachedStorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *Attach
 	p.disk = disk
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceUpdateRequest) send() *AttachedStorageDomainDiskServiceUpdateResponse {
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Send() *AttachedStorageDomainDiskServiceUpdateResponse {
 
 }
 
@@ -33751,9 +33871,9 @@ func NewVnicProfileService(connection *Connection, path string) *VnicProfileServ
 }
 
 type VnicProfileServiceGetRequest struct {
-	vnicProfile *VnicProfileService
-	header      map[string]string
-	query       map[string]string
+	vnicProfileService *VnicProfileService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *VnicProfileServiceGetRequest) Header(key, value string) *VnicProfileServiceGetRequest {
@@ -33772,7 +33892,7 @@ func (p *VnicProfileServiceGetRequest) Query(key, value string) *VnicProfileServ
 	return p
 }
 
-func (p *VnicProfileServiceGetRequest) send() *VnicProfileServiceGetResponse {
+func (p *VnicProfileServiceGetRequest) Send() *VnicProfileServiceGetResponse {
 
 }
 
@@ -33801,10 +33921,10 @@ func (op *VnicProfileService) Get(
 }
 
 type VnicProfileServiceRemoveRequest struct {
-	vnicProfile *VnicProfileService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	vnicProfileService *VnicProfileService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *VnicProfileServiceRemoveRequest) Header(key, value string) *VnicProfileServiceRemoveRequest {
@@ -33827,7 +33947,7 @@ func (p *VnicProfileServiceRemoveRequest) Async(async bool) *VnicProfileServiceR
 	p.async = &async
 	return p
 }
-func (p *VnicProfileServiceRemoveRequest) send() *VnicProfileServiceRemoveResponse {
+func (p *VnicProfileServiceRemoveRequest) Send() *VnicProfileServiceRemoveResponse {
 
 }
 
@@ -33856,11 +33976,11 @@ func (op *VnicProfileService) Remove(
 }
 
 type VnicProfileServiceUpdateRequest struct {
-	vnicProfile *VnicProfileService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
-	profile     *VnicProfile
+	vnicProfileService *VnicProfileService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	profile            *VnicProfile
 }
 
 func (p *VnicProfileServiceUpdateRequest) Header(key, value string) *VnicProfileServiceUpdateRequest {
@@ -33887,7 +34007,7 @@ func (p *VnicProfileServiceUpdateRequest) Profile(profile *VnicProfile) *VnicPro
 	p.profile = profile
 	return p
 }
-func (p *VnicProfileServiceUpdateRequest) send() *VnicProfileServiceUpdateResponse {
+func (p *VnicProfileServiceUpdateRequest) Send() *VnicProfileServiceUpdateResponse {
 
 }
 
@@ -33963,10 +34083,10 @@ func NewVmGraphicsConsolesService(connection *Connection, path string) *VmGraphi
 }
 
 type VmGraphicsConsolesServiceAddRequest struct {
-	vmGraphicsConsoles *VmGraphicsConsolesService
-	header             map[string]string
-	query              map[string]string
-	console            *GraphicsConsole
+	vmGraphicsConsolesService *VmGraphicsConsolesService
+	header                    map[string]string
+	query                     map[string]string
+	console                   *GraphicsConsole
 }
 
 func (p *VmGraphicsConsolesServiceAddRequest) Header(key, value string) *VmGraphicsConsolesServiceAddRequest {
@@ -33989,8 +34109,10 @@ func (p *VmGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) 
 	p.console = console
 	return p
 }
-func (p *VmGraphicsConsolesServiceAddRequest) send() *VmGraphicsConsolesServiceAddResponse {
+func (p *VmGraphicsConsolesServiceAddRequest) Send() *VmGraphicsConsolesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmGraphicsConsolesService.Connection.URL(), p.vmGraphicsConsolesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -34019,11 +34141,11 @@ func (op *VmGraphicsConsolesService) Add(
 }
 
 type VmGraphicsConsolesServiceListRequest struct {
-	vmGraphicsConsoles *VmGraphicsConsolesService
-	header             map[string]string
-	query              map[string]string
-	current            *bool
-	max                *int64
+	vmGraphicsConsolesService *VmGraphicsConsolesService
+	header                    map[string]string
+	query                     map[string]string
+	current                   *bool
+	max                       *int64
 }
 
 func (p *VmGraphicsConsolesServiceListRequest) Header(key, value string) *VmGraphicsConsolesServiceListRequest {
@@ -34050,7 +34172,7 @@ func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) *VmGraphicsConsole
 	p.max = &max
 	return p
 }
-func (p *VmGraphicsConsolesServiceListRequest) send() *VmGraphicsConsolesServiceListResponse {
+func (p *VmGraphicsConsolesServiceListRequest) Send() *VmGraphicsConsolesServiceListResponse {
 
 }
 
@@ -34133,9 +34255,9 @@ func NewPermitService(connection *Connection, path string) *PermitService {
 }
 
 type PermitServiceGetRequest struct {
-	permit *PermitService
-	header map[string]string
-	query  map[string]string
+	permitService *PermitService
+	header        map[string]string
+	query         map[string]string
 }
 
 func (p *PermitServiceGetRequest) Header(key, value string) *PermitServiceGetRequest {
@@ -34154,7 +34276,7 @@ func (p *PermitServiceGetRequest) Query(key, value string) *PermitServiceGetRequ
 	return p
 }
 
-func (p *PermitServiceGetRequest) send() *PermitServiceGetResponse {
+func (p *PermitServiceGetRequest) Send() *PermitServiceGetResponse {
 
 }
 
@@ -34196,10 +34318,10 @@ func (op *PermitService) Get(
 }
 
 type PermitServiceRemoveRequest struct {
-	permit *PermitService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	permitService *PermitService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *PermitServiceRemoveRequest) Header(key, value string) *PermitServiceRemoveRequest {
@@ -34222,7 +34344,7 @@ func (p *PermitServiceRemoveRequest) Async(async bool) *PermitServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *PermitServiceRemoveRequest) send() *PermitServiceRemoveResponse {
+func (p *PermitServiceRemoveRequest) Send() *PermitServiceRemoveResponse {
 
 }
 
@@ -34283,10 +34405,10 @@ func NewDataCenterService(connection *Connection, path string) *DataCenterServic
 }
 
 type DataCenterServiceGetRequest struct {
-	dataCenter *DataCenterService
-	header     map[string]string
-	query      map[string]string
-	filter     *bool
+	dataCenterService *DataCenterService
+	header            map[string]string
+	query             map[string]string
+	filter            *bool
 }
 
 func (p *DataCenterServiceGetRequest) Header(key, value string) *DataCenterServiceGetRequest {
@@ -34309,7 +34431,7 @@ func (p *DataCenterServiceGetRequest) Filter(filter bool) *DataCenterServiceGetR
 	p.filter = &filter
 	return p
 }
-func (p *DataCenterServiceGetRequest) send() *DataCenterServiceGetResponse {
+func (p *DataCenterServiceGetRequest) Send() *DataCenterServiceGetResponse {
 
 }
 
@@ -34379,11 +34501,11 @@ func (op *DataCenterService) Get(
 }
 
 type DataCenterServiceRemoveRequest struct {
-	dataCenter *DataCenterService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	force      *bool
+	dataCenterService *DataCenterService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	force             *bool
 }
 
 func (p *DataCenterServiceRemoveRequest) Header(key, value string) *DataCenterServiceRemoveRequest {
@@ -34410,7 +34532,7 @@ func (p *DataCenterServiceRemoveRequest) Force(force bool) *DataCenterServiceRem
 	p.force = &force
 	return p
 }
-func (p *DataCenterServiceRemoveRequest) send() *DataCenterServiceRemoveResponse {
+func (p *DataCenterServiceRemoveRequest) Send() *DataCenterServiceRemoveResponse {
 
 }
 
@@ -34454,11 +34576,11 @@ func (op *DataCenterService) Remove(
 }
 
 type DataCenterServiceUpdateRequest struct {
-	dataCenter *DataCenterService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	dataCenter *DataCenter
+	dataCenterService *DataCenterService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	dataCenter        *DataCenter
 }
 
 func (p *DataCenterServiceUpdateRequest) Header(key, value string) *DataCenterServiceUpdateRequest {
@@ -34485,7 +34607,7 @@ func (p *DataCenterServiceUpdateRequest) DataCenter(dataCenter *DataCenter) *Dat
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *DataCenterServiceUpdateRequest) send() *DataCenterServiceUpdateResponse {
+func (p *DataCenterServiceUpdateRequest) Send() *DataCenterServiceUpdateResponse {
 
 }
 
@@ -34670,10 +34792,10 @@ func NewStatisticsService(connection *Connection, path string) *StatisticsServic
 }
 
 type StatisticsServiceListRequest struct {
-	statistics *StatisticsService
-	header     map[string]string
-	query      map[string]string
-	max        *int64
+	statisticsService *StatisticsService
+	header            map[string]string
+	query             map[string]string
+	max               *int64
 }
 
 func (p *StatisticsServiceListRequest) Header(key, value string) *StatisticsServiceListRequest {
@@ -34696,7 +34818,7 @@ func (p *StatisticsServiceListRequest) Max(max int64) *StatisticsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *StatisticsServiceListRequest) send() *StatisticsServiceListResponse {
+func (p *StatisticsServiceListRequest) Send() *StatisticsServiceListResponse {
 
 }
 
@@ -34817,11 +34939,11 @@ func NewSchedulingPolicyUnitsService(connection *Connection, path string) *Sched
 }
 
 type SchedulingPolicyUnitsServiceListRequest struct {
-	schedulingPolicyUnits *SchedulingPolicyUnitsService
-	header                map[string]string
-	query                 map[string]string
-	filter                *bool
-	max                   *int64
+	schedulingPolicyUnitsService *SchedulingPolicyUnitsService
+	header                       map[string]string
+	query                        map[string]string
+	filter                       *bool
+	max                          *int64
 }
 
 func (p *SchedulingPolicyUnitsServiceListRequest) Header(key, value string) *SchedulingPolicyUnitsServiceListRequest {
@@ -34848,7 +34970,7 @@ func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) *SchedulingPoli
 	p.max = &max
 	return p
 }
-func (p *SchedulingPolicyUnitsServiceListRequest) send() *SchedulingPolicyUnitsServiceListResponse {
+func (p *SchedulingPolicyUnitsServiceListRequest) Send() *SchedulingPolicyUnitsServiceListResponse {
 
 }
 
@@ -34923,11 +35045,11 @@ func NewTemplateDiskService(connection *Connection, path string) *TemplateDiskSe
 }
 
 type TemplateDiskServiceCopyRequest struct {
-	templateDisk *TemplateDiskService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	filter       *bool
+	templateDiskService *TemplateDiskService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
+	filter              *bool
 }
 
 func (p *TemplateDiskServiceCopyRequest) Header(key, value string) *TemplateDiskServiceCopyRequest {
@@ -34954,7 +35076,7 @@ func (p *TemplateDiskServiceCopyRequest) Filter(filter bool) *TemplateDiskServic
 	p.filter = &filter
 	return p
 }
-func (p *TemplateDiskServiceCopyRequest) send() *TemplateDiskServiceCopyResponse {
+func (p *TemplateDiskServiceCopyRequest) Send() *TemplateDiskServiceCopyResponse {
 
 }
 
@@ -34984,11 +35106,11 @@ func (op *TemplateDiskService) Copy(
 }
 
 type TemplateDiskServiceExportRequest struct {
-	templateDisk *TemplateDiskService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	filter       *bool
+	templateDiskService *TemplateDiskService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
+	filter              *bool
 }
 
 func (p *TemplateDiskServiceExportRequest) Header(key, value string) *TemplateDiskServiceExportRequest {
@@ -35015,7 +35137,7 @@ func (p *TemplateDiskServiceExportRequest) Filter(filter bool) *TemplateDiskServ
 	p.filter = &filter
 	return p
 }
-func (p *TemplateDiskServiceExportRequest) send() *TemplateDiskServiceExportResponse {
+func (p *TemplateDiskServiceExportRequest) Send() *TemplateDiskServiceExportResponse {
 
 }
 
@@ -35045,9 +35167,9 @@ func (op *TemplateDiskService) Export(
 }
 
 type TemplateDiskServiceGetRequest struct {
-	templateDisk *TemplateDiskService
-	header       map[string]string
-	query        map[string]string
+	templateDiskService *TemplateDiskService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *TemplateDiskServiceGetRequest) Header(key, value string) *TemplateDiskServiceGetRequest {
@@ -35066,7 +35188,7 @@ func (p *TemplateDiskServiceGetRequest) Query(key, value string) *TemplateDiskSe
 	return p
 }
 
-func (p *TemplateDiskServiceGetRequest) send() *TemplateDiskServiceGetResponse {
+func (p *TemplateDiskServiceGetRequest) Send() *TemplateDiskServiceGetResponse {
 
 }
 
@@ -35094,10 +35216,10 @@ func (op *TemplateDiskService) Get(
 }
 
 type TemplateDiskServiceRemoveRequest struct {
-	templateDisk *TemplateDiskService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	templateDiskService *TemplateDiskService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *TemplateDiskServiceRemoveRequest) Header(key, value string) *TemplateDiskServiceRemoveRequest {
@@ -35120,7 +35242,7 @@ func (p *TemplateDiskServiceRemoveRequest) Async(async bool) *TemplateDiskServic
 	p.async = &async
 	return p
 }
-func (p *TemplateDiskServiceRemoveRequest) send() *TemplateDiskServiceRemoveResponse {
+func (p *TemplateDiskServiceRemoveRequest) Send() *TemplateDiskServiceRemoveResponse {
 
 }
 
@@ -35178,10 +35300,10 @@ func NewAffinityLabelVmsService(connection *Connection, path string) *AffinityLa
 }
 
 type AffinityLabelVmsServiceAddRequest struct {
-	affinityLabelVms *AffinityLabelVmsService
-	header           map[string]string
-	query            map[string]string
-	vm               *Vm
+	affinityLabelVmsService *AffinityLabelVmsService
+	header                  map[string]string
+	query                   map[string]string
+	vm                      *Vm
 }
 
 func (p *AffinityLabelVmsServiceAddRequest) Header(key, value string) *AffinityLabelVmsServiceAddRequest {
@@ -35204,8 +35326,10 @@ func (p *AffinityLabelVmsServiceAddRequest) Vm(vm *Vm) *AffinityLabelVmsServiceA
 	p.vm = vm
 	return p
 }
-func (p *AffinityLabelVmsServiceAddRequest) send() *AffinityLabelVmsServiceAddResponse {
+func (p *AffinityLabelVmsServiceAddRequest) Send() *AffinityLabelVmsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelVmsService.Connection.URL(), p.affinityLabelVmsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -35234,9 +35358,9 @@ func (op *AffinityLabelVmsService) Add(
 }
 
 type AffinityLabelVmsServiceListRequest struct {
-	affinityLabelVms *AffinityLabelVmsService
-	header           map[string]string
-	query            map[string]string
+	affinityLabelVmsService *AffinityLabelVmsService
+	header                  map[string]string
+	query                   map[string]string
 }
 
 func (p *AffinityLabelVmsServiceListRequest) Header(key, value string) *AffinityLabelVmsServiceListRequest {
@@ -35255,7 +35379,7 @@ func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) *AffinityL
 	return p
 }
 
-func (p *AffinityLabelVmsServiceListRequest) send() *AffinityLabelVmsServiceListResponse {
+func (p *AffinityLabelVmsServiceListRequest) Send() *AffinityLabelVmsServiceListResponse {
 
 }
 
@@ -35323,10 +35447,10 @@ func NewCopyableService(connection *Connection, path string) *CopyableService {
 }
 
 type CopyableServiceCopyRequest struct {
-	copyable *CopyableService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
+	copyableService *CopyableService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
 func (p *CopyableServiceCopyRequest) Header(key, value string) *CopyableServiceCopyRequest {
@@ -35349,7 +35473,7 @@ func (p *CopyableServiceCopyRequest) Async(async bool) *CopyableServiceCopyReque
 	p.async = &async
 	return p
 }
-func (p *CopyableServiceCopyRequest) send() *CopyableServiceCopyResponse {
+func (p *CopyableServiceCopyRequest) Send() *CopyableServiceCopyResponse {
 
 }
 
@@ -35404,10 +35528,10 @@ func NewAffinityLabelsService(connection *Connection, path string) *AffinityLabe
 }
 
 type AffinityLabelsServiceAddRequest struct {
-	affinityLabels *AffinityLabelsService
-	header         map[string]string
-	query          map[string]string
-	label          *AffinityLabel
+	affinityLabelsService *AffinityLabelsService
+	header                map[string]string
+	query                 map[string]string
+	label                 *AffinityLabel
 }
 
 func (p *AffinityLabelsServiceAddRequest) Header(key, value string) *AffinityLabelsServiceAddRequest {
@@ -35430,8 +35554,10 @@ func (p *AffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *AffinityL
 	p.label = label
 	return p
 }
-func (p *AffinityLabelsServiceAddRequest) send() *AffinityLabelsServiceAddResponse {
+func (p *AffinityLabelsServiceAddRequest) Send() *AffinityLabelsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelsService.Connection.URL(), p.affinityLabelsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -35461,10 +35587,10 @@ func (op *AffinityLabelsService) Add(
 }
 
 type AffinityLabelsServiceListRequest struct {
-	affinityLabels *AffinityLabelsService
-	header         map[string]string
-	query          map[string]string
-	max            *int64
+	affinityLabelsService *AffinityLabelsService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
 }
 
 func (p *AffinityLabelsServiceListRequest) Header(key, value string) *AffinityLabelsServiceListRequest {
@@ -35487,7 +35613,7 @@ func (p *AffinityLabelsServiceListRequest) Max(max int64) *AffinityLabelsService
 	p.max = &max
 	return p
 }
-func (p *AffinityLabelsServiceListRequest) send() *AffinityLabelsServiceListResponse {
+func (p *AffinityLabelsServiceListRequest) Send() *AffinityLabelsServiceListResponse {
 
 }
 
@@ -35561,10 +35687,10 @@ func NewVmGraphicsConsoleService(connection *Connection, path string) *VmGraphic
 }
 
 type VmGraphicsConsoleServiceGetRequest struct {
-	vmGraphicsConsole *VmGraphicsConsoleService
-	header            map[string]string
-	query             map[string]string
-	current           *bool
+	vmGraphicsConsoleService *VmGraphicsConsoleService
+	header                   map[string]string
+	query                    map[string]string
+	current                  *bool
 }
 
 func (p *VmGraphicsConsoleServiceGetRequest) Header(key, value string) *VmGraphicsConsoleServiceGetRequest {
@@ -35587,7 +35713,7 @@ func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) *VmGraphicsCo
 	p.current = &current
 	return p
 }
-func (p *VmGraphicsConsoleServiceGetRequest) send() *VmGraphicsConsoleServiceGetResponse {
+func (p *VmGraphicsConsoleServiceGetRequest) Send() *VmGraphicsConsoleServiceGetResponse {
 
 }
 
@@ -35628,10 +35754,10 @@ func (op *VmGraphicsConsoleService) Get(
 }
 
 type VmGraphicsConsoleServiceProxyTicketRequest struct {
-	vmGraphicsConsole *VmGraphicsConsoleService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
+	vmGraphicsConsoleService *VmGraphicsConsoleService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
 func (p *VmGraphicsConsoleServiceProxyTicketRequest) Header(key, value string) *VmGraphicsConsoleServiceProxyTicketRequest {
@@ -35654,7 +35780,7 @@ func (p *VmGraphicsConsoleServiceProxyTicketRequest) Async(async bool) *VmGraphi
 	p.async = &async
 	return p
 }
-func (p *VmGraphicsConsoleServiceProxyTicketRequest) send() *VmGraphicsConsoleServiceProxyTicketResponse {
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Send() *VmGraphicsConsoleServiceProxyTicketResponse {
 
 }
 
@@ -35688,9 +35814,9 @@ func (op *VmGraphicsConsoleService) ProxyTicket(
 }
 
 type VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest struct {
-	vmGraphicsConsole *VmGraphicsConsoleService
-	header            map[string]string
-	query             map[string]string
+	vmGraphicsConsoleService *VmGraphicsConsoleService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Header(key, value string) *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest {
@@ -35709,7 +35835,7 @@ func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Query(key, v
 	return p
 }
 
-func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) send() *VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse {
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Send() *VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse {
 
 }
 
@@ -35798,10 +35924,10 @@ func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
 }
 
 type VmGraphicsConsoleServiceRemoveRequest struct {
-	vmGraphicsConsole *VmGraphicsConsoleService
-	header            map[string]string
-	query             map[string]string
-	async             *bool
+	vmGraphicsConsoleService *VmGraphicsConsoleService
+	header                   map[string]string
+	query                    map[string]string
+	async                    *bool
 }
 
 func (p *VmGraphicsConsoleServiceRemoveRequest) Header(key, value string) *VmGraphicsConsoleServiceRemoveRequest {
@@ -35824,7 +35950,7 @@ func (p *VmGraphicsConsoleServiceRemoveRequest) Async(async bool) *VmGraphicsCon
 	p.async = &async
 	return p
 }
-func (p *VmGraphicsConsoleServiceRemoveRequest) send() *VmGraphicsConsoleServiceRemoveResponse {
+func (p *VmGraphicsConsoleServiceRemoveRequest) Send() *VmGraphicsConsoleServiceRemoveResponse {
 
 }
 
@@ -35853,10 +35979,10 @@ func (op *VmGraphicsConsoleService) Remove(
 }
 
 type VmGraphicsConsoleServiceTicketRequest struct {
-	vmGraphicsConsole *VmGraphicsConsoleService
-	header            map[string]string
-	query             map[string]string
-	ticket            *Ticket
+	vmGraphicsConsoleService *VmGraphicsConsoleService
+	header                   map[string]string
+	query                    map[string]string
+	ticket                   *Ticket
 }
 
 func (p *VmGraphicsConsoleServiceTicketRequest) Header(key, value string) *VmGraphicsConsoleServiceTicketRequest {
@@ -35879,7 +36005,7 @@ func (p *VmGraphicsConsoleServiceTicketRequest) Ticket(ticket *Ticket) *VmGraphi
 	p.ticket = ticket
 	return p
 }
-func (p *VmGraphicsConsoleServiceTicketRequest) send() *VmGraphicsConsoleServiceTicketResponse {
+func (p *VmGraphicsConsoleServiceTicketRequest) Send() *VmGraphicsConsoleServiceTicketResponse {
 
 }
 
@@ -35959,9 +36085,9 @@ func NewAffinityLabelHostService(connection *Connection, path string) *AffinityL
 }
 
 type AffinityLabelHostServiceGetRequest struct {
-	affinityLabelHost *AffinityLabelHostService
-	header            map[string]string
-	query             map[string]string
+	affinityLabelHostService *AffinityLabelHostService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *AffinityLabelHostServiceGetRequest) Header(key, value string) *AffinityLabelHostServiceGetRequest {
@@ -35980,7 +36106,7 @@ func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) *AffinityL
 	return p
 }
 
-func (p *AffinityLabelHostServiceGetRequest) send() *AffinityLabelHostServiceGetResponse {
+func (p *AffinityLabelHostServiceGetRequest) Send() *AffinityLabelHostServiceGetResponse {
 
 }
 
@@ -36009,9 +36135,9 @@ func (op *AffinityLabelHostService) Get(
 }
 
 type AffinityLabelHostServiceRemoveRequest struct {
-	affinityLabelHost *AffinityLabelHostService
-	header            map[string]string
-	query             map[string]string
+	affinityLabelHostService *AffinityLabelHostService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *AffinityLabelHostServiceRemoveRequest) Header(key, value string) *AffinityLabelHostServiceRemoveRequest {
@@ -36030,7 +36156,7 @@ func (p *AffinityLabelHostServiceRemoveRequest) Query(key, value string) *Affini
 	return p
 }
 
-func (p *AffinityLabelHostServiceRemoveRequest) send() *AffinityLabelHostServiceRemoveResponse {
+func (p *AffinityLabelHostServiceRemoveRequest) Send() *AffinityLabelHostServiceRemoveResponse {
 
 }
 
@@ -36080,9 +36206,9 @@ func NewAssignedTagService(connection *Connection, path string) *AssignedTagServ
 }
 
 type AssignedTagServiceGetRequest struct {
-	assignedTag *AssignedTagService
-	header      map[string]string
-	query       map[string]string
+	assignedTagService *AssignedTagService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *AssignedTagServiceGetRequest) Header(key, value string) *AssignedTagServiceGetRequest {
@@ -36101,7 +36227,7 @@ func (p *AssignedTagServiceGetRequest) Query(key, value string) *AssignedTagServ
 	return p
 }
 
-func (p *AssignedTagServiceGetRequest) send() *AssignedTagServiceGetResponse {
+func (p *AssignedTagServiceGetRequest) Send() *AssignedTagServiceGetResponse {
 
 }
 
@@ -36143,10 +36269,10 @@ func (op *AssignedTagService) Get(
 }
 
 type AssignedTagServiceRemoveRequest struct {
-	assignedTag *AssignedTagService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	assignedTagService *AssignedTagService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *AssignedTagServiceRemoveRequest) Header(key, value string) *AssignedTagServiceRemoveRequest {
@@ -36169,7 +36295,7 @@ func (p *AssignedTagServiceRemoveRequest) Async(async bool) *AssignedTagServiceR
 	p.async = &async
 	return p
 }
-func (p *AssignedTagServiceRemoveRequest) send() *AssignedTagServiceRemoveResponse {
+func (p *AssignedTagServiceRemoveRequest) Send() *AssignedTagServiceRemoveResponse {
 
 }
 
@@ -36230,7 +36356,7 @@ func NewDiskService(connection *Connection, path string) *DiskService {
 }
 
 type DiskServiceCopyRequest struct {
-	disk          *DiskService
+	diskService   *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -36271,7 +36397,7 @@ func (p *DiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) *Di
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceCopyRequest) send() *DiskServiceCopyResponse {
+func (p *DiskServiceCopyRequest) Send() *DiskServiceCopyResponse {
 
 }
 
@@ -36351,7 +36477,7 @@ func (op *DiskService) Copy(
 }
 
 type DiskServiceExportRequest struct {
-	disk          *DiskService
+	diskService   *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -36387,7 +36513,7 @@ func (p *DiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceExportRequest) send() *DiskServiceExportResponse {
+func (p *DiskServiceExportRequest) Send() *DiskServiceExportResponse {
 
 }
 
@@ -36421,9 +36547,9 @@ func (op *DiskService) Export(
 }
 
 type DiskServiceGetRequest struct {
-	disk   *DiskService
-	header map[string]string
-	query  map[string]string
+	diskService *DiskService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *DiskServiceGetRequest) Header(key, value string) *DiskServiceGetRequest {
@@ -36442,7 +36568,7 @@ func (p *DiskServiceGetRequest) Query(key, value string) *DiskServiceGetRequest 
 	return p
 }
 
-func (p *DiskServiceGetRequest) send() *DiskServiceGetResponse {
+func (p *DiskServiceGetRequest) Send() *DiskServiceGetResponse {
 
 }
 
@@ -36471,7 +36597,7 @@ func (op *DiskService) Get(
 }
 
 type DiskServiceMoveRequest struct {
-	disk          *DiskService
+	diskService   *DiskService
 	header        map[string]string
 	query         map[string]string
 	async         *bool
@@ -36507,7 +36633,7 @@ func (p *DiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) *Di
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceMoveRequest) send() *DiskServiceMoveResponse {
+func (p *DiskServiceMoveRequest) Send() *DiskServiceMoveResponse {
 
 }
 
@@ -36554,10 +36680,10 @@ func (op *DiskService) Move(
 }
 
 type DiskServiceRemoveRequest struct {
-	disk   *DiskService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	diskService *DiskService
+	header      map[string]string
+	query       map[string]string
+	async       *bool
 }
 
 func (p *DiskServiceRemoveRequest) Header(key, value string) *DiskServiceRemoveRequest {
@@ -36580,7 +36706,7 @@ func (p *DiskServiceRemoveRequest) Async(async bool) *DiskServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *DiskServiceRemoveRequest) send() *DiskServiceRemoveResponse {
+func (p *DiskServiceRemoveRequest) Send() *DiskServiceRemoveResponse {
 
 }
 
@@ -36609,9 +36735,9 @@ func (op *DiskService) Remove(
 }
 
 type DiskServiceSparsifyRequest struct {
-	disk   *DiskService
-	header map[string]string
-	query  map[string]string
+	diskService *DiskService
+	header      map[string]string
+	query       map[string]string
 }
 
 func (p *DiskServiceSparsifyRequest) Header(key, value string) *DiskServiceSparsifyRequest {
@@ -36630,7 +36756,7 @@ func (p *DiskServiceSparsifyRequest) Query(key, value string) *DiskServiceSparsi
 	return p
 }
 
-func (p *DiskServiceSparsifyRequest) send() *DiskServiceSparsifyResponse {
+func (p *DiskServiceSparsifyRequest) Send() *DiskServiceSparsifyResponse {
 
 }
 
@@ -36654,10 +36780,10 @@ func (op *DiskService) Sparsify(
 }
 
 type DiskServiceUpdateRequest struct {
-	disk   *DiskService
-	header map[string]string
-	query  map[string]string
-	disk   *Disk
+	diskService *DiskService
+	header      map[string]string
+	query       map[string]string
+	disk        *Disk
 }
 
 func (p *DiskServiceUpdateRequest) Header(key, value string) *DiskServiceUpdateRequest {
@@ -36680,7 +36806,7 @@ func (p *DiskServiceUpdateRequest) Disk(disk *Disk) *DiskServiceUpdateRequest {
 	p.disk = disk
 	return p
 }
-func (p *DiskServiceUpdateRequest) send() *DiskServiceUpdateResponse {
+func (p *DiskServiceUpdateRequest) Send() *DiskServiceUpdateResponse {
 
 }
 
@@ -36784,9 +36910,9 @@ func NewTemplateDiskAttachmentsService(connection *Connection, path string) *Tem
 }
 
 type TemplateDiskAttachmentsServiceListRequest struct {
-	templateDiskAttachments *TemplateDiskAttachmentsService
-	header                  map[string]string
-	query                   map[string]string
+	templateDiskAttachmentsService *TemplateDiskAttachmentsService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *TemplateDiskAttachmentsServiceListRequest) Header(key, value string) *TemplateDiskAttachmentsServiceListRequest {
@@ -36805,7 +36931,7 @@ func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) *Te
 	return p
 }
 
-func (p *TemplateDiskAttachmentsServiceListRequest) send() *TemplateDiskAttachmentsServiceListResponse {
+func (p *TemplateDiskAttachmentsServiceListRequest) Send() *TemplateDiskAttachmentsServiceListResponse {
 
 }
 
@@ -36872,12 +36998,12 @@ func NewStorageDomainContentDisksService(connection *Connection, path string) *S
 }
 
 type StorageDomainContentDisksServiceListRequest struct {
-	storageDomainContentDisks *StorageDomainContentDisksService
-	header                    map[string]string
-	query                     map[string]string
-	caseSensitive             *bool
-	max                       *int64
-	search                    *string
+	storageDomainContentDisksService *StorageDomainContentDisksService
+	header                           map[string]string
+	query                            map[string]string
+	caseSensitive                    *bool
+	max                              *int64
+	search                           *string
 }
 
 func (p *StorageDomainContentDisksServiceListRequest) Header(key, value string) *StorageDomainContentDisksServiceListRequest {
@@ -36908,7 +37034,7 @@ func (p *StorageDomainContentDisksServiceListRequest) Search(search string) *Sto
 	p.search = &search
 	return p
 }
-func (p *StorageDomainContentDisksServiceListRequest) send() *StorageDomainContentDisksServiceListResponse {
+func (p *StorageDomainContentDisksServiceListRequest) Send() *StorageDomainContentDisksServiceListResponse {
 
 }
 
@@ -36989,10 +37115,10 @@ func NewHostDevicesService(connection *Connection, path string) *HostDevicesServ
 }
 
 type HostDevicesServiceListRequest struct {
-	hostDevices *HostDevicesService
-	header      map[string]string
-	query       map[string]string
-	max         *int64
+	hostDevicesService *HostDevicesService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
 func (p *HostDevicesServiceListRequest) Header(key, value string) *HostDevicesServiceListRequest {
@@ -37015,7 +37141,7 @@ func (p *HostDevicesServiceListRequest) Max(max int64) *HostDevicesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *HostDevicesServiceListRequest) send() *HostDevicesServiceListResponse {
+func (p *HostDevicesServiceListRequest) Send() *HostDevicesServiceListResponse {
 
 }
 
@@ -37089,10 +37215,10 @@ func NewAssignedNetworksService(connection *Connection, path string) *AssignedNe
 }
 
 type AssignedNetworksServiceAddRequest struct {
-	assignedNetworks *AssignedNetworksService
-	header           map[string]string
-	query            map[string]string
-	network          *Network
+	assignedNetworksService *AssignedNetworksService
+	header                  map[string]string
+	query                   map[string]string
+	network                 *Network
 }
 
 func (p *AssignedNetworksServiceAddRequest) Header(key, value string) *AssignedNetworksServiceAddRequest {
@@ -37115,8 +37241,10 @@ func (p *AssignedNetworksServiceAddRequest) Network(network *Network) *AssignedN
 	p.network = network
 	return p
 }
-func (p *AssignedNetworksServiceAddRequest) send() *AssignedNetworksServiceAddResponse {
+func (p *AssignedNetworksServiceAddRequest) Send() *AssignedNetworksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedNetworksService.Connection.URL(), p.assignedNetworksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -37144,10 +37272,10 @@ func (op *AssignedNetworksService) Add(
 }
 
 type AssignedNetworksServiceListRequest struct {
-	assignedNetworks *AssignedNetworksService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
+	assignedNetworksService *AssignedNetworksService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
 func (p *AssignedNetworksServiceListRequest) Header(key, value string) *AssignedNetworksServiceListRequest {
@@ -37170,7 +37298,7 @@ func (p *AssignedNetworksServiceListRequest) Max(max int64) *AssignedNetworksSer
 	p.max = &max
 	return p
 }
-func (p *AssignedNetworksServiceListRequest) send() *AssignedNetworksServiceListResponse {
+func (p *AssignedNetworksServiceListRequest) Send() *AssignedNetworksServiceListResponse {
 
 }
 
@@ -37242,10 +37370,10 @@ func NewStorageService(connection *Connection, path string) *StorageService {
 }
 
 type StorageServiceGetRequest struct {
-	storage      *StorageService
-	header       map[string]string
-	query        map[string]string
-	reportStatus *bool
+	storageService *StorageService
+	header         map[string]string
+	query          map[string]string
+	reportStatus   *bool
 }
 
 func (p *StorageServiceGetRequest) Header(key, value string) *StorageServiceGetRequest {
@@ -37268,7 +37396,7 @@ func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) *StorageServi
 	p.reportStatus = &reportStatus
 	return p
 }
-func (p *StorageServiceGetRequest) send() *StorageServiceGetResponse {
+func (p *StorageServiceGetRequest) Send() *StorageServiceGetResponse {
 
 }
 
@@ -37373,9 +37501,9 @@ func NewUnmanagedNetworkService(connection *Connection, path string) *UnmanagedN
 }
 
 type UnmanagedNetworkServiceGetRequest struct {
-	unmanagedNetwork *UnmanagedNetworkService
-	header           map[string]string
-	query            map[string]string
+	unmanagedNetworkService *UnmanagedNetworkService
+	header                  map[string]string
+	query                   map[string]string
 }
 
 func (p *UnmanagedNetworkServiceGetRequest) Header(key, value string) *UnmanagedNetworkServiceGetRequest {
@@ -37394,7 +37522,7 @@ func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) *UnmanagedN
 	return p
 }
 
-func (p *UnmanagedNetworkServiceGetRequest) send() *UnmanagedNetworkServiceGetResponse {
+func (p *UnmanagedNetworkServiceGetRequest) Send() *UnmanagedNetworkServiceGetResponse {
 
 }
 
@@ -37422,10 +37550,10 @@ func (op *UnmanagedNetworkService) Get(
 }
 
 type UnmanagedNetworkServiceRemoveRequest struct {
-	unmanagedNetwork *UnmanagedNetworkService
-	header           map[string]string
-	query            map[string]string
-	async            *bool
+	unmanagedNetworkService *UnmanagedNetworkService
+	header                  map[string]string
+	query                   map[string]string
+	async                   *bool
 }
 
 func (p *UnmanagedNetworkServiceRemoveRequest) Header(key, value string) *UnmanagedNetworkServiceRemoveRequest {
@@ -37448,7 +37576,7 @@ func (p *UnmanagedNetworkServiceRemoveRequest) Async(async bool) *UnmanagedNetwo
 	p.async = &async
 	return p
 }
-func (p *UnmanagedNetworkServiceRemoveRequest) send() *UnmanagedNetworkServiceRemoveResponse {
+func (p *UnmanagedNetworkServiceRemoveRequest) Send() *UnmanagedNetworkServiceRemoveResponse {
 
 }
 
@@ -37503,9 +37631,9 @@ func NewQuotaService(connection *Connection, path string) *QuotaService {
 }
 
 type QuotaServiceGetRequest struct {
-	quota  *QuotaService
-	header map[string]string
-	query  map[string]string
+	quotaService *QuotaService
+	header       map[string]string
+	query        map[string]string
 }
 
 func (p *QuotaServiceGetRequest) Header(key, value string) *QuotaServiceGetRequest {
@@ -37524,7 +37652,7 @@ func (p *QuotaServiceGetRequest) Query(key, value string) *QuotaServiceGetReques
 	return p
 }
 
-func (p *QuotaServiceGetRequest) send() *QuotaServiceGetResponse {
+func (p *QuotaServiceGetRequest) Send() *QuotaServiceGetResponse {
 
 }
 
@@ -37569,10 +37697,10 @@ func (op *QuotaService) Get(
 }
 
 type QuotaServiceRemoveRequest struct {
-	quota  *QuotaService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	quotaService *QuotaService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
 }
 
 func (p *QuotaServiceRemoveRequest) Header(key, value string) *QuotaServiceRemoveRequest {
@@ -37595,7 +37723,7 @@ func (p *QuotaServiceRemoveRequest) Async(async bool) *QuotaServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *QuotaServiceRemoveRequest) send() *QuotaServiceRemoveResponse {
+func (p *QuotaServiceRemoveRequest) Send() *QuotaServiceRemoveResponse {
 
 }
 
@@ -37632,11 +37760,11 @@ func (op *QuotaService) Remove(
 }
 
 type QuotaServiceUpdateRequest struct {
-	quota  *QuotaService
-	header map[string]string
-	query  map[string]string
-	async  *bool
-	quota  *Quota
+	quotaService *QuotaService
+	header       map[string]string
+	query        map[string]string
+	async        *bool
+	quota        *Quota
 }
 
 func (p *QuotaServiceUpdateRequest) Header(key, value string) *QuotaServiceUpdateRequest {
@@ -37663,7 +37791,7 @@ func (p *QuotaServiceUpdateRequest) Quota(quota *Quota) *QuotaServiceUpdateReque
 	p.quota = quota
 	return p
 }
-func (p *QuotaServiceUpdateRequest) send() *QuotaServiceUpdateResponse {
+func (p *QuotaServiceUpdateRequest) Send() *QuotaServiceUpdateResponse {
 
 }
 
@@ -37772,9 +37900,9 @@ func NewSnapshotDiskService(connection *Connection, path string) *SnapshotDiskSe
 }
 
 type SnapshotDiskServiceGetRequest struct {
-	snapshotDisk *SnapshotDiskService
-	header       map[string]string
-	query        map[string]string
+	snapshotDiskService *SnapshotDiskService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *SnapshotDiskServiceGetRequest) Header(key, value string) *SnapshotDiskServiceGetRequest {
@@ -37793,7 +37921,7 @@ func (p *SnapshotDiskServiceGetRequest) Query(key, value string) *SnapshotDiskSe
 	return p
 }
 
-func (p *SnapshotDiskServiceGetRequest) send() *SnapshotDiskServiceGetResponse {
+func (p *SnapshotDiskServiceGetRequest) Send() *SnapshotDiskServiceGetResponse {
 
 }
 
@@ -37848,10 +37976,10 @@ func NewQossService(connection *Connection, path string) *QossService {
 }
 
 type QossServiceAddRequest struct {
-	qoss   *QossService
-	header map[string]string
-	query  map[string]string
-	qos    *Qos
+	qossService *QossService
+	header      map[string]string
+	query       map[string]string
+	qos         *Qos
 }
 
 func (p *QossServiceAddRequest) Header(key, value string) *QossServiceAddRequest {
@@ -37874,8 +38002,10 @@ func (p *QossServiceAddRequest) Qos(qos *Qos) *QossServiceAddRequest {
 	p.qos = qos
 	return p
 }
-func (p *QossServiceAddRequest) send() *QossServiceAddResponse {
+func (p *QossServiceAddRequest) Send() *QossServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.qossService.Connection.URL(), p.qossService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -37903,10 +38033,10 @@ func (op *QossService) Add(
 }
 
 type QossServiceListRequest struct {
-	qoss   *QossService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	qossService *QossService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
 func (p *QossServiceListRequest) Header(key, value string) *QossServiceListRequest {
@@ -37929,7 +38059,7 @@ func (p *QossServiceListRequest) Max(max int64) *QossServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *QossServiceListRequest) send() *QossServiceListResponse {
+func (p *QossServiceListRequest) Send() *QossServiceListResponse {
 
 }
 
@@ -38002,9 +38132,9 @@ func NewNetworkService(connection *Connection, path string) *NetworkService {
 }
 
 type NetworkServiceGetRequest struct {
-	network *NetworkService
-	header  map[string]string
-	query   map[string]string
+	networkService *NetworkService
+	header         map[string]string
+	query          map[string]string
 }
 
 func (p *NetworkServiceGetRequest) Header(key, value string) *NetworkServiceGetRequest {
@@ -38023,7 +38153,7 @@ func (p *NetworkServiceGetRequest) Query(key, value string) *NetworkServiceGetRe
 	return p
 }
 
-func (p *NetworkServiceGetRequest) send() *NetworkServiceGetResponse {
+func (p *NetworkServiceGetRequest) Send() *NetworkServiceGetResponse {
 
 }
 
@@ -38074,10 +38204,10 @@ func (op *NetworkService) Get(
 }
 
 type NetworkServiceRemoveRequest struct {
-	network *NetworkService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
+	networkService *NetworkService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
 }
 
 func (p *NetworkServiceRemoveRequest) Header(key, value string) *NetworkServiceRemoveRequest {
@@ -38100,7 +38230,7 @@ func (p *NetworkServiceRemoveRequest) Async(async bool) *NetworkServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *NetworkServiceRemoveRequest) send() *NetworkServiceRemoveResponse {
+func (p *NetworkServiceRemoveRequest) Send() *NetworkServiceRemoveResponse {
 
 }
 
@@ -38142,11 +38272,11 @@ func (op *NetworkService) Remove(
 }
 
 type NetworkServiceUpdateRequest struct {
-	network *NetworkService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
-	network *Network
+	networkService *NetworkService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
+	network        *Network
 }
 
 func (p *NetworkServiceUpdateRequest) Header(key, value string) *NetworkServiceUpdateRequest {
@@ -38173,7 +38303,7 @@ func (p *NetworkServiceUpdateRequest) Network(network *Network) *NetworkServiceU
 	p.network = network
 	return p
 }
-func (p *NetworkServiceUpdateRequest) send() *NetworkServiceUpdateResponse {
+func (p *NetworkServiceUpdateRequest) Send() *NetworkServiceUpdateResponse {
 
 }
 
@@ -38298,9 +38428,9 @@ func NewInstanceTypeService(connection *Connection, path string) *InstanceTypeSe
 }
 
 type InstanceTypeServiceGetRequest struct {
-	instanceType *InstanceTypeService
-	header       map[string]string
-	query        map[string]string
+	instanceTypeService *InstanceTypeService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *InstanceTypeServiceGetRequest) Header(key, value string) *InstanceTypeServiceGetRequest {
@@ -38319,7 +38449,7 @@ func (p *InstanceTypeServiceGetRequest) Query(key, value string) *InstanceTypeSe
 	return p
 }
 
-func (p *InstanceTypeServiceGetRequest) send() *InstanceTypeServiceGetResponse {
+func (p *InstanceTypeServiceGetRequest) Send() *InstanceTypeServiceGetResponse {
 
 }
 
@@ -38352,10 +38482,10 @@ func (op *InstanceTypeService) Get(
 }
 
 type InstanceTypeServiceRemoveRequest struct {
-	instanceType *InstanceTypeService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	instanceTypeService *InstanceTypeService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *InstanceTypeServiceRemoveRequest) Header(key, value string) *InstanceTypeServiceRemoveRequest {
@@ -38378,7 +38508,7 @@ func (p *InstanceTypeServiceRemoveRequest) Async(async bool) *InstanceTypeServic
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeServiceRemoveRequest) send() *InstanceTypeServiceRemoveResponse {
+func (p *InstanceTypeServiceRemoveRequest) Send() *InstanceTypeServiceRemoveResponse {
 
 }
 
@@ -38413,11 +38543,11 @@ func (op *InstanceTypeService) Remove(
 }
 
 type InstanceTypeServiceUpdateRequest struct {
-	instanceType *InstanceTypeService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	instanceType *InstanceType
+	instanceTypeService *InstanceTypeService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
+	instanceType        *InstanceType
 }
 
 func (p *InstanceTypeServiceUpdateRequest) Header(key, value string) *InstanceTypeServiceUpdateRequest {
@@ -38444,7 +38574,7 @@ func (p *InstanceTypeServiceUpdateRequest) InstanceType(instanceType *InstanceTy
 	p.instanceType = instanceType
 	return p
 }
-func (p *InstanceTypeServiceUpdateRequest) send() *InstanceTypeServiceUpdateResponse {
+func (p *InstanceTypeServiceUpdateRequest) Send() *InstanceTypeServiceUpdateResponse {
 
 }
 
@@ -38566,10 +38696,10 @@ func NewVirtualFunctionAllowedNetworksService(connection *Connection, path strin
 }
 
 type VirtualFunctionAllowedNetworksServiceAddRequest struct {
-	virtualFunctionAllowedNetworks *VirtualFunctionAllowedNetworksService
-	header                         map[string]string
-	query                          map[string]string
-	network                        *Network
+	virtualFunctionAllowedNetworksService *VirtualFunctionAllowedNetworksService
+	header                                map[string]string
+	query                                 map[string]string
+	network                               *Network
 }
 
 func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Header(key, value string) *VirtualFunctionAllowedNetworksServiceAddRequest {
@@ -38592,8 +38722,10 @@ func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Network(network *Netwo
 	p.network = network
 	return p
 }
-func (p *VirtualFunctionAllowedNetworksServiceAddRequest) send() *VirtualFunctionAllowedNetworksServiceAddResponse {
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Send() *VirtualFunctionAllowedNetworksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.virtualFunctionAllowedNetworksService.Connection.URL(), p.virtualFunctionAllowedNetworksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -38621,10 +38753,10 @@ func (op *VirtualFunctionAllowedNetworksService) Add(
 }
 
 type VirtualFunctionAllowedNetworksServiceListRequest struct {
-	virtualFunctionAllowedNetworks *VirtualFunctionAllowedNetworksService
-	header                         map[string]string
-	query                          map[string]string
-	max                            *int64
+	virtualFunctionAllowedNetworksService *VirtualFunctionAllowedNetworksService
+	header                                map[string]string
+	query                                 map[string]string
+	max                                   *int64
 }
 
 func (p *VirtualFunctionAllowedNetworksServiceListRequest) Header(key, value string) *VirtualFunctionAllowedNetworksServiceListRequest {
@@ -38647,7 +38779,7 @@ func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) *Virtu
 	p.max = &max
 	return p
 }
-func (p *VirtualFunctionAllowedNetworksServiceListRequest) send() *VirtualFunctionAllowedNetworksServiceListResponse {
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Send() *VirtualFunctionAllowedNetworksServiceListResponse {
 
 }
 
@@ -38719,9 +38851,9 @@ func NewHostHookService(connection *Connection, path string) *HostHookService {
 }
 
 type HostHookServiceGetRequest struct {
-	hostHook *HostHookService
-	header   map[string]string
-	query    map[string]string
+	hostHookService *HostHookService
+	header          map[string]string
+	query           map[string]string
 }
 
 func (p *HostHookServiceGetRequest) Header(key, value string) *HostHookServiceGetRequest {
@@ -38740,7 +38872,7 @@ func (p *HostHookServiceGetRequest) Query(key, value string) *HostHookServiceGet
 	return p
 }
 
-func (p *HostHookServiceGetRequest) send() *HostHookServiceGetResponse {
+func (p *HostHookServiceGetRequest) Send() *HostHookServiceGetResponse {
 
 }
 
@@ -38795,10 +38927,10 @@ func NewImagesService(connection *Connection, path string) *ImagesService {
 }
 
 type ImagesServiceListRequest struct {
-	images *ImagesService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	imagesService *ImagesService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
 func (p *ImagesServiceListRequest) Header(key, value string) *ImagesServiceListRequest {
@@ -38821,7 +38953,7 @@ func (p *ImagesServiceListRequest) Max(max int64) *ImagesServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *ImagesServiceListRequest) send() *ImagesServiceListResponse {
+func (p *ImagesServiceListRequest) Send() *ImagesServiceListResponse {
 
 }
 
@@ -38893,10 +39025,10 @@ func NewSnapshotCdromsService(connection *Connection, path string) *SnapshotCdro
 }
 
 type SnapshotCdromsServiceListRequest struct {
-	snapshotCdroms *SnapshotCdromsService
-	header         map[string]string
-	query          map[string]string
-	max            *int64
+	snapshotCdromsService *SnapshotCdromsService
+	header                map[string]string
+	query                 map[string]string
+	max                   *int64
 }
 
 func (p *SnapshotCdromsServiceListRequest) Header(key, value string) *SnapshotCdromsServiceListRequest {
@@ -38919,7 +39051,7 @@ func (p *SnapshotCdromsServiceListRequest) Max(max int64) *SnapshotCdromsService
 	p.max = &max
 	return p
 }
-func (p *SnapshotCdromsServiceListRequest) send() *SnapshotCdromsServiceListResponse {
+func (p *SnapshotCdromsServiceListRequest) Send() *SnapshotCdromsServiceListResponse {
 
 }
 
@@ -38991,10 +39123,10 @@ func NewBalancesService(connection *Connection, path string) *BalancesService {
 }
 
 type BalancesServiceAddRequest struct {
-	balances *BalancesService
-	header   map[string]string
-	query    map[string]string
-	balance  *Balance
+	balancesService *BalancesService
+	header          map[string]string
+	query           map[string]string
+	balance         *Balance
 }
 
 func (p *BalancesServiceAddRequest) Header(key, value string) *BalancesServiceAddRequest {
@@ -39017,8 +39149,10 @@ func (p *BalancesServiceAddRequest) Balance(balance *Balance) *BalancesServiceAd
 	p.balance = balance
 	return p
 }
-func (p *BalancesServiceAddRequest) send() *BalancesServiceAddResponse {
+func (p *BalancesServiceAddRequest) Send() *BalancesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.balancesService.Connection.URL(), p.balancesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -39046,11 +39180,11 @@ func (op *BalancesService) Add(
 }
 
 type BalancesServiceListRequest struct {
-	balances *BalancesService
-	header   map[string]string
-	query    map[string]string
-	filter   *bool
-	max      *int64
+	balancesService *BalancesService
+	header          map[string]string
+	query           map[string]string
+	filter          *bool
+	max             *int64
 }
 
 func (p *BalancesServiceListRequest) Header(key, value string) *BalancesServiceListRequest {
@@ -39077,7 +39211,7 @@ func (p *BalancesServiceListRequest) Max(max int64) *BalancesServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *BalancesServiceListRequest) send() *BalancesServiceListResponse {
+func (p *BalancesServiceListRequest) Send() *BalancesServiceListResponse {
 
 }
 
@@ -39153,9 +39287,9 @@ func NewTemplateCdromService(connection *Connection, path string) *TemplateCdrom
 }
 
 type TemplateCdromServiceGetRequest struct {
-	templateCdrom *TemplateCdromService
-	header        map[string]string
-	query         map[string]string
+	templateCdromService *TemplateCdromService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *TemplateCdromServiceGetRequest) Header(key, value string) *TemplateCdromServiceGetRequest {
@@ -39174,7 +39308,7 @@ func (p *TemplateCdromServiceGetRequest) Query(key, value string) *TemplateCdrom
 	return p
 }
 
-func (p *TemplateCdromServiceGetRequest) send() *TemplateCdromServiceGetResponse {
+func (p *TemplateCdromServiceGetRequest) Send() *TemplateCdromServiceGetResponse {
 
 }
 
@@ -39235,10 +39369,10 @@ func NewMoveableService(connection *Connection, path string) *MoveableService {
 }
 
 type MoveableServiceMoveRequest struct {
-	moveable *MoveableService
-	header   map[string]string
-	query    map[string]string
-	async    *bool
+	moveableService *MoveableService
+	header          map[string]string
+	query           map[string]string
+	async           *bool
 }
 
 func (p *MoveableServiceMoveRequest) Header(key, value string) *MoveableServiceMoveRequest {
@@ -39261,7 +39395,7 @@ func (p *MoveableServiceMoveRequest) Async(async bool) *MoveableServiceMoveReque
 	p.async = &async
 	return p
 }
-func (p *MoveableServiceMoveRequest) send() *MoveableServiceMoveResponse {
+func (p *MoveableServiceMoveRequest) Send() *MoveableServiceMoveResponse {
 
 }
 
@@ -39315,9 +39449,9 @@ func NewCpuProfileService(connection *Connection, path string) *CpuProfileServic
 }
 
 type CpuProfileServiceGetRequest struct {
-	cpuProfile *CpuProfileService
-	header     map[string]string
-	query      map[string]string
+	cpuProfileService *CpuProfileService
+	header            map[string]string
+	query             map[string]string
 }
 
 func (p *CpuProfileServiceGetRequest) Header(key, value string) *CpuProfileServiceGetRequest {
@@ -39336,7 +39470,7 @@ func (p *CpuProfileServiceGetRequest) Query(key, value string) *CpuProfileServic
 	return p
 }
 
-func (p *CpuProfileServiceGetRequest) send() *CpuProfileServiceGetResponse {
+func (p *CpuProfileServiceGetRequest) Send() *CpuProfileServiceGetResponse {
 
 }
 
@@ -39364,10 +39498,10 @@ func (op *CpuProfileService) Get(
 }
 
 type CpuProfileServiceRemoveRequest struct {
-	cpuProfile *CpuProfileService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
+	cpuProfileService *CpuProfileService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
 }
 
 func (p *CpuProfileServiceRemoveRequest) Header(key, value string) *CpuProfileServiceRemoveRequest {
@@ -39390,7 +39524,7 @@ func (p *CpuProfileServiceRemoveRequest) Async(async bool) *CpuProfileServiceRem
 	p.async = &async
 	return p
 }
-func (p *CpuProfileServiceRemoveRequest) send() *CpuProfileServiceRemoveResponse {
+func (p *CpuProfileServiceRemoveRequest) Send() *CpuProfileServiceRemoveResponse {
 
 }
 
@@ -39418,11 +39552,11 @@ func (op *CpuProfileService) Remove(
 }
 
 type CpuProfileServiceUpdateRequest struct {
-	cpuProfile *CpuProfileService
-	header     map[string]string
-	query      map[string]string
-	async      *bool
-	profile    *CpuProfile
+	cpuProfileService *CpuProfileService
+	header            map[string]string
+	query             map[string]string
+	async             *bool
+	profile           *CpuProfile
 }
 
 func (p *CpuProfileServiceUpdateRequest) Header(key, value string) *CpuProfileServiceUpdateRequest {
@@ -39449,7 +39583,7 @@ func (p *CpuProfileServiceUpdateRequest) Profile(profile *CpuProfile) *CpuProfil
 	p.profile = profile
 	return p
 }
-func (p *CpuProfileServiceUpdateRequest) send() *CpuProfileServiceUpdateResponse {
+func (p *CpuProfileServiceUpdateRequest) Send() *CpuProfileServiceUpdateResponse {
 
 }
 
@@ -39558,9 +39692,9 @@ func NewStorageServerConnectionExtensionService(connection *Connection, path str
 }
 
 type StorageServerConnectionExtensionServiceGetRequest struct {
-	storageServerConnectionExtension *StorageServerConnectionExtensionService
-	header                           map[string]string
-	query                            map[string]string
+	storageServerConnectionExtensionService *StorageServerConnectionExtensionService
+	header                                  map[string]string
+	query                                   map[string]string
 }
 
 func (p *StorageServerConnectionExtensionServiceGetRequest) Header(key, value string) *StorageServerConnectionExtensionServiceGetRequest {
@@ -39579,7 +39713,7 @@ func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value str
 	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceGetRequest) send() *StorageServerConnectionExtensionServiceGetResponse {
+func (p *StorageServerConnectionExtensionServiceGetRequest) Send() *StorageServerConnectionExtensionServiceGetResponse {
 
 }
 
@@ -39607,10 +39741,10 @@ func (op *StorageServerConnectionExtensionService) Get(
 }
 
 type StorageServerConnectionExtensionServiceRemoveRequest struct {
-	storageServerConnectionExtension *StorageServerConnectionExtensionService
-	header                           map[string]string
-	query                            map[string]string
-	async                            *bool
+	storageServerConnectionExtensionService *StorageServerConnectionExtensionService
+	header                                  map[string]string
+	query                                   map[string]string
+	async                                   *bool
 }
 
 func (p *StorageServerConnectionExtensionServiceRemoveRequest) Header(key, value string) *StorageServerConnectionExtensionServiceRemoveRequest {
@@ -39633,7 +39767,7 @@ func (p *StorageServerConnectionExtensionServiceRemoveRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *StorageServerConnectionExtensionServiceRemoveRequest) send() *StorageServerConnectionExtensionServiceRemoveResponse {
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Send() *StorageServerConnectionExtensionServiceRemoveResponse {
 
 }
 
@@ -39661,11 +39795,11 @@ func (op *StorageServerConnectionExtensionService) Remove(
 }
 
 type StorageServerConnectionExtensionServiceUpdateRequest struct {
-	storageServerConnectionExtension *StorageServerConnectionExtensionService
-	header                           map[string]string
-	query                            map[string]string
-	async                            *bool
-	extension                        *StorageConnectionExtension
+	storageServerConnectionExtensionService *StorageServerConnectionExtensionService
+	header                                  map[string]string
+	query                                   map[string]string
+	async                                   *bool
+	extension                               *StorageConnectionExtension
 }
 
 func (p *StorageServerConnectionExtensionServiceUpdateRequest) Header(key, value string) *StorageServerConnectionExtensionServiceUpdateRequest {
@@ -39692,7 +39826,7 @@ func (p *StorageServerConnectionExtensionServiceUpdateRequest) Extension(extensi
 	p.extension = extension
 	return p
 }
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) send() *StorageServerConnectionExtensionServiceUpdateResponse {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Send() *StorageServerConnectionExtensionServiceUpdateResponse {
 
 }
 
@@ -39768,9 +39902,9 @@ func NewClusterLevelsService(connection *Connection, path string) *ClusterLevels
 }
 
 type ClusterLevelsServiceListRequest struct {
-	clusterLevels *ClusterLevelsService
-	header        map[string]string
-	query         map[string]string
+	clusterLevelsService *ClusterLevelsService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *ClusterLevelsServiceListRequest) Header(key, value string) *ClusterLevelsServiceListRequest {
@@ -39789,7 +39923,7 @@ func (p *ClusterLevelsServiceListRequest) Query(key, value string) *ClusterLevel
 	return p
 }
 
-func (p *ClusterLevelsServiceListRequest) send() *ClusterLevelsServiceListResponse {
+func (p *ClusterLevelsServiceListRequest) Send() *ClusterLevelsServiceListResponse {
 
 }
 
@@ -39871,10 +40005,10 @@ func NewNetworkFilterParametersService(connection *Connection, path string) *Net
 }
 
 type NetworkFilterParametersServiceAddRequest struct {
-	networkFilterParameters *NetworkFilterParametersService
-	header                  map[string]string
-	query                   map[string]string
-	parameter               *NetworkFilterParameter
+	networkFilterParametersService *NetworkFilterParametersService
+	header                         map[string]string
+	query                          map[string]string
+	parameter                      *NetworkFilterParameter
 }
 
 func (p *NetworkFilterParametersServiceAddRequest) Header(key, value string) *NetworkFilterParametersServiceAddRequest {
@@ -39897,8 +40031,10 @@ func (p *NetworkFilterParametersServiceAddRequest) Parameter(parameter *NetworkF
 	p.parameter = parameter
 	return p
 }
-func (p *NetworkFilterParametersServiceAddRequest) send() *NetworkFilterParametersServiceAddResponse {
+func (p *NetworkFilterParametersServiceAddRequest) Send() *NetworkFilterParametersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.networkFilterParametersService.Connection.URL(), p.networkFilterParametersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -39946,9 +40082,9 @@ func (op *NetworkFilterParametersService) Add(
 }
 
 type NetworkFilterParametersServiceListRequest struct {
-	networkFilterParameters *NetworkFilterParametersService
-	header                  map[string]string
-	query                   map[string]string
+	networkFilterParametersService *NetworkFilterParametersService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *NetworkFilterParametersServiceListRequest) Header(key, value string) *NetworkFilterParametersServiceListRequest {
@@ -39967,7 +40103,7 @@ func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) *Ne
 	return p
 }
 
-func (p *NetworkFilterParametersServiceListRequest) send() *NetworkFilterParametersServiceListResponse {
+func (p *NetworkFilterParametersServiceListRequest) Send() *NetworkFilterParametersServiceListResponse {
 
 }
 
@@ -40034,10 +40170,10 @@ func NewVmNicsService(connection *Connection, path string) *VmNicsService {
 }
 
 type VmNicsServiceAddRequest struct {
-	vmNics *VmNicsService
-	header map[string]string
-	query  map[string]string
-	nic    *Nic
+	vmNicsService *VmNicsService
+	header        map[string]string
+	query         map[string]string
+	nic           *Nic
 }
 
 func (p *VmNicsServiceAddRequest) Header(key, value string) *VmNicsServiceAddRequest {
@@ -40060,8 +40196,10 @@ func (p *VmNicsServiceAddRequest) Nic(nic *Nic) *VmNicsServiceAddRequest {
 	p.nic = nic
 	return p
 }
-func (p *VmNicsServiceAddRequest) send() *VmNicsServiceAddResponse {
+func (p *VmNicsServiceAddRequest) Send() *VmNicsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.vmNicsService.Connection.URL(), p.vmNicsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -40135,10 +40273,10 @@ func (op *VmNicsService) Add(
 }
 
 type VmNicsServiceListRequest struct {
-	vmNics *VmNicsService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	vmNicsService *VmNicsService
+	header        map[string]string
+	query         map[string]string
+	max           *int64
 }
 
 func (p *VmNicsServiceListRequest) Header(key, value string) *VmNicsServiceListRequest {
@@ -40161,7 +40299,7 @@ func (p *VmNicsServiceListRequest) Max(max int64) *VmNicsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *VmNicsServiceListRequest) send() *VmNicsServiceListResponse {
+func (p *VmNicsServiceListRequest) Send() *VmNicsServiceListResponse {
 
 }
 
@@ -40233,10 +40371,10 @@ func NewVmReportedDevicesService(connection *Connection, path string) *VmReporte
 }
 
 type VmReportedDevicesServiceListRequest struct {
-	vmReportedDevices *VmReportedDevicesService
-	header            map[string]string
-	query             map[string]string
-	max               *int64
+	vmReportedDevicesService *VmReportedDevicesService
+	header                   map[string]string
+	query                    map[string]string
+	max                      *int64
 }
 
 func (p *VmReportedDevicesServiceListRequest) Header(key, value string) *VmReportedDevicesServiceListRequest {
@@ -40259,7 +40397,7 @@ func (p *VmReportedDevicesServiceListRequest) Max(max int64) *VmReportedDevicesS
 	p.max = &max
 	return p
 }
-func (p *VmReportedDevicesServiceListRequest) send() *VmReportedDevicesServiceListResponse {
+func (p *VmReportedDevicesServiceListRequest) Send() *VmReportedDevicesServiceListResponse {
 
 }
 
@@ -40331,10 +40469,10 @@ func NewBalanceService(connection *Connection, path string) *BalanceService {
 }
 
 type BalanceServiceGetRequest struct {
-	balance *BalanceService
-	header  map[string]string
-	query   map[string]string
-	filter  *bool
+	balanceService *BalanceService
+	header         map[string]string
+	query          map[string]string
+	filter         *bool
 }
 
 func (p *BalanceServiceGetRequest) Header(key, value string) *BalanceServiceGetRequest {
@@ -40357,7 +40495,7 @@ func (p *BalanceServiceGetRequest) Filter(filter bool) *BalanceServiceGetRequest
 	p.filter = &filter
 	return p
 }
-func (p *BalanceServiceGetRequest) send() *BalanceServiceGetResponse {
+func (p *BalanceServiceGetRequest) Send() *BalanceServiceGetResponse {
 
 }
 
@@ -40392,10 +40530,10 @@ func (op *BalanceService) Get(
 }
 
 type BalanceServiceRemoveRequest struct {
-	balance *BalanceService
-	header  map[string]string
-	query   map[string]string
-	async   *bool
+	balanceService *BalanceService
+	header         map[string]string
+	query          map[string]string
+	async          *bool
 }
 
 func (p *BalanceServiceRemoveRequest) Header(key, value string) *BalanceServiceRemoveRequest {
@@ -40418,7 +40556,7 @@ func (p *BalanceServiceRemoveRequest) Async(async bool) *BalanceServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *BalanceServiceRemoveRequest) send() *BalanceServiceRemoveResponse {
+func (p *BalanceServiceRemoveRequest) Send() *BalanceServiceRemoveResponse {
 
 }
 
@@ -40474,10 +40612,10 @@ func NewPermitsService(connection *Connection, path string) *PermitsService {
 }
 
 type PermitsServiceAddRequest struct {
-	permits *PermitsService
-	header  map[string]string
-	query   map[string]string
-	permit  *Permit
+	permitsService *PermitsService
+	header         map[string]string
+	query          map[string]string
+	permit         *Permit
 }
 
 func (p *PermitsServiceAddRequest) Header(key, value string) *PermitsServiceAddRequest {
@@ -40500,8 +40638,10 @@ func (p *PermitsServiceAddRequest) Permit(permit *Permit) *PermitsServiceAddRequ
 	p.permit = permit
 	return p
 }
-func (p *PermitsServiceAddRequest) send() *PermitsServiceAddResponse {
+func (p *PermitsServiceAddRequest) Send() *PermitsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.permitsService.Connection.URL(), p.permitsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -40546,10 +40686,10 @@ func (op *PermitsService) Add(
 }
 
 type PermitsServiceListRequest struct {
-	permits *PermitsService
-	header  map[string]string
-	query   map[string]string
-	max     *int64
+	permitsService *PermitsService
+	header         map[string]string
+	query          map[string]string
+	max            *int64
 }
 
 func (p *PermitsServiceListRequest) Header(key, value string) *PermitsServiceListRequest {
@@ -40572,7 +40712,7 @@ func (p *PermitsServiceListRequest) Max(max int64) *PermitsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *PermitsServiceListRequest) send() *PermitsServiceListResponse {
+func (p *PermitsServiceListRequest) Send() *PermitsServiceListResponse {
 
 }
 
@@ -40665,10 +40805,10 @@ func NewStorageDomainTemplatesService(connection *Connection, path string) *Stor
 }
 
 type StorageDomainTemplatesServiceListRequest struct {
-	storageDomainTemplates *StorageDomainTemplatesService
-	header                 map[string]string
-	query                  map[string]string
-	max                    *int64
+	storageDomainTemplatesService *StorageDomainTemplatesService
+	header                        map[string]string
+	query                         map[string]string
+	max                           *int64
 }
 
 func (p *StorageDomainTemplatesServiceListRequest) Header(key, value string) *StorageDomainTemplatesServiceListRequest {
@@ -40691,7 +40831,7 @@ func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) *StorageDomain
 	p.max = &max
 	return p
 }
-func (p *StorageDomainTemplatesServiceListRequest) send() *StorageDomainTemplatesServiceListResponse {
+func (p *StorageDomainTemplatesServiceListRequest) Send() *StorageDomainTemplatesServiceListResponse {
 
 }
 
@@ -40763,9 +40903,9 @@ func NewSystemService(connection *Connection, path string) *SystemService {
 }
 
 type SystemServiceGetRequest struct {
-	system *SystemService
-	header map[string]string
-	query  map[string]string
+	systemService *SystemService
+	header        map[string]string
+	query         map[string]string
 }
 
 func (p *SystemServiceGetRequest) Header(key, value string) *SystemServiceGetRequest {
@@ -40784,7 +40924,7 @@ func (p *SystemServiceGetRequest) Query(key, value string) *SystemServiceGetRequ
 	return p
 }
 
-func (p *SystemServiceGetRequest) send() *SystemServiceGetResponse {
+func (p *SystemServiceGetRequest) Send() *SystemServiceGetResponse {
 
 }
 
@@ -40886,10 +41026,10 @@ func (op *SystemService) Get(
 }
 
 type SystemServiceReloadConfigurationsRequest struct {
-	system *SystemService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	systemService *SystemService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *SystemServiceReloadConfigurationsRequest) Header(key, value string) *SystemServiceReloadConfigurationsRequest {
@@ -40912,7 +41052,7 @@ func (p *SystemServiceReloadConfigurationsRequest) Async(async bool) *SystemServ
 	p.async = &async
 	return p
 }
-func (p *SystemServiceReloadConfigurationsRequest) send() *SystemServiceReloadConfigurationsResponse {
+func (p *SystemServiceReloadConfigurationsRequest) Send() *SystemServiceReloadConfigurationsResponse {
 
 }
 
@@ -41430,9 +41570,9 @@ func NewExternalHostService(connection *Connection, path string) *ExternalHostSe
 }
 
 type ExternalHostServiceGetRequest struct {
-	externalHost *ExternalHostService
-	header       map[string]string
-	query        map[string]string
+	externalHostService *ExternalHostService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *ExternalHostServiceGetRequest) Header(key, value string) *ExternalHostServiceGetRequest {
@@ -41451,7 +41591,7 @@ func (p *ExternalHostServiceGetRequest) Query(key, value string) *ExternalHostSe
 	return p
 }
 
-func (p *ExternalHostServiceGetRequest) send() *ExternalHostServiceGetResponse {
+func (p *ExternalHostServiceGetRequest) Send() *ExternalHostServiceGetResponse {
 
 }
 
@@ -41506,9 +41646,9 @@ func NewExternalHostGroupService(connection *Connection, path string) *ExternalH
 }
 
 type ExternalHostGroupServiceGetRequest struct {
-	externalHostGroup *ExternalHostGroupService
-	header            map[string]string
-	query             map[string]string
+	externalHostGroupService *ExternalHostGroupService
+	header                   map[string]string
+	query                    map[string]string
 }
 
 func (p *ExternalHostGroupServiceGetRequest) Header(key, value string) *ExternalHostGroupServiceGetRequest {
@@ -41527,7 +41667,7 @@ func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) *ExternalH
 	return p
 }
 
-func (p *ExternalHostGroupServiceGetRequest) send() *ExternalHostGroupServiceGetResponse {
+func (p *ExternalHostGroupServiceGetRequest) Send() *ExternalHostGroupServiceGetResponse {
 
 }
 
@@ -41583,9 +41723,9 @@ func NewKatelloErratumService(connection *Connection, path string) *KatelloErrat
 }
 
 type KatelloErratumServiceGetRequest struct {
-	katelloErratum *KatelloErratumService
-	header         map[string]string
-	query          map[string]string
+	katelloErratumService *KatelloErratumService
+	header                map[string]string
+	query                 map[string]string
 }
 
 func (p *KatelloErratumServiceGetRequest) Header(key, value string) *KatelloErratumServiceGetRequest {
@@ -41604,7 +41744,7 @@ func (p *KatelloErratumServiceGetRequest) Query(key, value string) *KatelloErrat
 	return p
 }
 
-func (p *KatelloErratumServiceGetRequest) send() *KatelloErratumServiceGetResponse {
+func (p *KatelloErratumServiceGetRequest) Send() *KatelloErratumServiceGetResponse {
 
 }
 
@@ -41683,9 +41823,9 @@ func NewExternalDiscoveredHostService(connection *Connection, path string) *Exte
 }
 
 type ExternalDiscoveredHostServiceGetRequest struct {
-	externalDiscoveredHost *ExternalDiscoveredHostService
-	header                 map[string]string
-	query                  map[string]string
+	externalDiscoveredHostService *ExternalDiscoveredHostService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *ExternalDiscoveredHostServiceGetRequest) Header(key, value string) *ExternalDiscoveredHostServiceGetRequest {
@@ -41704,7 +41844,7 @@ func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) *Exte
 	return p
 }
 
-func (p *ExternalDiscoveredHostServiceGetRequest) send() *ExternalDiscoveredHostServiceGetResponse {
+func (p *ExternalDiscoveredHostServiceGetRequest) Send() *ExternalDiscoveredHostServiceGetResponse {
 
 }
 
@@ -41761,10 +41901,10 @@ func NewEngineKatelloErrataService(connection *Connection, path string) *EngineK
 }
 
 type EngineKatelloErrataServiceListRequest struct {
-	engineKatelloErrata *EngineKatelloErrataService
-	header              map[string]string
-	query               map[string]string
-	max                 *int64
+	engineKatelloErrataService *EngineKatelloErrataService
+	header                     map[string]string
+	query                      map[string]string
+	max                        *int64
 }
 
 func (p *EngineKatelloErrataServiceListRequest) Header(key, value string) *EngineKatelloErrataServiceListRequest {
@@ -41787,7 +41927,7 @@ func (p *EngineKatelloErrataServiceListRequest) Max(max int64) *EngineKatelloErr
 	p.max = &max
 	return p
 }
-func (p *EngineKatelloErrataServiceListRequest) send() *EngineKatelloErrataServiceListResponse {
+func (p *EngineKatelloErrataServiceListRequest) Send() *EngineKatelloErrataServiceListResponse {
 
 }
 
@@ -41888,9 +42028,9 @@ func NewExternalComputeResourceService(connection *Connection, path string) *Ext
 }
 
 type ExternalComputeResourceServiceGetRequest struct {
-	externalComputeResource *ExternalComputeResourceService
-	header                  map[string]string
-	query                   map[string]string
+	externalComputeResourceService *ExternalComputeResourceService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *ExternalComputeResourceServiceGetRequest) Header(key, value string) *ExternalComputeResourceServiceGetRequest {
@@ -41909,7 +42049,7 @@ func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) *Ext
 	return p
 }
 
-func (p *ExternalComputeResourceServiceGetRequest) send() *ExternalComputeResourceServiceGetResponse {
+func (p *ExternalComputeResourceServiceGetRequest) Send() *ExternalComputeResourceServiceGetResponse {
 
 }
 
@@ -41964,10 +42104,10 @@ func NewExternalHostGroupsService(connection *Connection, path string) *External
 }
 
 type ExternalHostGroupsServiceListRequest struct {
-	externalHostGroups *ExternalHostGroupsService
-	header             map[string]string
-	query              map[string]string
-	max                *int64
+	externalHostGroupsService *ExternalHostGroupsService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
 func (p *ExternalHostGroupsServiceListRequest) Header(key, value string) *ExternalHostGroupsServiceListRequest {
@@ -41990,7 +42130,7 @@ func (p *ExternalHostGroupsServiceListRequest) Max(max int64) *ExternalHostGroup
 	p.max = &max
 	return p
 }
-func (p *ExternalHostGroupsServiceListRequest) send() *ExternalHostGroupsServiceListResponse {
+func (p *ExternalHostGroupsServiceListRequest) Send() *ExternalHostGroupsServiceListResponse {
 
 }
 
@@ -42062,9 +42202,9 @@ func NewExternalHostProviderService(connection *Connection, path string) *Extern
 }
 
 type ExternalHostProviderServiceGetRequest struct {
-	externalHostProvider *ExternalHostProviderService
-	header               map[string]string
-	query                map[string]string
+	externalHostProviderService *ExternalHostProviderService
+	header                      map[string]string
+	query                       map[string]string
 }
 
 func (p *ExternalHostProviderServiceGetRequest) Header(key, value string) *ExternalHostProviderServiceGetRequest {
@@ -42083,7 +42223,7 @@ func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) *Extern
 	return p
 }
 
-func (p *ExternalHostProviderServiceGetRequest) send() *ExternalHostProviderServiceGetResponse {
+func (p *ExternalHostProviderServiceGetRequest) Send() *ExternalHostProviderServiceGetResponse {
 
 }
 
@@ -42111,10 +42251,10 @@ func (op *ExternalHostProviderService) Get(
 }
 
 type ExternalHostProviderServiceImportCertificatesRequest struct {
-	externalHostProvider *ExternalHostProviderService
-	header               map[string]string
-	query                map[string]string
-	certificates         []Certificate
+	externalHostProviderService *ExternalHostProviderService
+	header                      map[string]string
+	query                       map[string]string
+	certificates                []Certificate
 }
 
 func (p *ExternalHostProviderServiceImportCertificatesRequest) Header(key, value string) *ExternalHostProviderServiceImportCertificatesRequest {
@@ -42137,7 +42277,7 @@ func (p *ExternalHostProviderServiceImportCertificatesRequest) Certificates(cert
 	p.certificates = certificates
 	return p
 }
-func (p *ExternalHostProviderServiceImportCertificatesRequest) send() *ExternalHostProviderServiceImportCertificatesResponse {
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Send() *ExternalHostProviderServiceImportCertificatesResponse {
 
 }
 
@@ -42159,10 +42299,10 @@ func (op *ExternalHostProviderService) ImportCertificates(
 }
 
 type ExternalHostProviderServiceRemoveRequest struct {
-	externalHostProvider *ExternalHostProviderService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
+	externalHostProviderService *ExternalHostProviderService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
 }
 
 func (p *ExternalHostProviderServiceRemoveRequest) Header(key, value string) *ExternalHostProviderServiceRemoveRequest {
@@ -42185,7 +42325,7 @@ func (p *ExternalHostProviderServiceRemoveRequest) Async(async bool) *ExternalHo
 	p.async = &async
 	return p
 }
-func (p *ExternalHostProviderServiceRemoveRequest) send() *ExternalHostProviderServiceRemoveResponse {
+func (p *ExternalHostProviderServiceRemoveRequest) Send() *ExternalHostProviderServiceRemoveResponse {
 
 }
 
@@ -42213,10 +42353,10 @@ func (op *ExternalHostProviderService) Remove(
 }
 
 type ExternalHostProviderServiceTestConnectivityRequest struct {
-	externalHostProvider *ExternalHostProviderService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
+	externalHostProviderService *ExternalHostProviderService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
 }
 
 func (p *ExternalHostProviderServiceTestConnectivityRequest) Header(key, value string) *ExternalHostProviderServiceTestConnectivityRequest {
@@ -42239,7 +42379,7 @@ func (p *ExternalHostProviderServiceTestConnectivityRequest) Async(async bool) *
 	p.async = &async
 	return p
 }
-func (p *ExternalHostProviderServiceTestConnectivityRequest) send() *ExternalHostProviderServiceTestConnectivityResponse {
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Send() *ExternalHostProviderServiceTestConnectivityResponse {
 
 }
 
@@ -42266,11 +42406,11 @@ func (op *ExternalHostProviderService) TestConnectivity(
 }
 
 type ExternalHostProviderServiceUpdateRequest struct {
-	externalHostProvider *ExternalHostProviderService
-	header               map[string]string
-	query                map[string]string
-	async                *bool
-	provider             *ExternalHostProvider
+	externalHostProviderService *ExternalHostProviderService
+	header                      map[string]string
+	query                       map[string]string
+	async                       *bool
+	provider                    *ExternalHostProvider
 }
 
 func (p *ExternalHostProviderServiceUpdateRequest) Header(key, value string) *ExternalHostProviderServiceUpdateRequest {
@@ -42297,7 +42437,7 @@ func (p *ExternalHostProviderServiceUpdateRequest) Provider(provider *ExternalHo
 	p.provider = provider
 	return p
 }
-func (p *ExternalHostProviderServiceUpdateRequest) send() *ExternalHostProviderServiceUpdateResponse {
+func (p *ExternalHostProviderServiceUpdateRequest) Send() *ExternalHostProviderServiceUpdateResponse {
 
 }
 
@@ -42417,10 +42557,10 @@ func NewKatelloErrataService(connection *Connection, path string) *KatelloErrata
 }
 
 type KatelloErrataServiceListRequest struct {
-	katelloErrata *KatelloErrataService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	katelloErrataService *KatelloErrataService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *KatelloErrataServiceListRequest) Header(key, value string) *KatelloErrataServiceListRequest {
@@ -42443,7 +42583,7 @@ func (p *KatelloErrataServiceListRequest) Max(max int64) *KatelloErrataServiceLi
 	p.max = &max
 	return p
 }
-func (p *KatelloErrataServiceListRequest) send() *KatelloErrataServiceListResponse {
+func (p *KatelloErrataServiceListRequest) Send() *KatelloErrataServiceListResponse {
 
 }
 
@@ -42544,10 +42684,10 @@ func NewExternalDiscoveredHostsService(connection *Connection, path string) *Ext
 }
 
 type ExternalDiscoveredHostsServiceListRequest struct {
-	externalDiscoveredHosts *ExternalDiscoveredHostsService
-	header                  map[string]string
-	query                   map[string]string
-	max                     *int64
+	externalDiscoveredHostsService *ExternalDiscoveredHostsService
+	header                         map[string]string
+	query                          map[string]string
+	max                            *int64
 }
 
 func (p *ExternalDiscoveredHostsServiceListRequest) Header(key, value string) *ExternalDiscoveredHostsServiceListRequest {
@@ -42570,7 +42710,7 @@ func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) *ExternalDisc
 	p.max = &max
 	return p
 }
-func (p *ExternalDiscoveredHostsServiceListRequest) send() *ExternalDiscoveredHostsServiceListResponse {
+func (p *ExternalDiscoveredHostsServiceListRequest) Send() *ExternalDiscoveredHostsServiceListResponse {
 
 }
 
@@ -42642,10 +42782,10 @@ func NewExternalHostsService(connection *Connection, path string) *ExternalHosts
 }
 
 type ExternalHostsServiceListRequest struct {
-	externalHosts *ExternalHostsService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	externalHostsService *ExternalHostsService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *ExternalHostsServiceListRequest) Header(key, value string) *ExternalHostsServiceListRequest {
@@ -42668,7 +42808,7 @@ func (p *ExternalHostsServiceListRequest) Max(max int64) *ExternalHostsServiceLi
 	p.max = &max
 	return p
 }
-func (p *ExternalHostsServiceListRequest) send() *ExternalHostsServiceListResponse {
+func (p *ExternalHostsServiceListRequest) Send() *ExternalHostsServiceListResponse {
 
 }
 
@@ -42740,10 +42880,10 @@ func NewExternalComputeResourcesService(connection *Connection, path string) *Ex
 }
 
 type ExternalComputeResourcesServiceListRequest struct {
-	externalComputeResources *ExternalComputeResourcesService
-	header                   map[string]string
-	query                    map[string]string
-	max                      *int64
+	externalComputeResourcesService *ExternalComputeResourcesService
+	header                          map[string]string
+	query                           map[string]string
+	max                             *int64
 }
 
 func (p *ExternalComputeResourcesServiceListRequest) Header(key, value string) *ExternalComputeResourcesServiceListRequest {
@@ -42766,7 +42906,7 @@ func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) *ExternalCom
 	p.max = &max
 	return p
 }
-func (p *ExternalComputeResourcesServiceListRequest) send() *ExternalComputeResourcesServiceListResponse {
+func (p *ExternalComputeResourcesServiceListRequest) Send() *ExternalComputeResourcesServiceListResponse {
 
 }
 
@@ -42838,10 +42978,10 @@ func NewExternalHostProvidersService(connection *Connection, path string) *Exter
 }
 
 type ExternalHostProvidersServiceAddRequest struct {
-	externalHostProviders *ExternalHostProvidersService
-	header                map[string]string
-	query                 map[string]string
-	provider              *ExternalHostProvider
+	externalHostProvidersService *ExternalHostProvidersService
+	header                       map[string]string
+	query                        map[string]string
+	provider                     *ExternalHostProvider
 }
 
 func (p *ExternalHostProvidersServiceAddRequest) Header(key, value string) *ExternalHostProvidersServiceAddRequest {
@@ -42864,8 +43004,10 @@ func (p *ExternalHostProvidersServiceAddRequest) Provider(provider *ExternalHost
 	p.provider = provider
 	return p
 }
-func (p *ExternalHostProvidersServiceAddRequest) send() *ExternalHostProvidersServiceAddResponse {
+func (p *ExternalHostProvidersServiceAddRequest) Send() *ExternalHostProvidersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.externalHostProvidersService.Connection.URL(), p.externalHostProvidersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -42893,10 +43035,10 @@ func (op *ExternalHostProvidersService) Add(
 }
 
 type ExternalHostProvidersServiceListRequest struct {
-	externalHostProviders *ExternalHostProvidersService
-	header                map[string]string
-	query                 map[string]string
-	max                   *int64
+	externalHostProvidersService *ExternalHostProvidersService
+	header                       map[string]string
+	query                        map[string]string
+	max                          *int64
 }
 
 func (p *ExternalHostProvidersServiceListRequest) Header(key, value string) *ExternalHostProvidersServiceListRequest {
@@ -42919,7 +43061,7 @@ func (p *ExternalHostProvidersServiceListRequest) Max(max int64) *ExternalHostPr
 	p.max = &max
 	return p
 }
-func (p *ExternalHostProvidersServiceListRequest) send() *ExternalHostProvidersServiceListResponse {
+func (p *ExternalHostProvidersServiceListRequest) Send() *ExternalHostProvidersServiceListResponse {
 
 }
 
@@ -42992,9 +43134,9 @@ func NewGlusterBrickService(connection *Connection, path string) *GlusterBrickSe
 }
 
 type GlusterBrickServiceGetRequest struct {
-	glusterBrick *GlusterBrickService
-	header       map[string]string
-	query        map[string]string
+	glusterBrickService *GlusterBrickService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *GlusterBrickServiceGetRequest) Header(key, value string) *GlusterBrickServiceGetRequest {
@@ -43013,7 +43155,7 @@ func (p *GlusterBrickServiceGetRequest) Query(key, value string) *GlusterBrickSe
 	return p
 }
 
-func (p *GlusterBrickServiceGetRequest) send() *GlusterBrickServiceGetResponse {
+func (p *GlusterBrickServiceGetRequest) Send() *GlusterBrickServiceGetResponse {
 
 }
 
@@ -43084,10 +43226,10 @@ func (op *GlusterBrickService) Get(
 }
 
 type GlusterBrickServiceRemoveRequest struct {
-	glusterBrick *GlusterBrickService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
+	glusterBrickService *GlusterBrickService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
 }
 
 func (p *GlusterBrickServiceRemoveRequest) Header(key, value string) *GlusterBrickServiceRemoveRequest {
@@ -43110,7 +43252,7 @@ func (p *GlusterBrickServiceRemoveRequest) Async(async bool) *GlusterBrickServic
 	p.async = &async
 	return p
 }
-func (p *GlusterBrickServiceRemoveRequest) send() *GlusterBrickServiceRemoveResponse {
+func (p *GlusterBrickServiceRemoveRequest) Send() *GlusterBrickServiceRemoveResponse {
 
 }
 
@@ -43147,11 +43289,11 @@ func (op *GlusterBrickService) Remove(
 }
 
 type GlusterBrickServiceReplaceRequest struct {
-	glusterBrick *GlusterBrickService
-	header       map[string]string
-	query        map[string]string
-	async        *bool
-	force        *bool
+	glusterBrickService *GlusterBrickService
+	header              map[string]string
+	query               map[string]string
+	async               *bool
+	force               *bool
 }
 
 func (p *GlusterBrickServiceReplaceRequest) Header(key, value string) *GlusterBrickServiceReplaceRequest {
@@ -43178,7 +43320,7 @@ func (p *GlusterBrickServiceReplaceRequest) Force(force bool) *GlusterBrickServi
 	p.force = &force
 	return p
 }
-func (p *GlusterBrickServiceReplaceRequest) send() *GlusterBrickServiceReplaceResponse {
+func (p *GlusterBrickServiceReplaceRequest) Send() *GlusterBrickServiceReplaceResponse {
 
 }
 
@@ -43251,10 +43393,10 @@ func NewGlusterVolumesService(connection *Connection, path string) *GlusterVolum
 }
 
 type GlusterVolumesServiceAddRequest struct {
-	glusterVolumes *GlusterVolumesService
-	header         map[string]string
-	query          map[string]string
-	volume         *GlusterVolume
+	glusterVolumesService *GlusterVolumesService
+	header                map[string]string
+	query                 map[string]string
+	volume                *GlusterVolume
 }
 
 func (p *GlusterVolumesServiceAddRequest) Header(key, value string) *GlusterVolumesServiceAddRequest {
@@ -43277,8 +43419,10 @@ func (p *GlusterVolumesServiceAddRequest) Volume(volume *GlusterVolume) *Gluster
 	p.volume = volume
 	return p
 }
-func (p *GlusterVolumesServiceAddRequest) send() *GlusterVolumesServiceAddResponse {
+func (p *GlusterVolumesServiceAddRequest) Send() *GlusterVolumesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.glusterVolumesService.Connection.URL(), p.glusterVolumesService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -43343,12 +43487,12 @@ func (op *GlusterVolumesService) Add(
 }
 
 type GlusterVolumesServiceListRequest struct {
-	glusterVolumes *GlusterVolumesService
-	header         map[string]string
-	query          map[string]string
-	caseSensitive  *bool
-	max            *int64
-	search         *string
+	glusterVolumesService *GlusterVolumesService
+	header                map[string]string
+	query                 map[string]string
+	caseSensitive         *bool
+	max                   *int64
+	search                *string
 }
 
 func (p *GlusterVolumesServiceListRequest) Header(key, value string) *GlusterVolumesServiceListRequest {
@@ -43379,7 +43523,7 @@ func (p *GlusterVolumesServiceListRequest) Search(search string) *GlusterVolumes
 	p.search = &search
 	return p
 }
-func (p *GlusterVolumesServiceListRequest) send() *GlusterVolumesServiceListResponse {
+func (p *GlusterVolumesServiceListRequest) Send() *GlusterVolumesServiceListResponse {
 
 }
 
@@ -43468,9 +43612,9 @@ func NewGlusterVolumeService(connection *Connection, path string) *GlusterVolume
 }
 
 type GlusterVolumeServiceGetRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *GlusterVolumeServiceGetRequest) Header(key, value string) *GlusterVolumeServiceGetRequest {
@@ -43489,7 +43633,7 @@ func (p *GlusterVolumeServiceGetRequest) Query(key, value string) *GlusterVolume
 	return p
 }
 
-func (p *GlusterVolumeServiceGetRequest) send() *GlusterVolumeServiceGetResponse {
+func (p *GlusterVolumeServiceGetRequest) Send() *GlusterVolumeServiceGetResponse {
 
 }
 
@@ -43554,9 +43698,9 @@ func (op *GlusterVolumeService) Get(
 }
 
 type GlusterVolumeServiceGetProfileStatisticsRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Header(key, value string) *GlusterVolumeServiceGetProfileStatisticsRequest {
@@ -43575,7 +43719,7 @@ func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Query(key, value strin
 	return p
 }
 
-func (p *GlusterVolumeServiceGetProfileStatisticsRequest) send() *GlusterVolumeServiceGetProfileStatisticsResponse {
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Send() *GlusterVolumeServiceGetProfileStatisticsResponse {
 
 }
 
@@ -43608,12 +43752,12 @@ func (op *GlusterVolumeService) GetProfileStatistics(
 }
 
 type GlusterVolumeServiceRebalanceRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	fixLayout     *bool
-	force         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	fixLayout            *bool
+	force                *bool
 }
 
 func (p *GlusterVolumeServiceRebalanceRequest) Header(key, value string) *GlusterVolumeServiceRebalanceRequest {
@@ -43644,7 +43788,7 @@ func (p *GlusterVolumeServiceRebalanceRequest) Force(force bool) *GlusterVolumeS
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceRebalanceRequest) send() *GlusterVolumeServiceRebalanceResponse {
+func (p *GlusterVolumeServiceRebalanceRequest) Send() *GlusterVolumeServiceRebalanceResponse {
 
 }
 
@@ -43690,10 +43834,10 @@ func (op *GlusterVolumeService) Rebalance(
 }
 
 type GlusterVolumeServiceRemoveRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *GlusterVolumeServiceRemoveRequest) Header(key, value string) *GlusterVolumeServiceRemoveRequest {
@@ -43716,7 +43860,7 @@ func (p *GlusterVolumeServiceRemoveRequest) Async(async bool) *GlusterVolumeServ
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceRemoveRequest) send() *GlusterVolumeServiceRemoveResponse {
+func (p *GlusterVolumeServiceRemoveRequest) Send() *GlusterVolumeServiceRemoveResponse {
 
 }
 
@@ -43750,10 +43894,10 @@ func (op *GlusterVolumeService) Remove(
 }
 
 type GlusterVolumeServiceResetAllOptionsRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *GlusterVolumeServiceResetAllOptionsRequest) Header(key, value string) *GlusterVolumeServiceResetAllOptionsRequest {
@@ -43776,7 +43920,7 @@ func (p *GlusterVolumeServiceResetAllOptionsRequest) Async(async bool) *GlusterV
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceResetAllOptionsRequest) send() *GlusterVolumeServiceResetAllOptionsResponse {
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Send() *GlusterVolumeServiceResetAllOptionsResponse {
 
 }
 
@@ -43810,12 +43954,12 @@ func (op *GlusterVolumeService) ResetAllOptions(
 }
 
 type GlusterVolumeServiceResetOptionRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	force         *bool
-	option        *Option
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	force                *bool
+	option               *Option
 }
 
 func (p *GlusterVolumeServiceResetOptionRequest) Header(key, value string) *GlusterVolumeServiceResetOptionRequest {
@@ -43846,7 +43990,7 @@ func (p *GlusterVolumeServiceResetOptionRequest) Option(option *Option) *Gluster
 	p.option = option
 	return p
 }
-func (p *GlusterVolumeServiceResetOptionRequest) send() *GlusterVolumeServiceResetOptionResponse {
+func (p *GlusterVolumeServiceResetOptionRequest) Send() *GlusterVolumeServiceResetOptionResponse {
 
 }
 
@@ -43892,11 +44036,11 @@ func (op *GlusterVolumeService) ResetOption(
 }
 
 type GlusterVolumeServiceSetOptionRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	option        *Option
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	option               *Option
 }
 
 func (p *GlusterVolumeServiceSetOptionRequest) Header(key, value string) *GlusterVolumeServiceSetOptionRequest {
@@ -43923,7 +44067,7 @@ func (p *GlusterVolumeServiceSetOptionRequest) Option(option *Option) *GlusterVo
 	p.option = option
 	return p
 }
-func (p *GlusterVolumeServiceSetOptionRequest) send() *GlusterVolumeServiceSetOptionResponse {
+func (p *GlusterVolumeServiceSetOptionRequest) Send() *GlusterVolumeServiceSetOptionResponse {
 
 }
 
@@ -43967,11 +44111,11 @@ func (op *GlusterVolumeService) SetOption(
 }
 
 type GlusterVolumeServiceStartRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	force         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	force                *bool
 }
 
 func (p *GlusterVolumeServiceStartRequest) Header(key, value string) *GlusterVolumeServiceStartRequest {
@@ -43998,7 +44142,7 @@ func (p *GlusterVolumeServiceStartRequest) Force(force bool) *GlusterVolumeServi
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceStartRequest) send() *GlusterVolumeServiceStartResponse {
+func (p *GlusterVolumeServiceStartRequest) Send() *GlusterVolumeServiceStartResponse {
 
 }
 
@@ -44036,10 +44180,10 @@ func (op *GlusterVolumeService) Start(
 }
 
 type GlusterVolumeServiceStartProfileRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *GlusterVolumeServiceStartProfileRequest) Header(key, value string) *GlusterVolumeServiceStartProfileRequest {
@@ -44062,7 +44206,7 @@ func (p *GlusterVolumeServiceStartProfileRequest) Async(async bool) *GlusterVolu
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStartProfileRequest) send() *GlusterVolumeServiceStartProfileResponse {
+func (p *GlusterVolumeServiceStartProfileRequest) Send() *GlusterVolumeServiceStartProfileResponse {
 
 }
 
@@ -44095,11 +44239,11 @@ func (op *GlusterVolumeService) StartProfile(
 }
 
 type GlusterVolumeServiceStopRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	force         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	force                *bool
 }
 
 func (p *GlusterVolumeServiceStopRequest) Header(key, value string) *GlusterVolumeServiceStopRequest {
@@ -44126,7 +44270,7 @@ func (p *GlusterVolumeServiceStopRequest) Force(force bool) *GlusterVolumeServic
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceStopRequest) send() *GlusterVolumeServiceStopResponse {
+func (p *GlusterVolumeServiceStopRequest) Send() *GlusterVolumeServiceStopResponse {
 
 }
 
@@ -44162,10 +44306,10 @@ func (op *GlusterVolumeService) Stop(
 }
 
 type GlusterVolumeServiceStopProfileRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *GlusterVolumeServiceStopProfileRequest) Header(key, value string) *GlusterVolumeServiceStopProfileRequest {
@@ -44188,7 +44332,7 @@ func (p *GlusterVolumeServiceStopProfileRequest) Async(async bool) *GlusterVolum
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStopProfileRequest) send() *GlusterVolumeServiceStopProfileResponse {
+func (p *GlusterVolumeServiceStopProfileRequest) Send() *GlusterVolumeServiceStopProfileResponse {
 
 }
 
@@ -44221,10 +44365,10 @@ func (op *GlusterVolumeService) StopProfile(
 }
 
 type GlusterVolumeServiceStopRebalanceRequest struct {
-	glusterVolume *GlusterVolumeService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
+	glusterVolumeService *GlusterVolumeService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
 }
 
 func (p *GlusterVolumeServiceStopRebalanceRequest) Header(key, value string) *GlusterVolumeServiceStopRebalanceRequest {
@@ -44247,7 +44391,7 @@ func (p *GlusterVolumeServiceStopRebalanceRequest) Async(async bool) *GlusterVol
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStopRebalanceRequest) send() *GlusterVolumeServiceStopRebalanceResponse {
+func (p *GlusterVolumeServiceStopRebalanceRequest) Send() *GlusterVolumeServiceStopRebalanceResponse {
 
 }
 
@@ -44333,10 +44477,10 @@ func NewGlusterHookService(connection *Connection, path string) *GlusterHookServ
 }
 
 type GlusterHookServiceDisableRequest struct {
-	glusterHook *GlusterHookService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	glusterHookService *GlusterHookService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *GlusterHookServiceDisableRequest) Header(key, value string) *GlusterHookServiceDisableRequest {
@@ -44359,7 +44503,7 @@ func (p *GlusterHookServiceDisableRequest) Async(async bool) *GlusterHookService
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceDisableRequest) send() *GlusterHookServiceDisableResponse {
+func (p *GlusterHookServiceDisableRequest) Send() *GlusterHookServiceDisableResponse {
 
 }
 
@@ -44388,10 +44532,10 @@ func (op *GlusterHookService) Disable(
 }
 
 type GlusterHookServiceEnableRequest struct {
-	glusterHook *GlusterHookService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	glusterHookService *GlusterHookService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *GlusterHookServiceEnableRequest) Header(key, value string) *GlusterHookServiceEnableRequest {
@@ -44414,7 +44558,7 @@ func (p *GlusterHookServiceEnableRequest) Async(async bool) *GlusterHookServiceE
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceEnableRequest) send() *GlusterHookServiceEnableResponse {
+func (p *GlusterHookServiceEnableRequest) Send() *GlusterHookServiceEnableResponse {
 
 }
 
@@ -44443,9 +44587,9 @@ func (op *GlusterHookService) Enable(
 }
 
 type GlusterHookServiceGetRequest struct {
-	glusterHook *GlusterHookService
-	header      map[string]string
-	query       map[string]string
+	glusterHookService *GlusterHookService
+	header             map[string]string
+	query              map[string]string
 }
 
 func (p *GlusterHookServiceGetRequest) Header(key, value string) *GlusterHookServiceGetRequest {
@@ -44464,7 +44608,7 @@ func (p *GlusterHookServiceGetRequest) Query(key, value string) *GlusterHookServ
 	return p
 }
 
-func (p *GlusterHookServiceGetRequest) send() *GlusterHookServiceGetResponse {
+func (p *GlusterHookServiceGetRequest) Send() *GlusterHookServiceGetResponse {
 
 }
 
@@ -44492,10 +44636,10 @@ func (op *GlusterHookService) Get(
 }
 
 type GlusterHookServiceRemoveRequest struct {
-	glusterHook *GlusterHookService
-	header      map[string]string
-	query       map[string]string
-	async       *bool
+	glusterHookService *GlusterHookService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
 }
 
 func (p *GlusterHookServiceRemoveRequest) Header(key, value string) *GlusterHookServiceRemoveRequest {
@@ -44518,7 +44662,7 @@ func (p *GlusterHookServiceRemoveRequest) Async(async bool) *GlusterHookServiceR
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceRemoveRequest) send() *GlusterHookServiceRemoveResponse {
+func (p *GlusterHookServiceRemoveRequest) Send() *GlusterHookServiceRemoveResponse {
 
 }
 
@@ -44547,12 +44691,12 @@ func (op *GlusterHookService) Remove(
 }
 
 type GlusterHookServiceResolveRequest struct {
-	glusterHook    *GlusterHookService
-	header         map[string]string
-	query          map[string]string
-	async          *bool
-	host           *Host
-	resolutionType *string
+	glusterHookService *GlusterHookService
+	header             map[string]string
+	query              map[string]string
+	async              *bool
+	host               *Host
+	resolutionType     *string
 }
 
 func (p *GlusterHookServiceResolveRequest) Header(key, value string) *GlusterHookServiceResolveRequest {
@@ -44583,7 +44727,7 @@ func (p *GlusterHookServiceResolveRequest) ResolutionType(resolutionType string)
 	p.resolutionType = &resolutionType
 	return p
 }
-func (p *GlusterHookServiceResolveRequest) send() *GlusterHookServiceResolveResponse {
+func (p *GlusterHookServiceResolveRequest) Send() *GlusterHookServiceResolveResponse {
 
 }
 
@@ -44649,11 +44793,11 @@ func NewGlusterBricksService(connection *Connection, path string) *GlusterBricks
 }
 
 type GlusterBricksServiceActivateRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	bricks        []GlusterBrick
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	bricks               []GlusterBrick
 }
 
 func (p *GlusterBricksServiceActivateRequest) Header(key, value string) *GlusterBricksServiceActivateRequest {
@@ -44680,7 +44824,7 @@ func (p *GlusterBricksServiceActivateRequest) Bricks(bricks []GlusterBrick) *Glu
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceActivateRequest) send() *GlusterBricksServiceActivateResponse {
+func (p *GlusterBricksServiceActivateRequest) Send() *GlusterBricksServiceActivateResponse {
 
 }
 
@@ -44730,12 +44874,12 @@ func (op *GlusterBricksService) Activate(
 }
 
 type GlusterBricksServiceAddRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	bricks        []GlusterBrick
-	replicaCount  *int64
-	stripeCount   *int64
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	bricks               []GlusterBrick
+	replicaCount         *int64
+	stripeCount          *int64
 }
 
 func (p *GlusterBricksServiceAddRequest) Header(key, value string) *GlusterBricksServiceAddRequest {
@@ -44766,8 +44910,16 @@ func (p *GlusterBricksServiceAddRequest) StripeCount(stripeCount int64) *Gluster
 	p.stripeCount = &stripeCount
 	return p
 }
-func (p *GlusterBricksServiceAddRequest) send() *GlusterBricksServiceAddResponse {
+func (p *GlusterBricksServiceAddRequest) Send() *GlusterBricksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.glusterBricksService.Connection.URL(), p.glusterBricksService.Path)
+	values := make(url.Values)
+	if replicaCount != null {
+		fmt.Println("test")
+	}
+	if stripeCount != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -44823,10 +44975,10 @@ func (op *GlusterBricksService) Add(
 }
 
 type GlusterBricksServiceListRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *GlusterBricksServiceListRequest) Header(key, value string) *GlusterBricksServiceListRequest {
@@ -44849,7 +45001,7 @@ func (p *GlusterBricksServiceListRequest) Max(max int64) *GlusterBricksServiceLi
 	p.max = &max
 	return p
 }
-func (p *GlusterBricksServiceListRequest) send() *GlusterBricksServiceListResponse {
+func (p *GlusterBricksServiceListRequest) Send() *GlusterBricksServiceListResponse {
 
 }
 
@@ -44908,11 +45060,11 @@ func (op *GlusterBricksService) List(
 }
 
 type GlusterBricksServiceMigrateRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	bricks        []GlusterBrick
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	bricks               []GlusterBrick
 }
 
 func (p *GlusterBricksServiceMigrateRequest) Header(key, value string) *GlusterBricksServiceMigrateRequest {
@@ -44939,7 +45091,7 @@ func (p *GlusterBricksServiceMigrateRequest) Bricks(bricks []GlusterBrick) *Glus
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceMigrateRequest) send() *GlusterBricksServiceMigrateResponse {
+func (p *GlusterBricksServiceMigrateRequest) Send() *GlusterBricksServiceMigrateResponse {
 
 }
 
@@ -44992,12 +45144,12 @@ func (op *GlusterBricksService) Migrate(
 }
 
 type GlusterBricksServiceRemoveRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	bricks        []GlusterBrick
-	replicaCount  *int64
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	bricks               []GlusterBrick
+	replicaCount         *int64
 }
 
 func (p *GlusterBricksServiceRemoveRequest) Header(key, value string) *GlusterBricksServiceRemoveRequest {
@@ -45028,7 +45180,7 @@ func (p *GlusterBricksServiceRemoveRequest) ReplicaCount(replicaCount int64) *Gl
 	p.replicaCount = &replicaCount
 	return p
 }
-func (p *GlusterBricksServiceRemoveRequest) send() *GlusterBricksServiceRemoveResponse {
+func (p *GlusterBricksServiceRemoveRequest) Send() *GlusterBricksServiceRemoveResponse {
 
 }
 
@@ -45080,11 +45232,11 @@ func (op *GlusterBricksService) Remove(
 }
 
 type GlusterBricksServiceStopMigrateRequest struct {
-	glusterBricks *GlusterBricksService
-	header        map[string]string
-	query         map[string]string
-	async         *bool
-	bricks        []GlusterBrick
+	glusterBricksService *GlusterBricksService
+	header               map[string]string
+	query                map[string]string
+	async                *bool
+	bricks               []GlusterBrick
 }
 
 func (p *GlusterBricksServiceStopMigrateRequest) Header(key, value string) *GlusterBricksServiceStopMigrateRequest {
@@ -45111,7 +45263,7 @@ func (p *GlusterBricksServiceStopMigrateRequest) Bricks(bricks []GlusterBrick) *
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceStopMigrateRequest) send() *GlusterBricksServiceStopMigrateResponse {
+func (p *GlusterBricksServiceStopMigrateRequest) Send() *GlusterBricksServiceStopMigrateResponse {
 
 }
 
@@ -45198,10 +45350,10 @@ func NewGlusterHooksService(connection *Connection, path string) *GlusterHooksSe
 }
 
 type GlusterHooksServiceListRequest struct {
-	glusterHooks *GlusterHooksService
-	header       map[string]string
-	query        map[string]string
-	max          *int64
+	glusterHooksService *GlusterHooksService
+	header              map[string]string
+	query               map[string]string
+	max                 *int64
 }
 
 func (p *GlusterHooksServiceListRequest) Header(key, value string) *GlusterHooksServiceListRequest {
@@ -45224,7 +45376,7 @@ func (p *GlusterHooksServiceListRequest) Max(max int64) *GlusterHooksServiceList
 	p.max = &max
 	return p
 }
-func (p *GlusterHooksServiceListRequest) send() *GlusterHooksServiceListResponse {
+func (p *GlusterHooksServiceListRequest) Send() *GlusterHooksServiceListResponse {
 
 }
 
@@ -45297,10 +45449,10 @@ func NewDisksService(connection *Connection, path string) *DisksService {
 }
 
 type DisksServiceAddRequest struct {
-	disks  *DisksService
-	header map[string]string
-	query  map[string]string
-	disk   *Disk
+	disksService *DisksService
+	header       map[string]string
+	query        map[string]string
+	disk         *Disk
 }
 
 func (p *DisksServiceAddRequest) Header(key, value string) *DisksServiceAddRequest {
@@ -45323,8 +45475,10 @@ func (p *DisksServiceAddRequest) Disk(disk *Disk) *DisksServiceAddRequest {
 	p.disk = disk
 	return p
 }
-func (p *DisksServiceAddRequest) send() *DisksServiceAddResponse {
+func (p *DisksServiceAddRequest) Send() *DisksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.disksService.Connection.URL(), p.disksService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -45436,7 +45590,7 @@ func (op *DisksService) Add(
 }
 
 type DisksServiceListRequest struct {
-	disks         *DisksService
+	disksService  *DisksService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -45472,7 +45626,7 @@ func (p *DisksServiceListRequest) Search(search string) *DisksServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *DisksServiceListRequest) send() *DisksServiceListResponse {
+func (p *DisksServiceListRequest) Send() *DisksServiceListResponse {
 
 }
 
@@ -45581,10 +45735,10 @@ func NewInstanceTypeWatchdogsService(connection *Connection, path string) *Insta
 }
 
 type InstanceTypeWatchdogsServiceAddRequest struct {
-	instanceTypeWatchdogs *InstanceTypeWatchdogsService
-	header                map[string]string
-	query                 map[string]string
-	watchdog              *Watchdog
+	instanceTypeWatchdogsService *InstanceTypeWatchdogsService
+	header                       map[string]string
+	query                        map[string]string
+	watchdog                     *Watchdog
 }
 
 func (p *InstanceTypeWatchdogsServiceAddRequest) Header(key, value string) *InstanceTypeWatchdogsServiceAddRequest {
@@ -45607,8 +45761,10 @@ func (p *InstanceTypeWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *I
 	p.watchdog = watchdog
 	return p
 }
-func (p *InstanceTypeWatchdogsServiceAddRequest) send() *InstanceTypeWatchdogsServiceAddResponse {
+func (p *InstanceTypeWatchdogsServiceAddRequest) Send() *InstanceTypeWatchdogsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeWatchdogsService.Connection.URL(), p.instanceTypeWatchdogsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -45637,11 +45793,11 @@ func (op *InstanceTypeWatchdogsService) Add(
 }
 
 type InstanceTypeWatchdogsServiceListRequest struct {
-	instanceTypeWatchdogs *InstanceTypeWatchdogsService
-	header                map[string]string
-	query                 map[string]string
-	max                   *int64
-	search                *string
+	instanceTypeWatchdogsService *InstanceTypeWatchdogsService
+	header                       map[string]string
+	query                        map[string]string
+	max                          *int64
+	search                       *string
 }
 
 func (p *InstanceTypeWatchdogsServiceListRequest) Header(key, value string) *InstanceTypeWatchdogsServiceListRequest {
@@ -45668,7 +45824,7 @@ func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) *Instanc
 	p.search = &search
 	return p
 }
-func (p *InstanceTypeWatchdogsServiceListRequest) send() *InstanceTypeWatchdogsServiceListResponse {
+func (p *InstanceTypeWatchdogsServiceListRequest) Send() *InstanceTypeWatchdogsServiceListResponse {
 
 }
 
@@ -45746,10 +45902,10 @@ func NewJobsService(connection *Connection, path string) *JobsService {
 }
 
 type JobsServiceAddRequest struct {
-	jobs   *JobsService
-	header map[string]string
-	query  map[string]string
-	job    *Job
+	jobsService *JobsService
+	header      map[string]string
+	query       map[string]string
+	job         *Job
 }
 
 func (p *JobsServiceAddRequest) Header(key, value string) *JobsServiceAddRequest {
@@ -45772,8 +45928,10 @@ func (p *JobsServiceAddRequest) Job(job *Job) *JobsServiceAddRequest {
 	p.job = job
 	return p
 }
-func (p *JobsServiceAddRequest) send() *JobsServiceAddResponse {
+func (p *JobsServiceAddRequest) Send() *JobsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.jobsService.Connection.URL(), p.jobsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -45838,10 +45996,10 @@ func (op *JobsService) Add(
 }
 
 type JobsServiceListRequest struct {
-	jobs   *JobsService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	jobsService *JobsService
+	header      map[string]string
+	query       map[string]string
+	max         *int64
 }
 
 func (p *JobsServiceListRequest) Header(key, value string) *JobsServiceListRequest {
@@ -45864,7 +46022,7 @@ func (p *JobsServiceListRequest) Max(max int64) *JobsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *JobsServiceListRequest) send() *JobsServiceListResponse {
+func (p *JobsServiceListRequest) Send() *JobsServiceListResponse {
 
 }
 
@@ -45965,10 +46123,10 @@ func NewIconsService(connection *Connection, path string) *IconsService {
 }
 
 type IconsServiceListRequest struct {
-	icons  *IconsService
-	header map[string]string
-	query  map[string]string
-	max    *int64
+	iconsService *IconsService
+	header       map[string]string
+	query        map[string]string
+	max          *int64
 }
 
 func (p *IconsServiceListRequest) Header(key, value string) *IconsServiceListRequest {
@@ -45991,7 +46149,7 @@ func (p *IconsServiceListRequest) Max(max int64) *IconsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *IconsServiceListRequest) send() *IconsServiceListResponse {
+func (p *IconsServiceListRequest) Send() *IconsServiceListResponse {
 
 }
 
@@ -46081,7 +46239,7 @@ func NewTemplatesService(connection *Connection, path string) *TemplatesService 
 }
 
 type TemplatesServiceAddRequest struct {
-	templates        *TemplatesService
+	templatesService *TemplatesService
 	header           map[string]string
 	query            map[string]string
 	clonePermissions *bool
@@ -46112,8 +46270,13 @@ func (p *TemplatesServiceAddRequest) Template(template *Template) *TemplatesServ
 	p.template = template
 	return p
 }
-func (p *TemplatesServiceAddRequest) send() *TemplatesServiceAddResponse {
+func (p *TemplatesServiceAddRequest) Send() *TemplatesServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.templatesService.Connection.URL(), p.templatesService.Path)
+	values := make(url.Values)
+	if clonePermissions != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -46177,13 +46340,13 @@ func (op *TemplatesService) Add(
 }
 
 type TemplatesServiceListRequest struct {
-	templates     *TemplatesService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	filter        *bool
-	max           *int64
-	search        *string
+	templatesService *TemplatesService
+	header           map[string]string
+	query            map[string]string
+	caseSensitive    *bool
+	filter           *bool
+	max              *int64
+	search           *string
 }
 
 func (p *TemplatesServiceListRequest) Header(key, value string) *TemplatesServiceListRequest {
@@ -46218,7 +46381,7 @@ func (p *TemplatesServiceListRequest) Search(search string) *TemplatesServiceLis
 	p.search = &search
 	return p
 }
-func (p *TemplatesServiceListRequest) send() *TemplatesServiceListResponse {
+func (p *TemplatesServiceListRequest) Send() *TemplatesServiceListResponse {
 
 }
 
@@ -46309,10 +46472,10 @@ func NewFilterService(connection *Connection, path string) *FilterService {
 }
 
 type FilterServiceGetRequest struct {
-	filter *FilterService
-	header map[string]string
-	query  map[string]string
-	filter *bool
+	filterService *FilterService
+	header        map[string]string
+	query         map[string]string
+	filter        *bool
 }
 
 func (p *FilterServiceGetRequest) Header(key, value string) *FilterServiceGetRequest {
@@ -46335,7 +46498,7 @@ func (p *FilterServiceGetRequest) Filter(filter bool) *FilterServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *FilterServiceGetRequest) send() *FilterServiceGetResponse {
+func (p *FilterServiceGetRequest) Send() *FilterServiceGetResponse {
 
 }
 
@@ -46370,10 +46533,10 @@ func (op *FilterService) Get(
 }
 
 type FilterServiceRemoveRequest struct {
-	filter *FilterService
-	header map[string]string
-	query  map[string]string
-	async  *bool
+	filterService *FilterService
+	header        map[string]string
+	query         map[string]string
+	async         *bool
 }
 
 func (p *FilterServiceRemoveRequest) Header(key, value string) *FilterServiceRemoveRequest {
@@ -46396,7 +46559,7 @@ func (p *FilterServiceRemoveRequest) Async(async bool) *FilterServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *FilterServiceRemoveRequest) send() *FilterServiceRemoveResponse {
+func (p *FilterServiceRemoveRequest) Send() *FilterServiceRemoveResponse {
 
 }
 
@@ -46453,10 +46616,10 @@ func NewAssignedAffinityLabelsService(connection *Connection, path string) *Assi
 }
 
 type AssignedAffinityLabelsServiceAddRequest struct {
-	assignedAffinityLabels *AssignedAffinityLabelsService
-	header                 map[string]string
-	query                  map[string]string
-	label                  *AffinityLabel
+	assignedAffinityLabelsService *AssignedAffinityLabelsService
+	header                        map[string]string
+	query                         map[string]string
+	label                         *AffinityLabel
 }
 
 func (p *AssignedAffinityLabelsServiceAddRequest) Header(key, value string) *AssignedAffinityLabelsServiceAddRequest {
@@ -46479,8 +46642,10 @@ func (p *AssignedAffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *A
 	p.label = label
 	return p
 }
-func (p *AssignedAffinityLabelsServiceAddRequest) send() *AssignedAffinityLabelsServiceAddResponse {
+func (p *AssignedAffinityLabelsServiceAddRequest) Send() *AssignedAffinityLabelsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedAffinityLabelsService.Connection.URL(), p.assignedAffinityLabelsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -46509,9 +46674,9 @@ func (op *AssignedAffinityLabelsService) Add(
 }
 
 type AssignedAffinityLabelsServiceListRequest struct {
-	assignedAffinityLabels *AssignedAffinityLabelsService
-	header                 map[string]string
-	query                  map[string]string
+	assignedAffinityLabelsService *AssignedAffinityLabelsService
+	header                        map[string]string
+	query                         map[string]string
 }
 
 func (p *AssignedAffinityLabelsServiceListRequest) Header(key, value string) *AssignedAffinityLabelsServiceListRequest {
@@ -46530,7 +46695,7 @@ func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) *Ass
 	return p
 }
 
-func (p *AssignedAffinityLabelsServiceListRequest) send() *AssignedAffinityLabelsServiceListResponse {
+func (p *AssignedAffinityLabelsServiceListRequest) Send() *AssignedAffinityLabelsServiceListResponse {
 
 }
 
@@ -46598,9 +46763,9 @@ func NewSnapshotCdromService(connection *Connection, path string) *SnapshotCdrom
 }
 
 type SnapshotCdromServiceGetRequest struct {
-	snapshotCdrom *SnapshotCdromService
-	header        map[string]string
-	query         map[string]string
+	snapshotCdromService *SnapshotCdromService
+	header               map[string]string
+	query                map[string]string
 }
 
 func (p *SnapshotCdromServiceGetRequest) Header(key, value string) *SnapshotCdromServiceGetRequest {
@@ -46619,7 +46784,7 @@ func (p *SnapshotCdromServiceGetRequest) Query(key, value string) *SnapshotCdrom
 	return p
 }
 
-func (p *SnapshotCdromServiceGetRequest) send() *SnapshotCdromServiceGetResponse {
+func (p *SnapshotCdromServiceGetRequest) Send() *SnapshotCdromServiceGetResponse {
 
 }
 
@@ -46674,9 +46839,9 @@ func NewHostNumaNodeService(connection *Connection, path string) *HostNumaNodeSe
 }
 
 type HostNumaNodeServiceGetRequest struct {
-	hostNumaNode *HostNumaNodeService
-	header       map[string]string
-	query        map[string]string
+	hostNumaNodeService *HostNumaNodeService
+	header              map[string]string
+	query               map[string]string
 }
 
 func (p *HostNumaNodeServiceGetRequest) Header(key, value string) *HostNumaNodeServiceGetRequest {
@@ -46695,7 +46860,7 @@ func (p *HostNumaNodeServiceGetRequest) Query(key, value string) *HostNumaNodeSe
 	return p
 }
 
-func (p *HostNumaNodeServiceGetRequest) send() *HostNumaNodeServiceGetResponse {
+func (p *HostNumaNodeServiceGetRequest) Send() *HostNumaNodeServiceGetResponse {
 
 }
 
@@ -46762,9 +46927,9 @@ func NewTemplateGraphicsConsoleService(connection *Connection, path string) *Tem
 }
 
 type TemplateGraphicsConsoleServiceGetRequest struct {
-	templateGraphicsConsole *TemplateGraphicsConsoleService
-	header                  map[string]string
-	query                   map[string]string
+	templateGraphicsConsoleService *TemplateGraphicsConsoleService
+	header                         map[string]string
+	query                          map[string]string
 }
 
 func (p *TemplateGraphicsConsoleServiceGetRequest) Header(key, value string) *TemplateGraphicsConsoleServiceGetRequest {
@@ -46783,7 +46948,7 @@ func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) *Tem
 	return p
 }
 
-func (p *TemplateGraphicsConsoleServiceGetRequest) send() *TemplateGraphicsConsoleServiceGetResponse {
+func (p *TemplateGraphicsConsoleServiceGetRequest) Send() *TemplateGraphicsConsoleServiceGetResponse {
 
 }
 
@@ -46812,10 +46977,10 @@ func (op *TemplateGraphicsConsoleService) Get(
 }
 
 type TemplateGraphicsConsoleServiceRemoveRequest struct {
-	templateGraphicsConsole *TemplateGraphicsConsoleService
-	header                  map[string]string
-	query                   map[string]string
-	async                   *bool
+	templateGraphicsConsoleService *TemplateGraphicsConsoleService
+	header                         map[string]string
+	query                          map[string]string
+	async                          *bool
 }
 
 func (p *TemplateGraphicsConsoleServiceRemoveRequest) Header(key, value string) *TemplateGraphicsConsoleServiceRemoveRequest {
@@ -46838,7 +47003,7 @@ func (p *TemplateGraphicsConsoleServiceRemoveRequest) Async(async bool) *Templat
 	p.async = &async
 	return p
 }
-func (p *TemplateGraphicsConsoleServiceRemoveRequest) send() *TemplateGraphicsConsoleServiceRemoveResponse {
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Send() *TemplateGraphicsConsoleServiceRemoveResponse {
 
 }
 
@@ -46897,10 +47062,10 @@ func NewAffinityLabelHostsService(connection *Connection, path string) *Affinity
 }
 
 type AffinityLabelHostsServiceAddRequest struct {
-	affinityLabelHosts *AffinityLabelHostsService
-	header             map[string]string
-	query              map[string]string
-	host               *Host
+	affinityLabelHostsService *AffinityLabelHostsService
+	header                    map[string]string
+	query                     map[string]string
+	host                      *Host
 }
 
 func (p *AffinityLabelHostsServiceAddRequest) Header(key, value string) *AffinityLabelHostsServiceAddRequest {
@@ -46923,8 +47088,10 @@ func (p *AffinityLabelHostsServiceAddRequest) Host(host *Host) *AffinityLabelHos
 	p.host = host
 	return p
 }
-func (p *AffinityLabelHostsServiceAddRequest) send() *AffinityLabelHostsServiceAddResponse {
+func (p *AffinityLabelHostsServiceAddRequest) Send() *AffinityLabelHostsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelHostsService.Connection.URL(), p.affinityLabelHostsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -46953,9 +47120,9 @@ func (op *AffinityLabelHostsService) Add(
 }
 
 type AffinityLabelHostsServiceListRequest struct {
-	affinityLabelHosts *AffinityLabelHostsService
-	header             map[string]string
-	query              map[string]string
+	affinityLabelHostsService *AffinityLabelHostsService
+	header                    map[string]string
+	query                     map[string]string
 }
 
 func (p *AffinityLabelHostsServiceListRequest) Header(key, value string) *AffinityLabelHostsServiceListRequest {
@@ -46974,7 +47141,7 @@ func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) *Affinit
 	return p
 }
 
-func (p *AffinityLabelHostsServiceListRequest) send() *AffinityLabelHostsServiceListResponse {
+func (p *AffinityLabelHostsServiceListRequest) Send() *AffinityLabelHostsServiceListResponse {
 
 }
 
@@ -47042,10 +47209,10 @@ func NewDiskSnapshotsService(connection *Connection, path string) *DiskSnapshots
 }
 
 type DiskSnapshotsServiceListRequest struct {
-	diskSnapshots *DiskSnapshotsService
-	header        map[string]string
-	query         map[string]string
-	max           *int64
+	diskSnapshotsService *DiskSnapshotsService
+	header               map[string]string
+	query                map[string]string
+	max                  *int64
 }
 
 func (p *DiskSnapshotsServiceListRequest) Header(key, value string) *DiskSnapshotsServiceListRequest {
@@ -47068,7 +47235,7 @@ func (p *DiskSnapshotsServiceListRequest) Max(max int64) *DiskSnapshotsServiceLi
 	p.max = &max
 	return p
 }
-func (p *DiskSnapshotsServiceListRequest) send() *DiskSnapshotsServiceListResponse {
+func (p *DiskSnapshotsServiceListRequest) Send() *DiskSnapshotsServiceListResponse {
 
 }
 
@@ -47165,10 +47332,10 @@ func NewStorageDomainVmsService(connection *Connection, path string) *StorageDom
 }
 
 type StorageDomainVmsServiceListRequest struct {
-	storageDomainVms *StorageDomainVmsService
-	header           map[string]string
-	query            map[string]string
-	max              *int64
+	storageDomainVmsService *StorageDomainVmsService
+	header                  map[string]string
+	query                   map[string]string
+	max                     *int64
 }
 
 func (p *StorageDomainVmsServiceListRequest) Header(key, value string) *StorageDomainVmsServiceListRequest {
@@ -47191,7 +47358,7 @@ func (p *StorageDomainVmsServiceListRequest) Max(max int64) *StorageDomainVmsSer
 	p.max = &max
 	return p
 }
-func (p *StorageDomainVmsServiceListRequest) send() *StorageDomainVmsServiceListResponse {
+func (p *StorageDomainVmsServiceListRequest) Send() *StorageDomainVmsServiceListResponse {
 
 }
 
@@ -47265,7 +47432,7 @@ func NewHostsService(connection *Connection, path string) *HostsService {
 }
 
 type HostsServiceAddRequest struct {
-	hosts                *HostsService
+	hostsService         *HostsService
 	header               map[string]string
 	query                map[string]string
 	deployHostedEngine   *bool
@@ -47301,8 +47468,16 @@ func (p *HostsServiceAddRequest) UndeployHostedEngine(undeployHostedEngine bool)
 	p.undeployHostedEngine = &undeployHostedEngine
 	return p
 }
-func (p *HostsServiceAddRequest) send() *HostsServiceAddResponse {
+func (p *HostsServiceAddRequest) Send() *HostsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.hostsService.Connection.URL(), p.hostsService.Path)
+	values := make(url.Values)
+	if deployHostedEngine != null {
+		fmt.Println("test")
+	}
+	if undeployHostedEngine != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -47364,7 +47539,7 @@ func (op *HostsService) Add(
 }
 
 type HostsServiceListRequest struct {
-	hosts         *HostsService
+	hostsService  *HostsService
 	header        map[string]string
 	query         map[string]string
 	caseSensitive *bool
@@ -47405,7 +47580,7 @@ func (p *HostsServiceListRequest) Search(search string) *HostsServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *HostsServiceListRequest) send() *HostsServiceListResponse {
+func (p *HostsServiceListRequest) Send() *HostsServiceListResponse {
 
 }
 
@@ -47508,11 +47683,11 @@ func NewStorageDomainDisksService(connection *Connection, path string) *StorageD
 }
 
 type StorageDomainDisksServiceAddRequest struct {
-	storageDomainDisks *StorageDomainDisksService
-	header             map[string]string
-	query              map[string]string
-	disk               *Disk
-	unregistered       *bool
+	storageDomainDisksService *StorageDomainDisksService
+	header                    map[string]string
+	query                     map[string]string
+	disk                      *Disk
+	unregistered              *bool
 }
 
 func (p *StorageDomainDisksServiceAddRequest) Header(key, value string) *StorageDomainDisksServiceAddRequest {
@@ -47539,8 +47714,13 @@ func (p *StorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) *S
 	p.unregistered = &unregistered
 	return p
 }
-func (p *StorageDomainDisksServiceAddRequest) send() *StorageDomainDisksServiceAddResponse {
+func (p *StorageDomainDisksServiceAddRequest) Send() *StorageDomainDisksServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainDisksService.Connection.URL(), p.storageDomainDisksService.Path)
+	values := make(url.Values)
+	if unregistered != null {
+		fmt.Println("test")
+	}
 }
 
 //
@@ -47581,10 +47761,10 @@ func (op *StorageDomainDisksService) Add(
 }
 
 type StorageDomainDisksServiceListRequest struct {
-	storageDomainDisks *StorageDomainDisksService
-	header             map[string]string
-	query              map[string]string
-	max                *int64
+	storageDomainDisksService *StorageDomainDisksService
+	header                    map[string]string
+	query                     map[string]string
+	max                       *int64
 }
 
 func (p *StorageDomainDisksServiceListRequest) Header(key, value string) *StorageDomainDisksServiceListRequest {
@@ -47607,7 +47787,7 @@ func (p *StorageDomainDisksServiceListRequest) Max(max int64) *StorageDomainDisk
 	p.max = &max
 	return p
 }
-func (p *StorageDomainDisksServiceListRequest) send() *StorageDomainDisksServiceListResponse {
+func (p *StorageDomainDisksServiceListRequest) Send() *StorageDomainDisksServiceListResponse {
 
 }
 
@@ -47681,10 +47861,10 @@ func NewFiltersService(connection *Connection, path string) *FiltersService {
 }
 
 type FiltersServiceAddRequest struct {
-	filters *FiltersService
-	header  map[string]string
-	query   map[string]string
-	filter  *Filter
+	filtersService *FiltersService
+	header         map[string]string
+	query          map[string]string
+	filter         *Filter
 }
 
 func (p *FiltersServiceAddRequest) Header(key, value string) *FiltersServiceAddRequest {
@@ -47707,8 +47887,10 @@ func (p *FiltersServiceAddRequest) Filter(filter *Filter) *FiltersServiceAddRequ
 	p.filter = filter
 	return p
 }
-func (p *FiltersServiceAddRequest) send() *FiltersServiceAddResponse {
+func (p *FiltersServiceAddRequest) Send() *FiltersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.filtersService.Connection.URL(), p.filtersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -47736,11 +47918,11 @@ func (op *FiltersService) Add(
 }
 
 type FiltersServiceListRequest struct {
-	filters *FiltersService
-	header  map[string]string
-	query   map[string]string
-	filter  *bool
-	max     *int64
+	filtersService *FiltersService
+	header         map[string]string
+	query          map[string]string
+	filter         *bool
+	max            *int64
 }
 
 func (p *FiltersServiceListRequest) Header(key, value string) *FiltersServiceListRequest {
@@ -47767,7 +47949,7 @@ func (p *FiltersServiceListRequest) Max(max int64) *FiltersServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *FiltersServiceListRequest) send() *FiltersServiceListResponse {
+func (p *FiltersServiceListRequest) Send() *FiltersServiceListResponse {
 
 }
 
@@ -47842,10 +48024,10 @@ func NewStorageServerConnectionsService(connection *Connection, path string) *St
 }
 
 type StorageServerConnectionsServiceAddRequest struct {
-	storageServerConnections *StorageServerConnectionsService
-	header                   map[string]string
-	query                    map[string]string
-	connection               *StorageConnection
+	storageServerConnectionsService *StorageServerConnectionsService
+	header                          map[string]string
+	query                           map[string]string
+	connection                      *StorageConnection
 }
 
 func (p *StorageServerConnectionsServiceAddRequest) Header(key, value string) *StorageServerConnectionsServiceAddRequest {
@@ -47868,8 +48050,10 @@ func (p *StorageServerConnectionsServiceAddRequest) Connection(connection *Stora
 	p.connection = connection
 	return p
 }
-func (p *StorageServerConnectionsServiceAddRequest) send() *StorageServerConnectionsServiceAddResponse {
+func (p *StorageServerConnectionsServiceAddRequest) Send() *StorageServerConnectionsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionsService.Connection.URL(), p.storageServerConnectionsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -47916,10 +48100,10 @@ func (op *StorageServerConnectionsService) Add(
 }
 
 type StorageServerConnectionsServiceListRequest struct {
-	storageServerConnections *StorageServerConnectionsService
-	header                   map[string]string
-	query                    map[string]string
-	max                      *int64
+	storageServerConnectionsService *StorageServerConnectionsService
+	header                          map[string]string
+	query                           map[string]string
+	max                             *int64
 }
 
 func (p *StorageServerConnectionsServiceListRequest) Header(key, value string) *StorageServerConnectionsServiceListRequest {
@@ -47942,7 +48126,7 @@ func (p *StorageServerConnectionsServiceListRequest) Max(max int64) *StorageServ
 	p.max = &max
 	return p
 }
-func (p *StorageServerConnectionsServiceListRequest) send() *StorageServerConnectionsServiceListResponse {
+func (p *StorageServerConnectionsServiceListRequest) Send() *StorageServerConnectionsServiceListResponse {
 
 }
 
@@ -48014,10 +48198,10 @@ func NewFenceAgentsService(connection *Connection, path string) *FenceAgentsServ
 }
 
 type FenceAgentsServiceAddRequest struct {
-	fenceAgents *FenceAgentsService
-	header      map[string]string
-	query       map[string]string
-	agent       *Agent
+	fenceAgentsService *FenceAgentsService
+	header             map[string]string
+	query              map[string]string
+	agent              *Agent
 }
 
 func (p *FenceAgentsServiceAddRequest) Header(key, value string) *FenceAgentsServiceAddRequest {
@@ -48040,8 +48224,10 @@ func (p *FenceAgentsServiceAddRequest) Agent(agent *Agent) *FenceAgentsServiceAd
 	p.agent = agent
 	return p
 }
-func (p *FenceAgentsServiceAddRequest) send() *FenceAgentsServiceAddResponse {
+func (p *FenceAgentsServiceAddRequest) Send() *FenceAgentsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.fenceAgentsService.Connection.URL(), p.fenceAgentsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -48069,10 +48255,10 @@ func (op *FenceAgentsService) Add(
 }
 
 type FenceAgentsServiceListRequest struct {
-	fenceAgents *FenceAgentsService
-	header      map[string]string
-	query       map[string]string
-	max         *int64
+	fenceAgentsService *FenceAgentsService
+	header             map[string]string
+	query              map[string]string
+	max                *int64
 }
 
 func (p *FenceAgentsServiceListRequest) Header(key, value string) *FenceAgentsServiceListRequest {
@@ -48095,7 +48281,7 @@ func (p *FenceAgentsServiceListRequest) Max(max int64) *FenceAgentsServiceListRe
 	p.max = &max
 	return p
 }
-func (p *FenceAgentsServiceListRequest) send() *FenceAgentsServiceListResponse {
+func (p *FenceAgentsServiceListRequest) Send() *FenceAgentsServiceListResponse {
 
 }
 
@@ -48168,10 +48354,10 @@ func NewClustersService(connection *Connection, path string) *ClustersService {
 }
 
 type ClustersServiceAddRequest struct {
-	clusters *ClustersService
-	header   map[string]string
-	query    map[string]string
-	cluster  *Cluster
+	clustersService *ClustersService
+	header          map[string]string
+	query           map[string]string
+	cluster         *Cluster
 }
 
 func (p *ClustersServiceAddRequest) Header(key, value string) *ClustersServiceAddRequest {
@@ -48194,8 +48380,10 @@ func (p *ClustersServiceAddRequest) Cluster(cluster *Cluster) *ClustersServiceAd
 	p.cluster = cluster
 	return p
 }
-func (p *ClustersServiceAddRequest) send() *ClustersServiceAddResponse {
+func (p *ClustersServiceAddRequest) Send() *ClustersServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.clustersService.Connection.URL(), p.clustersService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -48241,13 +48429,13 @@ func (op *ClustersService) Add(
 }
 
 type ClustersServiceListRequest struct {
-	clusters      *ClustersService
-	header        map[string]string
-	query         map[string]string
-	caseSensitive *bool
-	filter        *bool
-	max           *int64
-	search        *string
+	clustersService *ClustersService
+	header          map[string]string
+	query           map[string]string
+	caseSensitive   *bool
+	filter          *bool
+	max             *int64
+	search          *string
 }
 
 func (p *ClustersServiceListRequest) Header(key, value string) *ClustersServiceListRequest {
@@ -48282,7 +48470,7 @@ func (p *ClustersServiceListRequest) Search(search string) *ClustersServiceListR
 	p.search = &search
 	return p
 }
-func (p *ClustersServiceListRequest) send() *ClustersServiceListResponse {
+func (p *ClustersServiceListRequest) Send() *ClustersServiceListResponse {
 
 }
 
@@ -48367,10 +48555,10 @@ func NewAssignedPermissionsService(connection *Connection, path string) *Assigne
 }
 
 type AssignedPermissionsServiceAddRequest struct {
-	assignedPermissions *AssignedPermissionsService
-	header              map[string]string
-	query               map[string]string
-	permission          *Permission
+	assignedPermissionsService *AssignedPermissionsService
+	header                     map[string]string
+	query                      map[string]string
+	permission                 *Permission
 }
 
 func (p *AssignedPermissionsServiceAddRequest) Header(key, value string) *AssignedPermissionsServiceAddRequest {
@@ -48393,8 +48581,10 @@ func (p *AssignedPermissionsServiceAddRequest) Permission(permission *Permission
 	p.permission = permission
 	return p
 }
-func (p *AssignedPermissionsServiceAddRequest) send() *AssignedPermissionsServiceAddResponse {
+func (p *AssignedPermissionsServiceAddRequest) Send() *AssignedPermissionsServiceAddResponse {
 
+	rawURL := fmt.Sprintf("%s%s", p.assignedPermissionsService.Connection.URL(), p.assignedPermissionsService.Path)
+	values := make(url.Values)
 }
 
 //
@@ -48473,9 +48663,9 @@ func (op *AssignedPermissionsService) Add(
 }
 
 type AssignedPermissionsServiceListRequest struct {
-	assignedPermissions *AssignedPermissionsService
-	header              map[string]string
-	query               map[string]string
+	assignedPermissionsService *AssignedPermissionsService
+	header                     map[string]string
+	query                      map[string]string
 }
 
 func (p *AssignedPermissionsServiceListRequest) Header(key, value string) *AssignedPermissionsServiceListRequest {
@@ -48494,7 +48684,7 @@ func (p *AssignedPermissionsServiceListRequest) Query(key, value string) *Assign
 	return p
 }
 
-func (p *AssignedPermissionsServiceListRequest) send() *AssignedPermissionsServiceListResponse {
+func (p *AssignedPermissionsServiceListRequest) Send() *AssignedPermissionsServiceListResponse {
 
 }
 

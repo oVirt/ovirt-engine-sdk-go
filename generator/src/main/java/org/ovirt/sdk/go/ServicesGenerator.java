@@ -22,14 +22,11 @@ import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -188,7 +185,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.startBlock();
         // Service itself
         buffer.addLine("%1$s *%2$s", 
-            goNames.getPrivateMemberStyleName(service.getName()),
+            goNames.getPrivateMemberStyleName(goNames.getServiceName(service).getClassName()),
             goNames.getServiceName(service).getClassName());
 
         //      Generate common parameters
@@ -215,13 +212,14 @@ public class ServicesGenerator implements GoGenerator {
         }
 
         // Generate send method:
-        buffer.addLine("func (p *%1$s) send() *%2$s {",
+        buffer.addLine("func (p *%1$s) Send() *%2$s {",
             request, getResponseClassName(method, service));
         buffer.addLine();
+        buffer.startBlock();
         // Generate method code based on response type:
-        // if (ADD.equals(methodName)) {
-        //     generateAddRequestImplementation(method);
-        // }
+        if (ADD.equals(methodName)) {
+            generateAddRequestImplementation(method, service);
+        }
         // else if (GET.equals(methodName) || LIST.equals(methodName)) {
         //     generateListRequestImplementation(method);
         // }
@@ -234,7 +232,7 @@ public class ServicesGenerator implements GoGenerator {
         // else {
         //     generateActionRequestImplementation(method);
         // }
-
+        buffer.endBlock();
         // End send method:
         buffer.addLine("}");
         buffer.addLine();
@@ -301,86 +299,27 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateAddRequestImplementation(Method method, Service service) {
-        // 
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        buffer.addImport("net/url");
+        buffer.addLine("values := make(url.Values)");
 
-// func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
-// 	var result OvResponse
+        getSecondaryParameters(method)
+            .forEach(this::generateRequestParameterQueryBuilder);
 
-// 	// Build the URL:
-// 	useRawURL := c.buildRawURL(r.Path, r.Query)
-
-// 	// Validate the method selected:
-// 	if Contains(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
-// 		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST", r.Method)
-// 	}
-
-// 	// Build the net/http request:
-// 	req, err := http.NewRequest(r.Method, useRawURL, nil)
-// 	if err != nil {
-// 		return &result, err
-// 	}
-
-// 	// Add request headers:
-// 	for reqHK, reqHV := range r.Headers {
-// 		req.Header.Add(reqHK, reqHV)
-// 	}
-// 	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
-// 	req.Header.Add("Version", "4")
-// 	req.Header.Add("Content-Type", "application/xml")
-// 	req.Header.Add("Accept", "application/xml")
-// 	// 		Generate base64(username:password)
-// 	rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
-// 	req.Header.Add("Authorization",
-// 		fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
-
-// 	// Send the request and wait for the response:
-// 	resp, err := c.client.Do(req)
-// 	if err != nil {
-// 		return &result, err
-// 	}
-
-// 	// Return the response:
-// 	defer resp.Body.Close()
-// 	respBodyBytes, err := ioutil.ReadAll(resp.Body)
-// 	result.Body = string(respBodyBytes)
-// 	if err != nil {
-// 		return &result, err
-// 	}
-// 	result.Code = resp.StatusCode
-// 	result.Headers = make(map[string]string)
-// 	for respHK, respHV := range resp.Header {
-// 		result.Headers[respHK] = respHV[0]
-// 	}
-
-// 	return &result, nil
-
-
-	// Send the request and get the response
-	// ovResp, err := op.internalAdd(nic, headers, query, wait)
-	// if err != nil {
-	// 	return nil, err
+	// // Build the URL
+	// rawURL := fmt.Sprintf("%s%s", p.vnicProfiles.Connection.URL(), p.vnicProfiles.Path)
+	// values := make(url.Values)
+	// if p.async != nil {
+	// 	values["async"] = []string{*p.async}
 	// }
-	// var nicVar Nic
-	// xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	// return &nicVar, nil
-
-	// req := NewOvRequest("POST", service.Path, headers, query, "")
-	// xmlBytes, err := xml.Marshal(object)
-	// if err != nil {
-	// 	return nil, err
+	// if p.query != nil && len(p.query) > 0 {
+	// 	for k, v := range p.query {
+	// 		values[k] = []string{v}
+	// 	}
+	// 	rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
 	// }
-	// req.Body = string(xmlBytes)
-	// res, err := service.Connection.Send(req)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// // If Add succeed
-	// if Contains(res.Code, []int{200, 201, 202}) {
-	// 	return res, nil
-	// }
-	// // Add failed
-	// return nil, checkFault(res)
-
 
     }
 
@@ -1009,6 +948,15 @@ public class ServicesGenerator implements GoGenerator {
             .filter(x -> x.isIn() && !x.isOut())
             .sorted()
             .collect(toList());
+    }
+
+    private void generateRequestParameterQueryBuilder(Parameter parameter) {
+        String value = goNames.getPrivateMemberStyleName(parameter.getName());
+        String type = goNames.getClassStyleName(parameter.getType().getName());
+
+        buffer.addLine("if (%1$s != null) {", value);
+        buffer.addLine("fmt.Println(\"test\")");
+        buffer.addLine("}");
     }
 
     private void generateSetActionAttribute(Parameter parameter) {

@@ -295,6 +295,10 @@ public class GoNames {
         return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
     }
 
+    public String getPrivateMemberStyleName(String name) {
+        return renameReserved(name.substring(0, 1).toLowerCase() + name.substring(1));
+    }
+
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go method name.
      */
