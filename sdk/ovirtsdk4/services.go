@@ -105,6 +105,7 @@ func (p *VnicProfilesServiceAddRequest) Send() *VnicProfilesServiceAddResponse {
 
 	rawURL := fmt.Sprintf("%s%s", p.vnicProfilesService.Connection.URL(), p.vnicProfilesService.Path)
 	values := make(url.Values)
+
 }
 
 //

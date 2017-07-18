@@ -212,7 +212,7 @@ public class ServicesGenerator implements GoGenerator {
         }
 
         // Generate send method:
-        buffer.addLine("func (p *%1$s) Send() *%2$s {",
+        buffer.addLine("func (p *%1$s) Send() (*%2$s, error) {",
             request, getResponseClassName(method, service));
         buffer.addLine();
         buffer.startBlock();
@@ -307,20 +307,161 @@ public class ServicesGenerator implements GoGenerator {
 
         getSecondaryParameters(method)
             .forEach(this::generateRequestParameterQueryBuilder);
+        generateAdditionalQueryParameters();
+        
+        // Generate the final URL
+        buffer.addLine("if len(values) > 0 {");
+        buffer.startBlock();
+        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.endBlock();
+        buffer.addLine("}");
 
-	// // Build the URL
-	// rawURL := fmt.Sprintf("%s%s", p.vnicProfiles.Connection.URL(), p.vnicProfiles.Path)
-	// values := make(url.Values)
-	// if p.async != nil {
-	// 	values["async"] = []string{*p.async}
-	// }
-	// if p.query != nil && len(p.query) > 0 {
-	// 	for k, v := range p.query {
-	// 		values[k] = []string{v}
-	// 	}
-	// 	rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+        // Generate the net/http request.Body (via bytes.Buffer)
+        buffer.addImport("bytes");
+        buffer.addLine("var body *bytes.Buffer");
+        generateWriteRequestBody(getFirstParameter(method));
+
+        // Construct the net/http request
+        buffer.addImport("net/http");
+        buffer.addLine("req, err := http.NewRequest(\"GET\", rawURL, body)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+	}
+
+    private void generateRequestParameterQueryBuilder(Parameter parameter) {
+        String value = goNames.getPrivateMemberStyleName(parameter.getName());
+        buffer.addLine("if p.%1$s != nil {", value);
+        buffer.startBlock();
+        buffer.addLine("values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%1$s)}", value);
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
+
+    private void generateAdditionalQueryParameters() {
+        buffer.addLine("if p.query != nil) {");
+        buffer.startBlock();
+        buffer.addLine("for k, v range p.query {");
+        buffer.startBlock();
+        buffer.addLine("values[k] = []string{v}");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
+
+    private void generateWriteRequestBody(Parameter parameter) {
+        // var body *bytes.Buffer
+        if (parameter != null) {
+            Type type = parameter.getType();
+            GoTypeReference paraTypeReference = goNames.getTypeReference(type);
+            buffer.addImports(paraTypeReference.getImports());
+            String paraName = goNames.getParameterStyleName(parameter.getName());
+            buffer.addImport("encoding/xml");
+            buffer.addLine("xmlBytes, err := xml.Marshal(p.%1$s)", paraName);
+            buffer.addLine("if err != nil {");
+            buffer.startBlock();
+            buffer.addLine("return nil, err");
+            buffer.endBlock();
+            buffer.addLine("}");
+            buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
+        }
+    }
+
+    private void generateCommonRequestImplementation(Method method, Service service, String[] codes) {
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        
+        generateAdditionalHeadersParameters();
+        buffer.addLine("req.Header.Add(\"User-Agent\", fmt.Sprintf(\"GoSDK/%%s\", SDK_VERSION))");
+        buffer.addLine("req.Header.Add(\"Version\", \"4\")");
+        buffer.addLine("req.Header.Add(\"Content-Type\", \"application/xml\")");
+        buffer.addLine("req.Header.Add(\"Accept\", \"application/xml\")");
+        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection, %2$s)", );
+	// // 		Generate base64(username:password)
+	// rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
+	// req.Header.Add("Authorization",
+	// 	fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
+
+	// // Send the request and wait for the response:
+	// resp, err := c.client.Do(req)
+	// if err != nil {
+	// 	return &result, err
 	// }
 
+	// // Return the response:
+	// defer resp.Body.Close()
+	// respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	// result.Body = string(respBodyBytes)
+	// if err != nil {
+	// 	return &result, err
+	// }
+	// result.Code = resp.StatusCode
+	// result.Headers = make(map[string]string)
+	// for respHK, respHV := range resp.Header {
+	// 	result.Headers[respHK] = respHV[0]
+	// }
+
+	// return &result, nil
+
+
+
+        buffer.addLine("HttpResponse response = getConnection().send(request);");
+        buffer.addLine("if (");
+        buffer.addLine("  response.getStatusLine().getStatusCode() == %1$s", codes[0]);
+        for (int i = 1; i < codes.length; i++) {
+            buffer.addLine("  || response.getStatusLine().getStatusCode() == %1$s", codes[i]);
+        }
+        buffer.addLine(") {");
+        List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
+        if (parameters.isEmpty()) {
+            buffer.addLine("EntityUtils.consumeQuietly(response.getEntity());");
+            buffer.addLine("return new %1$s();", getResponseImplName(method));
+        }
+        else {
+            buffer.addLine("try (");
+            buffer.addLine("  XmlReader reader = new XmlReader(response.getEntity().getContent())");
+            buffer.addLine(") {");
+            parameters.stream()
+                .sorted()
+                .forEach(this::generateRequestReaderImplementation);
+            buffer.addLine("}");
+            buffer.addLine("catch (IOException ex) {");
+            buffer.addLine(  "throw new Error(\"Failed to read response\", ex);");
+            buffer.addLine("}");
+            buffer.addLine("finally {");
+            buffer.addLine(  "EntityUtils.consumeQuietly(response.getEntity());");
+            buffer.addLine("}");
+        }
+        buffer.addLine("}");
+        buffer.addLine("else {");
+        buffer.addLine(  "checkFault(response);");
+        if (parameters.isEmpty()) {
+            buffer.addLine("return new %1$s();", getResponseClassName(method));
+        }
+        else {
+            buffer.addLine("return new %1$s(null);", getResponseClassName(method));
+        }
+        buffer.addLine("}");
+    }
+
+    private void generateAdditionalHeadersParameters() {
+        buffer.addLine();
+        buffer.addLine("if p.header != nil {");
+        buffer.startBlock();
+        buffer.addLine("for hk, hv := range p.header {");
+        buffer.startBlock();
+        buffer.addLine("req.Header.Add(hk, hv)");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateResponse(Method method, Service service) {
@@ -948,15 +1089,6 @@ public class ServicesGenerator implements GoGenerator {
             .filter(x -> x.isIn() && !x.isOut())
             .sorted()
             .collect(toList());
-    }
-
-    private void generateRequestParameterQueryBuilder(Parameter parameter) {
-        String value = goNames.getPrivateMemberStyleName(parameter.getName());
-        String type = goNames.getClassStyleName(parameter.getType().getName());
-
-        buffer.addLine("if (%1$s != null) {", value);
-        buffer.addLine("fmt.Println(\"test\")");
-        buffer.addLine("}");
     }
 
     private void generateSetActionAttribute(Parameter parameter) {
