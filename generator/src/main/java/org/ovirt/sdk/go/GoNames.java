@@ -307,6 +307,10 @@ public class GoNames {
         return renameReserved(result);
     }
 
+    public String getPublicMethodStyleName(String nameString) {
+        return renameReserved(nameString.substring(0, 1).toUpperCase() + nameString.substring(1));
+    }
+
     public String getPrivateMethodStyleName(Name name) {
         String result = getClassStyleName(name);
         return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));

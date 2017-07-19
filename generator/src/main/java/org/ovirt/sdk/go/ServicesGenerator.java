@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -214,7 +215,6 @@ public class ServicesGenerator implements GoGenerator {
         // Generate send method:
         buffer.addLine("func (p *%1$s) Send() (*%2$s, error) {",
             request, getResponseClassName(method, service));
-        buffer.addLine();
         buffer.startBlock();
         // Generate method code based on response type:
         if (ADD.equals(methodName)) {
@@ -331,6 +331,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
 	}
 
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
@@ -387,29 +388,91 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("encoding/base64");
         buffer.addLine("auth := fmt.Sprintf(\"Basic %%s\", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))");
         buffer.addLine("req.Header.Add(\"Authorization\", auth)");
-        buffer.addCommentLine("Send the request and wait for the response:");
+        // Send the request and wait for the response
+        buffer.addCommentLine("Send the request and wait for the response");
         buffer.addLine("resp, err := p.%1$s.Connection.client.Do(req)",
             serviceAsPrivateMemberName);
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");;
+        buffer.addLine("defer resp.Body.Close()");
+        // Read resp.Body
+        buffer.addImport("io/ioutil");
+        buffer.addLine("respBodyBytes, err := ioutil.ReadAll(resp.Body)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
 
-	// resp, err := c.client.Do(req)
-	// if err != nil {
-	// 	return &result, err
-	// }
 
-	// // Return the response:
-	// defer resp.Body.Close()
-	// respBodyBytes, err := ioutil.ReadAll(resp.Body)
-	// result.Body = string(respBodyBytes)
-	// if err != nil {
-	// 	return &result, err
-	// }
-	// result.Code = resp.StatusCode
-	// result.Headers = make(map[string]string)
-	// for respHK, respHV := range resp.Header {
-	// 	result.Headers[respHK] = respHV[0]
-	// }
+    private void generateResponseParseImplementation(Method method, Service service) {
+        List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
+        if (parameters.isEmpty()) {
+            buffer.addLine("return new(%1$s)", getResponseClassName(method, service));
+        } else {
+            buffer.addImport("encoding/xml");
+            for (Parameter para : parameters) {
+                generateResponseParameterParseImplementation(para, service);
+            }
+        }
+    }
 
-	// return &result, nil
+    private void generateResponseParameterParseImplementation(Parameter outParameter, Service service) {
+        GoTypeReference outParamTypeReference = goNames.getTypeReference(outParameter.getType());
+        String outParamNameAsVar = goNames.getVariableStyleName(outParameter.getName());
+        Model model = outParameter.getType().getModel();
+
+        Type outParameterType = outParameter.getType();
+        if (outParameterType instanceof PrimitiveType) {
+            if (outParameterType == model.getBooleanType()) {
+                buffer.addImport("strconv");
+                buffer.addLine("return strconv.ParseBool(string(respBodyBytes))");
+            } else if (outParameterType == model.getIntegerType()) {
+                buffer.addImport("strconv");
+                buffer.addLine("return strconv.ParseInt(string(respBodyBytes), 10, 64)");
+            } else if (outParameterType == model.getDecimalType()) {
+                buffer.addImport("strconv");
+                buffer.addLine("return srconv.ParseFloat(string(respBodyBytes), 10, 64");
+            } else if (outParameterType == model.getStringType()) {
+                buffer.addLine("return string(respBodyBytes), nil");
+            } else {
+                throw new IllegalArgumentException(
+                    "XMLParsing: Don't know how to build reference for primitive type \"" + outParameterType + "\""
+                );
+            }
+        } else if (outParameterType instanceof StructType) {
+            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameter.getType()).getClassName());
+            this.generateResponseParameterXmlUnmarshal(outParameter);
+            buffer.addLine("return &%1$s, nil", outParamNameAsVar);
+        } else if (outParameterType instanceof ListType) {
+            ListType outParamListType = (ListType) outParameterType;
+            if (outParamListType.getElementType() instanceof StructType) {
+                String outParamListTypeStr = outParamTypeReference.getText().replace("[]", "");
+                String outParamListAttriTypeStr = String.format("%ss", outParamListTypeStr);
+                outParamListTypeStr = String.format("%ss", outParamListTypeStr);
+
+                buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamListTypeStr);
+                generateResponseParameterXmlUnmarshal(outParameter);
+                buffer.addLine("return %1$s, nil",
+                    String.format("%s.%s", outParamNameAsVar, outParamListAttriTypeStr));
+            } else if (outParamListType.getElementType() == model.getStringType()) {
+                buffer.addLine("return []string{string(respBodyBytes)}, nil");
+            } else {
+                throw new IllegalArgumentException(
+                    "XMLParsing: Don't know how to build reference for type: List-Of- \"" + outParameterType + "\""
+                );
+            }
+        }
+    }
+
+    private void generateResponseParameterXmlUnmarshal(Parameter outParameter) {
+        buffer.addImport("encoding/xml");
+        buffer.addLine("xml.Unmarshal(respBodyBytes, &%1$s)",
+            goNames.getVariableStyleName(outParameter.getName()));
     }
 
     private void generateAdditionalHeadersParameters() {
@@ -427,26 +490,49 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateResponse(Method method, Service service) {
-        Name methodName = method.getName();
-        String request = getRequestClassName(method, service);
         String response = getResponseClassName(method, service);
         buffer.addLine("type %1$s struct {", response);
         buffer.startBlock();
-        // Generate the methods and appropriate constructors to get the output parameters:
         method.parameters()
             .filter(Parameter::isOut)
             .sorted()
-            .forEach(this::generateResponseMember);
+            .forEach(this::generateResponseParameter);
         buffer.endBlock();
         buffer.addLine("}");
+
+        // Generate Repsonse parameter getter method
+        List<Parameter> parameters = method.parameters()
+            .filter(Parameter::isOut)
+            .sorted()
+            .collect(Collectors.toList());
+        for (Parameter para : parameters) {
+            generateResponseParameterGetterMethod(para, service);
+        }
     }
 
-    private void generateResponseMember(Parameter parameter) {
+    private void generateResponseParameter(Parameter parameter) {
         Type type = parameter.getType();
         Name name = parameter.getName();
         String memberName = goNames.getPrivateMemberStyleName(name);
         GoTypeReference reference = goNames.getTypeReference(type);
         buffer.addLine("%1$s %2$s", memberName, reference.getText());
+    }
+
+    private void generateResponseParameterGetterMethod(Parameter parameter, Service service) {
+        Type type = parameter.getType();
+        Name name = parameter.getName();
+        String memberName = goNames.getPrivateMemberStyleName(name);
+        GoTypeReference reference = goNames.getTypeReference(type);
+        String response = getResponseClassName(parameter.getDeclaringMethod(), service);
+        buffer.addLine("func (p *%1$s) %2$s() %3$s {",
+            response,
+            goNames.getPublicMethodStyleName(memberName),
+            reference.getText()
+            );
+        buffer.startBlock();
+        buffer.addLine("return p.%1$s", memberName);
+        buffer.endBlock();
+        buffer.addLine("}");
     }
 
     private void generateAddHttpPost(Method method, Service service) {
