@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
@@ -42,7 +41,6 @@ import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.Service;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
-import org.ovirt.api.metamodel.tool.SchemaNames;
 
 /**
  * This class is responsible for generating the classes that represent the services of the model.
@@ -60,7 +58,6 @@ public class ServicesGenerator implements GoGenerator {
 
     // Reference to the objects used to generate the code:
     @Inject private GoNames goNames;
-    @Inject private SchemaNames schemaNames;
 
     // The buffer used to generate the code:
     private GoBuffer buffer;
@@ -96,8 +93,6 @@ public class ServicesGenerator implements GoGenerator {
     private void generateService(Service service) {
         // Begin class:
         GoClassName serviceName = goNames.getServiceName(service);
-        Service base = service.getBase();
-        GoClassName baseName = base != null? goNames.getServiceName(base): goNames.getBaseServiceName();
         
         // Generate struct definition
         generateDoc(service);
@@ -170,22 +165,6 @@ public class ServicesGenerator implements GoGenerator {
             goNames.getPrivateMemberStyleName(serviceClassName.getClassName()));
         buffer.endBlock();
         buffer.addLine("}");
-
-        // if (ADD.equals(name)) {
-        //     generateAddHttpPost(method, service);
-        // }
-        // else if (GET.equals(name) || LIST.equals(name)) {
-        //     generateHttpGet(method, service);
-        // }
-        // else if (REMOVE.equals(name)) {
-        //     generateHttpDelete(method, service);
-        // }
-        // else if (UPDATE.equals(name)) {
-        //     generateHttpPut(method, service);
-        // }
-        // else {
-        //     generateActionHttpPost(method, service);
-        // }
     }
 
     private void generateRequest(Method method, Service service) {
@@ -756,329 +735,6 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("}");
     }
 
-    private void generateAddHttpPost(Method method, Service service) {
-        // Get the service class name
-        GoClassName serviceName = goNames.getServiceName(service);
-
-        // Get the primary param, Add function: the first In is just the Out param
-        Parameter primaryParameter = getFirstParameter(method);
-        // Get other in params
-        List<Parameter> secondaryParameters = getSecondaryParameters(method);
-
-        // Begin method:
-        Name methodName = method.getName();
-        //      get primary parameter name
-        String primaryArg = goNames.getParameterStyleName(primaryParameter.getName());
-        //      get primary parameter type name
-        GoTypeReference primaryParameterGoTypeReference = goNames.getTypeReference(primaryParameter.getType());
-        buffer.addImports(primaryParameterGoTypeReference.getImports());
-
-        //      Generate function doc
-        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
-        //      Generate function definition
-        buffer.addLine(
-            "func (op *%1$s) %2$s(",
-            serviceName.getClassName(),
-            goNames.getPublicMethodStyleName(methodName));
-        //      Generate func-codes definition
-        buffer.startBlock();
-        buffer.addLine("%1$s %2$s,", primaryArg, primaryParameterGoTypeReference.getText());
-        secondaryParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) (");
-        //      Generate the output parameters
-        buffer.startBlock();
-        this.generateOutputParameter(primaryParameter);
-        buffer.addLine("error) {");
-        buffer.endBlock();
-        //      Generate function ending
-        buffer.endBlock();
- 
-        // Start body:
-        buffer.startBlock();
-
-        //      Generate the code to build the URL query:
-        buffer.addLine("// Build the URL:");
-        buffer.addLine("if query == nil {");
-        buffer.startBlock();
-        buffer.addLine("query = make(map[string]string)");
-        buffer.endBlock();
-        buffer.addLine("}");
-        secondaryParameters.forEach(this::generateUrlParameter);
-        buffer.addLine();
-        //      Generate the code to send the request
-        buffer.addLine("// Send the request and get the response");
-        buffer.addLine("ovResp, err := op.internalAdd(%1$s, headers, query, wait)", primaryArg);
-        //      Parse the result
-        this.generateOvResponseParsing(primaryParameter);
-        // End body:
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-    }
-
-    private void generateActionHttpPost(Method method, Service service) {
-        // Get the input parameters:
-        List<Parameter> inParameters = method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .collect(toList());
-        // Get the service class name
-        GoClassName serviceName = goNames.getServiceName(service);
-        // Begin method:
-        Name methodName = method.getName();
-        //      Generate function doc
-        generateActionDoc(method, Parameter::isIn);
-        //      Get function output parameters
-        Parameter outParam = getOutParameter(method);
-        //      Generate function definition
-        buffer.addLine(
-            "func (op *%1$s) %2$s(",
-            serviceName.getClassName(),
-            goNames.getPublicMethodStyleName(methodName));
-        buffer.startBlock();
-        inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) (");
-        //      Generate the output parameters
-        buffer.startBlock();
-        if (outParam != null) {
-            this.generateOutputParameter(outParam);
-        }
-        buffer.addLine("error) {");
-        buffer.endBlock();
-        //      Generate function ending
-        buffer.endBlock();
-
-        // Start body:
-        buffer.startBlock();
-
-        //      Generate the code to populate the action:
-        buffer.addLine("// Populate the action:");
-        buffer.addLine("action := &Action{");
-        buffer.startBlock();
-        inParameters.forEach(this::generateSetActionAttribute);
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-
-        buffer.addLine("// Send the request and wait for the response:");
-        if (outParam == null) {
-            buffer.addLine(
-                "_, err := op.internalAction(action, \"%1$s\", headers, query, wait)",
-                getPath(methodName)
-            );
-            buffer.addLine("return err");
-        } else {
-            buffer.addLine(
-                "ovResp, err := op.internalAction(action, \"%1$s\", headers, query, wait)",
-                getPath(methodName)
-            );
-            // Generate the ovResponse parsing
-            this.generateOvResponseParsing(outParam);
-        }
-        
-        // End body:
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-    }
-
-    private void generateHttpGet(Method method, Service service) {
-        // Get the input parameters:
-        List<Parameter> inParameters = method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .collect(toList());
-        // Get the service class name
-        GoClassName serviceName = goNames.getServiceName(service);
-        // Begin method:
-        Name methodName = method.getName();
-        //      Generate function doc
-        generateActionDoc(method, Parameter::isIn);
-        //      Get function output parameters
-        Parameter outParameter = getOutParameter(method);
-        GoTypeReference outParamGoTypeReference = goNames.getTypeReference(outParameter.getType());
-        //      Generate function body
-        buffer.addLine(
-            "func (op *%1$s) %2$s(",
-            serviceName.getClassName(),
-            goNames.getPublicMethodStyleName(methodName));
-        buffer.startBlock();
-        inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) ( ");
-        //      Generate the output parameters
-        buffer.startBlock();
-        this.generateOutputParameter(outParameter);
-        buffer.addLine("error) {");
-        buffer.endBlock();
-        //      Generate function ending
-        buffer.endBlock();
-
-        // Start body:
-        buffer.startBlock();
-
-        //      Generate the code to build the URL query:
-        buffer.addLine("// Build the URL:");
-        buffer.addLine("if query == nil {");
-        buffer.startBlock();
-        buffer.addLine("query = make(map[string]string)");
-        buffer.endBlock();
-        buffer.addLine("}");
-        inParameters.forEach(this::generateUrlParameter);
-        buffer.addLine();
-
-        // Generate the code to send the request and wait for the response:
-        buffer.addLine("// Send the request and wait for the response:");
-        buffer.addLine("ovResp, err := op.internalGet(headers, query, wait)");
-
-        // Generate ovResponse parsing
-        this.generateOvResponseParsing(outParameter);
-
-        // End body:
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-    }
-
-    private void generateHttpPut(Method method, Service service) {
-        // Classify the parameters: it's also the Output param
-        Parameter primaryParameter = getFirstParameter(method);
-        List<Parameter> secondaryParameters = getSecondaryParameters(method);
-        // Get the service class name
-        GoClassName serviceName = goNames.getServiceName(service);
-
-        // Begin method:
-        Name methodName = method.getName();
-        //      get primary parameter name
-        String primaryArg = goNames.getParameterStyleName(primaryParameter.getName());
-        //      get primary parameter type name
-        GoTypeReference primaryParameterGoTypeReference = goNames.getTypeReference(primaryParameter.getType());
-        buffer.addImports(primaryParameterGoTypeReference.getImports());
-        //      Generate function doc
-        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
-        //      Generate function definition
-        buffer.addLine(
-            "func (op *%1$s) %2$s(",
-            serviceName.getClassName(),
-            goNames.getPublicMethodStyleName(methodName));
-        //      Generate function parameters definition
-        buffer.startBlock();
-        buffer.addLine("%1$s %2$s,", primaryArg, primaryParameterGoTypeReference.getText());
-        secondaryParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) (");
-        //      Generate the output parameters
-        buffer.startBlock();
-        this.generateOutputParameter(primaryParameter);
-        buffer.addLine("error) {");
-        buffer.endBlock();
-        //      Generate function ending
-        buffer.endBlock();
-
-        // Start body:
-        buffer.startBlock();
-
-        //      Generate the code to build the URL query:
-        buffer.addLine("// Build the URL:");
-        buffer.addLine("if query == nil {");
-        buffer.startBlock();
-        buffer.addLine("query = make(map[string]string)");
-        buffer.endBlock();
-        buffer.addLine("}");
-        secondaryParameters.forEach(this::generateUrlParameter);
-        buffer.addLine();
-        //      Generate the code to send the request
-        buffer.addLine("// Send the request");
-        buffer.addLine("ovResp, err := op.internalUpdate(%1$s, headers, query, wait)", primaryArg);
-
-        //      Generate ovResponse parsing
-        this.generateOvResponseParsing(primaryParameter);
-
-        // End body:
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-    }
-
-    private void generateHttpDelete(Method method, Service service) {
-        // Get the parameters:
-        List<Parameter> inParameters = method.parameters()
-            .filter(Parameter::isIn)
-            .collect(toList());
-        // Get the service class name
-        GoClassName serviceName = goNames.getServiceName(service);
-        // Begin method:
-        Name methodName = method.getName();
-        //      Generate function doc
-        generateActionDoc(method, Parameter::isIn);
-        //      Get function output parameters
-        //      remove() function has no out parameters
-
-        //      Generate function definition
-        buffer.addLine(
-            "func (op *%1$s) %2$s(",
-            serviceName.getClassName(),
-            goNames.getPublicMethodStyleName(methodName));
-        buffer.startBlock();
-        inParameters.forEach(this::generateFormalParameter);
-        buffer.addLine("headers map[string]string,");
-        buffer.addLine("query map[string]string,");
-        buffer.addLine("wait bool) (");
-        //      Generate the output parameters
-        buffer.startBlock();
-        buffer.addLine("error) {");
-        buffer.endBlock();
-        //      Generate function ending
-        buffer.endBlock();
-
-        // Begin body:
-        buffer.startBlock();
-
-        //      Generate the code to build the URL query:
-        buffer.addLine("// Build the URL:");
-        buffer.addLine("if query == nil {");
-        buffer.startBlock();
-        buffer.addLine("query = make(map[string]string)");
-        buffer.endBlock();
-        buffer.addLine("}");
-        inParameters.forEach(this::generateUrlParameter);
-        buffer.addLine();
-
-        // Generate the code to send the request and wait for the response:
-        buffer.addLine("// Send the request and wait for the response:");
-        buffer.addLine("_, err := op.internalRemove(headers, query, wait)");
-        buffer.addLine("return err");
-
-        // End body:
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine();
-    }
-
-    private void generateOutputParameter(Parameter parameter) {
-        // Get parameter type
-        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
-        buffer.addImports(goTypeReference.getImports());
-
-        // Get parameter type name
-        buffer.addLine(
-            "%1$s,", goTypeReference.getText());
-    }
-
-    private void generateUrlParameter(Parameter parameter) {
-        Type type = parameter.getType();
-        Name name = parameter.getName();
-        String arg = goNames.getParameterStyleName(name);
-        String tag = schemaNames.getSchemaTagName(name);
-        buffer.addLine("query[\"%1$s\"] = fmt.Sprintf(\"%%v\", %2$s)", tag, arg);
-    }
-
     private void generateStr(Service service) {
         GoClassName serviceName = goNames.getServiceName(service);
         buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
@@ -1088,12 +744,6 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
-    }
-
-    private void generateLocatorMember(Locator locator) {
-        GoClassName serviceName = goNames.getServiceName(locator.getService());
-        String memberName = goNames.getPublicMemberStyleName(locator.getName());
-        buffer.addLine("%1$sServ  *%2$s", memberName, serviceName.getClassName());
     }
 
     private void generateLocatorMethod(Locator locator, Service service) {
@@ -1227,29 +877,6 @@ public class ServicesGenerator implements GoGenerator {
         return name.words().map(String::toLowerCase).collect(joining());
     }
 
-    private void generateActionDoc(Method method, Predicate<Parameter> predicate) {
-        buffer.startComment();
-        if (method.getDoc() != null) {
-            generateDocText(method);
-        }
-        if (method.parameters().filter(predicate).findFirst().orElse(null) != null) {
-            List<String> lines = method.parameters()
-                .filter(predicate)
-                .filter(p -> p.getDoc() != null)
-                .map(p -> String.format("`%s`:: %s", goNames.getPublicMemberStyleName(p.getName()), p.getDoc()))
-                .collect(toList());
-
-            if (!lines.isEmpty()) {
-                buffer.addLine("// This method supports the following parameters:");
-                lines.forEach(this::generateDocText);
-                buffer.addLine("// `headers`:: Additional HTTP headers.");
-                buffer.addLine("// `query`:: Additional URL query parameters.");
-                buffer.addLine("// `wait`:: If `True` wait for the response.");
-            }
-        }
-        buffer.endComment();
-    }
-
     protected void generateDoc(Concept concept) {
         buffer.startComment();
         generateDocText(concept);
@@ -1283,110 +910,11 @@ public class ServicesGenerator implements GoGenerator {
             goNames.getVariableStyleName(outParameter.getName()));
     }
 
-    private void generateOvResponseParsing(Parameter outParameter) {
-        GoTypeReference outParamTypeReference = goNames.getTypeReference(outParameter.getType());
-        String outParamNameAsVar = goNames.getVariableStyleName(outParameter.getName());
-        Model model = outParameter.getType().getModel();
-
-        Type outParameterType = outParameter.getType();
-        if (outParameterType instanceof PrimitiveType) {
-            if (outParameterType == model.getBooleanType()) {
-                buffer.addLine("if err != nil {");
-                buffer.startBlock();
-                buffer.addLine("return false, err");
-                buffer.endBlock();
-                buffer.addLine("}");
-                buffer.addImport("strconv");
-                buffer.addLine("return strconv.ParseBool(ovResp.Body)");
-            } else if (outParameterType == model.getIntegerType()) {
-                buffer.addLine("if err != nil {");
-                buffer.startBlock();
-                buffer.addLine("return 0, err");
-                buffer.endBlock();
-                buffer.addLine("}");
-                buffer.addImport("strconv");
-                buffer.addLine("return strconv.ParseInt(ovResp.Body, 10, 64)");
-            } else if (outParameterType == model.getDecimalType()) {
-                buffer.addLine("if err != nil {");
-                buffer.startBlock();
-                buffer.addLine("return 0, err");
-                buffer.endBlock();
-                buffer.addLine("}");
-                buffer.addImport("strconv");
-                buffer.addLine("return srconv.ParseFloat(ovResp.Body, 10, 64");
-            } else if (outParameterType == model.getStringType()) {
-                buffer.addLine("if err != nil {");
-                buffer.startBlock();
-                buffer.addLine("return \"\", err");
-                buffer.endBlock();
-                buffer.addLine("}");
-                buffer.addLine("return ovResp.Body, nil");
-            } else {
-                throw new IllegalArgumentException(
-                    "XMLParsing: Don't know how to build reference for primitive type \"" + outParameterType + "\""
-                );
-            }
-        } else if (outParameterType instanceof StructType) {
-            buffer.addLine("if err != nil {");
-            buffer.startBlock();
-            buffer.addLine("return nil, err");
-            buffer.endBlock();
-            buffer.addLine("}");
-            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameter.getType()).getClassName());
-            this.generateXmlUnmarshal(outParameter);
-            buffer.addLine("return &%1$s, nil", outParamNameAsVar);
-        } else if (outParameterType instanceof ListType) {
-            buffer.addLine("if err != nil {");
-            buffer.startBlock();
-            buffer.addLine("return nil, err");
-            buffer.endBlock();
-            buffer.addLine("}");
-
-            ListType outParamListType = (ListType) outParameterType;
-            if (outParamListType.getElementType() instanceof StructType) {
-                String outParamListTypeStr = outParamTypeReference.getText().replace("[]", "");
-                String outParamListAttriTypeStr = String.format("%ss", outParamListTypeStr);
-                outParamListTypeStr = String.format("%ss", outParamListTypeStr);
-
-                buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamListTypeStr);
-                generateXmlUnmarshal(outParameter);
-                buffer.addLine("return %1$s, nil",
-                    String.format("%s.%s", outParamNameAsVar, outParamListAttriTypeStr));
-            } else if (outParamListType.getElementType() == model.getStringType()) {
-                buffer.addLine("return []string{ovResp.Body}, nil");
-            } else {
-                throw new IllegalArgumentException(
-                    "XMLParsing: Don't know how to build reference for type: List-Of- \"" + outParameterType + "\""
-                );
-            }
-        }
-    }
-
-    /**
-     * Return the ONLY (Java) one output parameter of method
-     */
-    private Parameter getOutParameter(Method method) {
-        return method.parameters()
-            .filter(x -> x.isOut())
-            .findFirst()
-            .orElse(null);
-    }
-
     private List<Parameter> getSecondaryParameters(Method method) {
         return method.parameters()
             .filter(x -> x.isIn() && !x.isOut())
             .sorted()
             .collect(toList());
-    }
-
-    private void generateSetActionAttribute(Parameter parameter) {
-        String memberName = goNames.getPublicMemberStyleName(parameter.getName());
-        String parameterName = goNames.getParameterStyleName(parameter.getName());
-        String varTypeSuffix = "";
-        if (GoTypes.isGoPrimitiveType(parameter.getType())) {
-            varTypeSuffix = "&";
-        }
-        buffer.addLine("%1$s: %2$s%3$s,", memberName, varTypeSuffix, parameterName);
     }
 
     private String getRequestClassName(Method method, Service service) {
@@ -1397,18 +925,6 @@ public class ServicesGenerator implements GoGenerator {
     private String getResponseClassName(Method method, Service service) {
         return goNames.getServiceName(service).getClassName() + 
             goNames.getClassStyleName(method.getName()) + "Response";
-    }
-
-    private void generateFormalParameter(Parameter parameter) {
-        // Get parameter name
-        Name parameterName = parameter.getName();
-        GoTypeReference goTypeReference = goNames.getTypeReference(parameter.getType());
-        buffer.addImports(goTypeReference.getImports());
-
-        String arg = goNames.getParameterStyleName(parameterName);
-        // Get parameter type name
-        buffer.addLine(
-            "%1$s %2$s,", arg, goTypeReference.getText());
     }
 
 }
