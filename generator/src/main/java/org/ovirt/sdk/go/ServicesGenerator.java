@@ -220,9 +220,9 @@ public class ServicesGenerator implements GoGenerator {
         if (ADD.equals(methodName)) {
             generateAddRequestImplementation(method, service);
         }
-        // else if (GET.equals(methodName) || LIST.equals(methodName)) {
-        //     generateListRequestImplementation(method);
-        // }
+        else if (GET.equals(methodName) || LIST.equals(methodName)) {
+            generateListRequestImplementation(method, service);
+        }
         // else if (REMOVE.equals(methodName)) {
         //     generateRemoveRequestImplementation(method);
         // }
@@ -333,6 +333,38 @@ public class ServicesGenerator implements GoGenerator {
         generateCommonRequestImplementation(method, service, new String[]{"200"});
         generateResponseParseImplementation(method, service);
 	}
+
+    private void generateListRequestImplementation(Method method, Service service) {
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        buffer.addImport("net/url");
+        buffer.addLine("values := make(url.Values)");
+        method.parameters()
+            .filter(Parameter::isIn)
+            .filter(p -> p.getType() instanceof PrimitiveType)
+            .sorted()
+            .forEach(this::generateRequestParameterQueryBuilder);
+        generateAdditionalQueryParameters();
+        // Generate the final URL
+        buffer.addLine("if len(values) > 0 {");
+        buffer.startBlock();
+        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        // Construct the net/http request
+        buffer.addImport("net/http");
+        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, nil)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
+    }
 
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
         String value = goNames.getPrivateMemberStyleName(parameter.getName());

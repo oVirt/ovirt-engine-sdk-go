@@ -276,6 +276,53 @@ func (p *VnicProfilesServiceListRequest) Max(max int64) *VnicProfilesServiceList
 	return p
 }
 func (p *VnicProfilesServiceListRequest) Send() (*VnicProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vnicProfilesService.Connection.URL(), p.vnicProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vnicProfilesService.Connection.username, p.vnicProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vnicProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vnicProfilesServiceListResponse VnicProfilesServiceListResponse
+	var profilesVar VnicProfiles
+	xml.Unmarshal(respBodyBytes, &profilesVar)
+	vnicProfilesServiceListResponse.profiles = profilesVar.VnicProfiles
+	return &vnicProfilesServiceListResponse, nil
 }
 
 type VnicProfilesServiceListResponse struct {
@@ -382,6 +429,53 @@ func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) *SchedulingP
 	return p
 }
 func (p *SchedulingPolicyUnitServiceGetRequest) Send() (*SchedulingPolicyUnitServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.schedulingPolicyUnitService.Connection.URL(), p.schedulingPolicyUnitService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.schedulingPolicyUnitService.Connection.username, p.schedulingPolicyUnitService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.schedulingPolicyUnitService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var schedulingPolicyUnitServiceGetResponse SchedulingPolicyUnitServiceGetResponse
+	var unitVar SchedulingPolicyUnit
+	xml.Unmarshal(respBodyBytes, &unitVar)
+	schedulingPolicyUnitServiceGetResponse.unit = &unitVar
+	return &schedulingPolicyUnitServiceGetResponse, nil
 }
 
 type SchedulingPolicyUnitServiceGetResponse struct {
@@ -528,6 +622,50 @@ func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string
 }
 
 func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Send() (*VirtualFunctionAllowedNetworkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.virtualFunctionAllowedNetworkService.Connection.URL(), p.virtualFunctionAllowedNetworkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.virtualFunctionAllowedNetworkService.Connection.username, p.virtualFunctionAllowedNetworkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.virtualFunctionAllowedNetworkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var virtualFunctionAllowedNetworkServiceGetResponse VirtualFunctionAllowedNetworkServiceGetResponse
+	var networkVar Network
+	xml.Unmarshal(respBodyBytes, &networkVar)
+	virtualFunctionAllowedNetworkServiceGetResponse.network = &networkVar
+	return &virtualFunctionAllowedNetworkServiceGetResponse, nil
 }
 
 type VirtualFunctionAllowedNetworkServiceGetResponse struct {
@@ -784,6 +922,53 @@ func (p *TemplateNicsServiceListRequest) Max(max int64) *TemplateNicsServiceList
 	return p
 }
 func (p *TemplateNicsServiceListRequest) Send() (*TemplateNicsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateNicsService.Connection.URL(), p.templateNicsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateNicsService.Connection.username, p.templateNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateNicsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateNicsServiceListResponse TemplateNicsServiceListResponse
+	var nicsVar Nics
+	xml.Unmarshal(respBodyBytes, &nicsVar)
+	templateNicsServiceListResponse.nics = nicsVar.Nics
+	return &templateNicsServiceListResponse, nil
 }
 
 type TemplateNicsServiceListResponse struct {
@@ -885,6 +1070,50 @@ func (p *AffinityLabelServiceGetRequest) Query(key, value string) *AffinityLabel
 }
 
 func (p *AffinityLabelServiceGetRequest) Send() (*AffinityLabelServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelService.Connection.URL(), p.affinityLabelService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelService.Connection.username, p.affinityLabelService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelServiceGetResponse AffinityLabelServiceGetResponse
+	var labelVar AffinityLabel
+	xml.Unmarshal(respBodyBytes, &labelVar)
+	affinityLabelServiceGetResponse.label = &labelVar
+	return &affinityLabelServiceGetResponse, nil
 }
 
 type AffinityLabelServiceGetResponse struct {
@@ -1241,6 +1470,53 @@ func (p *BookmarksServiceListRequest) Max(max int64) *BookmarksServiceListReques
 	return p
 }
 func (p *BookmarksServiceListRequest) Send() (*BookmarksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.bookmarksService.Connection.URL(), p.bookmarksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.bookmarksService.Connection.username, p.bookmarksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.bookmarksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var bookmarksServiceListResponse BookmarksServiceListResponse
+	var bookmarksVar Bookmarks
+	xml.Unmarshal(respBodyBytes, &bookmarksVar)
+	bookmarksServiceListResponse.bookmarks = bookmarksVar.Bookmarks
+	return &bookmarksServiceListResponse, nil
 }
 
 type BookmarksServiceListResponse struct {
@@ -1478,6 +1754,53 @@ func (p *NetworkAttachmentsServiceListRequest) Max(max int64) *NetworkAttachment
 	return p
 }
 func (p *NetworkAttachmentsServiceListRequest) Send() (*NetworkAttachmentsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkAttachmentsService.Connection.URL(), p.networkAttachmentsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkAttachmentsService.Connection.username, p.networkAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkAttachmentsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkAttachmentsServiceListResponse NetworkAttachmentsServiceListResponse
+	var attachmentsVar NetworkAttachments
+	xml.Unmarshal(respBodyBytes, &attachmentsVar)
+	networkAttachmentsServiceListResponse.attachments = attachmentsVar.NetworkAttachments
+	return &networkAttachmentsServiceListResponse, nil
 }
 
 type NetworkAttachmentsServiceListResponse struct {
@@ -1578,6 +1901,50 @@ func (p *OperatingSystemServiceGetRequest) Query(key, value string) *OperatingSy
 }
 
 func (p *OperatingSystemServiceGetRequest) Send() (*OperatingSystemServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.operatingSystemService.Connection.URL(), p.operatingSystemService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.operatingSystemService.Connection.username, p.operatingSystemService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.operatingSystemService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var operatingSystemServiceGetResponse OperatingSystemServiceGetResponse
+	var operatingSystemVar OperatingSystemInfo
+	xml.Unmarshal(respBodyBytes, &operatingSystemVar)
+	operatingSystemServiceGetResponse.operatingSystem = &operatingSystemVar
+	return &operatingSystemServiceGetResponse, nil
 }
 
 type OperatingSystemServiceGetResponse struct {
@@ -1666,6 +2033,53 @@ func (p *TemplateDisksServiceListRequest) Max(max int64) *TemplateDisksServiceLi
 	return p
 }
 func (p *TemplateDisksServiceListRequest) Send() (*TemplateDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateDisksService.Connection.URL(), p.templateDisksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateDisksService.Connection.username, p.templateDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateDisksServiceListResponse TemplateDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	templateDisksServiceListResponse.disks = disksVar.Disks
+	return &templateDisksServiceListResponse, nil
 }
 
 type TemplateDisksServiceListResponse struct {
@@ -1931,6 +2345,50 @@ func (p *SystemPermissionsServiceListRequest) Query(key, value string) *SystemPe
 }
 
 func (p *SystemPermissionsServiceListRequest) Send() (*SystemPermissionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.systemPermissionsService.Connection.URL(), p.systemPermissionsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.systemPermissionsService.Connection.username, p.systemPermissionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.systemPermissionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var systemPermissionsServiceListResponse SystemPermissionsServiceListResponse
+	var permissionsVar Permissions
+	xml.Unmarshal(respBodyBytes, &permissionsVar)
+	systemPermissionsServiceListResponse.permissions = permissionsVar.Permissions
+	return &systemPermissionsServiceListResponse, nil
 }
 
 type SystemPermissionsServiceListResponse struct {
@@ -2046,6 +2504,50 @@ func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) *VmReported
 }
 
 func (p *VmReportedDeviceServiceGetRequest) Send() (*VmReportedDeviceServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmReportedDeviceService.Connection.URL(), p.vmReportedDeviceService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmReportedDeviceService.Connection.username, p.vmReportedDeviceService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmReportedDeviceService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmReportedDeviceServiceGetResponse VmReportedDeviceServiceGetResponse
+	var reportedDeviceVar ReportedDevice
+	xml.Unmarshal(respBodyBytes, &reportedDeviceVar)
+	vmReportedDeviceServiceGetResponse.reportedDevice = &reportedDeviceVar
+	return &vmReportedDeviceServiceGetResponse, nil
 }
 
 type VmReportedDeviceServiceGetResponse struct {
@@ -2134,6 +2636,53 @@ func (p *SnapshotNicsServiceListRequest) Max(max int64) *SnapshotNicsServiceList
 	return p
 }
 func (p *SnapshotNicsServiceListRequest) Send() (*SnapshotNicsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotNicsService.Connection.URL(), p.snapshotNicsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotNicsService.Connection.username, p.snapshotNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotNicsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotNicsServiceListResponse SnapshotNicsServiceListResponse
+	var nicsVar Nics
+	xml.Unmarshal(respBodyBytes, &nicsVar)
+	snapshotNicsServiceListResponse.nics = nicsVar.Nics
+	return &snapshotNicsServiceListResponse, nil
 }
 
 type SnapshotNicsServiceListResponse struct {
@@ -2351,6 +2900,53 @@ func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) *AssignedVnicPro
 	return p
 }
 func (p *AssignedVnicProfilesServiceListRequest) Send() (*AssignedVnicProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedVnicProfilesService.Connection.URL(), p.assignedVnicProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedVnicProfilesService.Connection.username, p.assignedVnicProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedVnicProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedVnicProfilesServiceListResponse AssignedVnicProfilesServiceListResponse
+	var profilesVar VnicProfiles
+	xml.Unmarshal(respBodyBytes, &profilesVar)
+	assignedVnicProfilesServiceListResponse.profiles = profilesVar.VnicProfiles
+	return &assignedVnicProfilesServiceListResponse, nil
 }
 
 type AssignedVnicProfilesServiceListResponse struct {
@@ -2568,6 +3164,53 @@ func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) *QuotaClusterLimit
 	return p
 }
 func (p *QuotaClusterLimitsServiceListRequest) Send() (*QuotaClusterLimitsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotaClusterLimitsService.Connection.URL(), p.quotaClusterLimitsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaClusterLimitsService.Connection.username, p.quotaClusterLimitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotaClusterLimitsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotaClusterLimitsServiceListResponse QuotaClusterLimitsServiceListResponse
+	var limitsVar QuotaClusterLimits
+	xml.Unmarshal(respBodyBytes, &limitsVar)
+	quotaClusterLimitsServiceListResponse.limits = limitsVar.QuotaClusterLimits
+	return &quotaClusterLimitsServiceListResponse, nil
 }
 
 type QuotaClusterLimitsServiceListResponse struct {
@@ -2826,6 +3469,59 @@ func (p *NetworksServiceListRequest) Search(search string) *NetworksServiceListR
 	return p
 }
 func (p *NetworksServiceListRequest) Send() (*NetworksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networksService.Connection.URL(), p.networksService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networksService.Connection.username, p.networksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networksServiceListResponse NetworksServiceListResponse
+	var networksVar Networks
+	xml.Unmarshal(respBodyBytes, &networksVar)
+	networksServiceListResponse.networks = networksVar.Networks
+	return &networksServiceListResponse, nil
 }
 
 type NetworksServiceListResponse struct {
@@ -3099,6 +3795,53 @@ func (p *AffinityGroupsServiceListRequest) Max(max int64) *AffinityGroupsService
 	return p
 }
 func (p *AffinityGroupsServiceListRequest) Send() (*AffinityGroupsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityGroupsService.Connection.URL(), p.affinityGroupsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityGroupsService.Connection.username, p.affinityGroupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityGroupsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityGroupsServiceListResponse AffinityGroupsServiceListResponse
+	var groupsVar AffinityGroups
+	xml.Unmarshal(respBodyBytes, &groupsVar)
+	affinityGroupsServiceListResponse.groups = groupsVar.AffinityGroups
+	return &affinityGroupsServiceListResponse, nil
 }
 
 type AffinityGroupsServiceListResponse struct {
@@ -3201,6 +3944,50 @@ func (p *DiskSnapshotServiceGetRequest) Query(key, value string) *DiskSnapshotSe
 }
 
 func (p *DiskSnapshotServiceGetRequest) Send() (*DiskSnapshotServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskSnapshotService.Connection.URL(), p.diskSnapshotService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskSnapshotService.Connection.username, p.diskSnapshotService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskSnapshotService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskSnapshotServiceGetResponse DiskSnapshotServiceGetResponse
+	var snapshotVar DiskSnapshot
+	xml.Unmarshal(respBodyBytes, &snapshotVar)
+	diskSnapshotServiceGetResponse.snapshot = &snapshotVar
+	return &diskSnapshotServiceGetResponse, nil
 }
 
 type DiskSnapshotServiceGetResponse struct {
@@ -3345,6 +4132,53 @@ func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) *SchedulingPolic
 	return p
 }
 func (p *SchedulingPolicyServiceGetRequest) Send() (*SchedulingPolicyServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.schedulingPolicyService.Connection.URL(), p.schedulingPolicyService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.schedulingPolicyService.Connection.username, p.schedulingPolicyService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.schedulingPolicyService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var schedulingPolicyServiceGetResponse SchedulingPolicyServiceGetResponse
+	var policyVar SchedulingPolicy
+	xml.Unmarshal(respBodyBytes, &policyVar)
+	schedulingPolicyServiceGetResponse.policy = &policyVar
+	return &schedulingPolicyServiceGetResponse, nil
 }
 
 type SchedulingPolicyServiceGetResponse struct {
@@ -3596,6 +4430,50 @@ func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) *NetworkAt
 }
 
 func (p *NetworkAttachmentServiceGetRequest) Send() (*NetworkAttachmentServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkAttachmentService.Connection.URL(), p.networkAttachmentService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkAttachmentService.Connection.username, p.networkAttachmentService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkAttachmentService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkAttachmentServiceGetResponse NetworkAttachmentServiceGetResponse
+	var attachmentVar NetworkAttachment
+	xml.Unmarshal(respBodyBytes, &attachmentVar)
+	networkAttachmentServiceGetResponse.attachment = &attachmentVar
+	return &networkAttachmentServiceGetResponse, nil
 }
 
 type NetworkAttachmentServiceGetResponse struct {
@@ -3921,6 +4799,53 @@ func (p *DiskProfilesServiceListRequest) Max(max int64) *DiskProfilesServiceList
 	return p
 }
 func (p *DiskProfilesServiceListRequest) Send() (*DiskProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskProfilesService.Connection.URL(), p.diskProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskProfilesService.Connection.username, p.diskProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskProfilesServiceListResponse DiskProfilesServiceListResponse
+	var profileVar DiskProfiles
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	diskProfilesServiceListResponse.profile = profileVar.DiskProfiles
+	return &diskProfilesServiceListResponse, nil
 }
 
 type DiskProfilesServiceListResponse struct {
@@ -4022,6 +4947,50 @@ func (p *IconServiceGetRequest) Query(key, value string) *IconServiceGetRequest 
 }
 
 func (p *IconServiceGetRequest) Send() (*IconServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.iconService.Connection.URL(), p.iconService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.iconService.Connection.username, p.iconService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.iconService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var iconServiceGetResponse IconServiceGetResponse
+	var iconVar Icon
+	xml.Unmarshal(respBodyBytes, &iconVar)
+	iconServiceGetResponse.icon = &iconVar
+	return &iconServiceGetResponse, nil
 }
 
 type IconServiceGetResponse struct {
@@ -4120,6 +5089,50 @@ func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) *Assig
 }
 
 func (p *AssignedAffinityLabelServiceGetRequest) Send() (*AssignedAffinityLabelServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedAffinityLabelService.Connection.URL(), p.assignedAffinityLabelService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedAffinityLabelService.Connection.username, p.assignedAffinityLabelService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedAffinityLabelService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedAffinityLabelServiceGetResponse AssignedAffinityLabelServiceGetResponse
+	var labelVar AffinityLabel
+	xml.Unmarshal(respBodyBytes, &labelVar)
+	assignedAffinityLabelServiceGetResponse.label = &labelVar
+	return &assignedAffinityLabelServiceGetResponse, nil
 }
 
 type AssignedAffinityLabelServiceGetResponse struct {
@@ -4366,6 +5379,53 @@ func (p *CpuProfilesServiceListRequest) Max(max int64) *CpuProfilesServiceListRe
 	return p
 }
 func (p *CpuProfilesServiceListRequest) Send() (*CpuProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.cpuProfilesService.Connection.URL(), p.cpuProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.cpuProfilesService.Connection.username, p.cpuProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.cpuProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var cpuProfilesServiceListResponse CpuProfilesServiceListResponse
+	var profileVar CpuProfiles
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	cpuProfilesServiceListResponse.profile = profileVar.CpuProfiles
+	return &cpuProfilesServiceListResponse, nil
 }
 
 type CpuProfilesServiceListResponse struct {
@@ -4606,6 +5666,53 @@ func (p *MacPoolsServiceListRequest) Max(max int64) *MacPoolsServiceListRequest 
 	return p
 }
 func (p *MacPoolsServiceListRequest) Send() (*MacPoolsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.macPoolsService.Connection.URL(), p.macPoolsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.macPoolsService.Connection.username, p.macPoolsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.macPoolsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var macPoolsServiceListResponse MacPoolsServiceListResponse
+	var poolsVar MacPools
+	xml.Unmarshal(respBodyBytes, &poolsVar)
+	macPoolsServiceListResponse.pools = poolsVar.MacPools
+	return &macPoolsServiceListResponse, nil
 }
 
 type MacPoolsServiceListResponse struct {
@@ -4835,6 +5942,53 @@ func (p *AffinityGroupVmsServiceListRequest) Max(max int64) *AffinityGroupVmsSer
 	return p
 }
 func (p *AffinityGroupVmsServiceListRequest) Send() (*AffinityGroupVmsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityGroupVmsService.Connection.URL(), p.affinityGroupVmsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityGroupVmsService.Connection.username, p.affinityGroupVmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityGroupVmsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityGroupVmsServiceListResponse AffinityGroupVmsServiceListResponse
+	var vmsVar Vms
+	xml.Unmarshal(respBodyBytes, &vmsVar)
+	affinityGroupVmsServiceListResponse.vms = vmsVar.Vms
+	return &affinityGroupVmsServiceListResponse, nil
 }
 
 type AffinityGroupVmsServiceListResponse struct {
@@ -4938,6 +6092,50 @@ func (p *QosServiceGetRequest) Query(key, value string) *QosServiceGetRequest {
 }
 
 func (p *QosServiceGetRequest) Send() (*QosServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.qosService.Connection.URL(), p.qosService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.qosService.Connection.username, p.qosService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.qosService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var qosServiceGetResponse QosServiceGetResponse
+	var qosVar Qos
+	xml.Unmarshal(respBodyBytes, &qosVar)
+	qosServiceGetResponse.qos = &qosVar
+	return &qosServiceGetResponse, nil
 }
 
 type QosServiceGetResponse struct {
@@ -5293,6 +6491,53 @@ func (p *TagsServiceListRequest) Max(max int64) *TagsServiceListRequest {
 	return p
 }
 func (p *TagsServiceListRequest) Send() (*TagsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.tagsService.Connection.URL(), p.tagsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.tagsService.Connection.username, p.tagsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.tagsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var tagsServiceListResponse TagsServiceListResponse
+	var tagsVar Tags
+	xml.Unmarshal(respBodyBytes, &tagsVar)
+	tagsServiceListResponse.tags = tagsVar.Tags
+	return &tagsServiceListResponse, nil
 }
 
 type TagsServiceListResponse struct {
@@ -5424,6 +6669,50 @@ func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) 
 }
 
 func (p *ExternalProviderCertificateServiceGetRequest) Send() (*ExternalProviderCertificateServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalProviderCertificateService.Connection.URL(), p.externalProviderCertificateService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalProviderCertificateService.Connection.username, p.externalProviderCertificateService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalProviderCertificateService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalProviderCertificateServiceGetResponse ExternalProviderCertificateServiceGetResponse
+	var certificateVar Certificate
+	xml.Unmarshal(respBodyBytes, &certificateVar)
+	externalProviderCertificateServiceGetResponse.certificate = &certificateVar
+	return &externalProviderCertificateServiceGetResponse, nil
 }
 
 type ExternalProviderCertificateServiceGetResponse struct {
@@ -5670,6 +6959,62 @@ func (p *EventsServiceListRequest) Search(search string) *EventsServiceListReque
 	return p
 }
 func (p *EventsServiceListRequest) Send() (*EventsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.eventsService.Connection.URL(), p.eventsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.from != nil {
+		values["from"] = []string{fmt.Sprintf("%v", *p.from)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.eventsService.Connection.username, p.eventsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.eventsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var eventsServiceListResponse EventsServiceListResponse
+	var eventsVar Events
+	xml.Unmarshal(respBodyBytes, &eventsVar)
+	eventsServiceListResponse.events = eventsVar.Events
+	return &eventsServiceListResponse, nil
 }
 
 type EventsServiceListResponse struct {
@@ -5934,6 +7279,50 @@ func (p *VmWatchdogServiceGetRequest) Query(key, value string) *VmWatchdogServic
 }
 
 func (p *VmWatchdogServiceGetRequest) Send() (*VmWatchdogServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmWatchdogService.Connection.URL(), p.vmWatchdogService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmWatchdogService.Connection.username, p.vmWatchdogService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmWatchdogService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmWatchdogServiceGetResponse VmWatchdogServiceGetResponse
+	var watchdogVar Watchdog
+	xml.Unmarshal(respBodyBytes, &watchdogVar)
+	vmWatchdogServiceGetResponse.watchdog = &watchdogVar
+	return &vmWatchdogServiceGetResponse, nil
 }
 
 type VmWatchdogServiceGetResponse struct {
@@ -6310,6 +7699,50 @@ func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) *Attac
 }
 
 func (p *AttachedStorageDomainServiceGetRequest) Send() (*AttachedStorageDomainServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainService.Connection.URL(), p.attachedStorageDomainService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainService.Connection.username, p.attachedStorageDomainService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.attachedStorageDomainService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var attachedStorageDomainServiceGetResponse AttachedStorageDomainServiceGetResponse
+	var storageDomainVar StorageDomain
+	xml.Unmarshal(respBodyBytes, &storageDomainVar)
+	attachedStorageDomainServiceGetResponse.storageDomain = &storageDomainVar
+	return &attachedStorageDomainServiceGetResponse, nil
 }
 
 type AttachedStorageDomainServiceGetResponse struct {
@@ -6578,6 +8011,53 @@ func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) *AttachedStora
 	return p
 }
 func (p *AttachedStorageDomainsServiceListRequest) Send() (*AttachedStorageDomainsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainsService.Connection.URL(), p.attachedStorageDomainsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainsService.Connection.username, p.attachedStorageDomainsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.attachedStorageDomainsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var attachedStorageDomainsServiceListResponse AttachedStorageDomainsServiceListResponse
+	var storageDomainsVar StorageDomains
+	xml.Unmarshal(respBodyBytes, &storageDomainsVar)
+	attachedStorageDomainsServiceListResponse.storageDomains = storageDomainsVar.StorageDomains
+	return &attachedStorageDomainsServiceListResponse, nil
 }
 
 type AttachedStorageDomainsServiceListResponse struct {
@@ -6678,6 +8158,50 @@ func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) *Instan
 }
 
 func (p *InstanceTypeWatchdogServiceGetRequest) Send() (*InstanceTypeWatchdogServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeWatchdogService.Connection.URL(), p.instanceTypeWatchdogService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeWatchdogService.Connection.username, p.instanceTypeWatchdogService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeWatchdogService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeWatchdogServiceGetResponse InstanceTypeWatchdogServiceGetResponse
+	var watchdogVar Watchdog
+	xml.Unmarshal(respBodyBytes, &watchdogVar)
+	instanceTypeWatchdogServiceGetResponse.watchdog = &watchdogVar
+	return &instanceTypeWatchdogServiceGetResponse, nil
 }
 
 type InstanceTypeWatchdogServiceGetResponse struct {
@@ -6889,6 +8413,50 @@ func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) *QuotaStor
 }
 
 func (p *QuotaStorageLimitServiceGetRequest) Send() (*QuotaStorageLimitServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotaStorageLimitService.Connection.URL(), p.quotaStorageLimitService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaStorageLimitService.Connection.username, p.quotaStorageLimitService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotaStorageLimitService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotaStorageLimitServiceGetResponse QuotaStorageLimitServiceGetResponse
+	var limitVar QuotaStorageLimit
+	xml.Unmarshal(respBodyBytes, &limitVar)
+	quotaStorageLimitServiceGetResponse.limit = &limitVar
+	return &quotaStorageLimitServiceGetResponse, nil
 }
 
 type QuotaStorageLimitServiceGetResponse struct {
@@ -7028,6 +8596,50 @@ func (p *RoleServiceGetRequest) Query(key, value string) *RoleServiceGetRequest 
 }
 
 func (p *RoleServiceGetRequest) Send() (*RoleServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.roleService.Connection.URL(), p.roleService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.roleService.Connection.username, p.roleService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.roleService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var roleServiceGetResponse RoleServiceGetResponse
+	var roleVar Role
+	xml.Unmarshal(respBodyBytes, &roleVar)
+	roleServiceGetResponse.role = &roleVar
+	return &roleServiceGetResponse, nil
 }
 
 type RoleServiceGetResponse struct {
@@ -7293,6 +8905,50 @@ func (p *AssignedNetworkServiceGetRequest) Query(key, value string) *AssignedNet
 }
 
 func (p *AssignedNetworkServiceGetRequest) Send() (*AssignedNetworkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedNetworkService.Connection.URL(), p.assignedNetworkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedNetworkService.Connection.username, p.assignedNetworkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedNetworkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedNetworkServiceGetResponse AssignedNetworkServiceGetResponse
+	var networkVar Network
+	xml.Unmarshal(respBodyBytes, &networkVar)
+	assignedNetworkServiceGetResponse.network = &networkVar
+	return &assignedNetworkServiceGetResponse, nil
 }
 
 type AssignedNetworkServiceGetResponse struct {
@@ -7502,6 +9158,50 @@ func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string
 }
 
 func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Send() (*StorageDomainVmDiskAttachmentServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainVmDiskAttachmentService.Connection.URL(), p.storageDomainVmDiskAttachmentService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainVmDiskAttachmentService.Connection.username, p.storageDomainVmDiskAttachmentService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainVmDiskAttachmentService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainVmDiskAttachmentServiceGetResponse StorageDomainVmDiskAttachmentServiceGetResponse
+	var attachmentVar DiskAttachment
+	xml.Unmarshal(respBodyBytes, &attachmentVar)
+	storageDomainVmDiskAttachmentServiceGetResponse.attachment = &attachmentVar
+	return &storageDomainVmDiskAttachmentServiceGetResponse, nil
 }
 
 type StorageDomainVmDiskAttachmentServiceGetResponse struct {
@@ -7592,6 +9292,53 @@ func (p *HostNicsServiceListRequest) Max(max int64) *HostNicsServiceListRequest 
 	return p
 }
 func (p *HostNicsServiceListRequest) Send() (*HostNicsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostNicsService.Connection.URL(), p.hostNicsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostNicsService.Connection.username, p.hostNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostNicsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostNicsServiceListResponse HostNicsServiceListResponse
+	var nicsVar HostNics
+	xml.Unmarshal(respBodyBytes, &nicsVar)
+	hostNicsServiceListResponse.nics = nicsVar.HostNics
+	return &hostNicsServiceListResponse, nil
 }
 
 type HostNicsServiceListResponse struct {
@@ -7693,6 +9440,50 @@ func (p *VmNumaNodeServiceGetRequest) Query(key, value string) *VmNumaNodeServic
 }
 
 func (p *VmNumaNodeServiceGetRequest) Send() (*VmNumaNodeServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmNumaNodeService.Connection.URL(), p.vmNumaNodeService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNumaNodeService.Connection.username, p.vmNumaNodeService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmNumaNodeService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmNumaNodeServiceGetResponse VmNumaNodeServiceGetResponse
+	var nodeVar VirtualNumaNode
+	xml.Unmarshal(respBodyBytes, &nodeVar)
+	vmNumaNodeServiceGetResponse.node = &nodeVar
+	return &vmNumaNodeServiceGetResponse, nil
 }
 
 type VmNumaNodeServiceGetResponse struct {
@@ -7930,6 +9721,53 @@ func (p *TemplateCdromsServiceListRequest) Max(max int64) *TemplateCdromsService
 	return p
 }
 func (p *TemplateCdromsServiceListRequest) Send() (*TemplateCdromsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateCdromsService.Connection.URL(), p.templateCdromsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateCdromsService.Connection.username, p.templateCdromsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateCdromsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateCdromsServiceListResponse TemplateCdromsServiceListResponse
+	var cdromsVar Cdroms
+	xml.Unmarshal(respBodyBytes, &cdromsVar)
+	templateCdromsServiceListResponse.cdroms = cdromsVar.Cdroms
+	return &templateCdromsServiceListResponse, nil
 }
 
 type TemplateCdromsServiceListResponse struct {
@@ -8031,6 +9869,50 @@ func (p *SnapshotServiceGetRequest) Query(key, value string) *SnapshotServiceGet
 }
 
 func (p *SnapshotServiceGetRequest) Send() (*SnapshotServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotService.Connection.URL(), p.snapshotService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotService.Connection.username, p.snapshotService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotServiceGetResponse SnapshotServiceGetResponse
+	var snapshotVar Snapshot
+	xml.Unmarshal(respBodyBytes, &snapshotVar)
+	snapshotServiceGetResponse.snapshot = &snapshotVar
+	return &snapshotServiceGetResponse, nil
 }
 
 type SnapshotServiceGetResponse struct {
@@ -8423,6 +10305,56 @@ func (p *SchedulingPoliciesServiceListRequest) Max(max int64) *SchedulingPolicie
 	return p
 }
 func (p *SchedulingPoliciesServiceListRequest) Send() (*SchedulingPoliciesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.schedulingPoliciesService.Connection.URL(), p.schedulingPoliciesService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.schedulingPoliciesService.Connection.username, p.schedulingPoliciesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.schedulingPoliciesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var schedulingPoliciesServiceListResponse SchedulingPoliciesServiceListResponse
+	var policiesVar SchedulingPolicys
+	xml.Unmarshal(respBodyBytes, &policiesVar)
+	schedulingPoliciesServiceListResponse.policies = policiesVar.SchedulingPolicys
+	return &schedulingPoliciesServiceListResponse, nil
 }
 
 type SchedulingPoliciesServiceListResponse struct {
@@ -8648,6 +10580,56 @@ func (p *WeightsServiceListRequest) Max(max int64) *WeightsServiceListRequest {
 	return p
 }
 func (p *WeightsServiceListRequest) Send() (*WeightsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.weightsService.Connection.URL(), p.weightsService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.weightsService.Connection.username, p.weightsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.weightsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var weightsServiceListResponse WeightsServiceListResponse
+	var weightsVar Weights
+	xml.Unmarshal(respBodyBytes, &weightsVar)
+	weightsServiceListResponse.weights = weightsVar.Weights
+	return &weightsServiceListResponse, nil
 }
 
 type WeightsServiceListResponse struct {
@@ -8892,6 +10874,53 @@ func (p *VmHostDevicesServiceListRequest) Max(max int64) *VmHostDevicesServiceLi
 	return p
 }
 func (p *VmHostDevicesServiceListRequest) Send() (*VmHostDevicesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmHostDevicesService.Connection.URL(), p.vmHostDevicesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmHostDevicesService.Connection.username, p.vmHostDevicesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmHostDevicesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmHostDevicesServiceListResponse VmHostDevicesServiceListResponse
+	var deviceVar HostDevices
+	xml.Unmarshal(respBodyBytes, &deviceVar)
+	vmHostDevicesServiceListResponse.device = deviceVar.HostDevices
+	return &vmHostDevicesServiceListResponse, nil
 }
 
 type VmHostDevicesServiceListResponse struct {
@@ -8994,6 +11023,50 @@ func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) *Assigned
 }
 
 func (p *AssignedCpuProfileServiceGetRequest) Send() (*AssignedCpuProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedCpuProfileService.Connection.URL(), p.assignedCpuProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedCpuProfileService.Connection.username, p.assignedCpuProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedCpuProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedCpuProfileServiceGetResponse AssignedCpuProfileServiceGetResponse
+	var profileVar CpuProfile
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	assignedCpuProfileServiceGetResponse.profile = &profileVar
+	return &assignedCpuProfileServiceGetResponse, nil
 }
 
 type AssignedCpuProfileServiceGetResponse struct {
@@ -9133,6 +11206,50 @@ func (p *SnapshotNicServiceGetRequest) Query(key, value string) *SnapshotNicServ
 }
 
 func (p *SnapshotNicServiceGetRequest) Send() (*SnapshotNicServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotNicService.Connection.URL(), p.snapshotNicService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotNicService.Connection.username, p.snapshotNicService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotNicService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotNicServiceGetResponse SnapshotNicServiceGetResponse
+	var nicVar Nic
+	xml.Unmarshal(respBodyBytes, &nicVar)
+	snapshotNicServiceGetResponse.nic = &nicVar
+	return &snapshotNicServiceGetResponse, nil
 }
 
 type SnapshotNicServiceGetResponse struct {
@@ -9217,6 +11334,50 @@ func (p *HostDeviceServiceGetRequest) Query(key, value string) *HostDeviceServic
 }
 
 func (p *HostDeviceServiceGetRequest) Send() (*HostDeviceServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostDeviceService.Connection.URL(), p.hostDeviceService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostDeviceService.Connection.username, p.hostDeviceService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostDeviceService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostDeviceServiceGetResponse HostDeviceServiceGetResponse
+	var deviceVar HostDevice
+	xml.Unmarshal(respBodyBytes, &deviceVar)
+	hostDeviceServiceGetResponse.device = &deviceVar
+	return &hostDeviceServiceGetResponse, nil
 }
 
 type HostDeviceServiceGetResponse struct {
@@ -9434,6 +11595,50 @@ func (p *ImageTransfersServiceListRequest) Query(key, value string) *ImageTransf
 }
 
 func (p *ImageTransfersServiceListRequest) Send() (*ImageTransfersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.imageTransfersService.Connection.URL(), p.imageTransfersService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.imageTransfersService.Connection.username, p.imageTransfersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.imageTransfersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var imageTransfersServiceListResponse ImageTransfersServiceListResponse
+	var imageTransferVar ImageTransfers
+	xml.Unmarshal(respBodyBytes, &imageTransferVar)
+	imageTransfersServiceListResponse.imageTransfer = imageTransferVar.ImageTransfers
+	return &imageTransfersServiceListResponse, nil
 }
 
 type ImageTransfersServiceListResponse struct {
@@ -9676,6 +11881,50 @@ func (p *EventServiceGetRequest) Query(key, value string) *EventServiceGetReques
 }
 
 func (p *EventServiceGetRequest) Send() (*EventServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.eventService.Connection.URL(), p.eventService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.eventService.Connection.username, p.eventService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.eventService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var eventServiceGetResponse EventServiceGetResponse
+	var eventVar Event
+	xml.Unmarshal(respBodyBytes, &eventVar)
+	eventServiceGetResponse.event = &eventVar
+	return &eventServiceGetResponse, nil
 }
 
 type EventServiceGetResponse struct {
@@ -9897,6 +12146,50 @@ func (p *NetworkFiltersServiceListRequest) Query(key, value string) *NetworkFilt
 }
 
 func (p *NetworkFiltersServiceListRequest) Send() (*NetworkFiltersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkFiltersService.Connection.URL(), p.networkFiltersService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkFiltersService.Connection.username, p.networkFiltersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkFiltersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkFiltersServiceListResponse NetworkFiltersServiceListResponse
+	var filtersVar NetworkFilters
+	xml.Unmarshal(respBodyBytes, &filtersVar)
+	networkFiltersServiceListResponse.filters = filtersVar.NetworkFilters
+	return &networkFiltersServiceListResponse, nil
 }
 
 type NetworkFiltersServiceListResponse struct {
@@ -9996,6 +12289,50 @@ func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) *StatisticS
 	return p
 }
 func (p *StatisticServiceGetRequest) Send() (*StatisticServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.statisticService.Connection.URL(), p.statisticService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.statisticService.Connection.username, p.statisticService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.statisticService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var statisticServiceGetResponse StatisticServiceGetResponse
+	var statisticVar Statistic
+	xml.Unmarshal(respBodyBytes, &statisticVar)
+	statisticServiceGetResponse.statistic = &statisticVar
+	return &statisticServiceGetResponse, nil
 }
 
 type StatisticServiceGetResponse struct {
@@ -10251,6 +12588,53 @@ func (p *AssignedRolesServiceListRequest) Max(max int64) *AssignedRolesServiceLi
 	return p
 }
 func (p *AssignedRolesServiceListRequest) Send() (*AssignedRolesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedRolesService.Connection.URL(), p.assignedRolesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedRolesService.Connection.username, p.assignedRolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedRolesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedRolesServiceListResponse AssignedRolesServiceListResponse
+	var rolesVar Roles
+	xml.Unmarshal(respBodyBytes, &rolesVar)
+	assignedRolesServiceListResponse.roles = rolesVar.Roles
+	return &assignedRolesServiceListResponse, nil
 }
 
 type AssignedRolesServiceListResponse struct {
@@ -10353,6 +12737,50 @@ func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) *Netw
 }
 
 func (p *NetworkFilterParameterServiceGetRequest) Send() (*NetworkFilterParameterServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkFilterParameterService.Connection.URL(), p.networkFilterParameterService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkFilterParameterService.Connection.username, p.networkFilterParameterService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkFilterParameterService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkFilterParameterServiceGetResponse NetworkFilterParameterServiceGetResponse
+	var parameterVar NetworkFilterParameter
+	xml.Unmarshal(respBodyBytes, &parameterVar)
+	networkFilterParameterServiceGetResponse.parameter = &parameterVar
+	return &networkFilterParameterServiceGetResponse, nil
 }
 
 type NetworkFilterParameterServiceGetResponse struct {
@@ -10570,6 +12998,50 @@ func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) *Open
 }
 
 func (p *OpenstackImageProviderServiceGetRequest) Send() (*OpenstackImageProviderServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackImageProviderService.Connection.URL(), p.openstackImageProviderService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackImageProviderService.Connection.username, p.openstackImageProviderService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackImageProviderService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackImageProviderServiceGetResponse OpenstackImageProviderServiceGetResponse
+	var providerVar OpenStackImageProvider
+	xml.Unmarshal(respBodyBytes, &providerVar)
+	openstackImageProviderServiceGetResponse.provider = &providerVar
+	return &openstackImageProviderServiceGetResponse, nil
 }
 
 type OpenstackImageProviderServiceGetResponse struct {
@@ -10907,6 +13379,50 @@ func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) *OpenstackN
 }
 
 func (p *OpenstackNetworkServiceGetRequest) Send() (*OpenstackNetworkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackNetworkService.Connection.URL(), p.openstackNetworkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackNetworkService.Connection.username, p.openstackNetworkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackNetworkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackNetworkServiceGetResponse OpenstackNetworkServiceGetResponse
+	var networkVar OpenStackNetwork
+	xml.Unmarshal(respBodyBytes, &networkVar)
+	openstackNetworkServiceGetResponse.network = &networkVar
+	return &openstackNetworkServiceGetResponse, nil
 }
 
 type OpenstackNetworkServiceGetResponse struct {
@@ -11187,6 +13703,53 @@ func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) *OpenstackIma
 	return p
 }
 func (p *OpenstackImageProvidersServiceListRequest) Send() (*OpenstackImageProvidersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackImageProvidersService.Connection.URL(), p.openstackImageProvidersService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackImageProvidersService.Connection.username, p.openstackImageProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackImageProvidersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackImageProvidersServiceListResponse OpenstackImageProvidersServiceListResponse
+	var providersVar OpenStackImageProviders
+	xml.Unmarshal(respBodyBytes, &providersVar)
+	openstackImageProvidersServiceListResponse.providers = providersVar.OpenStackImageProviders
+	return &openstackImageProvidersServiceListResponse, nil
 }
 
 type OpenstackImageProvidersServiceListResponse struct {
@@ -11287,6 +13850,50 @@ func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value str
 }
 
 func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Send() (*OpenstackVolumeAuthenticationKeyServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeAuthenticationKeyService.Connection.URL(), p.openstackVolumeAuthenticationKeyService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeAuthenticationKeyService.Connection.username, p.openstackVolumeAuthenticationKeyService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeAuthenticationKeyService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeAuthenticationKeyServiceGetResponse OpenstackVolumeAuthenticationKeyServiceGetResponse
+	var keyVar OpenstackVolumeAuthenticationKey
+	xml.Unmarshal(respBodyBytes, &keyVar)
+	openstackVolumeAuthenticationKeyServiceGetResponse.key = &keyVar
+	return &openstackVolumeAuthenticationKeyServiceGetResponse, nil
 }
 
 type OpenstackVolumeAuthenticationKeyServiceGetResponse struct {
@@ -11493,6 +14100,53 @@ func (p *OpenstackImagesServiceListRequest) Max(max int64) *OpenstackImagesServi
 	return p
 }
 func (p *OpenstackImagesServiceListRequest) Send() (*OpenstackImagesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackImagesService.Connection.URL(), p.openstackImagesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackImagesService.Connection.username, p.openstackImagesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackImagesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackImagesServiceListResponse OpenstackImagesServiceListResponse
+	var imagesVar OpenStackImages
+	xml.Unmarshal(respBodyBytes, &imagesVar)
+	openstackImagesServiceListResponse.images = imagesVar.OpenStackImages
+	return &openstackImagesServiceListResponse, nil
 }
 
 type OpenstackImagesServiceListResponse struct {
@@ -11715,6 +14369,53 @@ func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) *OpenstackN
 	return p
 }
 func (p *OpenstackNetworkProvidersServiceListRequest) Send() (*OpenstackNetworkProvidersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackNetworkProvidersService.Connection.URL(), p.openstackNetworkProvidersService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackNetworkProvidersService.Connection.username, p.openstackNetworkProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackNetworkProvidersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackNetworkProvidersServiceListResponse OpenstackNetworkProvidersServiceListResponse
+	var providersVar OpenStackNetworkProviders
+	xml.Unmarshal(respBodyBytes, &providersVar)
+	openstackNetworkProvidersServiceListResponse.providers = providersVar.OpenStackNetworkProviders
+	return &openstackNetworkProvidersServiceListResponse, nil
 }
 
 type OpenstackNetworkProvidersServiceListResponse struct {
@@ -11954,6 +14655,53 @@ func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) *OpenstackVo
 	return p
 }
 func (p *OpenstackVolumeProvidersServiceListRequest) Send() (*OpenstackVolumeProvidersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeProvidersService.Connection.URL(), p.openstackVolumeProvidersService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeProvidersService.Connection.username, p.openstackVolumeProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeProvidersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeProvidersServiceListResponse OpenstackVolumeProvidersServiceListResponse
+	var providersVar OpenStackVolumeProviders
+	xml.Unmarshal(respBodyBytes, &providersVar)
+	openstackVolumeProvidersServiceListResponse.providers = providersVar.OpenStackVolumeProviders
+	return &openstackVolumeProvidersServiceListResponse, nil
 }
 
 type OpenstackVolumeProvidersServiceListResponse struct {
@@ -12060,6 +14808,53 @@ func (p *OpenstackNetworksServiceListRequest) Max(max int64) *OpenstackNetworksS
 	return p
 }
 func (p *OpenstackNetworksServiceListRequest) Send() (*OpenstackNetworksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackNetworksService.Connection.URL(), p.openstackNetworksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackNetworksService.Connection.username, p.openstackNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackNetworksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackNetworksServiceListResponse OpenstackNetworksServiceListResponse
+	var networksVar OpenStackNetworks
+	xml.Unmarshal(respBodyBytes, &networksVar)
+	openstackNetworksServiceListResponse.networks = networksVar.OpenStackNetworks
+	return &openstackNetworksServiceListResponse, nil
 }
 
 type OpenstackNetworksServiceListResponse struct {
@@ -12160,6 +14955,50 @@ func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) *Ope
 }
 
 func (p *OpenstackVolumeProviderServiceGetRequest) Send() (*OpenstackVolumeProviderServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeProviderService.Connection.URL(), p.openstackVolumeProviderService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeProviderService.Connection.username, p.openstackVolumeProviderService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeProviderService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeProviderServiceGetResponse OpenstackVolumeProviderServiceGetResponse
+	var providerVar OpenStackVolumeProvider
+	xml.Unmarshal(respBodyBytes, &providerVar)
+	openstackVolumeProviderServiceGetResponse.provider = &providerVar
+	return &openstackVolumeProviderServiceGetResponse, nil
 }
 
 type OpenstackVolumeProviderServiceGetResponse struct {
@@ -12514,6 +15353,53 @@ func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) *OpenstackVolume
 	return p
 }
 func (p *OpenstackVolumeTypesServiceListRequest) Send() (*OpenstackVolumeTypesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeTypesService.Connection.URL(), p.openstackVolumeTypesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeTypesService.Connection.username, p.openstackVolumeTypesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeTypesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeTypesServiceListResponse OpenstackVolumeTypesServiceListResponse
+	var typesVar OpenStackVolumeTypes
+	xml.Unmarshal(respBodyBytes, &typesVar)
+	openstackVolumeTypesServiceListResponse.types = typesVar.OpenStackVolumeTypes
+	return &openstackVolumeTypesServiceListResponse, nil
 }
 
 type OpenstackVolumeTypesServiceListResponse struct {
@@ -12731,6 +15617,53 @@ func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) *Op
 	return p
 }
 func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Send() (*OpenstackVolumeAuthenticationKeysServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeAuthenticationKeysService.Connection.URL(), p.openstackVolumeAuthenticationKeysService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeAuthenticationKeysService.Connection.username, p.openstackVolumeAuthenticationKeysService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeAuthenticationKeysService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeAuthenticationKeysServiceListResponse OpenstackVolumeAuthenticationKeysServiceListResponse
+	var keysVar OpenstackVolumeAuthenticationKeys
+	xml.Unmarshal(respBodyBytes, &keysVar)
+	openstackVolumeAuthenticationKeysServiceListResponse.keys = keysVar.OpenstackVolumeAuthenticationKeys
+	return &openstackVolumeAuthenticationKeysServiceListResponse, nil
 }
 
 type OpenstackVolumeAuthenticationKeysServiceListResponse struct {
@@ -12831,6 +15764,50 @@ func (p *OpenstackImageServiceGetRequest) Query(key, value string) *OpenstackIma
 }
 
 func (p *OpenstackImageServiceGetRequest) Send() (*OpenstackImageServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackImageService.Connection.URL(), p.openstackImageService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackImageService.Connection.username, p.openstackImageService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackImageService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackImageServiceGetResponse OpenstackImageServiceGetResponse
+	var imageVar OpenStackImage
+	xml.Unmarshal(respBodyBytes, &imageVar)
+	openstackImageServiceGetResponse.image = &imageVar
+	return &openstackImageServiceGetResponse, nil
 }
 
 type OpenstackImageServiceGetResponse struct {
@@ -13026,6 +16003,50 @@ func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) *Opensta
 }
 
 func (p *OpenstackVolumeTypeServiceGetRequest) Send() (*OpenstackVolumeTypeServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeTypeService.Connection.URL(), p.openstackVolumeTypeService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeTypeService.Connection.username, p.openstackVolumeTypeService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackVolumeTypeService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackVolumeTypeServiceGetResponse OpenstackVolumeTypeServiceGetResponse
+	var type_Var OpenStackVolumeType
+	xml.Unmarshal(respBodyBytes, &type_Var)
+	openstackVolumeTypeServiceGetResponse.type_ = &type_Var
+	return &openstackVolumeTypeServiceGetResponse, nil
 }
 
 type OpenstackVolumeTypeServiceGetResponse struct {
@@ -13109,6 +16130,50 @@ func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) *OpenstackSu
 }
 
 func (p *OpenstackSubnetServiceGetRequest) Send() (*OpenstackSubnetServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackSubnetService.Connection.URL(), p.openstackSubnetService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackSubnetService.Connection.username, p.openstackSubnetService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackSubnetService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackSubnetServiceGetResponse OpenstackSubnetServiceGetResponse
+	var subnetVar OpenStackSubnet
+	xml.Unmarshal(respBodyBytes, &subnetVar)
+	openstackSubnetServiceGetResponse.subnet = &subnetVar
+	return &openstackSubnetServiceGetResponse, nil
 }
 
 type OpenstackSubnetServiceGetResponse struct {
@@ -13365,6 +16430,53 @@ func (p *OpenstackSubnetsServiceListRequest) Max(max int64) *OpenstackSubnetsSer
 	return p
 }
 func (p *OpenstackSubnetsServiceListRequest) Send() (*OpenstackSubnetsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackSubnetsService.Connection.URL(), p.openstackSubnetsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackSubnetsService.Connection.username, p.openstackSubnetsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackSubnetsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackSubnetsServiceListResponse OpenstackSubnetsServiceListResponse
+	var subnetsVar OpenStackSubnets
+	xml.Unmarshal(respBodyBytes, &subnetsVar)
+	openstackSubnetsServiceListResponse.subnets = subnetsVar.OpenStackSubnets
+	return &openstackSubnetsServiceListResponse, nil
 }
 
 type OpenstackSubnetsServiceListResponse struct {
@@ -13466,6 +16578,50 @@ func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) *Op
 }
 
 func (p *OpenstackNetworkProviderServiceGetRequest) Send() (*OpenstackNetworkProviderServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.openstackNetworkProviderService.Connection.URL(), p.openstackNetworkProviderService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackNetworkProviderService.Connection.username, p.openstackNetworkProviderService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.openstackNetworkProviderService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var openstackNetworkProviderServiceGetResponse OpenstackNetworkProviderServiceGetResponse
+	var providerVar OpenStackNetworkProvider
+	xml.Unmarshal(respBodyBytes, &providerVar)
+	openstackNetworkProviderServiceGetResponse.provider = &providerVar
+	return &openstackNetworkProviderServiceGetResponse, nil
 }
 
 type OpenstackNetworkProviderServiceGetResponse struct {
@@ -13924,6 +17080,53 @@ func (p *TemplateServiceGetRequest) Filter(filter bool) *TemplateServiceGetReque
 	return p
 }
 func (p *TemplateServiceGetRequest) Send() (*TemplateServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateService.Connection.URL(), p.templateService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateService.Connection.username, p.templateService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateServiceGetResponse TemplateServiceGetResponse
+	var templateVar Template
+	xml.Unmarshal(respBodyBytes, &templateVar)
+	templateServiceGetResponse.template = &templateVar
+	return &templateServiceGetResponse, nil
 }
 
 type TemplateServiceGetResponse struct {
@@ -14455,6 +17658,53 @@ func (p *VmWatchdogsServiceListRequest) Max(max int64) *VmWatchdogsServiceListRe
 	return p
 }
 func (p *VmWatchdogsServiceListRequest) Send() (*VmWatchdogsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmWatchdogsService.Connection.URL(), p.vmWatchdogsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmWatchdogsService.Connection.username, p.vmWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmWatchdogsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmWatchdogsServiceListResponse VmWatchdogsServiceListResponse
+	var watchdogsVar Watchdogs
+	xml.Unmarshal(respBodyBytes, &watchdogsVar)
+	vmWatchdogsServiceListResponse.watchdogs = watchdogsVar.Watchdogs
+	return &vmWatchdogsServiceListResponse, nil
 }
 
 type VmWatchdogsServiceListResponse struct {
@@ -14560,6 +17810,50 @@ func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) *AffinityLab
 }
 
 func (p *AffinityLabelVmServiceGetRequest) Send() (*AffinityLabelVmServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelVmService.Connection.URL(), p.affinityLabelVmService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelVmService.Connection.username, p.affinityLabelVmService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelVmService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelVmServiceGetResponse AffinityLabelVmServiceGetResponse
+	var vmVar Vm
+	xml.Unmarshal(respBodyBytes, &vmVar)
+	affinityLabelVmServiceGetResponse.vm = &vmVar
+	return &affinityLabelVmServiceGetResponse, nil
 }
 
 type AffinityLabelVmServiceGetResponse struct {
@@ -15118,6 +18412,59 @@ func (p *VmServiceGetRequest) NextRun(nextRun bool) *VmServiceGetRequest {
 	return p
 }
 func (p *VmServiceGetRequest) Send() (*VmServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmService.Connection.URL(), p.vmService.Path)
+	values := make(url.Values)
+	if p.allContent != nil {
+		values["allContent"] = []string{fmt.Sprintf("%v", *p.allContent)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.nextRun != nil {
+		values["nextRun"] = []string{fmt.Sprintf("%v", *p.nextRun)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmService.Connection.username, p.vmService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmServiceGetResponse VmServiceGetResponse
+	var vmVar Vm
+	xml.Unmarshal(respBodyBytes, &vmVar)
+	vmServiceGetResponse.vm = &vmVar
+	return &vmServiceGetResponse, nil
 }
 
 type VmServiceGetResponse struct {
@@ -16711,6 +20058,53 @@ func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) *Instanc
 	return p
 }
 func (p *InstanceTypeGraphicsConsolesServiceListRequest) Send() (*InstanceTypeGraphicsConsolesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeGraphicsConsolesService.Connection.URL(), p.instanceTypeGraphicsConsolesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeGraphicsConsolesService.Connection.username, p.instanceTypeGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeGraphicsConsolesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeGraphicsConsolesServiceListResponse InstanceTypeGraphicsConsolesServiceListResponse
+	var consolesVar GraphicsConsoles
+	xml.Unmarshal(respBodyBytes, &consolesVar)
+	instanceTypeGraphicsConsolesServiceListResponse.consoles = consolesVar.GraphicsConsoles
+	return &instanceTypeGraphicsConsolesServiceListResponse, nil
 }
 
 type InstanceTypeGraphicsConsolesServiceListResponse struct {
@@ -16813,6 +20207,50 @@ func (p *StorageDomainVmServiceGetRequest) Query(key, value string) *StorageDoma
 }
 
 func (p *StorageDomainVmServiceGetRequest) Send() (*StorageDomainVmServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainVmService.Connection.URL(), p.storageDomainVmService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainVmService.Connection.username, p.storageDomainVmService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainVmService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainVmServiceGetResponse StorageDomainVmServiceGetResponse
+	var vmVar Vm
+	xml.Unmarshal(respBodyBytes, &vmVar)
+	storageDomainVmServiceGetResponse.vm = &vmVar
+	return &storageDomainVmServiceGetResponse, nil
 }
 
 type StorageDomainVmServiceGetResponse struct {
@@ -17249,6 +20687,53 @@ func (p *ClusterServiceGetRequest) Filter(filter bool) *ClusterServiceGetRequest
 	return p
 }
 func (p *ClusterServiceGetRequest) Send() (*ClusterServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.clusterService.Connection.URL(), p.clusterService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.clusterService.Connection.username, p.clusterService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.clusterService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var clusterServiceGetResponse ClusterServiceGetResponse
+	var clusterVar Cluster
+	xml.Unmarshal(respBodyBytes, &clusterVar)
+	clusterServiceGetResponse.cluster = &clusterVar
+	return &clusterServiceGetResponse, nil
 }
 
 type ClusterServiceGetResponse struct {
@@ -17712,6 +21197,53 @@ func (p *SnapshotDisksServiceListRequest) Max(max int64) *SnapshotDisksServiceLi
 	return p
 }
 func (p *SnapshotDisksServiceListRequest) Send() (*SnapshotDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotDisksService.Connection.URL(), p.snapshotDisksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotDisksService.Connection.username, p.snapshotDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotDisksServiceListResponse SnapshotDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	snapshotDisksServiceListResponse.disks = disksVar.Disks
+	return &snapshotDisksServiceListResponse, nil
 }
 
 type SnapshotDisksServiceListResponse struct {
@@ -17930,6 +21462,53 @@ func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) *TemplateGra
 	return p
 }
 func (p *TemplateGraphicsConsolesServiceListRequest) Send() (*TemplateGraphicsConsolesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateGraphicsConsolesService.Connection.URL(), p.templateGraphicsConsolesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateGraphicsConsolesService.Connection.username, p.templateGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateGraphicsConsolesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateGraphicsConsolesServiceListResponse TemplateGraphicsConsolesServiceListResponse
+	var consolesVar GraphicsConsoles
+	xml.Unmarshal(respBodyBytes, &consolesVar)
+	templateGraphicsConsolesServiceListResponse.consoles = consolesVar.GraphicsConsoles
+	return &templateGraphicsConsolesServiceListResponse, nil
 }
 
 type TemplateGraphicsConsolesServiceListResponse struct {
@@ -18104,6 +21683,53 @@ func (p *VmPoolServiceGetRequest) Filter(filter bool) *VmPoolServiceGetRequest {
 	return p
 }
 func (p *VmPoolServiceGetRequest) Send() (*VmPoolServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmPoolService.Connection.URL(), p.vmPoolService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmPoolService.Connection.username, p.vmPoolService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmPoolService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmPoolServiceGetResponse VmPoolServiceGetResponse
+	var poolVar VmPool
+	xml.Unmarshal(respBodyBytes, &poolVar)
+	vmPoolServiceGetResponse.pool = &poolVar
+	return &vmPoolServiceGetResponse, nil
 }
 
 type VmPoolServiceGetResponse struct {
@@ -18515,6 +22141,53 @@ func (p *QuotasServiceListRequest) Max(max int64) *QuotasServiceListRequest {
 	return p
 }
 func (p *QuotasServiceListRequest) Send() (*QuotasServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotasService.Connection.URL(), p.quotasService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotasService.Connection.username, p.quotasService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotasService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotasServiceListResponse QuotasServiceListResponse
+	var quotasVar Quotas
+	xml.Unmarshal(respBodyBytes, &quotasVar)
+	quotasServiceListResponse.quotas = quotasVar.Quotas
+	return &quotasServiceListResponse, nil
 }
 
 type QuotasServiceListResponse struct {
@@ -18618,6 +22291,50 @@ func (p *ClusterLevelServiceGetRequest) Query(key, value string) *ClusterLevelSe
 }
 
 func (p *ClusterLevelServiceGetRequest) Send() (*ClusterLevelServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.clusterLevelService.Connection.URL(), p.clusterLevelService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.clusterLevelService.Connection.username, p.clusterLevelService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.clusterLevelService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var clusterLevelServiceGetResponse ClusterLevelServiceGetResponse
+	var levelVar ClusterLevel
+	xml.Unmarshal(respBodyBytes, &levelVar)
+	clusterLevelServiceGetResponse.level = &levelVar
+	return &clusterLevelServiceGetResponse, nil
 }
 
 type ClusterLevelServiceGetResponse struct {
@@ -18734,6 +22451,53 @@ func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) *Storage
 	return p
 }
 func (p *StorageDomainContentDiskServiceGetRequest) Send() (*StorageDomainContentDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainContentDiskService.Connection.URL(), p.storageDomainContentDiskService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainContentDiskService.Connection.username, p.storageDomainContentDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainContentDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainContentDiskServiceGetResponse StorageDomainContentDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	storageDomainContentDiskServiceGetResponse.disk = &diskVar
+	return &storageDomainContentDiskServiceGetResponse, nil
 }
 
 type StorageDomainContentDiskServiceGetResponse struct {
@@ -18835,6 +22599,56 @@ func (p *VmApplicationsServiceListRequest) Max(max int64) *VmApplicationsService
 	return p
 }
 func (p *VmApplicationsServiceListRequest) Send() (*VmApplicationsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmApplicationsService.Connection.URL(), p.vmApplicationsService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmApplicationsService.Connection.username, p.vmApplicationsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmApplicationsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmApplicationsServiceListResponse VmApplicationsServiceListResponse
+	var applicationsVar Applications
+	xml.Unmarshal(respBodyBytes, &applicationsVar)
+	vmApplicationsServiceListResponse.applications = applicationsVar.Applications
+	return &vmApplicationsServiceListResponse, nil
 }
 
 type VmApplicationsServiceListResponse struct {
@@ -18959,6 +22773,59 @@ func (p *FilesServiceListRequest) Search(search string) *FilesServiceListRequest
 	return p
 }
 func (p *FilesServiceListRequest) Send() (*FilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.filesService.Connection.URL(), p.filesService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.filesService.Connection.username, p.filesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.filesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var filesServiceListResponse FilesServiceListResponse
+	var fileVar Files
+	xml.Unmarshal(respBodyBytes, &fileVar)
+	filesServiceListResponse.file = fileVar.Files
+	return &filesServiceListResponse, nil
 }
 
 type FilesServiceListResponse struct {
@@ -19160,6 +23027,53 @@ func (p *VmCdromServiceGetRequest) Current(current bool) *VmCdromServiceGetReque
 	return p
 }
 func (p *VmCdromServiceGetRequest) Send() (*VmCdromServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmCdromService.Connection.URL(), p.vmCdromService.Path)
+	values := make(url.Values)
+	if p.current != nil {
+		values["current"] = []string{fmt.Sprintf("%v", *p.current)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmCdromService.Connection.username, p.vmCdromService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmCdromService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmCdromServiceGetResponse VmCdromServiceGetResponse
+	var cdromVar Cdrom
+	xml.Unmarshal(respBodyBytes, &cdromVar)
+	vmCdromServiceGetResponse.cdrom = &cdromVar
+	return &vmCdromServiceGetResponse, nil
 }
 
 type VmCdromServiceGetResponse struct {
@@ -19383,6 +23297,50 @@ func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) *QuotaClus
 }
 
 func (p *QuotaClusterLimitServiceGetRequest) Send() (*QuotaClusterLimitServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotaClusterLimitService.Connection.URL(), p.quotaClusterLimitService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaClusterLimitService.Connection.username, p.quotaClusterLimitService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotaClusterLimitService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotaClusterLimitServiceGetResponse QuotaClusterLimitServiceGetResponse
+	var limitVar QuotaClusterLimit
+	xml.Unmarshal(respBodyBytes, &limitVar)
+	quotaClusterLimitServiceGetResponse.limit = &limitVar
+	return &quotaClusterLimitServiceGetResponse, nil
 }
 
 type QuotaClusterLimitServiceGetResponse struct {
@@ -19523,6 +23481,50 @@ func (p *DiskAttachmentServiceGetRequest) Query(key, value string) *DiskAttachme
 }
 
 func (p *DiskAttachmentServiceGetRequest) Send() (*DiskAttachmentServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskAttachmentService.Connection.URL(), p.diskAttachmentService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskAttachmentService.Connection.username, p.diskAttachmentService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskAttachmentService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskAttachmentServiceGetResponse DiskAttachmentServiceGetResponse
+	var attachmentVar DiskAttachment
+	xml.Unmarshal(respBodyBytes, &attachmentVar)
+	diskAttachmentServiceGetResponse.attachment = &attachmentVar
+	return &diskAttachmentServiceGetResponse, nil
 }
 
 type DiskAttachmentServiceGetResponse struct {
@@ -19765,6 +23767,50 @@ func (p *BookmarkServiceGetRequest) Query(key, value string) *BookmarkServiceGet
 }
 
 func (p *BookmarkServiceGetRequest) Send() (*BookmarkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.bookmarkService.Connection.URL(), p.bookmarkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.bookmarkService.Connection.username, p.bookmarkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.bookmarkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var bookmarkServiceGetResponse BookmarkServiceGetResponse
+	var bookmarkVar Bookmark
+	xml.Unmarshal(respBodyBytes, &bookmarkVar)
+	bookmarkServiceGetResponse.bookmark = &bookmarkVar
+	return &bookmarkServiceGetResponse, nil
 }
 
 type BookmarkServiceGetResponse struct {
@@ -20011,6 +24057,50 @@ func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) *InstanceTyp
 }
 
 func (p *InstanceTypeNicServiceGetRequest) Send() (*InstanceTypeNicServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeNicService.Connection.URL(), p.instanceTypeNicService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeNicService.Connection.username, p.instanceTypeNicService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeNicService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeNicServiceGetResponse InstanceTypeNicServiceGetResponse
+	var nicVar Nic
+	xml.Unmarshal(respBodyBytes, &nicVar)
+	instanceTypeNicServiceGetResponse.nic = &nicVar
+	return &instanceTypeNicServiceGetResponse, nil
 }
 
 type InstanceTypeNicServiceGetResponse struct {
@@ -20222,6 +24312,50 @@ func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) *Assigne
 }
 
 func (p *AssignedDiskProfileServiceGetRequest) Send() (*AssignedDiskProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedDiskProfileService.Connection.URL(), p.assignedDiskProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedDiskProfileService.Connection.username, p.assignedDiskProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedDiskProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedDiskProfileServiceGetResponse AssignedDiskProfileServiceGetResponse
+	var diskProfileVar DiskProfile
+	xml.Unmarshal(respBodyBytes, &diskProfileVar)
+	assignedDiskProfileServiceGetResponse.diskProfile = &diskProfileVar
+	return &assignedDiskProfileServiceGetResponse, nil
 }
 
 type AssignedDiskProfileServiceGetResponse struct {
@@ -20491,6 +24625,53 @@ func (p *NetworkLabelsServiceListRequest) Max(max int64) *NetworkLabelsServiceLi
 	return p
 }
 func (p *NetworkLabelsServiceListRequest) Send() (*NetworkLabelsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkLabelsService.Connection.URL(), p.networkLabelsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkLabelsService.Connection.username, p.networkLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkLabelsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkLabelsServiceListResponse NetworkLabelsServiceListResponse
+	var labelsVar NetworkLabels
+	xml.Unmarshal(respBodyBytes, &labelsVar)
+	networkLabelsServiceListResponse.labels = labelsVar.NetworkLabels
+	return &networkLabelsServiceListResponse, nil
 }
 
 type NetworkLabelsServiceListResponse struct {
@@ -20596,6 +24777,53 @@ func (p *StorageDomainServiceGetRequest) Filter(filter bool) *StorageDomainServi
 	return p
 }
 func (p *StorageDomainServiceGetRequest) Send() (*StorageDomainServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainService.Connection.URL(), p.storageDomainService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainService.Connection.username, p.storageDomainService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainServiceGetResponse StorageDomainServiceGetResponse
+	var storageDomainVar StorageDomain
+	xml.Unmarshal(respBodyBytes, &storageDomainVar)
+	storageDomainServiceGetResponse.storageDomain = &storageDomainVar
+	return &storageDomainServiceGetResponse, nil
 }
 
 type StorageDomainServiceGetResponse struct {
@@ -21440,6 +25668,62 @@ func (p *DataCentersServiceListRequest) Search(search string) *DataCentersServic
 	return p
 }
 func (p *DataCentersServiceListRequest) Send() (*DataCentersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.dataCentersService.Connection.URL(), p.dataCentersService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.dataCentersService.Connection.username, p.dataCentersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.dataCentersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var dataCentersServiceListResponse DataCentersServiceListResponse
+	var dataCentersVar DataCenters
+	xml.Unmarshal(respBodyBytes, &dataCentersVar)
+	dataCentersServiceListResponse.dataCenters = dataCentersVar.DataCenters
+	return &dataCentersServiceListResponse, nil
 }
 
 type DataCentersServiceListResponse struct {
@@ -21607,6 +25891,53 @@ func (p *VmApplicationServiceGetRequest) Filter(filter bool) *VmApplicationServi
 	return p
 }
 func (p *VmApplicationServiceGetRequest) Send() (*VmApplicationServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmApplicationService.Connection.URL(), p.vmApplicationService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmApplicationService.Connection.username, p.vmApplicationService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmApplicationService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmApplicationServiceGetResponse VmApplicationServiceGetResponse
+	var applicationVar Application
+	xml.Unmarshal(respBodyBytes, &applicationVar)
+	vmApplicationServiceGetResponse.application = &applicationVar
+	return &vmApplicationServiceGetResponse, nil
 }
 
 type VmApplicationServiceGetResponse struct {
@@ -21815,6 +26146,53 @@ func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) *QuotaStorageLimit
 	return p
 }
 func (p *QuotaStorageLimitsServiceListRequest) Send() (*QuotaStorageLimitsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotaStorageLimitsService.Connection.URL(), p.quotaStorageLimitsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaStorageLimitsService.Connection.username, p.quotaStorageLimitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotaStorageLimitsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotaStorageLimitsServiceListResponse QuotaStorageLimitsServiceListResponse
+	var limitsVar QuotaStorageLimits
+	xml.Unmarshal(respBodyBytes, &limitsVar)
+	quotaStorageLimitsServiceListResponse.limits = limitsVar.QuotaStorageLimits
+	return &quotaStorageLimitsServiceListResponse, nil
 }
 
 type QuotaStorageLimitsServiceListResponse struct {
@@ -21915,6 +26293,50 @@ func (p *TemplateNicServiceGetRequest) Query(key, value string) *TemplateNicServ
 }
 
 func (p *TemplateNicServiceGetRequest) Send() (*TemplateNicServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateNicService.Connection.URL(), p.templateNicService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateNicService.Connection.username, p.templateNicService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateNicService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateNicServiceGetResponse TemplateNicServiceGetResponse
+	var nicVar Nic
+	xml.Unmarshal(respBodyBytes, &nicVar)
+	templateNicServiceGetResponse.nic = &nicVar
+	return &templateNicServiceGetResponse, nil
 }
 
 type TemplateNicServiceGetResponse struct {
@@ -22133,6 +26555,53 @@ func (p *VmCdromsServiceListRequest) Max(max int64) *VmCdromsServiceListRequest 
 	return p
 }
 func (p *VmCdromsServiceListRequest) Send() (*VmCdromsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmCdromsService.Connection.URL(), p.vmCdromsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmCdromsService.Connection.username, p.vmCdromsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmCdromsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmCdromsServiceListResponse VmCdromsServiceListResponse
+	var cdromsVar Cdroms
+	xml.Unmarshal(respBodyBytes, &cdromsVar)
+	vmCdromsServiceListResponse.cdroms = cdromsVar.Cdroms
+	return &vmCdromsServiceListResponse, nil
 }
 
 type VmCdromsServiceListResponse struct {
@@ -22241,6 +26710,53 @@ func (p *VmSessionsServiceListRequest) Max(max int64) *VmSessionsServiceListRequ
 	return p
 }
 func (p *VmSessionsServiceListRequest) Send() (*VmSessionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmSessionsService.Connection.URL(), p.vmSessionsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmSessionsService.Connection.username, p.vmSessionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmSessionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmSessionsServiceListResponse VmSessionsServiceListResponse
+	var sessionsVar Sessions
+	xml.Unmarshal(respBodyBytes, &sessionsVar)
+	vmSessionsServiceListResponse.sessions = sessionsVar.Sessions
+	return &vmSessionsServiceListResponse, nil
 }
 
 type VmSessionsServiceListResponse struct {
@@ -22536,6 +27052,50 @@ func (p *VmDiskServiceGetRequest) Query(key, value string) *VmDiskServiceGetRequ
 }
 
 func (p *VmDiskServiceGetRequest) Send() (*VmDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmDiskService.Connection.URL(), p.vmDiskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmDiskService.Connection.username, p.vmDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmDiskServiceGetResponse VmDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	vmDiskServiceGetResponse.disk = &diskVar
+	return &vmDiskServiceGetResponse, nil
 }
 
 type VmDiskServiceGetResponse struct {
@@ -22835,6 +27395,50 @@ func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) *Sto
 }
 
 func (p *StorageServerConnectionServiceGetRequest) Send() (*StorageServerConnectionServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionService.Connection.URL(), p.storageServerConnectionService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionService.Connection.username, p.storageServerConnectionService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageServerConnectionService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageServerConnectionServiceGetResponse StorageServerConnectionServiceGetResponse
+	var conectionVar StorageConnection
+	xml.Unmarshal(respBodyBytes, &conectionVar)
+	storageServerConnectionServiceGetResponse.conection = &conectionVar
+	return &storageServerConnectionServiceGetResponse, nil
 }
 
 type StorageServerConnectionServiceGetResponse struct {
@@ -23571,6 +28175,53 @@ func (p *HostServiceGetRequest) Filter(filter bool) *HostServiceGetRequest {
 	return p
 }
 func (p *HostServiceGetRequest) Send() (*HostServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostService.Connection.URL(), p.hostService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostService.Connection.username, p.hostService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostServiceGetResponse HostServiceGetResponse
+	var hostVar Host
+	xml.Unmarshal(respBodyBytes, &hostVar)
+	hostServiceGetResponse.host = &hostVar
+	return &hostServiceGetResponse, nil
 }
 
 type HostServiceGetResponse struct {
@@ -24799,6 +29450,53 @@ func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) *Externa
 	return p
 }
 func (p *ExternalProviderCertificatesServiceListRequest) Send() (*ExternalProviderCertificatesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalProviderCertificatesService.Connection.URL(), p.externalProviderCertificatesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalProviderCertificatesService.Connection.username, p.externalProviderCertificatesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalProviderCertificatesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalProviderCertificatesServiceListResponse ExternalProviderCertificatesServiceListResponse
+	var certificatesVar Certificates
+	xml.Unmarshal(respBodyBytes, &certificatesVar)
+	externalProviderCertificatesServiceListResponse.certificates = certificatesVar.Certificates
+	return &externalProviderCertificatesServiceListResponse, nil
 }
 
 type ExternalProviderCertificatesServiceListResponse struct {
@@ -24900,6 +29598,50 @@ func (p *VmHostDeviceServiceGetRequest) Query(key, value string) *VmHostDeviceSe
 }
 
 func (p *VmHostDeviceServiceGetRequest) Send() (*VmHostDeviceServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmHostDeviceService.Connection.URL(), p.vmHostDeviceService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmHostDeviceService.Connection.username, p.vmHostDeviceService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmHostDeviceService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmHostDeviceServiceGetResponse VmHostDeviceServiceGetResponse
+	var deviceVar HostDevice
+	xml.Unmarshal(respBodyBytes, &deviceVar)
+	vmHostDeviceServiceGetResponse.device = &deviceVar
+	return &vmHostDeviceServiceGetResponse, nil
 }
 
 type VmHostDeviceServiceGetResponse struct {
@@ -25075,6 +29817,50 @@ func (p *TagServiceGetRequest) Query(key, value string) *TagServiceGetRequest {
 }
 
 func (p *TagServiceGetRequest) Send() (*TagServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.tagService.Connection.URL(), p.tagService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.tagService.Connection.username, p.tagService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.tagService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var tagServiceGetResponse TagServiceGetResponse
+	var tagVar Tag
+	xml.Unmarshal(respBodyBytes, &tagVar)
+	tagServiceGetResponse.tag = &tagVar
+	return &tagServiceGetResponse, nil
 }
 
 type TagServiceGetResponse struct {
@@ -25332,6 +30118,53 @@ func (p *HostNumaNodesServiceListRequest) Max(max int64) *HostNumaNodesServiceLi
 	return p
 }
 func (p *HostNumaNodesServiceListRequest) Send() (*HostNumaNodesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostNumaNodesService.Connection.URL(), p.hostNumaNodesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostNumaNodesService.Connection.username, p.hostNumaNodesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostNumaNodesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostNumaNodesServiceListResponse HostNumaNodesServiceListResponse
+	var nodesVar NumaNodes
+	xml.Unmarshal(respBodyBytes, &nodesVar)
+	hostNumaNodesServiceListResponse.nodes = nodesVar.NumaNodes
+	return &hostNumaNodesServiceListResponse, nil
 }
 
 type HostNumaNodesServiceListResponse struct {
@@ -25567,6 +30400,53 @@ func (p *AssignedTagsServiceListRequest) Max(max int64) *AssignedTagsServiceList
 	return p
 }
 func (p *AssignedTagsServiceListRequest) Send() (*AssignedTagsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedTagsService.Connection.URL(), p.assignedTagsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedTagsService.Connection.username, p.assignedTagsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedTagsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedTagsServiceListResponse AssignedTagsServiceListResponse
+	var tagsVar Tags
+	xml.Unmarshal(respBodyBytes, &tagsVar)
+	assignedTagsServiceListResponse.tags = tagsVar.Tags
+	return &assignedTagsServiceListResponse, nil
 }
 
 type AssignedTagsServiceListResponse struct {
@@ -25836,6 +30716,50 @@ func (p *JobServiceGetRequest) Query(key, value string) *JobServiceGetRequest {
 }
 
 func (p *JobServiceGetRequest) Send() (*JobServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.jobService.Connection.URL(), p.jobService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.jobService.Connection.username, p.jobService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.jobService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var jobServiceGetResponse JobServiceGetResponse
+	var jobVar Job
+	xml.Unmarshal(respBodyBytes, &jobVar)
+	jobServiceGetResponse.job = &jobVar
+	return &jobServiceGetResponse, nil
 }
 
 type JobServiceGetResponse struct {
@@ -25956,6 +30880,50 @@ func (p *FileServiceGetRequest) Query(key, value string) *FileServiceGetRequest 
 }
 
 func (p *FileServiceGetRequest) Send() (*FileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.fileService.Connection.URL(), p.fileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.fileService.Connection.username, p.fileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.fileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var fileServiceGetResponse FileServiceGetResponse
+	var fileVar File
+	xml.Unmarshal(respBodyBytes, &fileVar)
+	fileServiceGetResponse.file = &fileVar
+	return &fileServiceGetResponse, nil
 }
 
 type FileServiceGetResponse struct {
@@ -26196,6 +31164,53 @@ func (p *StepsServiceListRequest) Max(max int64) *StepsServiceListRequest {
 	return p
 }
 func (p *StepsServiceListRequest) Send() (*StepsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.stepsService.Connection.URL(), p.stepsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.stepsService.Connection.username, p.stepsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.stepsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var stepsServiceListResponse StepsServiceListResponse
+	var stepsVar Steps
+	xml.Unmarshal(respBodyBytes, &stepsVar)
+	stepsServiceListResponse.steps = stepsVar.Steps
+	return &stepsServiceListResponse, nil
 }
 
 type StepsServiceListResponse struct {
@@ -26322,6 +31337,50 @@ func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string
 }
 
 func (p *StorageDomainServerConnectionServiceGetRequest) Send() (*StorageDomainServerConnectionServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainServerConnectionService.Connection.URL(), p.storageDomainServerConnectionService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainServerConnectionService.Connection.username, p.storageDomainServerConnectionService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainServerConnectionService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainServerConnectionServiceGetResponse StorageDomainServerConnectionServiceGetResponse
+	var connectionVar StorageConnection
+	xml.Unmarshal(respBodyBytes, &connectionVar)
+	storageDomainServerConnectionServiceGetResponse.connection = &connectionVar
+	return &storageDomainServerConnectionServiceGetResponse, nil
 }
 
 type StorageDomainServerConnectionServiceGetResponse struct {
@@ -26605,6 +31664,53 @@ func (p *RolesServiceListRequest) Max(max int64) *RolesServiceListRequest {
 	return p
 }
 func (p *RolesServiceListRequest) Send() (*RolesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.rolesService.Connection.URL(), p.rolesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.rolesService.Connection.username, p.rolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.rolesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var rolesServiceListResponse RolesServiceListResponse
+	var rolesVar Roles
+	xml.Unmarshal(respBodyBytes, &rolesVar)
+	rolesServiceListResponse.roles = rolesVar.Roles
+	return &rolesServiceListResponse, nil
 }
 
 type RolesServiceListResponse struct {
@@ -26960,6 +32066,50 @@ func (p *ImageTransferServiceGetRequest) Query(key, value string) *ImageTransfer
 }
 
 func (p *ImageTransferServiceGetRequest) Send() (*ImageTransferServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.imageTransferService.Connection.URL(), p.imageTransferService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.imageTransferService.Connection.username, p.imageTransferService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.imageTransferService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var imageTransferServiceGetResponse ImageTransferServiceGetResponse
+	var imageTransferVar ImageTransfer
+	xml.Unmarshal(respBodyBytes, &imageTransferVar)
+	imageTransferServiceGetResponse.imageTransfer = &imageTransferVar
+	return &imageTransferServiceGetResponse, nil
 }
 
 type ImageTransferServiceGetResponse struct {
@@ -27140,6 +32290,50 @@ func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) *Assigne
 }
 
 func (p *AssignedVnicProfileServiceGetRequest) Send() (*AssignedVnicProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedVnicProfileService.Connection.URL(), p.assignedVnicProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedVnicProfileService.Connection.username, p.assignedVnicProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedVnicProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedVnicProfileServiceGetResponse AssignedVnicProfileServiceGetResponse
+	var profileVar VnicProfile
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	assignedVnicProfileServiceGetResponse.profile = &profileVar
+	return &assignedVnicProfileServiceGetResponse, nil
 }
 
 type AssignedVnicProfileServiceGetResponse struct {
@@ -27291,6 +32485,50 @@ func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) *TemplateWa
 }
 
 func (p *TemplateWatchdogServiceGetRequest) Send() (*TemplateWatchdogServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateWatchdogService.Connection.URL(), p.templateWatchdogService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateWatchdogService.Connection.username, p.templateWatchdogService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateWatchdogService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateWatchdogServiceGetResponse TemplateWatchdogServiceGetResponse
+	var watchdogVar Watchdog
+	xml.Unmarshal(respBodyBytes, &watchdogVar)
+	templateWatchdogServiceGetResponse.watchdog = &watchdogVar
+	return &templateWatchdogServiceGetResponse, nil
 }
 
 type TemplateWatchdogServiceGetResponse struct {
@@ -27499,6 +32737,50 @@ func (p *VmSessionServiceGetRequest) Query(key, value string) *VmSessionServiceG
 }
 
 func (p *VmSessionServiceGetRequest) Send() (*VmSessionServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmSessionService.Connection.URL(), p.vmSessionService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmSessionService.Connection.username, p.vmSessionService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmSessionService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmSessionServiceGetResponse VmSessionServiceGetResponse
+	var sessionVar Session
+	xml.Unmarshal(respBodyBytes, &sessionVar)
+	vmSessionServiceGetResponse.session = &sessionVar
+	return &vmSessionServiceGetResponse, nil
 }
 
 type VmSessionServiceGetResponse struct {
@@ -27692,6 +32974,50 @@ func (p *VmNicServiceGetRequest) Query(key, value string) *VmNicServiceGetReques
 }
 
 func (p *VmNicServiceGetRequest) Send() (*VmNicServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmNicService.Connection.URL(), p.vmNicService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNicService.Connection.username, p.vmNicService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmNicService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmNicServiceGetResponse VmNicServiceGetResponse
+	var nicVar Nic
+	xml.Unmarshal(respBodyBytes, &nicVar)
+	vmNicServiceGetResponse.nic = &nicVar
+	return &vmNicServiceGetResponse, nil
 }
 
 type VmNicServiceGetResponse struct {
@@ -28113,6 +33439,56 @@ func (p *SnapshotsServiceListRequest) Max(max int64) *SnapshotsServiceListReques
 	return p
 }
 func (p *SnapshotsServiceListRequest) Send() (*SnapshotsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotsService.Connection.URL(), p.snapshotsService.Path)
+	values := make(url.Values)
+	if p.allContent != nil {
+		values["allContent"] = []string{fmt.Sprintf("%v", *p.allContent)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotsService.Connection.username, p.snapshotsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotsServiceListResponse SnapshotsServiceListResponse
+	var snapshotsVar Snapshots
+	xml.Unmarshal(respBodyBytes, &snapshotsVar)
+	snapshotsServiceListResponse.snapshots = snapshotsVar.Snapshots
+	return &snapshotsServiceListResponse, nil
 }
 
 type SnapshotsServiceListResponse struct {
@@ -28223,6 +33599,50 @@ func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value stri
 }
 
 func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Send() (*StorageDomainVmDiskAttachmentsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainVmDiskAttachmentsService.Connection.URL(), p.storageDomainVmDiskAttachmentsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainVmDiskAttachmentsService.Connection.username, p.storageDomainVmDiskAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainVmDiskAttachmentsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainVmDiskAttachmentsServiceListResponse StorageDomainVmDiskAttachmentsServiceListResponse
+	var attachmentsVar DiskAttachments
+	xml.Unmarshal(respBodyBytes, &attachmentsVar)
+	storageDomainVmDiskAttachmentsServiceListResponse.attachments = attachmentsVar.DiskAttachments
+	return &storageDomainVmDiskAttachmentsServiceListResponse, nil
 }
 
 type StorageDomainVmDiskAttachmentsServiceListResponse struct {
@@ -28318,6 +33738,50 @@ func (p *ImageServiceGetRequest) Query(key, value string) *ImageServiceGetReques
 }
 
 func (p *ImageServiceGetRequest) Send() (*ImageServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.imageService.Connection.URL(), p.imageService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.imageService.Connection.username, p.imageService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.imageService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var imageServiceGetResponse ImageServiceGetResponse
+	var imageVar Image
+	xml.Unmarshal(respBodyBytes, &imageVar)
+	imageServiceGetResponse.image = &imageVar
+	return &imageServiceGetResponse, nil
 }
 
 type ImageServiceGetResponse struct {
@@ -28621,6 +34085,56 @@ func (p *InstanceTypeNicsServiceListRequest) Search(search string) *InstanceType
 	return p
 }
 func (p *InstanceTypeNicsServiceListRequest) Send() (*InstanceTypeNicsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeNicsService.Connection.URL(), p.instanceTypeNicsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeNicsService.Connection.username, p.instanceTypeNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeNicsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeNicsServiceListResponse InstanceTypeNicsServiceListResponse
+	var nicsVar Nics
+	xml.Unmarshal(respBodyBytes, &nicsVar)
+	instanceTypeNicsServiceListResponse.nics = nicsVar.Nics
+	return &instanceTypeNicsServiceListResponse, nil
 }
 
 type InstanceTypeNicsServiceListResponse struct {
@@ -28730,6 +34244,53 @@ func (p *OperatingSystemsServiceListRequest) Max(max int64) *OperatingSystemsSer
 	return p
 }
 func (p *OperatingSystemsServiceListRequest) Send() (*OperatingSystemsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.operatingSystemsService.Connection.URL(), p.operatingSystemsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.operatingSystemsService.Connection.username, p.operatingSystemsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.operatingSystemsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var operatingSystemsServiceListResponse OperatingSystemsServiceListResponse
+	var operatingSystemVar OperatingSystemInfos
+	xml.Unmarshal(respBodyBytes, &operatingSystemVar)
+	operatingSystemsServiceListResponse.operatingSystem = operatingSystemVar.OperatingSystemInfos
+	return &operatingSystemsServiceListResponse, nil
 }
 
 type OperatingSystemsServiceListResponse struct {
@@ -28831,6 +34392,50 @@ func (p *HostNicServiceGetRequest) Query(key, value string) *HostNicServiceGetRe
 }
 
 func (p *HostNicServiceGetRequest) Send() (*HostNicServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostNicService.Connection.URL(), p.hostNicService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostNicService.Connection.username, p.hostNicService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostNicService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostNicServiceGetResponse HostNicServiceGetResponse
+	var nicVar HostNic
+	xml.Unmarshal(respBodyBytes, &nicVar)
+	hostNicServiceGetResponse.nic = &nicVar
+	return &hostNicServiceGetResponse, nil
 }
 
 type HostNicServiceGetResponse struct {
@@ -29185,6 +34790,53 @@ func (p *IscsiBondsServiceListRequest) Max(max int64) *IscsiBondsServiceListRequ
 	return p
 }
 func (p *IscsiBondsServiceListRequest) Send() (*IscsiBondsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.iscsiBondsService.Connection.URL(), p.iscsiBondsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.iscsiBondsService.Connection.username, p.iscsiBondsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.iscsiBondsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var iscsiBondsServiceListResponse IscsiBondsServiceListResponse
+	var bondsVar IscsiBonds
+	xml.Unmarshal(respBodyBytes, &bondsVar)
+	iscsiBondsServiceListResponse.bonds = bondsVar.IscsiBonds
+	return &iscsiBondsServiceListResponse, nil
 }
 
 type IscsiBondsServiceListResponse struct {
@@ -29445,6 +35097,59 @@ func (p *UsersServiceListRequest) Search(search string) *UsersServiceListRequest
 	return p
 }
 func (p *UsersServiceListRequest) Send() (*UsersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.usersService.Connection.URL(), p.usersService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.usersService.Connection.username, p.usersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.usersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var usersServiceListResponse UsersServiceListResponse
+	var usersVar Users
+	xml.Unmarshal(respBodyBytes, &usersVar)
+	usersServiceListResponse.users = usersVar.Users
+	return &usersServiceListResponse, nil
 }
 
 type UsersServiceListResponse struct {
@@ -29722,6 +35427,59 @@ func (p *GroupsServiceListRequest) Search(search string) *GroupsServiceListReque
 	return p
 }
 func (p *GroupsServiceListRequest) Send() (*GroupsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.groupsService.Connection.URL(), p.groupsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.groupsService.Connection.username, p.groupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.groupsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var groupsServiceListResponse GroupsServiceListResponse
+	var groupsVar Groups
+	xml.Unmarshal(respBodyBytes, &groupsVar)
+	groupsServiceListResponse.groups = groupsVar.Groups
+	return &groupsServiceListResponse, nil
 }
 
 type GroupsServiceListResponse struct {
@@ -29831,6 +35589,50 @@ func (p *DomainServiceGetRequest) Query(key, value string) *DomainServiceGetRequ
 }
 
 func (p *DomainServiceGetRequest) Send() (*DomainServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainService.Connection.URL(), p.domainService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainService.Connection.username, p.domainService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainServiceGetResponse DomainServiceGetResponse
+	var domainVar Domain
+	xml.Unmarshal(respBodyBytes, &domainVar)
+	domainServiceGetResponse.domain = &domainVar
+	return &domainServiceGetResponse, nil
 }
 
 type DomainServiceGetResponse struct {
@@ -30073,6 +35875,53 @@ func (p *SshPublicKeysServiceListRequest) Max(max int64) *SshPublicKeysServiceLi
 	return p
 }
 func (p *SshPublicKeysServiceListRequest) Send() (*SshPublicKeysServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.sshPublicKeysService.Connection.URL(), p.sshPublicKeysService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.sshPublicKeysService.Connection.username, p.sshPublicKeysService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.sshPublicKeysService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var sshPublicKeysServiceListResponse SshPublicKeysServiceListResponse
+	var keysVar SshPublicKeys
+	xml.Unmarshal(respBodyBytes, &keysVar)
+	sshPublicKeysServiceListResponse.keys = keysVar.SshPublicKeys
+	return &sshPublicKeysServiceListResponse, nil
 }
 
 type SshPublicKeysServiceListResponse struct {
@@ -30174,6 +36023,50 @@ func (p *DomainUserServiceGetRequest) Query(key, value string) *DomainUserServic
 }
 
 func (p *DomainUserServiceGetRequest) Send() (*DomainUserServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainUserService.Connection.URL(), p.domainUserService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainUserService.Connection.username, p.domainUserService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainUserService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainUserServiceGetResponse DomainUserServiceGetResponse
+	var userVar User
+	xml.Unmarshal(respBodyBytes, &userVar)
+	domainUserServiceGetResponse.user = &userVar
+	return &domainUserServiceGetResponse, nil
 }
 
 type DomainUserServiceGetResponse struct {
@@ -30280,6 +36173,50 @@ func (p *UserServiceGetRequest) Query(key, value string) *UserServiceGetRequest 
 }
 
 func (p *UserServiceGetRequest) Send() (*UserServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.userService.Connection.URL(), p.userService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.userService.Connection.username, p.userService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.userService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var userServiceGetResponse UserServiceGetResponse
+	var userVar User
+	xml.Unmarshal(respBodyBytes, &userVar)
+	userServiceGetResponse.user = &userVar
+	return &userServiceGetResponse, nil
 }
 
 type UserServiceGetResponse struct {
@@ -30504,6 +36441,53 @@ func (p *DomainsServiceListRequest) Max(max int64) *DomainsServiceListRequest {
 	return p
 }
 func (p *DomainsServiceListRequest) Send() (*DomainsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainsService.Connection.URL(), p.domainsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainsService.Connection.username, p.domainsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainsServiceListResponse DomainsServiceListResponse
+	var domainsVar Domains
+	xml.Unmarshal(respBodyBytes, &domainsVar)
+	domainsServiceListResponse.domains = domainsVar.Domains
+	return &domainsServiceListResponse, nil
 }
 
 type DomainsServiceListResponse struct {
@@ -30639,6 +36623,59 @@ func (p *DomainUsersServiceListRequest) Search(search string) *DomainUsersServic
 	return p
 }
 func (p *DomainUsersServiceListRequest) Send() (*DomainUsersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainUsersService.Connection.URL(), p.domainUsersService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainUsersService.Connection.username, p.domainUsersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainUsersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainUsersServiceListResponse DomainUsersServiceListResponse
+	var usersVar Users
+	xml.Unmarshal(respBodyBytes, &usersVar)
+	domainUsersServiceListResponse.users = usersVar.Users
+	return &domainUsersServiceListResponse, nil
 }
 
 type DomainUsersServiceListResponse struct {
@@ -30784,6 +36821,59 @@ func (p *DomainGroupsServiceListRequest) Search(search string) *DomainGroupsServ
 	return p
 }
 func (p *DomainGroupsServiceListRequest) Send() (*DomainGroupsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainGroupsService.Connection.URL(), p.domainGroupsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainGroupsService.Connection.username, p.domainGroupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainGroupsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainGroupsServiceListResponse DomainGroupsServiceListResponse
+	var groupsVar Groups
+	xml.Unmarshal(respBodyBytes, &groupsVar)
+	domainGroupsServiceListResponse.groups = groupsVar.Groups
+	return &domainGroupsServiceListResponse, nil
 }
 
 type DomainGroupsServiceListResponse struct {
@@ -30892,6 +36982,50 @@ func (p *GroupServiceGetRequest) Query(key, value string) *GroupServiceGetReques
 }
 
 func (p *GroupServiceGetRequest) Send() (*GroupServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.groupService.Connection.URL(), p.groupService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.groupService.Connection.username, p.groupService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.groupService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var groupServiceGetResponse GroupServiceGetResponse
+	var getVar Group
+	xml.Unmarshal(respBodyBytes, &getVar)
+	groupServiceGetResponse.get = &getVar
+	return &groupServiceGetResponse, nil
 }
 
 type GroupServiceGetResponse struct {
@@ -31067,6 +37201,50 @@ func (p *DomainGroupServiceGetRequest) Query(key, value string) *DomainGroupServ
 }
 
 func (p *DomainGroupServiceGetRequest) Send() (*DomainGroupServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.domainGroupService.Connection.URL(), p.domainGroupService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.domainGroupService.Connection.username, p.domainGroupService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.domainGroupService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var domainGroupServiceGetResponse DomainGroupServiceGetResponse
+	var getVar Group
+	xml.Unmarshal(respBodyBytes, &getVar)
+	domainGroupServiceGetResponse.get = &getVar
+	return &domainGroupServiceGetResponse, nil
 }
 
 type DomainGroupServiceGetResponse struct {
@@ -31150,6 +37328,50 @@ func (p *SshPublicKeyServiceGetRequest) Query(key, value string) *SshPublicKeySe
 }
 
 func (p *SshPublicKeyServiceGetRequest) Send() (*SshPublicKeyServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.sshPublicKeyService.Connection.URL(), p.sshPublicKeyService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.sshPublicKeyService.Connection.username, p.sshPublicKeyService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.sshPublicKeyService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var sshPublicKeyServiceGetResponse SshPublicKeyServiceGetResponse
+	var keyVar SshPublicKey
+	xml.Unmarshal(respBodyBytes, &keyVar)
+	sshPublicKeyServiceGetResponse.key = &keyVar
+	return &sshPublicKeyServiceGetResponse, nil
 }
 
 type SshPublicKeyServiceGetResponse struct {
@@ -31358,6 +37580,50 @@ func (p *FenceAgentServiceGetRequest) Query(key, value string) *FenceAgentServic
 }
 
 func (p *FenceAgentServiceGetRequest) Send() (*FenceAgentServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.fenceAgentService.Connection.URL(), p.fenceAgentService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.fenceAgentService.Connection.username, p.fenceAgentService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.fenceAgentService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var fenceAgentServiceGetResponse FenceAgentServiceGetResponse
+	var agentVar Agent
+	xml.Unmarshal(respBodyBytes, &agentVar)
+	fenceAgentServiceGetResponse.agent = &agentVar
+	return &fenceAgentServiceGetResponse, nil
 }
 
 type FenceAgentServiceGetResponse struct {
@@ -31566,6 +37832,50 @@ func (p *MacPoolServiceGetRequest) Query(key, value string) *MacPoolServiceGetRe
 }
 
 func (p *MacPoolServiceGetRequest) Send() (*MacPoolServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.macPoolService.Connection.URL(), p.macPoolService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.macPoolService.Connection.username, p.macPoolService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.macPoolService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var macPoolServiceGetResponse MacPoolServiceGetResponse
+	var poolVar MacPool
+	xml.Unmarshal(respBodyBytes, &poolVar)
+	macPoolServiceGetResponse.pool = &poolVar
+	return &macPoolServiceGetResponse, nil
 }
 
 type MacPoolServiceGetResponse struct {
@@ -31923,6 +38233,53 @@ func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) *AssignedCpuProfi
 	return p
 }
 func (p *AssignedCpuProfilesServiceListRequest) Send() (*AssignedCpuProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedCpuProfilesService.Connection.URL(), p.assignedCpuProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedCpuProfilesService.Connection.username, p.assignedCpuProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedCpuProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedCpuProfilesServiceListResponse AssignedCpuProfilesServiceListResponse
+	var profilesVar CpuProfiles
+	xml.Unmarshal(respBodyBytes, &profilesVar)
+	assignedCpuProfilesServiceListResponse.profiles = profilesVar.CpuProfiles
+	return &assignedCpuProfilesServiceListResponse, nil
 }
 
 type AssignedCpuProfilesServiceListResponse struct {
@@ -32157,6 +38514,53 @@ func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) *St
 	return p
 }
 func (p *StorageServerConnectionExtensionsServiceListRequest) Send() (*StorageServerConnectionExtensionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionExtensionsService.Connection.URL(), p.storageServerConnectionExtensionsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionExtensionsService.Connection.username, p.storageServerConnectionExtensionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageServerConnectionExtensionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageServerConnectionExtensionsServiceListResponse StorageServerConnectionExtensionsServiceListResponse
+	var extensionsVar StorageConnectionExtensions
+	xml.Unmarshal(respBodyBytes, &extensionsVar)
+	storageServerConnectionExtensionsServiceListResponse.extensions = extensionsVar.StorageConnectionExtensions
+	return &storageServerConnectionExtensionsServiceListResponse, nil
 }
 
 type StorageServerConnectionExtensionsServiceListResponse struct {
@@ -32257,6 +38661,50 @@ func (p *PermissionServiceGetRequest) Query(key, value string) *PermissionServic
 }
 
 func (p *PermissionServiceGetRequest) Send() (*PermissionServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.permissionService.Connection.URL(), p.permissionService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.permissionService.Connection.username, p.permissionService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.permissionService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var permissionServiceGetResponse PermissionServiceGetResponse
+	var permissionVar Permission
+	xml.Unmarshal(respBodyBytes, &permissionVar)
+	permissionServiceGetResponse.permission = &permissionVar
+	return &permissionServiceGetResponse, nil
 }
 
 type PermissionServiceGetResponse struct {
@@ -32396,6 +38844,50 @@ func (p *DiskProfileServiceGetRequest) Query(key, value string) *DiskProfileServ
 }
 
 func (p *DiskProfileServiceGetRequest) Send() (*DiskProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskProfileService.Connection.URL(), p.diskProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskProfileService.Connection.username, p.diskProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskProfileServiceGetResponse DiskProfileServiceGetResponse
+	var profileVar DiskProfile
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	diskProfileServiceGetResponse.profile = &profileVar
+	return &diskProfileServiceGetResponse, nil
 }
 
 type DiskProfileServiceGetResponse struct {
@@ -32617,6 +39109,50 @@ func (p *AffinityGroupServiceGetRequest) Query(key, value string) *AffinityGroup
 }
 
 func (p *AffinityGroupServiceGetRequest) Send() (*AffinityGroupServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityGroupService.Connection.URL(), p.affinityGroupService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityGroupService.Connection.username, p.affinityGroupService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityGroupService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityGroupServiceGetResponse AffinityGroupServiceGetResponse
+	var groupVar AffinityGroup
+	xml.Unmarshal(respBodyBytes, &groupVar)
+	affinityGroupServiceGetResponse.group = &groupVar
+	return &affinityGroupServiceGetResponse, nil
 }
 
 type AffinityGroupServiceGetResponse struct {
@@ -32866,6 +39402,53 @@ func (p *UnmanagedNetworksServiceListRequest) Max(max int64) *UnmanagedNetworksS
 	return p
 }
 func (p *UnmanagedNetworksServiceListRequest) Send() (*UnmanagedNetworksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.unmanagedNetworksService.Connection.URL(), p.unmanagedNetworksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.unmanagedNetworksService.Connection.username, p.unmanagedNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.unmanagedNetworksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var unmanagedNetworksServiceListResponse UnmanagedNetworksServiceListResponse
+	var networksVar UnmanagedNetworks
+	xml.Unmarshal(respBodyBytes, &networksVar)
+	unmanagedNetworksServiceListResponse.networks = networksVar.UnmanagedNetworks
+	return &unmanagedNetworksServiceListResponse, nil
 }
 
 type UnmanagedNetworksServiceListResponse struct {
@@ -33258,6 +39841,65 @@ func (p *VmsServiceListRequest) Search(search string) *VmsServiceListRequest {
 	return p
 }
 func (p *VmsServiceListRequest) Send() (*VmsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmsService.Connection.URL(), p.vmsService.Path)
+	values := make(url.Values)
+	if p.allContent != nil {
+		values["allContent"] = []string{fmt.Sprintf("%v", *p.allContent)}
+	}
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmsService.Connection.username, p.vmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmsServiceListResponse VmsServiceListResponse
+	var vmsVar Vms
+	xml.Unmarshal(respBodyBytes, &vmsVar)
+	vmsServiceListResponse.vms = vmsVar.Vms
+	return &vmsServiceListResponse, nil
 }
 
 type VmsServiceListResponse struct {
@@ -33384,6 +40026,50 @@ func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) *Stora
 }
 
 func (p *StorageDomainTemplateServiceGetRequest) Send() (*StorageDomainTemplateServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainTemplateService.Connection.URL(), p.storageDomainTemplateService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainTemplateService.Connection.username, p.storageDomainTemplateService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainTemplateService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainTemplateServiceGetResponse StorageDomainTemplateServiceGetResponse
+	var templateVar Template
+	xml.Unmarshal(respBodyBytes, &templateVar)
+	storageDomainTemplateServiceGetResponse.template = &templateVar
+	return &storageDomainTemplateServiceGetResponse, nil
 }
 
 type StorageDomainTemplateServiceGetResponse struct {
@@ -33901,6 +40587,62 @@ func (p *VmPoolsServiceListRequest) Search(search string) *VmPoolsServiceListReq
 	return p
 }
 func (p *VmPoolsServiceListRequest) Send() (*VmPoolsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmPoolsService.Connection.URL(), p.vmPoolsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmPoolsService.Connection.username, p.vmPoolsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmPoolsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmPoolsServiceListResponse VmPoolsServiceListResponse
+	var poolsVar VmPools
+	xml.Unmarshal(respBodyBytes, &poolsVar)
+	vmPoolsServiceListResponse.pools = poolsVar.VmPools
+	return &vmPoolsServiceListResponse, nil
 }
 
 type VmPoolsServiceListResponse struct {
@@ -34145,6 +40887,53 @@ func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) *AssignedDiskPro
 	return p
 }
 func (p *AssignedDiskProfilesServiceListRequest) Send() (*AssignedDiskProfilesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedDiskProfilesService.Connection.URL(), p.assignedDiskProfilesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedDiskProfilesService.Connection.username, p.assignedDiskProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedDiskProfilesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedDiskProfilesServiceListResponse AssignedDiskProfilesServiceListResponse
+	var profilesVar DiskProfiles
+	xml.Unmarshal(respBodyBytes, &profilesVar)
+	assignedDiskProfilesServiceListResponse.profiles = profilesVar.DiskProfiles
+	return &assignedDiskProfilesServiceListResponse, nil
 }
 
 type AssignedDiskProfilesServiceListResponse struct {
@@ -34333,6 +41122,50 @@ func (p *StepServiceGetRequest) Query(key, value string) *StepServiceGetRequest 
 }
 
 func (p *StepServiceGetRequest) Send() (*StepServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.stepService.Connection.URL(), p.stepService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.stepService.Connection.username, p.stepService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.stepService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var stepServiceGetResponse StepServiceGetResponse
+	var stepVar Step
+	xml.Unmarshal(respBodyBytes, &stepVar)
+	stepServiceGetResponse.step = &stepVar
+	return &stepServiceGetResponse, nil
 }
 
 type StepServiceGetResponse struct {
@@ -34589,6 +41422,53 @@ func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) *AttachedS
 	return p
 }
 func (p *AttachedStorageDomainDisksServiceListRequest) Send() (*AttachedStorageDomainDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainDisksService.Connection.URL(), p.attachedStorageDomainDisksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainDisksService.Connection.username, p.attachedStorageDomainDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.attachedStorageDomainDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var attachedStorageDomainDisksServiceListResponse AttachedStorageDomainDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	attachedStorageDomainDisksServiceListResponse.disks = disksVar.Disks
+	return &attachedStorageDomainDisksServiceListResponse, nil
 }
 
 type AttachedStorageDomainDisksServiceListResponse struct {
@@ -34705,6 +41585,50 @@ func (p *NetworkFilterServiceGetRequest) Query(key, value string) *NetworkFilter
 }
 
 func (p *NetworkFilterServiceGetRequest) Send() (*NetworkFilterServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkFilterService.Connection.URL(), p.networkFilterService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkFilterService.Connection.username, p.networkFilterService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkFilterService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkFilterServiceGetResponse NetworkFilterServiceGetResponse
+	var networkFilterVar NetworkFilter
+	xml.Unmarshal(respBodyBytes, &networkFilterVar)
+	networkFilterServiceGetResponse.networkFilter = &networkFilterVar
+	return &networkFilterServiceGetResponse, nil
 }
 
 type NetworkFilterServiceGetResponse struct {
@@ -34906,6 +41830,53 @@ func (p *VmDisksServiceListRequest) Max(max int64) *VmDisksServiceListRequest {
 	return p
 }
 func (p *VmDisksServiceListRequest) Send() (*VmDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmDisksService.Connection.URL(), p.vmDisksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmDisksService.Connection.username, p.vmDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmDisksServiceListResponse VmDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	vmDisksServiceListResponse.disks = disksVar.Disks
+	return &vmDisksServiceListResponse, nil
 }
 
 type VmDisksServiceListResponse struct {
@@ -35158,6 +42129,50 @@ func (p *DiskAttachmentsServiceListRequest) Query(key, value string) *DiskAttach
 }
 
 func (p *DiskAttachmentsServiceListRequest) Send() (*DiskAttachmentsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskAttachmentsService.Connection.URL(), p.diskAttachmentsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskAttachmentsService.Connection.username, p.diskAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskAttachmentsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskAttachmentsServiceListResponse DiskAttachmentsServiceListResponse
+	var attachmentsVar DiskAttachments
+	xml.Unmarshal(respBodyBytes, &attachmentsVar)
+	diskAttachmentsServiceListResponse.attachments = attachmentsVar.DiskAttachments
+	return &diskAttachmentsServiceListResponse, nil
 }
 
 type DiskAttachmentsServiceListResponse struct {
@@ -35384,6 +42399,50 @@ func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) *StorageDo
 }
 
 func (p *StorageDomainDiskServiceGetRequest) Send() (*StorageDomainDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainDiskService.Connection.URL(), p.storageDomainDiskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainDiskService.Connection.username, p.storageDomainDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainDiskServiceGetResponse StorageDomainDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	storageDomainDiskServiceGetResponse.disk = &diskVar
+	return &storageDomainDiskServiceGetResponse, nil
 }
 
 type StorageDomainDiskServiceGetResponse struct {
@@ -35738,6 +42797,53 @@ func (p *HostHooksServiceListRequest) Max(max int64) *HostHooksServiceListReques
 	return p
 }
 func (p *HostHooksServiceListRequest) Send() (*HostHooksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostHooksService.Connection.URL(), p.hostHooksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostHooksService.Connection.username, p.hostHooksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostHooksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostHooksServiceListResponse HostHooksServiceListResponse
+	var hooksVar Hooks
+	xml.Unmarshal(respBodyBytes, &hooksVar)
+	hostHooksServiceListResponse.hooks = hooksVar.Hooks
+	return &hostHooksServiceListResponse, nil
 }
 
 type HostHooksServiceListResponse struct {
@@ -36032,6 +43138,62 @@ func (p *StorageDomainsServiceListRequest) Search(search string) *StorageDomains
 	return p
 }
 func (p *StorageDomainsServiceListRequest) Send() (*StorageDomainsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainsService.Connection.URL(), p.storageDomainsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainsService.Connection.username, p.storageDomainsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainsServiceListResponse StorageDomainsServiceListResponse
+	var storageDomainsVar StorageDomains
+	xml.Unmarshal(respBodyBytes, &storageDomainsVar)
+	storageDomainsServiceListResponse.storageDomains = storageDomainsVar.StorageDomains
+	return &storageDomainsServiceListResponse, nil
 }
 
 type StorageDomainsServiceListResponse struct {
@@ -36143,6 +43305,50 @@ func (p *NetworkLabelServiceGetRequest) Query(key, value string) *NetworkLabelSe
 }
 
 func (p *NetworkLabelServiceGetRequest) Send() (*NetworkLabelServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkLabelService.Connection.URL(), p.networkLabelService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkLabelService.Connection.username, p.networkLabelService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkLabelService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkLabelServiceGetResponse NetworkLabelServiceGetResponse
+	var labelVar NetworkLabel
+	xml.Unmarshal(respBodyBytes, &labelVar)
+	networkLabelServiceGetResponse.label = &labelVar
+	return &networkLabelServiceGetResponse, nil
 }
 
 type NetworkLabelServiceGetResponse struct {
@@ -36494,6 +43700,59 @@ func (p *InstanceTypesServiceListRequest) Search(search string) *InstanceTypesSe
 	return p
 }
 func (p *InstanceTypesServiceListRequest) Send() (*InstanceTypesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypesService.Connection.URL(), p.instanceTypesService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypesService.Connection.username, p.instanceTypesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypesServiceListResponse InstanceTypesServiceListResponse
+	var instanceTypeVar InstanceTypes
+	xml.Unmarshal(respBodyBytes, &instanceTypeVar)
+	instanceTypesServiceListResponse.instanceType = instanceTypeVar.InstanceTypes
+	return &instanceTypesServiceListResponse, nil
 }
 
 type InstanceTypesServiceListResponse struct {
@@ -36721,6 +43980,53 @@ func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) *Stora
 	return p
 }
 func (p *StorageDomainServerConnectionsServiceListRequest) Send() (*StorageDomainServerConnectionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainServerConnectionsService.Connection.URL(), p.storageDomainServerConnectionsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainServerConnectionsService.Connection.username, p.storageDomainServerConnectionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainServerConnectionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainServerConnectionsServiceListResponse StorageDomainServerConnectionsServiceListResponse
+	var connectionsVar StorageConnections
+	xml.Unmarshal(respBodyBytes, &connectionsVar)
+	storageDomainServerConnectionsServiceListResponse.connections = connectionsVar.StorageConnections
+	return &storageDomainServerConnectionsServiceListResponse, nil
 }
 
 type StorageDomainServerConnectionsServiceListResponse struct {
@@ -36821,6 +44127,50 @@ func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) 
 }
 
 func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Send() (*InstanceTypeGraphicsConsoleServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeGraphicsConsoleService.Connection.URL(), p.instanceTypeGraphicsConsoleService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeGraphicsConsoleService.Connection.username, p.instanceTypeGraphicsConsoleService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeGraphicsConsoleService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeGraphicsConsoleServiceGetResponse InstanceTypeGraphicsConsoleServiceGetResponse
+	var consoleVar GraphicsConsole
+	xml.Unmarshal(respBodyBytes, &consoleVar)
+	instanceTypeGraphicsConsoleServiceGetResponse.console = &consoleVar
+	return &instanceTypeGraphicsConsoleServiceGetResponse, nil
 }
 
 type InstanceTypeGraphicsConsoleServiceGetResponse struct {
@@ -36962,6 +44312,50 @@ func (p *IscsiBondServiceGetRequest) Query(key, value string) *IscsiBondServiceG
 }
 
 func (p *IscsiBondServiceGetRequest) Send() (*IscsiBondServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.iscsiBondService.Connection.URL(), p.iscsiBondService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.iscsiBondService.Connection.username, p.iscsiBondService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.iscsiBondService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var iscsiBondServiceGetResponse IscsiBondServiceGetResponse
+	var bondVar IscsiBond
+	xml.Unmarshal(respBodyBytes, &bondVar)
+	iscsiBondServiceGetResponse.bond = &bondVar
+	return &iscsiBondServiceGetResponse, nil
 }
 
 type IscsiBondServiceGetResponse struct {
@@ -37216,6 +44610,50 @@ func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) *Temp
 }
 
 func (p *TemplateDiskAttachmentServiceGetRequest) Send() (*TemplateDiskAttachmentServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateDiskAttachmentService.Connection.URL(), p.templateDiskAttachmentService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateDiskAttachmentService.Connection.username, p.templateDiskAttachmentService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateDiskAttachmentService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateDiskAttachmentServiceGetResponse TemplateDiskAttachmentServiceGetResponse
+	var attachmentVar DiskAttachment
+	xml.Unmarshal(respBodyBytes, &attachmentVar)
+	templateDiskAttachmentServiceGetResponse.attachment = &attachmentVar
+	return &templateDiskAttachmentServiceGetResponse, nil
 }
 
 type TemplateDiskAttachmentServiceGetResponse struct {
@@ -37377,6 +44815,53 @@ func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) *HostSto
 	return p
 }
 func (p *HostStorageServiceListRequest) Send() (*HostStorageServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostStorageService.Connection.URL(), p.hostStorageService.Path)
+	values := make(url.Values)
+	if p.reportStatus != nil {
+		values["reportStatus"] = []string{fmt.Sprintf("%v", *p.reportStatus)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostStorageService.Connection.username, p.hostStorageService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostStorageService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostStorageServiceListResponse HostStorageServiceListResponse
+	var storagesVar HostStorages
+	xml.Unmarshal(respBodyBytes, &storagesVar)
+	hostStorageServiceListResponse.storages = storagesVar.HostStorages
+	return &hostStorageServiceListResponse, nil
 }
 
 type HostStorageServiceListResponse struct {
@@ -37541,6 +45026,53 @@ func (p *WeightServiceGetRequest) Filter(filter bool) *WeightServiceGetRequest {
 	return p
 }
 func (p *WeightServiceGetRequest) Send() (*WeightServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.weightService.Connection.URL(), p.weightService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.weightService.Connection.username, p.weightService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.weightService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var weightServiceGetResponse WeightServiceGetResponse
+	var weightVar Weight
+	xml.Unmarshal(respBodyBytes, &weightVar)
+	weightServiceGetResponse.weight = &weightVar
+	return &weightServiceGetResponse, nil
 }
 
 type WeightServiceGetResponse struct {
@@ -37827,6 +45359,53 @@ func (p *VmNumaNodesServiceListRequest) Max(max int64) *VmNumaNodesServiceListRe
 	return p
 }
 func (p *VmNumaNodesServiceListRequest) Send() (*VmNumaNodesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmNumaNodesService.Connection.URL(), p.vmNumaNodesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNumaNodesService.Connection.username, p.vmNumaNodesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmNumaNodesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmNumaNodesServiceListResponse VmNumaNodesServiceListResponse
+	var nodesVar VirtualNumaNodes
+	xml.Unmarshal(respBodyBytes, &nodesVar)
+	vmNumaNodesServiceListResponse.nodes = nodesVar.VirtualNumaNodes
+	return &vmNumaNodesServiceListResponse, nil
 }
 
 type VmNumaNodesServiceListResponse struct {
@@ -38045,6 +45624,53 @@ func (p *TemplateWatchdogsServiceListRequest) Max(max int64) *TemplateWatchdogsS
 	return p
 }
 func (p *TemplateWatchdogsServiceListRequest) Send() (*TemplateWatchdogsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateWatchdogsService.Connection.URL(), p.templateWatchdogsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateWatchdogsService.Connection.username, p.templateWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateWatchdogsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateWatchdogsServiceListResponse TemplateWatchdogsServiceListResponse
+	var watchdogsVar Watchdogs
+	xml.Unmarshal(respBodyBytes, &watchdogsVar)
+	templateWatchdogsServiceListResponse.watchdogs = watchdogsVar.Watchdogs
+	return &templateWatchdogsServiceListResponse, nil
 }
 
 type TemplateWatchdogsServiceListResponse struct {
@@ -38276,6 +45902,50 @@ func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) *A
 }
 
 func (p *AttachedStorageDomainDiskServiceGetRequest) Send() (*AttachedStorageDomainDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainDiskService.Connection.URL(), p.attachedStorageDomainDiskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainDiskService.Connection.username, p.attachedStorageDomainDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.attachedStorageDomainDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var attachedStorageDomainDiskServiceGetResponse AttachedStorageDomainDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	attachedStorageDomainDiskServiceGetResponse.disk = &diskVar
+	return &attachedStorageDomainDiskServiceGetResponse, nil
 }
 
 type AttachedStorageDomainDiskServiceGetResponse struct {
@@ -38669,6 +46339,50 @@ func (p *VnicProfileServiceGetRequest) Query(key, value string) *VnicProfileServ
 }
 
 func (p *VnicProfileServiceGetRequest) Send() (*VnicProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vnicProfileService.Connection.URL(), p.vnicProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vnicProfileService.Connection.username, p.vnicProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vnicProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vnicProfileServiceGetResponse VnicProfileServiceGetResponse
+	var profileVar VnicProfile
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	vnicProfileServiceGetResponse.profile = &profileVar
+	return &vnicProfileServiceGetResponse, nil
 }
 
 type VnicProfileServiceGetResponse struct {
@@ -39020,6 +46734,56 @@ func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) *VmGraphicsConsole
 	return p
 }
 func (p *VmGraphicsConsolesServiceListRequest) Send() (*VmGraphicsConsolesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmGraphicsConsolesService.Connection.URL(), p.vmGraphicsConsolesService.Path)
+	values := make(url.Values)
+	if p.current != nil {
+		values["current"] = []string{fmt.Sprintf("%v", *p.current)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmGraphicsConsolesService.Connection.username, p.vmGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmGraphicsConsolesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmGraphicsConsolesServiceListResponse VmGraphicsConsolesServiceListResponse
+	var consolesVar GraphicsConsoles
+	xml.Unmarshal(respBodyBytes, &consolesVar)
+	vmGraphicsConsolesServiceListResponse.consoles = consolesVar.GraphicsConsoles
+	return &vmGraphicsConsolesServiceListResponse, nil
 }
 
 type VmGraphicsConsolesServiceListResponse struct {
@@ -39131,6 +46895,50 @@ func (p *PermitServiceGetRequest) Query(key, value string) *PermitServiceGetRequ
 }
 
 func (p *PermitServiceGetRequest) Send() (*PermitServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.permitService.Connection.URL(), p.permitService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.permitService.Connection.username, p.permitService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.permitService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var permitServiceGetResponse PermitServiceGetResponse
+	var permitVar Permit
+	xml.Unmarshal(respBodyBytes, &permitVar)
+	permitServiceGetResponse.permit = &permitVar
+	return &permitServiceGetResponse, nil
 }
 
 type PermitServiceGetResponse struct {
@@ -39295,6 +47103,53 @@ func (p *DataCenterServiceGetRequest) Filter(filter bool) *DataCenterServiceGetR
 	return p
 }
 func (p *DataCenterServiceGetRequest) Send() (*DataCenterServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.dataCenterService.Connection.URL(), p.dataCenterService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.dataCenterService.Connection.username, p.dataCenterService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.dataCenterService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var dataCenterServiceGetResponse DataCenterServiceGetResponse
+	var dataCenterVar DataCenter
+	xml.Unmarshal(respBodyBytes, &dataCenterVar)
+	dataCenterServiceGetResponse.dataCenter = &dataCenterVar
+	return &dataCenterServiceGetResponse, nil
 }
 
 type DataCenterServiceGetResponse struct {
@@ -39698,6 +47553,53 @@ func (p *StatisticsServiceListRequest) Max(max int64) *StatisticsServiceListRequ
 	return p
 }
 func (p *StatisticsServiceListRequest) Send() (*StatisticsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.statisticsService.Connection.URL(), p.statisticsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.statisticsService.Connection.username, p.statisticsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.statisticsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var statisticsServiceListResponse StatisticsServiceListResponse
+	var statisticsVar Statistics
+	xml.Unmarshal(respBodyBytes, &statisticsVar)
+	statisticsServiceListResponse.statistics = statisticsVar.Statistics
+	return &statisticsServiceListResponse, nil
 }
 
 type StatisticsServiceListResponse struct {
@@ -39857,6 +47759,56 @@ func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) *SchedulingPoli
 	return p
 }
 func (p *SchedulingPolicyUnitsServiceListRequest) Send() (*SchedulingPolicyUnitsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.schedulingPolicyUnitsService.Connection.URL(), p.schedulingPolicyUnitsService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.schedulingPolicyUnitsService.Connection.username, p.schedulingPolicyUnitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.schedulingPolicyUnitsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var schedulingPolicyUnitsServiceListResponse SchedulingPolicyUnitsServiceListResponse
+	var unitsVar SchedulingPolicyUnits
+	xml.Unmarshal(respBodyBytes, &unitsVar)
+	schedulingPolicyUnitsServiceListResponse.units = unitsVar.SchedulingPolicyUnits
+	return &schedulingPolicyUnitsServiceListResponse, nil
 }
 
 type SchedulingPolicyUnitsServiceListResponse struct {
@@ -40086,6 +48038,50 @@ func (p *TemplateDiskServiceGetRequest) Query(key, value string) *TemplateDiskSe
 }
 
 func (p *TemplateDiskServiceGetRequest) Send() (*TemplateDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateDiskService.Connection.URL(), p.templateDiskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateDiskService.Connection.username, p.templateDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateDiskServiceGetResponse TemplateDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	templateDiskServiceGetResponse.disk = &diskVar
+	return &templateDiskServiceGetResponse, nil
 }
 
 type TemplateDiskServiceGetResponse struct {
@@ -40341,6 +48337,50 @@ func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) *AffinityL
 }
 
 func (p *AffinityLabelVmsServiceListRequest) Send() (*AffinityLabelVmsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelVmsService.Connection.URL(), p.affinityLabelVmsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelVmsService.Connection.username, p.affinityLabelVmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelVmsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelVmsServiceListResponse AffinityLabelVmsServiceListResponse
+	var vmsVar Vms
+	xml.Unmarshal(respBodyBytes, &vmsVar)
+	affinityLabelVmsServiceListResponse.vms = vmsVar.Vms
+	return &affinityLabelVmsServiceListResponse, nil
 }
 
 type AffinityLabelVmsServiceListResponse struct {
@@ -40639,6 +48679,53 @@ func (p *AffinityLabelsServiceListRequest) Max(max int64) *AffinityLabelsService
 	return p
 }
 func (p *AffinityLabelsServiceListRequest) Send() (*AffinityLabelsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelsService.Connection.URL(), p.affinityLabelsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelsService.Connection.username, p.affinityLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelsServiceListResponse AffinityLabelsServiceListResponse
+	var labelsVar AffinityLabels
+	xml.Unmarshal(respBodyBytes, &labelsVar)
+	affinityLabelsServiceListResponse.labels = labelsVar.AffinityLabels
+	return &affinityLabelsServiceListResponse, nil
 }
 
 type AffinityLabelsServiceListResponse struct {
@@ -40746,6 +48833,53 @@ func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) *VmGraphicsCo
 	return p
 }
 func (p *VmGraphicsConsoleServiceGetRequest) Send() (*VmGraphicsConsoleServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmGraphicsConsoleService.Connection.URL(), p.vmGraphicsConsoleService.Path)
+	values := make(url.Values)
+	if p.current != nil {
+		values["current"] = []string{fmt.Sprintf("%v", *p.current)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmGraphicsConsoleService.Connection.username, p.vmGraphicsConsoleService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmGraphicsConsoleService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmGraphicsConsoleServiceGetResponse VmGraphicsConsoleServiceGetResponse
+	var consoleVar GraphicsConsole
+	xml.Unmarshal(respBodyBytes, &consoleVar)
+	vmGraphicsConsoleServiceGetResponse.console = &consoleVar
+	return &vmGraphicsConsoleServiceGetResponse, nil
 }
 
 type VmGraphicsConsoleServiceGetResponse struct {
@@ -41169,6 +49303,50 @@ func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) *AffinityL
 }
 
 func (p *AffinityLabelHostServiceGetRequest) Send() (*AffinityLabelHostServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelHostService.Connection.URL(), p.affinityLabelHostService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelHostService.Connection.username, p.affinityLabelHostService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelHostService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelHostServiceGetResponse AffinityLabelHostServiceGetResponse
+	var hostVar Host
+	xml.Unmarshal(respBodyBytes, &hostVar)
+	affinityLabelHostServiceGetResponse.host = &hostVar
+	return &affinityLabelHostServiceGetResponse, nil
 }
 
 type AffinityLabelHostServiceGetResponse struct {
@@ -41299,6 +49477,50 @@ func (p *AssignedTagServiceGetRequest) Query(key, value string) *AssignedTagServ
 }
 
 func (p *AssignedTagServiceGetRequest) Send() (*AssignedTagServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedTagService.Connection.URL(), p.assignedTagService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedTagService.Connection.username, p.assignedTagService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedTagService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedTagServiceGetResponse AssignedTagServiceGetResponse
+	var tagVar Tag
+	xml.Unmarshal(respBodyBytes, &tagVar)
+	assignedTagServiceGetResponse.tag = &tagVar
+	return &assignedTagServiceGetResponse, nil
 }
 
 type AssignedTagServiceGetResponse struct {
@@ -41653,6 +49875,50 @@ func (p *DiskServiceGetRequest) Query(key, value string) *DiskServiceGetRequest 
 }
 
 func (p *DiskServiceGetRequest) Send() (*DiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskService.Connection.URL(), p.diskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskService.Connection.username, p.diskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskServiceGetResponse DiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	diskServiceGetResponse.disk = &diskVar
+	return &diskServiceGetResponse, nil
 }
 
 type DiskServiceGetResponse struct {
@@ -42036,6 +50302,50 @@ func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) *Te
 }
 
 func (p *TemplateDiskAttachmentsServiceListRequest) Send() (*TemplateDiskAttachmentsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateDiskAttachmentsService.Connection.URL(), p.templateDiskAttachmentsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateDiskAttachmentsService.Connection.username, p.templateDiskAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateDiskAttachmentsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateDiskAttachmentsServiceListResponse TemplateDiskAttachmentsServiceListResponse
+	var attachmentsVar DiskAttachments
+	xml.Unmarshal(respBodyBytes, &attachmentsVar)
+	templateDiskAttachmentsServiceListResponse.attachments = attachmentsVar.DiskAttachments
+	return &templateDiskAttachmentsServiceListResponse, nil
 }
 
 type TemplateDiskAttachmentsServiceListResponse struct {
@@ -42146,6 +50456,59 @@ func (p *StorageDomainContentDisksServiceListRequest) Search(search string) *Sto
 	return p
 }
 func (p *StorageDomainContentDisksServiceListRequest) Send() (*StorageDomainContentDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainContentDisksService.Connection.URL(), p.storageDomainContentDisksService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainContentDisksService.Connection.username, p.storageDomainContentDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainContentDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainContentDisksServiceListResponse StorageDomainContentDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	storageDomainContentDisksServiceListResponse.disks = disksVar.Disks
+	return &storageDomainContentDisksServiceListResponse, nil
 }
 
 type StorageDomainContentDisksServiceListResponse struct {
@@ -42260,6 +50623,53 @@ func (p *HostDevicesServiceListRequest) Max(max int64) *HostDevicesServiceListRe
 	return p
 }
 func (p *HostDevicesServiceListRequest) Send() (*HostDevicesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostDevicesService.Connection.URL(), p.hostDevicesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostDevicesService.Connection.username, p.hostDevicesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostDevicesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostDevicesServiceListResponse HostDevicesServiceListResponse
+	var devicesVar HostDevices
+	xml.Unmarshal(respBodyBytes, &devicesVar)
+	hostDevicesServiceListResponse.devices = devicesVar.HostDevices
+	return &hostDevicesServiceListResponse, nil
 }
 
 type HostDevicesServiceListResponse struct {
@@ -42479,6 +50889,53 @@ func (p *AssignedNetworksServiceListRequest) Max(max int64) *AssignedNetworksSer
 	return p
 }
 func (p *AssignedNetworksServiceListRequest) Send() (*AssignedNetworksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedNetworksService.Connection.URL(), p.assignedNetworksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedNetworksService.Connection.username, p.assignedNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedNetworksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedNetworksServiceListResponse AssignedNetworksServiceListResponse
+	var networksVar Networks
+	xml.Unmarshal(respBodyBytes, &networksVar)
+	assignedNetworksServiceListResponse.networks = networksVar.Networks
+	return &assignedNetworksServiceListResponse, nil
 }
 
 type AssignedNetworksServiceListResponse struct {
@@ -42584,6 +51041,53 @@ func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) *StorageServi
 	return p
 }
 func (p *StorageServiceGetRequest) Send() (*StorageServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageService.Connection.URL(), p.storageService.Path)
+	values := make(url.Values)
+	if p.reportStatus != nil {
+		values["reportStatus"] = []string{fmt.Sprintf("%v", *p.reportStatus)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageService.Connection.username, p.storageService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageServiceGetResponse StorageServiceGetResponse
+	var storageVar HostStorage
+	xml.Unmarshal(respBodyBytes, &storageVar)
+	storageServiceGetResponse.storage = &storageVar
+	return &storageServiceGetResponse, nil
 }
 
 type StorageServiceGetResponse struct {
@@ -42717,6 +51221,50 @@ func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) *UnmanagedN
 }
 
 func (p *UnmanagedNetworkServiceGetRequest) Send() (*UnmanagedNetworkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.unmanagedNetworkService.Connection.URL(), p.unmanagedNetworkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.unmanagedNetworkService.Connection.username, p.unmanagedNetworkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.unmanagedNetworkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var unmanagedNetworkServiceGetResponse UnmanagedNetworkServiceGetResponse
+	var networkVar UnmanagedNetwork
+	xml.Unmarshal(respBodyBytes, &networkVar)
+	unmanagedNetworkServiceGetResponse.network = &networkVar
+	return &unmanagedNetworkServiceGetResponse, nil
 }
 
 type UnmanagedNetworkServiceGetResponse struct {
@@ -42856,6 +51404,50 @@ func (p *QuotaServiceGetRequest) Query(key, value string) *QuotaServiceGetReques
 }
 
 func (p *QuotaServiceGetRequest) Send() (*QuotaServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.quotaService.Connection.URL(), p.quotaService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaService.Connection.username, p.quotaService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.quotaService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var quotaServiceGetResponse QuotaServiceGetResponse
+	var quotaVar Quota
+	xml.Unmarshal(respBodyBytes, &quotaVar)
+	quotaServiceGetResponse.quota = &quotaVar
+	return &quotaServiceGetResponse, nil
 }
 
 type QuotaServiceGetResponse struct {
@@ -43141,6 +51733,50 @@ func (p *SnapshotDiskServiceGetRequest) Query(key, value string) *SnapshotDiskSe
 }
 
 func (p *SnapshotDiskServiceGetRequest) Send() (*SnapshotDiskServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotDiskService.Connection.URL(), p.snapshotDiskService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotDiskService.Connection.username, p.snapshotDiskService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotDiskService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotDiskServiceGetResponse SnapshotDiskServiceGetResponse
+	var diskVar Disk
+	xml.Unmarshal(respBodyBytes, &diskVar)
+	snapshotDiskServiceGetResponse.disk = &diskVar
+	return &snapshotDiskServiceGetResponse, nil
 }
 
 type SnapshotDiskServiceGetResponse struct {
@@ -43341,6 +51977,53 @@ func (p *QossServiceListRequest) Max(max int64) *QossServiceListRequest {
 	return p
 }
 func (p *QossServiceListRequest) Send() (*QossServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.qossService.Connection.URL(), p.qossService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.qossService.Connection.username, p.qossService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.qossService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var qossServiceListResponse QossServiceListResponse
+	var qossVar Qoss
+	xml.Unmarshal(respBodyBytes, &qossVar)
+	qossServiceListResponse.qoss = qossVar.Qoss
+	return &qossServiceListResponse, nil
 }
 
 type QossServiceListResponse struct {
@@ -43442,6 +52125,50 @@ func (p *NetworkServiceGetRequest) Query(key, value string) *NetworkServiceGetRe
 }
 
 func (p *NetworkServiceGetRequest) Send() (*NetworkServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkService.Connection.URL(), p.networkService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkService.Connection.username, p.networkService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkServiceGetResponse NetworkServiceGetResponse
+	var networkVar Network
+	xml.Unmarshal(respBodyBytes, &networkVar)
+	networkServiceGetResponse.network = &networkVar
+	return &networkServiceGetResponse, nil
 }
 
 type NetworkServiceGetResponse struct {
@@ -43754,6 +52481,50 @@ func (p *InstanceTypeServiceGetRequest) Query(key, value string) *InstanceTypeSe
 }
 
 func (p *InstanceTypeServiceGetRequest) Send() (*InstanceTypeServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeService.Connection.URL(), p.instanceTypeService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeService.Connection.username, p.instanceTypeService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeServiceGetResponse InstanceTypeServiceGetResponse
+	var instanceTypeVar InstanceType
+	xml.Unmarshal(respBodyBytes, &instanceTypeVar)
+	instanceTypeServiceGetResponse.instanceType = &instanceTypeVar
+	return &instanceTypeServiceGetResponse, nil
 }
 
 type InstanceTypeServiceGetResponse struct {
@@ -44155,6 +52926,53 @@ func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) *Virtu
 	return p
 }
 func (p *VirtualFunctionAllowedNetworksServiceListRequest) Send() (*VirtualFunctionAllowedNetworksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.virtualFunctionAllowedNetworksService.Connection.URL(), p.virtualFunctionAllowedNetworksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.virtualFunctionAllowedNetworksService.Connection.username, p.virtualFunctionAllowedNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.virtualFunctionAllowedNetworksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var virtualFunctionAllowedNetworksServiceListResponse VirtualFunctionAllowedNetworksServiceListResponse
+	var networksVar Networks
+	xml.Unmarshal(respBodyBytes, &networksVar)
+	virtualFunctionAllowedNetworksServiceListResponse.networks = networksVar.Networks
+	return &virtualFunctionAllowedNetworksServiceListResponse, nil
 }
 
 type VirtualFunctionAllowedNetworksServiceListResponse struct {
@@ -44255,6 +53073,50 @@ func (p *HostHookServiceGetRequest) Query(key, value string) *HostHookServiceGet
 }
 
 func (p *HostHookServiceGetRequest) Send() (*HostHookServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostHookService.Connection.URL(), p.hostHookService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostHookService.Connection.username, p.hostHookService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostHookService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostHookServiceGetResponse HostHookServiceGetResponse
+	var hookVar Hook
+	xml.Unmarshal(respBodyBytes, &hookVar)
+	hostHookServiceGetResponse.hook = &hookVar
+	return &hostHookServiceGetResponse, nil
 }
 
 type HostHookServiceGetResponse struct {
@@ -44343,6 +53205,53 @@ func (p *ImagesServiceListRequest) Max(max int64) *ImagesServiceListRequest {
 	return p
 }
 func (p *ImagesServiceListRequest) Send() (*ImagesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.imagesService.Connection.URL(), p.imagesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.imagesService.Connection.username, p.imagesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.imagesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var imagesServiceListResponse ImagesServiceListResponse
+	var imagesVar Images
+	xml.Unmarshal(respBodyBytes, &imagesVar)
+	imagesServiceListResponse.images = imagesVar.Images
+	return &imagesServiceListResponse, nil
 }
 
 type ImagesServiceListResponse struct {
@@ -44448,6 +53357,53 @@ func (p *SnapshotCdromsServiceListRequest) Max(max int64) *SnapshotCdromsService
 	return p
 }
 func (p *SnapshotCdromsServiceListRequest) Send() (*SnapshotCdromsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotCdromsService.Connection.URL(), p.snapshotCdromsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotCdromsService.Connection.username, p.snapshotCdromsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotCdromsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotCdromsServiceListResponse SnapshotCdromsServiceListResponse
+	var cdromsVar Cdroms
+	xml.Unmarshal(respBodyBytes, &cdromsVar)
+	snapshotCdromsServiceListResponse.cdroms = cdromsVar.Cdroms
+	return &snapshotCdromsServiceListResponse, nil
 }
 
 type SnapshotCdromsServiceListResponse struct {
@@ -44670,6 +53626,56 @@ func (p *BalancesServiceListRequest) Max(max int64) *BalancesServiceListRequest 
 	return p
 }
 func (p *BalancesServiceListRequest) Send() (*BalancesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.balancesService.Connection.URL(), p.balancesService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.balancesService.Connection.username, p.balancesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.balancesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var balancesServiceListResponse BalancesServiceListResponse
+	var balancesVar Balances
+	xml.Unmarshal(respBodyBytes, &balancesVar)
+	balancesServiceListResponse.balances = balancesVar.Balances
+	return &balancesServiceListResponse, nil
 }
 
 type BalancesServiceListResponse struct {
@@ -44774,6 +53780,50 @@ func (p *TemplateCdromServiceGetRequest) Query(key, value string) *TemplateCdrom
 }
 
 func (p *TemplateCdromServiceGetRequest) Send() (*TemplateCdromServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateCdromService.Connection.URL(), p.templateCdromService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateCdromService.Connection.username, p.templateCdromService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateCdromService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateCdromServiceGetResponse TemplateCdromServiceGetResponse
+	var cdromVar Cdrom
+	xml.Unmarshal(respBodyBytes, &cdromVar)
+	templateCdromServiceGetResponse.cdrom = &cdromVar
+	return &templateCdromServiceGetResponse, nil
 }
 
 type TemplateCdromServiceGetResponse struct {
@@ -44945,6 +53995,50 @@ func (p *CpuProfileServiceGetRequest) Query(key, value string) *CpuProfileServic
 }
 
 func (p *CpuProfileServiceGetRequest) Send() (*CpuProfileServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.cpuProfileService.Connection.URL(), p.cpuProfileService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.cpuProfileService.Connection.username, p.cpuProfileService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.cpuProfileService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var cpuProfileServiceGetResponse CpuProfileServiceGetResponse
+	var profileVar CpuProfile
+	xml.Unmarshal(respBodyBytes, &profileVar)
+	cpuProfileServiceGetResponse.profile = &profileVar
+	return &cpuProfileServiceGetResponse, nil
 }
 
 type CpuProfileServiceGetResponse struct {
@@ -45204,6 +54298,50 @@ func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value str
 }
 
 func (p *StorageServerConnectionExtensionServiceGetRequest) Send() (*StorageServerConnectionExtensionServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionExtensionService.Connection.URL(), p.storageServerConnectionExtensionService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionExtensionService.Connection.username, p.storageServerConnectionExtensionService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageServerConnectionExtensionService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageServerConnectionExtensionServiceGetResponse StorageServerConnectionExtensionServiceGetResponse
+	var extensionVar StorageConnectionExtension
+	xml.Unmarshal(respBodyBytes, &extensionVar)
+	storageServerConnectionExtensionServiceGetResponse.extension = &extensionVar
+	return &storageServerConnectionExtensionServiceGetResponse, nil
 }
 
 type StorageServerConnectionExtensionServiceGetResponse struct {
@@ -45430,6 +54568,50 @@ func (p *ClusterLevelsServiceListRequest) Query(key, value string) *ClusterLevel
 }
 
 func (p *ClusterLevelsServiceListRequest) Send() (*ClusterLevelsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.clusterLevelsService.Connection.URL(), p.clusterLevelsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.clusterLevelsService.Connection.username, p.clusterLevelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.clusterLevelsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var clusterLevelsServiceListResponse ClusterLevelsServiceListResponse
+	var levelsVar ClusterLevels
+	xml.Unmarshal(respBodyBytes, &levelsVar)
+	clusterLevelsServiceListResponse.levels = levelsVar.ClusterLevels
+	return &clusterLevelsServiceListResponse, nil
 }
 
 type ClusterLevelsServiceListResponse struct {
@@ -45672,6 +54854,50 @@ func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) *Ne
 }
 
 func (p *NetworkFilterParametersServiceListRequest) Send() (*NetworkFilterParametersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.networkFilterParametersService.Connection.URL(), p.networkFilterParametersService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkFilterParametersService.Connection.username, p.networkFilterParametersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.networkFilterParametersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var networkFilterParametersServiceListResponse NetworkFilterParametersServiceListResponse
+	var parametersVar NetworkFilterParameters
+	xml.Unmarshal(respBodyBytes, &parametersVar)
+	networkFilterParametersServiceListResponse.parameters = parametersVar.NetworkFilterParameters
+	return &networkFilterParametersServiceListResponse, nil
 }
 
 type NetworkFilterParametersServiceListResponse struct {
@@ -45930,6 +55156,53 @@ func (p *VmNicsServiceListRequest) Max(max int64) *VmNicsServiceListRequest {
 	return p
 }
 func (p *VmNicsServiceListRequest) Send() (*VmNicsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmNicsService.Connection.URL(), p.vmNicsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNicsService.Connection.username, p.vmNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmNicsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmNicsServiceListResponse VmNicsServiceListResponse
+	var nicsVar Nics
+	xml.Unmarshal(respBodyBytes, &nicsVar)
+	vmNicsServiceListResponse.nics = nicsVar.Nics
+	return &vmNicsServiceListResponse, nil
 }
 
 type VmNicsServiceListResponse struct {
@@ -46035,6 +55308,53 @@ func (p *VmReportedDevicesServiceListRequest) Max(max int64) *VmReportedDevicesS
 	return p
 }
 func (p *VmReportedDevicesServiceListRequest) Send() (*VmReportedDevicesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.vmReportedDevicesService.Connection.URL(), p.vmReportedDevicesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmReportedDevicesService.Connection.username, p.vmReportedDevicesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.vmReportedDevicesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var vmReportedDevicesServiceListResponse VmReportedDevicesServiceListResponse
+	var reportedDeviceVar ReportedDevices
+	xml.Unmarshal(respBodyBytes, &reportedDeviceVar)
+	vmReportedDevicesServiceListResponse.reportedDevice = reportedDeviceVar.ReportedDevices
+	return &vmReportedDevicesServiceListResponse, nil
 }
 
 type VmReportedDevicesServiceListResponse struct {
@@ -46140,6 +55460,53 @@ func (p *BalanceServiceGetRequest) Filter(filter bool) *BalanceServiceGetRequest
 	return p
 }
 func (p *BalanceServiceGetRequest) Send() (*BalanceServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.balanceService.Connection.URL(), p.balanceService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.balanceService.Connection.username, p.balanceService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.balanceService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var balanceServiceGetResponse BalanceServiceGetResponse
+	var balanceVar Balance
+	xml.Unmarshal(respBodyBytes, &balanceVar)
+	balanceServiceGetResponse.balance = &balanceVar
+	return &balanceServiceGetResponse, nil
 }
 
 type BalanceServiceGetResponse struct {
@@ -46421,6 +55788,53 @@ func (p *PermitsServiceListRequest) Max(max int64) *PermitsServiceListRequest {
 	return p
 }
 func (p *PermitsServiceListRequest) Send() (*PermitsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.permitsService.Connection.URL(), p.permitsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.permitsService.Connection.username, p.permitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.permitsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var permitsServiceListResponse PermitsServiceListResponse
+	var permitsVar Permits
+	xml.Unmarshal(respBodyBytes, &permitsVar)
+	permitsServiceListResponse.permits = permitsVar.Permits
+	return &permitsServiceListResponse, nil
 }
 
 type PermitsServiceListResponse struct {
@@ -46547,6 +55961,53 @@ func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) *StorageDomain
 	return p
 }
 func (p *StorageDomainTemplatesServiceListRequest) Send() (*StorageDomainTemplatesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainTemplatesService.Connection.URL(), p.storageDomainTemplatesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainTemplatesService.Connection.username, p.storageDomainTemplatesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainTemplatesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainTemplatesServiceListResponse StorageDomainTemplatesServiceListResponse
+	var templatesVar Templates
+	xml.Unmarshal(respBodyBytes, &templatesVar)
+	storageDomainTemplatesServiceListResponse.templates = templatesVar.Templates
+	return &storageDomainTemplatesServiceListResponse, nil
 }
 
 type StorageDomainTemplatesServiceListResponse struct {
@@ -46647,6 +56108,50 @@ func (p *SystemServiceGetRequest) Query(key, value string) *SystemServiceGetRequ
 }
 
 func (p *SystemServiceGetRequest) Send() (*SystemServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.systemService.Connection.URL(), p.systemService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.systemService.Connection.username, p.systemService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.systemService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var systemServiceGetResponse SystemServiceGetResponse
+	var apiVar Api
+	xml.Unmarshal(respBodyBytes, &apiVar)
+	systemServiceGetResponse.api = &apiVar
+	return &systemServiceGetResponse, nil
 }
 
 type SystemServiceGetResponse struct {
@@ -47323,6 +56828,50 @@ func (p *ExternalHostServiceGetRequest) Query(key, value string) *ExternalHostSe
 }
 
 func (p *ExternalHostServiceGetRequest) Send() (*ExternalHostServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostService.Connection.URL(), p.externalHostService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostService.Connection.username, p.externalHostService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostServiceGetResponse ExternalHostServiceGetResponse
+	var hostVar ExternalHost
+	xml.Unmarshal(respBodyBytes, &hostVar)
+	externalHostServiceGetResponse.host = &hostVar
+	return &externalHostServiceGetResponse, nil
 }
 
 type ExternalHostServiceGetResponse struct {
@@ -47406,6 +56955,50 @@ func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) *ExternalH
 }
 
 func (p *ExternalHostGroupServiceGetRequest) Send() (*ExternalHostGroupServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostGroupService.Connection.URL(), p.externalHostGroupService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostGroupService.Connection.username, p.externalHostGroupService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostGroupService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostGroupServiceGetResponse ExternalHostGroupServiceGetResponse
+	var groupVar ExternalHostGroup
+	xml.Unmarshal(respBodyBytes, &groupVar)
+	externalHostGroupServiceGetResponse.group = &groupVar
+	return &externalHostGroupServiceGetResponse, nil
 }
 
 type ExternalHostGroupServiceGetResponse struct {
@@ -47490,6 +57083,50 @@ func (p *KatelloErratumServiceGetRequest) Query(key, value string) *KatelloErrat
 }
 
 func (p *KatelloErratumServiceGetRequest) Send() (*KatelloErratumServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.katelloErratumService.Connection.URL(), p.katelloErratumService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.katelloErratumService.Connection.username, p.katelloErratumService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.katelloErratumService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var katelloErratumServiceGetResponse KatelloErratumServiceGetResponse
+	var erratumVar KatelloErratum
+	xml.Unmarshal(respBodyBytes, &erratumVar)
+	katelloErratumServiceGetResponse.erratum = &erratumVar
+	return &katelloErratumServiceGetResponse, nil
 }
 
 type KatelloErratumServiceGetResponse struct {
@@ -47597,6 +57234,50 @@ func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) *Exte
 }
 
 func (p *ExternalDiscoveredHostServiceGetRequest) Send() (*ExternalDiscoveredHostServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalDiscoveredHostService.Connection.URL(), p.externalDiscoveredHostService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalDiscoveredHostService.Connection.username, p.externalDiscoveredHostService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalDiscoveredHostService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalDiscoveredHostServiceGetResponse ExternalDiscoveredHostServiceGetResponse
+	var hostVar ExternalDiscoveredHost
+	xml.Unmarshal(respBodyBytes, &hostVar)
+	externalDiscoveredHostServiceGetResponse.host = &hostVar
+	return &externalDiscoveredHostServiceGetResponse, nil
 }
 
 type ExternalDiscoveredHostServiceGetResponse struct {
@@ -47687,6 +57368,53 @@ func (p *EngineKatelloErrataServiceListRequest) Max(max int64) *EngineKatelloErr
 	return p
 }
 func (p *EngineKatelloErrataServiceListRequest) Send() (*EngineKatelloErrataServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.engineKatelloErrataService.Connection.URL(), p.engineKatelloErrataService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.engineKatelloErrataService.Connection.username, p.engineKatelloErrataService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.engineKatelloErrataService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var engineKatelloErrataServiceListResponse EngineKatelloErrataServiceListResponse
+	var errataVar KatelloErratums
+	xml.Unmarshal(respBodyBytes, &errataVar)
+	engineKatelloErrataServiceListResponse.errata = errataVar.KatelloErratums
+	return &engineKatelloErrataServiceListResponse, nil
 }
 
 type EngineKatelloErrataServiceListResponse struct {
@@ -47816,6 +57544,50 @@ func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) *Ext
 }
 
 func (p *ExternalComputeResourceServiceGetRequest) Send() (*ExternalComputeResourceServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalComputeResourceService.Connection.URL(), p.externalComputeResourceService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalComputeResourceService.Connection.username, p.externalComputeResourceService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalComputeResourceService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalComputeResourceServiceGetResponse ExternalComputeResourceServiceGetResponse
+	var resourceVar ExternalComputeResource
+	xml.Unmarshal(respBodyBytes, &resourceVar)
+	externalComputeResourceServiceGetResponse.resource = &resourceVar
+	return &externalComputeResourceServiceGetResponse, nil
 }
 
 type ExternalComputeResourceServiceGetResponse struct {
@@ -47904,6 +57676,53 @@ func (p *ExternalHostGroupsServiceListRequest) Max(max int64) *ExternalHostGroup
 	return p
 }
 func (p *ExternalHostGroupsServiceListRequest) Send() (*ExternalHostGroupsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostGroupsService.Connection.URL(), p.externalHostGroupsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostGroupsService.Connection.username, p.externalHostGroupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostGroupsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostGroupsServiceListResponse ExternalHostGroupsServiceListResponse
+	var groupsVar ExternalHostGroups
+	xml.Unmarshal(respBodyBytes, &groupsVar)
+	externalHostGroupsServiceListResponse.groups = groupsVar.ExternalHostGroups
+	return &externalHostGroupsServiceListResponse, nil
 }
 
 type ExternalHostGroupsServiceListResponse struct {
@@ -48004,6 +57823,50 @@ func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) *Extern
 }
 
 func (p *ExternalHostProviderServiceGetRequest) Send() (*ExternalHostProviderServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostProviderService.Connection.URL(), p.externalHostProviderService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostProviderService.Connection.username, p.externalHostProviderService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostProviderService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostProviderServiceGetResponse ExternalHostProviderServiceGetResponse
+	var providerVar ExternalHostProvider
+	xml.Unmarshal(respBodyBytes, &providerVar)
+	externalHostProviderServiceGetResponse.provider = &providerVar
+	return &externalHostProviderServiceGetResponse, nil
 }
 
 type ExternalHostProviderServiceGetResponse struct {
@@ -48384,6 +58247,53 @@ func (p *KatelloErrataServiceListRequest) Max(max int64) *KatelloErrataServiceLi
 	return p
 }
 func (p *KatelloErrataServiceListRequest) Send() (*KatelloErrataServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.katelloErrataService.Connection.URL(), p.katelloErrataService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.katelloErrataService.Connection.username, p.katelloErrataService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.katelloErrataService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var katelloErrataServiceListResponse KatelloErrataServiceListResponse
+	var errataVar KatelloErratums
+	xml.Unmarshal(respBodyBytes, &errataVar)
+	katelloErrataServiceListResponse.errata = errataVar.KatelloErratums
+	return &katelloErrataServiceListResponse, nil
 }
 
 type KatelloErrataServiceListResponse struct {
@@ -48518,6 +58428,53 @@ func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) *ExternalDisc
 	return p
 }
 func (p *ExternalDiscoveredHostsServiceListRequest) Send() (*ExternalDiscoveredHostsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalDiscoveredHostsService.Connection.URL(), p.externalDiscoveredHostsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalDiscoveredHostsService.Connection.username, p.externalDiscoveredHostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalDiscoveredHostsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalDiscoveredHostsServiceListResponse ExternalDiscoveredHostsServiceListResponse
+	var hostsVar ExternalDiscoveredHosts
+	xml.Unmarshal(respBodyBytes, &hostsVar)
+	externalDiscoveredHostsServiceListResponse.hosts = hostsVar.ExternalDiscoveredHosts
+	return &externalDiscoveredHostsServiceListResponse, nil
 }
 
 type ExternalDiscoveredHostsServiceListResponse struct {
@@ -48623,6 +58580,53 @@ func (p *ExternalHostsServiceListRequest) Max(max int64) *ExternalHostsServiceLi
 	return p
 }
 func (p *ExternalHostsServiceListRequest) Send() (*ExternalHostsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostsService.Connection.URL(), p.externalHostsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostsService.Connection.username, p.externalHostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostsServiceListResponse ExternalHostsServiceListResponse
+	var hostsVar ExternalHosts
+	xml.Unmarshal(respBodyBytes, &hostsVar)
+	externalHostsServiceListResponse.hosts = hostsVar.ExternalHosts
+	return &externalHostsServiceListResponse, nil
 }
 
 type ExternalHostsServiceListResponse struct {
@@ -48728,6 +58732,53 @@ func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) *ExternalCom
 	return p
 }
 func (p *ExternalComputeResourcesServiceListRequest) Send() (*ExternalComputeResourcesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalComputeResourcesService.Connection.URL(), p.externalComputeResourcesService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalComputeResourcesService.Connection.username, p.externalComputeResourcesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalComputeResourcesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalComputeResourcesServiceListResponse ExternalComputeResourcesServiceListResponse
+	var resourcesVar ExternalComputeResources
+	xml.Unmarshal(respBodyBytes, &resourcesVar)
+	externalComputeResourcesServiceListResponse.resources = resourcesVar.ExternalComputeResources
+	return &externalComputeResourcesServiceListResponse, nil
 }
 
 type ExternalComputeResourcesServiceListResponse struct {
@@ -48945,6 +58996,53 @@ func (p *ExternalHostProvidersServiceListRequest) Max(max int64) *ExternalHostPr
 	return p
 }
 func (p *ExternalHostProvidersServiceListRequest) Send() (*ExternalHostProvidersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.externalHostProvidersService.Connection.URL(), p.externalHostProvidersService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostProvidersService.Connection.username, p.externalHostProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.externalHostProvidersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var externalHostProvidersServiceListResponse ExternalHostProvidersServiceListResponse
+	var providersVar ExternalHostProviders
+	xml.Unmarshal(respBodyBytes, &providersVar)
+	externalHostProvidersServiceListResponse.providers = providersVar.ExternalHostProviders
+	return &externalHostProvidersServiceListResponse, nil
 }
 
 type ExternalHostProvidersServiceListResponse struct {
@@ -49046,6 +59144,50 @@ func (p *GlusterBrickServiceGetRequest) Query(key, value string) *GlusterBrickSe
 }
 
 func (p *GlusterBrickServiceGetRequest) Send() (*GlusterBrickServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterBrickService.Connection.URL(), p.glusterBrickService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterBrickService.Connection.username, p.glusterBrickService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterBrickService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterBrickServiceGetResponse GlusterBrickServiceGetResponse
+	var brickVar GlusterBrick
+	xml.Unmarshal(respBodyBytes, &brickVar)
+	glusterBrickServiceGetResponse.brick = &brickVar
+	return &glusterBrickServiceGetResponse, nil
 }
 
 type GlusterBrickServiceGetResponse struct {
@@ -49480,6 +59622,59 @@ func (p *GlusterVolumesServiceListRequest) Search(search string) *GlusterVolumes
 	return p
 }
 func (p *GlusterVolumesServiceListRequest) Send() (*GlusterVolumesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterVolumesService.Connection.URL(), p.glusterVolumesService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterVolumesService.Connection.username, p.glusterVolumesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterVolumesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterVolumesServiceListResponse GlusterVolumesServiceListResponse
+	var volumesVar GlusterVolumes
+	xml.Unmarshal(respBodyBytes, &volumesVar)
+	glusterVolumesServiceListResponse.volumes = volumesVar.GlusterVolumes
+	return &glusterVolumesServiceListResponse, nil
 }
 
 type GlusterVolumesServiceListResponse struct {
@@ -49597,6 +59792,50 @@ func (p *GlusterVolumeServiceGetRequest) Query(key, value string) *GlusterVolume
 }
 
 func (p *GlusterVolumeServiceGetRequest) Send() (*GlusterVolumeServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterVolumeService.Connection.URL(), p.glusterVolumeService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterVolumeService.Connection.username, p.glusterVolumeService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterVolumeService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterVolumeServiceGetResponse GlusterVolumeServiceGetResponse
+	var volumeVar GlusterVolume
+	xml.Unmarshal(respBodyBytes, &volumeVar)
+	glusterVolumeServiceGetResponse.volume = &volumeVar
+	return &glusterVolumeServiceGetResponse, nil
 }
 
 type GlusterVolumeServiceGetResponse struct {
@@ -50610,6 +60849,50 @@ func (p *GlusterHookServiceGetRequest) Query(key, value string) *GlusterHookServ
 }
 
 func (p *GlusterHookServiceGetRequest) Send() (*GlusterHookServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterHookService.Connection.URL(), p.glusterHookService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterHookService.Connection.username, p.glusterHookService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterHookService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterHookServiceGetResponse GlusterHookServiceGetResponse
+	var hookVar GlusterHook
+	xml.Unmarshal(respBodyBytes, &hookVar)
+	glusterHookServiceGetResponse.hook = &hookVar
+	return &glusterHookServiceGetResponse, nil
 }
 
 type GlusterHookServiceGetResponse struct {
@@ -51071,6 +61354,53 @@ func (p *GlusterBricksServiceListRequest) Max(max int64) *GlusterBricksServiceLi
 	return p
 }
 func (p *GlusterBricksServiceListRequest) Send() (*GlusterBricksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterBricksService.Connection.URL(), p.glusterBricksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterBricksService.Connection.username, p.glusterBricksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterBricksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterBricksServiceListResponse GlusterBricksServiceListResponse
+	var bricksVar GlusterBricks
+	xml.Unmarshal(respBodyBytes, &bricksVar)
+	glusterBricksServiceListResponse.bricks = bricksVar.GlusterBricks
+	return &glusterBricksServiceListResponse, nil
 }
 
 type GlusterBricksServiceListResponse struct {
@@ -51459,6 +61789,53 @@ func (p *GlusterHooksServiceListRequest) Max(max int64) *GlusterHooksServiceList
 	return p
 }
 func (p *GlusterHooksServiceListRequest) Send() (*GlusterHooksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.glusterHooksService.Connection.URL(), p.glusterHooksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterHooksService.Connection.username, p.glusterHooksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.glusterHooksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var glusterHooksServiceListResponse GlusterHooksServiceListResponse
+	var hooksVar GlusterHooks
+	xml.Unmarshal(respBodyBytes, &hooksVar)
+	glusterHooksServiceListResponse.hooks = hooksVar.GlusterHooks
+	return &glusterHooksServiceListResponse, nil
 }
 
 type GlusterHooksServiceListResponse struct {
@@ -51771,6 +62148,59 @@ func (p *DisksServiceListRequest) Search(search string) *DisksServiceListRequest
 	return p
 }
 func (p *DisksServiceListRequest) Send() (*DisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.disksService.Connection.URL(), p.disksService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.disksService.Connection.username, p.disksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.disksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var disksServiceListResponse DisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	disksServiceListResponse.disks = disksVar.Disks
+	return &disksServiceListResponse, nil
 }
 
 type DisksServiceListResponse struct {
@@ -52031,6 +62461,56 @@ func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) *Instanc
 	return p
 }
 func (p *InstanceTypeWatchdogsServiceListRequest) Send() (*InstanceTypeWatchdogsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.instanceTypeWatchdogsService.Connection.URL(), p.instanceTypeWatchdogsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeWatchdogsService.Connection.username, p.instanceTypeWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.instanceTypeWatchdogsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var instanceTypeWatchdogsServiceListResponse InstanceTypeWatchdogsServiceListResponse
+	var watchdogsVar Watchdogs
+	xml.Unmarshal(respBodyBytes, &watchdogsVar)
+	instanceTypeWatchdogsServiceListResponse.watchdogs = watchdogsVar.Watchdogs
+	return &instanceTypeWatchdogsServiceListResponse, nil
 }
 
 type InstanceTypeWatchdogsServiceListResponse struct {
@@ -52291,6 +62771,53 @@ func (p *JobsServiceListRequest) Max(max int64) *JobsServiceListRequest {
 	return p
 }
 func (p *JobsServiceListRequest) Send() (*JobsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.jobsService.Connection.URL(), p.jobsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.jobsService.Connection.username, p.jobsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.jobsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var jobsServiceListResponse JobsServiceListResponse
+	var jobsVar Jobs
+	xml.Unmarshal(respBodyBytes, &jobsVar)
+	jobsServiceListResponse.jobs = jobsVar.Jobs
+	return &jobsServiceListResponse, nil
 }
 
 type JobsServiceListResponse struct {
@@ -52425,6 +62952,53 @@ func (p *IconsServiceListRequest) Max(max int64) *IconsServiceListRequest {
 	return p
 }
 func (p *IconsServiceListRequest) Send() (*IconsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.iconsService.Connection.URL(), p.iconsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.iconsService.Connection.username, p.iconsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.iconsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var iconsServiceListResponse IconsServiceListResponse
+	var iconsVar Icons
+	xml.Unmarshal(respBodyBytes, &iconsVar)
+	iconsServiceListResponse.icons = iconsVar.Icons
+	return &iconsServiceListResponse, nil
 }
 
 type IconsServiceListResponse struct {
@@ -52719,6 +63293,62 @@ func (p *TemplatesServiceListRequest) Search(search string) *TemplatesServiceLis
 	return p
 }
 func (p *TemplatesServiceListRequest) Send() (*TemplatesServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templatesService.Connection.URL(), p.templatesService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templatesService.Connection.username, p.templatesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templatesService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templatesServiceListResponse TemplatesServiceListResponse
+	var templatesVar Templates
+	xml.Unmarshal(respBodyBytes, &templatesVar)
+	templatesServiceListResponse.templates = templatesVar.Templates
+	return &templatesServiceListResponse, nil
 }
 
 type TemplatesServiceListResponse struct {
@@ -52843,6 +63473,53 @@ func (p *FilterServiceGetRequest) Filter(filter bool) *FilterServiceGetRequest {
 	return p
 }
 func (p *FilterServiceGetRequest) Send() (*FilterServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.filterService.Connection.URL(), p.filterService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.filterService.Connection.username, p.filterService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.filterService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var filterServiceGetResponse FilterServiceGetResponse
+	var resultVar Filter
+	xml.Unmarshal(respBodyBytes, &resultVar)
+	filterServiceGetResponse.result = &resultVar
+	return &filterServiceGetResponse, nil
 }
 
 type FilterServiceGetResponse struct {
@@ -53104,6 +63781,50 @@ func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) *Ass
 }
 
 func (p *AssignedAffinityLabelsServiceListRequest) Send() (*AssignedAffinityLabelsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedAffinityLabelsService.Connection.URL(), p.assignedAffinityLabelsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedAffinityLabelsService.Connection.username, p.assignedAffinityLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedAffinityLabelsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedAffinityLabelsServiceListResponse AssignedAffinityLabelsServiceListResponse
+	var labelVar AffinityLabels
+	xml.Unmarshal(respBodyBytes, &labelVar)
+	assignedAffinityLabelsServiceListResponse.label = labelVar.AffinityLabels
+	return &assignedAffinityLabelsServiceListResponse, nil
 }
 
 type AssignedAffinityLabelsServiceListResponse struct {
@@ -53200,6 +63921,50 @@ func (p *SnapshotCdromServiceGetRequest) Query(key, value string) *SnapshotCdrom
 }
 
 func (p *SnapshotCdromServiceGetRequest) Send() (*SnapshotCdromServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.snapshotCdromService.Connection.URL(), p.snapshotCdromService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotCdromService.Connection.username, p.snapshotCdromService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.snapshotCdromService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var snapshotCdromServiceGetResponse SnapshotCdromServiceGetResponse
+	var cdromVar Cdrom
+	xml.Unmarshal(respBodyBytes, &cdromVar)
+	snapshotCdromServiceGetResponse.cdrom = &cdromVar
+	return &snapshotCdromServiceGetResponse, nil
 }
 
 type SnapshotCdromServiceGetResponse struct {
@@ -53283,6 +64048,50 @@ func (p *HostNumaNodeServiceGetRequest) Query(key, value string) *HostNumaNodeSe
 }
 
 func (p *HostNumaNodeServiceGetRequest) Send() (*HostNumaNodeServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostNumaNodeService.Connection.URL(), p.hostNumaNodeService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostNumaNodeService.Connection.username, p.hostNumaNodeService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostNumaNodeService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostNumaNodeServiceGetResponse HostNumaNodeServiceGetResponse
+	var nodeVar NumaNode
+	xml.Unmarshal(respBodyBytes, &nodeVar)
+	hostNumaNodeServiceGetResponse.node = &nodeVar
+	return &hostNumaNodeServiceGetResponse, nil
 }
 
 type HostNumaNodeServiceGetResponse struct {
@@ -53378,6 +64187,50 @@ func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) *Tem
 }
 
 func (p *TemplateGraphicsConsoleServiceGetRequest) Send() (*TemplateGraphicsConsoleServiceGetResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.templateGraphicsConsoleService.Connection.URL(), p.templateGraphicsConsoleService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateGraphicsConsoleService.Connection.username, p.templateGraphicsConsoleService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.templateGraphicsConsoleService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var templateGraphicsConsoleServiceGetResponse TemplateGraphicsConsoleServiceGetResponse
+	var consoleVar GraphicsConsole
+	xml.Unmarshal(respBodyBytes, &consoleVar)
+	templateGraphicsConsoleServiceGetResponse.console = &consoleVar
+	return &templateGraphicsConsoleServiceGetResponse, nil
 }
 
 type TemplateGraphicsConsoleServiceGetResponse struct {
@@ -53635,6 +64488,50 @@ func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) *Affinit
 }
 
 func (p *AffinityLabelHostsServiceListRequest) Send() (*AffinityLabelHostsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.affinityLabelHostsService.Connection.URL(), p.affinityLabelHostsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelHostsService.Connection.username, p.affinityLabelHostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.affinityLabelHostsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var affinityLabelHostsServiceListResponse AffinityLabelHostsServiceListResponse
+	var hostsVar Hosts
+	xml.Unmarshal(respBodyBytes, &hostsVar)
+	affinityLabelHostsServiceListResponse.hosts = hostsVar.Hosts
+	return &affinityLabelHostsServiceListResponse, nil
 }
 
 type AffinityLabelHostsServiceListResponse struct {
@@ -53736,6 +64633,53 @@ func (p *DiskSnapshotsServiceListRequest) Max(max int64) *DiskSnapshotsServiceLi
 	return p
 }
 func (p *DiskSnapshotsServiceListRequest) Send() (*DiskSnapshotsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.diskSnapshotsService.Connection.URL(), p.diskSnapshotsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskSnapshotsService.Connection.username, p.diskSnapshotsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.diskSnapshotsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var diskSnapshotsServiceListResponse DiskSnapshotsServiceListResponse
+	var snapshotsVar DiskSnapshots
+	xml.Unmarshal(respBodyBytes, &snapshotsVar)
+	diskSnapshotsServiceListResponse.snapshots = snapshotsVar.DiskSnapshots
+	return &diskSnapshotsServiceListResponse, nil
 }
 
 type DiskSnapshotsServiceListResponse struct {
@@ -53866,6 +64810,53 @@ func (p *StorageDomainVmsServiceListRequest) Max(max int64) *StorageDomainVmsSer
 	return p
 }
 func (p *StorageDomainVmsServiceListRequest) Send() (*StorageDomainVmsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainVmsService.Connection.URL(), p.storageDomainVmsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainVmsService.Connection.username, p.storageDomainVmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainVmsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainVmsServiceListResponse StorageDomainVmsServiceListResponse
+	var vmVar Vms
+	xml.Unmarshal(respBodyBytes, &vmVar)
+	storageDomainVmsServiceListResponse.vm = vmVar.Vms
+	return &storageDomainVmsServiceListResponse, nil
 }
 
 type StorageDomainVmsServiceListResponse struct {
@@ -54150,6 +65141,62 @@ func (p *HostsServiceListRequest) Search(search string) *HostsServiceListRequest
 	return p
 }
 func (p *HostsServiceListRequest) Send() (*HostsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.hostsService.Connection.URL(), p.hostsService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostsService.Connection.username, p.hostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.hostsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var hostsServiceListResponse HostsServiceListResponse
+	var hostsVar Hosts
+	xml.Unmarshal(respBodyBytes, &hostsVar)
+	hostsServiceListResponse.hosts = hostsVar.Hosts
+	return &hostsServiceListResponse, nil
 }
 
 type HostsServiceListResponse struct {
@@ -54419,6 +65466,53 @@ func (p *StorageDomainDisksServiceListRequest) Max(max int64) *StorageDomainDisk
 	return p
 }
 func (p *StorageDomainDisksServiceListRequest) Send() (*StorageDomainDisksServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageDomainDisksService.Connection.URL(), p.storageDomainDisksService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainDisksService.Connection.username, p.storageDomainDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageDomainDisksService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageDomainDisksServiceListResponse StorageDomainDisksServiceListResponse
+	var disksVar Disks
+	xml.Unmarshal(respBodyBytes, &disksVar)
+	storageDomainDisksServiceListResponse.disks = disksVar.Disks
+	return &storageDomainDisksServiceListResponse, nil
 }
 
 type StorageDomainDisksServiceListResponse struct {
@@ -54643,6 +65737,56 @@ func (p *FiltersServiceListRequest) Max(max int64) *FiltersServiceListRequest {
 	return p
 }
 func (p *FiltersServiceListRequest) Send() (*FiltersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.filtersService.Connection.URL(), p.filtersService.Path)
+	values := make(url.Values)
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.filtersService.Connection.username, p.filtersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.filtersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var filtersServiceListResponse FiltersServiceListResponse
+	var filtersVar Filters
+	xml.Unmarshal(respBodyBytes, &filtersVar)
+	filtersServiceListResponse.filters = filtersVar.Filters
+	return &filtersServiceListResponse, nil
 }
 
 type FiltersServiceListResponse struct {
@@ -54882,6 +66026,53 @@ func (p *StorageServerConnectionsServiceListRequest) Max(max int64) *StorageServ
 	return p
 }
 func (p *StorageServerConnectionsServiceListRequest) Send() (*StorageServerConnectionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionsService.Connection.URL(), p.storageServerConnectionsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionsService.Connection.username, p.storageServerConnectionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.storageServerConnectionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var storageServerConnectionsServiceListResponse StorageServerConnectionsServiceListResponse
+	var connectionsVar StorageConnections
+	xml.Unmarshal(respBodyBytes, &connectionsVar)
+	storageServerConnectionsServiceListResponse.connections = connectionsVar.StorageConnections
+	return &storageServerConnectionsServiceListResponse, nil
 }
 
 type StorageServerConnectionsServiceListResponse struct {
@@ -55099,6 +66290,53 @@ func (p *FenceAgentsServiceListRequest) Max(max int64) *FenceAgentsServiceListRe
 	return p
 }
 func (p *FenceAgentsServiceListRequest) Send() (*FenceAgentsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.fenceAgentsService.Connection.URL(), p.fenceAgentsService.Path)
+	values := make(url.Values)
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.fenceAgentsService.Connection.username, p.fenceAgentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.fenceAgentsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var fenceAgentsServiceListResponse FenceAgentsServiceListResponse
+	var agentsVar Agents
+	xml.Unmarshal(respBodyBytes, &agentsVar)
+	fenceAgentsServiceListResponse.agents = agentsVar.Agents
+	return &fenceAgentsServiceListResponse, nil
 }
 
 type FenceAgentsServiceListResponse struct {
@@ -55350,6 +66588,62 @@ func (p *ClustersServiceListRequest) Search(search string) *ClustersServiceListR
 	return p
 }
 func (p *ClustersServiceListRequest) Send() (*ClustersServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.clustersService.Connection.URL(), p.clustersService.Path)
+	values := make(url.Values)
+	if p.caseSensitive != nil {
+		values["caseSensitive"] = []string{fmt.Sprintf("%v", *p.caseSensitive)}
+	}
+	if p.filter != nil {
+		values["filter"] = []string{fmt.Sprintf("%v", *p.filter)}
+	}
+	if p.max != nil {
+		values["max"] = []string{fmt.Sprintf("%v", *p.max)}
+	}
+	if p.search != nil {
+		values["search"] = []string{fmt.Sprintf("%v", *p.search)}
+	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.clustersService.Connection.username, p.clustersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.clustersService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var clustersServiceListResponse ClustersServiceListResponse
+	var clustersVar Clusters
+	xml.Unmarshal(respBodyBytes, &clustersVar)
+	clustersServiceListResponse.clusters = clustersVar.Clusters
+	return &clustersServiceListResponse, nil
 }
 
 type ClustersServiceListResponse struct {
@@ -55626,6 +66920,50 @@ func (p *AssignedPermissionsServiceListRequest) Query(key, value string) *Assign
 }
 
 func (p *AssignedPermissionsServiceListRequest) Send() (*AssignedPermissionsServiceListResponse, error) {
+	rawURL := fmt.Sprintf("%s%s", p.assignedPermissionsService.Connection.URL(), p.assignedPermissionsService.Path)
+	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	req, err := http.NewRequest("POST", rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedPermissionsService.Connection.username, p.assignedPermissionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response
+	resp, err := p.assignedPermissionsService.Connection.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	respBodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	var assignedPermissionsServiceListResponse AssignedPermissionsServiceListResponse
+	var permissionsVar Permissions
+	xml.Unmarshal(respBodyBytes, &permissionsVar)
+	assignedPermissionsServiceListResponse.permissions = permissionsVar.Permissions
+	return &assignedPermissionsServiceListResponse, nil
 }
 
 type AssignedPermissionsServiceListResponse struct {
