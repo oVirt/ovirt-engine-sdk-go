@@ -153,34 +153,45 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateMethod(Method method, Service service) {
-        Name name = method.getName();
-
         // Generate the request and response struct for method
         generateRequest(method, service);
         generateResponse(method, service);
 
-        if (ADD.equals(name)) {
-            generateAddHttpPost(method, service);
-        }
-        else if (GET.equals(name) || LIST.equals(name)) {
-            generateHttpGet(method, service);
-        }
-        else if (REMOVE.equals(name)) {
-            generateHttpDelete(method, service);
-        }
-        else if (UPDATE.equals(name)) {
-            generateHttpPut(method, service);
-        }
-        else {
-            generateActionHttpPost(method, service);
-        }
+        // Generate the method using Request/Response
+        Name methodName = method.getName();
+        String request = getRequestClassName(method, service);
+        String methodNameString = goNames.getPublicMethodStyleName(methodName);
+        GoClassName serviceClassName = goNames.getServiceName(service);
+        buffer.addLine("func (p *%1$s) %2$s() *%3$s {",
+            serviceClassName.getClassName(), methodNameString, request);
+        buffer.startBlock();
+        buffer.addLine("return &%1$s{%2$s: p}",
+            request,
+            goNames.getPrivateMemberStyleName(serviceClassName.getClassName()));
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        // if (ADD.equals(name)) {
+        //     generateAddHttpPost(method, service);
+        // }
+        // else if (GET.equals(name) || LIST.equals(name)) {
+        //     generateHttpGet(method, service);
+        // }
+        // else if (REMOVE.equals(name)) {
+        //     generateHttpDelete(method, service);
+        // }
+        // else if (UPDATE.equals(name)) {
+        //     generateHttpPut(method, service);
+        // }
+        // else {
+        //     generateActionHttpPost(method, service);
+        // }
     }
 
     private void generateRequest(Method method, Service service) {
         // Begin class
         Name methodName = method.getName();
         String request = getRequestClassName(method, service);
-        String response = getResponseClassName(method, service);
 
         buffer.addLine("type %1$s struct {", request);
         buffer.startBlock();

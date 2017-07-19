@@ -21,14 +21,12 @@ func TestSend(t *testing.T) {
 	}
 	defer conn.Close()
 
-	clustersService := conn.SystemService().ClustersService()
+	clustersListResponse, err2 := conn.SystemService().ClustersService().
+		List().
+		CaseSensitive(false).
+		Max(100).
+		Send()
 
-	clustersListRequest := &ClustersServiceListRequest{}
-	clustersListRequest.clustersService = clustersService
-	clustersListRequest.CaseSensitive(false)
-	clustersListRequest.Max(100)
-
-	clustersListResponse, err2 := clustersListRequest.Send()
 	if err2 != nil {
 		t.Fatalf("Get clusters failed, reason: %s", err2.Error())
 	}

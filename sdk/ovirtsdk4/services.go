@@ -23,7 +23,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -165,87 +164,8 @@ type VnicProfilesServiceAddResponse struct {
 func (p *VnicProfilesServiceAddResponse) Profile() *VnicProfile {
 	return p.profile
 }
-
-//
-// Add a vNIC profile.
-// For example to add vNIC profile `123` to network `456` send a request to:
-// [source]
-// ----
-// POST /ovirt-engine/api/networks/456/vnicprofiles
-// ----
-// With the following body:
-// [source,xml]
-// ----
-// <vnic_profile id="123">
-//   <name>new_vNIC_name</name>
-//   <pass_through>
-//     <mode>disabled</mode>
-//   </pass_through>
-//   <port_mirroring>false</port_mirroring>
-// </vnic_profile>
-// ----
-// Please note that there is a default network filter to each VNIC profile.
-// For more details of how the default network filter is calculated please refer to
-// the documentation in <<services/network_filters,NetworkFilters>>.
-// The output of creating a new VNIC profile depends in the  body  arguments that were given.
-// In case no network filter was given, the default network filter will be configured. For example:
-// [source,xml]
-// ----
-// <vnic_profile href="/ovirt-engine/api/vnicprofiles/123" id="123">
-//   <name>new_vNIC_name</name>
-//   <link href="/ovirt-engine/api/vnicprofiles/123/permissions" rel="permissions"/>
-//   <pass_through>
-//     <mode>disabled</mode>
-//   </pass_through>
-//   <port_mirroring>false</port_mirroring>
-//   <network href="/ovirt-engine/api/networks/456" id="456"/>
-//   <network_filter href="/ovirt-engine/api/networkfilters/789" id="789"/>
-// </vnic_profile>
-// ----
-// In case an empty network filter was given, no network filter will be configured for the specific VNIC profile
-// regardless of the VNIC profile's default network filter. For example:
-// [source,xml]
-// ----
-// <vnic_profile>
-//   <name>no_network_filter</name>
-//   <network_filter/>
-// </vnic_profile>
-// ----
-// In case that a specific valid network filter id was given, the VNIC profile will be configured with the given
-// network filter regardless of the VNIC profiles's default network filter. For example:
-// [source,xml]
-// ----
-// <vnic_profile>
-//   <name>user_choice_network_filter</name>
-//   <network_filter id= "0000001b-001b-001b-001b-0000000001d5"/>
-// </vnic_profile>
-// ----
-// This method supports the following parameters:
-// `Profile`:: The vNIC profile that is being added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VnicProfilesService) Add(
-	profile *VnicProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar VnicProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *VnicProfilesService) Add() *VnicProfilesServiceAddRequest {
+	return &VnicProfilesServiceAddRequest{vnicProfilesService: p}
 }
 
 type VnicProfilesServiceListRequest struct {
@@ -332,36 +252,8 @@ type VnicProfilesServiceListResponse struct {
 func (p *VnicProfilesServiceListResponse) Profiles() []VnicProfile {
 	return p.profiles
 }
-
-//
-// List all vNIC profiles.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VnicProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profilesVar VnicProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
-	return profilesVar.VnicProfiles, nil
+func (p *VnicProfilesService) List() *VnicProfilesServiceListRequest {
+	return &VnicProfilesServiceListRequest{vnicProfilesService: p}
 }
 
 //
@@ -485,35 +377,8 @@ type SchedulingPolicyUnitServiceGetResponse struct {
 func (p *SchedulingPolicyUnitServiceGetResponse) Unit() *SchedulingPolicyUnit {
 	return p.unit
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPolicyUnitService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SchedulingPolicyUnit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var unitVar SchedulingPolicyUnit
-	xml.Unmarshal([]byte(ovResp.Body), &unitVar)
-	return &unitVar, nil
+func (p *SchedulingPolicyUnitService) Get() *SchedulingPolicyUnitServiceGetRequest {
+	return &SchedulingPolicyUnitServiceGetRequest{schedulingPolicyUnitService: p}
 }
 
 type SchedulingPolicyUnitServiceRemoveRequest struct {
@@ -592,27 +457,8 @@ func (p *SchedulingPolicyUnitServiceRemoveRequest) Send() (*SchedulingPolicyUnit
 type SchedulingPolicyUnitServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPolicyUnitService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *SchedulingPolicyUnitService) Remove() *SchedulingPolicyUnitServiceRemoveRequest {
+	return &SchedulingPolicyUnitServiceRemoveRequest{schedulingPolicyUnitService: p}
 }
 
 //
@@ -718,28 +564,8 @@ type VirtualFunctionAllowedNetworkServiceGetResponse struct {
 func (p *VirtualFunctionAllowedNetworkServiceGetResponse) Network() *Network {
 	return p.network
 }
-
-//
-//
-func (op *VirtualFunctionAllowedNetworkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *VirtualFunctionAllowedNetworkService) Get() *VirtualFunctionAllowedNetworkServiceGetRequest {
+	return &VirtualFunctionAllowedNetworkServiceGetRequest{virtualFunctionAllowedNetworkService: p}
 }
 
 type VirtualFunctionAllowedNetworkServiceRemoveRequest struct {
@@ -818,27 +644,8 @@ func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Send() (*VirtualFunc
 type VirtualFunctionAllowedNetworkServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VirtualFunctionAllowedNetworkService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VirtualFunctionAllowedNetworkService) Remove() *VirtualFunctionAllowedNetworkServiceRemoveRequest {
+	return &VirtualFunctionAllowedNetworkServiceRemoveRequest{virtualFunctionAllowedNetworkService: p}
 }
 
 //
@@ -955,29 +762,8 @@ type TemplateNicsServiceAddResponse struct {
 func (p *TemplateNicsServiceAddResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-//
-func (op *TemplateNicsService) Add(
-	nic *Nic,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *TemplateNicsService) Add() *TemplateNicsServiceAddRequest {
+	return &TemplateNicsServiceAddRequest{templateNicsService: p}
 }
 
 type TemplateNicsServiceListRequest struct {
@@ -1064,35 +850,8 @@ type TemplateNicsServiceListResponse struct {
 func (p *TemplateNicsServiceListResponse) Nics() []Nic {
 	return p.nics
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateNicsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicsVar Nics
-	xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
-	return nicsVar.Nics, nil
+func (p *TemplateNicsService) List() *TemplateNicsServiceListRequest {
+	return &TemplateNicsServiceListRequest{templateNicsService: p}
 }
 
 //
@@ -1209,29 +968,8 @@ type AffinityLabelServiceGetResponse struct {
 func (p *AffinityLabelServiceGetResponse) Label() *AffinityLabel {
 	return p.label
 }
-
-//
-// Retrieves the details of a label.
-//
-func (op *AffinityLabelService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *AffinityLabelService) Get() *AffinityLabelServiceGetRequest {
+	return &AffinityLabelServiceGetRequest{affinityLabelService: p}
 }
 
 type AffinityLabelServiceRemoveRequest struct {
@@ -1302,22 +1040,8 @@ func (p *AffinityLabelServiceRemoveRequest) Send() (*AffinityLabelServiceRemoveR
 type AffinityLabelServiceRemoveResponse struct {
 }
 
-//
-// Removes a label from the system and clears all assignments
-// of the removed label.
-//
-func (op *AffinityLabelService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AffinityLabelService) Remove() *AffinityLabelServiceRemoveRequest {
+	return &AffinityLabelServiceRemoveRequest{affinityLabelService: p}
 }
 
 type AffinityLabelServiceUpdateRequest struct {
@@ -1407,31 +1131,8 @@ type AffinityLabelServiceUpdateResponse struct {
 func (p *AffinityLabelServiceUpdateResponse) Label() *AffinityLabel {
 	return p.label
 }
-
-//
-// Updates a label. This call will update all metadata, such as the name
-// or description.
-//
-func (op *AffinityLabelService) Update(
-	label *AffinityLabel,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(label, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *AffinityLabelService) Update() *AffinityLabelServiceUpdateRequest {
+	return &AffinityLabelServiceUpdateRequest{affinityLabelService: p}
 }
 
 //
@@ -1575,47 +1276,8 @@ type BookmarksServiceAddResponse struct {
 func (p *BookmarksServiceAddResponse) Bookmark() *Bookmark {
 	return p.bookmark
 }
-
-//
-// Adding a new bookmark.
-// Example of adding a bookmark:
-// [source]
-// ----
-// POST /ovirt-engine/api/bookmarks
-// ----
-// [source,xml]
-// ----
-// <bookmark>
-//   <name>new_example_vm</name>
-//   <value>vm: name=new_example*</value>
-// </bookmark>
-// ----
-// This method supports the following parameters:
-// `Bookmark`:: The added bookmark.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BookmarksService) Add(
-	bookmark *Bookmark,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Bookmark,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(bookmark, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bookmarkVar Bookmark
-	xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
-	return &bookmarkVar, nil
+func (p *BookmarksService) Add() *BookmarksServiceAddRequest {
+	return &BookmarksServiceAddRequest{bookmarksService: p}
 }
 
 type BookmarksServiceListRequest struct {
@@ -1702,54 +1364,8 @@ type BookmarksServiceListResponse struct {
 func (p *BookmarksServiceListResponse) Bookmarks() []Bookmark {
 	return p.bookmarks
 }
-
-//
-// Listing all the available bookmarks.
-// Example of listing bookmarks:
-// [source]
-// ----
-// GET /ovirt-engine/api/bookmarks
-// ----
-// [source,xml]
-// ----
-// <bookmarks>
-//   <bookmark href="/ovirt-engine/api/bookmarks/123" id="123">
-//     <name>database</name>
-//     <value>vm: name=database*</value>
-//   </bookmark>
-//   <bookmark href="/ovirt-engine/api/bookmarks/456" id="456">
-//     <name>example</name>
-//     <value>vm: name=example*</value>
-//   </bookmark>
-// </bookmarks>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of bookmarks to return. If not specified all the bookmarks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BookmarksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Bookmark,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bookmarksVar Bookmarks
-	xml.Unmarshal([]byte(ovResp.Body), &bookmarksVar)
-	return bookmarksVar.Bookmarks, nil
+func (p *BookmarksService) List() *BookmarksServiceListRequest {
+	return &BookmarksServiceListRequest{bookmarksService: p}
 }
 
 //
@@ -1877,29 +1493,8 @@ type NetworkAttachmentsServiceAddResponse struct {
 func (p *NetworkAttachmentsServiceAddResponse) Attachment() *NetworkAttachment {
 	return p.attachment
 }
-
-//
-//
-func (op *NetworkAttachmentsService) Add(
-	attachment *NetworkAttachment,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(attachment, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar NetworkAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *NetworkAttachmentsService) Add() *NetworkAttachmentsServiceAddRequest {
+	return &NetworkAttachmentsServiceAddRequest{networkAttachmentsService: p}
 }
 
 type NetworkAttachmentsServiceListRequest struct {
@@ -1986,35 +1581,8 @@ type NetworkAttachmentsServiceListResponse struct {
 func (p *NetworkAttachmentsServiceListResponse) Attachments() []NetworkAttachment {
 	return p.attachments
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of attachments to return. If not specified all the attachments are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkAttachmentsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]NetworkAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentsVar NetworkAttachments
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
-	return attachmentsVar.NetworkAttachments, nil
+func (p *NetworkAttachmentsService) List() *NetworkAttachmentsServiceListRequest {
+	return &NetworkAttachmentsServiceListRequest{networkAttachmentsService: p}
 }
 
 //
@@ -2130,28 +1698,8 @@ type OperatingSystemServiceGetResponse struct {
 func (p *OperatingSystemServiceGetResponse) OperatingSystem() *OperatingSystemInfo {
 	return p.operatingSystem
 }
-
-//
-//
-func (op *OperatingSystemService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OperatingSystemInfo,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var operatingSystemVar OperatingSystemInfo
-	xml.Unmarshal([]byte(ovResp.Body), &operatingSystemVar)
-	return &operatingSystemVar, nil
+func (p *OperatingSystemService) Get() *OperatingSystemServiceGetRequest {
+	return &OperatingSystemServiceGetRequest{operatingSystemService: p}
 }
 
 //
@@ -2265,35 +1813,8 @@ type TemplateDisksServiceListResponse struct {
 func (p *TemplateDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateDisksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *TemplateDisksService) List() *TemplateDisksServiceListRequest {
+	return &TemplateDisksServiceListRequest{templateDisksService: p}
 }
 
 //
@@ -2422,80 +1943,8 @@ type SystemPermissionsServiceAddResponse struct {
 func (p *SystemPermissionsServiceAddResponse) Permission() *Permission {
 	return p.permission
 }
-
-//
-// Assign a new permission to a user or group for specific entity.
-// For example, to assign the `UserVmManager` role to the virtual machine with id `123` to the user with id `456`
-// send a request like this:
-// ....
-// POST /ovirt-engine/api/vms/123/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>UserVmManager</name>
-//   </role>
-//   <user id="456"/>
-// </permission>
-// ----
-// To assign the `SuperUser` role to the system to the user with id `456` send a request like this:
-// ....
-// POST /ovirt-engine/api/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>SuperUser</name>
-//   </role>
-//   <user id="456"/>
-// </permission>
-// ----
-// If you want to assign permission to the group instead of the user please replace the `user` element with the
-// `group` element with proper `id` of the group. For example to assign the `UserRole` role to the cluster with
-// id `123` to the group with id `789` send a request like this:
-// ....
-// POST /ovirt-engine/api/clusters/123/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>UserRole</name>
-//   </role>
-//   <group id="789"/>
-// </permission>
-// ----
-// This method supports the following parameters:
-// `Permission`:: The permission.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SystemPermissionsService) Add(
-	permission *Permission,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Permission,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(permission, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permissionVar Permission
-	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
-	return &permissionVar, nil
+func (p *SystemPermissionsService) Add() *SystemPermissionsServiceAddRequest {
+	return &SystemPermissionsServiceAddRequest{systemPermissionsService: p}
 }
 
 type SystemPermissionsServiceListRequest struct {
@@ -2574,48 +2023,8 @@ type SystemPermissionsServiceListResponse struct {
 func (p *SystemPermissionsServiceListResponse) Permissions() []Permission {
 	return p.permissions
 }
-
-//
-// List all the permissions of the specific entity.
-// For example to list all the permissions of the cluster with id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/clusters/123/permissions
-// ....
-// [source,xml]
-// ----
-// <permissions>
-//   <permission id="456">
-//     <cluster id="123"/>
-//     <role id="789"/>
-//     <user id="451"/>
-//   </permission>
-//   <permission id="654">
-//     <cluster id="123"/>
-//     <role id="789"/>
-//     <group id="127"/>
-//   </permission>
-// </permissions>
-// ----
-//
-func (op *SystemPermissionsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Permission,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permissionsVar Permissions
-	xml.Unmarshal([]byte(ovResp.Body), &permissionsVar)
-	return permissionsVar.Permissions, nil
+func (p *SystemPermissionsService) List() *SystemPermissionsServiceListRequest {
+	return &SystemPermissionsServiceListRequest{systemPermissionsService: p}
 }
 
 //
@@ -2733,28 +2142,8 @@ type VmReportedDeviceServiceGetResponse struct {
 func (p *VmReportedDeviceServiceGetResponse) ReportedDevice() *ReportedDevice {
 	return p.reportedDevice
 }
-
-//
-//
-func (op *VmReportedDeviceService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ReportedDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var reportedDeviceVar ReportedDevice
-	xml.Unmarshal([]byte(ovResp.Body), &reportedDeviceVar)
-	return &reportedDeviceVar, nil
+func (p *VmReportedDeviceService) Get() *VmReportedDeviceServiceGetRequest {
+	return &VmReportedDeviceServiceGetRequest{vmReportedDeviceService: p}
 }
 
 //
@@ -2868,35 +2257,8 @@ type SnapshotNicsServiceListResponse struct {
 func (p *SnapshotNicsServiceListResponse) Nics() []Nic {
 	return p.nics
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotNicsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicsVar Nics
-	xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
-	return nicsVar.Nics, nil
+func (p *SnapshotNicsService) List() *SnapshotNicsServiceListRequest {
+	return &SnapshotNicsServiceListRequest{snapshotNicsService: p}
 }
 
 //
@@ -3023,29 +2385,8 @@ type AssignedVnicProfilesServiceAddResponse struct {
 func (p *AssignedVnicProfilesServiceAddResponse) Profile() *VnicProfile {
 	return p.profile
 }
-
-//
-//
-func (op *AssignedVnicProfilesService) Add(
-	profile *VnicProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar VnicProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *AssignedVnicProfilesService) Add() *AssignedVnicProfilesServiceAddRequest {
+	return &AssignedVnicProfilesServiceAddRequest{assignedVnicProfilesService: p}
 }
 
 type AssignedVnicProfilesServiceListRequest struct {
@@ -3132,35 +2473,8 @@ type AssignedVnicProfilesServiceListResponse struct {
 func (p *AssignedVnicProfilesServiceListResponse) Profiles() []VnicProfile {
 	return p.profiles
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedVnicProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profilesVar VnicProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
-	return profilesVar.VnicProfiles, nil
+func (p *AssignedVnicProfilesService) List() *AssignedVnicProfilesServiceListRequest {
+	return &AssignedVnicProfilesServiceListRequest{assignedVnicProfilesService: p}
 }
 
 //
@@ -3287,29 +2601,8 @@ type QuotaClusterLimitsServiceAddResponse struct {
 func (p *QuotaClusterLimitsServiceAddResponse) Limit() *QuotaClusterLimit {
 	return p.limit
 }
-
-//
-//
-func (op *QuotaClusterLimitsService) Add(
-	limit *QuotaClusterLimit,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*QuotaClusterLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(limit, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitVar QuotaClusterLimit
-	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
-	return &limitVar, nil
+func (p *QuotaClusterLimitsService) Add() *QuotaClusterLimitsServiceAddRequest {
+	return &QuotaClusterLimitsServiceAddRequest{quotaClusterLimitsService: p}
 }
 
 type QuotaClusterLimitsServiceListRequest struct {
@@ -3396,35 +2689,8 @@ type QuotaClusterLimitsServiceListResponse struct {
 func (p *QuotaClusterLimitsServiceListResponse) Limits() []QuotaClusterLimit {
 	return p.limits
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of limits to return. If not specified all the limits are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotaClusterLimitsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]QuotaClusterLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitsVar QuotaClusterLimits
-	xml.Unmarshal([]byte(ovResp.Body), &limitsVar)
-	return limitsVar.QuotaClusterLimits, nil
+func (p *QuotaClusterLimitsService) List() *QuotaClusterLimitsServiceListRequest {
+	return &QuotaClusterLimitsServiceListRequest{quotaClusterLimitsService: p}
 }
 
 //
@@ -3555,56 +2821,8 @@ type NetworksServiceAddResponse struct {
 func (p *NetworksServiceAddResponse) Network() *Network {
 	return p.network
 }
-
-//
-// Creates a new logical network, or associates an existing network with a data center.
-// Creation of a new network requires the `name` and `data_center` elements.
-// For example, to create a network named `mynetwork` for data center `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/networks
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network>
-//   <name>mynetwork</name>
-//   <data_center id="123"/>
-// </network>
-// ----
-// To associate the existing network `456` with the data center `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters/123/networks
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network>
-//   <name>ovirtmgmt</name>
-// </network>
-// ----
-//
-func (op *NetworksService) Add(
-	network *Network,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(network, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *NetworksService) Add() *NetworksServiceAddRequest {
+	return &NetworksServiceAddRequest{networksService: p}
 }
 
 type NetworksServiceListRequest struct {
@@ -3707,69 +2925,8 @@ type NetworksServiceListResponse struct {
 func (p *NetworksServiceListResponse) Networks() []Network {
 	return p.networks
 }
-
-//
-// List logical networks.
-// For example:
-// [source]
-// ----
-// GET /ovirt-engine/api/networks
-// ----
-// Will respond:
-// [source,xml]
-// ----
-// <networks>
-//   <network href="/ovirt-engine/api/networks/123" id="123">
-//     <name>ovirtmgmt</name>
-//     <description>Default Management Network</description>
-//     <link href="/ovirt-engine/api/networks/123/permissions" rel="permissions"/>
-//     <link href="/ovirt-engine/api/networks/123/vnicprofiles" rel="vnicprofiles"/>
-//     <link href="/ovirt-engine/api/networks/123/networklabels" rel="networklabels"/>
-//     <mtu>0</mtu>
-//     <stp>false</stp>
-//     <usages>
-//       <usage>vm</usage>
-//     </usages>
-//     <data_center href="/ovirt-engine/api/datacenters/456" id="456"/>
-//   </network>
-//   ...
-// </networks>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `Search`:: A query string used to restrict the returned networks.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworksService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networksVar Networks
-	xml.Unmarshal([]byte(ovResp.Body), &networksVar)
-	return networksVar.Networks, nil
+func (p *NetworksService) List() *NetworksServiceListRequest {
+	return &NetworksServiceListRequest{networksService: p}
 }
 
 //
@@ -3898,49 +3055,8 @@ type AffinityGroupsServiceAddResponse struct {
 func (p *AffinityGroupsServiceAddResponse) Group() *AffinityGroup {
 	return p.group
 }
-
-//
-// Create a new affinity group.
-// Post a request like in the example below to create a new affinity group:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/000-000/affinitygroups
-// ----
-// And use the following example in its body:
-// [source,xml]
-// ----
-// <affinity_group>
-//   <name>AF_GROUP_001</name>
-//   <positive>true</positive>
-//   <enforcing>true</enforcing>
-// </affinity_group>
-// ----
-// This method supports the following parameters:
-// `Group`:: The affinity group object to create.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupsService) Add(
-	group *AffinityGroup,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(group, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupVar AffinityGroup
-	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
-	return &groupVar, nil
+func (p *AffinityGroupsService) Add() *AffinityGroupsServiceAddRequest {
+	return &AffinityGroupsServiceAddRequest{affinityGroupsService: p}
 }
 
 type AffinityGroupsServiceListRequest struct {
@@ -4027,36 +3143,8 @@ type AffinityGroupsServiceListResponse struct {
 func (p *AffinityGroupsServiceListResponse) Groups() []AffinityGroup {
 	return p.groups
 }
-
-//
-// List existing affinity groups.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of affinity groups to return. If not specified all the affinity groups are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]AffinityGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupsVar AffinityGroups
-	xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
-	return groupsVar.AffinityGroups, nil
+func (p *AffinityGroupsService) List() *AffinityGroupsServiceListRequest {
+	return &AffinityGroupsServiceListRequest{affinityGroupsService: p}
 }
 
 //
@@ -4173,28 +3261,8 @@ type DiskSnapshotServiceGetResponse struct {
 func (p *DiskSnapshotServiceGetResponse) Snapshot() *DiskSnapshot {
 	return p.snapshot
 }
-
-//
-//
-func (op *DiskSnapshotService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskSnapshot,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var snapshotVar DiskSnapshot
-	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
-	return &snapshotVar, nil
+func (p *DiskSnapshotService) Get() *DiskSnapshotServiceGetRequest {
+	return &DiskSnapshotServiceGetRequest{diskSnapshotService: p}
 }
 
 type DiskSnapshotServiceRemoveRequest struct {
@@ -4273,27 +3341,8 @@ func (p *DiskSnapshotServiceRemoveRequest) Send() (*DiskSnapshotServiceRemoveRes
 type DiskSnapshotServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskSnapshotService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *DiskSnapshotService) Remove() *DiskSnapshotServiceRemoveRequest {
+	return &DiskSnapshotServiceRemoveRequest{diskSnapshotService: p}
 }
 
 //
@@ -4407,35 +3456,8 @@ type SchedulingPolicyServiceGetResponse struct {
 func (p *SchedulingPolicyServiceGetResponse) Policy() *SchedulingPolicy {
 	return p.policy
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPolicyService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SchedulingPolicy,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var policyVar SchedulingPolicy
-	xml.Unmarshal([]byte(ovResp.Body), &policyVar)
-	return &policyVar, nil
+func (p *SchedulingPolicyService) Get() *SchedulingPolicyServiceGetRequest {
+	return &SchedulingPolicyServiceGetRequest{schedulingPolicyService: p}
 }
 
 type SchedulingPolicyServiceRemoveRequest struct {
@@ -4514,27 +3536,8 @@ func (p *SchedulingPolicyServiceRemoveRequest) Send() (*SchedulingPolicyServiceR
 type SchedulingPolicyServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPolicyService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *SchedulingPolicyService) Remove() *SchedulingPolicyServiceRemoveRequest {
+	return &SchedulingPolicyServiceRemoveRequest{schedulingPolicyService: p}
 }
 
 type SchedulingPolicyServiceUpdateRequest struct {
@@ -4632,31 +3635,8 @@ type SchedulingPolicyServiceUpdateResponse struct {
 func (p *SchedulingPolicyServiceUpdateResponse) Policy() *SchedulingPolicy {
 	return p.policy
 }
-
-//
-//
-func (op *SchedulingPolicyService) Update(
-	policy *SchedulingPolicy,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SchedulingPolicy,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(policy, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var policyVar SchedulingPolicy
-	xml.Unmarshal([]byte(ovResp.Body), &policyVar)
-	return &policyVar, nil
+func (p *SchedulingPolicyService) Update() *SchedulingPolicyServiceUpdateRequest {
+	return &SchedulingPolicyServiceUpdateRequest{schedulingPolicyService: p}
 }
 
 //
@@ -4798,28 +3778,8 @@ type NetworkAttachmentServiceGetResponse struct {
 func (p *NetworkAttachmentServiceGetResponse) Attachment() *NetworkAttachment {
 	return p.attachment
 }
-
-//
-//
-func (op *NetworkAttachmentService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar NetworkAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *NetworkAttachmentService) Get() *NetworkAttachmentServiceGetRequest {
+	return &NetworkAttachmentServiceGetRequest{networkAttachmentService: p}
 }
 
 type NetworkAttachmentServiceRemoveRequest struct {
@@ -4898,27 +3858,8 @@ func (p *NetworkAttachmentServiceRemoveRequest) Send() (*NetworkAttachmentServic
 type NetworkAttachmentServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkAttachmentService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *NetworkAttachmentService) Remove() *NetworkAttachmentServiceRemoveRequest {
+	return &NetworkAttachmentServiceRemoveRequest{networkAttachmentService: p}
 }
 
 type NetworkAttachmentServiceUpdateRequest struct {
@@ -5016,31 +3957,8 @@ type NetworkAttachmentServiceUpdateResponse struct {
 func (p *NetworkAttachmentServiceUpdateResponse) Attachment() *NetworkAttachment {
 	return p.attachment
 }
-
-//
-//
-func (op *NetworkAttachmentService) Update(
-	attachment *NetworkAttachment,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(attachment, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar NetworkAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *NetworkAttachmentService) Update() *NetworkAttachmentServiceUpdateRequest {
+	return &NetworkAttachmentServiceUpdateRequest{networkAttachmentService: p}
 }
 
 //
@@ -5157,29 +4075,8 @@ type DiskProfilesServiceAddResponse struct {
 func (p *DiskProfilesServiceAddResponse) Profile() *DiskProfile {
 	return p.profile
 }
-
-//
-//
-func (op *DiskProfilesService) Add(
-	profile *DiskProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar DiskProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *DiskProfilesService) Add() *DiskProfilesServiceAddRequest {
+	return &DiskProfilesServiceAddRequest{diskProfilesService: p}
 }
 
 type DiskProfilesServiceListRequest struct {
@@ -5266,35 +4163,8 @@ type DiskProfilesServiceListResponse struct {
 func (p *DiskProfilesServiceListResponse) Profile() []DiskProfile {
 	return p.profile
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar DiskProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return profileVar.DiskProfiles, nil
+func (p *DiskProfilesService) List() *DiskProfilesServiceListRequest {
+	return &DiskProfilesServiceListRequest{diskProfilesService: p}
 }
 
 //
@@ -5411,41 +4281,8 @@ type IconServiceGetResponse struct {
 func (p *IconServiceGetResponse) Icon() *Icon {
 	return p.icon
 }
-
-//
-// Get an icon.
-// [source]
-// ----
-// GET /ovirt-engine/api/icons/123
-// ----
-// You will get a XML response like this one:
-// [source,xml]
-// ----
-// <icon id="123">
-//   <data>Some binary data here</data>
-//   <media_type>image/png</media_type>
-// </icon>
-// ----
-//
-func (op *IconService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Icon,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var iconVar Icon
-	xml.Unmarshal([]byte(ovResp.Body), &iconVar)
-	return &iconVar, nil
+func (p *IconService) Get() *IconServiceGetRequest {
+	return &IconServiceGetRequest{iconService: p}
 }
 
 //
@@ -5553,29 +4390,8 @@ type AssignedAffinityLabelServiceGetResponse struct {
 func (p *AssignedAffinityLabelServiceGetResponse) Label() *AffinityLabel {
 	return p.label
 }
-
-//
-// Retrieves details about the attached label.
-//
-func (op *AssignedAffinityLabelService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *AssignedAffinityLabelService) Get() *AssignedAffinityLabelServiceGetRequest {
+	return &AssignedAffinityLabelServiceGetRequest{assignedAffinityLabelService: p}
 }
 
 type AssignedAffinityLabelServiceRemoveRequest struct {
@@ -5646,21 +4462,8 @@ func (p *AssignedAffinityLabelServiceRemoveRequest) Send() (*AssignedAffinityLab
 type AssignedAffinityLabelServiceRemoveResponse struct {
 }
 
-//
-// Removes the label from an entity. Does not touch the label itself.
-//
-func (op *AssignedAffinityLabelService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedAffinityLabelService) Remove() *AssignedAffinityLabelServiceRemoveRequest {
+	return &AssignedAffinityLabelServiceRemoveRequest{assignedAffinityLabelService: p}
 }
 
 //
@@ -5777,29 +4580,8 @@ type CpuProfilesServiceAddResponse struct {
 func (p *CpuProfilesServiceAddResponse) Profile() *CpuProfile {
 	return p.profile
 }
-
-//
-//
-func (op *CpuProfilesService) Add(
-	profile *CpuProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *CpuProfilesService) Add() *CpuProfilesServiceAddRequest {
+	return &CpuProfilesServiceAddRequest{cpuProfilesService: p}
 }
 
 type CpuProfilesServiceListRequest struct {
@@ -5886,35 +4668,8 @@ type CpuProfilesServiceListResponse struct {
 func (p *CpuProfilesServiceListResponse) Profile() []CpuProfile {
 	return p.profile
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *CpuProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return profileVar.CpuProfiles, nil
+func (p *CpuProfilesService) List() *CpuProfilesServiceListRequest {
+	return &CpuProfilesServiceListRequest{cpuProfilesService: p}
 }
 
 //
@@ -6041,52 +4796,8 @@ type MacPoolsServiceAddResponse struct {
 func (p *MacPoolsServiceAddResponse) Pool() *MacPool {
 	return p.pool
 }
-
-//
-// Creates a new MAC address pool.
-// Creation of a MAC address pool requires values for the `name` and `ranges` attributes.
-// For example, to create MAC address pool send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/macpools
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <mac_pool>
-//   <name>MACPool</name>
-//   <description>A MAC address pool</description>
-//   <allow_duplicates>true</allow_duplicates>
-//   <default_pool>false</default_pool>
-//   <ranges>
-//     <range>
-//       <from>00:1A:4A:16:01:51</from>
-//       <to>00:1A:4A:16:01:e6</to>
-//     </range>
-//   </ranges>
-// </mac_pool>
-// ----
-//
-func (op *MacPoolsService) Add(
-	pool *MacPool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*MacPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(pool, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar MacPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *MacPoolsService) Add() *MacPoolsServiceAddRequest {
+	return &MacPoolsServiceAddRequest{macPoolsService: p}
 }
 
 type MacPoolsServiceListRequest struct {
@@ -6173,35 +4884,8 @@ type MacPoolsServiceListResponse struct {
 func (p *MacPoolsServiceListResponse) Pools() []MacPool {
 	return p.pools
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of pools to return. If not specified all the pools are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *MacPoolsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]MacPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolsVar MacPools
-	xml.Unmarshal([]byte(ovResp.Body), &poolsVar)
-	return poolsVar.MacPools, nil
+func (p *MacPoolsService) List() *MacPoolsServiceListRequest {
+	return &MacPoolsServiceListRequest{macPoolsService: p}
 }
 
 //
@@ -6329,40 +5013,8 @@ type AffinityGroupVmsServiceAddResponse struct {
 func (p *AffinityGroupVmsServiceAddResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-// Add a virtual machine to the affinity group.
-// For example, to add the virtual machine 000-000 to affinity group 123-456 send a request to:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/000-000/affinitygroups/123-456/vms
-// ----
-// With the following body:
-// [source,xml]
-// ----
-// <vm id="000-000"/>
-// ----
-//
-func (op *AffinityGroupVmsService) Add(
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(vm, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *AffinityGroupVmsService) Add() *AffinityGroupVmsServiceAddRequest {
+	return &AffinityGroupVmsServiceAddRequest{affinityGroupVmsService: p}
 }
 
 type AffinityGroupVmsServiceListRequest struct {
@@ -6449,37 +5101,8 @@ type AffinityGroupVmsServiceListResponse struct {
 func (p *AffinityGroupVmsServiceListResponse) Vms() []Vm {
 	return p.vms
 }
-
-//
-// List all virtual machines assigned to this affinity group.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of virtual machines to return. If not specified, all the virtual machines are
-// returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupVmsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmsVar Vms
-	xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
-	return vmsVar.Vms, nil
+func (p *AffinityGroupVmsService) List() *AffinityGroupVmsServiceListRequest {
+	return &AffinityGroupVmsServiceListRequest{affinityGroupVmsService: p}
 }
 
 //
@@ -6596,28 +5219,8 @@ type QosServiceGetResponse struct {
 func (p *QosServiceGetResponse) Qos() *Qos {
 	return p.qos
 }
-
-//
-//
-func (op *QosService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Qos,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var qosVar Qos
-	xml.Unmarshal([]byte(ovResp.Body), &qosVar)
-	return &qosVar, nil
+func (p *QosService) Get() *QosServiceGetRequest {
+	return &QosServiceGetRequest{qosService: p}
 }
 
 type QosServiceRemoveRequest struct {
@@ -6696,27 +5299,8 @@ func (p *QosServiceRemoveRequest) Send() (*QosServiceRemoveResponse, error) {
 type QosServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QosService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *QosService) Remove() *QosServiceRemoveRequest {
+	return &QosServiceRemoveRequest{qosService: p}
 }
 
 type QosServiceUpdateRequest struct {
@@ -6814,31 +5398,8 @@ type QosServiceUpdateResponse struct {
 func (p *QosServiceUpdateResponse) Qos() *Qos {
 	return p.qos
 }
-
-//
-//
-func (op *QosService) Update(
-	qos *Qos,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Qos,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(qos, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var qosVar Qos
-	xml.Unmarshal([]byte(ovResp.Body), &qosVar)
-	return &qosVar, nil
+func (p *QosService) Update() *QosServiceUpdateRequest {
+	return &QosServiceUpdateRequest{qosService: p}
 }
 
 //
@@ -6956,58 +5517,8 @@ type TagsServiceAddResponse struct {
 func (p *TagsServiceAddResponse) Tag() *Tag {
 	return p.tag
 }
-
-//
-// Add a new tag to the system.
-// For example, to add new tag with name `mytag` to the system send a request like this:
-// ....
-// POST /ovirt-engine/api/tags
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <tag>
-//   <name>mytag</name>
-// </tag>
-// ----
-// NOTE: The root tag is a special pseudo-tag assumed as the default parent tag if no parent tag is specified.
-// The root tag cannot be deleted nor assigned a parent tag.
-// To create new tag with specific parent tag send a request body like this:
-// [source,xml]
-// ----
-// <tag>
-//   <name>mytag</name>
-//   <parent>
-//     <name>myparenttag</name>
-//   </parent>
-// </tag>
-// ----
-// This method supports the following parameters:
-// `Tag`:: The added tag.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TagsService) Add(
-	tag *Tag,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(tag, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagVar Tag
-	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
-	return &tagVar, nil
+func (p *TagsService) Add() *TagsServiceAddRequest {
+	return &TagsServiceAddRequest{tagsService: p}
 }
 
 type TagsServiceListRequest struct {
@@ -7094,65 +5605,8 @@ type TagsServiceListResponse struct {
 func (p *TagsServiceListResponse) Tags() []Tag {
 	return p.tags
 }
-
-//
-// List the tags in the system.
-// For example to list the full hierarchy of the tags in the system send a request like this:
-// ....
-// GET /ovirt-engine/api/tags
-// ....
-// [source,xml]
-// ----
-// <tags>
-//   <tag href="/ovirt-engine/api/tags/222" id="222">
-//     <name>root2</name>
-//     <description>root2</description>
-//     <parent href="/ovirt-engine/api/tags/111" id="111"/>
-//   </tag>
-//   <tag href="/ovirt-engine/api/tags/333" id="333">
-//     <name>root3</name>
-//     <description>root3</description>
-//     <parent href="/ovirt-engine/api/tags/222" id="222"/>
-//   </tag>
-//   <tag href="/ovirt-engine/api/tags/111" id="111">
-//     <name>root</name>
-//     <description>root</description>
-//   </tag>
-// </tags>
-// ----
-// In the previous XML output you can see the following hierarchy of the tags:
-// ....
-// root:        (id: 111)
-//   - root2    (id: 222)
-//     - root3  (id: 333)
-// ....
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of tags to return. If not specified all the tags are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TagsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagsVar Tags
-	xml.Unmarshal([]byte(ovResp.Body), &tagsVar)
-	return tagsVar.Tags, nil
+func (p *TagsService) List() *TagsServiceListRequest {
+	return &TagsServiceListRequest{tagsService: p}
 }
 
 //
@@ -7269,28 +5723,8 @@ type ExternalProviderCertificateServiceGetResponse struct {
 func (p *ExternalProviderCertificateServiceGetResponse) Certificate() *Certificate {
 	return p.certificate
 }
-
-//
-//
-func (op *ExternalProviderCertificateService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Certificate,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var certificateVar Certificate
-	xml.Unmarshal([]byte(ovResp.Body), &certificateVar)
-	return &certificateVar, nil
+func (p *ExternalProviderCertificateService) Get() *ExternalProviderCertificateServiceGetRequest {
+	return &ExternalProviderCertificateServiceGetRequest{externalProviderCertificateService: p}
 }
 
 //
@@ -7408,59 +5842,8 @@ type EventsServiceAddResponse struct {
 func (p *EventsServiceAddResponse) Event() *Event {
 	return p.event
 }
-
-//
-// Adds an external event to the internal audit log.
-// This is intended for integration with external systems that detect or produce events relevant for the
-// administrator of the system. For example, an external monitoring tool may be able to detect that a file system
-// is full inside the guest operating system of a virtual machine. This event can be added to the internal audit
-// log sending a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/events
-// <event>
-//   <description>File system /home is full</description>
-//   <severity>alert</severity>
-//   <origin>mymonitor</origin>
-//   <custom_id>1467879754</custom_id>
-// </event>
-// ----
-// Events can also be linked to specific objects. For example, the above event could be linked to the specific
-// virtual machine where it happened, using the `vm` link:
-// [source]
-// ----
-// POST /ovirt-engine/api/events
-// <event>
-//   <description>File system /home is full</description>
-//   <severity>alert</severity>
-//   <origin>mymonitor</origin>
-//   <custom_id>1467879754</custom_id>
-//   <vm id="aae98225-5b73-490d-a252-899209af17e9"/>
-// </event>
-// ----
-// NOTE: When using links, like the `vm` in the previous example, only the `id` attribute is accepted. The `name`
-// attribute, if provided, is simply ignored.
-//
-func (op *EventsService) Add(
-	event *Event,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Event,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(event, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var eventVar Event
-	xml.Unmarshal([]byte(ovResp.Body), &eventVar)
-	return &eventVar, nil
+func (p *EventsService) Add() *EventsServiceAddRequest {
+	return &EventsServiceAddRequest{eventsService: p}
 }
 
 type EventsServiceListRequest struct {
@@ -7571,142 +5954,8 @@ type EventsServiceListResponse struct {
 func (p *EventsServiceListResponse) Events() []Event {
 	return p.events
 }
-
-//
-// Get list of events.
-// [source]
-// ----
-// GET /ovirt-engine/api/events
-// ----
-// To the above request we get following response:
-// [source,xml]
-// ----
-// <events>
-//   <event href="/ovirt-engine/api/events/2" id="2">
-//     <description>User admin@internal-authz logged out.</description>
-//     <code>31</code>
-//     <correlation_id>1e892ea9</correlation_id>
-//     <custom_id>-1</custom_id>
-//     <flood_rate>30</flood_rate>
-//     <origin>oVirt</origin>
-//     <severity>normal</severity>
-//     <time>2016-09-14T12:14:34.541+02:00</time>
-//     <user href="/ovirt-engine/api/users/57d91d48-00da-0137-0138-000000000244" id="57d91d48-00da-0137-0138-000000000244"/>
-//   </event>
-//   <event href="/ovirt-engine/api/events/1" id="1">
-//     <description>User admin logged in.</description>
-//     <code>30</code>
-//     <correlation_id>1fbd81f4</correlation_id>
-//     <custom_id>-1</custom_id>
-//     <flood_rate>30</flood_rate>
-//     <origin>oVirt</origin>
-//     <severity>normal</severity>
-//     <time>2016-09-14T11:54:35.229+02:00</time>
-//     <user href="/ovirt-engine/api/users/57d91d48-00da-0137-0138-000000000244" id="57d91d48-00da-0137-0138-000000000244"/>
-//   </event>
-// </events>
-// ----
-// The following events occur:
-// * id="1" - The API logs in the admin user account.
-// * id="2" - The API logs out of the admin user account.
-// This method supports the following parameters:
-// `From`:: Indicates the identifier of the the first event that should be returned. The identifiers of events are
-// strictly increasing, so when this parameter is used only the events with that identifiers equal or greater
-// than the given value will be returned. For example, the following request will return only the events
-// with identifiers greater or equal than `123`:
-// [source]
-// ----
-// GET /ovirt-engine/api/events?from=123
-// ----
-// This parameter is optional, and if not specified then the first event returned will be most recently
-// generated.
-// `Max`:: Sets the maximum number of events to return. If not specified all the events are returned.
-// `Search`:: The events service provides search queries similar to other resource services.
-// We can search by providing specific severity.
-// [source]
-// ----
-// GET /ovirt-engine/api/events?search=severity%3Dnormal
-// ----
-// To the above request we get a list of events which severity is equal to `normal`:
-// [source,xml]
-// ----
-// <events>
-//   <event href="/ovirt-engine/api/events/2" id="2">
-//     <description>User admin@internal-authz logged out.</description>
-//     <code>31</code>
-//     <correlation_id>1fbd81f4</correlation_id>
-//     <custom_id>-1</custom_id>
-//     <flood_rate>30</flood_rate>
-//     <origin>oVirt</origin>
-//     <severity>normal</severity>
-//     <time>2016-09-14T11:54:35.229+02:00</time>
-//     <user href="/ovirt-engine/api/users/57d91d48-00da-0137-0138-000000000244" id="57d91d48-00da-0137-0138-000000000244"/>
-//   </event>
-//   <event href="/ovirt-engine/api/events/1" id="1">
-//     <description>Affinity Rules Enforcement Manager started.</description>
-//     <code>10780</code>
-//     <custom_id>-1</custom_id>
-//     <flood_rate>30</flood_rate>
-//     <origin>oVirt</origin>
-//     <severity>normal</severity>
-//     <time>2016-09-14T11:52:18.861+02:00</time>
-//   </event>
-// </events>
-// ----
-// A virtualization environment generates a large amount of events after
-// a period of time. However, the API only displays a default number of
-// events for one search query. To display more than the default, the API
-// separates results into pages with the page command in a search query.
-// The following search query tells the API to paginate results using a
-// page value in combination with the sortby clause:
-// [source]
-// ----
-// sortby time asc page 1
-// ----
-// Below example paginates event resources. The URL-encoded request is:
-// [source]
-// ----
-// GET /ovirt-engine/api/events?search=sortby%20time%20asc%20page%201
-// ----
-// Increase the page value to view the next page of results.
-// [source]
-// ----
-// GET /ovirt-engine/api/events?search=sortby%20time%20asc%20page%202
-// ----
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *EventsService) List(
-	caseSensitive bool,
-	from int64,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Event,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["from"] = fmt.Sprintf("%v", from)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var eventsVar Events
-	xml.Unmarshal([]byte(ovResp.Body), &eventsVar)
-	return eventsVar.Events, nil
+func (p *EventsService) List() *EventsServiceListRequest {
+	return &EventsServiceListRequest{eventsService: p}
 }
 
 type EventsServiceUndeleteRequest struct {
@@ -7794,26 +6043,8 @@ func (p *EventsServiceUndeleteRequest) Send() (*EventsServiceUndeleteResponse, e
 type EventsServiceUndeleteResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the un-delete should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *EventsService) Undelete(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "undelete", headers, query, wait)
-	return err
+func (p *EventsService) Undelete() *EventsServiceUndeleteRequest {
+	return &EventsServiceUndeleteRequest{eventsService: p}
 }
 
 //
@@ -7931,29 +6162,8 @@ type VmWatchdogServiceGetResponse struct {
 func (p *VmWatchdogServiceGetResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Returns the information about the watchdog.
-//
-func (op *VmWatchdogService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *VmWatchdogService) Get() *VmWatchdogServiceGetRequest {
+	return &VmWatchdogServiceGetRequest{vmWatchdogService: p}
 }
 
 type VmWatchdogServiceRemoveRequest struct {
@@ -8032,33 +6242,8 @@ func (p *VmWatchdogServiceRemoveRequest) Send() (*VmWatchdogServiceRemoveRespons
 type VmWatchdogServiceRemoveResponse struct {
 }
 
-//
-// Removes the watchdog from the virtual machine.
-// For example, to remove a watchdog from a virtual machine, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123/watchdogs/00000000-0000-0000-0000-000000000000
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmWatchdogService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmWatchdogService) Remove() *VmWatchdogServiceRemoveRequest {
+	return &VmWatchdogServiceRemoveRequest{vmWatchdogService: p}
 }
 
 type VmWatchdogServiceUpdateRequest struct {
@@ -8156,58 +6341,8 @@ type VmWatchdogServiceUpdateResponse struct {
 func (p *VmWatchdogServiceUpdateResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Updates the information about the watchdog.
-// You can update the information using `action` and `model` elements.
-// For example, to update a watchdog, send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/123/watchdogs
-// <watchdog>
-//   <action>reset</action>
-// </watchdog>
-// ----
-// with response body:
-// [source,xml]
-// ----
-// <watchdog href="/ovirt-engine/api/vms/123/watchdogs/00000000-0000-0000-0000-000000000000" id="00000000-0000-0000-0000-000000000000">
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-//   <action>reset</action>
-//   <model>i6300esb</model>
-// </watchdog>
-// ----
-// This method supports the following parameters:
-// `Watchdog`:: The information about the watchdog.
-// The request data must contain at least one of `model` and `action`
-// elements. The response data contains complete information about the
-// updated watchdog.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmWatchdogService) Update(
-	watchdog *Watchdog,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *VmWatchdogService) Update() *VmWatchdogServiceUpdateRequest {
+	return &VmWatchdogServiceUpdateRequest{vmWatchdogService: p}
 }
 
 //
@@ -8322,38 +6457,8 @@ func (p *AttachedStorageDomainServiceActivateRequest) Send() (*AttachedStorageDo
 type AttachedStorageDomainServiceActivateResponse struct {
 }
 
-//
-// This operation activates an attached storage domain.
-// Once the storage domain is activated it is ready for use with the data center.
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters/123/storagedomains/456/activate
-// ----
-// The activate action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the activation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainService) Activate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "activate", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainService) Activate() *AttachedStorageDomainServiceActivateRequest {
+	return &AttachedStorageDomainServiceActivateRequest{attachedStorageDomainService: p}
 }
 
 type AttachedStorageDomainServiceDeactivateRequest struct {
@@ -8441,38 +6546,8 @@ func (p *AttachedStorageDomainServiceDeactivateRequest) Send() (*AttachedStorage
 type AttachedStorageDomainServiceDeactivateResponse struct {
 }
 
-//
-// This operation deactivates an attached storage domain.
-// Once the storage domain is deactivated it will not be used with the data center.
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters/123/storagedomains/456/deactivate
-// ----
-// The deactivate action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the deactivation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainService) Deactivate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "deactivate", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainService) Deactivate() *AttachedStorageDomainServiceDeactivateRequest {
+	return &AttachedStorageDomainServiceDeactivateRequest{attachedStorageDomainService: p}
 }
 
 type AttachedStorageDomainServiceGetRequest struct {
@@ -8551,28 +6626,8 @@ type AttachedStorageDomainServiceGetResponse struct {
 func (p *AttachedStorageDomainServiceGetResponse) StorageDomain() *StorageDomain {
 	return p.storageDomain
 }
-
-//
-//
-func (op *AttachedStorageDomainService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainVar StorageDomain
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
-	return &storageDomainVar, nil
+func (p *AttachedStorageDomainService) Get() *AttachedStorageDomainServiceGetRequest {
+	return &AttachedStorageDomainServiceGetRequest{attachedStorageDomainService: p}
 }
 
 type AttachedStorageDomainServiceRemoveRequest struct {
@@ -8651,27 +6706,8 @@ func (p *AttachedStorageDomainServiceRemoveRequest) Send() (*AttachedStorageDoma
 type AttachedStorageDomainServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AttachedStorageDomainService) Remove() *AttachedStorageDomainServiceRemoveRequest {
+	return &AttachedStorageDomainServiceRemoveRequest{attachedStorageDomainService: p}
 }
 
 //
@@ -8800,29 +6836,8 @@ type AttachedStorageDomainsServiceAddResponse struct {
 func (p *AttachedStorageDomainsServiceAddResponse) StorageDomain() *StorageDomain {
 	return p.storageDomain
 }
-
-//
-//
-func (op *AttachedStorageDomainsService) Add(
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(storageDomain, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainVar StorageDomain
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
-	return &storageDomainVar, nil
+func (p *AttachedStorageDomainsService) Add() *AttachedStorageDomainsServiceAddRequest {
+	return &AttachedStorageDomainsServiceAddRequest{attachedStorageDomainsService: p}
 }
 
 type AttachedStorageDomainsServiceListRequest struct {
@@ -8909,35 +6924,8 @@ type AttachedStorageDomainsServiceListResponse struct {
 func (p *AttachedStorageDomainsServiceListResponse) StorageDomains() []StorageDomain {
 	return p.storageDomains
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of storage domains to return. If not specified all the storage domains are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainsVar StorageDomains
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
-	return storageDomainsVar.StorageDomains, nil
+func (p *AttachedStorageDomainsService) List() *AttachedStorageDomainsServiceListRequest {
+	return &AttachedStorageDomainsServiceListRequest{attachedStorageDomainsService: p}
 }
 
 //
@@ -9053,29 +7041,8 @@ type InstanceTypeWatchdogServiceGetResponse struct {
 func (p *InstanceTypeWatchdogServiceGetResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Gets watchdog configuration of the instance type.
-//
-func (op *InstanceTypeWatchdogService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *InstanceTypeWatchdogService) Get() *InstanceTypeWatchdogServiceGetRequest {
+	return &InstanceTypeWatchdogServiceGetRequest{instanceTypeWatchdogService: p}
 }
 
 type InstanceTypeWatchdogServiceRemoveRequest struct {
@@ -9154,28 +7121,8 @@ func (p *InstanceTypeWatchdogServiceRemoveRequest) Send() (*InstanceTypeWatchdog
 type InstanceTypeWatchdogServiceRemoveResponse struct {
 }
 
-//
-// Remove a watchdog from the instance type.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeWatchdogService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *InstanceTypeWatchdogService) Remove() *InstanceTypeWatchdogServiceRemoveRequest {
+	return &InstanceTypeWatchdogServiceRemoveRequest{instanceTypeWatchdogService: p}
 }
 
 type InstanceTypeWatchdogServiceUpdateRequest struct {
@@ -9273,32 +7220,8 @@ type InstanceTypeWatchdogServiceUpdateResponse struct {
 func (p *InstanceTypeWatchdogServiceUpdateResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Updates the watchdog configuration of the instance type.
-//
-func (op *InstanceTypeWatchdogService) Update(
-	watchdog *Watchdog,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *InstanceTypeWatchdogService) Update() *InstanceTypeWatchdogServiceUpdateRequest {
+	return &InstanceTypeWatchdogServiceUpdateRequest{instanceTypeWatchdogService: p}
 }
 
 //
@@ -9404,28 +7327,8 @@ type QuotaStorageLimitServiceGetResponse struct {
 func (p *QuotaStorageLimitServiceGetResponse) Limit() *QuotaStorageLimit {
 	return p.limit
 }
-
-//
-//
-func (op *QuotaStorageLimitService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*QuotaStorageLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitVar QuotaStorageLimit
-	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
-	return &limitVar, nil
+func (p *QuotaStorageLimitService) Get() *QuotaStorageLimitServiceGetRequest {
+	return &QuotaStorageLimitServiceGetRequest{quotaStorageLimitService: p}
 }
 
 type QuotaStorageLimitServiceRemoveRequest struct {
@@ -9504,27 +7407,8 @@ func (p *QuotaStorageLimitServiceRemoveRequest) Send() (*QuotaStorageLimitServic
 type QuotaStorageLimitServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the update should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotaStorageLimitService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *QuotaStorageLimitService) Remove() *QuotaStorageLimitServiceRemoveRequest {
+	return &QuotaStorageLimitServiceRemoveRequest{quotaStorageLimitService: p}
 }
 
 //
@@ -9630,44 +7514,8 @@ type RoleServiceGetResponse struct {
 func (p *RoleServiceGetResponse) Role() *Role {
 	return p.role
 }
-
-//
-// Get the role.
-// [source]
-// ----
-// GET /ovirt-engine/api/roles/123
-// ----
-// You will receive XML response like this one:
-// [source,xml]
-// ----
-// <role id="123">
-//   <name>MyRole</name>
-//   <description>MyRole description</description>
-//   <link href="/ovirt-engine/api/roles/123/permits" rel="permits"/>
-//   <administrative>true</administrative>
-//   <mutable>false</mutable>
-// </role>
-// ----
-//
-func (op *RoleService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Role,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var roleVar Role
-	xml.Unmarshal([]byte(ovResp.Body), &roleVar)
-	return &roleVar, nil
+func (p *RoleService) Get() *RoleServiceGetRequest {
+	return &RoleServiceGetRequest{roleService: p}
 }
 
 type RoleServiceRemoveRequest struct {
@@ -9746,33 +7594,8 @@ func (p *RoleServiceRemoveRequest) Send() (*RoleServiceRemoveResponse, error) {
 type RoleServiceRemoveResponse struct {
 }
 
-//
-// Removes the role.
-// To remove the role you need to know its id, then send request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/roles/{role_id}
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *RoleService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *RoleService) Remove() *RoleServiceRemoveRequest {
+	return &RoleServiceRemoveRequest{roleService: p}
 }
 
 type RoleServiceUpdateRequest struct {
@@ -9870,53 +7693,8 @@ type RoleServiceUpdateResponse struct {
 func (p *RoleServiceUpdateResponse) Role() *Role {
 	return p.role
 }
-
-//
-// Updates a role. You are allowed to update `name`, `description` and `administrative` attributes after role is
-// created. Within this endpoint you can't add or remove roles permits you need to use
-// <<services/permits, service>> that manages permits of role.
-// For example to update role's `name`, `description` and `administrative` attributes send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/roles/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <role>
-//   <name>MyNewRoleName</name>
-//   <description>My new description of the role</description>
-//   <administrative>true</administrative>
-// </group>
-// ----
-// This method supports the following parameters:
-// `Role`:: Updated role.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *RoleService) Update(
-	role *Role,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Role,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(role, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var roleVar Role
-	xml.Unmarshal([]byte(ovResp.Body), &roleVar)
-	return &roleVar, nil
+func (p *RoleService) Update() *RoleServiceUpdateRequest {
+	return &RoleServiceUpdateRequest{roleService: p}
 }
 
 //
@@ -10035,28 +7813,8 @@ type AssignedNetworkServiceGetResponse struct {
 func (p *AssignedNetworkServiceGetResponse) Network() *Network {
 	return p.network
 }
-
-//
-//
-func (op *AssignedNetworkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *AssignedNetworkService) Get() *AssignedNetworkServiceGetRequest {
+	return &AssignedNetworkServiceGetRequest{assignedNetworkService: p}
 }
 
 type AssignedNetworkServiceRemoveRequest struct {
@@ -10135,27 +7893,8 @@ func (p *AssignedNetworkServiceRemoveRequest) Send() (*AssignedNetworkServiceRem
 type AssignedNetworkServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedNetworkService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedNetworkService) Remove() *AssignedNetworkServiceRemoveRequest {
+	return &AssignedNetworkServiceRemoveRequest{assignedNetworkService: p}
 }
 
 type AssignedNetworkServiceUpdateRequest struct {
@@ -10253,31 +7992,8 @@ type AssignedNetworkServiceUpdateResponse struct {
 func (p *AssignedNetworkServiceUpdateResponse) Network() *Network {
 	return p.network
 }
-
-//
-//
-func (op *AssignedNetworkService) Update(
-	network *Network,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(network, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *AssignedNetworkService) Update() *AssignedNetworkServiceUpdateRequest {
+	return &AssignedNetworkServiceUpdateRequest{assignedNetworkService: p}
 }
 
 //
@@ -10384,29 +8100,8 @@ type StorageDomainVmDiskAttachmentServiceGetResponse struct {
 func (p *StorageDomainVmDiskAttachmentServiceGetResponse) Attachment() *DiskAttachment {
 	return p.attachment
 }
-
-//
-// Returns the details of the attachment with all its properties and a link to the disk.
-//
-func (op *StorageDomainVmDiskAttachmentService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar DiskAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *StorageDomainVmDiskAttachmentService) Get() *StorageDomainVmDiskAttachmentServiceGetRequest {
+	return &StorageDomainVmDiskAttachmentServiceGetRequest{storageDomainVmDiskAttachmentService: p}
 }
 
 //
@@ -10521,35 +8216,8 @@ type HostNicsServiceListResponse struct {
 func (p *HostNicsServiceListResponse) Nics() []HostNic {
 	return p.nics
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostNicsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]HostNic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicsVar HostNics
-	xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
-	return nicsVar.HostNics, nil
+func (p *HostNicsService) List() *HostNicsServiceListRequest {
+	return &HostNicsServiceListRequest{hostNicsService: p}
 }
 
 //
@@ -10666,28 +8334,8 @@ type VmNumaNodeServiceGetResponse struct {
 func (p *VmNumaNodeServiceGetResponse) Node() *VirtualNumaNode {
 	return p.node
 }
-
-//
-//
-func (op *VmNumaNodeService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VirtualNumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodeVar VirtualNumaNode
-	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
-	return &nodeVar, nil
+func (p *VmNumaNodeService) Get() *VmNumaNodeServiceGetRequest {
+	return &VmNumaNodeServiceGetRequest{vmNumaNodeService: p}
 }
 
 type VmNumaNodeServiceRemoveRequest struct {
@@ -10766,33 +8414,8 @@ func (p *VmNumaNodeServiceRemoveRequest) Send() (*VmNumaNodeServiceRemoveRespons
 type VmNumaNodeServiceRemoveResponse struct {
 }
 
-//
-// Removes a virtual NUMA node.
-// An example of removing a virtual NUMA node:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123/numanodes/456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNumaNodeService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmNumaNodeService) Remove() *VmNumaNodeServiceRemoveRequest {
+	return &VmNumaNodeServiceRemoveRequest{vmNumaNodeService: p}
 }
 
 type VmNumaNodeServiceUpdateRequest struct {
@@ -10890,48 +8513,8 @@ type VmNumaNodeServiceUpdateResponse struct {
 func (p *VmNumaNodeServiceUpdateResponse) Node() *VirtualNumaNode {
 	return p.node
 }
-
-//
-// Updates a virtual NUMA node.
-// An example of pinning a virtual NUMA node to a physical NUMA node on the host:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/123/numanodes/456
-// ----
-// The request body should contain the following:
-// [source,xml]
-// ----
-// <vm_numa_node>
-//   <numa_node_pins>
-//     <numa_node_pin>
-//       <index>0</index>
-//     </numa_node_pin>
-//   </numa_node_pins>
-// </vm_numa_node>
-// ----
-//
-func (op *VmNumaNodeService) Update(
-	node *VirtualNumaNode,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VirtualNumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(node, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodeVar VirtualNumaNode
-	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
-	return &nodeVar, nil
+func (p *VmNumaNodeService) Update() *VmNumaNodeServiceUpdateRequest {
+	return &VmNumaNodeServiceUpdateRequest{vmNumaNodeService: p}
 }
 
 //
@@ -11046,35 +8629,8 @@ type TemplateCdromsServiceListResponse struct {
 func (p *TemplateCdromsServiceListResponse) Cdroms() []Cdrom {
 	return p.cdroms
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of CD-ROMs to return. If not specified all the CD-ROMs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateCdromsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromsVar Cdroms
-	xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
-	return cdromsVar.Cdroms, nil
+func (p *TemplateCdromsService) List() *TemplateCdromsServiceListRequest {
+	return &TemplateCdromsServiceListRequest{templateCdromsService: p}
 }
 
 //
@@ -11191,28 +8747,8 @@ type SnapshotServiceGetResponse struct {
 func (p *SnapshotServiceGetResponse) Snapshot() *Snapshot {
 	return p.snapshot
 }
-
-//
-//
-func (op *SnapshotService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Snapshot,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var snapshotVar Snapshot
-	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
-	return &snapshotVar, nil
+func (p *SnapshotService) Get() *SnapshotServiceGetRequest {
+	return &SnapshotServiceGetRequest{snapshotService: p}
 }
 
 type SnapshotServiceRemoveRequest struct {
@@ -11299,36 +8835,8 @@ func (p *SnapshotServiceRemoveRequest) Send() (*SnapshotServiceRemoveResponse, e
 type SnapshotServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `AllContent`:: Indicates if all the attributes of the virtual machine snapshot should be included in the response.
-// By default the attribute `initialization.configuration.data` is excluded.
-// For example, to retrieve the complete representation of the snapshot with id `456` of the virtual machine
-// with id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/vms/123/snapshots/456?all_content=true
-// ....
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotService) Remove(
-	async bool,
-	allContent bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-	query["all_content"] = fmt.Sprintf("%v", allContent)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *SnapshotService) Remove() *SnapshotServiceRemoveRequest {
+	return &SnapshotServiceRemoveRequest{snapshotService: p}
 }
 
 type SnapshotServiceRestoreRequest struct {
@@ -11428,42 +8936,8 @@ func (p *SnapshotServiceRestoreRequest) Send() (*SnapshotServiceRestoreResponse,
 type SnapshotServiceRestoreResponse struct {
 }
 
-//
-// Restores a virtual machine snapshot.
-// For example, to restore the snapshot with identifier `456` of virtual machine with identifier `123` send a
-// request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/snapshots/456/restore
-// ----
-// With an empty `action` in the body:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the restore should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotService) Restore(
-	async bool,
-	disks []Disk,
-	restoreMemory bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Disks:         disks,
-		RestoreMemory: &restoreMemory,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "restore", headers, query, wait)
-	return err
+func (p *SnapshotService) Restore() *SnapshotServiceRestoreRequest {
+	return &SnapshotServiceRestoreRequest{snapshotService: p}
 }
 
 //
@@ -11616,29 +9090,8 @@ type SchedulingPoliciesServiceAddResponse struct {
 func (p *SchedulingPoliciesServiceAddResponse) Policy() *SchedulingPolicy {
 	return p.policy
 }
-
-//
-//
-func (op *SchedulingPoliciesService) Add(
-	policy *SchedulingPolicy,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SchedulingPolicy,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(policy, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var policyVar SchedulingPolicy
-	xml.Unmarshal([]byte(ovResp.Body), &policyVar)
-	return &policyVar, nil
+func (p *SchedulingPoliciesService) Add() *SchedulingPoliciesServiceAddRequest {
+	return &SchedulingPoliciesServiceAddRequest{schedulingPoliciesService: p}
 }
 
 type SchedulingPoliciesServiceListRequest struct {
@@ -11733,38 +9186,8 @@ type SchedulingPoliciesServiceListResponse struct {
 func (p *SchedulingPoliciesServiceListResponse) Policies() []SchedulingPolicy {
 	return p.policies
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of policies to return. If not specified all the policies are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPoliciesService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]SchedulingPolicy,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var policiesVar SchedulingPolicys
-	xml.Unmarshal([]byte(ovResp.Body), &policiesVar)
-	return policiesVar.SchedulingPolicys, nil
+func (p *SchedulingPoliciesService) List() *SchedulingPoliciesServiceListRequest {
+	return &SchedulingPoliciesServiceListRequest{schedulingPoliciesService: p}
 }
 
 //
@@ -11891,29 +9314,8 @@ type WeightsServiceAddResponse struct {
 func (p *WeightsServiceAddResponse) Weight() *Weight {
 	return p.weight
 }
-
-//
-//
-func (op *WeightsService) Add(
-	weight *Weight,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Weight,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(weight, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var weightVar Weight
-	xml.Unmarshal([]byte(ovResp.Body), &weightVar)
-	return &weightVar, nil
+func (p *WeightsService) Add() *WeightsServiceAddRequest {
+	return &WeightsServiceAddRequest{weightsService: p}
 }
 
 type WeightsServiceListRequest struct {
@@ -12008,38 +9410,8 @@ type WeightsServiceListResponse struct {
 func (p *WeightsServiceListResponse) Weights() []Weight {
 	return p.weights
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of weights to return. If not specified all the weights are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *WeightsService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Weight,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var weightsVar Weights
-	xml.Unmarshal([]byte(ovResp.Body), &weightsVar)
-	return weightsVar.Weights, nil
+func (p *WeightsService) List() *WeightsServiceListRequest {
+	return &WeightsServiceListRequest{weightsService: p}
 }
 
 //
@@ -12167,52 +9539,8 @@ type VmHostDevicesServiceAddResponse struct {
 func (p *VmHostDevicesServiceAddResponse) Device() *HostDevice {
 	return p.device
 }
-
-//
-// Attach target device to given virtual machine.
-// Example:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/hostdevices
-// ----
-// With request body of type <<types/host_device,HostDevice>>, for example
-// [source,xml]
-// ----
-// <host_device id="123" />
-// ----
-// NOTE: A necessary precondition for a successful host device attachment is that the virtual machine must be pinned
-// to *exactly* one host. The device ID is then taken relative to this host.
-// NOTE: Attachment of a PCI device that is part of a bigger IOMMU group will result in attachment of the remaining
-// devices from that IOMMU group as "placeholders". These devices are then identified using the `placeholder`
-// attribute of the <<types/host_device,HostDevice>> type set to `true`.
-// In case you want attach a device that already serves as an IOMMU placeholder, simply issue an explicit Add operation
-// for it, and its `placeholder` flag will be cleared, and the device will be accessible to the virtual machine.
-// This method supports the following parameters:
-// `Device`:: The host device to be attached to given virtual machine.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmHostDevicesService) Add(
-	device *HostDevice,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*HostDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(device, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var deviceVar HostDevice
-	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
-	return &deviceVar, nil
+func (p *VmHostDevicesService) Add() *VmHostDevicesServiceAddRequest {
+	return &VmHostDevicesServiceAddRequest{vmHostDevicesService: p}
 }
 
 type VmHostDevicesServiceListRequest struct {
@@ -12299,36 +9627,8 @@ type VmHostDevicesServiceListResponse struct {
 func (p *VmHostDevicesServiceListResponse) Device() []HostDevice {
 	return p.device
 }
-
-//
-// List the host devices assigned to given virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of devices to return. If not specified all the devices are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmHostDevicesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]HostDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var deviceVar HostDevices
-	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
-	return deviceVar.HostDevices, nil
+func (p *VmHostDevicesService) List() *VmHostDevicesServiceListRequest {
+	return &VmHostDevicesServiceListRequest{vmHostDevicesService: p}
 }
 
 //
@@ -12445,28 +9745,8 @@ type AssignedCpuProfileServiceGetResponse struct {
 func (p *AssignedCpuProfileServiceGetResponse) Profile() *CpuProfile {
 	return p.profile
 }
-
-//
-//
-func (op *AssignedCpuProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *AssignedCpuProfileService) Get() *AssignedCpuProfileServiceGetRequest {
+	return &AssignedCpuProfileServiceGetRequest{assignedCpuProfileService: p}
 }
 
 type AssignedCpuProfileServiceRemoveRequest struct {
@@ -12545,27 +9825,8 @@ func (p *AssignedCpuProfileServiceRemoveRequest) Send() (*AssignedCpuProfileServ
 type AssignedCpuProfileServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedCpuProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedCpuProfileService) Remove() *AssignedCpuProfileServiceRemoveRequest {
+	return &AssignedCpuProfileServiceRemoveRequest{assignedCpuProfileService: p}
 }
 
 //
@@ -12671,28 +9932,8 @@ type SnapshotNicServiceGetResponse struct {
 func (p *SnapshotNicServiceGetResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-//
-func (op *SnapshotNicService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *SnapshotNicService) Get() *SnapshotNicServiceGetRequest {
+	return &SnapshotNicServiceGetRequest{snapshotNicService: p}
 }
 
 //
@@ -12799,45 +10040,8 @@ type HostDeviceServiceGetResponse struct {
 func (p *HostDeviceServiceGetResponse) Device() *HostDevice {
 	return p.device
 }
-
-//
-// Retrieve information about a particular host's device.
-// An example of getting a host device:
-// [source]
-// ----
-// GET /ovirt-engine/api/hosts/123/devices/456
-// ----
-// [source,xml]
-// ----
-// <host_device href="/ovirt-engine/api/hosts/123/devices/456" id="456">
-//   <name>usb_1_9_1_1_0</name>
-//   <capability>usb</capability>
-//   <host href="/ovirt-engine/api/hosts/123" id="123"/>
-//   <parent_device href="/ovirt-engine/api/hosts/123/devices/789" id="789">
-//     <name>usb_1_9_1</name>
-//   </parent_device>
-// </host_device>
-// ----
-//
-func (op *HostDeviceService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*HostDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var deviceVar HostDevice
-	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
-	return &deviceVar, nil
+func (p *HostDeviceService) Get() *HostDeviceServiceGetRequest {
+	return &HostDeviceServiceGetRequest{hostDeviceService: p}
 }
 
 //
@@ -12957,31 +10161,8 @@ type ImageTransfersServiceAddResponse struct {
 func (p *ImageTransfersServiceAddResponse) ImageTransfer() *ImageTransfer {
 	return p.imageTransfer
 }
-
-//
-// Add a new image transfer. An image needs to be specified in order to make
-// a new transfer.
-//
-func (op *ImageTransfersService) Add(
-	imageTransfer *ImageTransfer,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ImageTransfer,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(imageTransfer, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imageTransferVar ImageTransfer
-	xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
-	return &imageTransferVar, nil
+func (p *ImageTransfersService) Add() *ImageTransfersServiceAddRequest {
+	return &ImageTransfersServiceAddRequest{imageTransfersService: p}
 }
 
 type ImageTransfersServiceListRequest struct {
@@ -13060,30 +10241,8 @@ type ImageTransfersServiceListResponse struct {
 func (p *ImageTransfersServiceListResponse) ImageTransfer() []ImageTransfer {
 	return p.imageTransfer
 }
-
-//
-// Retrieves the list of image transfers that are currently
-// being performed.
-//
-func (op *ImageTransfersService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ImageTransfer,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imageTransferVar ImageTransfers
-	xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
-	return imageTransferVar.ImageTransfers, nil
+func (p *ImageTransfersService) List() *ImageTransfersServiceListRequest {
+	return &ImageTransfersServiceListRequest{imageTransfersService: p}
 }
 
 //
@@ -13210,21 +10369,8 @@ func (p *ExternalProviderServiceImportCertificatesRequest) Send() (*ExternalProv
 type ExternalProviderServiceImportCertificatesResponse struct {
 }
 
-//
-//
-func (op *ExternalProviderService) ImportCertificates(
-	certificates []Certificate,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Certificates: certificates,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
-	return err
+func (p *ExternalProviderService) ImportCertificates() *ExternalProviderServiceImportCertificatesRequest {
+	return &ExternalProviderServiceImportCertificatesRequest{externalProviderService: p}
 }
 
 type ExternalProviderServiceTestConnectivityRequest struct {
@@ -13312,26 +10458,8 @@ func (p *ExternalProviderServiceTestConnectivityRequest) Send() (*ExternalProvid
 type ExternalProviderServiceTestConnectivityResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the test should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalProviderService) TestConnectivity(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
-	return err
+func (p *ExternalProviderService) TestConnectivity() *ExternalProviderServiceTestConnectivityRequest {
+	return &ExternalProviderServiceTestConnectivityRequest{externalProviderService: p}
 }
 
 //
@@ -13450,53 +10578,8 @@ type EventServiceGetResponse struct {
 func (p *EventServiceGetResponse) Event() *Event {
 	return p.event
 }
-
-//
-// Get an event.
-// An example of getting an event:
-// [source]
-// ----
-// GET /ovirt-engine/api/events/123
-// ----
-// [source,xml]
-// ----
-// <event href="/ovirt-engine/api/events/123" id="123">
-//   <description>Host example.com was added by admin@internal-authz.</description>
-//   <code>42</code>
-//   <correlation_id>135</correlation_id>
-//   <custom_id>-1</custom_id>
-//   <flood_rate>30</flood_rate>
-//   <origin>oVirt</origin>
-//   <severity>normal</severity>
-//   <time>2016-12-11T11:13:44.654+02:00</time>
-//   <cluster href="/ovirt-engine/api/clusters/456" id="456"/>
-//   <host href="/ovirt-engine/api/hosts/789" id="789"/>
-//   <user href="/ovirt-engine/api/users/987" id="987"/>
-// </event>
-// ----
-// Note that the number of fields changes according to the information that resides on the event.
-// For example, for storage domain related events you will get the storage domain reference,
-// as well as the reference for the data center this storage domain resides in.
-//
-func (op *EventService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Event,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var eventVar Event
-	xml.Unmarshal([]byte(ovResp.Body), &eventVar)
-	return &eventVar, nil
+func (p *EventService) Get() *EventServiceGetRequest {
+	return &EventServiceGetRequest{eventService: p}
 }
 
 type EventServiceRemoveRequest struct {
@@ -13575,33 +10658,8 @@ func (p *EventServiceRemoveRequest) Send() (*EventServiceRemoveResponse, error) 
 type EventServiceRemoveResponse struct {
 }
 
-//
-// Removes an event from internal audit log.
-// An event can be removed by sending following request
-// [source]
-// ----
-// DELETE /ovirt-engine/api/events/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *EventService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *EventService) Remove() *EventServiceRemoveRequest {
+	return &EventServiceRemoveRequest{eventService: p}
 }
 
 //
@@ -13758,29 +10816,8 @@ type NetworkFiltersServiceListResponse struct {
 func (p *NetworkFiltersServiceListResponse) Filters() []NetworkFilter {
 	return p.filters
 }
-
-//
-// Retrieves the representations of the network filters.
-//
-func (op *NetworkFiltersService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]NetworkFilter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var filtersVar NetworkFilters
-	xml.Unmarshal([]byte(ovResp.Body), &filtersVar)
-	return filtersVar.NetworkFilters, nil
+func (p *NetworkFiltersService) List() *NetworkFiltersServiceListRequest {
+	return &NetworkFiltersServiceListRequest{networkFiltersService: p}
 }
 
 //
@@ -13901,30 +10938,8 @@ type StatisticServiceGetResponse struct {
 func (p *StatisticServiceGetResponse) Statistic() *Statistic {
 	return p.statistic
 }
-
-//
-//
-func (op *StatisticService) Get(
-	statistic *Statistic,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Statistic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["statistic"] = fmt.Sprintf("%v", statistic)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var statisticVar Statistic
-	xml.Unmarshal([]byte(ovResp.Body), &statisticVar)
-	return &statisticVar, nil
+func (p *StatisticService) Get() *StatisticServiceGetRequest {
+	return &StatisticServiceGetRequest{statisticService: p}
 }
 
 //
@@ -14042,53 +11057,8 @@ type ExternalVmImportsServiceAddResponse struct {
 func (p *ExternalVmImportsServiceAddResponse) Import_() *ExternalVmImport {
 	return p.import_
 }
-
-//
-// This operation is used to import a virtual machine from external hypervisor, such as KVM, XEN or VMware.
-// For example import of a virtual machine from VMware can be facilitated using the following request:
-// [source]
-// ----
-// POST /externalvmimports
-// ----
-// With request body of type <<types/external_vm_import,ExternalVmImport>>, for example:
-// [source,xml]
-// ----
-// <external_vm_import>
-//   <vm>
-//     <name>my_vm</name>
-//   </vm>
-//   <cluster id="360014051136c20574f743bdbd28177fd" />
-//   <storage_domain id="8bb5ade5-e988-4000-8b93-dbfc6717fe50" />
-//   <name>vm_name_as_is_in_vmware</name>
-//   <sparse>true</sparse>
-//   <username>vmware_user</username>
-//   <password>123456</password>
-//   <provider>VMWARE</provider>
-//   <url>vpx://wmware_user@vcenter-host/DataCenter/Cluster/esxi-host?no_verify=1</url>
-//   <drivers_iso id="virtio-win-1.6.7.iso" />
-// </external_vm_import>
-// ----
-//
-func (op *ExternalVmImportsService) Add(
-	import_ *ExternalVmImport,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalVmImport,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(import_, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var import_Var ExternalVmImport
-	xml.Unmarshal([]byte(ovResp.Body), &import_Var)
-	return &import_Var, nil
+func (p *ExternalVmImportsService) Add() *ExternalVmImportsServiceAddRequest {
+	return &ExternalVmImportsServiceAddRequest{externalVmImportsService: p}
 }
 
 //
@@ -14203,35 +11173,8 @@ type AssignedRolesServiceListResponse struct {
 func (p *AssignedRolesServiceListResponse) Roles() []Role {
 	return p.roles
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of roles to return. If not specified all the roles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedRolesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Role,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var rolesVar Roles
-	xml.Unmarshal([]byte(ovResp.Body), &rolesVar)
-	return rolesVar.Roles, nil
+func (p *AssignedRolesService) List() *AssignedRolesServiceListRequest {
+	return &AssignedRolesServiceListRequest{assignedRolesService: p}
 }
 
 //
@@ -14349,29 +11292,8 @@ type NetworkFilterParameterServiceGetResponse struct {
 func (p *NetworkFilterParameterServiceGetResponse) Parameter() *NetworkFilterParameter {
 	return p.parameter
 }
-
-//
-// Retrieves a representation of the network filter parameter.
-//
-func (op *NetworkFilterParameterService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkFilterParameter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var parameterVar NetworkFilterParameter
-	xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
-	return &parameterVar, nil
+func (p *NetworkFilterParameterService) Get() *NetworkFilterParameterServiceGetRequest {
+	return &NetworkFilterParameterServiceGetRequest{networkFilterParameterService: p}
 }
 
 type NetworkFilterParameterServiceRemoveRequest struct {
@@ -14442,27 +11364,8 @@ func (p *NetworkFilterParameterServiceRemoveRequest) Send() (*NetworkFilterParam
 type NetworkFilterParameterServiceRemoveResponse struct {
 }
 
-//
-// Removes the filter parameter.
-// For example, to remove the filter parameter with id `123` on NIC `456` of virtual machine `789`
-// send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/789/nics/456/networkfilterparameters/123
-// ----
-//
-func (op *NetworkFilterParameterService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *NetworkFilterParameterService) Remove() *NetworkFilterParameterServiceRemoveRequest {
+	return &NetworkFilterParameterServiceRemoveRequest{networkFilterParameterService: p}
 }
 
 type NetworkFilterParameterServiceUpdateRequest struct {
@@ -14552,49 +11455,8 @@ type NetworkFilterParameterServiceUpdateResponse struct {
 func (p *NetworkFilterParameterServiceUpdateResponse) Parameter() *NetworkFilterParameter {
 	return p.parameter
 }
-
-//
-// Updates the network filter parameter.
-// For example, to update the network filter parameter having with with id `123` on NIC `456` of
-// virtual machine `789` send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/789/nics/456/networkfilterparameters/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network_filter_parameter>
-//   <name>updatedName</name>
-//   <value>updatedValue</value>
-// </network_filter_parameter>
-// ----
-// This method supports the following parameters:
-// `Parameter`:: The network filter parameter that is being updated.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkFilterParameterService) Update(
-	parameter *NetworkFilterParameter,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkFilterParameter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(parameter, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var parameterVar NetworkFilterParameter
-	xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
-	return &parameterVar, nil
+func (p *NetworkFilterParameterService) Update() *NetworkFilterParameterServiceUpdateRequest {
+	return &NetworkFilterParameterServiceUpdateRequest{networkFilterParameterService: p}
 }
 
 //
@@ -14700,28 +11562,8 @@ type OpenstackImageProviderServiceGetResponse struct {
 func (p *OpenstackImageProviderServiceGetResponse) Provider() *OpenStackImageProvider {
 	return p.provider
 }
-
-//
-//
-func (op *OpenstackImageProviderService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackImageProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackImageProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackImageProviderService) Get() *OpenstackImageProviderServiceGetRequest {
+	return &OpenstackImageProviderServiceGetRequest{openstackImageProviderService: p}
 }
 
 type OpenstackImageProviderServiceImportCertificatesRequest struct {
@@ -14809,21 +11651,8 @@ func (p *OpenstackImageProviderServiceImportCertificatesRequest) Send() (*Openst
 type OpenstackImageProviderServiceImportCertificatesResponse struct {
 }
 
-//
-//
-func (op *OpenstackImageProviderService) ImportCertificates(
-	certificates []Certificate,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Certificates: certificates,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
-	return err
+func (p *OpenstackImageProviderService) ImportCertificates() *OpenstackImageProviderServiceImportCertificatesRequest {
+	return &OpenstackImageProviderServiceImportCertificatesRequest{openstackImageProviderService: p}
 }
 
 type OpenstackImageProviderServiceRemoveRequest struct {
@@ -14902,27 +11731,8 @@ func (p *OpenstackImageProviderServiceRemoveRequest) Send() (*OpenstackImageProv
 type OpenstackImageProviderServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackImageProviderService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *OpenstackImageProviderService) Remove() *OpenstackImageProviderServiceRemoveRequest {
+	return &OpenstackImageProviderServiceRemoveRequest{openstackImageProviderService: p}
 }
 
 type OpenstackImageProviderServiceTestConnectivityRequest struct {
@@ -15010,26 +11820,8 @@ func (p *OpenstackImageProviderServiceTestConnectivityRequest) Send() (*Openstac
 type OpenstackImageProviderServiceTestConnectivityResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the test should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackImageProviderService) TestConnectivity(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
-	return err
+func (p *OpenstackImageProviderService) TestConnectivity() *OpenstackImageProviderServiceTestConnectivityRequest {
+	return &OpenstackImageProviderServiceTestConnectivityRequest{openstackImageProviderService: p}
 }
 
 type OpenstackImageProviderServiceUpdateRequest struct {
@@ -15127,31 +11919,8 @@ type OpenstackImageProviderServiceUpdateResponse struct {
 func (p *OpenstackImageProviderServiceUpdateResponse) Provider() *OpenStackImageProvider {
 	return p.provider
 }
-
-//
-//
-func (op *OpenstackImageProviderService) Update(
-	provider *OpenStackImageProvider,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackImageProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackImageProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackImageProviderService) Update() *OpenstackImageProviderServiceUpdateRequest {
+	return &OpenstackImageProviderServiceUpdateRequest{openstackImageProviderService: p}
 }
 
 //
@@ -15281,28 +12050,8 @@ type OpenstackNetworkServiceGetResponse struct {
 func (p *OpenstackNetworkServiceGetResponse) Network() *OpenStackNetwork {
 	return p.network
 }
-
-//
-//
-func (op *OpenstackNetworkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackNetwork,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar OpenStackNetwork
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *OpenstackNetworkService) Get() *OpenstackNetworkServiceGetRequest {
+	return &OpenstackNetworkServiceGetRequest{openstackNetworkService: p}
 }
 
 type OpenstackNetworkServiceImportRequest struct {
@@ -15396,34 +12145,8 @@ func (p *OpenstackNetworkServiceImportRequest) Send() (*OpenstackNetworkServiceI
 type OpenstackNetworkServiceImportResponse struct {
 }
 
-//
-// This operation imports an external network into oVirt.
-// The network will be added to the data center specified.
-// This method supports the following parameters:
-// `DataCenter`:: The data center into which the network is to be imported.
-// Data center is mandatory, and can be specified
-// using the `id` or `name` attributes, the rest of
-// the attributes will be ignored.
-// `Async`:: Indicates if the import should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworkService) Import(
-	async bool,
-	dataCenter *DataCenter,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:      &async,
-		DataCenter: dataCenter,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "import", headers, query, wait)
-	return err
+func (p *OpenstackNetworkService) Import() *OpenstackNetworkServiceImportRequest {
+	return &OpenstackNetworkServiceImportRequest{openstackNetworkService: p}
 }
 
 //
@@ -15552,29 +12275,8 @@ type OpenstackImageProvidersServiceAddResponse struct {
 func (p *OpenstackImageProvidersServiceAddResponse) Provider() *OpenStackImageProvider {
 	return p.provider
 }
-
-//
-//
-func (op *OpenstackImageProvidersService) Add(
-	provider *OpenStackImageProvider,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackImageProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackImageProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackImageProvidersService) Add() *OpenstackImageProvidersServiceAddRequest {
+	return &OpenstackImageProvidersServiceAddRequest{openstackImageProvidersService: p}
 }
 
 type OpenstackImageProvidersServiceListRequest struct {
@@ -15661,35 +12363,8 @@ type OpenstackImageProvidersServiceListResponse struct {
 func (p *OpenstackImageProvidersServiceListResponse) Providers() []OpenStackImageProvider {
 	return p.providers
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of providers to return. If not specified all the providers are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackImageProvidersService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackImageProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providersVar OpenStackImageProviders
-	xml.Unmarshal([]byte(ovResp.Body), &providersVar)
-	return providersVar.OpenStackImageProviders, nil
+func (p *OpenstackImageProvidersService) List() *OpenstackImageProvidersServiceListRequest {
+	return &OpenstackImageProvidersServiceListRequest{openstackImageProvidersService: p}
 }
 
 //
@@ -15805,28 +12480,8 @@ type OpenstackVolumeAuthenticationKeyServiceGetResponse struct {
 func (p *OpenstackVolumeAuthenticationKeyServiceGetResponse) Key() *OpenstackVolumeAuthenticationKey {
 	return p.key
 }
-
-//
-//
-func (op *OpenstackVolumeAuthenticationKeyService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenstackVolumeAuthenticationKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar OpenstackVolumeAuthenticationKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *OpenstackVolumeAuthenticationKeyService) Get() *OpenstackVolumeAuthenticationKeyServiceGetRequest {
+	return &OpenstackVolumeAuthenticationKeyServiceGetRequest{openstackVolumeAuthenticationKeyService: p}
 }
 
 type OpenstackVolumeAuthenticationKeyServiceRemoveRequest struct {
@@ -15905,27 +12560,8 @@ func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Send() (*Openstac
 type OpenstackVolumeAuthenticationKeyServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeAuthenticationKeyService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *OpenstackVolumeAuthenticationKeyService) Remove() *OpenstackVolumeAuthenticationKeyServiceRemoveRequest {
+	return &OpenstackVolumeAuthenticationKeyServiceRemoveRequest{openstackVolumeAuthenticationKeyService: p}
 }
 
 type OpenstackVolumeAuthenticationKeyServiceUpdateRequest struct {
@@ -16015,29 +12651,8 @@ type OpenstackVolumeAuthenticationKeyServiceUpdateResponse struct {
 func (p *OpenstackVolumeAuthenticationKeyServiceUpdateResponse) Key() *OpenstackVolumeAuthenticationKey {
 	return p.key
 }
-
-//
-//
-func (op *OpenstackVolumeAuthenticationKeyService) Update(
-	key *OpenstackVolumeAuthenticationKey,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenstackVolumeAuthenticationKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(key, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar OpenstackVolumeAuthenticationKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *OpenstackVolumeAuthenticationKeyService) Update() *OpenstackVolumeAuthenticationKeyServiceUpdateRequest {
+	return &OpenstackVolumeAuthenticationKeyServiceUpdateRequest{openstackVolumeAuthenticationKeyService: p}
 }
 
 //
@@ -16151,36 +12766,8 @@ type OpenstackImagesServiceListResponse struct {
 func (p *OpenstackImagesServiceListResponse) Images() []OpenStackImage {
 	return p.images
 }
-
-//
-// Lists the images of a Glance image storage domain.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of images to return. If not specified all the images are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackImagesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackImage,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imagesVar OpenStackImages
-	xml.Unmarshal([]byte(ovResp.Body), &imagesVar)
-	return imagesVar.OpenStackImages, nil
+func (p *OpenstackImagesService) List() *OpenstackImagesServiceListRequest {
+	return &OpenstackImagesServiceListRequest{openstackImagesService: p}
 }
 
 //
@@ -16309,31 +12896,8 @@ type OpenstackNetworkProvidersServiceAddResponse struct {
 func (p *OpenstackNetworkProvidersServiceAddResponse) Provider() *OpenStackNetworkProvider {
 	return p.provider
 }
-
-//
-// The operation adds a new network provider to the system.
-// If the `type` property is not present, a default value of `NEUTRON` will be used.
-//
-func (op *OpenstackNetworkProvidersService) Add(
-	provider *OpenStackNetworkProvider,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackNetworkProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackNetworkProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackNetworkProvidersService) Add() *OpenstackNetworkProvidersServiceAddRequest {
+	return &OpenstackNetworkProvidersServiceAddRequest{openstackNetworkProvidersService: p}
 }
 
 type OpenstackNetworkProvidersServiceListRequest struct {
@@ -16420,35 +12984,8 @@ type OpenstackNetworkProvidersServiceListResponse struct {
 func (p *OpenstackNetworkProvidersServiceListResponse) Providers() []OpenStackNetworkProvider {
 	return p.providers
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of providers to return. If not specified all the providers are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworkProvidersService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackNetworkProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providersVar OpenStackNetworkProviders
-	xml.Unmarshal([]byte(ovResp.Body), &providersVar)
-	return providersVar.OpenStackNetworkProviders, nil
+func (p *OpenstackNetworkProvidersService) List() *OpenstackNetworkProvidersServiceListRequest {
+	return &OpenstackNetworkProvidersServiceListRequest{openstackNetworkProvidersService: p}
 }
 
 //
@@ -16576,50 +13113,8 @@ type OpenstackVolumeProvidersServiceAddResponse struct {
 func (p *OpenstackVolumeProvidersServiceAddResponse) Provider() *OpenStackVolumeProvider {
 	return p.provider
 }
-
-//
-// Adds a new volume provider.
-// For example:
-// [source]
-// ----
-// POST /ovirt-engine/api/openstackvolumeproviders
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <openstack_volume_provider>
-//   <name>mycinder</name>
-//   <url>https://mycinder.example.com:8776</url>
-//   <data_center>
-//     <name>mydc</name>
-//   </data_center>
-//   <requires_authentication>true</requires_authentication>
-//   <username>admin</username>
-//   <password>mypassword</password>
-//   <tenant_name>mytenant</tenant_name>
-// </openstack_volume_provider>
-// ----
-//
-func (op *OpenstackVolumeProvidersService) Add(
-	provider *OpenStackVolumeProvider,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackVolumeProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackVolumeProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackVolumeProvidersService) Add() *OpenstackVolumeProvidersServiceAddRequest {
+	return &OpenstackVolumeProvidersServiceAddRequest{openstackVolumeProvidersService: p}
 }
 
 type OpenstackVolumeProvidersServiceListRequest struct {
@@ -16706,36 +13201,8 @@ type OpenstackVolumeProvidersServiceListResponse struct {
 func (p *OpenstackVolumeProvidersServiceListResponse) Providers() []OpenStackVolumeProvider {
 	return p.providers
 }
-
-//
-// Retrieves the list of volume providers.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of providers to return. If not specified all the providers are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeProvidersService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackVolumeProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providersVar OpenStackVolumeProviders
-	xml.Unmarshal([]byte(ovResp.Body), &providersVar)
-	return providersVar.OpenStackVolumeProviders, nil
+func (p *OpenstackVolumeProvidersService) List() *OpenstackVolumeProvidersServiceListRequest {
+	return &OpenstackVolumeProvidersServiceListRequest{openstackVolumeProvidersService: p}
 }
 
 //
@@ -16859,35 +13326,8 @@ type OpenstackNetworksServiceListResponse struct {
 func (p *OpenstackNetworksServiceListResponse) Networks() []OpenStackNetwork {
 	return p.networks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackNetwork,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networksVar OpenStackNetworks
-	xml.Unmarshal([]byte(ovResp.Body), &networksVar)
-	return networksVar.OpenStackNetworks, nil
+func (p *OpenstackNetworksService) List() *OpenstackNetworksServiceListRequest {
+	return &OpenstackNetworksServiceListRequest{openstackNetworksService: p}
 }
 
 //
@@ -17003,28 +13443,8 @@ type OpenstackVolumeProviderServiceGetResponse struct {
 func (p *OpenstackVolumeProviderServiceGetResponse) Provider() *OpenStackVolumeProvider {
 	return p.provider
 }
-
-//
-//
-func (op *OpenstackVolumeProviderService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackVolumeProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackVolumeProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackVolumeProviderService) Get() *OpenstackVolumeProviderServiceGetRequest {
+	return &OpenstackVolumeProviderServiceGetRequest{openstackVolumeProviderService: p}
 }
 
 type OpenstackVolumeProviderServiceImportCertificatesRequest struct {
@@ -17112,21 +13532,8 @@ func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Send() (*Opens
 type OpenstackVolumeProviderServiceImportCertificatesResponse struct {
 }
 
-//
-//
-func (op *OpenstackVolumeProviderService) ImportCertificates(
-	certificates []Certificate,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Certificates: certificates,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
-	return err
+func (p *OpenstackVolumeProviderService) ImportCertificates() *OpenstackVolumeProviderServiceImportCertificatesRequest {
+	return &OpenstackVolumeProviderServiceImportCertificatesRequest{openstackVolumeProviderService: p}
 }
 
 type OpenstackVolumeProviderServiceRemoveRequest struct {
@@ -17205,27 +13612,8 @@ func (p *OpenstackVolumeProviderServiceRemoveRequest) Send() (*OpenstackVolumePr
 type OpenstackVolumeProviderServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeProviderService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *OpenstackVolumeProviderService) Remove() *OpenstackVolumeProviderServiceRemoveRequest {
+	return &OpenstackVolumeProviderServiceRemoveRequest{openstackVolumeProviderService: p}
 }
 
 type OpenstackVolumeProviderServiceTestConnectivityRequest struct {
@@ -17313,26 +13701,8 @@ func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Send() (*Opensta
 type OpenstackVolumeProviderServiceTestConnectivityResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the test should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeProviderService) TestConnectivity(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
-	return err
+func (p *OpenstackVolumeProviderService) TestConnectivity() *OpenstackVolumeProviderServiceTestConnectivityRequest {
+	return &OpenstackVolumeProviderServiceTestConnectivityRequest{openstackVolumeProviderService: p}
 }
 
 type OpenstackVolumeProviderServiceUpdateRequest struct {
@@ -17430,31 +13800,8 @@ type OpenstackVolumeProviderServiceUpdateResponse struct {
 func (p *OpenstackVolumeProviderServiceUpdateResponse) Provider() *OpenStackVolumeProvider {
 	return p.provider
 }
-
-//
-//
-func (op *OpenstackVolumeProviderService) Update(
-	provider *OpenStackVolumeProvider,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackVolumeProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackVolumeProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackVolumeProviderService) Update() *OpenstackVolumeProviderServiceUpdateRequest {
+	return &OpenstackVolumeProviderServiceUpdateRequest{openstackVolumeProviderService: p}
 }
 
 //
@@ -17604,35 +13951,8 @@ type OpenstackVolumeTypesServiceListResponse struct {
 func (p *OpenstackVolumeTypesServiceListResponse) Types() []OpenStackVolumeType {
 	return p.types
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of volume types to return. If not specified all the volume types are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeTypesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackVolumeType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var typesVar OpenStackVolumeTypes
-	xml.Unmarshal([]byte(ovResp.Body), &typesVar)
-	return typesVar.OpenStackVolumeTypes, nil
+func (p *OpenstackVolumeTypesService) List() *OpenstackVolumeTypesServiceListRequest {
+	return &OpenstackVolumeTypesServiceListRequest{openstackVolumeTypesService: p}
 }
 
 //
@@ -17759,29 +14079,8 @@ type OpenstackVolumeAuthenticationKeysServiceAddResponse struct {
 func (p *OpenstackVolumeAuthenticationKeysServiceAddResponse) Key() *OpenstackVolumeAuthenticationKey {
 	return p.key
 }
-
-//
-//
-func (op *OpenstackVolumeAuthenticationKeysService) Add(
-	key *OpenstackVolumeAuthenticationKey,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenstackVolumeAuthenticationKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(key, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar OpenstackVolumeAuthenticationKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *OpenstackVolumeAuthenticationKeysService) Add() *OpenstackVolumeAuthenticationKeysServiceAddRequest {
+	return &OpenstackVolumeAuthenticationKeysServiceAddRequest{openstackVolumeAuthenticationKeysService: p}
 }
 
 type OpenstackVolumeAuthenticationKeysServiceListRequest struct {
@@ -17868,35 +14167,8 @@ type OpenstackVolumeAuthenticationKeysServiceListResponse struct {
 func (p *OpenstackVolumeAuthenticationKeysServiceListResponse) Keys() []OpenstackVolumeAuthenticationKey {
 	return p.keys
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of keys to return. If not specified all the keys are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackVolumeAuthenticationKeysService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenstackVolumeAuthenticationKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keysVar OpenstackVolumeAuthenticationKeys
-	xml.Unmarshal([]byte(ovResp.Body), &keysVar)
-	return keysVar.OpenstackVolumeAuthenticationKeys, nil
+func (p *OpenstackVolumeAuthenticationKeysService) List() *OpenstackVolumeAuthenticationKeysServiceListRequest {
+	return &OpenstackVolumeAuthenticationKeysServiceListRequest{openstackVolumeAuthenticationKeysService: p}
 }
 
 //
@@ -18012,28 +14284,8 @@ type OpenstackImageServiceGetResponse struct {
 func (p *OpenstackImageServiceGetResponse) Image() *OpenStackImage {
 	return p.image
 }
-
-//
-//
-func (op *OpenstackImageService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackImage,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imageVar OpenStackImage
-	xml.Unmarshal([]byte(ovResp.Body), &imageVar)
-	return &imageVar, nil
+func (p *OpenstackImageService) Get() *OpenstackImageServiceGetRequest {
+	return &OpenstackImageServiceGetRequest{openstackImageService: p}
 }
 
 type OpenstackImageServiceImportRequest struct {
@@ -18151,58 +14403,8 @@ func (p *OpenstackImageServiceImportRequest) Send() (*OpenstackImageServiceImpor
 type OpenstackImageServiceImportResponse struct {
 }
 
-//
-// Imports a virtual machine from a Glance image storage domain.
-// For example, to import the image with identifier `456` from the
-// storage domain with identifier `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/openstackimageproviders/123/images/456/import
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>images0</name>
-//   </storage_domain>
-//   <cluster>
-//     <name>images0</name>
-//   </cluster>
-// </action>
-// ----
-// This method supports the following parameters:
-// `ImportAsTemplate`:: Indicates whether the image should be imported as a template.
-// `Cluster`:: This parameter is mandatory in case of using `import_as_template` and indicates which cluster should be used
-// for import glance image as template.
-// `Async`:: Indicates if the import should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackImageService) Import(
-	async bool,
-	cluster *Cluster,
-	disk *Disk,
-	importAsTemplate bool,
-	storageDomain *StorageDomain,
-	template *Template,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:            &async,
-		Cluster:          cluster,
-		Disk:             disk,
-		ImportAsTemplate: &importAsTemplate,
-		StorageDomain:    storageDomain,
-		Template:         template,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "import", headers, query, wait)
-	return err
+func (p *OpenstackImageService) Import() *OpenstackImageServiceImportRequest {
+	return &OpenstackImageServiceImportRequest{openstackImageService: p}
 }
 
 //
@@ -18308,28 +14510,8 @@ type OpenstackVolumeTypeServiceGetResponse struct {
 func (p *OpenstackVolumeTypeServiceGetResponse) Type_() *OpenStackVolumeType {
 	return p.type_
 }
-
-//
-//
-func (op *OpenstackVolumeTypeService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackVolumeType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var type_Var OpenStackVolumeType
-	xml.Unmarshal([]byte(ovResp.Body), &type_Var)
-	return &type_Var, nil
+func (p *OpenstackVolumeTypeService) Get() *OpenstackVolumeTypeServiceGetRequest {
+	return &OpenstackVolumeTypeServiceGetRequest{openstackVolumeTypeService: p}
 }
 
 //
@@ -18435,28 +14617,8 @@ type OpenstackSubnetServiceGetResponse struct {
 func (p *OpenstackSubnetServiceGetResponse) Subnet() *OpenStackSubnet {
 	return p.subnet
 }
-
-//
-//
-func (op *OpenstackSubnetService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackSubnet,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var subnetVar OpenStackSubnet
-	xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
-	return &subnetVar, nil
+func (p *OpenstackSubnetService) Get() *OpenstackSubnetServiceGetRequest {
+	return &OpenstackSubnetServiceGetRequest{openstackSubnetService: p}
 }
 
 type OpenstackSubnetServiceRemoveRequest struct {
@@ -18535,27 +14697,8 @@ func (p *OpenstackSubnetServiceRemoveRequest) Send() (*OpenstackSubnetServiceRem
 type OpenstackSubnetServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackSubnetService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *OpenstackSubnetService) Remove() *OpenstackSubnetServiceRemoveRequest {
+	return &OpenstackSubnetServiceRemoveRequest{openstackSubnetService: p}
 }
 
 //
@@ -18672,29 +14815,8 @@ type OpenstackSubnetsServiceAddResponse struct {
 func (p *OpenstackSubnetsServiceAddResponse) Subnet() *OpenStackSubnet {
 	return p.subnet
 }
-
-//
-//
-func (op *OpenstackSubnetsService) Add(
-	subnet *OpenStackSubnet,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackSubnet,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(subnet, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var subnetVar OpenStackSubnet
-	xml.Unmarshal([]byte(ovResp.Body), &subnetVar)
-	return &subnetVar, nil
+func (p *OpenstackSubnetsService) Add() *OpenstackSubnetsServiceAddRequest {
+	return &OpenstackSubnetsServiceAddRequest{openstackSubnetsService: p}
 }
 
 type OpenstackSubnetsServiceListRequest struct {
@@ -18781,35 +14903,8 @@ type OpenstackSubnetsServiceListResponse struct {
 func (p *OpenstackSubnetsServiceListResponse) Subnets() []OpenStackSubnet {
 	return p.subnets
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of sub-networks to return. If not specified all the sub-networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackSubnetsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OpenStackSubnet,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var subnetsVar OpenStackSubnets
-	xml.Unmarshal([]byte(ovResp.Body), &subnetsVar)
-	return subnetsVar.OpenStackSubnets, nil
+func (p *OpenstackSubnetsService) List() *OpenstackSubnetsServiceListRequest {
+	return &OpenstackSubnetsServiceListRequest{openstackSubnetsService: p}
 }
 
 //
@@ -18926,34 +15021,8 @@ type OpenstackNetworkProviderServiceGetResponse struct {
 func (p *OpenstackNetworkProviderServiceGetResponse) Provider() *OpenStackNetworkProvider {
 	return p.provider
 }
-
-//
-// Returns the representation of the object managed by this service.
-// For example, to get the OpenStack network provider with identifier `1234`, send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/openstacknetworkproviders/1234
-// ----
-//
-func (op *OpenstackNetworkProviderService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackNetworkProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackNetworkProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackNetworkProviderService) Get() *OpenstackNetworkProviderServiceGetRequest {
+	return &OpenstackNetworkProviderServiceGetRequest{openstackNetworkProviderService: p}
 }
 
 type OpenstackNetworkProviderServiceImportCertificatesRequest struct {
@@ -19041,21 +15110,8 @@ func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Send() (*Open
 type OpenstackNetworkProviderServiceImportCertificatesResponse struct {
 }
 
-//
-//
-func (op *OpenstackNetworkProviderService) ImportCertificates(
-	certificates []Certificate,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Certificates: certificates,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
-	return err
+func (p *OpenstackNetworkProviderService) ImportCertificates() *OpenstackNetworkProviderServiceImportCertificatesRequest {
+	return &OpenstackNetworkProviderServiceImportCertificatesRequest{openstackNetworkProviderService: p}
 }
 
 type OpenstackNetworkProviderServiceRemoveRequest struct {
@@ -19134,33 +15190,8 @@ func (p *OpenstackNetworkProviderServiceRemoveRequest) Send() (*OpenstackNetwork
 type OpenstackNetworkProviderServiceRemoveResponse struct {
 }
 
-//
-// Removes the provider.
-// For example, to remove the OpenStack network provider with identifier `1234`, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/openstacknetworkproviders/1234
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworkProviderService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *OpenstackNetworkProviderService) Remove() *OpenstackNetworkProviderServiceRemoveRequest {
+	return &OpenstackNetworkProviderServiceRemoveRequest{openstackNetworkProviderService: p}
 }
 
 type OpenstackNetworkProviderServiceTestConnectivityRequest struct {
@@ -19248,26 +15279,8 @@ func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Send() (*Openst
 type OpenstackNetworkProviderServiceTestConnectivityResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the test should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworkProviderService) TestConnectivity(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
-	return err
+func (p *OpenstackNetworkProviderService) TestConnectivity() *OpenstackNetworkProviderServiceTestConnectivityRequest {
+	return &OpenstackNetworkProviderServiceTestConnectivityRequest{openstackNetworkProviderService: p}
 }
 
 type OpenstackNetworkProviderServiceUpdateRequest struct {
@@ -19365,54 +15378,8 @@ type OpenstackNetworkProviderServiceUpdateResponse struct {
 func (p *OpenstackNetworkProviderServiceUpdateResponse) Provider() *OpenStackNetworkProvider {
 	return p.provider
 }
-
-//
-// Updates the provider.
-// For example, to update `provider_name`, `requires_authentication`, `url`, `tenant_name` and `type` properties,
-// for the OpenStack network provider with identifier `1234`, send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/openstacknetworkproviders/1234
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <openstack_network_provider>
-//   <name>ovn-network-provider</name>
-//   <requires_authentication>false</requires_authentication>
-//   <url>http://some_server_url.domain.com:9696</url>
-//   <tenant_name>oVirt</tenant_name>
-//   <type>external</type>
-// </openstack_network_provider>
-// ----
-// This method supports the following parameters:
-// `Provider`:: The provider to update.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OpenstackNetworkProviderService) Update(
-	provider *OpenStackNetworkProvider,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*OpenStackNetworkProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar OpenStackNetworkProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *OpenstackNetworkProviderService) Update() *OpenstackNetworkProviderServiceUpdateRequest {
+	return &OpenstackNetworkProviderServiceUpdateRequest{openstackNetworkProviderService: p}
 }
 
 //
@@ -19559,45 +15526,8 @@ func (p *TemplateServiceExportRequest) Send() (*TemplateServiceExportResponse, e
 type TemplateServiceExportResponse struct {
 }
 
-//
-// Exports a template to the data center export domain.
-// For example, the operation can be facilitated using the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/templates/123/export
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain id="456"/>
-//   <exclusive>true<exclusive/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Exclusive`:: Indicates if the existing templates with the same name should be overwritten.
-// The export action reports a failed action if a template of the same name exists in the destination domain.
-// Set this parameter to `true` to change this behavior and overwrite any existing template.
-// `StorageDomain`:: Specifies the destination export storage domain.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateService) Export(
-	exclusive bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Exclusive:     &exclusive,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *TemplateService) Export() *TemplateServiceExportRequest {
+	return &TemplateServiceExportRequest{templateService: p}
 }
 
 type TemplateServiceGetRequest struct {
@@ -19684,36 +15614,8 @@ type TemplateServiceGetResponse struct {
 func (p *TemplateServiceGetResponse) Template() *Template {
 	return p.template
 }
-
-//
-// Returns the information about this template or template version.
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templateVar Template
-	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
-	return &templateVar, nil
+func (p *TemplateService) Get() *TemplateServiceGetRequest {
+	return &TemplateServiceGetRequest{templateService: p}
 }
 
 type TemplateServiceRemoveRequest struct {
@@ -19792,32 +15694,8 @@ func (p *TemplateServiceRemoveRequest) Send() (*TemplateServiceRemoveResponse, e
 type TemplateServiceRemoveResponse struct {
 }
 
-//
-// Removes a virtual machine template.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/templates/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateService) Remove() *TemplateServiceRemoveRequest {
+	return &TemplateServiceRemoveRequest{templateService: p}
 }
 
 type TemplateServiceSealRequest struct {
@@ -19899,24 +15777,8 @@ func (p *TemplateServiceSealRequest) Send() (*TemplateServiceSealResponse, error
 type TemplateServiceSealResponse struct {
 }
 
-//
-// Seal the template.
-// Sealing erases all host-specific configuration from the filesystem:
-// SSH keys, UDEV rules, MAC addresses, system ID, hostname etc.,
-// thus making easy to use the template to create multiple virtual
-// machines without manual intervention.
-// Currently sealing is supported only for Linux OS.
-//
-func (op *TemplateService) Seal(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "seal", headers, query, wait)
-	return err
+func (p *TemplateService) Seal() *TemplateServiceSealRequest {
+	return &TemplateServiceSealRequest{templateService: p}
 }
 
 type TemplateServiceUpdateRequest struct {
@@ -20014,56 +15876,8 @@ type TemplateServiceUpdateResponse struct {
 func (p *TemplateServiceUpdateResponse) Template() *Template {
 	return p.template
 }
-
-//
-// Updates the template.
-// The `name`, `description`, `type`, `memory`, `cpu`, `topology`, `os`, `high_availability`, `display`,
-// `stateless`, `usb` and `timezone` elements can be updated after a template has been created.
-// For example, to update a template to so that it has 1 GiB of memory send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/templates/123
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <template>
-//   <memory>1073741824</memory>
-// </template>
-// ----
-// The `version_name` name attribute is the only one that can be updated within the `version` attribute used for
-// template versions:
-// [source,xml]
-// ----
-// <template>
-//   <version>
-//     <version_name>mytemplate_2</version_name>
-//   </version>
-// </template>
-// ----
-//
-func (op *TemplateService) Update(
-	template *Template,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(template, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templateVar Template
-	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
-	return &templateVar, nil
+func (p *TemplateService) Update() *TemplateServiceUpdateRequest {
+	return &TemplateServiceUpdateRequest{templateService: p}
 }
 
 //
@@ -20273,56 +16087,8 @@ type VmWatchdogsServiceAddResponse struct {
 func (p *VmWatchdogsServiceAddResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Adds new watchdog to the virtual machine.
-// For example, to add a watchdog to a virtual machine, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/watchdogs
-// <watchdog>
-//   <action>poweroff</action>
-//   <model>i6300esb</model>
-// </watchdog>
-// ----
-// with response body:
-// [source,xml]
-// ----
-// <watchdog href="/ovirt-engine/api/vms/123/watchdogs/00000000-0000-0000-0000-000000000000" id="00000000-0000-0000-0000-000000000000">
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-//   <action>poweroff</action>
-//   <model>i6300esb</model>
-// </watchdog>
-// ----
-// This method supports the following parameters:
-// `Watchdog`:: The information about the watchdog.
-// The request data must contain `model` element (such as `i6300esb`) and `action` element
-// (one of `none`, `reset`, `poweroff`, `dump`, `pause`). The response data additionally
-// contains references to the added watchdog and to the virtual machine.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmWatchdogsService) Add(
-	watchdog *Watchdog,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *VmWatchdogsService) Add() *VmWatchdogsServiceAddRequest {
+	return &VmWatchdogsServiceAddRequest{vmWatchdogsService: p}
 }
 
 type VmWatchdogsServiceListRequest struct {
@@ -20409,36 +16175,8 @@ type VmWatchdogsServiceListResponse struct {
 func (p *VmWatchdogsServiceListResponse) Watchdogs() []Watchdog {
 	return p.watchdogs
 }
-
-//
-// The list of watchdogs of the virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of watchdogs to return. If not specified all the watchdogs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmWatchdogsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogsVar Watchdogs
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
-	return watchdogsVar.Watchdogs, nil
+func (p *VmWatchdogsService) List() *VmWatchdogsServiceListRequest {
+	return &VmWatchdogsServiceListRequest{vmWatchdogsService: p}
 }
 
 //
@@ -20558,29 +16296,8 @@ type AffinityLabelVmServiceGetResponse struct {
 func (p *AffinityLabelVmServiceGetResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-// Retrieves details about a vm that has this label assigned.
-//
-func (op *AffinityLabelVmService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *AffinityLabelVmService) Get() *AffinityLabelVmServiceGetRequest {
+	return &AffinityLabelVmServiceGetRequest{affinityLabelVmService: p}
 }
 
 type AffinityLabelVmServiceRemoveRequest struct {
@@ -20651,21 +16368,8 @@ func (p *AffinityLabelVmServiceRemoveRequest) Send() (*AffinityLabelVmServiceRem
 type AffinityLabelVmServiceRemoveResponse struct {
 }
 
-//
-// Remove a label from a vm.
-//
-func (op *AffinityLabelVmService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AffinityLabelVmService) Remove() *AffinityLabelVmServiceRemoveRequest {
+	return &AffinityLabelVmServiceRemoveRequest{affinityLabelVmService: p}
 }
 
 //
@@ -20780,37 +16484,8 @@ func (p *VmServiceCancelMigrationRequest) Send() (*VmServiceCancelMigrationRespo
 type VmServiceCancelMigrationResponse struct {
 }
 
-//
-// This operation stops any migration of a virtual machine to another physical host.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/cancelmigration
-// ----
-// The cancel migration action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the migration should cancelled asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) CancelMigration(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "cancelmigration", headers, query, wait)
-	return err
+func (p *VmService) CancelMigration() *VmServiceCancelMigrationRequest {
+	return &VmServiceCancelMigrationRequest{vmService: p}
 }
 
 type VmServiceCloneRequest struct {
@@ -20904,28 +16579,8 @@ func (p *VmServiceCloneRequest) Send() (*VmServiceCloneResponse, error) {
 type VmServiceCloneResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the clone should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Clone(
-	async bool,
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Vm:    vm,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "clone", headers, query, wait)
-	return err
+func (p *VmService) Clone() *VmServiceCloneRequest {
+	return &VmServiceCloneRequest{vmService: p}
 }
 
 type VmServiceCommitSnapshotRequest struct {
@@ -21013,26 +16668,8 @@ func (p *VmServiceCommitSnapshotRequest) Send() (*VmServiceCommitSnapshotRespons
 type VmServiceCommitSnapshotResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the snapshots should be committed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) CommitSnapshot(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "commitsnapshot", headers, query, wait)
-	return err
+func (p *VmService) CommitSnapshot() *VmServiceCommitSnapshotRequest {
+	return &VmServiceCommitSnapshotRequest{vmService: p}
 }
 
 type VmServiceDetachRequest struct {
@@ -21120,37 +16757,8 @@ func (p *VmServiceDetachRequest) Send() (*VmServiceDetachResponse, error) {
 type VmServiceDetachResponse struct {
 }
 
-//
-// Detaches a virtual machine from a pool.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/detach
-// ----
-// The detach action does not take any action specific parameters, so the request body should contain an
-// empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the detach should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Detach(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "detach", headers, query, wait)
-	return err
+func (p *VmService) Detach() *VmServiceDetachRequest {
+	return &VmServiceDetachRequest{vmService: p}
 }
 
 type VmServiceExportRequest struct {
@@ -21256,53 +16864,8 @@ func (p *VmServiceExportRequest) Send() (*VmServiceExportResponse, error) {
 type VmServiceExportResponse struct {
 }
 
-//
-// Export a virtual machine to an export domain.
-// For example to export virtual machine `123` to the export domain `myexport`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/export
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>myexport</name>
-//   </storage_domain>
-//   <exclusive>true</exclusive>
-//   <discard_snapshots>true</discard_snapshots>
-// </action>
-// ----
-// This method supports the following parameters:
-// `DiscardSnapshots`:: The `discard_snapshots` parameter is to be used when the virtual machine should be exported with all its
-// snapshots collapsed.
-// `Exclusive`:: The `exclusive` parameter is to be used when the virtual machine should be exported even if another copy of
-// it already exists in the export domain (override).
-// `Async`:: Indicates if the export should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Export(
-	async bool,
-	discardSnapshots bool,
-	exclusive bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:            &async,
-		DiscardSnapshots: &discardSnapshots,
-		Exclusive:        &exclusive,
-		StorageDomain:    storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *VmService) Export() *VmServiceExportRequest {
+	return &VmServiceExportRequest{vmService: p}
 }
 
 type VmServiceFreezeFilesystemsRequest struct {
@@ -21390,39 +16953,8 @@ func (p *VmServiceFreezeFilesystemsRequest) Send() (*VmServiceFreezeFilesystemsR
 type VmServiceFreezeFilesystemsResponse struct {
 }
 
-//
-// Freeze virtual machine file systems.
-// This operation freezes a virtual machine's file systems using the QEMU guest agent when taking a live snapshot of
-// a running virtual machine. Normally, this is done automatically by the manager, but this must be executed
-// manually with the API for virtual machines using OpenStack Volume (Cinder) disks.
-// Example:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/freezefilesystems
-// ----
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the freeze should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) FreezeFilesystems(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "freezefilesystems", headers, query, wait)
-	return err
+func (p *VmService) FreezeFilesystems() *VmServiceFreezeFilesystemsRequest {
+	return &VmServiceFreezeFilesystemsRequest{vmService: p}
 }
 
 type VmServiceGetRequest struct {
@@ -21525,67 +17057,8 @@ type VmServiceGetResponse struct {
 func (p *VmServiceGetResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-// Retrieves the description of the virtual machine.
-// This method supports the following parameters:
-// `NextRun`:: Indicates if the returned result describes the virtual machine as it is currently running, or if describes
-// it with the modifications that have already been performed but that will have effect only when it is
-// restarted. By default the values is `false`.
-// If the parameter is included in the request, but without a value, it is assumed that the value is `true`, so
-// the following request:
-// [source]
-// ----
-// GET /vms/{vm:id};next_run
-// ----
-// Is equivalent to using the value `true`:
-// [source]
-// ----
-// GET /vms/{vm:id};next_run=true
-// ----
-// `AllContent`:: Indicates if all the attributes of the virtual machine should be included in the response.
-// By default the following attributes are excluded:
-// - `console`
-// - `initialization.configuration.data` - The OVF document describing the virtual machine.
-// - `rng_source`
-// - `soundcard`
-// - `virtio_scsi`
-// For example, to retrieve the complete representation of the virtual machine '123' send a request like this:
-// ....
-// GET /ovirt-engine/api/vms/123?all_content=true
-// ....
-// NOTE: The reason for not including these attributes is performance: they are seldom used and they require
-// additional queries to the database. So try to use the this parameter only when it is really needed.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Get(
-	allContent bool,
-	filter bool,
-	nextRun bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["all_content"] = fmt.Sprintf("%v", allContent)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["next_run"] = fmt.Sprintf("%v", nextRun)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *VmService) Get() *VmServiceGetRequest {
+	return &VmServiceGetRequest{vmService: p}
 }
 
 type VmServiceLogonRequest struct {
@@ -21673,41 +17146,8 @@ func (p *VmServiceLogonRequest) Send() (*VmServiceLogonResponse, error) {
 type VmServiceLogonResponse struct {
 }
 
-//
-// Initiates the automatic user logon to access a virtual machine from an external console.
-// This action requires the `ovirt-guest-agent-gdm-plugin` and the `ovirt-guest-agent-pam-module` packages to be
-// installed and the `ovirt-guest-agent` service to be running on the virtual machine.
-// Users require the appropriate user permissions for the virtual machine in order to access the virtual machine
-// from an external console.
-// This is how an example request would look like:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/logon
-// ----
-// Request body:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the logon should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Logon(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "logon", headers, query, wait)
-	return err
+func (p *VmService) Logon() *VmServiceLogonRequest {
+	return &VmServiceLogonRequest{vmService: p}
 }
 
 type VmServiceMaintenanceRequest struct {
@@ -21801,42 +17241,8 @@ func (p *VmServiceMaintenanceRequest) Send() (*VmServiceMaintenanceResponse, err
 type VmServiceMaintenanceResponse struct {
 }
 
-//
-// Sets the global maintenance mode on the hosted engine virtual machine.
-// This action has no effect on other virtual machines.
-// Example:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/maintenance
-// ----
-// [source,xml]
-// ----
-// <action>
-//   <maintenance_enabled>true<maintenance_enabled/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `MaintenanceEnabled`:: Indicates if global maintenance should be enabled or disabled.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Maintenance(
-	async bool,
-	maintenanceEnabled bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:              &async,
-		MaintenanceEnabled: &maintenanceEnabled,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "maintenance", headers, query, wait)
-	return err
+func (p *VmService) Maintenance() *VmServiceMaintenanceRequest {
+	return &VmServiceMaintenanceRequest{vmService: p}
 }
 
 type VmServiceMigrateRequest struct {
@@ -21942,51 +17348,8 @@ func (p *VmServiceMigrateRequest) Send() (*VmServiceMigrateResponse, error) {
 type VmServiceMigrateResponse struct {
 }
 
-//
-// This operation migrates a virtual machine to another physical host.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/migrate
-// ----
-// One can specify a specific host to migrate the virtual machine to:
-// [source,xml]
-// ----
-// <action>
-//   <host id="2ab5e1da-b726-4274-bbf7-0a42b16a0fc3"/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Cluster`:: Specifies the cluster the virtual machine should migrate to. This is an optional parameter. By default, the
-// virtual machine is migrated to another host within the same cluster.
-// `Force`:: Specifies the virtual machine should migrate although it might be defined as non migratable. This is an
-// optional parameter. By default, it is set to `false`.
-// `Host`:: Specifies a specific host the virtual machine should migrate to. This is an optional parameters. By default,
-// the oVirt Engine automatically selects a default host for migration within the same cluster. If an API user
-// requires a specific host, the user can specify the host with either an `id` or `name` parameter.
-// `Async`:: Indicates if the migration should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Migrate(
-	async bool,
-	cluster *Cluster,
-	force bool,
-	host *Host,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:   &async,
-		Cluster: cluster,
-		Force:   &force,
-		Host:    host,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "migrate", headers, query, wait)
-	return err
+func (p *VmService) Migrate() *VmServiceMigrateRequest {
+	return &VmServiceMigrateRequest{vmService: p}
 }
 
 type VmServicePreviewSnapshotRequest struct {
@@ -22098,34 +17461,8 @@ func (p *VmServicePreviewSnapshotRequest) Send() (*VmServicePreviewSnapshotRespo
 type VmServicePreviewSnapshotResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the preview should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) PreviewSnapshot(
-	async bool,
-	disks []Disk,
-	restoreMemory bool,
-	snapshot *Snapshot,
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Disks:         disks,
-		RestoreMemory: &restoreMemory,
-		Snapshot:      snapshot,
-		Vm:            vm,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "previewsnapshot", headers, query, wait)
-	return err
+func (p *VmService) PreviewSnapshot() *VmServicePreviewSnapshotRequest {
+	return &VmServicePreviewSnapshotRequest{vmService: p}
 }
 
 type VmServiceRebootRequest struct {
@@ -22213,37 +17550,8 @@ func (p *VmServiceRebootRequest) Send() (*VmServiceRebootResponse, error) {
 type VmServiceRebootResponse struct {
 }
 
-//
-// This operation sends a reboot request to a virtual machine.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/reboot
-// ----
-// The reboot action does not take any action specific parameters, so the request body should contain an
-// empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the reboot should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Reboot(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "reboot", headers, query, wait)
-	return err
+func (p *VmService) Reboot() *VmServiceRebootRequest {
+	return &VmServiceRebootRequest{vmService: p}
 }
 
 type VmServiceRemoveRequest struct {
@@ -22338,41 +17646,8 @@ func (p *VmServiceRemoveRequest) Send() (*VmServiceRemoveResponse, error) {
 type VmServiceRemoveResponse struct {
 }
 
-//
-// Removes the virtual machine, including the virtual disks attached to it.
-// For example, to remove the virtual machine with identifier `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `DetachOnly`:: Indicates if the attached virtual disks should be detached first and preserved instead of being removed.
-// `Force`:: Indicates if the virtual machine should be forcibly removed.
-// Locked virtual machines and virtual machines with locked disk images
-// cannot be removed without this flag set to true.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Remove(
-	async bool,
-	detachOnly bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-	query["detach_only"] = fmt.Sprintf("%v", detachOnly)
-	query["force"] = fmt.Sprintf("%v", force)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmService) Remove() *VmServiceRemoveRequest {
+	return &VmServiceRemoveRequest{vmService: p}
 }
 
 type VmServiceReorderMacAddressesRequest struct {
@@ -22460,26 +17735,8 @@ func (p *VmServiceReorderMacAddressesRequest) Send() (*VmServiceReorderMacAddres
 type VmServiceReorderMacAddressesResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) ReorderMacAddresses(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "reordermacaddresses", headers, query, wait)
-	return err
+func (p *VmService) ReorderMacAddresses() *VmServiceReorderMacAddressesRequest {
+	return &VmServiceReorderMacAddressesRequest{vmService: p}
 }
 
 type VmServiceShutdownRequest struct {
@@ -22567,37 +17824,8 @@ func (p *VmServiceShutdownRequest) Send() (*VmServiceShutdownResponse, error) {
 type VmServiceShutdownResponse struct {
 }
 
-//
-// This operation sends a shutdown request to a virtual machine.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/shutdown
-// ----
-// The shutdown action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the shutdown should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Shutdown(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "shutdown", headers, query, wait)
-	return err
+func (p *VmService) Shutdown() *VmServiceShutdownRequest {
+	return &VmServiceShutdownRequest{vmService: p}
 }
 
 type VmServiceStartRequest struct {
@@ -22715,73 +17943,8 @@ func (p *VmServiceStartRequest) Send() (*VmServiceStartResponse, error) {
 type VmServiceStartResponse struct {
 }
 
-//
-// Starts the virtual machine.
-// If the virtual environment is complete and the virtual machine contains all necessary components to function,
-// it can be started.
-// This example starts the virtual machine:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/start
-// ----
-// With a request body:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Pause`:: If set to `true`, start the virtual machine in paused mode. Default is `false`.
-// `Vm`:: The definition of the virtual machine for this specific run.
-// For example:
-// [source,xml]
-// ----
-// <action>
-//   <vm>
-//     <os>
-//       <boot>
-//         <devices>
-//           <device>cdrom</device>
-//         </devices>
-//       </boot>
-//     </os>
-//   </vm>
-// </action>
-// ----
-// This will set the boot device to the CDROM only for this specific start. After the virtual machine will be
-// powered off, this definition will be reverted.
-// `UseCloudInit`:: If set to `true`, the initialization type is set to _cloud-init_. The default value is `false`.
-// See https://cloudinit.readthedocs.io/en/latest[this] for details.
-// `UseSysprep`:: If set to `true`, the initialization type is set to _Sysprep_. The default value is `false`.
-// See https://en.wikipedia.org/wiki/Sysprep[this] for details.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Start(
-	async bool,
-	filter bool,
-	pause bool,
-	useCloudInit bool,
-	useSysprep bool,
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:        &async,
-		Filter:       &filter,
-		Pause:        &pause,
-		UseCloudInit: &useCloudInit,
-		UseSysprep:   &useSysprep,
-		Vm:           vm,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "start", headers, query, wait)
-	return err
+func (p *VmService) Start() *VmServiceStartRequest {
+	return &VmServiceStartRequest{vmService: p}
 }
 
 type VmServiceStopRequest struct {
@@ -22869,37 +18032,8 @@ func (p *VmServiceStopRequest) Send() (*VmServiceStopResponse, error) {
 type VmServiceStopResponse struct {
 }
 
-//
-// This operation forces a virtual machine to power-off.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/stop
-// ----
-// The stop action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Stop(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "stop", headers, query, wait)
-	return err
+func (p *VmService) Stop() *VmServiceStopRequest {
+	return &VmServiceStopRequest{vmService: p}
 }
 
 type VmServiceSuspendRequest struct {
@@ -22987,38 +18121,8 @@ func (p *VmServiceSuspendRequest) Send() (*VmServiceSuspendResponse, error) {
 type VmServiceSuspendResponse struct {
 }
 
-//
-// This operation saves the virtual machine state to disk and stops it.
-// Start a suspended virtual machine and restore the virtual machine state with the start action.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/suspend
-// ----
-// The suspend action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Suspend(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "suspend", headers, query, wait)
-	return err
+func (p *VmService) Suspend() *VmServiceSuspendRequest {
+	return &VmServiceSuspendRequest{vmService: p}
 }
 
 type VmServiceThawFilesystemsRequest struct {
@@ -23106,39 +18210,8 @@ func (p *VmServiceThawFilesystemsRequest) Send() (*VmServiceThawFilesystemsRespo
 type VmServiceThawFilesystemsResponse struct {
 }
 
-//
-// Thaw virtual machine file systems.
-// This operation thaws a virtual machine's file systems using the QEMU guest agent when taking a live snapshot of a
-// running virtual machine. Normally, this is done automatically by the manager, but this must be executed manually
-// with the API for virtual machines using OpenStack Volume (Cinder) disks.
-// Example:
-// [source]
-// ----
-// POST /api/vms/123/thawfilesystems
-// ----
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) ThawFilesystems(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "thawfilesystems", headers, query, wait)
-	return err
+func (p *VmService) ThawFilesystems() *VmServiceThawFilesystemsRequest {
+	return &VmServiceThawFilesystemsRequest{vmService: p}
 }
 
 type VmServiceTicketRequest struct {
@@ -23236,68 +18309,8 @@ type VmServiceTicketResponse struct {
 func (p *VmServiceTicketResponse) Ticket() *Ticket {
 	return p.ticket
 }
-
-//
-// Generates a time-sensitive authentication token for accessing a virtual machine's display.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/ticket
-// ----
-// The client-provided action optionally includes a desired ticket value and/or an expiry time in seconds.
-// In any case, the response specifies the actual ticket value and expiry used.
-// [source,xml]
-// ----
-// <action>
-//   <ticket>
-//     <value>abcd12345</value>
-//     <expiry>120</expiry>
-//   </ticket>
-// </action>
-// ----
-// [IMPORTANT]
-// ====
-// If the virtual machine is configured to support only one graphics protocol
-// then the generated authentication token will be valid for that protocol.
-// But if the virtual machine is configured to support multiple protocols,
-// VNC and SPICE, then the authentication token will only be valid for
-// the SPICE protocol.
-// In order to obtain an authentication token for a specific protocol, for
-// example for VNC, use the `ticket` method of the <<services/vm_graphics_console,
-// service>> that manages the graphics consoles of the virtual machine, sending
-// a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/graphicsconsoles/456/ticket
-// ----
-// ====
-// This method supports the following parameters:
-// `Async`:: Indicates if the generation of the ticket should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) Ticket(
-	async bool,
-	ticket *Ticket,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Ticket,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Ticket: ticket,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var ticketVar Ticket
-	xml.Unmarshal([]byte(ovResp.Body), &ticketVar)
-	return &ticketVar, nil
+func (p *VmService) Ticket() *VmServiceTicketRequest {
+	return &VmServiceTicketRequest{vmService: p}
 }
 
 type VmServiceUndoSnapshotRequest struct {
@@ -23385,26 +18398,8 @@ func (p *VmServiceUndoSnapshotRequest) Send() (*VmServiceUndoSnapshotResponse, e
 type VmServiceUndoSnapshotResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmService) UndoSnapshot(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "undosnapshot", headers, query, wait)
-	return err
+func (p *VmService) UndoSnapshot() *VmServiceUndoSnapshotRequest {
+	return &VmServiceUndoSnapshotRequest{vmService: p}
 }
 
 type VmServiceUpdateRequest struct {
@@ -23510,33 +18505,8 @@ type VmServiceUpdateResponse struct {
 func (p *VmServiceUpdateResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-//
-func (op *VmService) Update(
-	vm *Vm,
-	async bool,
-	nextRun bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-	query["next_run"] = fmt.Sprintf("%v", nextRun)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(vm, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *VmService) Update() *VmServiceUpdateRequest {
+	return &VmServiceUpdateRequest{vmService: p}
 }
 
 //
@@ -23850,30 +18820,8 @@ type InstanceTypeGraphicsConsolesServiceAddResponse struct {
 func (p *InstanceTypeGraphicsConsolesServiceAddResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Add new graphics console to the instance type.
-//
-func (op *InstanceTypeGraphicsConsolesService) Add(
-	console *GraphicsConsole,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(console, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *InstanceTypeGraphicsConsolesService) Add() *InstanceTypeGraphicsConsolesServiceAddRequest {
+	return &InstanceTypeGraphicsConsolesServiceAddRequest{instanceTypeGraphicsConsolesService: p}
 }
 
 type InstanceTypeGraphicsConsolesServiceListRequest struct {
@@ -23960,36 +18908,8 @@ type InstanceTypeGraphicsConsolesServiceListResponse struct {
 func (p *InstanceTypeGraphicsConsolesServiceListResponse) Consoles() []GraphicsConsole {
 	return p.consoles
 }
-
-//
-// Lists all the configured graphics consoles of the instance type.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of consoles to return. If not specified all the consoles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeGraphicsConsolesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consolesVar GraphicsConsoles
-	xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
-	return consolesVar.GraphicsConsoles, nil
+func (p *InstanceTypeGraphicsConsolesService) List() *InstanceTypeGraphicsConsolesServiceListRequest {
+	return &InstanceTypeGraphicsConsolesServiceListRequest{instanceTypeGraphicsConsolesService: p}
 }
 
 //
@@ -24106,28 +19026,8 @@ type StorageDomainVmServiceGetResponse struct {
 func (p *StorageDomainVmServiceGetResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-//
-func (op *StorageDomainVmService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *StorageDomainVmService) Get() *StorageDomainVmServiceGetRequest {
+	return &StorageDomainVmServiceGetRequest{storageDomainVmService: p}
 }
 
 type StorageDomainVmServiceImportRequest struct {
@@ -24245,99 +19145,8 @@ func (p *StorageDomainVmServiceImportRequest) Send() (*StorageDomainVmServiceImp
 type StorageDomainVmServiceImportResponse struct {
 }
 
-//
-// Imports a virtual machine from an export storage domain.
-// For example, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/storagedomains/123/vms/456/import
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>mydata</name>
-//   </storage_domain>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-// </action>
-// ----
-// To import a virtual machine as a new entity add the `clone` parameter:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>mydata</name>
-//   </storage_domain>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-//   <clone>true</clone>
-//   <vm>
-//     <name>myvm</name>
-//   </vm>
-// </action>
-// ----
-// Include an optional `disks` parameter to choose which disks to import. For example, to import the disks
-// of the template that have the identifiers `123` and `456` send the following request body:
-// [source,xml]
-// ----
-// <action>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-//   <vm>
-//     <name>myvm</name>
-//   </vm>
-//   <disks>
-//     <disk id="123"/>
-//     <disk id="456"/>
-//   </disks>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Clone`:: Indicates if the identifiers of the imported virtual machine
-// should be regenerated.
-// By default when a virtual machine is imported the identifiers
-// are preserved. This means that the same virtual machine can't
-// be imported multiple times, as that identifiers needs to be
-// unique. To allow importing the same machine multiple times set
-// this parameter to `true`, as the default is `false`.
-// `CollapseSnapshots`:: Indicates of the snapshots of the virtual machine that is imported
-// should be collapsed, so that the result will be a virtual machine
-// without snapshots.
-// This parameter is optional, and if it isn't explicitly specified the
-// default value is `false`.
-// `Async`:: Indicates if the import should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainVmService) Import(
-	async bool,
-	clone bool,
-	cluster *Cluster,
-	collapseSnapshots bool,
-	storageDomain *StorageDomain,
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:             &async,
-		Clone:             &clone,
-		Cluster:           cluster,
-		CollapseSnapshots: &collapseSnapshots,
-		StorageDomain:     storageDomain,
-		Vm:                vm,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "import", headers, query, wait)
-	return err
+func (p *StorageDomainVmService) Import() *StorageDomainVmServiceImportRequest {
+	return &StorageDomainVmServiceImportRequest{storageDomainVmService: p}
 }
 
 type StorageDomainVmServiceRegisterRequest struct {
@@ -24461,48 +19270,8 @@ func (p *StorageDomainVmServiceRegisterRequest) Send() (*StorageDomainVmServiceR
 type StorageDomainVmServiceRegisterResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `AllowPartialImport`:: Indicates whether a virtual machine is allowed to be registered with only some of its disks.
-// If this flag is `true`, the engine will not fail in the validation process if an image is not found, but
-// instead it will allow the virtual machine to be registered without the missing disks. This is mainly used
-// during registration of a virtual machine when some of the storage domains are not available. The default
-// value is `false`.
-// `VnicProfileMappings`:: Mapping rules for virtual NIC profiles that will be applied during the import process.
-// `ReassignBadMacs`:: Indicates if the problematic MAC addresses should be re-assigned during the import process by the engine.
-// A MAC address would be considered as a problematic one if one of the following is true:
-// - It conflicts with a MAC address that is already allocated to a virtual machine in the target environment.
-// - It's out of the range of the target MAC address pool.
-// `Async`:: Indicates if the registration should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainVmService) Register(
-	allowPartialImport bool,
-	async bool,
-	clone bool,
-	cluster *Cluster,
-	reassignBadMacs bool,
-	vm *Vm,
-	vnicProfileMappings []VnicProfileMapping,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		AllowPartialImport:  &allowPartialImport,
-		Async:               &async,
-		Clone:               &clone,
-		Cluster:             cluster,
-		ReassignBadMacs:     &reassignBadMacs,
-		Vm:                  vm,
-		VnicProfileMappings: vnicProfileMappings,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "register", headers, query, wait)
-	return err
+func (p *StorageDomainVmService) Register() *StorageDomainVmServiceRegisterRequest {
+	return &StorageDomainVmServiceRegisterRequest{storageDomainVmService: p}
 }
 
 type StorageDomainVmServiceRemoveRequest struct {
@@ -24581,33 +19350,8 @@ func (p *StorageDomainVmServiceRemoveRequest) Send() (*StorageDomainVmServiceRem
 type StorageDomainVmServiceRemoveResponse struct {
 }
 
-//
-// Deletes a virtual machine from an export storage domain.
-// For example, to delete the virtual machine `456` from the storage domain `123`, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/storagedomains/123/vms/456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainVmService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageDomainVmService) Remove() *StorageDomainVmServiceRemoveRequest {
+	return &StorageDomainVmServiceRemoveRequest{storageDomainVmService: p}
 }
 
 //
@@ -24747,111 +19491,8 @@ type ClusterServiceGetResponse struct {
 func (p *ClusterServiceGetResponse) Cluster() *Cluster {
 	return p.cluster
 }
-
-//
-// Get information about the cluster.
-// An example of getting a cluster:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusters/123
-// ----
-// [source,xml]
-// ----
-// <cluster href="/ovirt-engine/api/clusters/123" id="123">
-//   <actions>
-//     <link href="/ovirt-engine/api/clusters/123/resetemulatedmachine" rel="resetemulatedmachine"/>
-//   </actions>
-//   <name>Default</name>
-//   <description>The default server cluster</description>
-//   <link href="/ovirt-engine/api/clusters/123/networks" rel="networks"/>
-//   <link href="/ovirt-engine/api/clusters/123/permissions" rel="permissions"/>
-//   <link href="/ovirt-engine/api/clusters/123/glustervolumes" rel="glustervolumes"/>
-//   <link href="/ovirt-engine/api/clusters/123/glusterhooks" rel="glusterhooks"/>
-//   <link href="/ovirt-engine/api/clusters/123/affinitygroups" rel="affinitygroups"/>
-//   <link href="/ovirt-engine/api/clusters/123/cpuprofiles" rel="cpuprofiles"/>
-//   <ballooning_enabled>false</ballooning_enabled>
-//   <cpu>
-//     <architecture>x86_64</architecture>
-//     <type>Intel Penryn Family</type>
-//   </cpu>
-//   <error_handling>
-//     <on_error>migrate</on_error>
-//   </error_handling>
-//   <fencing_policy>
-//     <enabled>true</enabled>
-//     <skip_if_connectivity_broken>
-//       <enabled>false</enabled>
-//       <threshold>50</threshold>
-//     </skip_if_connectivity_broken>
-//     <skip_if_sd_active>
-//       <enabled>false</enabled>
-//     </skip_if_sd_active>
-//   </fencing_policy>
-//   <gluster_service>false</gluster_service>
-//   <ha_reservation>false</ha_reservation>
-//   <ksm>
-//     <enabled>true</enabled>
-//     <merge_across_nodes>true</merge_across_nodes>
-//   </ksm>
-//   <maintenance_reason_required>false</maintenance_reason_required>
-//   <memory_policy>
-//     <over_commit>
-//       <percent>100</percent>
-//     </over_commit>
-//     <transparent_hugepages>
-//       <enabled>true</enabled>
-//     </transparent_hugepages>
-//   </memory_policy>
-//   <migration>
-//     <auto_converge>inherit</auto_converge>
-//     <bandwidth>
-//       <assignment_method>auto</assignment_method>
-//     </bandwidth>
-//     <compressed>inherit</compressed>
-//   </migration>
-//   <optional_reason>false</optional_reason>
-//   <required_rng_sources>
-//     <required_rng_source>random</required_rng_source>
-//   </required_rng_sources>
-//   <scheduling_policy href="/ovirt-engine/api/schedulingpolicies/456" id="456"/>
-//   <threads_as_cores>false</threads_as_cores>
-//   <trusted_service>false</trusted_service>
-//   <tunnel_migration>false</tunnel_migration>
-//   <version>
-//     <major>4</major>
-//     <minor>0</minor>
-//   </version>
-//   <virt_service>true</virt_service>
-//   <data_center href="/ovirt-engine/api/datacenters/111" id="111"/>
-// </cluster>
-// ----
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ClusterService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cluster,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var clusterVar Cluster
-	xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
-	return &clusterVar, nil
+func (p *ClusterService) Get() *ClusterServiceGetRequest {
+	return &ClusterServiceGetRequest{clusterService: p}
 }
 
 type ClusterServiceRemoveRequest struct {
@@ -24930,32 +19571,8 @@ func (p *ClusterServiceRemoveRequest) Send() (*ClusterServiceRemoveResponse, err
 type ClusterServiceRemoveResponse struct {
 }
 
-//
-// Removes cluster from the system.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/clusters/00000000-0000-0000-0000-000000000000
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ClusterService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *ClusterService) Remove() *ClusterServiceRemoveRequest {
+	return &ClusterServiceRemoveRequest{clusterService: p}
 }
 
 type ClusterServiceResetEmulatedMachineRequest struct {
@@ -25043,26 +19660,8 @@ func (p *ClusterServiceResetEmulatedMachineRequest) Send() (*ClusterServiceReset
 type ClusterServiceResetEmulatedMachineResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the reset should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ClusterService) ResetEmulatedMachine(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "resetemulatedmachine", headers, query, wait)
-	return err
+func (p *ClusterService) ResetEmulatedMachine() *ClusterServiceResetEmulatedMachineRequest {
+	return &ClusterServiceResetEmulatedMachineRequest{clusterService: p}
 }
 
 type ClusterServiceUpdateRequest struct {
@@ -25160,47 +19759,8 @@ type ClusterServiceUpdateResponse struct {
 func (p *ClusterServiceUpdateResponse) Cluster() *Cluster {
 	return p.cluster
 }
-
-//
-// Updates information about the cluster.
-// Only specified fields are updated, others remain unchanged.
-// E.g. update cluster's CPU:
-// [source]
-// ----
-// PUT /ovirt-engine/api/clusters/123
-// ----
-// With request body like:
-// [source,xml]
-// ----
-// <cluster>
-//   <cpu>
-//     <type>Intel Haswell-noTSX Family</type>
-//   </cpu>
-// </cluster>
-// ----
-//
-func (op *ClusterService) Update(
-	cluster *Cluster,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cluster,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(cluster, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var clusterVar Cluster
-	xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
-	return &clusterVar, nil
+func (p *ClusterService) Update() *ClusterServiceUpdateRequest {
+	return &ClusterServiceUpdateRequest{clusterService: p}
 }
 
 //
@@ -25405,35 +19965,8 @@ type SnapshotDisksServiceListResponse struct {
 func (p *SnapshotDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotDisksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *SnapshotDisksService) List() *SnapshotDisksServiceListRequest {
+	return &SnapshotDisksServiceListRequest{snapshotDisksService: p}
 }
 
 //
@@ -25560,30 +20093,8 @@ type TemplateGraphicsConsolesServiceAddResponse struct {
 func (p *TemplateGraphicsConsolesServiceAddResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Add new graphics console to the template.
-//
-func (op *TemplateGraphicsConsolesService) Add(
-	console *GraphicsConsole,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(console, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *TemplateGraphicsConsolesService) Add() *TemplateGraphicsConsolesServiceAddRequest {
+	return &TemplateGraphicsConsolesServiceAddRequest{templateGraphicsConsolesService: p}
 }
 
 type TemplateGraphicsConsolesServiceListRequest struct {
@@ -25670,36 +20181,8 @@ type TemplateGraphicsConsolesServiceListResponse struct {
 func (p *TemplateGraphicsConsolesServiceListResponse) Consoles() []GraphicsConsole {
 	return p.consoles
 }
-
-//
-// Lists all the configured graphics consoles of the template.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of consoles to return. If not specified all the consoles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateGraphicsConsolesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consolesVar GraphicsConsoles
-	xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
-	return consolesVar.GraphicsConsoles, nil
+func (p *TemplateGraphicsConsolesService) List() *TemplateGraphicsConsolesServiceListRequest {
+	return &TemplateGraphicsConsolesServiceListRequest{templateGraphicsConsolesService: p}
 }
 
 //
@@ -25826,37 +20309,8 @@ func (p *VmPoolServiceAllocateVmRequest) Send() (*VmPoolServiceAllocateVmRespons
 type VmPoolServiceAllocateVmResponse struct {
 }
 
-//
-// This operation allocates a virtual machine in the virtual machine pool.
-// [source]
-// ----
-// POST /ovirt-engine/api/vmpools/123/allocatevm
-// ----
-// The allocate virtual machine action does not take any action specific parameters, so the request body should
-// contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the allocation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolService) AllocateVm(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "allocatevm", headers, query, wait)
-	return err
+func (p *VmPoolService) AllocateVm() *VmPoolServiceAllocateVmRequest {
+	return &VmPoolServiceAllocateVmRequest{vmPoolService: p}
 }
 
 type VmPoolServiceGetRequest struct {
@@ -25943,60 +20397,8 @@ type VmPoolServiceGetResponse struct {
 func (p *VmPoolServiceGetResponse) Pool() *VmPool {
 	return p.pool
 }
-
-//
-// Get the virtual machine pool.
-// [source]
-// ----
-// GET /ovirt-engine/api/vmpools/123
-// ----
-// You will get a XML response like that one:
-// [source,xml]
-// ----
-// <vm_pool id="123">
-//   <actions>...</actions>
-//   <name>MyVmPool</name>
-//   <description>MyVmPool description</description>
-//   <link href="/ovirt-engine/api/vmpools/123/permissions" rel="permissions"/>
-//   <max_user_vms>1</max_user_vms>
-//   <prestarted_vms>0</prestarted_vms>
-//   <size>100</size>
-//   <stateful>false</stateful>
-//   <type>automatic</type>
-//   <use_latest_template_version>false</use_latest_template_version>
-//   <cluster id="123"/>
-//   <template id="123"/>
-//   <vm id="123">...</vm>
-//   ...
-// </vm_pool>
-// ----
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VmPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar VmPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *VmPoolService) Get() *VmPoolServiceGetRequest {
+	return &VmPoolServiceGetRequest{vmPoolService: p}
 }
 
 type VmPoolServiceRemoveRequest struct {
@@ -26075,32 +20477,8 @@ func (p *VmPoolServiceRemoveRequest) Send() (*VmPoolServiceRemoveResponse, error
 type VmPoolServiceRemoveResponse struct {
 }
 
-//
-// Removes a virtual machine pool.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vmpools/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmPoolService) Remove() *VmPoolServiceRemoveRequest {
+	return &VmPoolServiceRemoveRequest{vmPoolService: p}
 }
 
 type VmPoolServiceUpdateRequest struct {
@@ -26198,54 +20576,8 @@ type VmPoolServiceUpdateResponse struct {
 func (p *VmPoolServiceUpdateResponse) Pool() *VmPool {
 	return p.pool
 }
-
-//
-// Update the virtual machine pool.
-// [source]
-// ----
-// PUT /ovirt-engine/api/vmpools/123
-// ----
-// The `name`, `description`, `size`, `prestarted_vms` and `max_user_vms`
-// attributes can be updated after the virtual machine pool has been
-// created.
-// [source,xml]
-// ----
-// <vmpool>
-//   <name>VM_Pool_B</name>
-//   <description>Virtual Machine Pool B</description>
-//   <size>3</size>
-//   <prestarted_vms>1</size>
-//   <max_user_vms>2</size>
-// </vmpool>
-// ----
-// This method supports the following parameters:
-// `Pool`:: The virtual machine pool that is being updated.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolService) Update(
-	pool *VmPool,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VmPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(pool, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar VmPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *VmPoolService) Update() *VmPoolServiceUpdateRequest {
+	return &VmPoolServiceUpdateRequest{vmPoolService: p}
 }
 
 //
@@ -26375,42 +20707,8 @@ type QuotasServiceAddResponse struct {
 func (p *QuotasServiceAddResponse) Quota() *Quota {
 	return p.quota
 }
-
-//
-// Creates a new quota.
-// An example of creating a new quota:
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters/123/quotas
-// ----
-// [source,xml]
-// ----
-// <quota>
-//   <name>myquota</name>
-//   <description>My new quota for virtual machines</description>
-// </quota>
-// ----
-//
-func (op *QuotasService) Add(
-	quota *Quota,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Quota,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(quota, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var quotaVar Quota
-	xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
-	return &quotaVar, nil
+func (p *QuotasService) Add() *QuotasServiceAddRequest {
+	return &QuotasServiceAddRequest{quotasService: p}
 }
 
 type QuotasServiceListRequest struct {
@@ -26497,36 +20795,8 @@ type QuotasServiceListResponse struct {
 func (p *QuotasServiceListResponse) Quotas() []Quota {
 	return p.quotas
 }
-
-//
-// Lists quotas of a data center
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of quota descriptors to return. If not specified all the descriptors are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotasService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Quota,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var quotasVar Quotas
-	xml.Unmarshal([]byte(ovResp.Body), &quotasVar)
-	return quotasVar.Quotas, nil
+func (p *QuotasService) List() *QuotasServiceListRequest {
+	return &QuotasServiceListRequest{quotasService: p}
 }
 
 //
@@ -26644,56 +20914,8 @@ type ClusterLevelServiceGetResponse struct {
 func (p *ClusterLevelServiceGetResponse) Level() *ClusterLevel {
 	return p.level
 }
-
-//
-// Provides the information about the capabilities of the specific cluster level managed by this service.
-// For example, to find what CPU types are supported by level 3.6 you can send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusterlevels/3.6
-// ----
-// That will return a <<types/cluster_level, ClusterLevel>> object containing the supported CPU types, and other
-// information which describes the cluster level:
-// [source,xml]
-// ----
-// <cluster_level id="3.6">
-//   <cpu_types>
-//     <cpu_type>
-//       <name>Intel Conroe Family</name>
-//       <level>3</level>
-//       <architecture>x86_64</architecture>
-//     </cpu_type>
-//     ...
-//   </cpu_types>
-//   <permits>
-//     <permit id="1">
-//       <name>create_vm</name>
-//       <administrative>false</administrative>
-//     </permit>
-//     ...
-//   </permits>
-// </cluster_level>
-// ----
-//
-func (op *ClusterLevelService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ClusterLevel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var levelVar ClusterLevel
-	xml.Unmarshal([]byte(ovResp.Body), &levelVar)
-	return &levelVar, nil
+func (p *ClusterLevelService) Get() *ClusterLevelServiceGetRequest {
+	return &ClusterLevelServiceGetRequest{clusterLevelService: p}
 }
 
 //
@@ -26807,35 +21029,8 @@ type StorageDomainContentDiskServiceGetResponse struct {
 func (p *StorageDomainContentDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainContentDiskService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *StorageDomainContentDiskService) Get() *StorageDomainContentDiskServiceGetRequest {
+	return &StorageDomainContentDiskServiceGetRequest{storageDomainContentDiskService: p}
 }
 
 //
@@ -26958,39 +21153,8 @@ type VmApplicationsServiceListResponse struct {
 func (p *VmApplicationsServiceListResponse) Applications() []Application {
 	return p.applications
 }
-
-//
-// Returns a list of applications installed in the virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of applications to return. If not specified all the applications are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmApplicationsService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Application,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var applicationsVar Applications
-	xml.Unmarshal([]byte(ovResp.Body), &applicationsVar)
-	return applicationsVar.Applications, nil
+func (p *VmApplicationsService) List() *VmApplicationsServiceListRequest {
+	return &VmApplicationsServiceListRequest{vmApplicationsService: p}
 }
 
 //
@@ -27135,43 +21299,8 @@ type FilesServiceListResponse struct {
 func (p *FilesServiceListResponse) File() []File {
 	return p.file
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of files to return. If not specified all the files are returned.
-// `Search`:: A query string used to restrict the returned files.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FilesService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]File,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var fileVar Files
-	xml.Unmarshal([]byte(ovResp.Body), &fileVar)
-	return fileVar.Files, nil
+func (p *FilesService) List() *FilesServiceListRequest {
+	return &FilesServiceListRequest{filesService: p}
 }
 
 //
@@ -27288,28 +21417,8 @@ func (p *AffinityGroupVmServiceRemoveRequest) Send() (*AffinityGroupVmServiceRem
 type AffinityGroupVmServiceRemoveResponse struct {
 }
 
-//
-// Remove this virtual machine from the affinity group.
-// This method supports the following parameters:
-// `Async`:: Indicates if the removal should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupVmService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AffinityGroupVmService) Remove() *AffinityGroupVmServiceRemoveRequest {
+	return &AffinityGroupVmServiceRemoveRequest{affinityGroupVmService: p}
 }
 
 //
@@ -27426,54 +21535,8 @@ type VmCdromServiceGetResponse struct {
 func (p *VmCdromServiceGetResponse) Cdrom() *Cdrom {
 	return p.cdrom
 }
-
-//
-// Returns the information about this CDROM device.
-// The information consists of `cdrom` attribute containing reference to the CDROM device, the virtual machine,
-// and optionally the inserted disk.
-// If there is a disk inserted then the `file` attribute will contain a reference to the ISO image:
-// [source,xml]
-// ----
-// <cdrom href="..." id="00000000-0000-0000-0000-000000000000">
-//   <file id="mycd.iso"/>
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </cdrom>
-// ----
-// If there is no disk inserted then the `file` attribute won't be reported:
-// [source,xml]
-// ----
-// <cdrom href="..." id="00000000-0000-0000-0000-000000000000">
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </cdrom>
-// ----
-// This method supports the following parameters:
-// `Current`:: Indicates if the operation should return the information for the currently running virtual machine. This
-// parameter is optional, and the default value is `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmCdromService) Get(
-	current bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["current"] = fmt.Sprintf("%v", current)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromVar Cdrom
-	xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
-	return &cdromVar, nil
+func (p *VmCdromService) Get() *VmCdromServiceGetRequest {
+	return &VmCdromServiceGetRequest{vmCdromService: p}
 }
 
 type VmCdromServiceUpdateRequest struct {
@@ -27571,76 +21634,8 @@ type VmCdromServiceUpdateResponse struct {
 func (p *VmCdromServiceUpdateResponse) Cdrom() *Cdrom {
 	return p.cdrom
 }
-
-//
-// Updates the information about this CDROM device.
-// It allows to change or eject the disk by changing the value of the `file` attribute.
-// For example, to insert or change the disk send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/123/cdroms/00000000-0000-0000-0000-000000000000
-// ----
-// The body should contain the new value for the `file` attribute:
-// [source,xml]
-// ----
-// <cdrom>
-//   <file id="mycd.iso"/>
-// </cdrom>
-// ----
-// The value of the `id` attribute, `mycd.iso` in this example, should correspond to a file available in an
-// attached ISO storage domain.
-// To eject the disk use a `file` with an empty `id`:
-// [source,xml]
-// ----
-// <cdrom>
-//   <file id=""/>
-// </cdrom>
-// ----
-// By default the above operations change permanently the disk that will be visible to the virtual machine
-// after the next boot, but they don't have any effect on the currently running virtual machine. If you want
-// to change the disk that is visible to the current running virtual machine, add the `current=true` parameter.
-// For example, to eject the current disk send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/123/cdroms/00000000-0000-0000-0000-000000000000?current=true
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <cdrom>
-//   <file id=""/>
-// </cdrom>
-// ----
-// IMPORTANT: The changes made with the `current=true` parameter are never persisted, so they won't have any
-// effect after the virtual machine is rebooted.
-// This method supports the following parameters:
-// `Cdrom`:: The information about the CDROM device.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmCdromService) Update(
-	cdrom *Cdrom,
-	current bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["current"] = fmt.Sprintf("%v", current)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(cdrom, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromVar Cdrom
-	xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
-	return &cdromVar, nil
+func (p *VmCdromService) Update() *VmCdromServiceUpdateRequest {
+	return &VmCdromServiceUpdateRequest{vmCdromService: p}
 }
 
 //
@@ -27746,28 +21741,8 @@ type QuotaClusterLimitServiceGetResponse struct {
 func (p *QuotaClusterLimitServiceGetResponse) Limit() *QuotaClusterLimit {
 	return p.limit
 }
-
-//
-//
-func (op *QuotaClusterLimitService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*QuotaClusterLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitVar QuotaClusterLimit
-	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
-	return &limitVar, nil
+func (p *QuotaClusterLimitService) Get() *QuotaClusterLimitServiceGetRequest {
+	return &QuotaClusterLimitServiceGetRequest{quotaClusterLimitService: p}
 }
 
 type QuotaClusterLimitServiceRemoveRequest struct {
@@ -27846,27 +21821,8 @@ func (p *QuotaClusterLimitServiceRemoveRequest) Send() (*QuotaClusterLimitServic
 type QuotaClusterLimitServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotaClusterLimitService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *QuotaClusterLimitService) Remove() *QuotaClusterLimitServiceRemoveRequest {
+	return &QuotaClusterLimitServiceRemoveRequest{quotaClusterLimitService: p}
 }
 
 //
@@ -27973,44 +21929,8 @@ type DiskAttachmentServiceGetResponse struct {
 func (p *DiskAttachmentServiceGetResponse) Attachment() *DiskAttachment {
 	return p.attachment
 }
-
-//
-// Returns the details of the attachment, including the bootable flag and link to the disk.
-// An example of getting a disk attachment:
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/diskattachments/456
-// ----
-// [source,xml]
-// ----
-// <disk_attachment href="/ovirt-engine/api/vms/123/diskattachments/456" id="456">
-//   <active>true</active>
-//   <bootable>true</bootable>
-//   <interface>virtio</interface>
-//   <disk href="/ovirt-engine/api/disks/456" id="456"/>
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </disk_attachment>
-// ----
-//
-func (op *DiskAttachmentService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar DiskAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *DiskAttachmentService) Get() *DiskAttachmentServiceGetRequest {
+	return &DiskAttachmentServiceGetRequest{diskAttachmentService: p}
 }
 
 type DiskAttachmentServiceRemoveRequest struct {
@@ -28089,36 +22009,8 @@ func (p *DiskAttachmentServiceRemoveRequest) Send() (*DiskAttachmentServiceRemov
 type DiskAttachmentServiceRemoveResponse struct {
 }
 
-//
-// Removes the disk attachment.
-// This will only detach the disk from the virtual machine, but won't remove it from
-// the system, unless the `detach_only` parameter is `false`.
-// An example of removing a disk attachment:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123/diskattachments/456?detach_only=true
-// ----
-// This method supports the following parameters:
-// `DetachOnly`:: Indicates if the disk should only be detached from the virtual machine, but not removed from the system.
-// The default value is `true`, which won't remove the disk from the system.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskAttachmentService) Remove(
-	detachOnly bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["detach_only"] = fmt.Sprintf("%v", detachOnly)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *DiskAttachmentService) Remove() *DiskAttachmentServiceRemoveRequest {
+	return &DiskAttachmentServiceRemoveRequest{diskAttachmentService: p}
 }
 
 type DiskAttachmentServiceUpdateRequest struct {
@@ -28208,44 +22100,8 @@ type DiskAttachmentServiceUpdateResponse struct {
 func (p *DiskAttachmentServiceUpdateResponse) DiskAttachment() *DiskAttachment {
 	return p.diskAttachment
 }
-
-//
-// Update the disk attachment and the disk properties within it.
-// [source]
-// ----
-// PUT /vms/{vm:id}/disksattachments/{attachment:id}
-// <disk_attachment>
-//   <bootable>true</bootable>
-//   <interface>ide</interface>
-//   <active>true</active>
-//   <disk>
-//     <name>mydisk</name>
-//     <provisioned_size>1024</provisioned_size>
-//     ...
-//   </disk>
-// </disk_attachment>
-// ----
-//
-func (op *DiskAttachmentService) Update(
-	diskAttachment *DiskAttachment,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(diskAttachment, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskAttachmentVar DiskAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &diskAttachmentVar)
-	return &diskAttachmentVar, nil
+func (p *DiskAttachmentService) Update() *DiskAttachmentServiceUpdateRequest {
+	return &DiskAttachmentServiceUpdateRequest{diskAttachmentService: p}
 }
 
 //
@@ -28352,41 +22208,8 @@ type BookmarkServiceGetResponse struct {
 func (p *BookmarkServiceGetResponse) Bookmark() *Bookmark {
 	return p.bookmark
 }
-
-//
-// Get a bookmark.
-// An example for getting a bookmark:
-// [source]
-// ----
-// GET /ovirt-engine/api/bookmarks/123
-// ----
-// [source,xml]
-// ----
-// <bookmark href="/ovirt-engine/api/bookmarks/123" id="123">
-//   <name>example_vm</name>
-//   <value>vm: name=example*</value>
-// </bookmark>
-// ----
-//
-func (op *BookmarkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Bookmark,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bookmarkVar Bookmark
-	xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
-	return &bookmarkVar, nil
+func (p *BookmarkService) Get() *BookmarkServiceGetRequest {
+	return &BookmarkServiceGetRequest{bookmarkService: p}
 }
 
 type BookmarkServiceRemoveRequest struct {
@@ -28465,33 +22288,8 @@ func (p *BookmarkServiceRemoveRequest) Send() (*BookmarkServiceRemoveResponse, e
 type BookmarkServiceRemoveResponse struct {
 }
 
-//
-// Remove a bookmark.
-// An example for removing a bookmark:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/bookmarks/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BookmarkService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *BookmarkService) Remove() *BookmarkServiceRemoveRequest {
+	return &BookmarkServiceRemoveRequest{bookmarkService: p}
 }
 
 type BookmarkServiceUpdateRequest struct {
@@ -28589,50 +22387,8 @@ type BookmarkServiceUpdateResponse struct {
 func (p *BookmarkServiceUpdateResponse) Bookmark() *Bookmark {
 	return p.bookmark
 }
-
-//
-// Update a bookmark.
-// An example for updating a bookmark:
-// [source]
-// ----
-// PUT /ovirt-engine/api/bookmarks/123
-// ----
-// With the request body:
-// [source,xml]
-// ----
-// <bookmark>
-//   <name>new_example_vm</name>
-//   <value>vm: name=new_example*</value>
-// </bookmark>
-// ----
-// This method supports the following parameters:
-// `Bookmark`:: The updated bookmark.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BookmarkService) Update(
-	bookmark *Bookmark,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Bookmark,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(bookmark, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bookmarkVar Bookmark
-	xml.Unmarshal([]byte(ovResp.Body), &bookmarkVar)
-	return &bookmarkVar, nil
+func (p *BookmarkService) Update() *BookmarkServiceUpdateRequest {
+	return &BookmarkServiceUpdateRequest{bookmarkService: p}
 }
 
 //
@@ -28738,29 +22494,8 @@ type InstanceTypeNicServiceGetResponse struct {
 func (p *InstanceTypeNicServiceGetResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-// Gets network interface configuration of the instance type.
-//
-func (op *InstanceTypeNicService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *InstanceTypeNicService) Get() *InstanceTypeNicServiceGetRequest {
+	return &InstanceTypeNicServiceGetRequest{instanceTypeNicService: p}
 }
 
 type InstanceTypeNicServiceRemoveRequest struct {
@@ -28839,28 +22574,8 @@ func (p *InstanceTypeNicServiceRemoveRequest) Send() (*InstanceTypeNicServiceRem
 type InstanceTypeNicServiceRemoveResponse struct {
 }
 
-//
-// Remove the network interface from the instance type.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeNicService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *InstanceTypeNicService) Remove() *InstanceTypeNicServiceRemoveRequest {
+	return &InstanceTypeNicServiceRemoveRequest{instanceTypeNicService: p}
 }
 
 type InstanceTypeNicServiceUpdateRequest struct {
@@ -28958,32 +22673,8 @@ type InstanceTypeNicServiceUpdateResponse struct {
 func (p *InstanceTypeNicServiceUpdateResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-// Updates the network interface configuration of the instance type.
-//
-func (op *InstanceTypeNicService) Update(
-	nic *Nic,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *InstanceTypeNicService) Update() *InstanceTypeNicServiceUpdateRequest {
+	return &InstanceTypeNicServiceUpdateRequest{instanceTypeNicService: p}
 }
 
 //
@@ -29089,28 +22780,8 @@ type AssignedDiskProfileServiceGetResponse struct {
 func (p *AssignedDiskProfileServiceGetResponse) DiskProfile() *DiskProfile {
 	return p.diskProfile
 }
-
-//
-//
-func (op *AssignedDiskProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskProfileVar DiskProfile
-	xml.Unmarshal([]byte(ovResp.Body), &diskProfileVar)
-	return &diskProfileVar, nil
+func (p *AssignedDiskProfileService) Get() *AssignedDiskProfileServiceGetRequest {
+	return &AssignedDiskProfileServiceGetRequest{assignedDiskProfileService: p}
 }
 
 type AssignedDiskProfileServiceRemoveRequest struct {
@@ -29189,27 +22860,8 @@ func (p *AssignedDiskProfileServiceRemoveRequest) Send() (*AssignedDiskProfileSe
 type AssignedDiskProfileServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedDiskProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedDiskProfileService) Remove() *AssignedDiskProfileServiceRemoveRequest {
+	return &AssignedDiskProfileServiceRemoveRequest{assignedDiskProfileService: p}
 }
 
 //
@@ -29326,42 +22978,8 @@ type NetworkLabelsServiceAddResponse struct {
 func (p *NetworkLabelsServiceAddResponse) Label() *NetworkLabel {
 	return p.label
 }
-
-//
-// Attaches label to logical network.
-// You can attach labels to a logical network to automate the association of that logical network with physical host
-// network interfaces to which the same label has been attached.
-// For example, to attach the label `mylabel` to a logical network having id `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/networks/123/labels
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <label id="mylabel"/>
-// ----
-//
-func (op *NetworkLabelsService) Add(
-	label *NetworkLabel,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(label, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar NetworkLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *NetworkLabelsService) Add() *NetworkLabelsServiceAddRequest {
+	return &NetworkLabelsServiceAddRequest{networkLabelsService: p}
 }
 
 type NetworkLabelsServiceListRequest struct {
@@ -29448,35 +23066,8 @@ type NetworkLabelsServiceListResponse struct {
 func (p *NetworkLabelsServiceListResponse) Labels() []NetworkLabel {
 	return p.labels
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of labels to return. If not specified all the labels are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkLabelsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]NetworkLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelsVar NetworkLabels
-	xml.Unmarshal([]byte(ovResp.Body), &labelsVar)
-	return labelsVar.NetworkLabels, nil
+func (p *NetworkLabelsService) List() *NetworkLabelsServiceListRequest {
+	return &NetworkLabelsServiceListRequest{networkLabelsService: p}
 }
 
 //
@@ -29600,35 +23191,8 @@ type StorageDomainServiceGetResponse struct {
 func (p *StorageDomainServiceGetResponse) StorageDomain() *StorageDomain {
 	return p.storageDomain
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainVar StorageDomain
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
-	return &storageDomainVar, nil
+func (p *StorageDomainService) Get() *StorageDomainServiceGetRequest {
+	return &StorageDomainServiceGetRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceIsAttachedRequest struct {
@@ -29726,34 +23290,8 @@ type StorageDomainServiceIsAttachedResponse struct {
 func (p *StorageDomainServiceIsAttachedResponse) IsAttached() bool {
 	return p.isAttached
 }
-
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) IsAttached(
-	async bool,
-	host *Host,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	bool,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Host:  host,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "isattached", headers, query, wait)
-	if err != nil {
-		return false, err
-	}
-	return strconv.ParseBool(ovResp.Body)
+func (p *StorageDomainService) IsAttached() *StorageDomainServiceIsAttachedRequest {
+	return &StorageDomainServiceIsAttachedRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceReduceLunsRequest struct {
@@ -29841,44 +23379,8 @@ func (p *StorageDomainServiceReduceLunsRequest) Send() (*StorageDomainServiceRed
 type StorageDomainServiceReduceLunsResponse struct {
 }
 
-//
-// This operation reduces logical units from the storage domain.
-// In order to do so the data stored on the provided logical units will be moved to other logical units of the
-// storage domain and only then they will be reduced from the storage domain.
-// For example, in order to reduce two logical units from a storage domain send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/storagedomains/123/reduceluns
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-//  <action>
-//    <logical_units>
-//      <logical_unit id="1IET_00010001"/>
-//      <logical_unit id="1IET_00010002"/>
-//    </logical_units>
-//  </action>
-// ----
-// This method supports the following parameters:
-// `LogicalUnits`:: The logical units that needs to be reduced from the storage domain.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) ReduceLuns(
-	logicalUnits []LogicalUnit,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		LogicalUnits: logicalUnits,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "reduceluns", headers, query, wait)
-	return err
+func (p *StorageDomainService) ReduceLuns() *StorageDomainServiceReduceLunsRequest {
+	return &StorageDomainServiceReduceLunsRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceRefreshLunsRequest struct {
@@ -29972,49 +23474,8 @@ func (p *StorageDomainServiceRefreshLunsRequest) Send() (*StorageDomainServiceRe
 type StorageDomainServiceRefreshLunsResponse struct {
 }
 
-//
-// This operation refreshes the LUN size.
-// After increasing the size of the underlying LUN on the storage server,
-// the user can refresh the LUN size.
-// This action forces a rescan of the provided LUNs and
-// updates the database with the new size if required.
-// For example, in order to refresh the size of two LUNs send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/storagedomains/262b056b-aede-40f1-9666-b883eff59d40/refreshluns
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-//  <action>
-//    <logical_units>
-//      <logical_unit id="1IET_00010001"/>
-//      <logical_unit id="1IET_00010002"/>
-//    </logical_units>
-//  </action>
-// ----
-// This method supports the following parameters:
-// `LogicalUnits`:: The LUNs that need to be refreshed.
-// `Async`:: Indicates if the refresh should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) RefreshLuns(
-	async bool,
-	logicalUnits []LogicalUnit,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:        &async,
-		LogicalUnits: logicalUnits,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "refreshluns", headers, query, wait)
-	return err
+func (p *StorageDomainService) RefreshLuns() *StorageDomainServiceRefreshLunsRequest {
+	return &StorageDomainServiceRefreshLunsRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceRemoveRequest struct {
@@ -30117,62 +23578,8 @@ func (p *StorageDomainServiceRemoveRequest) Send() (*StorageDomainServiceRemoveR
 type StorageDomainServiceRemoveResponse struct {
 }
 
-//
-// Removes the storage domain.
-// Without any special parameters, the storage domain is detached from the system and removed from the database. The
-// storage domain can then be imported to the same or different setup, with all the data on it. If the storage isn't
-// accessible the operation will fail.
-// If the `destroy` parameter is `true` then the operation will always succeed, even if the storage isn't
-// accessible, the failure is just ignored and the storage domain is removed from the database anyway.
-// If the `format` parameter is `true` then the actual storage is formatted, and the metadata is removed from the
-// LUN or directory, so it can no longer be imported to the same or a different setup.
-// This method supports the following parameters:
-// `Host`:: Indicates what host should be used to remove the storage domain.
-// This parameter is mandatory, and it can contain the name or the identifier of the host. For example, to use
-// the host named `myhost` to remove the storage domain with identifier `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/storagedomains/123?host=myhost
-// ----
-// `Format`:: Indicates if the actual storage should be formatted, removing all the metadata from the underlying LUN or
-// directory:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/storagedomains/123?format=true
-// ----
-// This parameter is optional, and the default value is `false`.
-// `Destroy`:: Indicates if the operation should succeed, and the storage domain removed from the database, even if the
-// storage isn't accessible.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/storagedomains/123?destroy=true
-// ----
-// This parameter is optional, and the default value is `false`.
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) Remove(
-	host string,
-	format bool,
-	destroy bool,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["host"] = fmt.Sprintf("%v", host)
-	query["format"] = fmt.Sprintf("%v", format)
-	query["destroy"] = fmt.Sprintf("%v", destroy)
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageDomainService) Remove() *StorageDomainServiceRemoveRequest {
+	return &StorageDomainServiceRemoveRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceUpdateRequest struct {
@@ -30270,50 +23677,8 @@ type StorageDomainServiceUpdateResponse struct {
 func (p *StorageDomainServiceUpdateResponse) StorageDomain() *StorageDomain {
 	return p.storageDomain
 }
-
-//
-// Updates a storage domain.
-// Not all of the <<types/storage_domain,StorageDomain>>'s attributes are updatable post-creation. Those that can be
-// updated are: `name`, `description`, `comment`, `warning_low_space_indicator`, `critical_space_action_blocker` and
-// `wipe_after_delete` (note that changing the `wipe_after_delete` attribute will not change the wipe after delete
-// property of disks that already exist).
-// To update the `name` and `wipe_after_delete` attributes of a storage domain with an identifier `123`, send a
-// request as follows:
-// [source]
-// ----
-// PUT /ovirt-engine/api/storagedomains/123
-// ----
-// With a request body as follows:
-// [source,xml]
-// ----
-// <storage_domain>
-//   <name>data2</name>
-//   <wipe_after_delete>true</wipe_after_delete>
-// </storage_domain>
-// ----
-//
-func (op *StorageDomainService) Update(
-	storageDomain *StorageDomain,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(storageDomain, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainVar StorageDomain
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
-	return &storageDomainVar, nil
+func (p *StorageDomainService) Update() *StorageDomainServiceUpdateRequest {
+	return &StorageDomainServiceUpdateRequest{storageDomainService: p}
 }
 
 type StorageDomainServiceUpdateOvfStoreRequest struct {
@@ -30401,39 +23766,8 @@ func (p *StorageDomainServiceUpdateOvfStoreRequest) Send() (*StorageDomainServic
 type StorageDomainServiceUpdateOvfStoreResponse struct {
 }
 
-//
-// This operation forces the update of the `OVF_STORE`
-// of this storage domain.
-// The `OVF_STORE` is a disk image that contains the meta-data
-// of virtual machines and disks that reside in the
-// storage domain. This meta-data is used in case the
-// domain is imported or exported to or from a different
-// data center or a different installation.
-// By default the `OVF_STORE` is updated periodically
-// (set by default to 60 minutes) but users might want to force an
-// update after an important change, or when the they believe the
-// `OVF_STORE` is corrupt.
-// When initiated by the user, `OVF_STORE` update will be performed whether
-// an update is needed or not.
-// This method supports the following parameters:
-// `Async`:: Indicates if the `OVF_STORE` update should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainService) UpdateOvfStore(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "updateovfstore", headers, query, wait)
-	return err
+func (p *StorageDomainService) UpdateOvfStore() *StorageDomainServiceUpdateOvfStoreRequest {
+	return &StorageDomainServiceUpdateOvfStoreRequest{storageDomainService: p}
 }
 
 //
@@ -30662,49 +23996,8 @@ type DataCentersServiceAddResponse struct {
 func (p *DataCentersServiceAddResponse) DataCenter() *DataCenter {
 	return p.dataCenter
 }
-
-//
-// Creates a new data center.
-// Creation of a new data center requires the `name` and `local` elements. For example, to create a data center
-// named `mydc` that uses shared storage (NFS, iSCSI or fibre channel) send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <data_center>
-//   <name>mydc</name>
-//   <local>false</local>
-// </data_center>
-// ----
-// This method supports the following parameters:
-// `DataCenter`:: The data center that is being added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DataCentersService) Add(
-	dataCenter *DataCenter,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DataCenter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(dataCenter, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var dataCenterVar DataCenter
-	xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
-	return &dataCenterVar, nil
+func (p *DataCentersService) Add() *DataCentersServiceAddRequest {
+	return &DataCentersServiceAddRequest{dataCentersService: p}
 }
 
 type DataCentersServiceListRequest struct {
@@ -30815,95 +24108,8 @@ type DataCentersServiceListResponse struct {
 func (p *DataCentersServiceListResponse) DataCenters() []DataCenter {
 	return p.dataCenters
 }
-
-//
-// Lists the data centers.
-// The following request retrieves a representation of the data centers:
-// [source]
-// ----
-// GET /ovirt-engine/api/datacenters
-// ----
-// The above request performed with `curl`:
-// [source,bash]
-// ----
-// curl \
-// --request GET \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --header "Version: 4" \
-// --header "Accept: application/xml" \
-// --user "admin@internal:mypassword" \
-// https://myengine.example.com/ovirt-engine/api/datacenters
-// ----
-// This is what an example response could look like:
-// [source,xml]
-// ----
-// <data_center href="/ovirt-engine/api/datacenters/123" id="123">
-//   <name>Default</name>
-//   <description>The default Data Center</description>
-//   <link href="/ovirt-engine/api/datacenters/123/networks" rel="networks"/>
-//   <link href="/ovirt-engine/api/datacenters/123/storagedomains" rel="storagedomains"/>
-//   <link href="/ovirt-engine/api/datacenters/123/permissions" rel="permissions"/>
-//   <link href="/ovirt-engine/api/datacenters/123/clusters" rel="clusters"/>
-//   <link href="/ovirt-engine/api/datacenters/123/qoss" rel="qoss"/>
-//   <link href="/ovirt-engine/api/datacenters/123/iscsibonds" rel="iscsibonds"/>
-//   <link href="/ovirt-engine/api/datacenters/123/quotas" rel="quotas"/>
-//   <local>false</local>
-//   <quota_mode>disabled</quota_mode>
-//   <status>up</status>
-//   <supported_versions>
-//     <version>
-//       <major>4</major>
-//       <minor>0</minor>
-//     </version>
-//   </supported_versions>
-//   <version>
-//     <major>4</major>
-//     <minor>0</minor>
-//   </version>
-// </data_center>
-// ----
-// Note the `id` code of your `Default` data center. This code identifies this data center in relation to other
-// resources of your virtual environment.
-// The data center also contains a link to the storage domains collection. The data center uses this collection to
-// attach storage domains from the storage domains main collection.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of data centers to return. If not specified all the data centers are returned.
-// `Search`:: A query string used to restrict the returned data centers.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DataCentersService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DataCenter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var dataCentersVar DataCenters
-	xml.Unmarshal([]byte(ovResp.Body), &dataCentersVar)
-	return dataCentersVar.DataCenters, nil
+func (p *DataCentersService) List() *DataCentersServiceListRequest {
+	return &DataCentersServiceListRequest{dataCentersService: p}
 }
 
 //
@@ -31029,36 +24235,8 @@ type VmApplicationServiceGetResponse struct {
 func (p *VmApplicationServiceGetResponse) Application() *Application {
 	return p.application
 }
-
-//
-// Returns the information about the application.
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmApplicationService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Application,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var applicationVar Application
-	xml.Unmarshal([]byte(ovResp.Body), &applicationVar)
-	return &applicationVar, nil
+func (p *VmApplicationService) Get() *VmApplicationServiceGetRequest {
+	return &VmApplicationServiceGetRequest{vmApplicationService: p}
 }
 
 //
@@ -31175,29 +24353,8 @@ type QuotaStorageLimitsServiceAddResponse struct {
 func (p *QuotaStorageLimitsServiceAddResponse) Limit() *QuotaStorageLimit {
 	return p.limit
 }
-
-//
-//
-func (op *QuotaStorageLimitsService) Add(
-	limit *QuotaStorageLimit,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*QuotaStorageLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(limit, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitVar QuotaStorageLimit
-	xml.Unmarshal([]byte(ovResp.Body), &limitVar)
-	return &limitVar, nil
+func (p *QuotaStorageLimitsService) Add() *QuotaStorageLimitsServiceAddRequest {
+	return &QuotaStorageLimitsServiceAddRequest{quotaStorageLimitsService: p}
 }
 
 type QuotaStorageLimitsServiceListRequest struct {
@@ -31284,35 +24441,8 @@ type QuotaStorageLimitsServiceListResponse struct {
 func (p *QuotaStorageLimitsServiceListResponse) Limits() []QuotaStorageLimit {
 	return p.limits
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of limits to return. If not specified all the limits are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotaStorageLimitsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]QuotaStorageLimit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var limitsVar QuotaStorageLimits
-	xml.Unmarshal([]byte(ovResp.Body), &limitsVar)
-	return limitsVar.QuotaStorageLimits, nil
+func (p *QuotaStorageLimitsService) List() *QuotaStorageLimitsServiceListRequest {
+	return &QuotaStorageLimitsServiceListRequest{quotaStorageLimitsService: p}
 }
 
 //
@@ -31428,28 +24558,8 @@ type TemplateNicServiceGetResponse struct {
 func (p *TemplateNicServiceGetResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-//
-func (op *TemplateNicService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *TemplateNicService) Get() *TemplateNicServiceGetRequest {
+	return &TemplateNicServiceGetRequest{templateNicService: p}
 }
 
 type TemplateNicServiceRemoveRequest struct {
@@ -31528,27 +24638,8 @@ func (p *TemplateNicServiceRemoveRequest) Send() (*TemplateNicServiceRemoveRespo
 type TemplateNicServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateNicService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateNicService) Remove() *TemplateNicServiceRemoveRequest {
+	return &TemplateNicServiceRemoveRequest{templateNicService: p}
 }
 
 type TemplateNicServiceUpdateRequest struct {
@@ -31646,31 +24737,8 @@ type TemplateNicServiceUpdateResponse struct {
 func (p *TemplateNicServiceUpdateResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-//
-func (op *TemplateNicService) Update(
-	nic *Nic,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *TemplateNicService) Update() *TemplateNicServiceUpdateRequest {
+	return &TemplateNicServiceUpdateRequest{templateNicService: p}
 }
 
 //
@@ -31789,36 +24857,8 @@ type VmCdromsServiceListResponse struct {
 func (p *VmCdromsServiceListResponse) Cdroms() []Cdrom {
 	return p.cdroms
 }
-
-//
-// Returns the list of CDROM devices of the virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of CDROMs to return. If not specified all the CDROMs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmCdromsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromsVar Cdroms
-	xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
-	return cdromsVar.Cdroms, nil
+func (p *VmCdromsService) List() *VmCdromsServiceListRequest {
+	return &VmCdromsServiceListRequest{vmCdromsService: p}
 }
 
 //
@@ -31944,56 +24984,8 @@ type VmSessionsServiceListResponse struct {
 func (p *VmSessionsServiceListResponse) Sessions() []Session {
 	return p.sessions
 }
-
-//
-// Lists all user sessions for this virtual machine.
-// For example, to retrieve the session information for virtual machine `123` send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/sessions
-// ----
-// The response body will contain something like this:
-// [source,xml]
-// ----
-// <sessions>
-//   <session href="/ovirt-engine/api/vms/123/sessions/456" id="456">
-//     <console_user>true</console_user>
-//     <ip>
-//       <address>192.168.122.1</address>
-//     </ip>
-//     <user href="/ovirt-engine/api/users/789" id="789"/>
-//     <vm href="/ovirt-engine/api/vms/123" id="123"/>
-//   </session>
-//   ...
-// </sessions>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of sessions to return. If not specified all the sessions are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmSessionsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Session,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var sessionsVar Sessions
-	xml.Unmarshal([]byte(ovResp.Body), &sessionsVar)
-	return sessionsVar.Sessions, nil
+func (p *VmSessionsService) List() *VmSessionsServiceListRequest {
+	return &VmSessionsServiceListRequest{vmSessionsService: p}
 }
 
 //
@@ -32119,26 +25111,8 @@ func (p *VmDiskServiceActivateRequest) Send() (*VmDiskServiceActivateResponse, e
 type VmDiskServiceActivateResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the activation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDiskService) Activate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "activate", headers, query, wait)
-	return err
+func (p *VmDiskService) Activate() *VmDiskServiceActivateRequest {
+	return &VmDiskServiceActivateRequest{vmDiskService: p}
 }
 
 type VmDiskServiceDeactivateRequest struct {
@@ -32226,26 +25200,8 @@ func (p *VmDiskServiceDeactivateRequest) Send() (*VmDiskServiceDeactivateRespons
 type VmDiskServiceDeactivateResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the deactivation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDiskService) Deactivate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "deactivate", headers, query, wait)
-	return err
+func (p *VmDiskService) Deactivate() *VmDiskServiceDeactivateRequest {
+	return &VmDiskServiceDeactivateRequest{vmDiskService: p}
 }
 
 type VmDiskServiceExportRequest struct {
@@ -32339,29 +25295,8 @@ func (p *VmDiskServiceExportRequest) Send() (*VmDiskServiceExportResponse, error
 type VmDiskServiceExportResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the export should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDiskService) Export(
-	async bool,
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Filter: &filter,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *VmDiskService) Export() *VmDiskServiceExportRequest {
+	return &VmDiskServiceExportRequest{vmDiskService: p}
 }
 
 type VmDiskServiceGetRequest struct {
@@ -32440,28 +25375,8 @@ type VmDiskServiceGetResponse struct {
 func (p *VmDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-//
-func (op *VmDiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *VmDiskService) Get() *VmDiskServiceGetRequest {
+	return &VmDiskServiceGetRequest{vmDiskService: p}
 }
 
 type VmDiskServiceMoveRequest struct {
@@ -32555,29 +25470,8 @@ func (p *VmDiskServiceMoveRequest) Send() (*VmDiskServiceMoveResponse, error) {
 type VmDiskServiceMoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the move should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDiskService) Move(
-	async bool,
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Filter: &filter,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "move", headers, query, wait)
-	return err
+func (p *VmDiskService) Move() *VmDiskServiceMoveRequest {
+	return &VmDiskServiceMoveRequest{vmDiskService: p}
 }
 
 type VmDiskServiceRemoveRequest struct {
@@ -32656,31 +25550,8 @@ func (p *VmDiskServiceRemoveRequest) Send() (*VmDiskServiceRemoveResponse, error
 type VmDiskServiceRemoveResponse struct {
 }
 
-//
-// Detach the disk from the virtual machine.
-// NOTE: In version 3 of the API this used to also remove the disk completely from the system, but starting with
-// version 4 it doesn't. If you need to remove it completely use the <<services/disk/methods/remove,remove
-// method of the top level disk service>>.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDiskService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmDiskService) Remove() *VmDiskServiceRemoveRequest {
+	return &VmDiskServiceRemoveRequest{vmDiskService: p}
 }
 
 type VmDiskServiceUpdateRequest struct {
@@ -32778,31 +25649,8 @@ type VmDiskServiceUpdateResponse struct {
 func (p *VmDiskServiceUpdateResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-//
-func (op *VmDiskService) Update(
-	disk *Disk,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *VmDiskService) Update() *VmDiskServiceUpdateRequest {
+	return &VmDiskServiceUpdateRequest{vmDiskService: p}
 }
 
 //
@@ -32932,28 +25780,8 @@ type StorageServerConnectionServiceGetResponse struct {
 func (p *StorageServerConnectionServiceGetResponse) Conection() *StorageConnection {
 	return p.conection
 }
-
-//
-//
-func (op *StorageServerConnectionService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var conectionVar StorageConnection
-	xml.Unmarshal([]byte(ovResp.Body), &conectionVar)
-	return &conectionVar, nil
+func (p *StorageServerConnectionService) Get() *StorageServerConnectionServiceGetRequest {
+	return &StorageServerConnectionServiceGetRequest{storageServerConnectionService: p}
 }
 
 type StorageServerConnectionServiceRemoveRequest struct {
@@ -33040,40 +25868,8 @@ func (p *StorageServerConnectionServiceRemoveRequest) Send() (*StorageServerConn
 type StorageServerConnectionServiceRemoveResponse struct {
 }
 
-//
-// Removes a storage connection.
-// A storage connection can only be deleted if neither storage domain nor LUN disks reference it. The host name or
-// id is optional; providing it disconnects (unmounts) the connection from that host.
-// This method supports the following parameters:
-// `Host`:: The name or identifier of the host from which the connection would be unmounted (disconnected). If not
-// provided, no host will be disconnected.
-// For example, to use the host with identifier `456` to delete the storage connection with identifier `123`
-// send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/storageconnections/123?host=456
-// ----
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageServerConnectionService) Remove(
-	host string,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["host"] = fmt.Sprintf("%v", host)
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageServerConnectionService) Remove() *StorageServerConnectionServiceRemoveRequest {
+	return &StorageServerConnectionServiceRemoveRequest{storageServerConnectionService: p}
 }
 
 type StorageServerConnectionServiceUpdateRequest struct {
@@ -33179,49 +25975,8 @@ type StorageServerConnectionServiceUpdateResponse struct {
 func (p *StorageServerConnectionServiceUpdateResponse) Connection() *StorageConnection {
 	return p.connection
 }
-
-//
-// Updates the storage connection.
-// For example, to change the address of the storage server send a request like this:
-// [source,xml]
-// ----
-// PUT /ovirt-engine/api/storageconnections/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <storage_connection>
-//   <address>mynewnfs.example.com</address>
-//   <host>
-//     <name>myhost</name>
-//   </host>
-// </storage_connection>
-// ----
-//
-func (op *StorageServerConnectionService) Update(
-	connection *StorageConnection,
-	async bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-	query["force"] = fmt.Sprintf("%v", force)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(connection, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionVar StorageConnection
-	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
-	return &connectionVar, nil
+func (p *StorageServerConnectionService) Update() *StorageServerConnectionServiceUpdateRequest {
+	return &StorageServerConnectionServiceUpdateRequest{storageServerConnectionService: p}
 }
 
 //
@@ -33337,27 +26092,8 @@ func (p *HostServiceActivateRequest) Send() (*HostServiceActivateResponse, error
 type HostServiceActivateResponse struct {
 }
 
-//
-// Activate the host for use, such as running virtual machines.
-// This method supports the following parameters:
-// `Async`:: Indicates if the activation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Activate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "activate", headers, query, wait)
-	return err
+func (p *HostService) Activate() *HostServiceActivateRequest {
+	return &HostServiceActivateRequest{hostService: p}
 }
 
 type HostServiceApproveRequest struct {
@@ -33451,30 +26187,8 @@ func (p *HostServiceApproveRequest) Send() (*HostServiceApproveResponse, error) 
 type HostServiceApproveResponse struct {
 }
 
-//
-// Approve a pre-installed Hypervisor host for usage in the virtualization environment.
-// This action also accepts an optional cluster element to define the target cluster for this host.
-// This method supports the following parameters:
-// `Async`:: Indicates if the approval should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Approve(
-	async bool,
-	cluster *Cluster,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:   &async,
-		Cluster: cluster,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "approve", headers, query, wait)
-	return err
+func (p *HostService) Approve() *HostServiceApproveRequest {
+	return &HostServiceApproveRequest{hostService: p}
 }
 
 type HostServiceCommitNetConfigRequest struct {
@@ -33562,42 +26276,8 @@ func (p *HostServiceCommitNetConfigRequest) Send() (*HostServiceCommitNetConfigR
 type HostServiceCommitNetConfigResponse struct {
 }
 
-//
-// Marks the network configuration as good and persists it inside the host.
-// An API user commits the network configuration to persist a host network interface attachment or detachment, or
-// persist the creation and deletion of a bonded interface.
-// IMPORTANT: Networking configuration is only committed after the engine has established that host connectivity is
-// not lost as a result of the configuration changes. If host connectivity is lost, the host requires a reboot and
-// automatically reverts to the previous networking configuration.
-// For example, to commit the network configuration of host with id `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/hosts/123/commitnetconfig
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) CommitNetConfig(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "commitnetconfig", headers, query, wait)
-	return err
+func (p *HostService) CommitNetConfig() *HostServiceCommitNetConfigRequest {
+	return &HostServiceCommitNetConfigRequest{hostService: p}
 }
 
 type HostServiceDeactivateRequest struct {
@@ -33697,33 +26377,8 @@ func (p *HostServiceDeactivateRequest) Send() (*HostServiceDeactivateResponse, e
 type HostServiceDeactivateResponse struct {
 }
 
-//
-// Deactivate the host to perform maintenance tasks.
-// This method supports the following parameters:
-// `Async`:: Indicates if the deactivation should be performed asynchronously.
-// `StopGlusterService`:: Indicates if the gluster service should be stopped as part of deactivating the host. It can be used while
-// performing maintenance operations on the gluster host. Default value for this variable is `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Deactivate(
-	async bool,
-	reason string,
-	stopGlusterService bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:              &async,
-		Reason:             &reason,
-		StopGlusterService: &stopGlusterService,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "deactivate", headers, query, wait)
-	return err
+func (p *HostService) Deactivate() *HostServiceDeactivateRequest {
+	return &HostServiceDeactivateRequest{hostService: p}
 }
 
 type HostServiceEnrollCertificateRequest struct {
@@ -33811,27 +26466,8 @@ func (p *HostServiceEnrollCertificateRequest) Send() (*HostServiceEnrollCertific
 type HostServiceEnrollCertificateResponse struct {
 }
 
-//
-// Enroll certificate of the host. Useful in case you get a warning that it is about to, or already expired.
-// This method supports the following parameters:
-// `Async`:: Indicates if the enrollment should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) EnrollCertificate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "enrollcertificate", headers, query, wait)
-	return err
+func (p *HostService) EnrollCertificate() *HostServiceEnrollCertificateRequest {
+	return &HostServiceEnrollCertificateRequest{hostService: p}
 }
 
 type HostServiceFenceRequest struct {
@@ -33929,59 +26565,8 @@ type HostServiceFenceResponse struct {
 func (p *HostServiceFenceResponse) PowerManagement() *PowerManagement {
 	return p.powerManagement
 }
-
-//
-// Controls host's power management device.
-// For example, let's assume you want to start the host. This can be done via:
-// [source]
-// ----
-// #!/bin/sh -ex
-// url="https://engine.example.com/ovirt-engine/api"
-// user="admin@internal"
-// password="..."
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --user "${user}:${password}" \
-// --request POST \
-// --header "Version: 4" \
-// --header "Content-Type: application/xml" \
-// --header "Accept: application/xml" \
-// --data '
-// <action>
-//   <fence_type>start</fence_type>
-// </action>
-// ' \
-// "${url}/hosts/123/fence"
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the fencing should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Fence(
-	async bool,
-	fenceType string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*PowerManagement,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async:     &async,
-		FenceType: &fenceType,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "fence", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var powerManagementVar PowerManagement
-	xml.Unmarshal([]byte(ovResp.Body), &powerManagementVar)
-	return &powerManagementVar, nil
+func (p *HostService) Fence() *HostServiceFenceRequest {
+	return &HostServiceFenceRequest{hostService: p}
 }
 
 type HostServiceForceSelectSpmRequest struct {
@@ -34069,36 +26654,8 @@ func (p *HostServiceForceSelectSpmRequest) Send() (*HostServiceForceSelectSpmRes
 type HostServiceForceSelectSpmResponse struct {
 }
 
-//
-// Manually set a host as the storage pool manager (SPM).
-// [source]
-// ----
-// POST /ovirt-engine/api/hosts/123/forceselectspm
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) ForceSelectSpm(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "forceselectspm", headers, query, wait)
-	return err
+func (p *HostService) ForceSelectSpm() *HostServiceForceSelectSpmRequest {
+	return &HostServiceForceSelectSpmRequest{hostService: p}
 }
 
 type HostServiceGetRequest struct {
@@ -34185,36 +26742,8 @@ type HostServiceGetResponse struct {
 func (p *HostServiceGetResponse) Host() *Host {
 	return p.host
 }
-
-//
-// Get the host details.
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar Host
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *HostService) Get() *HostServiceGetRequest {
+	return &HostServiceGetRequest{hostService: p}
 }
 
 type HostServiceInstallRequest struct {
@@ -34338,90 +26867,8 @@ func (p *HostServiceInstallRequest) Send() (*HostServiceInstallResponse, error) 
 type HostServiceInstallResponse struct {
 }
 
-//
-// Install VDSM and related software on the host. The host type defines additional parameters for the action.
-// Example of installing a host, using `curl` and JSON, plain:
-// [source,bash]
-// ----
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --request PUT \
-// --header "Content-Type: application/json" \
-// --header "Accept: application/json" \
-// --header "Version: 4" \
-// --user "admin@internal:..." \
-// --data '
-// {
-//   "root_password": "myrootpassword"
-// }
-// ' \
-// "https://engine.example.com/ovirt-engine/api/hosts/123"
-// ----
-// Example of installing a host, using `curl` and JSON, with hosted engine components:
-// [source,bash]
-// ----
-// curl \
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --request PUT \
-// --header "Content-Type: application/json" \
-// --header "Accept: application/json" \
-// --header "Version: 4" \
-// --user "admin@internal:..." \
-// --data '
-// {
-//   "root_password": "myrootpassword"
-// }
-// ' \
-// "https://engine.example.com/ovirt-engine/api/hosts/123?deploy_hosted_engine=true"
-// ----
-// This method supports the following parameters:
-// `RootPassword`:: The password of of the `root` user, used to connect to the host via SSH.
-// `Ssh`:: The SSH details used to connect to the host.
-// `Host`:: This `override_iptables` property is used to indicate if the firewall configuration should be
-// replaced by the default one.
-// `Image`:: When installing an oVirt node a image ISO file is needed.
-// `Async`:: Indicates if the installation should be performed asynchronously.
-// `DeployHostedEngine`:: When set to `true` it means this host should deploy also hosted
-// engine components. Missing value is treated as `true` i.e deploy.
-// Omitting this parameter means `false` and will perform no operation
-// in hosted engine area.
-// `UndeployHostedEngine`:: When set to `true` it means this host should un-deploy hosted engine
-// components and this host will not function as part of the High
-// Availability cluster. Missing value is treated as `true` i.e un-deploy
-// Omitting this parameter means `false` and will perform no operation
-// in hosted engine area.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Install(
-	async bool,
-	deployHostedEngine bool,
-	host *Host,
-	image string,
-	rootPassword string,
-	ssh *Ssh,
-	undeployHostedEngine bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:                &async,
-		DeployHostedEngine:   &deployHostedEngine,
-		Host:                 host,
-		Image:                &image,
-		RootPassword:         &rootPassword,
-		Ssh:                  ssh,
-		UndeployHostedEngine: &undeployHostedEngine,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "install", headers, query, wait)
-	return err
+func (p *HostService) Install() *HostServiceInstallRequest {
+	return &HostServiceInstallRequest{hostService: p}
 }
 
 type HostServiceIscsiDiscoverRequest struct {
@@ -34519,36 +26966,8 @@ type HostServiceIscsiDiscoverResponse struct {
 func (p *HostServiceIscsiDiscoverResponse) IscsiTargets() []string {
 	return p.iscsiTargets
 }
-
-//
-// Discover iSCSI targets on the host, using the initiator details.
-// This method supports the following parameters:
-// `Iscsi`:: The target iSCSI device.
-// `Async`:: Indicates if the discovery should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) IscsiDiscover(
-	async bool,
-	iscsi *IscsiDetails,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]string,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Iscsi: iscsi,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "iscsidiscover", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	return []string{ovResp.Body}, nil
+func (p *HostService) IscsiDiscover() *HostServiceIscsiDiscoverRequest {
+	return &HostServiceIscsiDiscoverRequest{hostService: p}
 }
 
 type HostServiceIscsiLoginRequest struct {
@@ -34642,30 +27061,8 @@ func (p *HostServiceIscsiLoginRequest) Send() (*HostServiceIscsiLoginResponse, e
 type HostServiceIscsiLoginResponse struct {
 }
 
-//
-// Login to iSCSI targets on the host, using the target details.
-// This method supports the following parameters:
-// `Iscsi`:: The target iSCSI device.
-// `Async`:: Indicates if the login should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) IscsiLogin(
-	async bool,
-	iscsi *IscsiDetails,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Iscsi: iscsi,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "iscsilogin", headers, query, wait)
-	return err
+func (p *HostService) IscsiLogin() *HostServiceIscsiLoginRequest {
+	return &HostServiceIscsiLoginRequest{hostService: p}
 }
 
 type HostServiceRefreshRequest struct {
@@ -34753,27 +27150,8 @@ func (p *HostServiceRefreshRequest) Send() (*HostServiceRefreshResponse, error) 
 type HostServiceRefreshResponse struct {
 }
 
-//
-// Refresh the host devices and capabilities.
-// This method supports the following parameters:
-// `Async`:: Indicates if the refresh should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Refresh(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "refresh", headers, query, wait)
-	return err
+func (p *HostService) Refresh() *HostServiceRefreshRequest {
+	return &HostServiceRefreshRequest{hostService: p}
 }
 
 type HostServiceRemoveRequest struct {
@@ -34852,42 +27230,8 @@ func (p *HostServiceRemoveRequest) Send() (*HostServiceRemoveResponse, error) {
 type HostServiceRemoveResponse struct {
 }
 
-//
-// Remove the host from the system.
-// [source]
-// ----
-// #!/bin/sh -ex
-// url="https://engine.example.com/ovirt-engine/api"
-// user="admin@internal"
-// password="..."
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --user "${user}:${password}" \
-// --request DELETE \
-// --header "Version: 4" \
-// "${url}/hosts/1ff7a191-2f3b-4eff-812b-9f91a30c3acc"
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *HostService) Remove() *HostServiceRemoveRequest {
+	return &HostServiceRemoveRequest{hostService: p}
 }
 
 type HostServiceSetupNetworksRequest struct {
@@ -35029,195 +27373,8 @@ func (p *HostServiceSetupNetworksRequest) Send() (*HostServiceSetupNetworksRespo
 type HostServiceSetupNetworksResponse struct {
 }
 
-//
-// This method is used to change the configuration of the network interfaces of a host.
-// For example, lets assume that you have a host with three network interfaces `eth0`, `eth1` and `eth2` and that
-// you want to configure a new bond using `eth0` and `eth1`, and put a VLAN on top of it. Using a simple shell
-// script and the `curl` command line HTTP client that can be done as follows:
-// [source]
-// ----
-// #!/bin/sh -ex
-// url="https://engine.example.com/ovirt-engine/api"
-// user="admin@internal"
-// password="..."
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --user "${user}:${password}" \
-// --request POST \
-// --header "Version: 4" \
-// --header "Content-Type: application/xml" \
-// --header "Accept: application/xml" \
-// --data '
-// <action>
-//   <modified_bonds>
-//     <host_nic>
-//       <name>bond0</name>
-//       <bonding>
-//         <options>
-//           <option>
-//             <name>mode</name>
-//             <value>4</value>
-//           </option>
-//           <option>
-//             <name>miimon</name>
-//             <value>100</value>
-//           </option>
-//         </options>
-//         <slaves>
-//           <host_nic>
-//             <name>eth1</name>
-//           </host_nic>
-//           <host_nic>
-//             <name>eth2</name>
-//           </host_nic>
-//         </slaves>
-//       </bonding>
-//     </host_nic>
-//   </modified_bonds>
-//   <modified_network_attachments>
-//     <network_attachment>
-//       <network>
-//         <name>myvlan</name>
-//       </network>
-//       <host_nic>
-//         <name>bond0</name>
-//       </host_nic>
-//       <ip_address_assignments>
-//         <assignment_method>static</assignment_method>
-//         <ip_address_assignment>
-//           <ip>
-//             <address>192.168.122.10</address>
-//             <netmask>255.255.255.0</netmask>
-//           </ip>
-//         </ip_address_assignment>
-//       </ip_address_assignments>
-//       <dns_resolver_configuration>
-//         <name_servers>
-//           <name_server>1.1.1.1</name_server>
-//           <name_server>2.2.2.2</name_server>
-//         </name_servers>
-//       </dns_resolver_configuration>
-//     </network_attachment>
-//   </modified_network_attachments>
-//  </action>
-// ' \
-// "${url}/hosts/1ff7a191-2f3b-4eff-812b-9f91a30c3acc/setupnetworks"
-// ----
-// Note that this is valid for version 4 of the API. In previous versions some elements were represented as XML
-// attributes instead of XML elements. In particular the `options` and `ip` elements were represented as follows:
-// [source,xml]
-// ----
-// <options name="mode" value="4"/>
-// <options name="miimon" value="100"/>
-// <ip address="192.168.122.10" netmask="255.255.255.0"/>
-// ----
-// Using the Python SDK the same can be done with the following code:
-// [source,python]
-// ----
-// # Find the service that manages the collection of hosts:
-// hosts_service = connection.system_service().hosts_service()
-// # Find the host:
-// host = hosts_service.list(search='name=myhost')[0]
-// # Find the service that manages the host:
-// host_service = hosts_service.host_service(host.id)
-// # Configure the network adding a bond with two slaves and attaching it to a
-// # network with an static IP address:
-// host_service.setup_networks(
-//     modified_bonds=[
-//         types.HostNic(
-//             name='bond0',
-//             bonding=types.Bonding(
-//                 options=[
-//                     types.Option(
-//                         name='mode',
-//                         value='4',
-//                     ),
-//                     types.Option(
-//                         name='miimon',
-//                         value='100',
-//                     ),
-//                 ],
-//                 slaves=[
-//                     types.HostNic(
-//                         name='eth1',
-//                     ),
-//                     types.HostNic(
-//                         name='eth2',
-//                     ),
-//                 ],
-//             ),
-//         ),
-//     ],
-//     modified_network_attachments=[
-//         types.NetworkAttachment(
-//             network=types.Network(
-//                 name='myvlan',
-//             ),
-//             host_nic=types.HostNic(
-//                 name='bond0',
-//             ),
-//             ip_address_assignments=[
-//                 types.IpAddressAssignment(
-//                     assignment_method=types.BootProtocol.STATIC,
-//                     ip=types.Ip(
-//                         address='192.168.122.10',
-//                         netmask='255.255.255.0',
-//                     ),
-//                 ),
-//             ],
-//             dns_resolver_configuration=types.DnsResolverConfiguration(
-//                 name_servers=[
-//                     '1.1.1.1',
-//                     '2.2.2.2',
-//                 ],
-//             ),
-//         ),
-//     ],
-// )
-// # After modifying the network configuration it is very important to make it
-// # persistent:
-// host_service.commit_net_config()
-// ----
-// IMPORTANT: To make sure that the network configuration has been saved in the host, and that it will be applied
-// when the host is rebooted, remember to call <<services/host/methods/commit_net_config, commitnetconfig>>.
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) SetupNetworks(
-	async bool,
-	checkConnectivity bool,
-	connectivityTimeout int64,
-	modifiedBonds []HostNic,
-	modifiedLabels []NetworkLabel,
-	modifiedNetworkAttachments []NetworkAttachment,
-	removedBonds []HostNic,
-	removedLabels []NetworkLabel,
-	removedNetworkAttachments []NetworkAttachment,
-	synchronizedNetworkAttachments []NetworkAttachment,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:                          &async,
-		CheckConnectivity:              &checkConnectivity,
-		ConnectivityTimeout:            &connectivityTimeout,
-		ModifiedBonds:                  modifiedBonds,
-		ModifiedLabels:                 modifiedLabels,
-		ModifiedNetworkAttachments:     modifiedNetworkAttachments,
-		RemovedBonds:                   removedBonds,
-		RemovedLabels:                  removedLabels,
-		RemovedNetworkAttachments:      removedNetworkAttachments,
-		SynchronizedNetworkAttachments: synchronizedNetworkAttachments,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "setupnetworks", headers, query, wait)
-	return err
+func (p *HostService) SetupNetworks() *HostServiceSetupNetworksRequest {
+	return &HostServiceSetupNetworksRequest{hostService: p}
 }
 
 type HostServiceUnregisteredStorageDomainsDiscoverRequest struct {
@@ -35315,36 +27472,8 @@ type HostServiceUnregisteredStorageDomainsDiscoverResponse struct {
 func (p *HostServiceUnregisteredStorageDomainsDiscoverResponse) StorageDomains() []StorageDomain {
 	return p.storageDomains
 }
-
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the discovery should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) UnregisteredStorageDomainsDiscover(
-	async bool,
-	iscsi *IscsiDetails,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageDomain,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Iscsi: iscsi,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "unregisteredstoragedomainsdiscover", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainsVar StorageDomains
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
-	return storageDomainsVar.StorageDomains, nil
+func (p *HostService) UnregisteredStorageDomainsDiscover() *HostServiceUnregisteredStorageDomainsDiscoverRequest {
+	return &HostServiceUnregisteredStorageDomainsDiscoverRequest{hostService: p}
 }
 
 type HostServiceUpdateRequest struct {
@@ -35442,46 +27571,8 @@ type HostServiceUpdateResponse struct {
 func (p *HostServiceUpdateResponse) Host() *Host {
 	return p.host
 }
-
-//
-// Update the host properties.
-// For example, to update a the kernel command line of a host send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/hosts/123
-// ----
-// With request body like this:
-// [source, xml]
-// ----
-// <host>
-//   <os>
-//     <custom_kernel_cmdline>vfio_iommu_type1.allow_unsafe_interrupts=1</custom_kernel_cmdline>
-//   </os>
-// </host>
-// ----
-//
-func (op *HostService) Update(
-	host *Host,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(host, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar Host
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *HostService) Update() *HostServiceUpdateRequest {
+	return &HostServiceUpdateRequest{hostService: p}
 }
 
 type HostServiceUpgradeRequest struct {
@@ -35569,27 +27660,8 @@ func (p *HostServiceUpgradeRequest) Send() (*HostServiceUpgradeResponse, error) 
 type HostServiceUpgradeResponse struct {
 }
 
-//
-// Upgrade VDSM and selected software on the host.
-// This method supports the following parameters:
-// `Async`:: Indicates if the upgrade should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostService) Upgrade(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "upgrade", headers, query, wait)
-	return err
+func (p *HostService) Upgrade() *HostServiceUpgradeRequest {
+	return &HostServiceUpgradeRequest{hostService: p}
 }
 
 type HostServiceUpgradeCheckRequest struct {
@@ -35671,23 +27743,8 @@ func (p *HostServiceUpgradeCheckRequest) Send() (*HostServiceUpgradeCheckRespons
 type HostServiceUpgradeCheckResponse struct {
 }
 
-//
-// Check if there are upgrades available for the host. If there are upgrades
-// available an icon will be displayed next to host status icon in the webadmin.
-// Audit log messages are also added to indicate the availability of upgrades.
-// The upgrade can be started from the webadmin or by using the
-// <<services/host/methods/upgrade, upgrade>> host action.
-//
-func (op *HostService) UpgradeCheck(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "upgradecheck", headers, query, wait)
-	return err
+func (p *HostService) UpgradeCheck() *HostServiceUpgradeCheckRequest {
+	return &HostServiceUpgradeCheckRequest{hostService: p}
 }
 
 //
@@ -35989,35 +28046,8 @@ type ExternalProviderCertificatesServiceListResponse struct {
 func (p *ExternalProviderCertificatesServiceListResponse) Certificates() []Certificate {
 	return p.certificates
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of certificates to return. If not specified all the certificates are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalProviderCertificatesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Certificate,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var certificatesVar Certificates
-	xml.Unmarshal([]byte(ovResp.Body), &certificatesVar)
-	return certificatesVar.Certificates, nil
+func (p *ExternalProviderCertificatesService) List() *ExternalProviderCertificatesServiceListRequest {
+	return &ExternalProviderCertificatesServiceListRequest{externalProviderCertificatesService: p}
 }
 
 //
@@ -36134,54 +28164,8 @@ type VmHostDeviceServiceGetResponse struct {
 func (p *VmHostDeviceServiceGetResponse) Device() *HostDevice {
 	return p.device
 }
-
-//
-// Retrieve information about particular host device attached to given virtual machine.
-// Example:
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/hostdevices/456
-// ----
-// [source,xml]
-// ----
-// <host_device href="/ovirt-engine/api/hosts/543/devices/456" id="456">
-//   <name>pci_0000_04_00_0</name>
-//   <capability>pci</capability>
-//   <iommu_group>30</iommu_group>
-//   <placeholder>true</placeholder>
-//   <product id="0x13ba">
-//     <name>GM107GL [Quadro K2200]</name>
-//   </product>
-//   <vendor id="0x10de">
-//     <name>NVIDIA Corporation</name>
-//   </vendor>
-//   <host href="/ovirt-engine/api/hosts/543" id="543"/>
-//   <parent_device href="/ovirt-engine/api/hosts/543/devices/456" id="456">
-//     <name>pci_0000_00_03_0</name>
-//   </parent_device>
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </host_device>
-// ----
-//
-func (op *VmHostDeviceService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*HostDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var deviceVar HostDevice
-	xml.Unmarshal([]byte(ovResp.Body), &deviceVar)
-	return &deviceVar, nil
+func (p *VmHostDeviceService) Get() *VmHostDeviceServiceGetRequest {
+	return &VmHostDeviceServiceGetRequest{vmHostDeviceService: p}
 }
 
 type VmHostDeviceServiceRemoveRequest struct {
@@ -36260,36 +28244,8 @@ func (p *VmHostDeviceServiceRemoveRequest) Send() (*VmHostDeviceServiceRemoveRes
 type VmHostDeviceServiceRemoveResponse struct {
 }
 
-//
-// Remove the attachment of this host device from given virtual machine.
-// NOTE: In case this device serves as an IOMMU placeholder, it cannot be removed (remove will result only
-// in setting its `placeholder` flag to `true`). Note that all IOMMU placeholder devices will be removed
-// automatically as soon as there will be no more non-placeholder devices (all devices from given IOMMU
-// group are detached).
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123/hostdevices/456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmHostDeviceService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmHostDeviceService) Remove() *VmHostDeviceServiceRemoveRequest {
+	return &VmHostDeviceServiceRemoveRequest{vmHostDeviceService: p}
 }
 
 //
@@ -36396,40 +28352,8 @@ type TagServiceGetResponse struct {
 func (p *TagServiceGetResponse) Tag() *Tag {
 	return p.tag
 }
-
-//
-// Gets the information about the tag.
-// For example to retrieve the information about the tag with the id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/tags/123
-// ....
-// [source,xml]
-// ----
-// <tag href="/ovirt-engine/api/tags/123" id="123">
-//   <name>root</name>
-//   <description>root</description>
-// </tag>
-// ----
-//
-func (op *TagService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagVar Tag
-	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
-	return &tagVar, nil
+func (p *TagService) Get() *TagServiceGetRequest {
+	return &TagServiceGetRequest{tagService: p}
 }
 
 type TagServiceRemoveRequest struct {
@@ -36508,32 +28432,8 @@ func (p *TagServiceRemoveRequest) Send() (*TagServiceRemoveResponse, error) {
 type TagServiceRemoveResponse struct {
 }
 
-//
-// Removes the tag from the system.
-// For example to remove the tag with id `123` send a request like this:
-// ....
-// DELETE /ovirt-engine/api/tags/123
-// ....
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TagService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TagService) Remove() *TagServiceRemoveRequest {
+	return &TagServiceRemoveRequest{tagService: p}
 }
 
 type TagServiceUpdateRequest struct {
@@ -36631,58 +28531,8 @@ type TagServiceUpdateResponse struct {
 func (p *TagServiceUpdateResponse) Tag() *Tag {
 	return p.tag
 }
-
-//
-// Updates the tag entity.
-// For example to update parent tag to tag with id `456` of the tag with id `123` send a request like this:
-// ....
-// PUT /ovirt-engine/api/tags/123
-// ....
-// With request body like:
-// [source,xml]
-// ----
-// <tag>
-//   <parent id="456"/>
-// </tag>
-// ----
-// You may also specify a tag name instead of id. For example to update parent tag to tag with name `mytag`
-// of the tag with id `123` send a request like this:
-// [source,xml]
-// ----
-// <tag>
-//   <parent>
-//     <name>mytag</name>
-//   </parent>
-// </tag>
-// ----
-// This method supports the following parameters:
-// `Tag`:: The updated tag.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TagService) Update(
-	tag *Tag,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(tag, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagVar Tag
-	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
-	return &tagVar, nil
+func (p *TagService) Update() *TagServiceUpdateRequest {
+	return &TagServiceUpdateRequest{tagService: p}
 }
 
 //
@@ -36796,35 +28646,8 @@ type HostNumaNodesServiceListResponse struct {
 func (p *HostNumaNodesServiceListResponse) Nodes() []NumaNode {
 	return p.nodes
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of nodes to return. If not specified all the nodes are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostNumaNodesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]NumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodesVar NumaNodes
-	xml.Unmarshal([]byte(ovResp.Body), &nodesVar)
-	return nodesVar.NumaNodes, nil
+func (p *HostNumaNodesService) List() *HostNumaNodesServiceListRequest {
+	return &HostNumaNodesServiceListRequest{hostNumaNodesService: p}
 }
 
 //
@@ -36952,46 +28775,8 @@ type AssignedTagsServiceAddResponse struct {
 func (p *AssignedTagsServiceAddResponse) Tag() *Tag {
 	return p.tag
 }
-
-//
-// Assign tag to specific entity in the system.
-// For example to assign tag `mytag` to virtual machine with the id `123` send a request like this:
-// ....
-// POST /ovirt-engine/api/vms/123/tags
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <tag>
-//   <name>mytag</name>
-// </tag>
-// ----
-// This method supports the following parameters:
-// `Tag`:: The assigned tag.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedTagsService) Add(
-	tag *Tag,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(tag, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagVar Tag
-	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
-	return &tagVar, nil
+func (p *AssignedTagsService) Add() *AssignedTagsServiceAddRequest {
+	return &AssignedTagsServiceAddRequest{assignedTagsService: p}
 }
 
 type AssignedTagsServiceListRequest struct {
@@ -37078,50 +28863,8 @@ type AssignedTagsServiceListResponse struct {
 func (p *AssignedTagsServiceListResponse) Tags() []Tag {
 	return p.tags
 }
-
-//
-// List all tags assigned to the specific entity.
-// For example to list all the tags of the virtual machine with id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/vms/123/tags
-// ....
-// [source,xml]
-// ----
-// <tags>
-//   <tag href="/ovirt-engine/api/tags/222" id="222">
-//     <name>mytag</name>
-//     <description>mytag</description>
-//     <vm href="/ovirt-engine/api/vms/123" id="123"/>
-//   </tag>
-// </tags>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of tags to return. If not specified all the tags are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedTagsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagsVar Tags
-	xml.Unmarshal([]byte(ovResp.Body), &tagsVar)
-	return tagsVar.Tags, nil
+func (p *AssignedTagsService) List() *AssignedTagsServiceListRequest {
+	return &AssignedTagsServiceListRequest{assignedTagsService: p}
 }
 
 //
@@ -37248,37 +28991,8 @@ func (p *JobServiceClearRequest) Send() (*JobServiceClearResponse, error) {
 type JobServiceClearResponse struct {
 }
 
-//
-// Set an external job execution to be cleared by the system.
-// For example, to set a job with identifier `123` send the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/jobs/clear
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *JobService) Clear(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "clear", headers, query, wait)
-	return err
+func (p *JobService) Clear() *JobServiceClearRequest {
+	return &JobServiceClearRequest{jobService: p}
 }
 
 type JobServiceEndRequest struct {
@@ -37378,47 +29092,8 @@ func (p *JobServiceEndRequest) Send() (*JobServiceEndResponse, error) {
 type JobServiceEndResponse struct {
 }
 
-//
-// Marks an external job execution as ended.
-// For example, to terminate a job with identifier `123` send the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/jobs/end
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action>
-//   <force>true</force>
-//   <status>finished</status>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Force`:: Indicates if the job should be forcibly terminated.
-// `Succeeded`:: Indicates if the job should be marked as successfully finished or as failed.
-// This parameter is optional, and the default value is `true`.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *JobService) End(
-	async bool,
-	force bool,
-	succeeded bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:     &async,
-		Force:     &force,
-		Succeeded: &succeeded,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "end", headers, query, wait)
-	return err
+func (p *JobService) End() *JobServiceEndRequest {
+	return &JobServiceEndRequest{jobService: p}
 }
 
 type JobServiceGetRequest struct {
@@ -37497,52 +29172,8 @@ type JobServiceGetResponse struct {
 func (p *JobServiceGetResponse) Job() *Job {
 	return p.job
 }
-
-//
-// Retrieves a job.
-// [source]
-// ----
-// GET /ovirt-engine/api/jobs/123
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <job href="/ovirt-engine/api/jobs/123" id="123">
-//   <actions>
-//     <link href="/ovirt-engine/api/jobs/123/clear" rel="clear"/>
-//     <link href="/ovirt-engine/api/jobs/123/end" rel="end"/>
-//   </actions>
-//   <description>Adding Disk</description>
-//   <link href="/ovirt-engine/api/jobs/123/steps" rel="steps"/>
-//   <auto_cleared>true</auto_cleared>
-//   <end_time>2016-12-12T23:07:29.758+02:00</end_time>
-//   <external>false</external>
-//   <last_updated>2016-12-12T23:07:29.758+02:00</last_updated>
-//   <start_time>2016-12-12T23:07:26.593+02:00</start_time>
-//   <status>failed</status>
-//   <owner href="/ovirt-engine/api/users/456" id="456"/>
-// </job>
-// ----
-//
-func (op *JobService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Job,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var jobVar Job
-	xml.Unmarshal([]byte(ovResp.Body), &jobVar)
-	return &jobVar, nil
+func (p *JobService) Get() *JobServiceGetRequest {
+	return &JobServiceGetRequest{jobService: p}
 }
 
 //
@@ -37661,28 +29292,8 @@ type FileServiceGetResponse struct {
 func (p *FileServiceGetResponse) File() *File {
 	return p.file
 }
-
-//
-//
-func (op *FileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*File,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var fileVar File
-	xml.Unmarshal([]byte(ovResp.Body), &fileVar)
-	return &fileVar, nil
+func (p *FileService) Get() *FileServiceGetRequest {
+	return &FileServiceGetRequest{fileService: p}
 }
 
 //
@@ -37800,68 +29411,8 @@ type StepsServiceAddResponse struct {
 func (p *StepsServiceAddResponse) Step() *Step {
 	return p.step
 }
-
-//
-// Add an external step to an existing job or to an existing step.
-// For example, to add a step to `job` with identifier `123` send the
-// following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/jobs/123/steps
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <step>
-//   <description>Validating</description>
-//   <start_time>2016-12-12T23:07:26.605+02:00</start_time>
-//   <status>started</status>
-//   <type>validating</type>
-// </step>
-// ----
-// The response should look like:
-// [source,xml]
-// ----
-// <step href="/ovirt-engine/api/jobs/123/steps/456" id="456">
-//   <actions>
-//     <link href="/ovirt-engine/api/jobs/123/steps/456/end" rel="end"/>
-//   </actions>
-//   <description>Validating</description>
-//   <link href="/ovirt-engine/api/jobs/123/steps/456/statistics" rel="statistics"/>
-//   <external>true</external>
-//   <number>2</number>
-//   <start_time>2016-12-13T01:06:15.380+02:00</start_time>
-//   <status>started</status>
-//   <type>validating</type>
-//   <job href="/ovirt-engine/api/jobs/123" id="123"/>
-// </step>
-// ----
-// This method supports the following parameters:
-// `Step`:: Step that will be added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StepsService) Add(
-	step *Step,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Step,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(step, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var stepVar Step
-	xml.Unmarshal([]byte(ovResp.Body), &stepVar)
-	return &stepVar, nil
+func (p *StepsService) Add() *StepsServiceAddRequest {
+	return &StepsServiceAddRequest{stepsService: p}
 }
 
 type StepsServiceListRequest struct {
@@ -37948,60 +29499,8 @@ type StepsServiceListResponse struct {
 func (p *StepsServiceListResponse) Steps() []Step {
 	return p.steps
 }
-
-//
-// Retrieves the representation of the steps.
-// [source]
-// ----
-// GET /ovirt-engine/api/job/123/steps
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <steps>
-//   <step href="/ovirt-engine/api/jobs/123/steps/456" id="456">
-//     <actions>
-//       <link href="/ovirt-engine/api/jobs/123/steps/456/end" rel="end"/>
-//     </actions>
-//     <description>Validating</description>
-//     <link href="/ovirt-engine/api/jobs/123/steps/456/statistics" rel="statistics"/>
-//     <external>true</external>
-//     <number>2</number>
-//     <start_time>2016-12-13T01:06:15.380+02:00</start_time>
-//     <status>started</status>
-//     <type>validating</type>
-//     <job href="/ovirt-engine/api/jobs/123" id="123"/>
-//   </step>
-//   ...
-// </steps>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of steps to return. If not specified all the steps are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StepsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Step,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var stepsVar Steps
-	xml.Unmarshal([]byte(ovResp.Body), &stepsVar)
-	return stepsVar.Steps, nil
+func (p *StepsService) List() *StepsServiceListRequest {
+	return &StepsServiceListRequest{stepsService: p}
 }
 
 //
@@ -38118,28 +29617,8 @@ type StorageDomainServerConnectionServiceGetResponse struct {
 func (p *StorageDomainServerConnectionServiceGetResponse) Connection() *StorageConnection {
 	return p.connection
 }
-
-//
-//
-func (op *StorageDomainServerConnectionService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionVar StorageConnection
-	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
-	return &connectionVar, nil
+func (p *StorageDomainServerConnectionService) Get() *StorageDomainServerConnectionServiceGetRequest {
+	return &StorageDomainServerConnectionServiceGetRequest{storageDomainServerConnectionService: p}
 }
 
 type StorageDomainServerConnectionServiceRemoveRequest struct {
@@ -38218,28 +29697,8 @@ func (p *StorageDomainServerConnectionServiceRemoveRequest) Send() (*StorageDoma
 type StorageDomainServerConnectionServiceRemoveResponse struct {
 }
 
-//
-// Detaches a storage connection from storage.
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainServerConnectionService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageDomainServerConnectionService) Remove() *StorageDomainServerConnectionServiceRemoveRequest {
+	return &StorageDomainServerConnectionServiceRemoveRequest{storageDomainServerConnectionService: p}
 }
 
 //
@@ -38357,54 +29816,8 @@ type RolesServiceAddResponse struct {
 func (p *RolesServiceAddResponse) Role() *Role {
 	return p.role
 }
-
-//
-// Create a new role. The role can be administrative or non-administrative and can have different permits.
-// For example, to add the `MyRole` non-administrative role with permits to login and create virtual machines
-// send a request like this (note that you have to pass permit id):
-// [source]
-// ----
-// POST /ovirt-engine/api/roles
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <role>
-//   <name>MyRole</name>
-//   <description>My custom role to create virtual machines</description>
-//   <administrative>false</administrative>
-//   <permits>
-//     <permit id="1"/>
-//     <permit id="1300"/>
-//   </permits>
-// </group>
-// ----
-// This method supports the following parameters:
-// `Role`:: Role that will be added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *RolesService) Add(
-	role *Role,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Role,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(role, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var roleVar Role
-	xml.Unmarshal([]byte(ovResp.Body), &roleVar)
-	return &roleVar, nil
+func (p *RolesService) Add() *RolesServiceAddRequest {
+	return &RolesServiceAddRequest{rolesService: p}
 }
 
 type RolesServiceListRequest struct {
@@ -38491,54 +29904,8 @@ type RolesServiceListResponse struct {
 func (p *RolesServiceListResponse) Roles() []Role {
 	return p.roles
 }
-
-//
-// List roles.
-// [source]
-// ----
-// GET /ovirt-engine/api/roles
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <roles>
-//   <role id="123">
-//      <name>SuperUser</name>
-//      <description>Roles management administrator</description>
-//      <link href="/ovirt-engine/api/roles/123/permits" rel="permits"/>
-//      <administrative>true</administrative>
-//      <mutable>false</mutable>
-//   </role>
-//   ...
-// </roles>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of roles to return. If not specified all the roles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *RolesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Role,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var rolesVar Roles
-	xml.Unmarshal([]byte(ovResp.Body), &rolesVar)
-	return rolesVar.Roles, nil
+func (p *RolesService) List() *RolesServiceListRequest {
+	return &RolesServiceListRequest{rolesService: p}
 }
 
 //
@@ -38803,19 +30170,8 @@ func (p *ImageTransferServiceExtendRequest) Send() (*ImageTransferServiceExtendR
 type ImageTransferServiceExtendResponse struct {
 }
 
-//
-// Extend the image transfer session.
-//
-func (op *ImageTransferService) Extend(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "extend", headers, query, wait)
-	return err
+func (p *ImageTransferService) Extend() *ImageTransferServiceExtendRequest {
+	return &ImageTransferServiceExtendRequest{imageTransferService: p}
 }
 
 type ImageTransferServiceFinalizeRequest struct {
@@ -38897,23 +30253,8 @@ func (p *ImageTransferServiceFinalizeRequest) Send() (*ImageTransferServiceFinal
 type ImageTransferServiceFinalizeResponse struct {
 }
 
-//
-// After finishing to transfer the data, finalize the transfer.
-// This will make sure that the data being transferred is valid and fits the
-// image entity that was targeted in the transfer. Specifically, will verify that
-// if the image entity is a QCOW disk, the data uploaded is indeed a QCOW file,
-// and that the image doesn't have a backing file.
-//
-func (op *ImageTransferService) Finalize(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "finalize", headers, query, wait)
-	return err
+func (p *ImageTransferService) Finalize() *ImageTransferServiceFinalizeRequest {
+	return &ImageTransferServiceFinalizeRequest{imageTransferService: p}
 }
 
 type ImageTransferServiceGetRequest struct {
@@ -38992,29 +30333,8 @@ type ImageTransferServiceGetResponse struct {
 func (p *ImageTransferServiceGetResponse) ImageTransfer() *ImageTransfer {
 	return p.imageTransfer
 }
-
-//
-// Get the image transfer entity.
-//
-func (op *ImageTransferService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ImageTransfer,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imageTransferVar ImageTransfer
-	xml.Unmarshal([]byte(ovResp.Body), &imageTransferVar)
-	return &imageTransferVar, nil
+func (p *ImageTransferService) Get() *ImageTransferServiceGetRequest {
+	return &ImageTransferServiceGetRequest{imageTransferService: p}
 }
 
 type ImageTransferServicePauseRequest struct {
@@ -39096,19 +30416,8 @@ func (p *ImageTransferServicePauseRequest) Send() (*ImageTransferServicePauseRes
 type ImageTransferServicePauseResponse struct {
 }
 
-//
-// Pause the image transfer session.
-//
-func (op *ImageTransferService) Pause(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "pause", headers, query, wait)
-	return err
+func (p *ImageTransferService) Pause() *ImageTransferServicePauseRequest {
+	return &ImageTransferServicePauseRequest{imageTransferService: p}
 }
 
 type ImageTransferServiceResumeRequest struct {
@@ -39190,29 +30499,8 @@ func (p *ImageTransferServiceResumeRequest) Send() (*ImageTransferServiceResumeR
 type ImageTransferServiceResumeResponse struct {
 }
 
-//
-// Resume the image transfer session. The client will need to poll the transfer's phase until
-// it is different than `resuming`. For example:
-// [source,python]
-// ----
-// transfer_service = transfers_service.image_transfer_service(transfer.id)
-// transfer_service.resume()
-// transfer = transfer_service.get()
-// while transfer.phase == types.ImageTransferPhase.RESUMING:
-//    time.sleep(1)
-//    transfer = transfer_service.get()
-// ----
-//
-func (op *ImageTransferService) Resume(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "resume", headers, query, wait)
-	return err
+func (p *ImageTransferService) Resume() *ImageTransferServiceResumeRequest {
+	return &ImageTransferServiceResumeRequest{imageTransferService: p}
 }
 
 //
@@ -39318,28 +30606,8 @@ type AssignedVnicProfileServiceGetResponse struct {
 func (p *AssignedVnicProfileServiceGetResponse) Profile() *VnicProfile {
 	return p.profile
 }
-
-//
-//
-func (op *AssignedVnicProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar VnicProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *AssignedVnicProfileService) Get() *AssignedVnicProfileServiceGetRequest {
+	return &AssignedVnicProfileServiceGetRequest{assignedVnicProfileService: p}
 }
 
 type AssignedVnicProfileServiceRemoveRequest struct {
@@ -39418,27 +30686,8 @@ func (p *AssignedVnicProfileServiceRemoveRequest) Send() (*AssignedVnicProfileSe
 type AssignedVnicProfileServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedVnicProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedVnicProfileService) Remove() *AssignedVnicProfileServiceRemoveRequest {
+	return &AssignedVnicProfileServiceRemoveRequest{assignedVnicProfileService: p}
 }
 
 //
@@ -39556,28 +30805,8 @@ type TemplateWatchdogServiceGetResponse struct {
 func (p *TemplateWatchdogServiceGetResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-//
-func (op *TemplateWatchdogService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *TemplateWatchdogService) Get() *TemplateWatchdogServiceGetRequest {
+	return &TemplateWatchdogServiceGetRequest{templateWatchdogService: p}
 }
 
 type TemplateWatchdogServiceRemoveRequest struct {
@@ -39656,27 +30885,8 @@ func (p *TemplateWatchdogServiceRemoveRequest) Send() (*TemplateWatchdogServiceR
 type TemplateWatchdogServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateWatchdogService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateWatchdogService) Remove() *TemplateWatchdogServiceRemoveRequest {
+	return &TemplateWatchdogServiceRemoveRequest{templateWatchdogService: p}
 }
 
 type TemplateWatchdogServiceUpdateRequest struct {
@@ -39774,31 +30984,8 @@ type TemplateWatchdogServiceUpdateResponse struct {
 func (p *TemplateWatchdogServiceUpdateResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-//
-func (op *TemplateWatchdogService) Update(
-	watchdog *Watchdog,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *TemplateWatchdogService) Update() *TemplateWatchdogServiceUpdateRequest {
+	return &TemplateWatchdogServiceUpdateRequest{templateWatchdogService: p}
 }
 
 //
@@ -39904,28 +31091,8 @@ type VmSessionServiceGetResponse struct {
 func (p *VmSessionServiceGetResponse) Session() *Session {
 	return p.session
 }
-
-//
-//
-func (op *VmSessionService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Session,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var sessionVar Session
-	xml.Unmarshal([]byte(ovResp.Body), &sessionVar)
-	return &sessionVar, nil
+func (p *VmSessionService) Get() *VmSessionServiceGetRequest {
+	return &VmSessionServiceGetRequest{vmSessionService: p}
 }
 
 //
@@ -40040,26 +31207,8 @@ func (p *VmNicServiceActivateRequest) Send() (*VmNicServiceActivateResponse, err
 type VmNicServiceActivateResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the activation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNicService) Activate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "activate", headers, query, wait)
-	return err
+func (p *VmNicService) Activate() *VmNicServiceActivateRequest {
+	return &VmNicServiceActivateRequest{vmNicService: p}
 }
 
 type VmNicServiceDeactivateRequest struct {
@@ -40147,26 +31296,8 @@ func (p *VmNicServiceDeactivateRequest) Send() (*VmNicServiceDeactivateResponse,
 type VmNicServiceDeactivateResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the deactivation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNicService) Deactivate(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "deactivate", headers, query, wait)
-	return err
+func (p *VmNicService) Deactivate() *VmNicServiceDeactivateRequest {
+	return &VmNicServiceDeactivateRequest{vmNicService: p}
 }
 
 type VmNicServiceGetRequest struct {
@@ -40245,28 +31376,8 @@ type VmNicServiceGetResponse struct {
 func (p *VmNicServiceGetResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-//
-func (op *VmNicService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *VmNicService) Get() *VmNicServiceGetRequest {
+	return &VmNicServiceGetRequest{vmNicService: p}
 }
 
 type VmNicServiceRemoveRequest struct {
@@ -40345,42 +31456,8 @@ func (p *VmNicServiceRemoveRequest) Send() (*VmNicServiceRemoveResponse, error) 
 type VmNicServiceRemoveResponse struct {
 }
 
-//
-// Removes the NIC.
-// For example, to remove the NIC with id `456` from the virtual machine with id `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/vms/123/nics/456
-// ----
-// [IMPORTANT]
-// ====
-// The hotplugging feature only supports virtual machine operating systems with hotplugging operations.
-// Example operating systems include:
-// - Red Hat Enterprise Linux 6
-// - Red Hat Enterprise Linux 5
-// - Windows Server 2008 and
-// - Windows Server 2003
-// ====
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNicService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmNicService) Remove() *VmNicServiceRemoveRequest {
+	return &VmNicServiceRemoveRequest{vmNicService: p}
 }
 
 type VmNicServiceUpdateRequest struct {
@@ -40478,56 +31555,8 @@ type VmNicServiceUpdateResponse struct {
 func (p *VmNicServiceUpdateResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-// Updates the NIC.
-// For example, to update the NIC having with `456` belonging to virtual the machine with id `123` send a request
-// like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/vms/123/nics/456
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <nic>
-//   <name>mynic</name>
-//   <interface>e1000</interface>
-//   <vnic_profile id='789'/>
-// </nic>
-// ----
-// [IMPORTANT]
-// ====
-// The hotplugging feature only supports virtual machine operating systems with hotplugging operations.
-// Example operating systems include:
-// - Red Hat Enterprise Linux 6
-// - Red Hat Enterprise Linux 5
-// - Windows Server 2008 and
-// - Windows Server 2003
-// ====
-//
-func (op *VmNicService) Update(
-	nic *Nic,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *VmNicService) Update() *VmNicServiceUpdateRequest {
+	return &VmNicServiceUpdateRequest{vmNicService: p}
 }
 
 //
@@ -40682,42 +31711,8 @@ type SnapshotsServiceAddResponse struct {
 func (p *SnapshotsServiceAddResponse) Snapshot() *Snapshot {
 	return p.snapshot
 }
-
-//
-// Creates a virtual machine snapshot.
-// For example, to create a new snapshot for virtual machine `123` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/snapshots
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <snapshot>
-//   <description>My snapshot</description>
-// </snapshot>
-// ----
-//
-func (op *SnapshotsService) Add(
-	snapshot *Snapshot,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Snapshot,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(snapshot, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var snapshotVar Snapshot
-	xml.Unmarshal([]byte(ovResp.Body), &snapshotVar)
-	return &snapshotVar, nil
+func (p *SnapshotsService) Add() *SnapshotsServiceAddRequest {
+	return &SnapshotsServiceAddRequest{snapshotsService: p}
 }
 
 type SnapshotsServiceListRequest struct {
@@ -40812,44 +31807,8 @@ type SnapshotsServiceListResponse struct {
 func (p *SnapshotsServiceListResponse) Snapshots() []Snapshot {
 	return p.snapshots
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of snapshots to return. If not specified all the snapshots are returned.
-// `AllContent`:: Indicates if all the attributes of the virtual machine snapshot should be included in the response.
-// By default the attribute `initialization.configuration.data` is excluded.
-// For example, to retrieve the complete representation of the virtual machine with id `123` snapshots send a
-// request like this:
-// ....
-// GET /ovirt-engine/api/vms/123/snapshots?all_content=true
-// ....
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotsService) List(
-	allContent bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Snapshot,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["all_content"] = fmt.Sprintf("%v", allContent)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var snapshotsVar Snapshots
-	xml.Unmarshal([]byte(ovResp.Body), &snapshotsVar)
-	return snapshotsVar.Snapshots, nil
+func (p *SnapshotsService) List() *SnapshotsServiceListRequest {
+	return &SnapshotsServiceListRequest{snapshotsService: p}
 }
 
 //
@@ -40966,29 +31925,8 @@ type StorageDomainVmDiskAttachmentsServiceListResponse struct {
 func (p *StorageDomainVmDiskAttachmentsServiceListResponse) Attachments() []DiskAttachment {
 	return p.attachments
 }
-
-//
-// List the disks that are attached to the virtual machine.
-//
-func (op *StorageDomainVmDiskAttachmentsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentsVar DiskAttachments
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
-	return attachmentsVar.DiskAttachments, nil
+func (p *StorageDomainVmDiskAttachmentsService) List() *StorageDomainVmDiskAttachmentsServiceListRequest {
+	return &StorageDomainVmDiskAttachmentsServiceListRequest{storageDomainVmDiskAttachmentsService: p}
 }
 
 //
@@ -41105,28 +32043,8 @@ type ImageServiceGetResponse struct {
 func (p *ImageServiceGetResponse) Image() *Image {
 	return p.image
 }
-
-//
-//
-func (op *ImageService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Image,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imageVar Image
-	xml.Unmarshal([]byte(ovResp.Body), &imageVar)
-	return &imageVar, nil
+func (p *ImageService) Get() *ImageServiceGetRequest {
+	return &ImageServiceGetRequest{imageService: p}
 }
 
 type ImageServiceImportRequest struct {
@@ -41244,43 +32162,8 @@ func (p *ImageServiceImportRequest) Send() (*ImageServiceImportResponse, error) 
 type ImageServiceImportResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Cluster`:: Cluster where the image should be imported. Has effect only in case `import_as_template` parameter
-// is set to `true`.
-// `Disk`:: The disk which should be imported.
-// `ImportAsTemplate`:: Specify if template should be created from the imported disk.
-// `Template`:: Name of the template, which should be created. Has effect only in case `import_as_template` parameter
-// is set to `true`.
-// `StorageDomain`:: Storage domain where disk should be imported.
-// `Async`:: Indicates if the import should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ImageService) Import(
-	async bool,
-	cluster *Cluster,
-	disk *Disk,
-	importAsTemplate bool,
-	storageDomain *StorageDomain,
-	template *Template,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:            &async,
-		Cluster:          cluster,
-		Disk:             disk,
-		ImportAsTemplate: &importAsTemplate,
-		StorageDomain:    storageDomain,
-		Template:         template,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "import", headers, query, wait)
-	return err
+func (p *ImageService) Import() *ImageServiceImportRequest {
+	return &ImageServiceImportRequest{imageService: p}
 }
 
 //
@@ -41397,30 +32280,8 @@ type InstanceTypeNicsServiceAddResponse struct {
 func (p *InstanceTypeNicsServiceAddResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-// Add new network interface to the instance type.
-//
-func (op *InstanceTypeNicsService) Add(
-	nic *Nic,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *InstanceTypeNicsService) Add() *InstanceTypeNicsServiceAddRequest {
+	return &InstanceTypeNicsServiceAddRequest{instanceTypeNicsService: p}
 }
 
 type InstanceTypeNicsServiceListRequest struct {
@@ -41515,39 +32376,8 @@ type InstanceTypeNicsServiceListResponse struct {
 func (p *InstanceTypeNicsServiceListResponse) Nics() []Nic {
 	return p.nics
 }
-
-//
-// Lists all the configured network interface of the instance type.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
-// `Search`:: A query string used to restrict the returned templates.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeNicsService) List(
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicsVar Nics
-	xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
-	return nicsVar.Nics, nil
+func (p *InstanceTypeNicsService) List() *InstanceTypeNicsServiceListRequest {
+	return &InstanceTypeNicsServiceListRequest{instanceTypeNicsService: p}
 }
 
 //
@@ -41671,35 +32501,8 @@ type OperatingSystemsServiceListResponse struct {
 func (p *OperatingSystemsServiceListResponse) OperatingSystem() []OperatingSystemInfo {
 	return p.operatingSystem
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *OperatingSystemsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]OperatingSystemInfo,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var operatingSystemVar OperatingSystemInfos
-	xml.Unmarshal([]byte(ovResp.Body), &operatingSystemVar)
-	return operatingSystemVar.OperatingSystemInfos, nil
+func (p *OperatingSystemsService) List() *OperatingSystemsServiceListRequest {
+	return &OperatingSystemsServiceListRequest{operatingSystemsService: p}
 }
 
 //
@@ -41816,28 +32619,8 @@ type HostNicServiceGetResponse struct {
 func (p *HostNicServiceGetResponse) Nic() *HostNic {
 	return p.nic
 }
-
-//
-//
-func (op *HostNicService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*HostNic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar HostNic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *HostNicService) Get() *HostNicServiceGetRequest {
+	return &HostNicServiceGetRequest{hostNicService: p}
 }
 
 type HostNicServiceUpdateVirtualFunctionsConfigurationRequest struct {
@@ -41931,33 +32714,8 @@ func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Send() (*Host
 type HostNicServiceUpdateVirtualFunctionsConfigurationResponse struct {
 }
 
-//
-// The action updates virtual function configuration in case the current resource represents an SR-IOV enabled NIC.
-// The input should be consisted of at least one of the following properties:
-// - `allNetworksAllowed`
-// - `numberOfVirtualFunctions`
-// Please see the `HostNicVirtualFunctionsConfiguration` type for the meaning of the properties.
-// This method supports the following parameters:
-// `Async`:: Indicates if the update should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostNicService) UpdateVirtualFunctionsConfiguration(
-	async bool,
-	virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		VirtualFunctionsConfiguration: virtualFunctionsConfiguration,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "updatevirtualfunctionsconfiguration", headers, query, wait)
-	return err
+func (p *HostNicService) UpdateVirtualFunctionsConfiguration() *HostNicServiceUpdateVirtualFunctionsConfigurationRequest {
+	return &HostNicServiceUpdateVirtualFunctionsConfigurationRequest{hostNicService: p}
 }
 
 //
@@ -42140,50 +32898,8 @@ type IscsiBondsServiceAddResponse struct {
 func (p *IscsiBondsServiceAddResponse) Bond() *IscsiBond {
 	return p.bond
 }
-
-//
-// Create a new iSCSI bond on a data center.
-// For example, to create a new iSCSI bond on data center `123` using storage connections `456` and `789`, send a
-// request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/datacenters/123/iscsibonds
-// ----
-// The request body should look like this:
-// [source,xml]
-// ----
-// <iscsi_bond>
-//   <name>mybond</name>
-//   <storage_connections>
-//     <storage_connection id="456"/>
-//     <storage_connection id="789"/>
-//   </storage_connections>
-//   <networks>
-//     <network id="abc"/>
-//   </networks>
-// </iscsi_bond>
-// ----
-//
-func (op *IscsiBondsService) Add(
-	bond *IscsiBond,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*IscsiBond,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(bond, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bondVar IscsiBond
-	xml.Unmarshal([]byte(ovResp.Body), &bondVar)
-	return &bondVar, nil
+func (p *IscsiBondsService) Add() *IscsiBondsServiceAddRequest {
+	return &IscsiBondsServiceAddRequest{iscsiBondsService: p}
 }
 
 type IscsiBondsServiceListRequest struct {
@@ -42270,35 +32986,8 @@ type IscsiBondsServiceListResponse struct {
 func (p *IscsiBondsServiceListResponse) Bonds() []IscsiBond {
 	return p.bonds
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of bonds to return. If not specified all the bonds are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *IscsiBondsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]IscsiBond,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bondsVar IscsiBonds
-	xml.Unmarshal([]byte(ovResp.Body), &bondsVar)
-	return bondsVar.IscsiBonds, nil
+func (p *IscsiBondsService) List() *IscsiBondsServiceListRequest {
+	return &IscsiBondsServiceListRequest{iscsiBondsService: p}
 }
 
 //
@@ -42426,61 +33115,8 @@ type UsersServiceAddResponse struct {
 func (p *UsersServiceAddResponse) User() *User {
 	return p.user
 }
-
-//
-// Add user from a directory service.
-// For example, to add the `myuser` user from the `myextension-authz` authorization provider send a request
-// like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/users
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <user>
-//   <user_name>myuser@myextension-authz</user_name>
-//   <domain>
-//     <name>myextension-authz</name>
-//   </domain>
-// </user>
-// ----
-// In case you are working with Active Directory you have to pass user principal name (UPN) as `username`, followed
-// by authorization provider name. Due to https://bugzilla.redhat.com/1147900[bug 1147900] you need to provide
-// also `principal` parameter set to UPN of the user.
-// For example, to add the user with UPN `myuser@mysubdomain.mydomain.com` from the `myextension-authz`
-// authorization provider send a request body like this:
-// [source,xml]
-// ----
-// <user>
-//   <principal>myuser@mysubdomain.mydomain.com</principal>
-//   <user_name>myuser@mysubdomain.mydomain.com@myextension-authz</user_name>
-//   <domain>
-//     <name>myextension-authz</name>
-//   </domain>
-// </user>
-// ----
-//
-func (op *UsersService) Add(
-	user *User,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*User,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(user, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var userVar User
-	xml.Unmarshal([]byte(ovResp.Body), &userVar)
-	return &userVar, nil
+func (p *UsersService) Add() *UsersServiceAddRequest {
+	return &UsersServiceAddRequest{usersService: p}
 }
 
 type UsersServiceListRequest struct {
@@ -42583,68 +33219,8 @@ type UsersServiceListResponse struct {
 func (p *UsersServiceListResponse) Users() []User {
 	return p.users
 }
-
-//
-// List all the users in the system.
-// Usage:
-// ....
-// GET /ovirt-engine/api/users
-// ....
-// Will return the list of users:
-// [source,xml]
-// ----
-// <users>
-//   <user href="/ovirt-engine/api/users/1234" id="1234">
-//     <name>admin</name>
-//     <link href="/ovirt-engine/api/users/1234/sshpublickeys" rel="sshpublickeys"/>
-//     <link href="/ovirt-engine/api/users/1234/roles" rel="roles"/>
-//     <link href="/ovirt-engine/api/users/1234/permissions" rel="permissions"/>
-//     <link href="/ovirt-engine/api/users/1234/tags" rel="tags"/>
-//     <domain_entry_id>23456</domain_entry_id>
-//     <namespace>*</namespace>
-//     <principal>user1</principal>
-//     <user_name>user1@domain-authz</user_name>
-//     <domain href="/ovirt-engine/api/domains/45678" id="45678">
-//       <name>domain-authz</name>
-//     </domain>
-//   </user>
-// </users>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of users to return. If not specified all the users are returned.
-// `Search`:: A query string used to restrict the returned users.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *UsersService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]User,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var usersVar Users
-	xml.Unmarshal([]byte(ovResp.Body), &usersVar)
-	return usersVar.Users, nil
+func (p *UsersService) List() *UsersServiceListRequest {
+	return &UsersServiceListRequest{usersService: p}
 }
 
 //
@@ -42771,46 +33347,8 @@ type GroupsServiceAddResponse struct {
 func (p *GroupsServiceAddResponse) Group() *Group {
 	return p.group
 }
-
-//
-// Add group from a directory service. Please note that domain name is name of the authorization provider.
-// For example, to add the `Developers` group from the `internal-authz` authorization provider send a request
-// like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/groups
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <group>
-//   <name>Developers</name>
-//   <domain>
-//     <name>internal-authz</name>
-//   </domain>
-// </group>
-// ----
-//
-func (op *GroupsService) Add(
-	group *Group,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Group,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(group, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupVar Group
-	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
-	return &groupVar, nil
+func (p *GroupsService) Add() *GroupsServiceAddRequest {
+	return &GroupsServiceAddRequest{groupsService: p}
 }
 
 type GroupsServiceListRequest struct {
@@ -42913,43 +33451,8 @@ type GroupsServiceListResponse struct {
 func (p *GroupsServiceListResponse) Groups() []Group {
 	return p.groups
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of groups to return. If not specified all the groups are returned.
-// `Search`:: A query string used to restrict the returned groups.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GroupsService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Group,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupsVar Groups
-	xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
-	return groupsVar.Groups, nil
+func (p *GroupsService) List() *GroupsServiceListRequest {
+	return &GroupsServiceListRequest{groupsService: p}
 }
 
 //
@@ -43066,44 +33569,8 @@ type DomainServiceGetResponse struct {
 func (p *DomainServiceGetResponse) Domain() *Domain {
 	return p.domain
 }
-
-//
-// Gets the authentication domain information.
-// Usage:
-// ....
-// GET /ovirt-engine/api/domains/5678
-// ....
-// Will return the domain information:
-// [source,xml]
-// ----
-// <domain href="/ovirt-engine/api/domains/5678" id="5678">
-//   <name>internal-authz</name>
-//   <link href="/ovirt-engine/api/domains/5678/users" rel="users"/>
-//   <link href="/ovirt-engine/api/domains/5678/groups" rel="groups"/>
-//   <link href="/ovirt-engine/api/domains/5678/users?search={query}" rel="users/search"/>
-//   <link href="/ovirt-engine/api/domains/5678/groups?search={query}" rel="groups/search"/>
-// </domain>
-// ----
-//
-func (op *DomainService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Domain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var domainVar Domain
-	xml.Unmarshal([]byte(ovResp.Body), &domainVar)
-	return &domainVar, nil
+func (p *DomainService) Get() *DomainServiceGetRequest {
+	return &DomainServiceGetRequest{domainService: p}
 }
 
 //
@@ -43246,29 +33713,8 @@ type SshPublicKeysServiceAddResponse struct {
 func (p *SshPublicKeysServiceAddResponse) Key() *SshPublicKey {
 	return p.key
 }
-
-//
-//
-func (op *SshPublicKeysService) Add(
-	key *SshPublicKey,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SshPublicKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(key, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar SshPublicKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *SshPublicKeysService) Add() *SshPublicKeysServiceAddRequest {
+	return &SshPublicKeysServiceAddRequest{sshPublicKeysService: p}
 }
 
 type SshPublicKeysServiceListRequest struct {
@@ -43355,35 +33801,8 @@ type SshPublicKeysServiceListResponse struct {
 func (p *SshPublicKeysServiceListResponse) Keys() []SshPublicKey {
 	return p.keys
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of keys to return. If not specified all the keys are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SshPublicKeysService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]SshPublicKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keysVar SshPublicKeys
-	xml.Unmarshal([]byte(ovResp.Body), &keysVar)
-	return keysVar.SshPublicKeys, nil
+func (p *SshPublicKeysService) List() *SshPublicKeysServiceListRequest {
+	return &SshPublicKeysServiceListRequest{sshPublicKeysService: p}
 }
 
 //
@@ -43500,47 +33919,8 @@ type DomainUserServiceGetResponse struct {
 func (p *DomainUserServiceGetResponse) User() *User {
 	return p.user
 }
-
-//
-// Gets the domain user information.
-// Usage:
-// ....
-// GET /ovirt-engine/api/domains/5678/users/1234
-// ....
-// Will return the domain user information:
-// [source,xml]
-// ----
-// <user href="/ovirt-engine/api/users/1234" id="1234">
-//   <name>admin</name>
-//   <namespace>*</namespace>
-//   <principal>admin</principal>
-//   <user_name>admin@internal-authz</user_name>
-//   <domain href="/ovirt-engine/api/domains/5678" id="5678">
-//     <name>internal-authz</name>
-//   </domain>
-//   <groups/>
-// </user>
-// ----
-//
-func (op *DomainUserService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*User,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var userVar User
-	xml.Unmarshal([]byte(ovResp.Body), &userVar)
-	return &userVar, nil
+func (p *DomainUserService) Get() *DomainUserServiceGetRequest {
+	return &DomainUserServiceGetRequest{domainUserService: p}
 }
 
 //
@@ -43650,54 +34030,8 @@ type UserServiceGetResponse struct {
 func (p *UserServiceGetResponse) User() *User {
 	return p.user
 }
-
-//
-// Gets the system user information.
-// Usage:
-// ....
-// GET /ovirt-engine/api/users/1234
-// ....
-// Will return the user information:
-// [source,xml]
-// ----
-// <user href="/ovirt-engine/api/users/1234" id="1234">
-//   <name>admin</name>
-//   <link href="/ovirt-engine/api/users/1234/sshpublickeys" rel="sshpublickeys"/>
-//   <link href="/ovirt-engine/api/users/1234/roles" rel="roles"/>
-//   <link href="/ovirt-engine/api/users/1234/permissions" rel="permissions"/>
-//   <link href="/ovirt-engine/api/users/1234/tags" rel="tags"/>
-//   <department></department>
-//   <domain_entry_id>23456</domain_entry_id>
-//   <email>user1@domain.com</email>
-//   <last_name>Lastname</last_name>
-//   <namespace>*</namespace>
-//   <principal>user1</principal>
-//   <user_name>user1@domain-authz</user_name>
-//   <domain href="/ovirt-engine/api/domains/45678" id="45678">
-//     <name>domain-authz</name>
-//   </domain>
-// </user>
-// ----
-//
-func (op *UserService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*User,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var userVar User
-	xml.Unmarshal([]byte(ovResp.Body), &userVar)
-	return &userVar, nil
+func (p *UserService) Get() *UserServiceGetRequest {
+	return &UserServiceGetRequest{userService: p}
 }
 
 type UserServiceRemoveRequest struct {
@@ -43776,32 +34110,8 @@ func (p *UserServiceRemoveRequest) Send() (*UserServiceRemoveResponse, error) {
 type UserServiceRemoveResponse struct {
 }
 
-//
-// Removes the system user.
-// Usage:
-// ....
-// DELETE /ovirt-engine/api/users/1234
-// ....
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *UserService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *UserService) Remove() *UserServiceRemoveRequest {
+	return &UserServiceRemoveRequest{userService: p}
 }
 
 //
@@ -43964,53 +34274,8 @@ type DomainsServiceListResponse struct {
 func (p *DomainsServiceListResponse) Domains() []Domain {
 	return p.domains
 }
-
-//
-// List all the authentication domains in the system.
-// Usage:
-// ....
-// GET /ovirt-engine/api/domains
-// ....
-// Will return the list of domains:
-// [source,xml]
-// ----
-// <domains>
-//   <domain href="/ovirt-engine/api/domains/5678" id="5678">
-//     <name>internal-authz</name>
-//     <link href="/ovirt-engine/api/domains/5678/users" rel="users"/>
-//     <link href="/ovirt-engine/api/domains/5678/groups" rel="groups"/>
-//     <link href="/ovirt-engine/api/domains/5678/users?search={query}" rel="users/search"/>
-//     <link href="/ovirt-engine/api/domains/5678/groups?search={query}" rel="groups/search"/>
-//   </domain>
-// </domains>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of domains to return. If not specified all the domains are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DomainsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Domain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var domainsVar Domains
-	xml.Unmarshal([]byte(ovResp.Body), &domainsVar)
-	return domainsVar.Domains, nil
+func (p *DomainsService) List() *DomainsServiceListRequest {
+	return &DomainsServiceListRequest{domainsService: p}
 }
 
 //
@@ -44152,64 +34417,8 @@ type DomainUsersServiceListResponse struct {
 func (p *DomainUsersServiceListResponse) Users() []User {
 	return p.users
 }
-
-//
-// List all the users in the domain.
-// Usage:
-// ....
-// GET /ovirt-engine/api/domains/5678/users
-// ....
-// Will return the list of users in the domain:
-// [source,xml]
-// ----
-// <users>
-//   <user href="/ovirt-engine/api/domains/5678/users/1234" id="1234">
-//     <name>admin</name>
-//     <namespace>*</namespace>
-//     <principal>admin</principal>
-//     <user_name>admin@internal-authz</user_name>
-//     <domain href="/ovirt-engine/api/domains/5678" id="5678">
-//       <name>internal-authz</name>
-//     </domain>
-//     <groups/>
-//   </user>
-// </users>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of users to return. If not specified all the users are returned.
-// `Search`:: A query string used to restrict the returned users.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DomainUsersService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]User,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var usersVar Users
-	xml.Unmarshal([]byte(ovResp.Body), &usersVar)
-	return usersVar.Users, nil
+func (p *DomainUsersService) List() *DomainUsersServiceListRequest {
+	return &DomainUsersServiceListRequest{domainUsersService: p}
 }
 
 //
@@ -44350,43 +34559,8 @@ type DomainGroupsServiceListResponse struct {
 func (p *DomainGroupsServiceListResponse) Groups() []Group {
 	return p.groups
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of groups to return. If not specified all the groups are returned.
-// `Search`:: A query string used to restrict the returned groups.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DomainGroupsService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Group,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupsVar Groups
-	xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
-	return groupsVar.Groups, nil
+func (p *DomainGroupsService) List() *DomainGroupsServiceListRequest {
+	return &DomainGroupsServiceListRequest{domainGroupsService: p}
 }
 
 //
@@ -44502,28 +34676,8 @@ type GroupServiceGetResponse struct {
 func (p *GroupServiceGetResponse) Get() *Group {
 	return p.get
 }
-
-//
-//
-func (op *GroupService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Group,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var getVar Group
-	xml.Unmarshal([]byte(ovResp.Body), &getVar)
-	return &getVar, nil
+func (p *GroupService) Get() *GroupServiceGetRequest {
+	return &GroupServiceGetRequest{groupService: p}
 }
 
 type GroupServiceRemoveRequest struct {
@@ -44602,27 +34756,8 @@ func (p *GroupServiceRemoveRequest) Send() (*GroupServiceRemoveResponse, error) 
 type GroupServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GroupService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *GroupService) Remove() *GroupServiceRemoveRequest {
+	return &GroupServiceRemoveRequest{groupService: p}
 }
 
 //
@@ -44764,28 +34899,8 @@ type DomainGroupServiceGetResponse struct {
 func (p *DomainGroupServiceGetResponse) Get() *Group {
 	return p.get
 }
-
-//
-//
-func (op *DomainGroupService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Group,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var getVar Group
-	xml.Unmarshal([]byte(ovResp.Body), &getVar)
-	return &getVar, nil
+func (p *DomainGroupService) Get() *DomainGroupServiceGetRequest {
+	return &DomainGroupServiceGetRequest{domainGroupService: p}
 }
 
 //
@@ -44891,28 +35006,8 @@ type SshPublicKeyServiceGetResponse struct {
 func (p *SshPublicKeyServiceGetResponse) Key() *SshPublicKey {
 	return p.key
 }
-
-//
-//
-func (op *SshPublicKeyService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SshPublicKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar SshPublicKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *SshPublicKeyService) Get() *SshPublicKeyServiceGetRequest {
+	return &SshPublicKeyServiceGetRequest{sshPublicKeyService: p}
 }
 
 type SshPublicKeyServiceRemoveRequest struct {
@@ -44991,27 +35086,8 @@ func (p *SshPublicKeyServiceRemoveRequest) Send() (*SshPublicKeyServiceRemoveRes
 type SshPublicKeyServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SshPublicKeyService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *SshPublicKeyService) Remove() *SshPublicKeyServiceRemoveRequest {
+	return &SshPublicKeyServiceRemoveRequest{sshPublicKeyService: p}
 }
 
 type SshPublicKeyServiceUpdateRequest struct {
@@ -45109,31 +35185,8 @@ type SshPublicKeyServiceUpdateResponse struct {
 func (p *SshPublicKeyServiceUpdateResponse) Key() *SshPublicKey {
 	return p.key
 }
-
-//
-//
-func (op *SshPublicKeyService) Update(
-	key *SshPublicKey,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*SshPublicKey,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(key, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var keyVar SshPublicKey
-	xml.Unmarshal([]byte(ovResp.Body), &keyVar)
-	return &keyVar, nil
+func (p *SshPublicKeyService) Update() *SshPublicKeyServiceUpdateRequest {
+	return &SshPublicKeyServiceUpdateRequest{sshPublicKeyService: p}
 }
 
 //
@@ -45239,28 +35292,8 @@ type FenceAgentServiceGetResponse struct {
 func (p *FenceAgentServiceGetResponse) Agent() *Agent {
 	return p.agent
 }
-
-//
-//
-func (op *FenceAgentService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Agent,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var agentVar Agent
-	xml.Unmarshal([]byte(ovResp.Body), &agentVar)
-	return &agentVar, nil
+func (p *FenceAgentService) Get() *FenceAgentServiceGetRequest {
+	return &FenceAgentServiceGetRequest{fenceAgentService: p}
 }
 
 type FenceAgentServiceRemoveRequest struct {
@@ -45339,27 +35372,8 @@ func (p *FenceAgentServiceRemoveRequest) Send() (*FenceAgentServiceRemoveRespons
 type FenceAgentServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FenceAgentService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *FenceAgentService) Remove() *FenceAgentServiceRemoveRequest {
+	return &FenceAgentServiceRemoveRequest{fenceAgentService: p}
 }
 
 type FenceAgentServiceUpdateRequest struct {
@@ -45457,31 +35471,8 @@ type FenceAgentServiceUpdateResponse struct {
 func (p *FenceAgentServiceUpdateResponse) Agent() *Agent {
 	return p.agent
 }
-
-//
-//
-func (op *FenceAgentService) Update(
-	agent *Agent,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Agent,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(agent, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var agentVar Agent
-	xml.Unmarshal([]byte(ovResp.Body), &agentVar)
-	return &agentVar, nil
+func (p *FenceAgentService) Update() *FenceAgentServiceUpdateRequest {
+	return &FenceAgentServiceUpdateRequest{fenceAgentService: p}
 }
 
 //
@@ -45587,28 +35578,8 @@ type MacPoolServiceGetResponse struct {
 func (p *MacPoolServiceGetResponse) Pool() *MacPool {
 	return p.pool
 }
-
-//
-//
-func (op *MacPoolService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*MacPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar MacPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *MacPoolService) Get() *MacPoolServiceGetRequest {
+	return &MacPoolServiceGetRequest{macPoolService: p}
 }
 
 type MacPoolServiceRemoveRequest struct {
@@ -45687,33 +35658,8 @@ func (p *MacPoolServiceRemoveRequest) Send() (*MacPoolServiceRemoveResponse, err
 type MacPoolServiceRemoveResponse struct {
 }
 
-//
-// Removes a MAC address pool.
-// For example, to remove the MAC address pool having id `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/macpools/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *MacPoolService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *MacPoolService) Remove() *MacPoolServiceRemoveRequest {
+	return &MacPoolServiceRemoveRequest{macPoolService: p}
 }
 
 type MacPoolServiceUpdateRequest struct {
@@ -45811,57 +35757,8 @@ type MacPoolServiceUpdateResponse struct {
 func (p *MacPoolServiceUpdateResponse) Pool() *MacPool {
 	return p.pool
 }
-
-//
-// Updates a MAC address pool.
-// The `name`, `description`, `allow_duplicates`, and `ranges` attributes can be updated.
-// For example, to update the MAC address pool of id `123` send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/macpools/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <mac_pool>
-//   <name>UpdatedMACPool</name>
-//   <description>An updated MAC address pool</description>
-//   <allow_duplicates>false</allow_duplicates>
-//   <ranges>
-//     <range>
-//       <from>00:1A:4A:16:01:51</from>
-//       <to>00:1A:4A:16:01:e6</to>
-//     </range>
-//     <range>
-//       <from>02:1A:4A:01:00:00</from>
-//       <to>02:1A:4A:FF:FF:FF</to>
-//     </range>
-//   </ranges>
-// </mac_pool>
-// ----
-//
-func (op *MacPoolService) Update(
-	pool *MacPool,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*MacPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(pool, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar MacPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *MacPoolService) Update() *MacPoolServiceUpdateRequest {
+	return &MacPoolServiceUpdateRequest{macPoolService: p}
 }
 
 //
@@ -45978,29 +35875,8 @@ type AssignedCpuProfilesServiceAddResponse struct {
 func (p *AssignedCpuProfilesServiceAddResponse) Profile() *CpuProfile {
 	return p.profile
 }
-
-//
-//
-func (op *AssignedCpuProfilesService) Add(
-	profile *CpuProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *AssignedCpuProfilesService) Add() *AssignedCpuProfilesServiceAddRequest {
+	return &AssignedCpuProfilesServiceAddRequest{assignedCpuProfilesService: p}
 }
 
 type AssignedCpuProfilesServiceListRequest struct {
@@ -46087,35 +35963,8 @@ type AssignedCpuProfilesServiceListResponse struct {
 func (p *AssignedCpuProfilesServiceListResponse) Profiles() []CpuProfile {
 	return p.profiles
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedCpuProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profilesVar CpuProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
-	return profilesVar.CpuProfiles, nil
+func (p *AssignedCpuProfilesService) List() *AssignedCpuProfilesServiceListRequest {
+	return &AssignedCpuProfilesServiceListRequest{assignedCpuProfilesService: p}
 }
 
 //
@@ -46242,46 +36091,8 @@ type StorageServerConnectionExtensionsServiceAddResponse struct {
 func (p *StorageServerConnectionExtensionsServiceAddResponse) Extension() *StorageConnectionExtension {
 	return p.extension
 }
-
-//
-// Creates a new storage server connection extension for the given host.
-// The extension lets the user define credentials for an iSCSI target for a specific host. For example to use
-// `myuser` and `mypassword` as the credentials when connecting to the iSCSI target from host `123` send a request
-// like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/hosts/123/storageconnectionextensions
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <storage_connection_extension>
-//   <target>iqn.2016-01.com.example:mytarget</target>
-//   <username>myuser</username>
-//   <password>mypassword</password>
-// </storage_connection_extension>
-// ----
-//
-func (op *StorageServerConnectionExtensionsService) Add(
-	extension *StorageConnectionExtension,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnectionExtension,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(extension, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var extensionVar StorageConnectionExtension
-	xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
-	return &extensionVar, nil
+func (p *StorageServerConnectionExtensionsService) Add() *StorageServerConnectionExtensionsServiceAddRequest {
+	return &StorageServerConnectionExtensionsServiceAddRequest{storageServerConnectionExtensionsService: p}
 }
 
 type StorageServerConnectionExtensionsServiceListRequest struct {
@@ -46368,35 +36179,8 @@ type StorageServerConnectionExtensionsServiceListResponse struct {
 func (p *StorageServerConnectionExtensionsServiceListResponse) Extensions() []StorageConnectionExtension {
 	return p.extensions
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of extensions to return. If not specified all the extensions are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageServerConnectionExtensionsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageConnectionExtension,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var extensionsVar StorageConnectionExtensions
-	xml.Unmarshal([]byte(ovResp.Body), &extensionsVar)
-	return extensionsVar.StorageConnectionExtensions, nil
+func (p *StorageServerConnectionExtensionsService) List() *StorageServerConnectionExtensionsServiceListRequest {
+	return &StorageServerConnectionExtensionsServiceListRequest{storageServerConnectionExtensionsService: p}
 }
 
 //
@@ -46512,28 +36296,8 @@ type PermissionServiceGetResponse struct {
 func (p *PermissionServiceGetResponse) Permission() *Permission {
 	return p.permission
 }
-
-//
-//
-func (op *PermissionService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Permission,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permissionVar Permission
-	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
-	return &permissionVar, nil
+func (p *PermissionService) Get() *PermissionServiceGetRequest {
+	return &PermissionServiceGetRequest{permissionService: p}
 }
 
 type PermissionServiceRemoveRequest struct {
@@ -46612,27 +36376,8 @@ func (p *PermissionServiceRemoveRequest) Send() (*PermissionServiceRemoveRespons
 type PermissionServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *PermissionService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *PermissionService) Remove() *PermissionServiceRemoveRequest {
+	return &PermissionServiceRemoveRequest{permissionService: p}
 }
 
 //
@@ -46738,28 +36483,8 @@ type DiskProfileServiceGetResponse struct {
 func (p *DiskProfileServiceGetResponse) Profile() *DiskProfile {
 	return p.profile
 }
-
-//
-//
-func (op *DiskProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar DiskProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *DiskProfileService) Get() *DiskProfileServiceGetRequest {
+	return &DiskProfileServiceGetRequest{diskProfileService: p}
 }
 
 type DiskProfileServiceRemoveRequest struct {
@@ -46838,27 +36563,8 @@ func (p *DiskProfileServiceRemoveRequest) Send() (*DiskProfileServiceRemoveRespo
 type DiskProfileServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *DiskProfileService) Remove() *DiskProfileServiceRemoveRequest {
+	return &DiskProfileServiceRemoveRequest{diskProfileService: p}
 }
 
 type DiskProfileServiceUpdateRequest struct {
@@ -46956,31 +36662,8 @@ type DiskProfileServiceUpdateResponse struct {
 func (p *DiskProfileServiceUpdateResponse) Profile() *DiskProfile {
 	return p.profile
 }
-
-//
-//
-func (op *DiskProfileService) Update(
-	profile *DiskProfile,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar DiskProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *DiskProfileService) Update() *DiskProfileServiceUpdateRequest {
+	return &DiskProfileServiceUpdateRequest{diskProfileService: p}
 }
 
 //
@@ -47099,38 +36782,8 @@ type AffinityGroupServiceGetResponse struct {
 func (p *AffinityGroupServiceGetResponse) Group() *AffinityGroup {
 	return p.group
 }
-
-//
-// Retrieve the affinity group details.
-// [source,xml]
-// ----
-// <affinity_group id="00000000-0000-0000-0000-000000000000">
-//   <name>AF_GROUP_001</name>
-//   <cluster id="00000000-0000-0000-0000-000000000000"/>
-//   <positive>true</positive>
-//   <enforcing>true</enforcing>
-// </affinity_group>
-// ----
-//
-func (op *AffinityGroupService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupVar AffinityGroup
-	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
-	return &groupVar, nil
+func (p *AffinityGroupService) Get() *AffinityGroupServiceGetRequest {
+	return &AffinityGroupServiceGetRequest{affinityGroupService: p}
 }
 
 type AffinityGroupServiceRemoveRequest struct {
@@ -47209,32 +36862,8 @@ func (p *AffinityGroupServiceRemoveRequest) Send() (*AffinityGroupServiceRemoveR
 type AffinityGroupServiceRemoveResponse struct {
 }
 
-//
-// Remove the affinity group.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/clusters/000-000/affinitygroups/123-456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the removal should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AffinityGroupService) Remove() *AffinityGroupServiceRemoveRequest {
+	return &AffinityGroupServiceRemoveRequest{affinityGroupService: p}
 }
 
 type AffinityGroupServiceUpdateRequest struct {
@@ -47332,37 +36961,8 @@ type AffinityGroupServiceUpdateResponse struct {
 func (p *AffinityGroupServiceUpdateResponse) Group() *AffinityGroup {
 	return p.group
 }
-
-//
-// Update the affinity group.
-// This method supports the following parameters:
-// `Group`:: The affinity group.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityGroupService) Update(
-	group *AffinityGroup,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(group, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupVar AffinityGroup
-	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
-	return &groupVar, nil
+func (p *AffinityGroupService) Update() *AffinityGroupServiceUpdateRequest {
+	return &AffinityGroupServiceUpdateRequest{affinityGroupService: p}
 }
 
 //
@@ -47491,35 +37091,8 @@ type UnmanagedNetworksServiceListResponse struct {
 func (p *UnmanagedNetworksServiceListResponse) Networks() []UnmanagedNetwork {
 	return p.networks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *UnmanagedNetworksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]UnmanagedNetwork,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networksVar UnmanagedNetworks
-	xml.Unmarshal([]byte(ovResp.Body), &networksVar)
-	return networksVar.UnmanagedNetworks, nil
+func (p *UnmanagedNetworksService) List() *UnmanagedNetworksServiceListRequest {
+	return &UnmanagedNetworksServiceListRequest{unmanagedNetworksService: p}
 }
 
 //
@@ -47662,168 +37235,8 @@ type VmsServiceAddResponse struct {
 func (p *VmsServiceAddResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-// Creates a new virtual machine.
-// The virtual machine can be created in different ways:
-// - From a template. In this case the identifier or name of the template must be provided. For example, using a
-//   plain shell script and XML:
-// [source,bash]
-// ----
-// #!/bin/sh -ex
-// url="https://engine.example.com/ovirt-engine/api"
-// user="admin@internal"
-// password="..."
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --user "${user}:${password}" \
-// --request POST \
-// --header "Version: 4" \
-// --header "Content-Type: application/xml" \
-// --header "Accept: application/xml" \
-// --data '
-// <vm>
-//   <name>myvm</name>
-//   <template>
-//     <name>Blank</name>
-//   </template>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-// </vm>
-// ' \
-// "${url}/vms"
-// ----
-// - From a snapshot. In this case the identifier of the snapshot has to be provided. For example, using a plain
-//   shel script and XML:
-// [source,bash]
-// ----
-// #!/bin/sh -ex
-// url="https://engine.example.com/ovirt-engine/api"
-// user="admin@internal"
-// password="..."
-// curl \
-// --verbose \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --user "${user}:${password}" \
-// --request POST \
-// --header "Content-Type: application/xml" \
-// --header "Accept: application/xml" \
-// --data '
-// <vm>
-//   <name>myvm</name>
-//   <snapshots>
-//     <snapshot id="266742a5-6a65-483c-816d-d2ce49746680"/>
-//   </snapshots>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-// </vm>
-// ' \
-// "${url}/vms"
-// ----
-// When creating a virtual machine from a template or from a snapshot it is usually useful to explicitly indicate
-// in what storage domain to create the disks for the virtual machine. If the virtual machine is created from
-// a template then this is achieved passing a set of `disk_attachment` elements that indicate the mapping:
-// [source,xml]
-// ----
-// <vm>
-//   ...
-//   <disk_attachments>
-//     <disk_attachment>
-//       <disk id="8d4bd566-6c86-4592-a4a7-912dbf93c298">
-//         <storage_domains>
-//           <storage_domain id="9cb6cb0a-cf1d-41c2-92ca-5a6d665649c9"/>
-//         </storage_domains>
-//       </disk>
-//     <disk_attachment>
-//   </disk_attachments>
-// </vm>
-// ----
-// When the virtual machine is created from a snapshot this set of disks is slightly different, it uses the
-// `image_id` attribute instead of `id`.
-// [source,xml]
-// ----
-// <vm>
-//   ...
-//   <disk_attachments>
-//     <disk_attachment>
-//       <disk>
-//         <image_id>8d4bd566-6c86-4592-a4a7-912dbf93c298</image_id>
-//         <storage_domains>
-//           <storage_domain id="9cb6cb0a-cf1d-41c2-92ca-5a6d665649c9"/>
-//         </storage_domains>
-//       </disk>
-//     <disk_attachment>
-//   </disk_attachments>
-// </vm>
-// ----
-// It is possible to specify additional virtual machine parameters in the XML description, e.g. a virtual machine
-// of `desktop` type, with 2 GiB of RAM and additional description can be added sending a request body like the
-// following:
-// [source,xml]
-// ----
-// <vm>
-//   <name>myvm</name>
-//   <description>My Desktop Virtual Machine</description>
-//   <type>desktop</type>
-//   <memory>2147483648</memory>
-//   ...
-// </vm>
-// ----
-// A bootable CDROM device can be set like this:
-// [source,xml]
-// ----
-// <vm>
-//   ...
-//   <os>
-//     <boot dev="cdrom"/>
-//   </os>
-// </vm>
-// ----
-// In order to boot from CDROM, you first need to insert a disk, as described in the
-// <<services/vm_cdrom, CDROM service>>. Then booting from that CDROM can be specified using the `os.boot.devices`
-// attribute:
-// [source,xml]
-// ----
-// <vm>
-//   ...
-//   <os>
-//     <boot>
-//       <devices>
-//         <device>cdrom</device>
-//       </devices>
-//     </boot>
-//   </os>
-// </vm>
-// ----
-// In all cases the name or identifier of the cluster where the virtual machine will be created is mandatory.
-//
-func (op *VmsService) Add(
-	vm *Vm,
-	clone bool,
-	clonePermissions bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["clone"] = fmt.Sprintf("%v", clone)
-	query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(vm, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *VmsService) Add() *VmsServiceAddRequest {
+	return &VmsServiceAddRequest{vmsService: p}
 }
 
 type VmsServiceListRequest struct {
@@ -47942,61 +37355,8 @@ type VmsServiceListResponse struct {
 func (p *VmsServiceListResponse) Vms() []Vm {
 	return p.vms
 }
-
-//
-// This method supports the following parameters:
-// `Search`:: A query string used to restrict the returned virtual machines.
-// `Max`:: The maximum number of results to return.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `AllContent`:: Indicates if all the attributes of the virtual machines should be included in the response.
-// By default the following attributes are excluded:
-// - `console`
-// - `initialization.configuration.data` - The OVF document describing the virtual machine.
-// - `rng_source`
-// - `soundcard`
-// - `virtio_scsi`
-// For example, to retrieve the complete representation of the virtual machines send a request like this:
-// ....
-// GET /ovirt-engine/api/vms?all_content=true
-// ....
-// NOTE: The reason for not including these attributes is performance: they are seldom used and they require
-// additional queries to the database. So try to use the this parameter only when it is really needed.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmsService) List(
-	allContent bool,
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["all_content"] = fmt.Sprintf("%v", allContent)
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmsVar Vms
-	xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
-	return vmsVar.Vms, nil
+func (p *VmsService) List() *VmsServiceListRequest {
+	return &VmsServiceListRequest{vmsService: p}
 }
 
 //
@@ -48112,28 +37472,8 @@ type StorageDomainTemplateServiceGetResponse struct {
 func (p *StorageDomainTemplateServiceGetResponse) Template() *Template {
 	return p.template
 }
-
-//
-//
-func (op *StorageDomainTemplateService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templateVar Template
-	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
-	return &templateVar, nil
+func (p *StorageDomainTemplateService) Get() *StorageDomainTemplateServiceGetRequest {
+	return &StorageDomainTemplateServiceGetRequest{storageDomainTemplateService: p}
 }
 
 type StorageDomainTemplateServiceImportRequest struct {
@@ -48257,59 +37597,8 @@ func (p *StorageDomainTemplateServiceImportRequest) Send() (*StorageDomainTempla
 type StorageDomainTemplateServiceImportResponse struct {
 }
 
-//
-// Action to import a template from an export storage domain.
-// For example, to import the template `456` from the storage domain `123` send the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/storagedomains/123/templates/456/import
-// ----
-// With the following request body:
-// [source, xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>myexport</name>
-//   </storage_domain>
-//   <cluster>
-//     <name>mycluster</name>
-//   </cluster>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Clone`:: Use the optional `clone` parameter to generate new UUIDs for the imported template and its entities.
-// The user might want to import a template with the `clone` parameter set to `false` when importing a template
-// from an export domain, with templates that was exported by a different {product-name} environment.
-// `Async`:: Indicates if the import should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainTemplateService) Import(
-	async bool,
-	clone bool,
-	cluster *Cluster,
-	exclusive bool,
-	storageDomain *StorageDomain,
-	template *Template,
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Clone:         &clone,
-		Cluster:       cluster,
-		Exclusive:     &exclusive,
-		StorageDomain: storageDomain,
-		Template:      template,
-		Vm:            vm,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "import", headers, query, wait)
-	return err
+func (p *StorageDomainTemplateService) Import() *StorageDomainTemplateServiceImportRequest {
+	return &StorageDomainTemplateServiceImportRequest{storageDomainTemplateService: p}
 }
 
 type StorageDomainTemplateServiceRegisterRequest struct {
@@ -48427,40 +37716,8 @@ func (p *StorageDomainTemplateServiceRegisterRequest) Send() (*StorageDomainTemp
 type StorageDomainTemplateServiceRegisterResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `AllowPartialImport`:: Indicates whether a template is allowed to be registered with only some of its disks.
-// If this flag is `true`, the engine will not fail in the validation process if an image is not found, but
-// instead it will allow the template to be registered without the missing disks. This is mainly used during
-// registration of a template when some of the storage domains are not available. The default value is `false`.
-// `Async`:: Indicates if the registration should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainTemplateService) Register(
-	allowPartialImport bool,
-	async bool,
-	clone bool,
-	cluster *Cluster,
-	exclusive bool,
-	template *Template,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		AllowPartialImport: &allowPartialImport,
-		Async:              &async,
-		Clone:              &clone,
-		Cluster:            cluster,
-		Exclusive:          &exclusive,
-		Template:           template,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "register", headers, query, wait)
-	return err
+func (p *StorageDomainTemplateService) Register() *StorageDomainTemplateServiceRegisterRequest {
+	return &StorageDomainTemplateServiceRegisterRequest{storageDomainTemplateService: p}
 }
 
 type StorageDomainTemplateServiceRemoveRequest struct {
@@ -48539,27 +37796,8 @@ func (p *StorageDomainTemplateServiceRemoveRequest) Send() (*StorageDomainTempla
 type StorageDomainTemplateServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainTemplateService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageDomainTemplateService) Remove() *StorageDomainTemplateServiceRemoveRequest {
+	return &StorageDomainTemplateServiceRemoveRequest{storageDomainTemplateService: p}
 }
 
 //
@@ -48689,50 +37927,8 @@ type VmPoolsServiceAddResponse struct {
 func (p *VmPoolsServiceAddResponse) Pool() *VmPool {
 	return p.pool
 }
-
-//
-// Creates a new virtual machine pool.
-// A new pool requires the `name`, `cluster` and `template` attributes. Identify the cluster and template with the
-// `id` or `name` nested attributes:
-// [source]
-// ----
-// POST /ovirt-engine/api/vmpools
-// ----
-// With the following body:
-// [source,xml]
-// ----
-// <vmpool>
-//   <name>mypool</name>
-//   <cluster id="123"/>
-//   <template id="456"/>
-// </vmpool>
-// ----
-// This method supports the following parameters:
-// `Pool`:: Pool to add.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolsService) Add(
-	pool *VmPool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VmPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(pool, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolVar VmPool
-	xml.Unmarshal([]byte(ovResp.Body), &poolVar)
-	return &poolVar, nil
+func (p *VmPoolsService) Add() *VmPoolsServiceAddRequest {
+	return &VmPoolsServiceAddRequest{vmPoolsService: p}
 }
 
 type VmPoolsServiceListRequest struct {
@@ -48843,61 +38039,8 @@ type VmPoolsServiceListResponse struct {
 func (p *VmPoolsServiceListResponse) Pools() []VmPool {
 	return p.pools
 }
-
-//
-// Get a list of available virtual machines pools.
-// [source]
-// ----
-// GET /ovirt-engine/api/vmpools
-// ----
-// You will receive the following response:
-// [source,xml]
-// ----
-// <vm_pools>
-//   <vm_pool id="123">
-//     ...
-//   </vm_pool>
-//   ...
-// </vm_pools>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of pools to return. If this value is not specified, all of the pools are returned.
-// `Search`:: A query string used to restrict the returned pools.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmPoolsService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]VmPool,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var poolsVar VmPools
-	xml.Unmarshal([]byte(ovResp.Body), &poolsVar)
-	return poolsVar.VmPools, nil
+func (p *VmPoolsService) List() *VmPoolsServiceListRequest {
+	return &VmPoolsServiceListRequest{vmPoolsService: p}
 }
 
 //
@@ -49025,29 +38168,8 @@ type AssignedDiskProfilesServiceAddResponse struct {
 func (p *AssignedDiskProfilesServiceAddResponse) Profile() *DiskProfile {
 	return p.profile
 }
-
-//
-//
-func (op *AssignedDiskProfilesService) Add(
-	profile *DiskProfile,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar DiskProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *AssignedDiskProfilesService) Add() *AssignedDiskProfilesServiceAddRequest {
+	return &AssignedDiskProfilesServiceAddRequest{assignedDiskProfilesService: p}
 }
 
 type AssignedDiskProfilesServiceListRequest struct {
@@ -49134,35 +38256,8 @@ type AssignedDiskProfilesServiceListResponse struct {
 func (p *AssignedDiskProfilesServiceListResponse) Profiles() []DiskProfile {
 	return p.profiles
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of profiles to return. If not specified all the profiles are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedDiskProfilesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profilesVar DiskProfiles
-	xml.Unmarshal([]byte(ovResp.Body), &profilesVar)
-	return profilesVar.DiskProfiles, nil
+func (p *AssignedDiskProfilesService) List() *AssignedDiskProfilesServiceListRequest {
+	return &AssignedDiskProfilesServiceListRequest{assignedDiskProfilesService: p}
 }
 
 //
@@ -49300,48 +38395,8 @@ func (p *StepServiceEndRequest) Send() (*StepServiceEndResponse, error) {
 type StepServiceEndResponse struct {
 }
 
-//
-// Marks an external step execution as ended.
-// For example, to terminate a step with identifier `456` which belongs to a `job` with identifier `123` send the
-// following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/jobs/123/steps/456/end
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action>
-//   <force>true</force>
-//   <succeeded>true</succeeded>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Force`:: Indicates if the step should be forcibly terminated.
-// `Succeeded`:: Indicates if the step should be marked as successfully finished or as failed.
-// This parameter is optional, and the default value is `true`.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StepService) End(
-	async bool,
-	force bool,
-	succeeded bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:     &async,
-		Force:     &force,
-		Succeeded: &succeeded,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "end", headers, query, wait)
-	return err
+func (p *StepService) End() *StepServiceEndRequest {
+	return &StepServiceEndRequest{stepService: p}
 }
 
 type StepServiceGetRequest struct {
@@ -49420,50 +38475,8 @@ type StepServiceGetResponse struct {
 func (p *StepServiceGetResponse) Step() *Step {
 	return p.step
 }
-
-//
-// Retrieves a step.
-// [source]
-// ----
-// GET /ovirt-engine/api/jobs/123/steps/456
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <step href="/ovirt-engine/api/jobs/123/steps/456" id="456">
-//   <actions>
-//     <link href="/ovirt-engine/api/jobs/123/steps/456/end" rel="end"/>
-//   </actions>
-//   <description>Validating</description>
-//   <end_time>2016-12-12T23:07:26.627+02:00</end_time>
-//   <external>false</external>
-//   <number>0</number>
-//   <start_time>2016-12-12T23:07:26.605+02:00</start_time>
-//   <status>finished</status>
-//   <type>validating</type>
-//   <job href="/ovirt-engine/api/jobs/123" id="123"/>
-// </step>
-// ----
-//
-func (op *StepService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Step,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var stepVar Step
-	xml.Unmarshal([]byte(ovResp.Body), &stepVar)
-	return &stepVar, nil
+func (p *StepService) Get() *StepServiceGetRequest {
+	return &StepServiceGetRequest{stepService: p}
 }
 
 //
@@ -49601,42 +38614,8 @@ type AttachedStorageDomainDisksServiceAddResponse struct {
 func (p *AttachedStorageDomainDisksServiceAddResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Adds or registers a disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To add a new disk use the <<services/disks/methods/add, add>>
-// operation of the service that manages the disks of the system. To register an unregistered disk use the
-// <<services/attached_storage_domain_disk/methods/register, register>> operation of the service that manages
-// that disk.
-// This method supports the following parameters:
-// `Disk`:: The disk to add or register.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDisksService) Add(
-	disk *Disk,
-	unregistered bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["unregistered"] = fmt.Sprintf("%v", unregistered)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *AttachedStorageDomainDisksService) Add() *AttachedStorageDomainDisksServiceAddRequest {
+	return &AttachedStorageDomainDisksServiceAddRequest{attachedStorageDomainDisksService: p}
 }
 
 type AttachedStorageDomainDisksServiceListRequest struct {
@@ -49723,36 +38702,8 @@ type AttachedStorageDomainDisksServiceListResponse struct {
 func (p *AttachedStorageDomainDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// Retrieve the list of disks that are available in the storage domain.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDisksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *AttachedStorageDomainDisksService) List() *AttachedStorageDomainDisksServiceListRequest {
+	return &AttachedStorageDomainDisksServiceListRequest{attachedStorageDomainDisksService: p}
 }
 
 //
@@ -49883,29 +38834,8 @@ type NetworkFilterServiceGetResponse struct {
 func (p *NetworkFilterServiceGetResponse) NetworkFilter() *NetworkFilter {
 	return p.networkFilter
 }
-
-//
-// Retrieves a representation of the network filter.
-//
-func (op *NetworkFilterService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkFilter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkFilterVar NetworkFilter
-	xml.Unmarshal([]byte(ovResp.Body), &networkFilterVar)
-	return &networkFilterVar, nil
+func (p *NetworkFilterService) Get() *NetworkFilterServiceGetRequest {
+	return &NetworkFilterServiceGetRequest{networkFilterService: p}
 }
 
 //
@@ -50022,29 +38952,8 @@ type VmDisksServiceAddResponse struct {
 func (p *VmDisksServiceAddResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-//
-func (op *VmDisksService) Add(
-	disk *Disk,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *VmDisksService) Add() *VmDisksServiceAddRequest {
+	return &VmDisksServiceAddRequest{vmDisksService: p}
 }
 
 type VmDisksServiceListRequest struct {
@@ -50131,35 +39040,8 @@ type VmDisksServiceListResponse struct {
 func (p *VmDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmDisksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *VmDisksService) List() *VmDisksServiceListRequest {
+	return &VmDisksServiceListRequest{vmDisksService: p}
 }
 
 //
@@ -50289,66 +39171,8 @@ type DiskAttachmentsServiceAddResponse struct {
 func (p *DiskAttachmentsServiceAddResponse) Attachment() *DiskAttachment {
 	return p.attachment
 }
-
-//
-// Adds a new disk attachment to the virtual machine. The `attachment` parameter can contain just a reference, if
-// the disk already exists:
-// [source,xml]
-// ----
-// <disk_attachment>
-//   <bootable>true</bootable>
-//   <pass_discard>true</pass_discard>
-//   <interface>ide</interface>
-//   <active>true</active>
-//   <disk id="123"/>
-// </disk_attachment>
-// ----
-// Or it can contain the complete representation of the disk, if the disk doesn't exist yet:
-// [source,xml]
-// ----
-// <disk_attachment>
-//   <bootable>true</bootable>
-//   <pass_discard>true</pass_discard>
-//   <interface>ide</interface>
-//   <active>true</active>
-//   <disk>
-//     <name>mydisk</name>
-//     <provisioned_size>1024</provisioned_size>
-//     ...
-//   </disk>
-// </disk_attachment>
-// ----
-// In this case the disk will be created and then attached to the virtual machine.
-// In both cases, use the following URL for a virtual machine with an id `345`:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/345/diskattachments
-// ----
-// IMPORTANT: The server accepts requests that don't contain the `active` attribute, but the effect is
-// undefined. In some cases the disk will be automatically activated and in other cases it won't. To
-// avoid issues it is strongly recommended to always include the `active` attribute with the desired
-// value.
-//
-func (op *DiskAttachmentsService) Add(
-	attachment *DiskAttachment,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(attachment, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar DiskAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *DiskAttachmentsService) Add() *DiskAttachmentsServiceAddRequest {
+	return &DiskAttachmentsServiceAddRequest{diskAttachmentsService: p}
 }
 
 type DiskAttachmentsServiceListRequest struct {
@@ -50427,29 +39251,8 @@ type DiskAttachmentsServiceListResponse struct {
 func (p *DiskAttachmentsServiceListResponse) Attachments() []DiskAttachment {
 	return p.attachments
 }
-
-//
-// List the disk that are attached to the virtual machine.
-//
-func (op *DiskAttachmentsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentsVar DiskAttachments
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
-	return attachmentsVar.DiskAttachments, nil
+func (p *DiskAttachmentsService) List() *DiskAttachmentsServiceListRequest {
+	return &DiskAttachmentsServiceListRequest{diskAttachmentsService: p}
 }
 
 //
@@ -50586,33 +39389,8 @@ func (p *StorageDomainDiskServiceCopyRequest) Send() (*StorageDomainDiskServiceC
 type StorageDomainDiskServiceCopyResponse struct {
 }
 
-//
-// Copies a disk to the specified storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To copy a disk use the <<services/disk/methods/copy, copy>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `Disk`:: Description of the resulting disk.
-// `StorageDomain`:: The storage domain where the new disk will be created.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDiskService) Copy(
-	disk *Disk,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Disk:          disk,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "copy", headers, query, wait)
-	return err
+func (p *StorageDomainDiskService) Copy() *StorageDomainDiskServiceCopyRequest {
+	return &StorageDomainDiskServiceCopyRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceExportRequest struct {
@@ -50700,30 +39478,8 @@ func (p *StorageDomainDiskServiceExportRequest) Send() (*StorageDomainDiskServic
 type StorageDomainDiskServiceExportResponse struct {
 }
 
-//
-// Exports a disk to an export storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To export a disk use the <<services/disk/methods/export, export>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `StorageDomain`:: The export storage domain where the disk should be exported to.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDiskService) Export(
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *StorageDomainDiskService) Export() *StorageDomainDiskServiceExportRequest {
+	return &StorageDomainDiskServiceExportRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceGetRequest struct {
@@ -50802,29 +39558,8 @@ type StorageDomainDiskServiceGetResponse struct {
 func (p *StorageDomainDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Retrieves the description of the disk.
-//
-func (op *StorageDomainDiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *StorageDomainDiskService) Get() *StorageDomainDiskServiceGetRequest {
+	return &StorageDomainDiskServiceGetRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceMoveRequest struct {
@@ -50924,36 +39659,8 @@ func (p *StorageDomainDiskServiceMoveRequest) Send() (*StorageDomainDiskServiceM
 type StorageDomainDiskServiceMoveResponse struct {
 }
 
-//
-// Moves a disk to another storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To move a disk use the <<services/disk/methods/move, move>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `StorageDomain`:: The storage domain where the disk will be moved to.
-// `Async`:: Indicates if the move should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDiskService) Move(
-	async bool,
-	filter bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Filter:        &filter,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "move", headers, query, wait)
-	return err
+func (p *StorageDomainDiskService) Move() *StorageDomainDiskServiceMoveRequest {
+	return &StorageDomainDiskServiceMoveRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceRemoveRequest struct {
@@ -51024,24 +39731,8 @@ func (p *StorageDomainDiskServiceRemoveRequest) Send() (*StorageDomainDiskServic
 type StorageDomainDiskServiceRemoveResponse struct {
 }
 
-//
-// Removes a disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
-// operation of the service that manages that disk.
-//
-func (op *StorageDomainDiskService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageDomainDiskService) Remove() *StorageDomainDiskServiceRemoveRequest {
+	return &StorageDomainDiskServiceRemoveRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceSparsifyRequest struct {
@@ -51123,22 +39814,8 @@ func (p *StorageDomainDiskServiceSparsifyRequest) Send() (*StorageDomainDiskServ
 type StorageDomainDiskServiceSparsifyResponse struct {
 }
 
-//
-// Sparsify the disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
-// operation of the service that manages that disk.
-//
-func (op *StorageDomainDiskService) Sparsify(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "sparsify", headers, query, wait)
-	return err
+func (p *StorageDomainDiskService) Sparsify() *StorageDomainDiskServiceSparsifyRequest {
+	return &StorageDomainDiskServiceSparsifyRequest{storageDomainDiskService: p}
 }
 
 type StorageDomainDiskServiceUpdateRequest struct {
@@ -51228,38 +39905,8 @@ type StorageDomainDiskServiceUpdateResponse struct {
 func (p *StorageDomainDiskServiceUpdateResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Updates the disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To update a disk use the
-// <<services/disk/methods/update, update>> operation of the service that manages that disk.
-// This method supports the following parameters:
-// `Disk`:: The update to apply to the disk.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDiskService) Update(
-	disk *Disk,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *StorageDomainDiskService) Update() *StorageDomainDiskServiceUpdateRequest {
+	return &StorageDomainDiskServiceUpdateRequest{storageDomainDiskService: p}
 }
 
 //
@@ -51398,35 +40045,8 @@ type HostHooksServiceListResponse struct {
 func (p *HostHooksServiceListResponse) Hooks() []Hook {
 	return p.hooks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of hooks to return. If not specified all the hooks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostHooksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Hook,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hooksVar Hooks
-	xml.Unmarshal([]byte(ovResp.Body), &hooksVar)
-	return hooksVar.Hooks, nil
+func (p *HostHooksService) List() *HostHooksServiceListRequest {
+	return &HostHooksServiceListRequest{hostHooksService: p}
 }
 
 //
@@ -51553,91 +40173,8 @@ type StorageDomainsServiceAddResponse struct {
 func (p *StorageDomainsServiceAddResponse) StorageDomain() *StorageDomain {
 	return p.storageDomain
 }
-
-//
-// Adds a new storage domain.
-// Creation of a new <<types/storage_domain,StorageDomain>> requires the `name`, `type`, `host` and `storage`
-// attributes. Identify the `host` attribute with the `id` or `name` attributes. In oVirt 3.6 and later you can
-// enable the wipe after delete option by default on the storage domain. To configure this, specify
-// `wipe_after_delete` in the POST request. This option can be edited after the domain is created, but doing so will
-// not change the wipe after delete property of disks that already exist.
-// To add a new storage domain with specified `name`, `type`, `storage.type`, `storage.address` and `storage.path`
-// and by using a host with an id `123`, send a request as follows:
-// [source]
-// ----
-// POST /ovirt-engine/api/storagedomains
-// ----
-// With a request body as follows:
-// [source,xml]
-// ----
-// <storage_domain>
-//   <name>mydata</name>
-//   <type>data</type>
-//   <storage>
-//     <type>nfs</type>
-//     <address>mynfs.example.com</address>
-//     <path>/exports/mydata</path>
-//   </storage>
-//   <host>
-//     <name>myhost</name>
-//   </host>
-// </storage_domain>
-// ----
-// To create a new NFS ISO storage domain send a request like this:
-// [source,xml]
-// ----
-// <storage_domain>
-//   <name>myisos</name>
-//   <type>iso</type>
-//   <storage>
-//     <type>nfs</type>
-//     <address>mynfs.example.com</address>
-//     <path>/export/myisos</path>
-//   </storage>
-//   <host>
-//     <name>myhost</name>
-//   </host>
-// </storage_domain>
-// ----
-// To create a new iSCSI storage domain send a request like this:
-// [source,xml]
-// ----
-// <storage_domain>
-//   <name>myiscsi</name>
-//   <type>data</type>
-//   <storage>
-//     <type>iscsi</type>
-//     <logical_units>
-//       <logical_unit id="3600144f09dbd050000004eedbd340001"/>
-//       <logical_unit id="3600144f09dbd050000004eedbd340002"/>
-//     </logical_units>
-//   </storage>
-//   <host>
-//     <name>myhost</name>
-//   </host>
-// </storage_domain>
-// ----
-//
-func (op *StorageDomainsService) Add(
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(storageDomain, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainVar StorageDomain
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainVar)
-	return &storageDomainVar, nil
+func (p *StorageDomainsService) Add() *StorageDomainsServiceAddRequest {
+	return &StorageDomainsServiceAddRequest{storageDomainsService: p}
 }
 
 type StorageDomainsServiceListRequest struct {
@@ -51748,46 +40285,8 @@ type StorageDomainsServiceListResponse struct {
 func (p *StorageDomainsServiceListResponse) StorageDomains() []StorageDomain {
 	return p.storageDomains
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of storage domains to return. If not specified all the storage domains are returned.
-// `Search`:: A query string used to restrict the returned storage domains.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainsService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageDomain,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageDomainsVar StorageDomains
-	xml.Unmarshal([]byte(ovResp.Body), &storageDomainsVar)
-	return storageDomainsVar.StorageDomains, nil
+func (p *StorageDomainsService) List() *StorageDomainsServiceListRequest {
+	return &StorageDomainsServiceListRequest{storageDomainsService: p}
 }
 
 //
@@ -51903,28 +40402,8 @@ type NetworkLabelServiceGetResponse struct {
 func (p *NetworkLabelServiceGetResponse) Label() *NetworkLabel {
 	return p.label
 }
-
-//
-//
-func (op *NetworkLabelService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar NetworkLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *NetworkLabelService) Get() *NetworkLabelServiceGetRequest {
+	return &NetworkLabelServiceGetRequest{networkLabelService: p}
 }
 
 type NetworkLabelServiceRemoveRequest struct {
@@ -52003,33 +40482,8 @@ func (p *NetworkLabelServiceRemoveRequest) Send() (*NetworkLabelServiceRemoveRes
 type NetworkLabelServiceRemoveResponse struct {
 }
 
-//
-// Removes a label from a logical network.
-// For example, to remove the label `exemplary` from a logical network having id `123` send the following request:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/networks/123/labels/exemplary
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkLabelService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *NetworkLabelService) Remove() *NetworkLabelServiceRemoveRequest {
+	return &NetworkLabelServiceRemoveRequest{networkLabelService: p}
 }
 
 //
@@ -52146,108 +40600,8 @@ type InstanceTypesServiceAddResponse struct {
 func (p *InstanceTypesServiceAddResponse) InstanceType() *InstanceType {
 	return p.instanceType
 }
-
-//
-// Creates a new instance type.
-// This requires only a name attribute and can include all hardware configurations of the
-// virtual machine.
-// [source]
-// ----
-// POST /ovirt-engine/api/instancetypes
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <instance_type>
-//   <name>myinstancetype</name>
-// </template>
-// ----
-// Creating an instance type with all hardware configurations with a request body like this:
-// [source,xml]
-// ----
-// <instance_type>
-//   <name>myinstancetype</name>
-//   <console>
-//     <enabled>true</enabled>
-//   </console>
-//   <cpu>
-//     <topology>
-//       <cores>2</cores>
-//       <sockets>2</sockets>
-//       <threads>1</threads>
-//     </topology>
-//   </cpu>
-//   <custom_cpu_model>AMD Opteron_G2</custom_cpu_model>
-//   <custom_emulated_machine>q35</custom_emulated_machine>
-//   <display>
-//     <monitors>1</monitors>
-//     <single_qxl_pci>true</single_qxl_pci>
-//     <smartcard_enabled>true</smartcard_enabled>
-//     <type>spice</type>
-//   </display>
-//   <high_availability>
-//     <enabled>true</enabled>
-//     <priority>1</priority>
-//   </high_availability>
-//   <io>
-//     <threads>2</threads>
-//   </io>
-//   <memory>4294967296</memory>
-//   <memory_policy>
-//     <ballooning>true</ballooning>
-//     <guaranteed>268435456</guaranteed>
-//   </memory_policy>
-//   <migration>
-//     <auto_converge>inherit</auto_converge>
-//     <compressed>inherit</compressed>
-//     <policy id="00000000-0000-0000-0000-000000000000"/>
-//   </migration>
-//   <migration_downtime>2</migration_downtime>
-//   <os>
-//     <boot>
-//       <devices>
-//         <device>hd</device>
-//       </devices>
-//     </boot>
-//   </os>
-//   <rng_device>
-//     <rate>
-//       <bytes>200</bytes>
-//       <period>2</period>
-//     </rate>
-//     <source>urandom</source>
-//   </rng_device>
-//   <soundcard_enabled>true</soundcard_enabled>
-//   <usb>
-//     <enabled>true</enabled>
-//     <type>native</type>
-//   </usb>
-//   <virtio_scsi>
-//     <enabled>true</enabled>
-//   </virtio_scsi>
-// </instance_type>
-// ----
-//
-func (op *InstanceTypesService) Add(
-	instanceType *InstanceType,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*InstanceType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(instanceType, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var instanceTypeVar InstanceType
-	xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
-	return &instanceTypeVar, nil
+func (p *InstanceTypesService) Add() *InstanceTypesServiceAddRequest {
+	return &InstanceTypesServiceAddRequest{instanceTypesService: p}
 }
 
 type InstanceTypesServiceListRequest struct {
@@ -52350,45 +40704,8 @@ type InstanceTypesServiceListResponse struct {
 func (p *InstanceTypesServiceListResponse) InstanceType() []InstanceType {
 	return p.instanceType
 }
-
-//
-// Lists all existing instance types in the system.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of instance types to return. If not specified all the instance
-// types are returned.
-// `Search`:: A query string used to restrict the returned templates.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed
-// taking case into account. The default value is `true`, which means that case is taken
-// into account. If you want to search ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypesService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]InstanceType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var instanceTypeVar InstanceTypes
-	xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
-	return instanceTypeVar.InstanceTypes, nil
+func (p *InstanceTypesService) List() *InstanceTypesServiceListRequest {
+	return &InstanceTypesServiceListRequest{instanceTypesService: p}
 }
 
 //
@@ -52515,29 +40832,8 @@ type StorageDomainServerConnectionsServiceAddResponse struct {
 func (p *StorageDomainServerConnectionsServiceAddResponse) Connection() *StorageConnection {
 	return p.connection
 }
-
-//
-//
-func (op *StorageDomainServerConnectionsService) Add(
-	connection *StorageConnection,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(connection, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionVar StorageConnection
-	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
-	return &connectionVar, nil
+func (p *StorageDomainServerConnectionsService) Add() *StorageDomainServerConnectionsServiceAddRequest {
+	return &StorageDomainServerConnectionsServiceAddRequest{storageDomainServerConnectionsService: p}
 }
 
 type StorageDomainServerConnectionsServiceListRequest struct {
@@ -52624,35 +40920,8 @@ type StorageDomainServerConnectionsServiceListResponse struct {
 func (p *StorageDomainServerConnectionsServiceListResponse) Connections() []StorageConnection {
 	return p.connections
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of connections to return. If not specified all the connections are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainServerConnectionsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionsVar StorageConnections
-	xml.Unmarshal([]byte(ovResp.Body), &connectionsVar)
-	return connectionsVar.StorageConnections, nil
+func (p *StorageDomainServerConnectionsService) List() *StorageDomainServerConnectionsServiceListRequest {
+	return &StorageDomainServerConnectionsServiceListRequest{storageDomainServerConnectionsService: p}
 }
 
 //
@@ -52768,29 +41037,8 @@ type InstanceTypeGraphicsConsoleServiceGetResponse struct {
 func (p *InstanceTypeGraphicsConsoleServiceGetResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Gets graphics console configuration of the instance type.
-//
-func (op *InstanceTypeGraphicsConsoleService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *InstanceTypeGraphicsConsoleService) Get() *InstanceTypeGraphicsConsoleServiceGetRequest {
+	return &InstanceTypeGraphicsConsoleServiceGetRequest{instanceTypeGraphicsConsoleService: p}
 }
 
 type InstanceTypeGraphicsConsoleServiceRemoveRequest struct {
@@ -52869,28 +41117,8 @@ func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Send() (*InstanceTypeG
 type InstanceTypeGraphicsConsoleServiceRemoveResponse struct {
 }
 
-//
-// Remove the graphics console from the instance type.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeGraphicsConsoleService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *InstanceTypeGraphicsConsoleService) Remove() *InstanceTypeGraphicsConsoleServiceRemoveRequest {
+	return &InstanceTypeGraphicsConsoleServiceRemoveRequest{instanceTypeGraphicsConsoleService: p}
 }
 
 //
@@ -52996,28 +41224,8 @@ type IscsiBondServiceGetResponse struct {
 func (p *IscsiBondServiceGetResponse) Bond() *IscsiBond {
 	return p.bond
 }
-
-//
-//
-func (op *IscsiBondService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*IscsiBond,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bondVar IscsiBond
-	xml.Unmarshal([]byte(ovResp.Body), &bondVar)
-	return &bondVar, nil
+func (p *IscsiBondService) Get() *IscsiBondServiceGetRequest {
+	return &IscsiBondServiceGetRequest{iscsiBondService: p}
 }
 
 type IscsiBondServiceRemoveRequest struct {
@@ -53096,33 +41304,8 @@ func (p *IscsiBondServiceRemoveRequest) Send() (*IscsiBondServiceRemoveResponse,
 type IscsiBondServiceRemoveResponse struct {
 }
 
-//
-// Removes of an existing iSCSI bond.
-// For example, to remove the iSCSI bond `456` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/datacenters/123/iscsibonds/456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *IscsiBondService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *IscsiBondService) Remove() *IscsiBondServiceRemoveRequest {
+	return &IscsiBondServiceRemoveRequest{iscsiBondService: p}
 }
 
 type IscsiBondServiceUpdateRequest struct {
@@ -53220,46 +41403,8 @@ type IscsiBondServiceUpdateResponse struct {
 func (p *IscsiBondServiceUpdateResponse) Bond() *IscsiBond {
 	return p.bond
 }
-
-//
-// Updates an iSCSI bond.
-// Updating of an iSCSI bond can be done on the `name` and the `description` attributes only. For example, to
-// update the iSCSI bond `456` of data center `123`, send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/datacenters/123/iscsibonds/1234
-// ----
-// The request body should look like this:
-// [source,xml]
-// ----
-// <iscsi_bond>
-//    <name>mybond</name>
-//    <description>My iSCSI bond</description>
-// </iscsi_bond>
-// ----
-//
-func (op *IscsiBondService) Update(
-	bond *IscsiBond,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*IscsiBond,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(bond, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bondVar IscsiBond
-	xml.Unmarshal([]byte(ovResp.Body), &bondVar)
-	return &bondVar, nil
+func (p *IscsiBondService) Update() *IscsiBondServiceUpdateRequest {
+	return &IscsiBondServiceUpdateRequest{iscsiBondService: p}
 }
 
 //
@@ -53390,29 +41535,8 @@ type TemplateDiskAttachmentServiceGetResponse struct {
 func (p *TemplateDiskAttachmentServiceGetResponse) Attachment() *DiskAttachment {
 	return p.attachment
 }
-
-//
-// Returns the details of the attachment.
-//
-func (op *TemplateDiskAttachmentService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentVar DiskAttachment
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentVar)
-	return &attachmentVar, nil
+func (p *TemplateDiskAttachmentService) Get() *TemplateDiskAttachmentServiceGetRequest {
+	return &TemplateDiskAttachmentServiceGetRequest{templateDiskAttachmentService: p}
 }
 
 type TemplateDiskAttachmentServiceRemoveRequest struct {
@@ -53499,37 +41623,8 @@ func (p *TemplateDiskAttachmentServiceRemoveRequest) Send() (*TemplateDiskAttach
 type TemplateDiskAttachmentServiceRemoveResponse struct {
 }
 
-//
-// Removes the disk from the template. The disk will only be removed if there are other existing copies of the
-// disk on other storage domains.
-// A storage domain has to be specified to determine which of the copies should be removed (template disks can
-// have copies on multiple storage domains).
-// [source]
-// ----
-// DELETE /ovirt-engine/api/templates/{template:id}/diskattachments/{attachment:id}?storage_domain=072fbaa1-08f3-4a40-9f34-a5ca22dd1d74
-// ----
-// This method supports the following parameters:
-// `StorageDomain`:: Specifies the identifier of the storage domain the image to be removed resides on.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateDiskAttachmentService) Remove(
-	storageDomain string,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["storage_domain"] = fmt.Sprintf("%v", storageDomain)
-	query["force"] = fmt.Sprintf("%v", force)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateDiskAttachmentService) Remove() *TemplateDiskAttachmentServiceRemoveRequest {
+	return &TemplateDiskAttachmentServiceRemoveRequest{templateDiskAttachmentService: p}
 }
 
 //
@@ -53644,93 +41739,8 @@ type HostStorageServiceListResponse struct {
 func (p *HostStorageServiceListResponse) Storages() []HostStorage {
 	return p.storages
 }
-
-//
-// Get list of storages.
-// [source]
-// ----
-// GET /ovirt-engine/api/hosts/123/storage
-// ----
-// The XML response you get will be like this one:
-// [source,xml]
-// ----
-// <host_storages>
-//   <host_storage id="123">
-//     ...
-//   </host_storage>
-//   ...
-// </host_storages>
-// ----
-// This method supports the following parameters:
-// `ReportStatus`:: Indicates if the status of the LUNs in the storage should be checked.
-// Checking the status of the LUN is an heavy weight operation and
-// this data is not always needed by the user.
-// This parameter will give the option to not perform the status check of the LUNs.
-// The default is `true` for backward compatibility.
-// Here an example with the LUN status :
-// [source,xml]
-// ----
-// <host_storage id="123">
-//   <logical_units>
-//     <logical_unit id="123">
-//       <lun_mapping>0</lun_mapping>
-//       <paths>1</paths>
-//       <product_id>lun0</product_id>
-//       <serial>123</serial>
-//       <size>10737418240</size>
-//       <status>used</status>
-//       <vendor_id>LIO-ORG</vendor_id>
-//       <volume_group_id>123</volume_group_id>
-//     </logical_unit>
-//   </logical_units>
-//   <type>iscsi</type>
-//   <host id="123"/>
-// </host_storage>
-// ----
-// Here an example without the LUN status :
-// [source,xml]
-// ----
-// <host_storage id="123">
-//   <logical_units>
-//     <logical_unit id="123">
-//       <lun_mapping>0</lun_mapping>
-//       <paths>1</paths>
-//       <product_id>lun0</product_id>
-//       <serial>123</serial>
-//       <size>10737418240</size>
-//       <vendor_id>LIO-ORG</vendor_id>
-//       <volume_group_id>123</volume_group_id>
-//     </logical_unit>
-//   </logical_units>
-//   <type>iscsi</type>
-//   <host id="123"/>
-// </host_storage>
-// ----
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostStorageService) List(
-	reportStatus bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]HostStorage,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["report_status"] = fmt.Sprintf("%v", reportStatus)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storagesVar HostStorages
-	xml.Unmarshal([]byte(ovResp.Body), &storagesVar)
-	return storagesVar.HostStorages, nil
+func (p *HostStorageService) List() *HostStorageServiceListRequest {
+	return &HostStorageServiceListRequest{hostStorageService: p}
 }
 
 //
@@ -53855,35 +41865,8 @@ type WeightServiceGetResponse struct {
 func (p *WeightServiceGetResponse) Weight() *Weight {
 	return p.weight
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *WeightService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Weight,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var weightVar Weight
-	xml.Unmarshal([]byte(ovResp.Body), &weightVar)
-	return &weightVar, nil
+func (p *WeightService) Get() *WeightServiceGetRequest {
+	return &WeightServiceGetRequest{weightService: p}
 }
 
 type WeightServiceRemoveRequest struct {
@@ -53962,27 +41945,8 @@ func (p *WeightServiceRemoveRequest) Send() (*WeightServiceRemoveResponse, error
 type WeightServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *WeightService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *WeightService) Remove() *WeightServiceRemoveRequest {
+	return &WeightServiceRemoveRequest{weightService: p}
 }
 
 //
@@ -54099,52 +42063,8 @@ type VmNumaNodesServiceAddResponse struct {
 func (p *VmNumaNodesServiceAddResponse) Node() *VirtualNumaNode {
 	return p.node
 }
-
-//
-// Creates a new virtual NUMA node for the virtual machine.
-// An example of creating a NUMA node:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/c7ecd2dc/numanodes
-// Accept: application/xml
-// Content-type: application/xml
-// ----
-// The request body can contain the following:
-// [source,xml]
-// ----
-// <vm_numa_node>
-//   <cpu>
-//     <cores>
-//       <core>
-//         <index>0</index>
-//       </core>
-//     </cores>
-//   </cpu>
-//   <index>0</index>
-//   <memory>1024</memory>
-// </vm_numa_node>
-// ----
-//
-func (op *VmNumaNodesService) Add(
-	node *VirtualNumaNode,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VirtualNumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(node, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodeVar VirtualNumaNode
-	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
-	return &nodeVar, nil
+func (p *VmNumaNodesService) Add() *VmNumaNodesServiceAddRequest {
+	return &VmNumaNodesServiceAddRequest{vmNumaNodesService: p}
 }
 
 type VmNumaNodesServiceListRequest struct {
@@ -54231,36 +42151,8 @@ type VmNumaNodesServiceListResponse struct {
 func (p *VmNumaNodesServiceListResponse) Nodes() []VirtualNumaNode {
 	return p.nodes
 }
-
-//
-// Lists virtual NUMA nodes of a virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of nodes to return. If not specified all the nodes are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNumaNodesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]VirtualNumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodesVar VirtualNumaNodes
-	xml.Unmarshal([]byte(ovResp.Body), &nodesVar)
-	return nodesVar.VirtualNumaNodes, nil
+func (p *VmNumaNodesService) List() *VmNumaNodesServiceListRequest {
+	return &VmNumaNodesServiceListRequest{vmNumaNodesService: p}
 }
 
 //
@@ -54387,29 +42279,8 @@ type TemplateWatchdogsServiceAddResponse struct {
 func (p *TemplateWatchdogsServiceAddResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-//
-func (op *TemplateWatchdogsService) Add(
-	watchdog *Watchdog,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *TemplateWatchdogsService) Add() *TemplateWatchdogsServiceAddRequest {
+	return &TemplateWatchdogsServiceAddRequest{templateWatchdogsService: p}
 }
 
 type TemplateWatchdogsServiceListRequest struct {
@@ -54496,35 +42367,8 @@ type TemplateWatchdogsServiceListResponse struct {
 func (p *TemplateWatchdogsServiceListResponse) Watchdogs() []Watchdog {
 	return p.watchdogs
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of watchdogs to return. If not specified all the watchdogs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateWatchdogsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogsVar Watchdogs
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
-	return watchdogsVar.Watchdogs, nil
+func (p *TemplateWatchdogsService) List() *TemplateWatchdogsServiceListRequest {
+	return &TemplateWatchdogsServiceListRequest{templateWatchdogsService: p}
 }
 
 //
@@ -54660,33 +42504,8 @@ func (p *AttachedStorageDomainDiskServiceCopyRequest) Send() (*AttachedStorageDo
 type AttachedStorageDomainDiskServiceCopyResponse struct {
 }
 
-//
-// Copies a disk to the specified storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To copy a disk use the <<services/disk/methods/copy, copy>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `Disk`:: Description of the resulting disk.
-// `StorageDomain`:: The storage domain where the new disk will be created.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDiskService) Copy(
-	disk *Disk,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Disk:          disk,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "copy", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Copy() *AttachedStorageDomainDiskServiceCopyRequest {
+	return &AttachedStorageDomainDiskServiceCopyRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceExportRequest struct {
@@ -54774,30 +42593,8 @@ func (p *AttachedStorageDomainDiskServiceExportRequest) Send() (*AttachedStorage
 type AttachedStorageDomainDiskServiceExportResponse struct {
 }
 
-//
-// Exports a disk to an export storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To export a disk use the <<services/disk/methods/export, export>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `StorageDomain`:: The export storage domain where the disk should be exported to.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDiskService) Export(
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Export() *AttachedStorageDomainDiskServiceExportRequest {
+	return &AttachedStorageDomainDiskServiceExportRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceGetRequest struct {
@@ -54876,29 +42673,8 @@ type AttachedStorageDomainDiskServiceGetResponse struct {
 func (p *AttachedStorageDomainDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Retrieves the description of the disk.
-//
-func (op *AttachedStorageDomainDiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *AttachedStorageDomainDiskService) Get() *AttachedStorageDomainDiskServiceGetRequest {
+	return &AttachedStorageDomainDiskServiceGetRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceMoveRequest struct {
@@ -54998,36 +42774,8 @@ func (p *AttachedStorageDomainDiskServiceMoveRequest) Send() (*AttachedStorageDo
 type AttachedStorageDomainDiskServiceMoveResponse struct {
 }
 
-//
-// Moves a disk to another storage domain.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To move a disk use the <<services/disk/methods/move, move>>
-// operation of the service that manages that disk.
-// This method supports the following parameters:
-// `StorageDomain`:: The storage domain where the disk will be moved to.
-// `Async`:: Indicates if the move should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDiskService) Move(
-	async bool,
-	filter bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Filter:        &filter,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "move", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Move() *AttachedStorageDomainDiskServiceMoveRequest {
+	return &AttachedStorageDomainDiskServiceMoveRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceRegisterRequest struct {
@@ -55109,19 +42857,8 @@ func (p *AttachedStorageDomainDiskServiceRegisterRequest) Send() (*AttachedStora
 type AttachedStorageDomainDiskServiceRegisterResponse struct {
 }
 
-//
-// Registers an unregistered disk.
-//
-func (op *AttachedStorageDomainDiskService) Register(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "register", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Register() *AttachedStorageDomainDiskServiceRegisterRequest {
+	return &AttachedStorageDomainDiskServiceRegisterRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceRemoveRequest struct {
@@ -55192,24 +42929,8 @@ func (p *AttachedStorageDomainDiskServiceRemoveRequest) Send() (*AttachedStorage
 type AttachedStorageDomainDiskServiceRemoveResponse struct {
 }
 
-//
-// Removes a disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
-// operation of the service that manages that disk.
-//
-func (op *AttachedStorageDomainDiskService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Remove() *AttachedStorageDomainDiskServiceRemoveRequest {
+	return &AttachedStorageDomainDiskServiceRemoveRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceSparsifyRequest struct {
@@ -55291,22 +43012,8 @@ func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Send() (*AttachedStora
 type AttachedStorageDomainDiskServiceSparsifyResponse struct {
 }
 
-//
-// Sparsify the disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To remove a disk use the <<services/disk/methods/remove, remove>>
-// operation of the service that manages that disk.
-//
-func (op *AttachedStorageDomainDiskService) Sparsify(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "sparsify", headers, query, wait)
-	return err
+func (p *AttachedStorageDomainDiskService) Sparsify() *AttachedStorageDomainDiskServiceSparsifyRequest {
+	return &AttachedStorageDomainDiskServiceSparsifyRequest{attachedStorageDomainDiskService: p}
 }
 
 type AttachedStorageDomainDiskServiceUpdateRequest struct {
@@ -55396,38 +43103,8 @@ type AttachedStorageDomainDiskServiceUpdateResponse struct {
 func (p *AttachedStorageDomainDiskServiceUpdateResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Updates the disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To update a disk use the
-// <<services/disk/methods/update, update>> operation of the service that manages that disk.
-// This method supports the following parameters:
-// `Disk`:: The update to apply to the disk.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AttachedStorageDomainDiskService) Update(
-	disk *Disk,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *AttachedStorageDomainDiskService) Update() *AttachedStorageDomainDiskServiceUpdateRequest {
+	return &AttachedStorageDomainDiskServiceUpdateRequest{attachedStorageDomainDiskService: p}
 }
 
 //
@@ -55559,29 +43236,8 @@ type VnicProfileServiceGetResponse struct {
 func (p *VnicProfileServiceGetResponse) Profile() *VnicProfile {
 	return p.profile
 }
-
-//
-// Retrieves details about a vNIC profile.
-//
-func (op *VnicProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar VnicProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *VnicProfileService) Get() *VnicProfileServiceGetRequest {
+	return &VnicProfileServiceGetRequest{vnicProfileService: p}
 }
 
 type VnicProfileServiceRemoveRequest struct {
@@ -55660,28 +43316,8 @@ func (p *VnicProfileServiceRemoveRequest) Send() (*VnicProfileServiceRemoveRespo
 type VnicProfileServiceRemoveResponse struct {
 }
 
-//
-// Removes the vNIC profile.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VnicProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VnicProfileService) Remove() *VnicProfileServiceRemoveRequest {
+	return &VnicProfileServiceRemoveRequest{vnicProfileService: p}
 }
 
 type VnicProfileServiceUpdateRequest struct {
@@ -55779,37 +43415,8 @@ type VnicProfileServiceUpdateResponse struct {
 func (p *VnicProfileServiceUpdateResponse) Profile() *VnicProfile {
 	return p.profile
 }
-
-//
-// Updates details of a vNIC profile.
-// This method supports the following parameters:
-// `Profile`:: The vNIC profile that is being updated.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VnicProfileService) Update(
-	profile *VnicProfile,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*VnicProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar VnicProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *VnicProfileService) Update() *VnicProfileServiceUpdateRequest {
+	return &VnicProfileServiceUpdateRequest{vnicProfileService: p}
 }
 
 //
@@ -55938,30 +43545,8 @@ type VmGraphicsConsolesServiceAddResponse struct {
 func (p *VmGraphicsConsolesServiceAddResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Add new graphics console to the virtual machine.
-//
-func (op *VmGraphicsConsolesService) Add(
-	console *GraphicsConsole,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(console, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *VmGraphicsConsolesService) Add() *VmGraphicsConsolesServiceAddRequest {
+	return &VmGraphicsConsolesServiceAddRequest{vmGraphicsConsolesService: p}
 }
 
 type VmGraphicsConsolesServiceListRequest struct {
@@ -56056,44 +43641,8 @@ type VmGraphicsConsolesServiceListResponse struct {
 func (p *VmGraphicsConsolesServiceListResponse) Consoles() []GraphicsConsole {
 	return p.consoles
 }
-
-//
-// Lists all the configured graphics consoles of the virtual machine.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of consoles to return. If not specified all the consoles are returned.
-// `Current`:: Use the following query to obtain the current run-time configuration of the graphics consoles.
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/graphicsconsoles?current=true
-// ----
-// The default value is `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmGraphicsConsolesService) List(
-	current bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["current"] = fmt.Sprintf("%v", current)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consolesVar GraphicsConsoles
-	xml.Unmarshal([]byte(ovResp.Body), &consolesVar)
-	return consolesVar.GraphicsConsoles, nil
+func (p *VmGraphicsConsolesService) List() *VmGraphicsConsolesServiceListRequest {
+	return &VmGraphicsConsolesServiceListRequest{vmGraphicsConsolesService: p}
 }
 
 //
@@ -56211,42 +43760,8 @@ type PermitServiceGetResponse struct {
 func (p *PermitServiceGetResponse) Permit() *Permit {
 	return p.permit
 }
-
-//
-// Gets the information about the permit of the role.
-// For example to retrieve the information about the permit with the id `456` of the role with the id `123`
-// send a request like this:
-// ....
-// GET /ovirt-engine/api/roles/123/permits/456
-// ....
-// [source,xml]
-// ----
-// <permit href="/ovirt-engine/api/roles/123/permits/456" id="456">
-//   <name>change_vm_cd</name>
-//   <administrative>false</administrative>
-//   <role href="/ovirt-engine/api/roles/123" id="123"/>
-// </permit>
-// ----
-//
-func (op *PermitService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Permit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permitVar Permit
-	xml.Unmarshal([]byte(ovResp.Body), &permitVar)
-	return &permitVar, nil
+func (p *PermitService) Get() *PermitServiceGetRequest {
+	return &PermitServiceGetRequest{permitService: p}
 }
 
 type PermitServiceRemoveRequest struct {
@@ -56325,32 +43840,8 @@ func (p *PermitServiceRemoveRequest) Send() (*PermitServiceRemoveResponse, error
 type PermitServiceRemoveResponse struct {
 }
 
-//
-// Removes the permit from the role.
-// For example to remove the permit with id `456` from the role with id `123` send a request like this:
-// ....
-// DELETE /ovirt-engine/api/roles/123/permits/456
-// ....
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *PermitService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *PermitService) Remove() *PermitServiceRemoveRequest {
+	return &PermitServiceRemoveRequest{permitService: p}
 }
 
 //
@@ -56465,70 +43956,8 @@ type DataCenterServiceGetResponse struct {
 func (p *DataCenterServiceGetResponse) DataCenter() *DataCenter {
 	return p.dataCenter
 }
-
-//
-// Get a data center.
-// An example of getting a data center:
-// [source]
-// ----
-// GET /ovirt-engine/api/datacenters/123
-// ----
-// [source,xml]
-// ----
-// <data_center href="/ovirt-engine/api/datacenters/123" id="123">
-//   <name>Default</name>
-//   <description>The default Data Center</description>
-//   <link href="/ovirt-engine/api/datacenters/123/clusters" rel="clusters"/>
-//   <link href="/ovirt-engine/api/datacenters/123/storagedomains" rel="storagedomains"/>
-//   <link href="/ovirt-engine/api/datacenters/123/permissions" rel="permissions"/>
-//   <link href="/ovirt-engine/api/datacenters/123/networks" rel="networks"/>
-//   <link href="/ovirt-engine/api/datacenters/123/quotas" rel="quotas"/>
-//   <link href="/ovirt-engine/api/datacenters/123/qoss" rel="qoss"/>
-//   <link href="/ovirt-engine/api/datacenters/123/iscsibonds" rel="iscsibonds"/>
-//   <local>false</local>
-//   <quota_mode>disabled</quota_mode>
-//   <status>up</status>
-//   <storage_format>v3</storage_format>
-//   <supported_versions>
-//     <version>
-//       <major>4</major>
-//       <minor>0</minor>
-//    </version>
-//   </supported_versions>
-//   <version>
-//     <major>4</major>
-//     <minor>0</minor>
-//   </version>
-//   <mac_pool href="/ovirt-engine/api/macpools/456" id="456"/>
-// </data_center>
-// ----
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DataCenterService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DataCenter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var dataCenterVar DataCenter
-	xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
-	return &dataCenterVar, nil
+func (p *DataCenterService) Get() *DataCenterServiceGetRequest {
+	return &DataCenterServiceGetRequest{dataCenterService: p}
 }
 
 type DataCenterServiceRemoveRequest struct {
@@ -56615,43 +44044,8 @@ func (p *DataCenterServiceRemoveRequest) Send() (*DataCenterServiceRemoveRespons
 type DataCenterServiceRemoveResponse struct {
 }
 
-//
-// Removes the data center.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/datacenters/123
-// ----
-// Without any special parameters, the storage domains attached to the data center are detached and then removed
-// from the storage. If something fails when performing this operation, for example if there is no host available to
-// remove the storage domains from the storage, the complete operation will fail.
-// If the `force` parameter is `true` then the operation will always succeed, even if something fails while removing
-// one storage domain, for example. The failure is just ignored and the data center is removed from the database
-// anyway.
-// This method supports the following parameters:
-// `Force`:: Indicates if the operation should succeed, and the storage domain removed from the database, even if
-// something fails during the operation.
-// This parameter is optional, and the default value is `false`.
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DataCenterService) Remove(
-	force bool,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["force"] = fmt.Sprintf("%v", force)
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *DataCenterService) Remove() *DataCenterServiceRemoveRequest {
+	return &DataCenterServiceRemoveRequest{dataCenterService: p}
 }
 
 type DataCenterServiceUpdateRequest struct {
@@ -56749,51 +44143,8 @@ type DataCenterServiceUpdateResponse struct {
 func (p *DataCenterServiceUpdateResponse) DataCenter() *DataCenter {
 	return p.dataCenter
 }
-
-//
-// Updates the data center.
-// The `name`, `description`, `storage_type`, `version`, `storage_format` and `mac_pool` elements are updatable
-// post-creation. For example, to change the name and description of data center `123` send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/datacenters/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <data_center>
-//   <name>myupdatedname</name>
-//   <description>An updated description for the data center</description>
-// </data_center>
-// ----
-// This method supports the following parameters:
-// `DataCenter`:: The data center that is being updated.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DataCenterService) Update(
-	dataCenter *DataCenter,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*DataCenter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(dataCenter, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var dataCenterVar DataCenter
-	xml.Unmarshal([]byte(ovResp.Body), &dataCenterVar)
-	return &dataCenterVar, nil
+func (p *DataCenterService) Update() *DataCenterServiceUpdateRequest {
+	return &DataCenterServiceUpdateRequest{dataCenterService: p}
 }
 
 //
@@ -57014,84 +44365,8 @@ type StatisticsServiceListResponse struct {
 func (p *StatisticsServiceListResponse) Statistics() []Statistic {
 	return p.statistics
 }
-
-//
-// Retrieves a list of statistics.
-// For example, to retrieve the statistics for virtual machine `123` send a
-// request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/statistics
-// ----
-// The result will be like this:
-// [source,xml]
-// ----
-// <statistics>
-//   <statistic href="/ovirt-engine/api/vms/123/statistics/456" id="456">
-//     <name>memory.installed</name>
-//     <description>Total memory configured</description>
-//     <kind>gauge</kind>
-//     <type>integer</type>
-//     <unit>bytes</unit>
-//     <values>
-//       <value>
-//         <datum>1073741824</datum>
-//       </value>
-//     </values>
-//     <vm href="/ovirt-engine/api/vms/123" id="123"/>
-//   </statistic>
-//   ...
-// </statistics>
-// ----
-// Just a single part of the statistics can be retrieved by specifying its id at the end of the URI. That means:
-// [source]
-// ----
-// GET /ovirt-engine/api/vms/123/statistics/456
-// ----
-// Outputs:
-// [source,xml]
-// ----
-// <statistic href="/ovirt-engine/api/vms/123/statistics/456" id="456">
-//   <name>memory.installed</name>
-//   <description>Total memory configured</description>
-//   <kind>gauge</kind>
-//   <type>integer</type>
-//   <unit>bytes</unit>
-//   <values>
-//     <value>
-//       <datum>1073741824</datum>
-//     </value>
-//   </values>
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </statistic>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of statistics to return. If not specified all the statistics are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StatisticsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Statistic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var statisticsVar Statistics
-	xml.Unmarshal([]byte(ovResp.Body), &statisticsVar)
-	return statisticsVar.Statistics, nil
+func (p *StatisticsService) List() *StatisticsServiceListRequest {
+	return &StatisticsServiceListRequest{statisticsService: p}
 }
 
 //
@@ -57223,38 +44498,8 @@ type SchedulingPolicyUnitsServiceListResponse struct {
 func (p *SchedulingPolicyUnitsServiceListResponse) Units() []SchedulingPolicyUnit {
 	return p.units
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of policy units to return. If not specified all the policy units are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SchedulingPolicyUnitsService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]SchedulingPolicyUnit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var unitsVar SchedulingPolicyUnits
-	xml.Unmarshal([]byte(ovResp.Body), &unitsVar)
-	return unitsVar.SchedulingPolicyUnits, nil
+func (p *SchedulingPolicyUnitsService) List() *SchedulingPolicyUnitsServiceListRequest {
+	return &SchedulingPolicyUnitsServiceListRequest{schedulingPolicyUnitsService: p}
 }
 
 //
@@ -57385,29 +44630,8 @@ func (p *TemplateDiskServiceCopyRequest) Send() (*TemplateDiskServiceCopyRespons
 type TemplateDiskServiceCopyResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the copy should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateDiskService) Copy(
-	async bool,
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Filter: &filter,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "copy", headers, query, wait)
-	return err
+func (p *TemplateDiskService) Copy() *TemplateDiskServiceCopyRequest {
+	return &TemplateDiskServiceCopyRequest{templateDiskService: p}
 }
 
 type TemplateDiskServiceExportRequest struct {
@@ -57501,29 +44725,8 @@ func (p *TemplateDiskServiceExportRequest) Send() (*TemplateDiskServiceExportRes
 type TemplateDiskServiceExportResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the export should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateDiskService) Export(
-	async bool,
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Filter: &filter,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *TemplateDiskService) Export() *TemplateDiskServiceExportRequest {
+	return &TemplateDiskServiceExportRequest{templateDiskService: p}
 }
 
 type TemplateDiskServiceGetRequest struct {
@@ -57602,28 +44805,8 @@ type TemplateDiskServiceGetResponse struct {
 func (p *TemplateDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-//
-func (op *TemplateDiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *TemplateDiskService) Get() *TemplateDiskServiceGetRequest {
+	return &TemplateDiskServiceGetRequest{templateDiskService: p}
 }
 
 type TemplateDiskServiceRemoveRequest struct {
@@ -57702,27 +44885,8 @@ func (p *TemplateDiskServiceRemoveRequest) Send() (*TemplateDiskServiceRemoveRes
 type TemplateDiskServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateDiskService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateDiskService) Remove() *TemplateDiskServiceRemoveRequest {
+	return &TemplateDiskServiceRemoveRequest{templateDiskService: p}
 }
 
 //
@@ -57842,30 +45006,8 @@ type AffinityLabelVmsServiceAddResponse struct {
 func (p *AffinityLabelVmsServiceAddResponse) Vm() *Vm {
 	return p.vm
 }
-
-//
-// Add a label to a vm.
-//
-func (op *AffinityLabelVmsService) Add(
-	vm *Vm,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(vm, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vm
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return &vmVar, nil
+func (p *AffinityLabelVmsService) Add() *AffinityLabelVmsServiceAddRequest {
+	return &AffinityLabelVmsServiceAddRequest{affinityLabelVmsService: p}
 }
 
 type AffinityLabelVmsServiceListRequest struct {
@@ -57944,29 +45086,8 @@ type AffinityLabelVmsServiceListResponse struct {
 func (p *AffinityLabelVmsServiceListResponse) Vms() []Vm {
 	return p.vms
 }
-
-//
-// List all vms with the label.
-//
-func (op *AffinityLabelVmsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmsVar Vms
-	xml.Unmarshal([]byte(ovResp.Body), &vmsVar)
-	return vmsVar.Vms, nil
+func (p *AffinityLabelVmsService) List() *AffinityLabelVmsServiceListRequest {
+	return &AffinityLabelVmsServiceListRequest{affinityLabelVmsService: p}
 }
 
 //
@@ -58093,26 +45214,8 @@ func (p *CopyableServiceCopyRequest) Send() (*CopyableServiceCopyResponse, error
 type CopyableServiceCopyResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the copy should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *CopyableService) Copy(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "copy", headers, query, wait)
-	return err
+func (p *CopyableService) Copy() *CopyableServiceCopyRequest {
+	return &CopyableServiceCopyRequest{copyableService: p}
 }
 
 //
@@ -58230,31 +45333,8 @@ type AffinityLabelsServiceAddResponse struct {
 func (p *AffinityLabelsServiceAddResponse) Label() *AffinityLabel {
 	return p.label
 }
-
-//
-// Creates a new label. The label is automatically attached
-// to all entities mentioned in the vms or hosts lists.
-//
-func (op *AffinityLabelsService) Add(
-	label *AffinityLabel,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(label, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *AffinityLabelsService) Add() *AffinityLabelsServiceAddRequest {
+	return &AffinityLabelsServiceAddRequest{affinityLabelsService: p}
 }
 
 type AffinityLabelsServiceListRequest struct {
@@ -58341,36 +45421,8 @@ type AffinityLabelsServiceListResponse struct {
 func (p *AffinityLabelsServiceListResponse) Labels() []AffinityLabel {
 	return p.labels
 }
-
-//
-// Lists all labels present in the system.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of labels to return. If not specified all the labels are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AffinityLabelsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelsVar AffinityLabels
-	xml.Unmarshal([]byte(ovResp.Body), &labelsVar)
-	return labelsVar.AffinityLabels, nil
+func (p *AffinityLabelsService) List() *AffinityLabelsServiceListRequest {
+	return &AffinityLabelsServiceListRequest{affinityLabelsService: p}
 }
 
 //
@@ -58495,41 +45547,8 @@ type VmGraphicsConsoleServiceGetResponse struct {
 func (p *VmGraphicsConsoleServiceGetResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Gets graphics console configuration of the virtual machine.
-// This method supports the following parameters:
-// `Current`:: Use the following query to obtain the current run-time configuration of the graphics console.
-// [source]
-// ----
-// GET /ovit-engine/api/vms/123/graphicsconsoles/456?current=true
-// ----
-// The default value is `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmGraphicsConsoleService) Get(
-	current bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["current"] = fmt.Sprintf("%v", current)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *VmGraphicsConsoleService) Get() *VmGraphicsConsoleServiceGetRequest {
+	return &VmGraphicsConsoleServiceGetRequest{vmGraphicsConsoleService: p}
 }
 
 type VmGraphicsConsoleServiceProxyTicketRequest struct {
@@ -58621,34 +45640,8 @@ type VmGraphicsConsoleServiceProxyTicketResponse struct {
 func (p *VmGraphicsConsoleServiceProxyTicketResponse) ProxyTicket() *ProxyTicket {
 	return p.proxyTicket
 }
-
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the generation of the ticket should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmGraphicsConsoleService) ProxyTicket(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ProxyTicket,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "proxyticket", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var proxyTicketVar ProxyTicket
-	xml.Unmarshal([]byte(ovResp.Body), &proxyTicketVar)
-	return &proxyTicketVar, nil
+func (p *VmGraphicsConsoleService) ProxyTicket() *VmGraphicsConsoleServiceProxyTicketRequest {
+	return &VmGraphicsConsoleServiceProxyTicketRequest{vmGraphicsConsoleService: p}
 }
 
 type VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest struct {
@@ -58734,89 +45727,8 @@ type VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse struct {
 func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse) RemoteViewerConnectionFile() string {
 	return p.remoteViewerConnectionFile
 }
-
-//
-// Generates the file which is compatible with `remote-viewer` client.
-// Use the following request to generate remote viewer connection file of the graphics console.
-// Note that this action generates the file only if virtual machine is running.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/graphicsconsoles/456/remoteviewerconnectionfile
-// ----
-// The `remoteviewerconnectionfile` action does not take any action specific parameters,
-// so the request body should contain an empty `action`:
-// [source,xml]
-// ----
-// <action/>
-// ----
-// The response contains the file, which can be used with `remote-viewer` client.
-// [source,xml]
-// ----
-// <action>
-//   <remote_viewer_connection_file>
-//     [virt-viewer]
-//     type=spice
-//     host=192.168.1.101
-//     port=-1
-//     password=123456789
-//     delete-this-file=1
-//     fullscreen=0
-//     toggle-fullscreen=shift+f11
-//     release-cursor=shift+f12
-//     secure-attention=ctrl+alt+end
-//     tls-port=5900
-//     enable-smartcard=0
-//     enable-usb-autoshare=0
-//     usb-filter=null
-//     tls-ciphers=DEFAULT
-//     host-subject=O=local,CN=example.com
-//     ca=...
-//   </remote_viewer_connection_file>
-// </action>
-// ----
-// E.g., to fetch the content of remote viewer connection file and save it into temporary file, user can use
-// oVirt Python SDK as follows:
-// [source,python]
-// ----
-// # Find the virtual machine:
-// vm = vms_service.list(search='name=myvm')[0]
-// # Locate the service that manages the virtual machine, as that is where
-// # the locators are defined:
-// vm_service = vms_service.vm_service(vm.id)
-// # Find the graphic console of the virtual machine:
-// graphics_consoles_service = vm_service.graphics_consoles_service()
-// graphics_console = graphics_consoles_service.list()[0]
-// # Generate the remote viewer connection file:
-// console_service = graphics_consoles_service.console_service(graphics_console.id)
-// remote_viewer_connection_file = console_service.remote_viewer_connection_file()
-// # Write the content to file "/tmp/remote_viewer_connection_file.vv"
-// path = "/tmp/remote_viewer_connection_file.vv"
-// with open(path, "w") as f:
-//     f.write(remote_viewer_connection_file)
-// ----
-// When you create the remote viewer connection file, then you can connect to virtual machine graphic console,
-// as follows:
-// [source,bash]
-// ----
-// #!/bin/sh -ex
-// remote-viewer --ovirt-ca-file=/etc/pki/ovirt-engine/ca.pem /tmp/remote_viewer_connection_file.vv
-// ----
-//
-func (op *VmGraphicsConsoleService) RemoteViewerConnectionFile(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	string,
-	error) {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "remoteviewerconnectionfile", headers, query, wait)
-	if err != nil {
-		return "", err
-	}
-	return ovResp.Body, nil
+func (p *VmGraphicsConsoleService) RemoteViewerConnectionFile() *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest {
+	return &VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest{vmGraphicsConsoleService: p}
 }
 
 type VmGraphicsConsoleServiceRemoveRequest struct {
@@ -58895,28 +45807,8 @@ func (p *VmGraphicsConsoleServiceRemoveRequest) Send() (*VmGraphicsConsoleServic
 type VmGraphicsConsoleServiceRemoveResponse struct {
 }
 
-//
-// Remove the graphics console from the virtual machine.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmGraphicsConsoleService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *VmGraphicsConsoleService) Remove() *VmGraphicsConsoleServiceRemoveRequest {
+	return &VmGraphicsConsoleServiceRemoveRequest{vmGraphicsConsoleService: p}
 }
 
 type VmGraphicsConsoleServiceTicketRequest struct {
@@ -59008,50 +45900,8 @@ type VmGraphicsConsoleServiceTicketResponse struct {
 func (p *VmGraphicsConsoleServiceTicketResponse) Ticket() *Ticket {
 	return p.ticket
 }
-
-//
-// Generates a time-sensitive authentication token for accessing this virtual machine's console.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/graphicsconsoles/456/ticket
-// ----
-// The client-provided action optionally includes a desired ticket value and/or an expiry time in seconds.
-// In any case, the response specifies the actual ticket value and expiry used.
-// [source,xml]
-// ----
-// <action>
-//   <ticket>
-//     <value>abcd12345</value>
-//     <expiry>120</expiry>
-//   </ticket>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Ticket`:: The generated ticket that can be used to access this console.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmGraphicsConsoleService) Ticket(
-	ticket *Ticket,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Ticket,
-	error) {
-	// Populate the action:
-	action := &Action{
-		Ticket: ticket,
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "ticket", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var ticketVar Ticket
-	xml.Unmarshal([]byte(ovResp.Body), &ticketVar)
-	return &ticketVar, nil
+func (p *VmGraphicsConsoleService) Ticket() *VmGraphicsConsoleServiceTicketRequest {
+	return &VmGraphicsConsoleServiceTicketRequest{vmGraphicsConsoleService: p}
 }
 
 //
@@ -59160,29 +46010,8 @@ type AffinityLabelHostServiceGetResponse struct {
 func (p *AffinityLabelHostServiceGetResponse) Host() *Host {
 	return p.host
 }
-
-//
-// Retrieves details about a host that has this label assigned.
-//
-func (op *AffinityLabelHostService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar Host
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *AffinityLabelHostService) Get() *AffinityLabelHostServiceGetRequest {
+	return &AffinityLabelHostServiceGetRequest{affinityLabelHostService: p}
 }
 
 type AffinityLabelHostServiceRemoveRequest struct {
@@ -59253,21 +46082,8 @@ func (p *AffinityLabelHostServiceRemoveRequest) Send() (*AffinityLabelHostServic
 type AffinityLabelHostServiceRemoveResponse struct {
 }
 
-//
-// Remove a label from a host.
-//
-func (op *AffinityLabelHostService) Remove(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AffinityLabelHostService) Remove() *AffinityLabelHostServiceRemoveRequest {
+	return &AffinityLabelHostServiceRemoveRequest{affinityLabelHostService: p}
 }
 
 //
@@ -59374,42 +46190,8 @@ type AssignedTagServiceGetResponse struct {
 func (p *AssignedTagServiceGetResponse) Tag() *Tag {
 	return p.tag
 }
-
-//
-// Gets the information about the assigned tag.
-// For example to retrieve the information about the tag with the id `456` which is assigned to virtual machine
-// with id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/vms/123/tags/456
-// ....
-// [source,xml]
-// ----
-// <tag href="/ovirt-engine/api/tags/456" id="456">
-//   <name>root</name>
-//   <description>root</description>
-//   <vm href="/ovirt-engine/api/vms/123" id="123"/>
-// </tag>
-// ----
-//
-func (op *AssignedTagService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Tag,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var tagVar Tag
-	xml.Unmarshal([]byte(ovResp.Body), &tagVar)
-	return &tagVar, nil
+func (p *AssignedTagService) Get() *AssignedTagServiceGetRequest {
+	return &AssignedTagServiceGetRequest{assignedTagService: p}
 }
 
 type AssignedTagServiceRemoveRequest struct {
@@ -59488,32 +46270,8 @@ func (p *AssignedTagServiceRemoveRequest) Send() (*AssignedTagServiceRemoveRespo
 type AssignedTagServiceRemoveResponse struct {
 }
 
-//
-// Unassign tag from specific entity in the system.
-// For example to unassign the tag with id `456` from virtual machine with id `123` send a request like this:
-// ....
-// DELETE /ovirt-engine/api/vms/123/tags/456
-// ....
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedTagService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *AssignedTagService) Remove() *AssignedTagServiceRemoveRequest {
+	return &AssignedTagServiceRemoveRequest{assignedTagService: p}
 }
 
 //
@@ -59647,79 +46405,8 @@ func (p *DiskServiceCopyRequest) Send() (*DiskServiceCopyResponse, error) {
 type DiskServiceCopyResponse struct {
 }
 
-//
-// This operation copies a disk to the specified storage domain.
-// For example, copy of a disk can be facilitated using the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/disks/123/copy
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain id="456"/>
-//   <disk>
-//     <name>mydisk</name>
-//   </disk>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Disk`:: Description of the resulting disk. The only accepted value is the `name` attribute, which will be the name
-// used for the new disk. For example, to copy disk `123` using `myname` as the name for the new disk, send
-// a request like this:
-// ....
-// POST /ovirt-engine/disks/123
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <disk>
-//     <name>mydisk<name>
-//   </disk>
-//   <storage_domain id="456"/>
-// </action>
-// ----
-// `StorageDomain`:: The storage domain where the new disk will be created. Can be specified using the `id` or `name`
-// attributes. For example, to copy a disk to the storage domain named `mydata` send a request like this:
-// ....
-// POST /ovirt-engine/api/storagedomains/123/disks/789
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain>
-//     <name>mydata</name>
-//   </storage_domain>
-// </action>
-// ----
-// `Async`:: Indicates if the copy should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskService) Copy(
-	async bool,
-	disk *Disk,
-	filter bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Disk:          disk,
-		Filter:        &filter,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "copy", headers, query, wait)
-	return err
+func (p *DiskService) Copy() *DiskServiceCopyRequest {
+	return &DiskServiceCopyRequest{diskService: p}
 }
 
 type DiskServiceExportRequest struct {
@@ -59819,33 +46506,8 @@ func (p *DiskServiceExportRequest) Send() (*DiskServiceExportResponse, error) {
 type DiskServiceExportResponse struct {
 }
 
-//
-// Exports a disk to an export storage domain.
-// This method supports the following parameters:
-// `StorageDomain`:: The export storage domain where the disk should be exported to.
-// `Async`:: Indicates if the export should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskService) Export(
-	async bool,
-	filter bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Filter:        &filter,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "export", headers, query, wait)
-	return err
+func (p *DiskService) Export() *DiskServiceExportRequest {
+	return &DiskServiceExportRequest{diskService: p}
 }
 
 type DiskServiceGetRequest struct {
@@ -59924,29 +46586,8 @@ type DiskServiceGetResponse struct {
 func (p *DiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Retrieves the description of the disk.
-//
-func (op *DiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *DiskService) Get() *DiskServiceGetRequest {
+	return &DiskServiceGetRequest{diskService: p}
 }
 
 type DiskServiceMoveRequest struct {
@@ -60046,46 +46687,8 @@ func (p *DiskServiceMoveRequest) Send() (*DiskServiceMoveResponse, error) {
 type DiskServiceMoveResponse struct {
 }
 
-//
-// Moves a disk to another storage domain.
-// For example, to move the disk with identifier `123` to a storage domain with identifier `456` send the following
-// request:
-// [source]
-// ----
-// POST /ovirt-engine/api/disks/123/move
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action>
-//   <storage_domain id="456"/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `StorageDomain`:: The storage domain where the disk will be moved to.
-// `Async`:: Indicates if the move should be performed asynchronously.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskService) Move(
-	async bool,
-	filter bool,
-	storageDomain *StorageDomain,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:         &async,
-		Filter:        &filter,
-		StorageDomain: storageDomain,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "move", headers, query, wait)
-	return err
+func (p *DiskService) Move() *DiskServiceMoveRequest {
+	return &DiskServiceMoveRequest{diskService: p}
 }
 
 type DiskServiceRemoveRequest struct {
@@ -60164,28 +46767,8 @@ func (p *DiskServiceRemoveRequest) Send() (*DiskServiceRemoveResponse, error) {
 type DiskServiceRemoveResponse struct {
 }
 
-//
-// Removes a disk.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *DiskService) Remove() *DiskServiceRemoveRequest {
+	return &DiskServiceRemoveRequest{diskService: p}
 }
 
 type DiskServiceSparsifyRequest struct {
@@ -60267,23 +46850,8 @@ func (p *DiskServiceSparsifyRequest) Send() (*DiskServiceSparsifyResponse, error
 type DiskServiceSparsifyResponse struct {
 }
 
-//
-// Sparsify the disk.
-// Sparsification frees space in the disk image that is not used by its
-// filesystem. As a result, the image will occupy less space on the storage.
-// Currently sparsification works only on disks without snapshots. Disks
-// having derived disks are also not allowed.
-//
-func (op *DiskService) Sparsify(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "sparsify", headers, query, wait)
-	return err
+func (p *DiskService) Sparsify() *DiskServiceSparsifyRequest {
+	return &DiskServiceSparsifyRequest{diskService: p}
 }
 
 type DiskServiceUpdateRequest struct {
@@ -60373,50 +46941,8 @@ type DiskServiceUpdateResponse struct {
 func (p *DiskServiceUpdateResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// This operation updates the disk with the appropriate parameters.
-// The only field that can be updated is `qcow_version`.
-// For example, update disk can be facilitated using the following request:
-// [source]
-// ----
-// PUT /ovirt-engine/api/disks/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <disk>
-//   <qcow_version>qcow2_v3</qcow_version>
-// </disk>
-// ----
-// Since the backend operation is asynchronous the disk element which will be returned
-// to the user might not be synced with the changed properties.
-// This method supports the following parameters:
-// `Disk`:: The update to apply to the disk.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskService) Update(
-	disk *Disk,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request
-	ovResp, err := op.internalUpdate(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *DiskService) Update() *DiskServiceUpdateRequest {
+	return &DiskServiceUpdateRequest{diskService: p}
 }
 
 //
@@ -60549,29 +47075,8 @@ type TemplateDiskAttachmentsServiceListResponse struct {
 func (p *TemplateDiskAttachmentsServiceListResponse) Attachments() []DiskAttachment {
 	return p.attachments
 }
-
-//
-// List the disks that are attached to the template.
-//
-func (op *TemplateDiskAttachmentsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskAttachment,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var attachmentsVar DiskAttachments
-	xml.Unmarshal([]byte(ovResp.Body), &attachmentsVar)
-	return attachmentsVar.DiskAttachments, nil
+func (p *TemplateDiskAttachmentsService) List() *TemplateDiskAttachmentsServiceListRequest {
+	return &TemplateDiskAttachmentsServiceListRequest{templateDiskAttachmentsService: p}
 }
 
 //
@@ -60712,43 +47217,8 @@ type StorageDomainContentDisksServiceListResponse struct {
 func (p *StorageDomainContentDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `Search`:: A query string used to restrict the returned disks.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainContentDisksService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *StorageDomainContentDisksService) List() *StorageDomainContentDisksServiceListRequest {
+	return &StorageDomainContentDisksServiceListRequest{storageDomainContentDisksService: p}
 }
 
 //
@@ -60873,36 +47343,8 @@ type HostDevicesServiceListResponse struct {
 func (p *HostDevicesServiceListResponse) Devices() []HostDevice {
 	return p.devices
 }
-
-//
-// List the devices of a host.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of devices to return. If not specified all the devices are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostDevicesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]HostDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var devicesVar HostDevices
-	xml.Unmarshal([]byte(ovResp.Body), &devicesVar)
-	return devicesVar.HostDevices, nil
+func (p *HostDevicesService) List() *HostDevicesServiceListRequest {
+	return &HostDevicesServiceListRequest{hostDevicesService: p}
 }
 
 //
@@ -61030,29 +47472,8 @@ type AssignedNetworksServiceAddResponse struct {
 func (p *AssignedNetworksServiceAddResponse) Network() *Network {
 	return p.network
 }
-
-//
-//
-func (op *AssignedNetworksService) Add(
-	network *Network,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(network, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *AssignedNetworksService) Add() *AssignedNetworksServiceAddRequest {
+	return &AssignedNetworksServiceAddRequest{assignedNetworksService: p}
 }
 
 type AssignedNetworksServiceListRequest struct {
@@ -61139,35 +47560,8 @@ type AssignedNetworksServiceListResponse struct {
 func (p *AssignedNetworksServiceListResponse) Networks() []Network {
 	return p.networks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedNetworksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networksVar Networks
-	xml.Unmarshal([]byte(ovResp.Body), &networksVar)
-	return networksVar.Networks, nil
+func (p *AssignedNetworksService) List() *AssignedNetworksServiceListRequest {
+	return &AssignedNetworksServiceListRequest{assignedNetworksService: p}
 }
 
 //
@@ -61291,78 +47685,8 @@ type StorageServiceGetResponse struct {
 func (p *StorageServiceGetResponse) Storage() *HostStorage {
 	return p.storage
 }
-
-//
-// This method supports the following parameters:
-// `ReportStatus`:: Indicates if the status of the LUNs in the storage should be checked.
-// Checking the status of the LUN is an heavy weight operation and
-// this data is not always needed by the user.
-// This parameter will give the option to not perform the status check of the LUNs.
-// The default is `true` for backward compatibility.
-// Here an example with the LUN status :
-// [source,xml]
-// ----
-// <host_storage id="360014051136c20574f743bdbd28177fd">
-//   <logical_units>
-//     <logical_unit id="360014051136c20574f743bdbd28177fd">
-//       <lun_mapping>0</lun_mapping>
-//       <paths>1</paths>
-//       <product_id>lun0</product_id>
-//       <serial>SLIO-ORG_lun0_1136c205-74f7-43bd-bd28-177fd5ce6993</serial>
-//       <size>10737418240</size>
-//       <status>used</status>
-//       <vendor_id>LIO-ORG</vendor_id>
-//       <volume_group_id>O9Du7I-RahN-ECe1-dZ1w-nh0b-64io-MNzIBZ</volume_group_id>
-//     </logical_unit>
-//   </logical_units>
-//   <type>iscsi</type>
-//   <host id="8bb5ade5-e988-4000-8b93-dbfc6717fe50"/>
-// </host_storage>
-// ----
-// Here an example without the LUN status :
-// [source,xml]
-// ----
-// <host_storage id="360014051136c20574f743bdbd28177fd">
-//   <logical_units>
-//     <logical_unit id="360014051136c20574f743bdbd28177fd">
-//       <lun_mapping>0</lun_mapping>
-//       <paths>1</paths>
-//       <product_id>lun0</product_id>
-//       <serial>SLIO-ORG_lun0_1136c205-74f7-43bd-bd28-177fd5ce6993</serial>
-//       <size>10737418240</size>
-//       <vendor_id>LIO-ORG</vendor_id>
-//       <volume_group_id>O9Du7I-RahN-ECe1-dZ1w-nh0b-64io-MNzIBZ</volume_group_id>
-//     </logical_unit>
-//   </logical_units>
-//   <type>iscsi</type>
-//   <host id="8bb5ade5-e988-4000-8b93-dbfc6717fe50"/>
-// </host_storage>
-// ----
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageService) Get(
-	reportStatus bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*HostStorage,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["report_status"] = fmt.Sprintf("%v", reportStatus)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var storageVar HostStorage
-	xml.Unmarshal([]byte(ovResp.Body), &storageVar)
-	return &storageVar, nil
+func (p *StorageService) Get() *StorageServiceGetRequest {
+	return &StorageServiceGetRequest{storageService: p}
 }
 
 //
@@ -61468,28 +47792,8 @@ type UnmanagedNetworkServiceGetResponse struct {
 func (p *UnmanagedNetworkServiceGetResponse) Network() *UnmanagedNetwork {
 	return p.network
 }
-
-//
-//
-func (op *UnmanagedNetworkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*UnmanagedNetwork,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar UnmanagedNetwork
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *UnmanagedNetworkService) Get() *UnmanagedNetworkServiceGetRequest {
+	return &UnmanagedNetworkServiceGetRequest{unmanagedNetworkService: p}
 }
 
 type UnmanagedNetworkServiceRemoveRequest struct {
@@ -61568,27 +47872,8 @@ func (p *UnmanagedNetworkServiceRemoveRequest) Send() (*UnmanagedNetworkServiceR
 type UnmanagedNetworkServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *UnmanagedNetworkService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *UnmanagedNetworkService) Remove() *UnmanagedNetworkServiceRemoveRequest {
+	return &UnmanagedNetworkServiceRemoveRequest{unmanagedNetworkService: p}
 }
 
 //
@@ -61694,45 +47979,8 @@ type QuotaServiceGetResponse struct {
 func (p *QuotaServiceGetResponse) Quota() *Quota {
 	return p.quota
 }
-
-//
-// Retrieves a quota.
-// An example of retrieving a quota:
-// [source]
-// ----
-// GET /ovirt-engine/api/datacenters/123/quotas/456
-// ----
-// [source,xml]
-// ----
-// <quota id="456">
-//   <name>myquota</name>
-//   <description>My new quota for virtual machines</description>
-//   <cluster_hard_limit_pct>20</cluster_hard_limit_pct>
-//   <cluster_soft_limit_pct>80</cluster_soft_limit_pct>
-//   <storage_hard_limit_pct>20</storage_hard_limit_pct>
-//   <storage_soft_limit_pct>80</storage_soft_limit_pct>
-// </quota>
-// ----
-//
-func (op *QuotaService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Quota,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var quotaVar Quota
-	xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
-	return &quotaVar, nil
+func (p *QuotaService) Get() *QuotaServiceGetRequest {
+	return &QuotaServiceGetRequest{quotaService: p}
 }
 
 type QuotaServiceRemoveRequest struct {
@@ -61811,36 +48059,8 @@ func (p *QuotaServiceRemoveRequest) Send() (*QuotaServiceRemoveResponse, error) 
 type QuotaServiceRemoveResponse struct {
 }
 
-//
-// Delete a quota.
-// An example of deleting a quota:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/datacenters/123-456/quotas/654-321
-// -0472718ab224 HTTP/1.1
-// Accept: application/xml
-// Content-type: application/xml
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QuotaService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *QuotaService) Remove() *QuotaServiceRemoveRequest {
+	return &QuotaServiceRemoveRequest{quotaService: p}
 }
 
 type QuotaServiceUpdateRequest struct {
@@ -61938,46 +48158,8 @@ type QuotaServiceUpdateResponse struct {
 func (p *QuotaServiceUpdateResponse) Quota() *Quota {
 	return p.quota
 }
-
-//
-// Updates a quota.
-// An example of updating a quota:
-// [source]
-// ----
-// PUT /ovirt-engine/api/datacenters/123/quotas/456
-// ----
-// [source,xml]
-// ----
-// <quota>
-//   <cluster_hard_limit_pct>30</cluster_hard_limit_pct>
-//   <cluster_soft_limit_pct>70</cluster_soft_limit_pct>
-//   <storage_hard_limit_pct>20</storage_hard_limit_pct>
-//   <storage_soft_limit_pct>80</storage_soft_limit_pct>
-// </quota>
-// ----
-//
-func (op *QuotaService) Update(
-	quota *Quota,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Quota,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(quota, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var quotaVar Quota
-	xml.Unmarshal([]byte(ovResp.Body), &quotaVar)
-	return &quotaVar, nil
+func (p *QuotaService) Update() *QuotaServiceUpdateRequest {
+	return &QuotaServiceUpdateRequest{quotaService: p}
 }
 
 //
@@ -62119,28 +48301,8 @@ type SnapshotDiskServiceGetResponse struct {
 func (p *SnapshotDiskServiceGetResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-//
-func (op *SnapshotDiskService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *SnapshotDiskService) Get() *SnapshotDiskServiceGetRequest {
+	return &SnapshotDiskServiceGetRequest{snapshotDiskService: p}
 }
 
 //
@@ -62257,29 +48419,8 @@ type QossServiceAddResponse struct {
 func (p *QossServiceAddResponse) Qos() *Qos {
 	return p.qos
 }
-
-//
-//
-func (op *QossService) Add(
-	qos *Qos,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Qos,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(qos, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var qosVar Qos
-	xml.Unmarshal([]byte(ovResp.Body), &qosVar)
-	return &qosVar, nil
+func (p *QossService) Add() *QossServiceAddRequest {
+	return &QossServiceAddRequest{qossService: p}
 }
 
 type QossServiceListRequest struct {
@@ -62366,35 +48507,8 @@ type QossServiceListResponse struct {
 func (p *QossServiceListResponse) Qoss() []Qos {
 	return p.qoss
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of QoS descriptors to return. If not specified all the descriptors are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *QossService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Qos,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var qossVar Qoss
-	xml.Unmarshal([]byte(ovResp.Body), &qossVar)
-	return qossVar.Qoss, nil
+func (p *QossService) List() *QossServiceListRequest {
+	return &QossServiceListRequest{qossService: p}
 }
 
 //
@@ -62511,51 +48625,8 @@ type NetworkServiceGetResponse struct {
 func (p *NetworkServiceGetResponse) Network() *Network {
 	return p.network
 }
-
-//
-// Gets a logical network.
-// For example:
-// [source]
-// ----
-// GET /ovirt-engine/api/networks/123
-// ----
-// Will respond:
-// [source,xml]
-// ----
-// <network href="/ovirt-engine/api/networks/123" id="123">
-//   <name>ovirtmgmt</name>
-//   <description>Default Management Network</description>
-//   <link href="/ovirt-engine/api/networks/123/permissions" rel="permissions"/>
-//   <link href="/ovirt-engine/api/networks/123/vnicprofiles" rel="vnicprofiles"/>
-//   <link href="/ovirt-engine/api/networks/123/networklabels" rel="networklabels"/>
-//   <mtu>0</mtu>
-//   <stp>false</stp>
-//   <usages>
-//     <usage>vm</usage>
-//   </usages>
-//   <data_center href="/ovirt-engine/api/datacenters/456" id="456"/>
-// </network>
-// ----
-//
-func (op *NetworkService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *NetworkService) Get() *NetworkServiceGetRequest {
+	return &NetworkServiceGetRequest{networkService: p}
 }
 
 type NetworkServiceRemoveRequest struct {
@@ -62634,41 +48705,8 @@ func (p *NetworkServiceRemoveRequest) Send() (*NetworkServiceRemoveResponse, err
 type NetworkServiceRemoveResponse struct {
 }
 
-//
-// Removes a logical network, or the association of a logical network to a data center.
-// For example, to remove the logical network `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/networks/123
-// ----
-// Each network is bound exactly to one data center. So if we disassociate network with data center it has the same
-// result as if we would just remove that network. However it might be more specific to say we're removing network
-// `456` of data center `123`.
-// For example, to remove the association of network `456` to data center `123` send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/datacenters/123/networks/456
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *NetworkService) Remove() *NetworkServiceRemoveRequest {
+	return &NetworkServiceRemoveRequest{networkService: p}
 }
 
 type NetworkServiceUpdateRequest struct {
@@ -62766,59 +48804,8 @@ type NetworkServiceUpdateResponse struct {
 func (p *NetworkServiceUpdateResponse) Network() *Network {
 	return p.network
 }
-
-//
-// Updates a logical network.
-// The `name`, `description`, `ip`, `vlan`, `stp` and `display` attributes can be updated.
-// For example, to update the description of the logical network `123` send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/networks/123
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network>
-//   <description>My updated description</description>
-// </network>
-// ----
-// The maximum transmission unit of a network is set using a PUT request to
-// specify the integer value of the `mtu` attribute.
-// For example, to set the maximum transmission unit send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/datacenters/123/networks/456
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network>
-//   <mtu>1500</mtu>
-// </network>
-// ----
-//
-func (op *NetworkService) Update(
-	network *Network,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(network, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *NetworkService) Update() *NetworkServiceUpdateRequest {
+	return &NetworkServiceUpdateRequest{networkService: p}
 }
 
 //
@@ -62963,33 +48950,8 @@ type InstanceTypeServiceGetResponse struct {
 func (p *InstanceTypeServiceGetResponse) InstanceType() *InstanceType {
 	return p.instanceType
 }
-
-//
-// Get a specific instance type and it's attributes.
-// [source]
-// ----
-// GET /ovirt-engine/api/instancetypes/123
-// ----
-//
-func (op *InstanceTypeService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*InstanceType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var instanceTypeVar InstanceType
-	xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
-	return &instanceTypeVar, nil
+func (p *InstanceTypeService) Get() *InstanceTypeServiceGetRequest {
+	return &InstanceTypeServiceGetRequest{instanceTypeService: p}
 }
 
 type InstanceTypeServiceRemoveRequest struct {
@@ -63068,34 +49030,8 @@ func (p *InstanceTypeServiceRemoveRequest) Send() (*InstanceTypeServiceRemoveRes
 type InstanceTypeServiceRemoveResponse struct {
 }
 
-//
-// Removes a specific instance type from the system.
-// If a virtual machine was created using an instance type X after removal of the instance type
-// the virtual machine's instance type will be set to `custom`.
-// [source]
-// ----
-// DELETE /ovirt-engine/api/instancetypes/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *InstanceTypeService) Remove() *InstanceTypeServiceRemoveRequest {
+	return &InstanceTypeServiceRemoveRequest{instanceTypeService: p}
 }
 
 type InstanceTypeServiceUpdateRequest struct {
@@ -63193,55 +49129,8 @@ type InstanceTypeServiceUpdateResponse struct {
 func (p *InstanceTypeServiceUpdateResponse) InstanceType() *InstanceType {
 	return p.instanceType
 }
-
-//
-// Update a specific instance type and it's attributes.
-// All the attributes are editable after creation.
-// If a virtual machine was created using an instance type X and some configuration in instance
-// type X was updated, the virtual machine's configuration will be updated automatically by the
-// engine.
-// [source]
-// ----
-// PUT /ovirt-engine/api/instancetypes/123
-// ----
-// For example, to update the memory of instance type `123` to 1 GiB and set the cpu topology
-// to 2 sockets and 1 core, send a request like this:
-// [source, xml]
-// ----
-// <instance_type>
-//   <memory>1073741824</memory>
-//   <cpu>
-//     <topology>
-//       <cores>1</cores>
-//       <sockets>2</sockets>
-//       <threads>1</threads>
-//     </topology>
-//   </cpu>
-// </instance_type>
-// ----
-//
-func (op *InstanceTypeService) Update(
-	instanceType *InstanceType,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*InstanceType,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(instanceType, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var instanceTypeVar InstanceType
-	xml.Unmarshal([]byte(ovResp.Body), &instanceTypeVar)
-	return &instanceTypeVar, nil
+func (p *InstanceTypeService) Update() *InstanceTypeServiceUpdateRequest {
+	return &InstanceTypeServiceUpdateRequest{instanceTypeService: p}
 }
 
 //
@@ -63398,29 +49287,8 @@ type VirtualFunctionAllowedNetworksServiceAddResponse struct {
 func (p *VirtualFunctionAllowedNetworksServiceAddResponse) Network() *Network {
 	return p.network
 }
-
-//
-//
-func (op *VirtualFunctionAllowedNetworksService) Add(
-	network *Network,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(network, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networkVar Network
-	xml.Unmarshal([]byte(ovResp.Body), &networkVar)
-	return &networkVar, nil
+func (p *VirtualFunctionAllowedNetworksService) Add() *VirtualFunctionAllowedNetworksServiceAddRequest {
+	return &VirtualFunctionAllowedNetworksServiceAddRequest{virtualFunctionAllowedNetworksService: p}
 }
 
 type VirtualFunctionAllowedNetworksServiceListRequest struct {
@@ -63507,35 +49375,8 @@ type VirtualFunctionAllowedNetworksServiceListResponse struct {
 func (p *VirtualFunctionAllowedNetworksServiceListResponse) Networks() []Network {
 	return p.networks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of networks to return. If not specified all the networks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VirtualFunctionAllowedNetworksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Network,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var networksVar Networks
-	xml.Unmarshal([]byte(ovResp.Body), &networksVar)
-	return networksVar.Networks, nil
+func (p *VirtualFunctionAllowedNetworksService) List() *VirtualFunctionAllowedNetworksServiceListRequest {
+	return &VirtualFunctionAllowedNetworksServiceListRequest{virtualFunctionAllowedNetworksService: p}
 }
 
 //
@@ -63651,28 +49492,8 @@ type HostHookServiceGetResponse struct {
 func (p *HostHookServiceGetResponse) Hook() *Hook {
 	return p.hook
 }
-
-//
-//
-func (op *HostHookService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Hook,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hookVar Hook
-	xml.Unmarshal([]byte(ovResp.Body), &hookVar)
-	return &hookVar, nil
+func (p *HostHookService) Get() *HostHookServiceGetRequest {
+	return &HostHookServiceGetRequest{hostHookService: p}
 }
 
 //
@@ -63786,35 +49607,8 @@ type ImagesServiceListResponse struct {
 func (p *ImagesServiceListResponse) Images() []Image {
 	return p.images
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of images to return. If not specified all the images are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ImagesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Image,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var imagesVar Images
-	xml.Unmarshal([]byte(ovResp.Body), &imagesVar)
-	return imagesVar.Images, nil
+func (p *ImagesService) List() *ImagesServiceListRequest {
+	return &ImagesServiceListRequest{imagesService: p}
 }
 
 //
@@ -63938,35 +49732,8 @@ type SnapshotCdromsServiceListResponse struct {
 func (p *SnapshotCdromsServiceListResponse) Cdroms() []Cdrom {
 	return p.cdroms
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of CDROMS to return. If not specified all the CDROMS are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SnapshotCdromsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromsVar Cdroms
-	xml.Unmarshal([]byte(ovResp.Body), &cdromsVar)
-	return cdromsVar.Cdroms, nil
+func (p *SnapshotCdromsService) List() *SnapshotCdromsServiceListRequest {
+	return &SnapshotCdromsServiceListRequest{snapshotCdromsService: p}
 }
 
 //
@@ -64093,29 +49860,8 @@ type BalancesServiceAddResponse struct {
 func (p *BalancesServiceAddResponse) Balance() *Balance {
 	return p.balance
 }
-
-//
-//
-func (op *BalancesService) Add(
-	balance *Balance,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Balance,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(balance, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var balanceVar Balance
-	xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
-	return &balanceVar, nil
+func (p *BalancesService) Add() *BalancesServiceAddRequest {
+	return &BalancesServiceAddRequest{balancesService: p}
 }
 
 type BalancesServiceListRequest struct {
@@ -64210,38 +49956,8 @@ type BalancesServiceListResponse struct {
 func (p *BalancesServiceListResponse) Balances() []Balance {
 	return p.balances
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of balances to return. If not specified all the balances are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BalancesService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Balance,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var balancesVar Balances
-	xml.Unmarshal([]byte(ovResp.Body), &balancesVar)
-	return balancesVar.Balances, nil
+func (p *BalancesService) List() *BalancesServiceListRequest {
+	return &BalancesServiceListRequest{balancesService: p}
 }
 
 //
@@ -64358,34 +50074,8 @@ type TemplateCdromServiceGetResponse struct {
 func (p *TemplateCdromServiceGetResponse) Cdrom() *Cdrom {
 	return p.cdrom
 }
-
-//
-// Returns the information about this CD-ROM device.
-// For example, to get information about the CD-ROM device of template `123` send a request like:
-// [source]
-// ----
-// GET /ovirt-engine/api/templates/123/cdroms/
-// ----
-//
-func (op *TemplateCdromService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromVar Cdrom
-	xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
-	return &cdromVar, nil
+func (p *TemplateCdromService) Get() *TemplateCdromServiceGetRequest {
+	return &TemplateCdromServiceGetRequest{templateCdromService: p}
 }
 
 //
@@ -64500,26 +50190,8 @@ func (p *MoveableServiceMoveRequest) Send() (*MoveableServiceMoveResponse, error
 type MoveableServiceMoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the move should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *MoveableService) Move(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "move", headers, query, wait)
-	return err
+func (p *MoveableService) Move() *MoveableServiceMoveRequest {
+	return &MoveableServiceMoveRequest{moveableService: p}
 }
 
 //
@@ -64625,28 +50297,8 @@ type CpuProfileServiceGetResponse struct {
 func (p *CpuProfileServiceGetResponse) Profile() *CpuProfile {
 	return p.profile
 }
-
-//
-//
-func (op *CpuProfileService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *CpuProfileService) Get() *CpuProfileServiceGetRequest {
+	return &CpuProfileServiceGetRequest{cpuProfileService: p}
 }
 
 type CpuProfileServiceRemoveRequest struct {
@@ -64725,27 +50377,8 @@ func (p *CpuProfileServiceRemoveRequest) Send() (*CpuProfileServiceRemoveRespons
 type CpuProfileServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *CpuProfileService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *CpuProfileService) Remove() *CpuProfileServiceRemoveRequest {
+	return &CpuProfileServiceRemoveRequest{cpuProfileService: p}
 }
 
 type CpuProfileServiceUpdateRequest struct {
@@ -64843,31 +50476,8 @@ type CpuProfileServiceUpdateResponse struct {
 func (p *CpuProfileServiceUpdateResponse) Profile() *CpuProfile {
 	return p.profile
 }
-
-//
-//
-func (op *CpuProfileService) Update(
-	profile *CpuProfile,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*CpuProfile,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(profile, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var profileVar CpuProfile
-	xml.Unmarshal([]byte(ovResp.Body), &profileVar)
-	return &profileVar, nil
+func (p *CpuProfileService) Update() *CpuProfileServiceUpdateRequest {
+	return &CpuProfileServiceUpdateRequest{cpuProfileService: p}
 }
 
 //
@@ -65024,28 +50634,8 @@ type StorageServerConnectionExtensionServiceGetResponse struct {
 func (p *StorageServerConnectionExtensionServiceGetResponse) Extension() *StorageConnectionExtension {
 	return p.extension
 }
-
-//
-//
-func (op *StorageServerConnectionExtensionService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnectionExtension,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var extensionVar StorageConnectionExtension
-	xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
-	return &extensionVar, nil
+func (p *StorageServerConnectionExtensionService) Get() *StorageServerConnectionExtensionServiceGetRequest {
+	return &StorageServerConnectionExtensionServiceGetRequest{storageServerConnectionExtensionService: p}
 }
 
 type StorageServerConnectionExtensionServiceRemoveRequest struct {
@@ -65124,27 +50714,8 @@ func (p *StorageServerConnectionExtensionServiceRemoveRequest) Send() (*StorageS
 type StorageServerConnectionExtensionServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageServerConnectionExtensionService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *StorageServerConnectionExtensionService) Remove() *StorageServerConnectionExtensionServiceRemoveRequest {
+	return &StorageServerConnectionExtensionServiceRemoveRequest{storageServerConnectionExtensionService: p}
 }
 
 type StorageServerConnectionExtensionServiceUpdateRequest struct {
@@ -65242,46 +50813,8 @@ type StorageServerConnectionExtensionServiceUpdateResponse struct {
 func (p *StorageServerConnectionExtensionServiceUpdateResponse) Extension() *StorageConnectionExtension {
 	return p.extension
 }
-
-//
-// Update a storage server connection extension for the given host.
-// To update the storage connection `456` of host `123` send a request like this:
-// [source]
-// ----
-// PUT /ovirt-engine/api/hosts/123/storageconnectionextensions/456
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <storage_connection_extension>
-//   <target>iqn.2016-01.com.example:mytarget</target>
-//   <username>myuser</username>
-//   <password>mypassword</password>
-// </storage_connection_extension>
-// ----
-//
-func (op *StorageServerConnectionExtensionService) Update(
-	extension *StorageConnectionExtension,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnectionExtension,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(extension, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var extensionVar StorageConnectionExtension
-	xml.Unmarshal([]byte(ovResp.Body), &extensionVar)
-	return &extensionVar, nil
+func (p *StorageServerConnectionExtensionService) Update() *StorageServerConnectionExtensionServiceUpdateRequest {
+	return &StorageServerConnectionExtensionServiceUpdateRequest{storageServerConnectionExtensionService: p}
 }
 
 //
@@ -65390,43 +50923,8 @@ type ClusterLevelsServiceListResponse struct {
 func (p *ClusterLevelsServiceListResponse) Levels() []ClusterLevel {
 	return p.levels
 }
-
-//
-// Lists the cluster levels supported by the system.
-// [source]
-// ----
-// GET /ovirt-engine/api/clusterlevels
-// ----
-// This will return a list of available cluster levels.
-// [source,xml]
-// ----
-// <cluster_levels>
-//   <cluster_level id="4.0">
-//      ...
-//   </cluster_level>
-//   ...
-// </cluster_levels>
-// ----
-//
-func (op *ClusterLevelsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ClusterLevel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var levelsVar ClusterLevels
-	xml.Unmarshal([]byte(ovResp.Body), &levelsVar)
-	return levelsVar.ClusterLevels, nil
+func (p *ClusterLevelsService) List() *ClusterLevelsServiceListRequest {
+	return &ClusterLevelsServiceListRequest{clusterLevelsService: p}
 }
 
 //
@@ -65555,49 +51053,8 @@ type NetworkFilterParametersServiceAddResponse struct {
 func (p *NetworkFilterParametersServiceAddResponse) Parameter() *NetworkFilterParameter {
 	return p.parameter
 }
-
-//
-// Add a network filter parameter.
-// For example, to add the parameter for the network filter on NIC `456` of
-// virtual machine `789` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/789/nics/456/networkfilterparameters
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <network_filter_parameter>
-//   <name>IP</name>
-//   <value>10.0.1.2</value>
-// </network_filter_parameter>
-// ----
-// This method supports the following parameters:
-// `Parameter`:: The network filter parameter that is being added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *NetworkFilterParametersService) Add(
-	parameter *NetworkFilterParameter,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NetworkFilterParameter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(parameter, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var parameterVar NetworkFilterParameter
-	xml.Unmarshal([]byte(ovResp.Body), &parameterVar)
-	return &parameterVar, nil
+func (p *NetworkFilterParametersService) Add() *NetworkFilterParametersServiceAddRequest {
+	return &NetworkFilterParametersServiceAddRequest{networkFilterParametersService: p}
 }
 
 type NetworkFilterParametersServiceListRequest struct {
@@ -65676,29 +51133,8 @@ type NetworkFilterParametersServiceListResponse struct {
 func (p *NetworkFilterParametersServiceListResponse) Parameters() []NetworkFilterParameter {
 	return p.parameters
 }
-
-//
-// Retrieves the representations of the network filter parameters.
-//
-func (op *NetworkFilterParametersService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]NetworkFilterParameter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var parametersVar NetworkFilterParameters
-	xml.Unmarshal([]byte(ovResp.Body), &parametersVar)
-	return parametersVar.NetworkFilterParameters, nil
+func (p *NetworkFilterParametersService) List() *NetworkFilterParametersServiceListRequest {
+	return &NetworkFilterParametersServiceListRequest{networkFilterParametersService: p}
 }
 
 //
@@ -65826,75 +51262,8 @@ type VmNicsServiceAddResponse struct {
 func (p *VmNicsServiceAddResponse) Nic() *Nic {
 	return p.nic
 }
-
-//
-// Adds a NIC to the virtual machine.
-// The following example adds a network interface named `mynic` using `virtio` and the `ovirtmgmt` network to the
-// virtual machine.
-// [source]
-// ----
-// POST /ovirt-engine/api/vms/123/nics
-// ----
-// [source,xml]
-// ----
-// <nic>
-//   <interface>virtio</interface>
-//   <name>mynic</name>
-//   <network>
-//     <name>ovirtmgmt</name>
-//   </network>
-// </nic>
-// ----
-// The following example sends that request using `curl`:
-// [source,bash]
-// ----
-// curl \
-// --request POST \
-// --header "Version: 4" \
-// --header "Content-Type: application/xml" \
-// --header "Accept: application/xml" \
-// --user "admin@internal:mypassword" \
-// --cacert /etc/pki/ovirt-engine/ca.pem \
-// --data '
-// <nic>
-//   <name>mynic</name>
-//   <network>
-//     <name>ovirtmgmt</name>
-//   </network>
-// </nic>
-// ' \
-// https://myengine.example.com/ovirt-engine/api/vms/123/nics
-// ----
-// [IMPORTANT]
-// ====
-// The hotplugging feature only supports virtual machine operating systems with hotplugging operations.
-// Example operating systems include:
-// - Red Hat Enterprise Linux 6
-// - Red Hat Enterprise Linux 5
-// - Windows Server 2008 and
-// - Windows Server 2003
-// ====
-//
-func (op *VmNicsService) Add(
-	nic *Nic,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(nic, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicVar Nic
-	xml.Unmarshal([]byte(ovResp.Body), &nicVar)
-	return &nicVar, nil
+func (p *VmNicsService) Add() *VmNicsServiceAddRequest {
+	return &VmNicsServiceAddRequest{vmNicsService: p}
 }
 
 type VmNicsServiceListRequest struct {
@@ -65981,35 +51350,8 @@ type VmNicsServiceListResponse struct {
 func (p *VmNicsServiceListResponse) Nics() []Nic {
 	return p.nics
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of NICs to return. If not specified all the NICs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmNicsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Nic,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nicsVar Nics
-	xml.Unmarshal([]byte(ovResp.Body), &nicsVar)
-	return nicsVar.Nics, nil
+func (p *VmNicsService) List() *VmNicsServiceListRequest {
+	return &VmNicsServiceListRequest{vmNicsService: p}
 }
 
 //
@@ -66133,35 +51475,8 @@ type VmReportedDevicesServiceListResponse struct {
 func (p *VmReportedDevicesServiceListResponse) ReportedDevice() []ReportedDevice {
 	return p.reportedDevice
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of devices to return. If not specified all the devices are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *VmReportedDevicesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ReportedDevice,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var reportedDeviceVar ReportedDevices
-	xml.Unmarshal([]byte(ovResp.Body), &reportedDeviceVar)
-	return reportedDeviceVar.ReportedDevices, nil
+func (p *VmReportedDevicesService) List() *VmReportedDevicesServiceListRequest {
+	return &VmReportedDevicesServiceListRequest{vmReportedDevicesService: p}
 }
 
 //
@@ -66285,35 +51600,8 @@ type BalanceServiceGetResponse struct {
 func (p *BalanceServiceGetResponse) Balance() *Balance {
 	return p.balance
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BalanceService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Balance,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var balanceVar Balance
-	xml.Unmarshal([]byte(ovResp.Body), &balanceVar)
-	return &balanceVar, nil
+func (p *BalanceService) Get() *BalanceServiceGetRequest {
+	return &BalanceServiceGetRequest{balanceService: p}
 }
 
 type BalanceServiceRemoveRequest struct {
@@ -66392,27 +51680,8 @@ func (p *BalanceServiceRemoveRequest) Send() (*BalanceServiceRemoveResponse, err
 type BalanceServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *BalanceService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *BalanceService) Remove() *BalanceServiceRemoveRequest {
+	return &BalanceServiceRemoveRequest{balanceService: p}
 }
 
 //
@@ -66530,46 +51799,8 @@ type PermitsServiceAddResponse struct {
 func (p *PermitsServiceAddResponse) Permit() *Permit {
 	return p.permit
 }
-
-//
-// Adds a permit to the role. The permit name can be retrieved from the <<services/cluster_levels>> service.
-// For example to assign a permit `create_vm` to the role with id `123` send a request like this:
-// ....
-// POST /ovirt-engine/api/roles/123/permits
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permit>
-//   <name>create_vm</name>
-// </permit>
-// ----
-// This method supports the following parameters:
-// `Permit`:: The permit to add.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *PermitsService) Add(
-	permit *Permit,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Permit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(permit, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permitVar Permit
-	xml.Unmarshal([]byte(ovResp.Body), &permitVar)
-	return &permitVar, nil
+func (p *PermitsService) Add() *PermitsServiceAddRequest {
+	return &PermitsServiceAddRequest{permitsService: p}
 }
 
 type PermitsServiceListRequest struct {
@@ -66656,55 +51887,8 @@ type PermitsServiceListResponse struct {
 func (p *PermitsServiceListResponse) Permits() []Permit {
 	return p.permits
 }
-
-//
-// List the permits of the role.
-// For example to list the permits of the role with the id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/roles/123/permits
-// ....
-// [source,xml]
-// ----
-// <permits>
-//   <permit href="/ovirt-engine/api/roles/123/permits/5" id="5">
-//     <name>change_vm_cd</name>
-//     <administrative>false</administrative>
-//     <role href="/ovirt-engine/api/roles/123" id="123"/>
-//   </permit>
-//   <permit href="/ovirt-engine/api/roles/123/permits/7" id="7">
-//     <name>connect_to_vm</name>
-//     <administrative>false</administrative>
-//     <role href="/ovirt-engine/api/roles/123" id="123"/>
-//   </permit>
-// </permits>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of permits to return. If not specified all the permits are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *PermitsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Permit,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permitsVar Permits
-	xml.Unmarshal([]byte(ovResp.Body), &permitsVar)
-	return permitsVar.Permits, nil
+func (p *PermitsService) List() *PermitsServiceListRequest {
+	return &PermitsServiceListRequest{permitsService: p}
 }
 
 //
@@ -66829,35 +52013,8 @@ type StorageDomainTemplatesServiceListResponse struct {
 func (p *StorageDomainTemplatesServiceListResponse) Templates() []Template {
 	return p.templates
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of templates to return. If not specified all the templates are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainTemplatesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templatesVar Templates
-	xml.Unmarshal([]byte(ovResp.Body), &templatesVar)
-	return templatesVar.Templates, nil
+func (p *StorageDomainTemplatesService) List() *StorageDomainTemplatesServiceListRequest {
+	return &StorageDomainTemplatesServiceListRequest{storageDomainTemplatesService: p}
 }
 
 //
@@ -66973,102 +52130,8 @@ type SystemServiceGetResponse struct {
 func (p *SystemServiceGetResponse) Api() *Api {
 	return p.api
 }
-
-//
-// Returns basic information describing the API, like the product name, the version number and a summary of the
-// number of relevant objects.
-// [source]
-// ----
-// GET /ovirt-engine/api
-// ----
-// We get following response:
-// [source,xml]
-// ----
-// <api>
-//   <link rel="capabilities" href="/api/capabilities"/>
-//   <link rel="clusters" href="/api/clusters"/>
-//   <link rel="clusters/search" href="/api/clusters?search={query}"/>
-//   <link rel="datacenters" href="/api/datacenters"/>
-//   <link rel="datacenters/search" href="/api/datacenters?search={query}"/>
-//   <link rel="events" href="/api/events"/>
-//   <link rel="events/search" href="/api/events?search={query}"/>
-//   <link rel="hosts" href="/api/hosts"/>
-//   <link rel="hosts/search" href="/api/hosts?search={query}"/>
-//   <link rel="networks" href="/api/networks"/>
-//   <link rel="roles" href="/api/roles"/>
-//   <link rel="storagedomains" href="/api/storagedomains"/>
-//   <link rel="storagedomains/search" href="/api/storagedomains?search={query}"/>
-//   <link rel="tags" href="/api/tags"/>
-//   <link rel="templates" href="/api/templates"/>
-//   <link rel="templates/search" href="/api/templates?search={query}"/>
-//   <link rel="users" href="/api/users"/>
-//   <link rel="groups" href="/api/groups"/>
-//   <link rel="domains" href="/api/domains"/>
-//   <link rel="vmpools" href="/api/vmpools"/>
-//   <link rel="vmpools/search" href="/api/vmpools?search={query}"/>
-//   <link rel="vms" href="/api/vms"/>
-//   <link rel="vms/search" href="/api/vms?search={query}"/>
-//   <product_info>
-//     <name>oVirt Engine</name>
-//     <vendor>ovirt.org</vendor>
-//     <version>
-//       <build>4</build>
-//       <full_version>4.0.4</full_version>
-//       <major>4</major>
-//       <minor>0</minor>
-//       <revision>0</revision>
-//     </version>
-//   </product_info>
-//   <special_objects>
-//     <blank_template href="/ovirt-engine/api/templates/00000000-0000-0000-0000-000000000000" id="00000000-0000-0000-0000-000000000000"/>
-//     <root_tag href="/ovirt-engine/api/tags/00000000-0000-0000-0000-000000000000" id="00000000-0000-0000-0000-000000000000"/>
-//   </special_objects>
-//   <summary>
-//     <hosts>
-//       <active>0</active>
-//       <total>0</total>
-//     </hosts>
-//     <storage_domains>
-//       <active>0</active>
-//       <total>1</total>
-//     </storage_domains>
-//     <users>
-//       <active>1</active>
-//       <total>1</total>
-//     </users>
-//     <vms>
-//       <active>0</active>
-//       <total>0</total>
-//     </vms>
-//   </summary>
-//   <time>2016-09-14T12:00:48.132+02:00</time>
-// </api>
-// ----
-// The entry point provides a user with links to the collections in a
-// virtualization environment. The `rel` attribute of each collection link
-// provides a reference point for each link.
-// The entry point also contains other data such as `product_info`,
-// `special_objects` and `summary`.
-//
-func (op *SystemService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Api,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var apiVar Api
-	xml.Unmarshal([]byte(ovResp.Body), &apiVar)
-	return &apiVar, nil
+func (p *SystemService) Get() *SystemServiceGetRequest {
+	return &SystemServiceGetRequest{systemService: p}
 }
 
 type SystemServiceReloadConfigurationsRequest struct {
@@ -67156,26 +52219,8 @@ func (p *SystemServiceReloadConfigurationsRequest) Send() (*SystemServiceReloadC
 type SystemServiceReloadConfigurationsResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the reload should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *SystemService) ReloadConfigurations(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "reloadconfigurations", headers, query, wait)
-	return err
+func (p *SystemService) ReloadConfigurations() *SystemServiceReloadConfigurationsRequest {
+	return &SystemServiceReloadConfigurationsRequest{systemService: p}
 }
 
 //
@@ -67745,28 +52790,8 @@ type ExternalHostServiceGetResponse struct {
 func (p *ExternalHostServiceGetResponse) Host() *ExternalHost {
 	return p.host
 }
-
-//
-//
-func (op *ExternalHostService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalHost,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar ExternalHost
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *ExternalHostService) Get() *ExternalHostServiceGetRequest {
+	return &ExternalHostServiceGetRequest{externalHostService: p}
 }
 
 //
@@ -67872,28 +52897,8 @@ type ExternalHostGroupServiceGetResponse struct {
 func (p *ExternalHostGroupServiceGetResponse) Group() *ExternalHostGroup {
 	return p.group
 }
-
-//
-//
-func (op *ExternalHostGroupService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalHostGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupVar ExternalHostGroup
-	xml.Unmarshal([]byte(ovResp.Body), &groupVar)
-	return &groupVar, nil
+func (p *ExternalHostGroupService) Get() *ExternalHostGroupServiceGetRequest {
+	return &ExternalHostGroupServiceGetRequest{externalHostGroupService: p}
 }
 
 //
@@ -68000,52 +53005,8 @@ type KatelloErratumServiceGetResponse struct {
 func (p *KatelloErratumServiceGetResponse) Erratum() *KatelloErratum {
 	return p.erratum
 }
-
-//
-// Retrieves a Katello erratum.
-// [source]
-// ----
-// GET /ovirt-engine/api/katelloerrata/123
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <katello_erratum href="/ovirt-engine/api/katelloerrata/123" id="123">
-//   <name>RHBA-2013:XYZ</name>
-//   <description>The description of the erratum</description>
-//   <title>some bug fix update</title>
-//   <type>bugfix</type>
-//   <issued>2013-11-20T02:00:00.000+02:00</issued>
-//   <solution>Few guidelines regarding the solution</solution>
-//   <summary>Updated packages that fix one bug are now available for XYZ</summary>
-//   <packages>
-//     <package>
-//       <name>libipa_hbac-1.9.2-82.11.el6_4.i686</name>
-//     </package>
-//     ...
-//   </packages>
-// </katello_erratum>
-// ----
-//
-func (op *KatelloErratumService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*KatelloErratum,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var erratumVar KatelloErratum
-	xml.Unmarshal([]byte(ovResp.Body), &erratumVar)
-	return &erratumVar, nil
+func (p *KatelloErratumService) Get() *KatelloErratumServiceGetRequest {
+	return &KatelloErratumServiceGetRequest{katelloErratumService: p}
 }
 
 //
@@ -68151,28 +53112,8 @@ type ExternalDiscoveredHostServiceGetResponse struct {
 func (p *ExternalDiscoveredHostServiceGetResponse) Host() *ExternalDiscoveredHost {
 	return p.host
 }
-
-//
-//
-func (op *ExternalDiscoveredHostService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalDiscoveredHost,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar ExternalDiscoveredHost
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *ExternalDiscoveredHostService) Get() *ExternalDiscoveredHostServiceGetRequest {
+	return &ExternalDiscoveredHostServiceGetRequest{externalDiscoveredHostService: p}
 }
 
 //
@@ -68288,62 +53229,8 @@ type EngineKatelloErrataServiceListResponse struct {
 func (p *EngineKatelloErrataServiceListResponse) Errata() []KatelloErratum {
 	return p.errata
 }
-
-//
-// Retrieves the representation of the Katello errata.
-// [source]
-// ----
-// GET /ovirt-engine/api/katelloerrata
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <katello_errata>
-//   <katello_erratum href="/ovirt-engine/api/katelloerrata/123" id="123">
-//     <name>RHBA-2013:XYZ</name>
-//     <description>The description of the erratum</description>
-//     <title>some bug fix update</title>
-//     <type>bugfix</type>
-//     <issued>2013-11-20T02:00:00.000+02:00</issued>
-//     <solution>Few guidelines regarding the solution</solution>
-//     <summary>Updated packages that fix one bug are now available for XYZ</summary>
-//     <packages>
-//       <package>
-//         <name>libipa_hbac-1.9.2-82.11.el6_4.i686</name>
-//       </package>
-//       ...
-//     </packages>
-//   </katello_erratum>
-//   ...
-// </katello_errata>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of errata to return. If not specified all the errata are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *EngineKatelloErrataService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]KatelloErratum,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var errataVar KatelloErratums
-	xml.Unmarshal([]byte(ovResp.Body), &errataVar)
-	return errataVar.KatelloErratums, nil
+func (p *EngineKatelloErrataService) List() *EngineKatelloErrataServiceListRequest {
+	return &EngineKatelloErrataServiceListRequest{engineKatelloErrataService: p}
 }
 
 //
@@ -68461,28 +53348,8 @@ type ExternalComputeResourceServiceGetResponse struct {
 func (p *ExternalComputeResourceServiceGetResponse) Resource() *ExternalComputeResource {
 	return p.resource
 }
-
-//
-//
-func (op *ExternalComputeResourceService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalComputeResource,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var resourceVar ExternalComputeResource
-	xml.Unmarshal([]byte(ovResp.Body), &resourceVar)
-	return &resourceVar, nil
+func (p *ExternalComputeResourceService) Get() *ExternalComputeResourceServiceGetRequest {
+	return &ExternalComputeResourceServiceGetRequest{externalComputeResourceService: p}
 }
 
 //
@@ -68596,35 +53463,8 @@ type ExternalHostGroupsServiceListResponse struct {
 func (p *ExternalHostGroupsServiceListResponse) Groups() []ExternalHostGroup {
 	return p.groups
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of groups to return. If not specified all the groups are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalHostGroupsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ExternalHostGroup,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var groupsVar ExternalHostGroups
-	xml.Unmarshal([]byte(ovResp.Body), &groupsVar)
-	return groupsVar.ExternalHostGroups, nil
+func (p *ExternalHostGroupsService) List() *ExternalHostGroupsServiceListRequest {
+	return &ExternalHostGroupsServiceListRequest{externalHostGroupsService: p}
 }
 
 //
@@ -68740,28 +53580,8 @@ type ExternalHostProviderServiceGetResponse struct {
 func (p *ExternalHostProviderServiceGetResponse) Provider() *ExternalHostProvider {
 	return p.provider
 }
-
-//
-//
-func (op *ExternalHostProviderService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalHostProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar ExternalHostProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *ExternalHostProviderService) Get() *ExternalHostProviderServiceGetRequest {
+	return &ExternalHostProviderServiceGetRequest{externalHostProviderService: p}
 }
 
 type ExternalHostProviderServiceImportCertificatesRequest struct {
@@ -68849,21 +53669,8 @@ func (p *ExternalHostProviderServiceImportCertificatesRequest) Send() (*External
 type ExternalHostProviderServiceImportCertificatesResponse struct {
 }
 
-//
-//
-func (op *ExternalHostProviderService) ImportCertificates(
-	certificates []Certificate,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Certificates: certificates,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "importcertificates", headers, query, wait)
-	return err
+func (p *ExternalHostProviderService) ImportCertificates() *ExternalHostProviderServiceImportCertificatesRequest {
+	return &ExternalHostProviderServiceImportCertificatesRequest{externalHostProviderService: p}
 }
 
 type ExternalHostProviderServiceRemoveRequest struct {
@@ -68942,27 +53749,8 @@ func (p *ExternalHostProviderServiceRemoveRequest) Send() (*ExternalHostProvider
 type ExternalHostProviderServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalHostProviderService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *ExternalHostProviderService) Remove() *ExternalHostProviderServiceRemoveRequest {
+	return &ExternalHostProviderServiceRemoveRequest{externalHostProviderService: p}
 }
 
 type ExternalHostProviderServiceTestConnectivityRequest struct {
@@ -69050,26 +53838,8 @@ func (p *ExternalHostProviderServiceTestConnectivityRequest) Send() (*ExternalHo
 type ExternalHostProviderServiceTestConnectivityResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the test should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalHostProviderService) TestConnectivity(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "testconnectivity", headers, query, wait)
-	return err
+func (p *ExternalHostProviderService) TestConnectivity() *ExternalHostProviderServiceTestConnectivityRequest {
+	return &ExternalHostProviderServiceTestConnectivityRequest{externalHostProviderService: p}
 }
 
 type ExternalHostProviderServiceUpdateRequest struct {
@@ -69167,31 +53937,8 @@ type ExternalHostProviderServiceUpdateResponse struct {
 func (p *ExternalHostProviderServiceUpdateResponse) Provider() *ExternalHostProvider {
 	return p.provider
 }
-
-//
-//
-func (op *ExternalHostProviderService) Update(
-	provider *ExternalHostProvider,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalHostProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request
-	ovResp, err := op.internalUpdate(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar ExternalHostProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *ExternalHostProviderService) Update() *ExternalHostProviderServiceUpdateRequest {
+	return &ExternalHostProviderServiceUpdateRequest{externalHostProviderService: p}
 }
 
 //
@@ -69367,62 +54114,8 @@ type KatelloErrataServiceListResponse struct {
 func (p *KatelloErrataServiceListResponse) Errata() []KatelloErratum {
 	return p.errata
 }
-
-//
-// Retrieves the representation of the Katello errata.
-// [source]
-// ----
-// GET /ovirt-engine/api/katelloerrata
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <katello_errata>
-//   <katello_erratum href="/ovirt-engine/api/katelloerrata/123" id="123">
-//     <name>RHBA-2013:XYZ</name>
-//     <description>The description of the erratum</description>
-//     <title>some bug fix update</title>
-//     <type>bugfix</type>
-//     <issued>2013-11-20T02:00:00.000+02:00</issued>
-//     <solution>Few guidelines regarding the solution</solution>
-//     <summary>Updated packages that fix one bug are now available for XYZ</summary>
-//     <packages>
-//       <package>
-//         <name>libipa_hbac-1.9.2-82.11.el6_4.i686</name>
-//       </package>
-//       ...
-//     </packages>
-//   </katello_erratum>
-//   ...
-// </katello_errata>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of errata to return. If not specified all the errata are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *KatelloErrataService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]KatelloErratum,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var errataVar KatelloErratums
-	xml.Unmarshal([]byte(ovResp.Body), &errataVar)
-	return errataVar.KatelloErratums, nil
+func (p *KatelloErrataService) List() *KatelloErrataServiceListRequest {
+	return &KatelloErrataServiceListRequest{katelloErrataService: p}
 }
 
 //
@@ -69548,35 +54241,8 @@ type ExternalDiscoveredHostsServiceListResponse struct {
 func (p *ExternalDiscoveredHostsServiceListResponse) Hosts() []ExternalDiscoveredHost {
 	return p.hosts
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of hosts to return. If not specified all the hosts are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalDiscoveredHostsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ExternalDiscoveredHost,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostsVar ExternalDiscoveredHosts
-	xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
-	return hostsVar.ExternalDiscoveredHosts, nil
+func (p *ExternalDiscoveredHostsService) List() *ExternalDiscoveredHostsServiceListRequest {
+	return &ExternalDiscoveredHostsServiceListRequest{externalDiscoveredHostsService: p}
 }
 
 //
@@ -69700,35 +54366,8 @@ type ExternalHostsServiceListResponse struct {
 func (p *ExternalHostsServiceListResponse) Hosts() []ExternalHost {
 	return p.hosts
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of hosts to return. If not specified all the hosts are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalHostsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ExternalHost,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostsVar ExternalHosts
-	xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
-	return hostsVar.ExternalHosts, nil
+func (p *ExternalHostsService) List() *ExternalHostsServiceListRequest {
+	return &ExternalHostsServiceListRequest{externalHostsService: p}
 }
 
 //
@@ -69852,35 +54491,8 @@ type ExternalComputeResourcesServiceListResponse struct {
 func (p *ExternalComputeResourcesServiceListResponse) Resources() []ExternalComputeResource {
 	return p.resources
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of resources to return. If not specified all the resources are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalComputeResourcesService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ExternalComputeResource,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var resourcesVar ExternalComputeResources
-	xml.Unmarshal([]byte(ovResp.Body), &resourcesVar)
-	return resourcesVar.ExternalComputeResources, nil
+func (p *ExternalComputeResourcesService) List() *ExternalComputeResourcesServiceListRequest {
+	return &ExternalComputeResourcesServiceListRequest{externalComputeResourcesService: p}
 }
 
 //
@@ -70007,29 +54619,8 @@ type ExternalHostProvidersServiceAddResponse struct {
 func (p *ExternalHostProvidersServiceAddResponse) Provider() *ExternalHostProvider {
 	return p.provider
 }
-
-//
-//
-func (op *ExternalHostProvidersService) Add(
-	provider *ExternalHostProvider,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*ExternalHostProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(provider, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providerVar ExternalHostProvider
-	xml.Unmarshal([]byte(ovResp.Body), &providerVar)
-	return &providerVar, nil
+func (p *ExternalHostProvidersService) Add() *ExternalHostProvidersServiceAddRequest {
+	return &ExternalHostProvidersServiceAddRequest{externalHostProvidersService: p}
 }
 
 type ExternalHostProvidersServiceListRequest struct {
@@ -70116,35 +54707,8 @@ type ExternalHostProvidersServiceListResponse struct {
 func (p *ExternalHostProvidersServiceListResponse) Providers() []ExternalHostProvider {
 	return p.providers
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of providers to return. If not specified all the providers are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ExternalHostProvidersService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]ExternalHostProvider,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var providersVar ExternalHostProviders
-	xml.Unmarshal([]byte(ovResp.Body), &providersVar)
-	return providersVar.ExternalHostProviders, nil
+func (p *ExternalHostProvidersService) List() *ExternalHostProvidersServiceListRequest {
+	return &ExternalHostProvidersServiceListRequest{externalHostProvidersService: p}
 }
 
 //
@@ -70261,71 +54825,8 @@ type GlusterBrickServiceGetResponse struct {
 func (p *GlusterBrickServiceGetResponse) Brick() *GlusterBrick {
 	return p.brick
 }
-
-//
-// Get details of a brick.
-// Retrieves status details of brick from underlying gluster volume with header `All-Content` set to `true`. This is
-// the equivalent of running `gluster volume status <volumename> <brickname> detail`.
-// For example, to get the details of brick `234` of gluster volume `123`, send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks/234
-// ----
-// Which will return a response body like this:
-// [source,xml]
-// ----
-// <brick id="234">
-//   <name>host1:/rhgs/data/brick1</name>
-//   <brick_dir>/rhgs/data/brick1</brick_dir>
-//   <server_id>111</server_id>
-//   <status>up</status>
-//   <device>/dev/mapper/RHGS_vg1-lv_vmaddldisks</device>
-//   <fs_name>xfs</fs_name>
-//   <gluster_clients>
-//     <gluster_client>
-//       <bytes_read>2818417648</bytes_read>
-//       <bytes_written>1384694844</bytes_written>
-//       <client_port>1011</client_port>
-//       <host_name>client2</host_name>
-//     </gluster_client>
-//   </gluster_clients>
-//   <memory_pools>
-//     <memory_pool>
-//       <name>data-server:fd_t</name>
-//       <alloc_count>1626348</alloc_count>
-//       <cold_count>1020</cold_count>
-//       <hot_count>4</hot_count>
-//       <max_alloc>23</max_alloc>
-//       <max_stdalloc>0</max_stdalloc>
-//       <padded_size>140</padded_size>
-//       <pool_misses>0</pool_misses>
-//     </memory_pool>
-//   </memory_pools>
-//   <mnt_options>rw,seclabel,noatime,nodiratime,attr2,inode64,sunit=512,swidth=2048,noquota</mnt_options>
-//   <pid>25589</pid>
-//   <port>49155</port>
-// </brick>
-// ----
-//
-func (op *GlusterBrickService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GlusterBrick,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var brickVar GlusterBrick
-	xml.Unmarshal([]byte(ovResp.Body), &brickVar)
-	return &brickVar, nil
+func (p *GlusterBrickService) Get() *GlusterBrickServiceGetRequest {
+	return &GlusterBrickServiceGetRequest{glusterBrickService: p}
 }
 
 type GlusterBrickServiceRemoveRequest struct {
@@ -70404,36 +54905,8 @@ func (p *GlusterBrickServiceRemoveRequest) Send() (*GlusterBrickServiceRemoveRes
 type GlusterBrickServiceRemoveResponse struct {
 }
 
-//
-// Removes a brick.
-// Removes a brick from the underlying gluster volume and deletes entries from database. This can be used only when
-// removing a single brick without data migration. To remove multiple bricks and with data migration, use
-// <<services/gluster_bricks/methods/migrate, migrate>> instead.
-// For example, to delete brick `234` from gluster volume `123`, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks/234
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBrickService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *GlusterBrickService) Remove() *GlusterBrickServiceRemoveRequest {
+	return &GlusterBrickServiceRemoveRequest{glusterBrickService: p}
 }
 
 type GlusterBrickServiceReplaceRequest struct {
@@ -70527,32 +55000,8 @@ func (p *GlusterBrickServiceReplaceRequest) Send() (*GlusterBrickServiceReplaceR
 type GlusterBrickServiceReplaceResponse struct {
 }
 
-//
-// Replaces this brick with a new one.
-// IMPORTANT: This operation has been deprecated since version 3.5 of the engine and will be removed in the future.
-// Use <<services/gluster_bricks/methods/add, add brick(s)>> and
-// <<services/gluster_bricks/methods/migrate, migrate brick(s)>> instead.
-// This method supports the following parameters:
-// `Async`:: Indicates if the replacement should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBrickService) Replace(
-	async bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Force: &force,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "replace", headers, query, wait)
-	return err
+func (p *GlusterBrickService) Replace() *GlusterBrickServiceReplaceRequest {
+	return &GlusterBrickServiceReplaceRequest{glusterBrickService: p}
 }
 
 //
@@ -70682,66 +55131,8 @@ type GlusterVolumesServiceAddResponse struct {
 func (p *GlusterVolumesServiceAddResponse) Volume() *GlusterVolume {
 	return p.volume
 }
-
-//
-// Creates a new gluster volume.
-// The volume is created based on properties of the `volume` parameter. The properties `name`, `volume_type` and
-// `bricks` are required.
-// For example, to add a volume with name `myvolume` to the cluster `123`, send the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/123/glustervolumes
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <gluster_volume>
-//   <name>myvolume</name>
-//   <volume_type>replicate</volume_type>
-//   <replica_count>3</replica_count>
-//   <bricks>
-//     <brick>
-//       <server_id>server1</server_id>
-//       <brick_dir>/exp1</brick_dir>
-//     </brick>
-//     <brick>
-//       <server_id>server2</server_id>
-//       <brick_dir>/exp1</brick_dir>
-//     </brick>
-//     <brick>
-//       <server_id>server3</server_id>
-//       <brick_dir>/exp1</brick_dir>
-//     </brick>
-//   <bricks>
-// </gluster_volume>
-// ----
-// This method supports the following parameters:
-// `Volume`:: The gluster volume definition from which to create the volume is passed as input and the newly created
-// volume is returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumesService) Add(
-	volume *GlusterVolume,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GlusterVolume,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(volume, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var volumeVar GlusterVolume
-	xml.Unmarshal([]byte(ovResp.Body), &volumeVar)
-	return &volumeVar, nil
+func (p *GlusterVolumesService) Add() *GlusterVolumesServiceAddRequest {
+	return &GlusterVolumesServiceAddRequest{glusterVolumesService: p}
 }
 
 type GlusterVolumesServiceListRequest struct {
@@ -70844,50 +55235,8 @@ type GlusterVolumesServiceListResponse struct {
 func (p *GlusterVolumesServiceListResponse) Volumes() []GlusterVolume {
 	return p.volumes
 }
-
-//
-// Lists all gluster volumes in the cluster.
-// For example, to list all Gluster Volumes in cluster `456`, send a request like
-// this:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusters/456/glustervolumes
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of volumes to return. If not specified all the volumes are returned.
-// `Search`:: A query string used to restrict the returned volumes.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumesService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GlusterVolume,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var volumesVar GlusterVolumes
-	xml.Unmarshal([]byte(ovResp.Body), &volumesVar)
-	return volumesVar.GlusterVolumes, nil
+func (p *GlusterVolumesService) List() *GlusterVolumesServiceListRequest {
+	return &GlusterVolumesServiceListRequest{glusterVolumesService: p}
 }
 
 //
@@ -71005,65 +55354,8 @@ type GlusterVolumeServiceGetResponse struct {
 func (p *GlusterVolumeServiceGetResponse) Volume() *GlusterVolume {
 	return p.volume
 }
-
-//
-// Get the gluster volume details.
-// For example, to get details of a gluster volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusters/456/glustervolumes/123
-// ----
-// This GET request will return the following output:
-// [source,xml]
-// ----
-// <gluster_volume id="123">
-//  <name>data</name>
-//  <link href="/ovirt-engine/api/clusters/456/glustervolumes/123/glusterbricks" rel="glusterbricks"/>
-//  <disperse_count>0</disperse_count>
-//  <options>
-//    <option>
-//      <name>storage.owner-gid</name>
-//      <value>36</value>
-//    </option>
-//    <option>
-//      <name>performance.io-cache</name>
-//      <value>off</value>
-//    </option>
-//    <option>
-//      <name>cluster.data-self-heal-algorithm</name>
-//      <value>full</value>
-//    </option>
-//  </options>
-//  <redundancy_count>0</redundancy_count>
-//  <replica_count>3</replica_count>
-//  <status>up</status>
-//  <stripe_count>0</stripe_count>
-//  <transport_types>
-//    <transport_type>tcp</transport_type>
-//  </transport_types>
-//  <volume_type>replicate</volume_type>
-//  </gluster_volume>
-// ----
-//
-func (op *GlusterVolumeService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GlusterVolume,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var volumeVar GlusterVolume
-	xml.Unmarshal([]byte(ovResp.Body), &volumeVar)
-	return &volumeVar, nil
+func (p *GlusterVolumeService) Get() *GlusterVolumeServiceGetRequest {
+	return &GlusterVolumeServiceGetRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceGetProfileStatisticsRequest struct {
@@ -71149,33 +55441,8 @@ type GlusterVolumeServiceGetProfileStatisticsResponse struct {
 func (p *GlusterVolumeServiceGetProfileStatisticsResponse) Details() *GlusterVolumeProfileDetails {
 	return p.details
 }
-
-//
-// Get gluster volume profile statistics.
-// For example, to get profile statistics for a gluster volume with identifier `123` in cluster `456`, send a
-// request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/getprofilestatistics
-// ----
-//
-func (op *GlusterVolumeService) GetProfileStatistics(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GlusterVolumeProfileDetails,
-	error) {
-	// Populate the action:
-	action := &Action{}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalAction(action, "getprofilestatistics", headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var detailsVar GlusterVolumeProfileDetails
-	xml.Unmarshal([]byte(ovResp.Body), &detailsVar)
-	return &detailsVar, nil
+func (p *GlusterVolumeService) GetProfileStatistics() *GlusterVolumeServiceGetProfileStatisticsRequest {
+	return &GlusterVolumeServiceGetProfileStatisticsRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceRebalanceRequest struct {
@@ -71275,45 +55542,8 @@ func (p *GlusterVolumeServiceRebalanceRequest) Send() (*GlusterVolumeServiceReba
 type GlusterVolumeServiceRebalanceResponse struct {
 }
 
-//
-// Rebalance the gluster volume.
-// Rebalancing a gluster volume helps to distribute the data evenly across all the bricks. After expanding or
-// shrinking a gluster volume (without migrating data), we need to rebalance the data among the bricks. In a
-// non-replicated volume, all bricks should be online to perform the rebalance operation. In a replicated volume, at
-// least one of the bricks in the replica should be online.
-// For example, to rebalance a gluster volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/rebalance
-// ----
-// This method supports the following parameters:
-// `FixLayout`:: If set to true, rebalance will only fix the layout so that new data added to the volume is distributed
-// across all the hosts. But it will not migrate/rebalance the existing data. Default is `false`.
-// `Force`:: Indicates if the rebalance should be force started. The rebalance command can be executed with the force
-// option even when the older clients are connected to the cluster. However, this could lead to a data loss
-// situation. Default is `false`.
-// `Async`:: Indicates if the rebalance should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) Rebalance(
-	async bool,
-	fixLayout bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:     &async,
-		FixLayout: &fixLayout,
-		Force:     &force,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "rebalance", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) Rebalance() *GlusterVolumeServiceRebalanceRequest {
+	return &GlusterVolumeServiceRebalanceRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceRemoveRequest struct {
@@ -71392,33 +55622,8 @@ func (p *GlusterVolumeServiceRemoveRequest) Send() (*GlusterVolumeServiceRemoveR
 type GlusterVolumeServiceRemoveResponse struct {
 }
 
-//
-// Removes the gluster volume.
-// For example, to remove a volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/clusters/456/glustervolumes/123
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *GlusterVolumeService) Remove() *GlusterVolumeServiceRemoveRequest {
+	return &GlusterVolumeServiceRemoveRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceResetAllOptionsRequest struct {
@@ -71506,33 +55711,8 @@ func (p *GlusterVolumeServiceResetAllOptionsRequest) Send() (*GlusterVolumeServi
 type GlusterVolumeServiceResetAllOptionsResponse struct {
 }
 
-//
-// Resets all the options set in the gluster volume.
-// For example, to reset all options in a gluster volume with identifier `123` in cluster `456`, send a request like
-// this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/resetalloptions
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the reset should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) ResetAllOptions(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "resetalloptions", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) ResetAllOptions() *GlusterVolumeServiceResetAllOptionsRequest {
+	return &GlusterVolumeServiceResetAllOptionsRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceResetOptionRequest struct {
@@ -71632,45 +55812,8 @@ func (p *GlusterVolumeServiceResetOptionRequest) Send() (*GlusterVolumeServiceRe
 type GlusterVolumeServiceResetOptionResponse struct {
 }
 
-//
-// Resets a particular option in the gluster volume.
-// For example, to reset a particular option `option1` in a gluster volume with identifier `123` in cluster `456`,
-// send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/resetoption
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action>
-//  <option name="option1"/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Option`:: Option to reset.
-// `Async`:: Indicates if the reset should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) ResetOption(
-	async bool,
-	force bool,
-	option *Option,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Force:  &force,
-		Option: option,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "resetoption", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) ResetOption() *GlusterVolumeServiceResetOptionRequest {
+	return &GlusterVolumeServiceResetOptionRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceSetOptionRequest struct {
@@ -71764,43 +55907,8 @@ func (p *GlusterVolumeServiceSetOptionRequest) Send() (*GlusterVolumeServiceSetO
 type GlusterVolumeServiceSetOptionResponse struct {
 }
 
-//
-// Sets a particular option in the gluster volume.
-// For example, to set `option1` with value `value1` in a gluster volume with identifier `123` in cluster `456`,
-// send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/setoption
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <action>
-//  <option name="option1" value="value1"/>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Option`:: Option to set.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) SetOption(
-	async bool,
-	option *Option,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Option: option,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "setoption", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) SetOption() *GlusterVolumeServiceSetOptionRequest {
+	return &GlusterVolumeServiceSetOptionRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceStartRequest struct {
@@ -71894,37 +56002,8 @@ func (p *GlusterVolumeServiceStartRequest) Send() (*GlusterVolumeServiceStartRes
 type GlusterVolumeServiceStartResponse struct {
 }
 
-//
-// Starts the gluster volume.
-// A Gluster Volume should be started to read/write data. For example, to start a gluster volume with identifier
-// `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/start
-// ----
-// This method supports the following parameters:
-// `Force`:: Indicates if the volume should be force started. If a gluster volume is started already but few/all bricks
-// are down then force start can be used to bring all the bricks up. Default is `false`.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) Start(
-	async bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Force: &force,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "start", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) Start() *GlusterVolumeServiceStartRequest {
+	return &GlusterVolumeServiceStartRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceStartProfileRequest struct {
@@ -72012,32 +56091,8 @@ func (p *GlusterVolumeServiceStartProfileRequest) Send() (*GlusterVolumeServiceS
 type GlusterVolumeServiceStartProfileResponse struct {
 }
 
-//
-// Start profiling the gluster volume.
-// For example, to start profiling a gluster volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/startprofile
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) StartProfile(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "startprofile", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) StartProfile() *GlusterVolumeServiceStartProfileRequest {
+	return &GlusterVolumeServiceStartProfileRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceStopRequest struct {
@@ -72131,35 +56186,8 @@ func (p *GlusterVolumeServiceStopRequest) Send() (*GlusterVolumeServiceStopRespo
 type GlusterVolumeServiceStopResponse struct {
 }
 
-//
-// Stops the gluster volume.
-// Stopping a volume will make its data inaccessible.
-// For example, to stop a gluster volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/stop
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) Stop(
-	async bool,
-	force bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-		Force: &force,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "stop", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) Stop() *GlusterVolumeServiceStopRequest {
+	return &GlusterVolumeServiceStopRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceStopProfileRequest struct {
@@ -72247,32 +56275,8 @@ func (p *GlusterVolumeServiceStopProfileRequest) Send() (*GlusterVolumeServiceSt
 type GlusterVolumeServiceStopProfileResponse struct {
 }
 
-//
-// Stop profiling the gluster volume.
-// For example, to stop profiling a gluster volume with identifier `123` in cluster `456`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/stopprofile
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) StopProfile(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "stopprofile", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) StopProfile() *GlusterVolumeServiceStopProfileRequest {
+	return &GlusterVolumeServiceStopProfileRequest{glusterVolumeService: p}
 }
 
 type GlusterVolumeServiceStopRebalanceRequest struct {
@@ -72360,33 +56364,8 @@ func (p *GlusterVolumeServiceStopRebalanceRequest) Send() (*GlusterVolumeService
 type GlusterVolumeServiceStopRebalanceResponse struct {
 }
 
-//
-// Stop rebalancing the gluster volume.
-// For example, to stop rebalancing a gluster volume with identifier `123` in cluster `456`, send a request like
-// this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/456/glustervolumes/123/stoprebalance
-// ----
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterVolumeService) StopRebalance(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "stoprebalance", headers, query, wait)
-	return err
+func (p *GlusterVolumeService) StopRebalance() *GlusterVolumeServiceStopRebalanceRequest {
+	return &GlusterVolumeServiceStopRebalanceRequest{glusterVolumeService: p}
 }
 
 //
@@ -72526,28 +56505,8 @@ func (p *GlusterHookServiceDisableRequest) Send() (*GlusterHookServiceDisableRes
 type GlusterHookServiceDisableResponse struct {
 }
 
-//
-// Resolves status conflict of hook among servers in cluster by disabling Gluster hook in all servers of the
-// cluster. This updates the hook status to `DISABLED` in database.
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterHookService) Disable(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "disable", headers, query, wait)
-	return err
+func (p *GlusterHookService) Disable() *GlusterHookServiceDisableRequest {
+	return &GlusterHookServiceDisableRequest{glusterHookService: p}
 }
 
 type GlusterHookServiceEnableRequest struct {
@@ -72635,28 +56594,8 @@ func (p *GlusterHookServiceEnableRequest) Send() (*GlusterHookServiceEnableRespo
 type GlusterHookServiceEnableResponse struct {
 }
 
-//
-// Resolves status conflict of hook among servers in cluster by disabling Gluster hook in all servers of the
-// cluster. This updates the hook status to `DISABLED` in database.
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterHookService) Enable(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async: &async,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "enable", headers, query, wait)
-	return err
+func (p *GlusterHookService) Enable() *GlusterHookServiceEnableRequest {
+	return &GlusterHookServiceEnableRequest{glusterHookService: p}
 }
 
 type GlusterHookServiceGetRequest struct {
@@ -72735,28 +56674,8 @@ type GlusterHookServiceGetResponse struct {
 func (p *GlusterHookServiceGetResponse) Hook() *GlusterHook {
 	return p.hook
 }
-
-//
-//
-func (op *GlusterHookService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GlusterHook,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hookVar GlusterHook
-	xml.Unmarshal([]byte(ovResp.Body), &hookVar)
-	return &hookVar, nil
+func (p *GlusterHookService) Get() *GlusterHookServiceGetRequest {
+	return &GlusterHookServiceGetRequest{glusterHookService: p}
 }
 
 type GlusterHookServiceRemoveRequest struct {
@@ -72835,28 +56754,8 @@ func (p *GlusterHookServiceRemoveRequest) Send() (*GlusterHookServiceRemoveRespo
 type GlusterHookServiceRemoveResponse struct {
 }
 
-//
-// Removes the this Gluster hook from all servers in cluster and deletes it from the database.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterHookService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *GlusterHookService) Remove() *GlusterHookServiceRemoveRequest {
+	return &GlusterHookServiceRemoveRequest{glusterHookService: p}
 }
 
 type GlusterHookServiceResolveRequest struct {
@@ -72956,37 +56855,8 @@ func (p *GlusterHookServiceResolveRequest) Send() (*GlusterHookServiceResolveRes
 type GlusterHookServiceResolveResponse struct {
 }
 
-//
-// Resolves missing hook conflict depending on the resolution type.
-// For `ADD` resolves by copying hook stored in engine database to all servers where the hook is missing. The
-// engine maintains a list of all servers where hook is missing.
-// For `COPY` resolves conflict in hook content by copying hook stored in engine database to all servers where
-// the hook is missing. The engine maintains a list of all servers where the content is conflicting. If a host
-// id is passed as parameter, the hook content from the server is used as the master to copy to other servers
-// in cluster.
-// This method supports the following parameters:
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterHookService) Resolve(
-	async bool,
-	host *Host,
-	resolutionType string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:          &async,
-		Host:           host,
-		ResolutionType: &resolutionType,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "resolve", headers, query, wait)
-	return err
+func (p *GlusterHookService) Resolve() *GlusterHookServiceResolveRequest {
+	return &GlusterHookServiceResolveRequest{glusterHookService: p}
 }
 
 //
@@ -73108,49 +56978,8 @@ func (p *GlusterBricksServiceActivateRequest) Send() (*GlusterBricksServiceActiv
 type GlusterBricksServiceActivateResponse struct {
 }
 
-//
-// Activate the bricks post data migration of remove brick operation.
-// Used to activate brick(s) once the data migration from bricks is complete but user no longer wishes to remove
-// bricks. The bricks that were previously marked for removal will now be used as normal bricks.
-// For example, to retain the bricks that on glustervolume `123` from which data was migrated, send a request like
-// this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks/activate
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <bricks>
-//     <brick>
-//       <name>host1:/rhgs/brick1</name>
-//     </brick>
-//   </bricks>
-// </action>
-// ----
-// This method supports the following parameters:
-// `Bricks`:: The list of bricks that need to be re-activated.
-// `Async`:: Indicates if the activation should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) Activate(
-	async bool,
-	bricks []GlusterBrick,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Bricks: bricks,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "activate", headers, query, wait)
-	return err
+func (p *GlusterBricksService) Activate() *GlusterBricksServiceActivateRequest {
+	return &GlusterBricksServiceActivateRequest{glusterBricksService: p}
 }
 
 type GlusterBricksServiceAddRequest struct {
@@ -73256,57 +57085,8 @@ type GlusterBricksServiceAddResponse struct {
 func (p *GlusterBricksServiceAddResponse) Bricks() []GlusterBrick {
 	return p.bricks
 }
-
-//
-// Adds a list of bricks to gluster volume.
-// Used to expand a gluster volume by adding bricks. For replicated volume types, the parameter `replica_count`
-// needs to be passed. In case the replica count is being increased, then the number of bricks needs to be
-// equivalent to the number of replica sets.
-// For example, to add bricks to gluster volume `123`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <bricks>
-//   <brick>
-//     <server_id>111</server_id>
-//     <brick_dir>/export/data/brick3</brick_dir>
-//   </brick>
-// </bricks>
-// ----
-// This method supports the following parameters:
-// `Bricks`:: The list of bricks to be added to the volume
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) Add(
-	bricks []GlusterBrick,
-	replicaCount int64,
-	stripeCount int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GlusterBrick,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["replica_count"] = fmt.Sprintf("%v", replicaCount)
-	query["stripe_count"] = fmt.Sprintf("%v", stripeCount)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(bricks, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bricksVar GlusterBricks
-	xml.Unmarshal([]byte(ovResp.Body), &bricksVar)
-	return bricksVar.GlusterBricks, nil
+func (p *GlusterBricksService) Add() *GlusterBricksServiceAddRequest {
+	return &GlusterBricksServiceAddRequest{glusterBricksService: p}
 }
 
 type GlusterBricksServiceListRequest struct {
@@ -73393,59 +57173,8 @@ type GlusterBricksServiceListResponse struct {
 func (p *GlusterBricksServiceListResponse) Bricks() []GlusterBrick {
 	return p.bricks
 }
-
-//
-// Lists the bricks of a gluster volume.
-// For example, to list bricks of gluster volume `123`, send a request like this:
-// [source]
-// ----
-// GET /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks
-// ----
-// Provides an output as below:
-// [source,xml]
-// ----
-// <bricks>
-//   <brick id="234">
-//     <name>host1:/rhgs/data/brick1</name>
-//     <brick_dir>/rhgs/data/brick1</brick_dir>
-//     <server_id>111</server_id>
-//     <status>up</status>
-//   </brick>
-//   <brick id="233">
-//     <name>host2:/rhgs/data/brick1</name>
-//     <brick_dir>/rhgs/data/brick1</brick_dir>
-//     <server_id>222</server_id>
-//     <status>up</status>
-//   </brick>
-// </bricks>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of bricks to return. If not specified all the bricks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GlusterBrick,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var bricksVar GlusterBricks
-	xml.Unmarshal([]byte(ovResp.Body), &bricksVar)
-	return bricksVar.GlusterBricks, nil
+func (p *GlusterBricksService) List() *GlusterBricksServiceListRequest {
+	return &GlusterBricksServiceListRequest{glusterBricksService: p}
 }
 
 type GlusterBricksServiceMigrateRequest struct {
@@ -73539,52 +57268,8 @@ func (p *GlusterBricksServiceMigrateRequest) Send() (*GlusterBricksServiceMigrat
 type GlusterBricksServiceMigrateResponse struct {
 }
 
-//
-// Start migration of data prior to removing bricks.
-// Removing bricks is a two-step process, where the data on bricks to be removed, is first migrated to remaining
-// bricks. Once migration is completed the removal of bricks is confirmed via the API
-// <<services/gluster_bricks/methods/remove, remove>>. If at any point, the action needs to be cancelled
-// <<services/gluster_bricks/methods/stop_migrate, stopmigrate>> has to be called.
-// For instance, to delete a brick from a gluster volume with id `123`, send a request:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks/migrate
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <action>
-//   <bricks>
-//     <brick>
-//       <name>host1:/rhgs/brick1</name>
-//     </brick>
-//   </bricks>
-// </action>
-// ----
-// The migration process can be tracked from the job id returned from the API using
-// <<services/job/methods/get, job>> and steps in job using <<services/step/methods/get, step>>
-// This method supports the following parameters:
-// `Bricks`:: List of bricks for which data migration needs to be started.
-// `Async`:: Indicates if the migration should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) Migrate(
-	async bool,
-	bricks []GlusterBrick,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Bricks: bricks,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "migrate", headers, query, wait)
-	return err
+func (p *GlusterBricksService) Migrate() *GlusterBricksServiceMigrateRequest {
+	return &GlusterBricksServiceMigrateRequest{glusterBricksService: p}
 }
 
 type GlusterBricksServiceRemoveRequest struct {
@@ -73676,51 +57361,8 @@ func (p *GlusterBricksServiceRemoveRequest) Send() (*GlusterBricksServiceRemoveR
 type GlusterBricksServiceRemoveResponse struct {
 }
 
-//
-// Removes bricks from gluster volume.
-// The recommended way to remove bricks without data loss is to first migrate the data using
-// <<services/gluster_bricks/methods/stop_migrate, stopmigrate>> and then removing them. If migrate was not called on
-// bricks prior to remove, the bricks are removed without data migration which may lead to data loss.
-// For example, to delete the bricks from gluster volume `123`, send a request like this:
-// [source]
-// ----
-// DELETE /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <bricks>
-//   <brick>
-//     <name>host:brick_directory</name>
-//   </brick>
-// </bricks>
-// ----
-// This method supports the following parameters:
-// `Bricks`:: The list of bricks to be removed
-// `ReplicaCount`:: Replica count of volume post add operation.
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) Remove(
-	bricks []GlusterBrick,
-	replicaCount int64,
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["bricks"] = fmt.Sprintf("%v", bricks)
-	query["replica_count"] = fmt.Sprintf("%v", replicaCount)
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *GlusterBricksService) Remove() *GlusterBricksServiceRemoveRequest {
+	return &GlusterBricksServiceRemoveRequest{glusterBricksService: p}
 }
 
 type GlusterBricksServiceStopMigrateRequest struct {
@@ -73814,48 +57456,8 @@ func (p *GlusterBricksServiceStopMigrateRequest) Send() (*GlusterBricksServiceSt
 type GlusterBricksServiceStopMigrateResponse struct {
 }
 
-//
-// Stops migration of data from bricks for a remove brick operation.
-// To cancel data migration that was started as part of the 2-step remove brick process in case the user wishes to
-// continue using the bricks. The bricks that were marked for removal will function as normal bricks post this
-// operation.
-// For example, to stop migration of data from the bricks of gluster volume `123`, send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters/567/glustervolumes/123/glusterbricks/stopmigrate
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <bricks>
-//   <brick>
-//     <name>host:brick_directory</name>
-//   </brick>
-// </bricks>
-// ----
-// This method supports the following parameters:
-// `Bricks`:: List of bricks for which data migration needs to be stopped. This list should match the arguments passed to
-// <<services/gluster_bricks/methods/migrate, migrate>>.
-// `Async`:: Indicates if the action should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterBricksService) StopMigrate(
-	async bool,
-	bricks []GlusterBrick,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Populate the action:
-	action := &Action{
-		Async:  &async,
-		Bricks: bricks,
-	}
-
-	// Send the request and wait for the response:
-	_, err := op.internalAction(action, "stopmigrate", headers, query, wait)
-	return err
+func (p *GlusterBricksService) StopMigrate() *GlusterBricksServiceStopMigrateRequest {
+	return &GlusterBricksServiceStopMigrateRequest{glusterBricksService: p}
 }
 
 //
@@ -73980,35 +57582,8 @@ type GlusterHooksServiceListResponse struct {
 func (p *GlusterHooksServiceListResponse) Hooks() []GlusterHook {
 	return p.hooks
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of hooks to return. If not specified all the hooks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *GlusterHooksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]GlusterHook,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hooksVar GlusterHooks
-	xml.Unmarshal([]byte(ovResp.Body), &hooksVar)
-	return hooksVar.GlusterHooks, nil
+func (p *GlusterHooksService) List() *GlusterHooksServiceListRequest {
+	return &GlusterHooksServiceListRequest{glusterHooksService: p}
 }
 
 //
@@ -74136,113 +57711,8 @@ type DisksServiceAddResponse struct {
 func (p *DisksServiceAddResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Adds a new floating disk.
-// There are three types of disks that can be added - disk image, direct LUN and
-//  https://wiki.openstack.org/wiki/Cinder[Cinder] disk.
-// *Adding a new image disk:*
-// When creating a new floating image <<types/disk,Disk>>, the API requires the `storage_domain`, `provisioned_size`
-// and `format` attributes.
-// To create a new floating image disk with specified `provisioned_size`, `format` and `name` on a storage domain
-// with an id `123`, send a request as follows:
-// [source]
-// ----
-// POST /ovirt-engine/api/disks
-// ----
-// With a request body as follows:
-// [source,xml]
-// ----
-// <disk>
-//   <storage_domains>
-//     <storage_domain id="123"/>
-//   </storage_domains>
-//   <name>mydisk</name>
-//   <provisioned_size>1048576</provisioned_size>
-//   <format>cow</format>
-// </disk>
-// ----
-// *Adding a new direct LUN disk:*
-// When adding a new floating direct LUN via the API, there are two flavors that can be used:
-// . With a `host` element - in this case, the host is used for sanity checks (e.g., that the LUN is visible) and
-// to retrieve basic information about the LUN (e.g., size and serial).
-// . Without a `host` element - in this case, the operation is a database-only operation, and the storage is never
-// accessed.
-// To create a new floating direct LUN disk with a `host` element with an id `123`, specified `alias`, `type` and
-// `logical_unit` with an id `456` (that has the attributes `address`, `port` and `target`),
-// send a request as follows:
-// [source]
-// ----
-// POST /ovirt-engine/api/disks
-// ----
-// With a request body as follows:
-// [source,xml]
-// ----
-// <disk>
-//   <alias>mylun</alias>
-//   <lun_storage>
-//     <host id="123"/>
-//     <type>iscsi</type>
-//     <logical_units>
-//       <logical_unit id="456">
-//         <address>10.35.10.20</address>
-//         <port>3260</port>
-//         <target>iqn.2017-01.com.myhost:444</target>
-//       </logical_unit>
-//     </logical_units>
-//   </lun_storage>
-// </disk>
-// ----
-// To create a new floating direct LUN disk without using a host, remove the `host` element.
-// *Adding a new Cinder disk:*
-// To create a new floating Cinder disk, send a request as follows:
-// [source]
-// ----
-// POST /ovirt-engine/api/disks
-// ----
-// With a request body as follows:
-// [source,xml]
-// ----
-// <disk>
-//   <openstack_volume_type>
-//     <name>myceph</name>
-//   </openstack_volume_type>
-//   <storage_domains>
-//     <storage_domain>
-//       <name>cinderDomain</name>
-//     </storage_domain>
-//   </storage_domains>
-//   <provisioned_size>1073741824</provisioned_size>
-//   <interface>virtio</interface>
-//   <format>raw</format>
-// </disk>
-// ----
-// This method supports the following parameters:
-// `Disk`:: The disk.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DisksService) Add(
-	disk *Disk,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *DisksService) Add() *DisksServiceAddRequest {
+	return &DisksServiceAddRequest{disksService: p}
 }
 
 type DisksServiceListRequest struct {
@@ -74345,71 +57815,8 @@ type DisksServiceListResponse struct {
 func (p *DisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// Get list of disks.
-// [source]
-// ----
-// GET /ovirt-engine/api/disks
-// ----
-// You will get a XML response which will look like this one:
-// [source,xml]
-// ----
-// <disks>
-//   <disk id="123">
-//     <actions>...</actions>
-//     <name>MyDisk</name>
-//     <description>MyDisk description</description>
-//     <link href="/ovirt-engine/api/disks/123/permissions" rel="permissions"/>
-//     <link href="/ovirt-engine/api/disks/123/statistics" rel="statistics"/>
-//     <actual_size>5345845248</actual_size>
-//     <alias>MyDisk alias</alias>
-//     ...
-//     <status>ok</status>
-//     <storage_type>image</storage_type>
-//     <wipe_after_delete>false</wipe_after_delete>
-//     <disk_profile id="123"/>
-//     <quota id="123"/>
-//     <storage_domains>...</storage_domains>
-//   </disk>
-//   ...
-// </disks>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `Search`:: A query string used to restrict the returned disks.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DisksService) List(
-	caseSensitive bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *DisksService) List() *DisksServiceListRequest {
+	return &DisksServiceListRequest{disksService: p}
 }
 
 //
@@ -74537,30 +57944,8 @@ type InstanceTypeWatchdogsServiceAddResponse struct {
 func (p *InstanceTypeWatchdogsServiceAddResponse) Watchdog() *Watchdog {
 	return p.watchdog
 }
-
-//
-// Add new watchdog to the instance type.
-//
-func (op *InstanceTypeWatchdogsService) Add(
-	watchdog *Watchdog,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(watchdog, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogVar Watchdog
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogVar)
-	return &watchdogVar, nil
+func (p *InstanceTypeWatchdogsService) Add() *InstanceTypeWatchdogsServiceAddRequest {
+	return &InstanceTypeWatchdogsServiceAddRequest{instanceTypeWatchdogsService: p}
 }
 
 type InstanceTypeWatchdogsServiceListRequest struct {
@@ -74655,40 +58040,8 @@ type InstanceTypeWatchdogsServiceListResponse struct {
 func (p *InstanceTypeWatchdogsServiceListResponse) Watchdogs() []Watchdog {
 	return p.watchdogs
 }
-
-//
-// Lists all the configured watchdogs of the instance type.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of watchdogs to return. If not specified all the watchdogs are
-// returned.
-// `Search`:: A query string used to restrict the returned templates.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *InstanceTypeWatchdogsService) List(
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Watchdog,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var watchdogsVar Watchdogs
-	xml.Unmarshal([]byte(ovResp.Body), &watchdogsVar)
-	return watchdogsVar.Watchdogs, nil
+func (p *InstanceTypeWatchdogsService) List() *InstanceTypeWatchdogsServiceListRequest {
+	return &InstanceTypeWatchdogsServiceListRequest{instanceTypeWatchdogsService: p}
 }
 
 //
@@ -74816,66 +58169,8 @@ type JobsServiceAddResponse struct {
 func (p *JobsServiceAddResponse) Job() *Job {
 	return p.job
 }
-
-//
-// Add an external job.
-// For example, to add a job with the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/jobs
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <job>
-//   <description>Doing some work</description>
-//   <auto_cleared>true</auto_cleared>
-// </job>
-// ----
-// The response should look like:
-// [source,xml]
-// ----
-// <job href="/ovirt-engine/api/jobs/123" id="123">
-//   <actions>
-//     <link href="/ovirt-engine/api/jobs/123/clear" rel="clear"/>
-//     <link href="/ovirt-engine/api/jobs/123/end" rel="end"/>
-//   </actions>
-//   <description>Doing some work</description>
-//   <link href="/ovirt-engine/api/jobs/123/steps" rel="steps"/>
-//   <auto_cleared>true</auto_cleared>
-//   <external>true</external>
-//   <last_updated>2016-12-13T02:15:42.130+02:00</last_updated>
-//   <start_time>2016-12-13T02:15:42.130+02:00</start_time>
-//   <status>started</status>
-//   <owner href="/ovirt-engine/api/users/456" id="456"/>
-// </job>
-// ----
-// This method supports the following parameters:
-// `Job`:: Job that will be added.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *JobsService) Add(
-	job *Job,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Job,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(job, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var jobVar Job
-	xml.Unmarshal([]byte(ovResp.Body), &jobVar)
-	return &jobVar, nil
+func (p *JobsService) Add() *JobsServiceAddRequest {
+	return &JobsServiceAddRequest{jobsService: p}
 }
 
 type JobsServiceListRequest struct {
@@ -74962,62 +58257,8 @@ type JobsServiceListResponse struct {
 func (p *JobsServiceListResponse) Jobs() []Job {
 	return p.jobs
 }
-
-//
-// Retrieves the representation of the jobs.
-// [source]
-// ----
-// GET /ovirt-engine/api/jobs
-// ----
-// You will receive response in XML like this one:
-// [source,xml]
-// ----
-// <jobs>
-//   <job href="/ovirt-engine/api/jobs/123" id="123">
-//     <actions>
-//       <link href="/ovirt-engine/api/jobs/123/clear" rel="clear"/>
-//       <link href="/ovirt-engine/api/jobs/123/end" rel="end"/>
-//     </actions>
-//     <description>Adding Disk</description>
-//     <link href="/ovirt-engine/api/jobs/123/steps" rel="steps"/>
-//     <auto_cleared>true</auto_cleared>
-//     <end_time>2016-12-12T23:07:29.758+02:00</end_time>
-//     <external>false</external>
-//     <last_updated>2016-12-12T23:07:29.758+02:00</last_updated>
-//     <start_time>2016-12-12T23:07:26.593+02:00</start_time>
-//     <status>failed</status>
-//     <owner href="/ovirt-engine/api/users/456" id="456"/>
-//   </job>
-//   ...
-// </jobs>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of jobs to return. If not specified all the jobs are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *JobsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Job,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var jobsVar Jobs
-	xml.Unmarshal([]byte(ovResp.Body), &jobsVar)
-	return jobsVar.Jobs, nil
+func (p *JobsService) List() *JobsServiceListRequest {
+	return &JobsServiceListRequest{jobsService: p}
 }
 
 //
@@ -75143,51 +58384,8 @@ type IconsServiceListResponse struct {
 func (p *IconsServiceListResponse) Icons() []Icon {
 	return p.icons
 }
-
-//
-// Get a list of icons.
-// [source]
-// ----
-// GET /ovirt-engine/api/icons
-// ----
-// You will get a XML response which is similar to this one:
-// [source,xml]
-// ----
-// <icons>
-//   <icon id="123">
-//     <data>...</data>
-//     <media_type>image/png</media_type>
-//   </icon>
-//   ...
-// </icons>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of icons to return. If not specified all the icons are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *IconsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Icon,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var iconsVar Icons
-	xml.Unmarshal([]byte(ovResp.Body), &iconsVar)
-	return iconsVar.Icons, nil
+func (p *IconsService) List() *IconsServiceListRequest {
+	return &IconsServiceListRequest{iconsService: p}
 }
 
 //
@@ -75324,65 +58522,8 @@ type TemplatesServiceAddResponse struct {
 func (p *TemplatesServiceAddResponse) Template() *Template {
 	return p.template
 }
-
-//
-// Creates a new template.
-// This requires the `name` and `vm` elements. Identify the virtual machine with the `id` `name` attributes.
-// [source]
-// ----
-// POST /ovirt-engine/api/templates
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <template>
-//   <name>mytemplate</name>
-//   <vm id="123"/>
-// </template>
-// ----
-// The template can be created as a sub version of an existing template.This requires the `name` and `vm` attributes
-// for the new template, and the `base_template` and `version_name` attributes for the new template version. The
-// `base_template` and `version_name` attributes must be specified within a `version` section enclosed in the
-// `template` section. Identify the virtual machine with the `id` or `name` attributes.
-// [source,xml]
-// ----
-// <template>
-//   <name>mytemplate</name>
-//   <vm id="123"/>
-//   <version>
-//     <base_template id="456"/>
-//     <version_name>mytemplate_001</version_name>
-//   </version>
-// </template>
-// ----
-// This method supports the following parameters:
-// `Template`:: The information about the template or template version.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplatesService) Add(
-	template *Template,
-	clonePermissions bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["clone_permissions"] = fmt.Sprintf("%v", clonePermissions)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(template, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templateVar Template
-	xml.Unmarshal([]byte(ovResp.Body), &templateVar)
-	return &templateVar, nil
+func (p *TemplatesService) Add() *TemplatesServiceAddRequest {
+	return &TemplatesServiceAddRequest{templatesService: p}
 }
 
 type TemplatesServiceListRequest struct {
@@ -75493,53 +58634,8 @@ type TemplatesServiceListResponse struct {
 func (p *TemplatesServiceListResponse) Templates() []Template {
 	return p.templates
 }
-
-//
-// Returns the list of virtual machine templates.
-// For example:
-// [source]
-// ----
-// GET /ovirt-engine/api/templates
-// ----
-// Will return the list of virtual machines and virtual machine templates.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of templates to return. If not specified all the templates are returned.
-// `Search`:: A query string used to restrict the returned templates.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplatesService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Template,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var templatesVar Templates
-	xml.Unmarshal([]byte(ovResp.Body), &templatesVar)
-	return templatesVar.Templates, nil
+func (p *TemplatesService) List() *TemplatesServiceListRequest {
+	return &TemplatesServiceListRequest{templatesService: p}
 }
 
 //
@@ -75664,35 +58760,8 @@ type FilterServiceGetResponse struct {
 func (p *FilterServiceGetResponse) Result() *Filter {
 	return p.result
 }
-
-//
-// This method supports the following parameters:
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FilterService) Get(
-	filter bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Filter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var resultVar Filter
-	xml.Unmarshal([]byte(ovResp.Body), &resultVar)
-	return &resultVar, nil
+func (p *FilterService) Get() *FilterServiceGetRequest {
+	return &FilterServiceGetRequest{filterService: p}
 }
 
 type FilterServiceRemoveRequest struct {
@@ -75771,27 +58840,8 @@ func (p *FilterServiceRemoveRequest) Send() (*FilterServiceRemoveResponse, error
 type FilterServiceRemoveResponse struct {
 }
 
-//
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FilterService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *FilterService) Remove() *FilterServiceRemoveRequest {
+	return &FilterServiceRemoveRequest{filterService: p}
 }
 
 //
@@ -75910,30 +58960,8 @@ type AssignedAffinityLabelsServiceAddResponse struct {
 func (p *AssignedAffinityLabelsServiceAddResponse) Label() *AffinityLabel {
 	return p.label
 }
-
-//
-// Attaches a label to an entity.
-//
-func (op *AssignedAffinityLabelsService) Add(
-	label *AffinityLabel,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(label, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabel
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return &labelVar, nil
+func (p *AssignedAffinityLabelsService) Add() *AssignedAffinityLabelsServiceAddRequest {
+	return &AssignedAffinityLabelsServiceAddRequest{assignedAffinityLabelsService: p}
 }
 
 type AssignedAffinityLabelsServiceListRequest struct {
@@ -76012,29 +59040,8 @@ type AssignedAffinityLabelsServiceListResponse struct {
 func (p *AssignedAffinityLabelsServiceListResponse) Label() []AffinityLabel {
 	return p.label
 }
-
-//
-// Lists all labels that are attached to an entity.
-//
-func (op *AssignedAffinityLabelsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]AffinityLabel,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var labelVar AffinityLabels
-	xml.Unmarshal([]byte(ovResp.Body), &labelVar)
-	return labelVar.AffinityLabels, nil
+func (p *AssignedAffinityLabelsService) List() *AssignedAffinityLabelsServiceListRequest {
+	return &AssignedAffinityLabelsServiceListRequest{assignedAffinityLabelsService: p}
 }
 
 //
@@ -76152,28 +59159,8 @@ type SnapshotCdromServiceGetResponse struct {
 func (p *SnapshotCdromServiceGetResponse) Cdrom() *Cdrom {
 	return p.cdrom
 }
-
-//
-//
-func (op *SnapshotCdromService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cdrom,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var cdromVar Cdrom
-	xml.Unmarshal([]byte(ovResp.Body), &cdromVar)
-	return &cdromVar, nil
+func (p *SnapshotCdromService) Get() *SnapshotCdromServiceGetRequest {
+	return &SnapshotCdromServiceGetRequest{snapshotCdromService: p}
 }
 
 //
@@ -76279,28 +59266,8 @@ type HostNumaNodeServiceGetResponse struct {
 func (p *HostNumaNodeServiceGetResponse) Node() *NumaNode {
 	return p.node
 }
-
-//
-//
-func (op *HostNumaNodeService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*NumaNode,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var nodeVar NumaNode
-	xml.Unmarshal([]byte(ovResp.Body), &nodeVar)
-	return &nodeVar, nil
+func (p *HostNumaNodeService) Get() *HostNumaNodeServiceGetRequest {
+	return &HostNumaNodeServiceGetRequest{hostNumaNodeService: p}
 }
 
 //
@@ -76418,29 +59385,8 @@ type TemplateGraphicsConsoleServiceGetResponse struct {
 func (p *TemplateGraphicsConsoleServiceGetResponse) Console() *GraphicsConsole {
 	return p.console
 }
-
-//
-// Gets graphics console configuration of the template.
-//
-func (op *TemplateGraphicsConsoleService) Get(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*GraphicsConsole,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var consoleVar GraphicsConsole
-	xml.Unmarshal([]byte(ovResp.Body), &consoleVar)
-	return &consoleVar, nil
+func (p *TemplateGraphicsConsoleService) Get() *TemplateGraphicsConsoleServiceGetRequest {
+	return &TemplateGraphicsConsoleServiceGetRequest{templateGraphicsConsoleService: p}
 }
 
 type TemplateGraphicsConsoleServiceRemoveRequest struct {
@@ -76519,28 +59465,8 @@ func (p *TemplateGraphicsConsoleServiceRemoveRequest) Send() (*TemplateGraphicsC
 type TemplateGraphicsConsoleServiceRemoveResponse struct {
 }
 
-//
-// Remove the graphics console from the template.
-// This method supports the following parameters:
-// `Async`:: Indicates if the remove should be performed asynchronously.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *TemplateGraphicsConsoleService) Remove(
-	async bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) error {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["async"] = fmt.Sprintf("%v", async)
-
-	// Send the request and wait for the response:
-	_, err := op.internalRemove(headers, query, wait)
-	return err
+func (p *TemplateGraphicsConsoleService) Remove() *TemplateGraphicsConsoleServiceRemoveRequest {
+	return &TemplateGraphicsConsoleServiceRemoveRequest{templateGraphicsConsoleService: p}
 }
 
 //
@@ -76660,30 +59586,8 @@ type AffinityLabelHostsServiceAddResponse struct {
 func (p *AffinityLabelHostsServiceAddResponse) Host() *Host {
 	return p.host
 }
-
-//
-// Add a label to a host.
-//
-func (op *AffinityLabelHostsService) Add(
-	host *Host,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(host, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar Host
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *AffinityLabelHostsService) Add() *AffinityLabelHostsServiceAddRequest {
+	return &AffinityLabelHostsServiceAddRequest{affinityLabelHostsService: p}
 }
 
 type AffinityLabelHostsServiceListRequest struct {
@@ -76762,29 +59666,8 @@ type AffinityLabelHostsServiceListResponse struct {
 func (p *AffinityLabelHostsServiceListResponse) Hosts() []Host {
 	return p.hosts
 }
-
-//
-// List all hosts with the label.
-//
-func (op *AffinityLabelHostsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostsVar Hosts
-	xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
-	return hostsVar.Hosts, nil
+func (p *AffinityLabelHostsService) List() *AffinityLabelHostsServiceListRequest {
+	return &AffinityLabelHostsServiceListRequest{affinityLabelHostsService: p}
 }
 
 //
@@ -76910,35 +59793,8 @@ type DiskSnapshotsServiceListResponse struct {
 func (p *DiskSnapshotsServiceListResponse) Snapshots() []DiskSnapshot {
 	return p.snapshots
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of snapshots to return. If not specified all the snapshots are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *DiskSnapshotsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]DiskSnapshot,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var snapshotsVar DiskSnapshots
-	xml.Unmarshal([]byte(ovResp.Body), &snapshotsVar)
-	return snapshotsVar.DiskSnapshots, nil
+func (p *DiskSnapshotsService) List() *DiskSnapshotsServiceListRequest {
+	return &DiskSnapshotsServiceListRequest{diskSnapshotsService: p}
 }
 
 //
@@ -77087,36 +59943,8 @@ type StorageDomainVmsServiceListResponse struct {
 func (p *StorageDomainVmsServiceListResponse) Vm() []Vm {
 	return p.vm
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of virtual machines to return. If not specified all the virtual machines are
-// returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainVmsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Vm,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var vmVar Vms
-	xml.Unmarshal([]byte(ovResp.Body), &vmVar)
-	return vmVar.Vms, nil
+func (p *StorageDomainVmsService) List() *StorageDomainVmsServiceListRequest {
+	return &StorageDomainVmsServiceListRequest{storageDomainVmsService: p}
 }
 
 //
@@ -77260,63 +60088,8 @@ type HostsServiceAddResponse struct {
 func (p *HostsServiceAddResponse) Host() *Host {
 	return p.host
 }
-
-//
-// Creates a new host.
-// The host is created based on the attributes of the `host` parameter. The `name`, `address` and `root_password`
-// properties are required.
-// For example, to add a host send the following request:
-// [source]
-// ----
-// POST /ovirt-engine/api/hosts
-// ----
-// With the following request body:
-// [source,xml]
-// ----
-// <host>
-//   <name>myhost</name>
-//   <address>myhost.example.com</address>
-//   <root_password>myrootpassword</root_password>
-// </host>
-// ----
-// NOTE: The `root_password` element is only included in the client-provided initial representation and is not
-// exposed in the representations returned from subsequent requests.
-// To add a hosted engine host, use the optional `deploy_hosted_engine` parameter:
-// [source]
-// ----
-// POST /ovirt-engine/api/hosts?deploy_hosted_engine=true
-// ----
-// This method supports the following parameters:
-// `Host`:: The host definition from which to create the new host is passed as parameter, and the newly created host
-// is returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostsService) Add(
-	host *Host,
-	deployHostedEngine bool,
-	undeployHostedEngine bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["deploy_hosted_engine"] = fmt.Sprintf("%v", deployHostedEngine)
-	query["undeploy_hosted_engine"] = fmt.Sprintf("%v", undeployHostedEngine)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(host, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostVar Host
-	xml.Unmarshal([]byte(ovResp.Body), &hostVar)
-	return &hostVar, nil
+func (p *HostsService) Add() *HostsServiceAddRequest {
+	return &HostsServiceAddRequest{hostsService: p}
 }
 
 type HostsServiceListRequest struct {
@@ -77427,64 +60200,8 @@ type HostsServiceListResponse struct {
 func (p *HostsServiceListResponse) Hosts() []Host {
 	return p.hosts
 }
-
-//
-// Get a list of all available hosts.
-// For example, to list the hosts send the following request:
-// ....
-// GET /ovirt-engine/api/hosts
-// ....
-// The response body will be something like this:
-// [source,xml]
-// ----
-// <hosts>
-//   <host href="/ovirt-engine/api/hosts/123" id="123">
-//     ...
-//   </host>
-//   <host href="/ovirt-engine/api/hosts/456" id="456">
-//     ...
-//   </host>
-//   ...
-// </host>
-// ----
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of hosts to return. If not specified all the hosts are returned.
-// `Search`:: A query string used to restrict the returned hosts.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *HostsService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Host,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var hostsVar Hosts
-	xml.Unmarshal([]byte(ovResp.Body), &hostsVar)
-	return hostsVar.Hosts, nil
+func (p *HostsService) List() *HostsServiceListRequest {
+	return &HostsServiceListRequest{hostsService: p}
 }
 
 //
@@ -77621,42 +60338,8 @@ type StorageDomainDisksServiceAddResponse struct {
 func (p *StorageDomainDisksServiceAddResponse) Disk() *Disk {
 	return p.disk
 }
-
-//
-// Adds or registers a disk.
-// IMPORTANT: Since version 4.2 of the engine this operation is deprecated, and preserved only for backwards
-// compatibility. It will be removed in the future. To add a new disk use the <<services/disks/methods/add, add>>
-// operation of the service that manages the disks of the system. To register an unregistered disk use the
-// <<services/attached_storage_domain_disk/methods/register, register>> operation of the service that manages
-// that disk.
-// This method supports the following parameters:
-// `Disk`:: The disk to add or register.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDisksService) Add(
-	disk *Disk,
-	unregistered bool,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["unregistered"] = fmt.Sprintf("%v", unregistered)
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(disk, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var diskVar Disk
-	xml.Unmarshal([]byte(ovResp.Body), &diskVar)
-	return &diskVar, nil
+func (p *StorageDomainDisksService) Add() *StorageDomainDisksServiceAddRequest {
+	return &StorageDomainDisksServiceAddRequest{storageDomainDisksService: p}
 }
 
 type StorageDomainDisksServiceListRequest struct {
@@ -77743,36 +60426,8 @@ type StorageDomainDisksServiceListResponse struct {
 func (p *StorageDomainDisksServiceListResponse) Disks() []Disk {
 	return p.disks
 }
-
-//
-// Retrieve the list of disks that are available in the storage domain.
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of disks to return. If not specified all the disks are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageDomainDisksService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Disk,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var disksVar Disks
-	xml.Unmarshal([]byte(ovResp.Body), &disksVar)
-	return disksVar.Disks, nil
+func (p *StorageDomainDisksService) List() *StorageDomainDisksServiceListRequest {
+	return &StorageDomainDisksServiceListRequest{storageDomainDisksService: p}
 }
 
 //
@@ -77900,29 +60555,8 @@ type FiltersServiceAddResponse struct {
 func (p *FiltersServiceAddResponse) Filter() *Filter {
 	return p.filter
 }
-
-//
-//
-func (op *FiltersService) Add(
-	filter *Filter,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Filter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(filter, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var filterVar Filter
-	xml.Unmarshal([]byte(ovResp.Body), &filterVar)
-	return &filterVar, nil
+func (p *FiltersService) Add() *FiltersServiceAddRequest {
+	return &FiltersServiceAddRequest{filtersService: p}
 }
 
 type FiltersServiceListRequest struct {
@@ -78017,38 +60651,8 @@ type FiltersServiceListResponse struct {
 func (p *FiltersServiceListResponse) Filters() []Filter {
 	return p.filters
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of filters to return. If not specified all the filters are returned.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FiltersService) List(
-	filter bool,
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Filter,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var filtersVar Filters
-	xml.Unmarshal([]byte(ovResp.Body), &filtersVar)
-	return filtersVar.Filters, nil
+func (p *FiltersService) List() *FiltersServiceListRequest {
+	return &FiltersServiceListRequest{filtersService: p}
 }
 
 //
@@ -78175,48 +60779,8 @@ type StorageServerConnectionsServiceAddResponse struct {
 func (p *StorageServerConnectionsServiceAddResponse) Connection() *StorageConnection {
 	return p.connection
 }
-
-//
-// Creates a new storage connection.
-// For example, to create a new storage connection for the NFS server `mynfs.example.com` and NFS share
-// `/export/mydata` send a request like this:
-// [source]
-// ----
-// POST /ovirt-engine/api/storageconnections
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <storage_connection>
-//   <type>nfs</type>
-//   <address>mynfs.example.com</address>
-//   <path>/export/mydata</path>
-//   <host>
-//     <name>myhost</name>
-//   </host>
-// </storage_connection>
-// ----
-//
-func (op *StorageServerConnectionsService) Add(
-	connection *StorageConnection,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(connection, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionVar StorageConnection
-	xml.Unmarshal([]byte(ovResp.Body), &connectionVar)
-	return &connectionVar, nil
+func (p *StorageServerConnectionsService) Add() *StorageServerConnectionsServiceAddRequest {
+	return &StorageServerConnectionsServiceAddRequest{storageServerConnectionsService: p}
 }
 
 type StorageServerConnectionsServiceListRequest struct {
@@ -78303,35 +60867,8 @@ type StorageServerConnectionsServiceListResponse struct {
 func (p *StorageServerConnectionsServiceListResponse) Connections() []StorageConnection {
 	return p.connections
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of connections to return. If not specified all the connections are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *StorageServerConnectionsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]StorageConnection,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var connectionsVar StorageConnections
-	xml.Unmarshal([]byte(ovResp.Body), &connectionsVar)
-	return connectionsVar.StorageConnections, nil
+func (p *StorageServerConnectionsService) List() *StorageServerConnectionsServiceListRequest {
+	return &StorageServerConnectionsServiceListRequest{storageServerConnectionsService: p}
 }
 
 //
@@ -78458,29 +60995,8 @@ type FenceAgentsServiceAddResponse struct {
 func (p *FenceAgentsServiceAddResponse) Agent() *Agent {
 	return p.agent
 }
-
-//
-//
-func (op *FenceAgentsService) Add(
-	agent *Agent,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Agent,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(agent, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var agentVar Agent
-	xml.Unmarshal([]byte(ovResp.Body), &agentVar)
-	return &agentVar, nil
+func (p *FenceAgentsService) Add() *FenceAgentsServiceAddRequest {
+	return &FenceAgentsServiceAddRequest{fenceAgentsService: p}
 }
 
 type FenceAgentsServiceListRequest struct {
@@ -78567,35 +61083,8 @@ type FenceAgentsServiceListResponse struct {
 func (p *FenceAgentsServiceListResponse) Agents() []Agent {
 	return p.agents
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of agents to return. If not specified all the agents are returned.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *FenceAgentsService) List(
-	max int64,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Agent,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["max"] = fmt.Sprintf("%v", max)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var agentsVar Agents
-	xml.Unmarshal([]byte(ovResp.Body), &agentsVar)
-	return agentsVar.Agents, nil
+func (p *FenceAgentsService) List() *FenceAgentsServiceListRequest {
+	return &FenceAgentsServiceListRequest{fenceAgentsService: p}
 }
 
 //
@@ -78723,47 +61212,8 @@ type ClustersServiceAddResponse struct {
 func (p *ClustersServiceAddResponse) Cluster() *Cluster {
 	return p.cluster
 }
-
-//
-// Creates a new cluster.
-// This requires the `name`, `cpu.type` and `data_center` attributes. Identify the data center with either the `id`
-// or `name` attributes.
-// [source]
-// ----
-// POST /ovirt-engine/api/clusters
-// ----
-// With a request body like this:
-// [source,xml]
-// ----
-// <cluster>
-//   <name>mycluster</name>
-//   <cpu>
-//     <type>Intel Penryn Family</type>
-//   </cpu>
-//   <data_center id="123"/>
-// </cluster>
-// ----
-//
-func (op *ClustersService) Add(
-	cluster *Cluster,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Cluster,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(cluster, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var clusterVar Cluster
-	xml.Unmarshal([]byte(ovResp.Body), &clusterVar)
-	return &clusterVar, nil
+func (p *ClustersService) Add() *ClustersServiceAddRequest {
+	return &ClustersServiceAddRequest{clustersService: p}
 }
 
 type ClustersServiceListRequest struct {
@@ -78874,46 +61324,8 @@ type ClustersServiceListResponse struct {
 func (p *ClustersServiceListResponse) Clusters() []Cluster {
 	return p.clusters
 }
-
-//
-// This method supports the following parameters:
-// `Max`:: Sets the maximum number of clusters to return. If not specified all the clusters are returned.
-// `Search`:: A query string used to restrict the returned clusters.
-// `CaseSensitive`:: Indicates if the search performed using the `search` parameter should be performed taking case into
-// account. The default value is `true`, which means that case is taken into account. If you want to search
-// ignoring case set it to `false`.
-// `Filter`:: Indicates if the results should be filtered according to the permissions of the user.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *ClustersService) List(
-	caseSensitive bool,
-	filter bool,
-	max int64,
-	search string,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Cluster,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-	query["case_sensitive"] = fmt.Sprintf("%v", caseSensitive)
-	query["filter"] = fmt.Sprintf("%v", filter)
-	query["max"] = fmt.Sprintf("%v", max)
-	query["search"] = fmt.Sprintf("%v", search)
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var clustersVar Clusters
-	xml.Unmarshal([]byte(ovResp.Body), &clustersVar)
-	return clustersVar.Clusters, nil
+func (p *ClustersService) List() *ClustersServiceListRequest {
+	return &ClustersServiceListRequest{clustersService: p}
 }
 
 //
@@ -79042,80 +61454,8 @@ type AssignedPermissionsServiceAddResponse struct {
 func (p *AssignedPermissionsServiceAddResponse) Permission() *Permission {
 	return p.permission
 }
-
-//
-// Assign a new permission to a user or group for specific entity.
-// For example, to assign the `UserVmManager` role to the virtual machine with id `123` to the user with id `456`
-// send a request like this:
-// ....
-// POST /ovirt-engine/api/vms/123/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>UserVmManager</name>
-//   </role>
-//   <user id="456"/>
-// </permission>
-// ----
-// To assign the `SuperUser` role to the system to the user with id `456` send a request like this:
-// ....
-// POST /ovirt-engine/api/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>SuperUser</name>
-//   </role>
-//   <user id="456"/>
-// </permission>
-// ----
-// If you want to assign permission to the group instead of the user please replace the `user` element with the
-// `group` element with proper `id` of the group. For example to assign the `UserRole` role to the cluster with
-// id `123` to the group with id `789` send a request like this:
-// ....
-// POST /ovirt-engine/api/clusters/123/permissions
-// ....
-// With a request body like this:
-// [source,xml]
-// ----
-// <permission>
-//   <role>
-//     <name>UserRole</name>
-//   </role>
-//   <group id="789"/>
-// </permission>
-// ----
-// This method supports the following parameters:
-// `Permission`:: The permission.
-// `headers`:: Additional HTTP headers.
-// `query`:: Additional URL query parameters.
-// `wait`:: If `True` wait for the response.
-//
-func (op *AssignedPermissionsService) Add(
-	permission *Permission,
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	*Permission,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and get the response
-	ovResp, err := op.internalAdd(permission, headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permissionVar Permission
-	xml.Unmarshal([]byte(ovResp.Body), &permissionVar)
-	return &permissionVar, nil
+func (p *AssignedPermissionsService) Add() *AssignedPermissionsServiceAddRequest {
+	return &AssignedPermissionsServiceAddRequest{assignedPermissionsService: p}
 }
 
 type AssignedPermissionsServiceListRequest struct {
@@ -79194,48 +61534,8 @@ type AssignedPermissionsServiceListResponse struct {
 func (p *AssignedPermissionsServiceListResponse) Permissions() []Permission {
 	return p.permissions
 }
-
-//
-// List all the permissions of the specific entity.
-// For example to list all the permissions of the cluster with id `123` send a request like this:
-// ....
-// GET /ovirt-engine/api/clusters/123/permissions
-// ....
-// [source,xml]
-// ----
-// <permissions>
-//   <permission id="456">
-//     <cluster id="123"/>
-//     <role id="789"/>
-//     <user id="451"/>
-//   </permission>
-//   <permission id="654">
-//     <cluster id="123"/>
-//     <role id="789"/>
-//     <group id="127"/>
-//   </permission>
-// </permissions>
-// ----
-//
-func (op *AssignedPermissionsService) List(
-	headers map[string]string,
-	query map[string]string,
-	wait bool) (
-	[]Permission,
-	error) {
-	// Build the URL:
-	if query == nil {
-		query = make(map[string]string)
-	}
-
-	// Send the request and wait for the response:
-	ovResp, err := op.internalGet(headers, query, wait)
-	if err != nil {
-		return nil, err
-	}
-	var permissionsVar Permissions
-	xml.Unmarshal([]byte(ovResp.Body), &permissionsVar)
-	return permissionsVar.Permissions, nil
+func (p *AssignedPermissionsService) List() *AssignedPermissionsServiceListRequest {
+	return &AssignedPermissionsServiceListRequest{assignedPermissionsService: p}
 }
 
 //
