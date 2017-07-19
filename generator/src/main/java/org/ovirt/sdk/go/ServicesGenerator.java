@@ -570,7 +570,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("req.Header.Add(\"Version\", \"4\")");
         buffer.addLine("req.Header.Add(\"Content-Type\", \"application/xml\")");
         buffer.addLine("req.Header.Add(\"Accept\", \"application/xml\")");
-        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection.username, p.%1$s.Connection.username)",
+        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection.username, p.%1$s.Connection.password)",
             serviceAsPrivateMemberName);
         buffer.addCommentLine("Generate base64(username:password)");
         buffer.addImport("encoding/base64");
