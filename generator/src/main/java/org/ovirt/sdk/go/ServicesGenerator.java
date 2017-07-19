@@ -423,31 +423,40 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateResponseParameterParseImplementation(Parameter outParameter, Service service) {
         GoTypeReference outParamTypeReference = goNames.getTypeReference(outParameter.getType());
-        String outParamNameAsVar = goNames.getVariableStyleName(outParameter.getName());
+        Name outParaName = outParameter.getName();
+        String outParamNameAsVar = goNames.getVariableStyleName(outParaName);
         Model model = outParameter.getType().getModel();
-
+        Method method = outParameter.getDeclaringMethod();
         Type outParameterType = outParameter.getType();
+        String response = getResponseClassName(method, service);
+        buffer.addLine("var %1$s %2$s", goNames.getPrivateMemberStyleName(response), response);
         if (outParameterType instanceof PrimitiveType) {
             if (outParameterType == model.getBooleanType()) {
                 buffer.addImport("strconv");
-                buffer.addLine("return strconv.ParseBool(string(respBodyBytes))");
+                buffer.addLine("result := strconv.ParseBool(string(respBodyBytes))");
             } else if (outParameterType == model.getIntegerType()) {
                 buffer.addImport("strconv");
-                buffer.addLine("return strconv.ParseInt(string(respBodyBytes), 10, 64)");
+                buffer.addLine("result := strconv.ParseInt(string(respBodyBytes), 10, 64)");
             } else if (outParameterType == model.getDecimalType()) {
                 buffer.addImport("strconv");
-                buffer.addLine("return srconv.ParseFloat(string(respBodyBytes), 10, 64");
+                buffer.addLine("result := srconv.ParseFloat(string(respBodyBytes), 10, 64");
             } else if (outParameterType == model.getStringType()) {
-                buffer.addLine("return string(respBodyBytes), nil");
+                buffer.addLine("result := string(respBodyBytes)");
             } else {
                 throw new IllegalArgumentException(
                     "XMLParsing: Don't know how to build reference for primitive type \"" + outParameterType + "\""
                 );
             }
+            buffer.addLine("%1$s.%2$s = result",
+                goNames.getPrivateMemberStyleName(response),
+                goNames.getPrivateMemberStyleName(outParaName));
         } else if (outParameterType instanceof StructType) {
-            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameter.getType()).getClassName());
+            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameterType).getClassName());
             this.generateResponseParameterXmlUnmarshal(outParameter);
-            buffer.addLine("return &%1$s, nil", outParamNameAsVar);
+            buffer.addLine("%1$s.%2$s = &%3$s",
+                goNames.getPrivateMemberStyleName(response),
+                goNames.getPrivateMemberStyleName(outParaName),
+                outParamNameAsVar);
         } else if (outParameterType instanceof ListType) {
             ListType outParamListType = (ListType) outParameterType;
             if (outParamListType.getElementType() instanceof StructType) {
@@ -457,7 +466,9 @@ public class ServicesGenerator implements GoGenerator {
 
                 buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamListTypeStr);
                 generateResponseParameterXmlUnmarshal(outParameter);
-                buffer.addLine("return %1$s, nil",
+                buffer.addLine("%1$s.%2$s = %3$s",
+                    goNames.getPrivateMemberStyleName(response),
+                    goNames.getPrivateMemberStyleName(outParaName),
                     String.format("%s.%s", outParamNameAsVar, outParamListAttriTypeStr));
             } else if (outParamListType.getElementType() == model.getStringType()) {
                 buffer.addLine("return []string{string(respBodyBytes)}, nil");
@@ -467,6 +478,7 @@ public class ServicesGenerator implements GoGenerator {
                 );
             }
         }
+        buffer.addLine("return &%1$s, nil", goNames.getPrivateMemberStyleName(response));
     }
 
     private void generateResponseParameterXmlUnmarshal(Parameter outParameter) {

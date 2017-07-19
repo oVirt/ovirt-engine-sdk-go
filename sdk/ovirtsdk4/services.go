@@ -151,9 +151,11 @@ func (p *VnicProfilesServiceAddRequest) Send() (*VnicProfilesServiceAddResponse,
 	if err != nil {
 		return nil, err
 	}
+	var vnicProfilesServiceAddResponse VnicProfilesServiceAddResponse
 	var profileVar VnicProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	vnicProfilesServiceAddResponse.profile = &profileVar
+	return &vnicProfilesServiceAddResponse, nil
 }
 
 type VnicProfilesServiceAddResponse struct {
@@ -715,9 +717,11 @@ func (p *TemplateNicsServiceAddRequest) Send() (*TemplateNicsServiceAddResponse,
 	if err != nil {
 		return nil, err
 	}
+	var templateNicsServiceAddResponse TemplateNicsServiceAddResponse
 	var nicVar Nic
 	xml.Unmarshal(respBodyBytes, &nicVar)
-	return &nicVar, nil
+	templateNicsServiceAddResponse.nic = &nicVar
+	return &templateNicsServiceAddResponse, nil
 }
 
 type TemplateNicsServiceAddResponse struct {
@@ -1152,9 +1156,11 @@ func (p *BookmarksServiceAddRequest) Send() (*BookmarksServiceAddResponse, error
 	if err != nil {
 		return nil, err
 	}
+	var bookmarksServiceAddResponse BookmarksServiceAddResponse
 	var bookmarkVar Bookmark
 	xml.Unmarshal(respBodyBytes, &bookmarkVar)
-	return &bookmarkVar, nil
+	bookmarksServiceAddResponse.bookmark = &bookmarkVar
+	return &bookmarksServiceAddResponse, nil
 }
 
 type BookmarksServiceAddResponse struct {
@@ -1405,9 +1411,11 @@ func (p *NetworkAttachmentsServiceAddRequest) Send() (*NetworkAttachmentsService
 	if err != nil {
 		return nil, err
 	}
+	var networkAttachmentsServiceAddResponse NetworkAttachmentsServiceAddResponse
 	var attachmentVar NetworkAttachment
 	xml.Unmarshal(respBodyBytes, &attachmentVar)
-	return &attachmentVar, nil
+	networkAttachmentsServiceAddResponse.attachment = &attachmentVar
+	return &networkAttachmentsServiceAddResponse, nil
 }
 
 type NetworkAttachmentsServiceAddResponse struct {
@@ -1810,9 +1818,11 @@ func (p *SystemPermissionsServiceAddRequest) Send() (*SystemPermissionsServiceAd
 	if err != nil {
 		return nil, err
 	}
+	var systemPermissionsServiceAddResponse SystemPermissionsServiceAddResponse
 	var permissionVar Permission
 	xml.Unmarshal(respBodyBytes, &permissionVar)
-	return &permissionVar, nil
+	systemPermissionsServiceAddResponse.permission = &permissionVar
+	return &systemPermissionsServiceAddResponse, nil
 }
 
 type SystemPermissionsServiceAddResponse struct {
@@ -2274,9 +2284,11 @@ func (p *AssignedVnicProfilesServiceAddRequest) Send() (*AssignedVnicProfilesSer
 	if err != nil {
 		return nil, err
 	}
+	var assignedVnicProfilesServiceAddResponse AssignedVnicProfilesServiceAddResponse
 	var profileVar VnicProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	assignedVnicProfilesServiceAddResponse.profile = &profileVar
+	return &assignedVnicProfilesServiceAddResponse, nil
 }
 
 type AssignedVnicProfilesServiceAddResponse struct {
@@ -2489,9 +2501,11 @@ func (p *QuotaClusterLimitsServiceAddRequest) Send() (*QuotaClusterLimitsService
 	if err != nil {
 		return nil, err
 	}
+	var quotaClusterLimitsServiceAddResponse QuotaClusterLimitsServiceAddResponse
 	var limitVar QuotaClusterLimit
 	xml.Unmarshal(respBodyBytes, &limitVar)
-	return &limitVar, nil
+	quotaClusterLimitsServiceAddResponse.limit = &limitVar
+	return &quotaClusterLimitsServiceAddResponse, nil
 }
 
 type QuotaClusterLimitsServiceAddResponse struct {
@@ -2708,9 +2722,11 @@ func (p *NetworksServiceAddRequest) Send() (*NetworksServiceAddResponse, error) 
 	if err != nil {
 		return nil, err
 	}
+	var networksServiceAddResponse NetworksServiceAddResponse
 	var networkVar Network
 	xml.Unmarshal(respBodyBytes, &networkVar)
-	return &networkVar, nil
+	networksServiceAddResponse.network = &networkVar
+	return &networksServiceAddResponse, nil
 }
 
 type NetworksServiceAddResponse struct {
@@ -2996,9 +3012,11 @@ func (p *AffinityGroupsServiceAddRequest) Send() (*AffinityGroupsServiceAddRespo
 	if err != nil {
 		return nil, err
 	}
+	var affinityGroupsServiceAddResponse AffinityGroupsServiceAddResponse
 	var groupVar AffinityGroup
 	xml.Unmarshal(respBodyBytes, &groupVar)
-	return &groupVar, nil
+	affinityGroupsServiceAddResponse.group = &groupVar
+	return &affinityGroupsServiceAddResponse, nil
 }
 
 type AffinityGroupsServiceAddResponse struct {
@@ -3836,9 +3854,11 @@ func (p *DiskProfilesServiceAddRequest) Send() (*DiskProfilesServiceAddResponse,
 	if err != nil {
 		return nil, err
 	}
+	var diskProfilesServiceAddResponse DiskProfilesServiceAddResponse
 	var profileVar DiskProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	diskProfilesServiceAddResponse.profile = &profileVar
+	return &diskProfilesServiceAddResponse, nil
 }
 
 type DiskProfilesServiceAddResponse struct {
@@ -4279,9 +4299,11 @@ func (p *CpuProfilesServiceAddRequest) Send() (*CpuProfilesServiceAddResponse, e
 	if err != nil {
 		return nil, err
 	}
+	var cpuProfilesServiceAddResponse CpuProfilesServiceAddResponse
 	var profileVar CpuProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	cpuProfilesServiceAddResponse.profile = &profileVar
+	return &cpuProfilesServiceAddResponse, nil
 }
 
 type CpuProfilesServiceAddResponse struct {
@@ -4494,9 +4516,11 @@ func (p *MacPoolsServiceAddRequest) Send() (*MacPoolsServiceAddResponse, error) 
 	if err != nil {
 		return nil, err
 	}
+	var macPoolsServiceAddResponse MacPoolsServiceAddResponse
 	var poolVar MacPool
 	xml.Unmarshal(respBodyBytes, &poolVar)
-	return &poolVar, nil
+	macPoolsServiceAddResponse.pool = &poolVar
+	return &macPoolsServiceAddResponse, nil
 }
 
 type MacPoolsServiceAddResponse struct {
@@ -4733,9 +4757,11 @@ func (p *AffinityGroupVmsServiceAddRequest) Send() (*AffinityGroupVmsServiceAddR
 	if err != nil {
 		return nil, err
 	}
+	var affinityGroupVmsServiceAddResponse AffinityGroupVmsServiceAddResponse
 	var vmVar Vm
 	xml.Unmarshal(respBodyBytes, &vmVar)
-	return &vmVar, nil
+	affinityGroupVmsServiceAddResponse.vm = &vmVar
+	return &affinityGroupVmsServiceAddResponse, nil
 }
 
 type AffinityGroupVmsServiceAddResponse struct {
@@ -5171,9 +5197,11 @@ func (p *TagsServiceAddRequest) Send() (*TagsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var tagsServiceAddResponse TagsServiceAddResponse
 	var tagVar Tag
 	xml.Unmarshal(respBodyBytes, &tagVar)
-	return &tagVar, nil
+	tagsServiceAddResponse.tag = &tagVar
+	return &tagsServiceAddResponse, nil
 }
 
 type TagsServiceAddResponse struct {
@@ -5530,9 +5558,11 @@ func (p *EventsServiceAddRequest) Send() (*EventsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var eventsServiceAddResponse EventsServiceAddResponse
 	var eventVar Event
 	xml.Unmarshal(respBodyBytes, &eventVar)
-	return &eventVar, nil
+	eventsServiceAddResponse.event = &eventVar
+	return &eventsServiceAddResponse, nil
 }
 
 type EventsServiceAddResponse struct {
@@ -6481,9 +6511,11 @@ func (p *AttachedStorageDomainsServiceAddRequest) Send() (*AttachedStorageDomain
 	if err != nil {
 		return nil, err
 	}
+	var attachedStorageDomainsServiceAddResponse AttachedStorageDomainsServiceAddResponse
 	var storageDomainVar StorageDomain
 	xml.Unmarshal(respBodyBytes, &storageDomainVar)
-	return &storageDomainVar, nil
+	attachedStorageDomainsServiceAddResponse.storageDomain = &storageDomainVar
+	return &attachedStorageDomainsServiceAddResponse, nil
 }
 
 type AttachedStorageDomainsServiceAddResponse struct {
@@ -8319,9 +8351,11 @@ func (p *SchedulingPoliciesServiceAddRequest) Send() (*SchedulingPoliciesService
 	if err != nil {
 		return nil, err
 	}
+	var schedulingPoliciesServiceAddResponse SchedulingPoliciesServiceAddResponse
 	var policyVar SchedulingPolicy
 	xml.Unmarshal(respBodyBytes, &policyVar)
-	return &policyVar, nil
+	schedulingPoliciesServiceAddResponse.policy = &policyVar
+	return &schedulingPoliciesServiceAddResponse, nil
 }
 
 type SchedulingPoliciesServiceAddResponse struct {
@@ -8542,9 +8576,11 @@ func (p *WeightsServiceAddRequest) Send() (*WeightsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var weightsServiceAddResponse WeightsServiceAddResponse
 	var weightVar Weight
 	xml.Unmarshal(respBodyBytes, &weightVar)
-	return &weightVar, nil
+	weightsServiceAddResponse.weight = &weightVar
+	return &weightsServiceAddResponse, nil
 }
 
 type WeightsServiceAddResponse struct {
@@ -8766,9 +8802,11 @@ func (p *VmHostDevicesServiceAddRequest) Send() (*VmHostDevicesServiceAddRespons
 	if err != nil {
 		return nil, err
 	}
+	var vmHostDevicesServiceAddResponse VmHostDevicesServiceAddResponse
 	var deviceVar HostDevice
 	xml.Unmarshal(respBodyBytes, &deviceVar)
-	return &deviceVar, nil
+	vmHostDevicesServiceAddResponse.device = &deviceVar
+	return &vmHostDevicesServiceAddResponse, nil
 }
 
 type VmHostDevicesServiceAddResponse struct {
@@ -9332,9 +9370,11 @@ func (p *ImageTransfersServiceAddRequest) Send() (*ImageTransfersServiceAddRespo
 	if err != nil {
 		return nil, err
 	}
+	var imageTransfersServiceAddResponse ImageTransfersServiceAddResponse
 	var imageTransferVar ImageTransfer
 	xml.Unmarshal(respBodyBytes, &imageTransferVar)
-	return &imageTransferVar, nil
+	imageTransfersServiceAddResponse.imageTransfer = &imageTransferVar
+	return &imageTransfersServiceAddResponse, nil
 }
 
 type ImageTransfersServiceAddResponse struct {
@@ -10092,9 +10132,11 @@ func (p *ExternalVmImportsServiceAddRequest) Send() (*ExternalVmImportsServiceAd
 	if err != nil {
 		return nil, err
 	}
+	var externalVmImportsServiceAddResponse ExternalVmImportsServiceAddResponse
 	var import_Var ExternalVmImport
 	xml.Unmarshal(respBodyBytes, &import_Var)
-	return &import_Var, nil
+	externalVmImportsServiceAddResponse.import_ = &import_Var
+	return &externalVmImportsServiceAddResponse, nil
 }
 
 type ExternalVmImportsServiceAddResponse struct {
@@ -11078,9 +11120,11 @@ func (p *OpenstackImageProvidersServiceAddRequest) Send() (*OpenstackImageProvid
 	if err != nil {
 		return nil, err
 	}
+	var openstackImageProvidersServiceAddResponse OpenstackImageProvidersServiceAddResponse
 	var providerVar OpenStackImageProvider
 	xml.Unmarshal(respBodyBytes, &providerVar)
-	return &providerVar, nil
+	openstackImageProvidersServiceAddResponse.provider = &providerVar
+	return &openstackImageProvidersServiceAddResponse, nil
 }
 
 type OpenstackImageProvidersServiceAddResponse struct {
@@ -11602,9 +11646,11 @@ func (p *OpenstackNetworkProvidersServiceAddRequest) Send() (*OpenstackNetworkPr
 	if err != nil {
 		return nil, err
 	}
+	var openstackNetworkProvidersServiceAddResponse OpenstackNetworkProvidersServiceAddResponse
 	var providerVar OpenStackNetworkProvider
 	xml.Unmarshal(respBodyBytes, &providerVar)
-	return &providerVar, nil
+	openstackNetworkProvidersServiceAddResponse.provider = &providerVar
+	return &openstackNetworkProvidersServiceAddResponse, nil
 }
 
 type OpenstackNetworkProvidersServiceAddResponse struct {
@@ -11820,9 +11866,11 @@ func (p *OpenstackVolumeProvidersServiceAddRequest) Send() (*OpenstackVolumeProv
 	if err != nil {
 		return nil, err
 	}
+	var openstackVolumeProvidersServiceAddResponse OpenstackVolumeProvidersServiceAddResponse
 	var providerVar OpenStackVolumeProvider
 	xml.Unmarshal(respBodyBytes, &providerVar)
-	return &providerVar, nil
+	openstackVolumeProvidersServiceAddResponse.provider = &providerVar
+	return &openstackVolumeProvidersServiceAddResponse, nil
 }
 
 type OpenstackVolumeProvidersServiceAddResponse struct {
@@ -12616,9 +12664,11 @@ func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Send() (*OpenstackV
 	if err != nil {
 		return nil, err
 	}
+	var openstackVolumeAuthenticationKeysServiceAddResponse OpenstackVolumeAuthenticationKeysServiceAddResponse
 	var keyVar OpenstackVolumeAuthenticationKey
 	xml.Unmarshal(respBodyBytes, &keyVar)
-	return &keyVar, nil
+	openstackVolumeAuthenticationKeysServiceAddResponse.key = &keyVar
+	return &openstackVolumeAuthenticationKeysServiceAddResponse, nil
 }
 
 type OpenstackVolumeAuthenticationKeysServiceAddResponse struct {
@@ -13248,9 +13298,11 @@ func (p *OpenstackSubnetsServiceAddRequest) Send() (*OpenstackSubnetsServiceAddR
 	if err != nil {
 		return nil, err
 	}
+	var openstackSubnetsServiceAddResponse OpenstackSubnetsServiceAddResponse
 	var subnetVar OpenStackSubnet
 	xml.Unmarshal(respBodyBytes, &subnetVar)
-	return &subnetVar, nil
+	openstackSubnetsServiceAddResponse.subnet = &subnetVar
+	return &openstackSubnetsServiceAddResponse, nil
 }
 
 type OpenstackSubnetsServiceAddResponse struct {
@@ -14309,9 +14361,11 @@ func (p *VmWatchdogsServiceAddRequest) Send() (*VmWatchdogsServiceAddResponse, e
 	if err != nil {
 		return nil, err
 	}
+	var vmWatchdogsServiceAddResponse VmWatchdogsServiceAddResponse
 	var watchdogVar Watchdog
 	xml.Unmarshal(respBodyBytes, &watchdogVar)
-	return &watchdogVar, nil
+	vmWatchdogsServiceAddResponse.watchdog = &watchdogVar
+	return &vmWatchdogsServiceAddResponse, nil
 }
 
 type VmWatchdogsServiceAddResponse struct {
@@ -16589,9 +16643,11 @@ func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Send() (*InstanceTypeGra
 	if err != nil {
 		return nil, err
 	}
+	var instanceTypeGraphicsConsolesServiceAddResponse InstanceTypeGraphicsConsolesServiceAddResponse
 	var consoleVar GraphicsConsole
 	xml.Unmarshal(respBodyBytes, &consoleVar)
-	return &consoleVar, nil
+	instanceTypeGraphicsConsolesServiceAddResponse.console = &consoleVar
+	return &instanceTypeGraphicsConsolesServiceAddResponse, nil
 }
 
 type InstanceTypeGraphicsConsolesServiceAddResponse struct {
@@ -17806,9 +17862,11 @@ func (p *TemplateGraphicsConsolesServiceAddRequest) Send() (*TemplateGraphicsCon
 	if err != nil {
 		return nil, err
 	}
+	var templateGraphicsConsolesServiceAddResponse TemplateGraphicsConsolesServiceAddResponse
 	var consoleVar GraphicsConsole
 	xml.Unmarshal(respBodyBytes, &consoleVar)
-	return &consoleVar, nil
+	templateGraphicsConsolesServiceAddResponse.console = &consoleVar
+	return &templateGraphicsConsolesServiceAddResponse, nil
 }
 
 type TemplateGraphicsConsolesServiceAddResponse struct {
@@ -18377,9 +18435,11 @@ func (p *QuotasServiceAddRequest) Send() (*QuotasServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var quotasServiceAddResponse QuotasServiceAddResponse
 	var quotaVar Quota
 	xml.Unmarshal(respBodyBytes, &quotaVar)
-	return &quotaVar, nil
+	quotasServiceAddResponse.quota = &quotaVar
+	return &quotasServiceAddResponse, nil
 }
 
 type QuotasServiceAddResponse struct {
@@ -20351,9 +20411,11 @@ func (p *NetworkLabelsServiceAddRequest) Send() (*NetworkLabelsServiceAddRespons
 	if err != nil {
 		return nil, err
 	}
+	var networkLabelsServiceAddResponse NetworkLabelsServiceAddResponse
 	var labelVar NetworkLabel
 	xml.Unmarshal(respBodyBytes, &labelVar)
-	return &labelVar, nil
+	networkLabelsServiceAddResponse.label = &labelVar
+	return &networkLabelsServiceAddResponse, nil
 }
 
 type NetworkLabelsServiceAddResponse struct {
@@ -21276,9 +21338,11 @@ func (p *DataCentersServiceAddRequest) Send() (*DataCentersServiceAddResponse, e
 	if err != nil {
 		return nil, err
 	}
+	var dataCentersServiceAddResponse DataCentersServiceAddResponse
 	var dataCenterVar DataCenter
 	xml.Unmarshal(respBodyBytes, &dataCenterVar)
-	return &dataCenterVar, nil
+	dataCentersServiceAddResponse.dataCenter = &dataCenterVar
+	return &dataCentersServiceAddResponse, nil
 }
 
 type DataCentersServiceAddResponse struct {
@@ -21684,9 +21748,11 @@ func (p *QuotaStorageLimitsServiceAddRequest) Send() (*QuotaStorageLimitsService
 	if err != nil {
 		return nil, err
 	}
+	var quotaStorageLimitsServiceAddResponse QuotaStorageLimitsServiceAddResponse
 	var limitVar QuotaStorageLimit
 	xml.Unmarshal(respBodyBytes, &limitVar)
-	return &limitVar, nil
+	quotaStorageLimitsServiceAddResponse.limit = &limitVar
+	return &quotaStorageLimitsServiceAddResponse, nil
 }
 
 type QuotaStorageLimitsServiceAddResponse struct {
@@ -25417,9 +25483,11 @@ func (p *AssignedTagsServiceAddRequest) Send() (*AssignedTagsServiceAddResponse,
 	if err != nil {
 		return nil, err
 	}
+	var assignedTagsServiceAddResponse AssignedTagsServiceAddResponse
 	var tagVar Tag
 	xml.Unmarshal(respBodyBytes, &tagVar)
-	return &tagVar, nil
+	assignedTagsServiceAddResponse.tag = &tagVar
+	return &assignedTagsServiceAddResponse, nil
 }
 
 type AssignedTagsServiceAddResponse struct {
@@ -26022,9 +26090,11 @@ func (p *StepsServiceAddRequest) Send() (*StepsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var stepsServiceAddResponse StepsServiceAddResponse
 	var stepVar Step
 	xml.Unmarshal(respBodyBytes, &stepVar)
-	return &stepVar, nil
+	stepsServiceAddResponse.step = &stepVar
+	return &stepsServiceAddResponse, nil
 }
 
 type StepsServiceAddResponse struct {
@@ -26443,9 +26513,11 @@ func (p *RolesServiceAddRequest) Send() (*RolesServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var rolesServiceAddResponse RolesServiceAddResponse
 	var roleVar Role
 	xml.Unmarshal(respBodyBytes, &roleVar)
-	return &roleVar, nil
+	rolesServiceAddResponse.role = &roleVar
+	return &rolesServiceAddResponse, nil
 }
 
 type RolesServiceAddResponse struct {
@@ -27956,9 +28028,11 @@ func (p *SnapshotsServiceAddRequest) Send() (*SnapshotsServiceAddResponse, error
 	if err != nil {
 		return nil, err
 	}
+	var snapshotsServiceAddResponse SnapshotsServiceAddResponse
 	var snapshotVar Snapshot
 	xml.Unmarshal(respBodyBytes, &snapshotVar)
-	return &snapshotVar, nil
+	snapshotsServiceAddResponse.snapshot = &snapshotVar
+	return &snapshotsServiceAddResponse, nil
 }
 
 type SnapshotsServiceAddResponse struct {
@@ -28474,9 +28548,11 @@ func (p *InstanceTypeNicsServiceAddRequest) Send() (*InstanceTypeNicsServiceAddR
 	if err != nil {
 		return nil, err
 	}
+	var instanceTypeNicsServiceAddResponse InstanceTypeNicsServiceAddResponse
 	var nicVar Nic
 	xml.Unmarshal(respBodyBytes, &nicVar)
-	return &nicVar, nil
+	instanceTypeNicsServiceAddResponse.nic = &nicVar
+	return &instanceTypeNicsServiceAddResponse, nil
 }
 
 type InstanceTypeNicsServiceAddResponse struct {
@@ -29021,9 +29097,11 @@ func (p *IscsiBondsServiceAddRequest) Send() (*IscsiBondsServiceAddResponse, err
 	if err != nil {
 		return nil, err
 	}
+	var iscsiBondsServiceAddResponse IscsiBondsServiceAddResponse
 	var bondVar IscsiBond
 	xml.Unmarshal(respBodyBytes, &bondVar)
-	return &bondVar, nil
+	iscsiBondsServiceAddResponse.bond = &bondVar
+	return &iscsiBondsServiceAddResponse, nil
 }
 
 type IscsiBondsServiceAddResponse struct {
@@ -29258,9 +29336,11 @@ func (p *UsersServiceAddRequest) Send() (*UsersServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var usersServiceAddResponse UsersServiceAddResponse
 	var userVar User
 	xml.Unmarshal(respBodyBytes, &userVar)
-	return &userVar, nil
+	usersServiceAddResponse.user = &userVar
+	return &usersServiceAddResponse, nil
 }
 
 type UsersServiceAddResponse struct {
@@ -29548,9 +29628,11 @@ func (p *GroupsServiceAddRequest) Send() (*GroupsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var groupsServiceAddResponse GroupsServiceAddResponse
 	var groupVar Group
 	xml.Unmarshal(respBodyBytes, &groupVar)
-	return &groupVar, nil
+	groupsServiceAddResponse.group = &groupVar
+	return &groupsServiceAddResponse, nil
 }
 
 type GroupsServiceAddResponse struct {
@@ -29924,9 +30006,11 @@ func (p *SshPublicKeysServiceAddRequest) Send() (*SshPublicKeysServiceAddRespons
 	if err != nil {
 		return nil, err
 	}
+	var sshPublicKeysServiceAddResponse SshPublicKeysServiceAddResponse
 	var keyVar SshPublicKey
 	xml.Unmarshal(respBodyBytes, &keyVar)
-	return &keyVar, nil
+	sshPublicKeysServiceAddResponse.key = &keyVar
+	return &sshPublicKeysServiceAddResponse, nil
 }
 
 type SshPublicKeysServiceAddResponse struct {
@@ -31772,9 +31856,11 @@ func (p *AssignedCpuProfilesServiceAddRequest) Send() (*AssignedCpuProfilesServi
 	if err != nil {
 		return nil, err
 	}
+	var assignedCpuProfilesServiceAddResponse AssignedCpuProfilesServiceAddResponse
 	var profileVar CpuProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	assignedCpuProfilesServiceAddResponse.profile = &profileVar
+	return &assignedCpuProfilesServiceAddResponse, nil
 }
 
 type AssignedCpuProfilesServiceAddResponse struct {
@@ -31987,9 +32073,11 @@ func (p *StorageServerConnectionExtensionsServiceAddRequest) Send() (*StorageSer
 	if err != nil {
 		return nil, err
 	}
+	var storageServerConnectionExtensionsServiceAddResponse StorageServerConnectionExtensionsServiceAddResponse
 	var extensionVar StorageConnectionExtension
 	xml.Unmarshal(respBodyBytes, &extensionVar)
-	return &extensionVar, nil
+	storageServerConnectionExtensionsServiceAddResponse.extension = &extensionVar
+	return &storageServerConnectionExtensionsServiceAddResponse, nil
 }
 
 type StorageServerConnectionExtensionsServiceAddResponse struct {
@@ -32944,9 +33032,11 @@ func (p *VmsServiceAddRequest) Send() (*VmsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var vmsServiceAddResponse VmsServiceAddResponse
 	var vmVar Vm
 	xml.Unmarshal(respBodyBytes, &vmVar)
-	return &vmVar, nil
+	vmsServiceAddResponse.vm = &vmVar
+	return &vmsServiceAddResponse, nil
 }
 
 type VmsServiceAddResponse struct {
@@ -33708,9 +33798,11 @@ func (p *VmPoolsServiceAddRequest) Send() (*VmPoolsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var vmPoolsServiceAddResponse VmPoolsServiceAddResponse
 	var poolVar VmPool
 	xml.Unmarshal(respBodyBytes, &poolVar)
-	return &poolVar, nil
+	vmPoolsServiceAddResponse.pool = &poolVar
+	return &vmPoolsServiceAddResponse, nil
 }
 
 type VmPoolsServiceAddResponse struct {
@@ -33986,9 +34078,11 @@ func (p *AssignedDiskProfilesServiceAddRequest) Send() (*AssignedDiskProfilesSer
 	if err != nil {
 		return nil, err
 	}
+	var assignedDiskProfilesServiceAddResponse AssignedDiskProfilesServiceAddResponse
 	var profileVar DiskProfile
 	xml.Unmarshal(respBodyBytes, &profileVar)
-	return &profileVar, nil
+	assignedDiskProfilesServiceAddResponse.profile = &profileVar
+	return &assignedDiskProfilesServiceAddResponse, nil
 }
 
 type AssignedDiskProfilesServiceAddResponse struct {
@@ -34415,9 +34509,11 @@ func (p *AttachedStorageDomainDisksServiceAddRequest) Send() (*AttachedStorageDo
 	if err != nil {
 		return nil, err
 	}
+	var attachedStorageDomainDisksServiceAddResponse AttachedStorageDomainDisksServiceAddResponse
 	var diskVar Disk
 	xml.Unmarshal(respBodyBytes, &diskVar)
-	return &diskVar, nil
+	attachedStorageDomainDisksServiceAddResponse.disk = &diskVar
+	return &attachedStorageDomainDisksServiceAddResponse, nil
 }
 
 type AttachedStorageDomainDisksServiceAddResponse struct {
@@ -34743,9 +34839,11 @@ func (p *VmDisksServiceAddRequest) Send() (*VmDisksServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var vmDisksServiceAddResponse VmDisksServiceAddResponse
 	var diskVar Disk
 	xml.Unmarshal(respBodyBytes, &diskVar)
-	return &diskVar, nil
+	vmDisksServiceAddResponse.disk = &diskVar
+	return &vmDisksServiceAddResponse, nil
 }
 
 type VmDisksServiceAddResponse struct {
@@ -34961,9 +35059,11 @@ func (p *DiskAttachmentsServiceAddRequest) Send() (*DiskAttachmentsServiceAddRes
 	if err != nil {
 		return nil, err
 	}
+	var diskAttachmentsServiceAddResponse DiskAttachmentsServiceAddResponse
 	var attachmentVar DiskAttachment
 	xml.Unmarshal(respBodyBytes, &attachmentVar)
-	return &attachmentVar, nil
+	diskAttachmentsServiceAddResponse.attachment = &attachmentVar
+	return &diskAttachmentsServiceAddResponse, nil
 }
 
 type DiskAttachmentsServiceAddResponse struct {
@@ -35788,9 +35888,11 @@ func (p *StorageDomainsServiceAddRequest) Send() (*StorageDomainsServiceAddRespo
 	if err != nil {
 		return nil, err
 	}
+	var storageDomainsServiceAddResponse StorageDomainsServiceAddResponse
 	var storageDomainVar StorageDomain
 	xml.Unmarshal(respBodyBytes, &storageDomainVar)
-	return &storageDomainVar, nil
+	storageDomainsServiceAddResponse.storageDomain = &storageDomainVar
+	return &storageDomainsServiceAddResponse, nil
 }
 
 type StorageDomainsServiceAddResponse struct {
@@ -36236,9 +36338,11 @@ func (p *InstanceTypesServiceAddRequest) Send() (*InstanceTypesServiceAddRespons
 	if err != nil {
 		return nil, err
 	}
+	var instanceTypesServiceAddResponse InstanceTypesServiceAddResponse
 	var instanceTypeVar InstanceType
 	xml.Unmarshal(respBodyBytes, &instanceTypeVar)
-	return &instanceTypeVar, nil
+	instanceTypesServiceAddResponse.instanceType = &instanceTypeVar
+	return &instanceTypesServiceAddResponse, nil
 }
 
 type InstanceTypesServiceAddResponse struct {
@@ -36550,9 +36654,11 @@ func (p *StorageDomainServerConnectionsServiceAddRequest) Send() (*StorageDomain
 	if err != nil {
 		return nil, err
 	}
+	var storageDomainServerConnectionsServiceAddResponse StorageDomainServerConnectionsServiceAddResponse
 	var connectionVar StorageConnection
 	xml.Unmarshal(respBodyBytes, &connectionVar)
-	return &connectionVar, nil
+	storageDomainServerConnectionsServiceAddResponse.connection = &connectionVar
+	return &storageDomainServerConnectionsServiceAddResponse, nil
 }
 
 type StorageDomainServerConnectionsServiceAddResponse struct {
@@ -37631,9 +37737,11 @@ func (p *VmNumaNodesServiceAddRequest) Send() (*VmNumaNodesServiceAddResponse, e
 	if err != nil {
 		return nil, err
 	}
+	var vmNumaNodesServiceAddResponse VmNumaNodesServiceAddResponse
 	var nodeVar VirtualNumaNode
 	xml.Unmarshal(respBodyBytes, &nodeVar)
-	return &nodeVar, nil
+	vmNumaNodesServiceAddResponse.node = &nodeVar
+	return &vmNumaNodesServiceAddResponse, nil
 }
 
 type VmNumaNodesServiceAddResponse struct {
@@ -37870,9 +37978,11 @@ func (p *TemplateWatchdogsServiceAddRequest) Send() (*TemplateWatchdogsServiceAd
 	if err != nil {
 		return nil, err
 	}
+	var templateWatchdogsServiceAddResponse TemplateWatchdogsServiceAddResponse
 	var watchdogVar Watchdog
 	xml.Unmarshal(respBodyBytes, &watchdogVar)
-	return &watchdogVar, nil
+	templateWatchdogsServiceAddResponse.watchdog = &watchdogVar
+	return &templateWatchdogsServiceAddResponse, nil
 }
 
 type TemplateWatchdogsServiceAddResponse struct {
@@ -38837,9 +38947,11 @@ func (p *VmGraphicsConsolesServiceAddRequest) Send() (*VmGraphicsConsolesService
 	if err != nil {
 		return nil, err
 	}
+	var vmGraphicsConsolesServiceAddResponse VmGraphicsConsolesServiceAddResponse
 	var consoleVar GraphicsConsole
 	xml.Unmarshal(respBodyBytes, &consoleVar)
-	return &consoleVar, nil
+	vmGraphicsConsolesServiceAddResponse.console = &consoleVar
+	return &vmGraphicsConsolesServiceAddResponse, nil
 }
 
 type VmGraphicsConsolesServiceAddResponse struct {
@@ -40166,9 +40278,11 @@ func (p *AffinityLabelVmsServiceAddRequest) Send() (*AffinityLabelVmsServiceAddR
 	if err != nil {
 		return nil, err
 	}
+	var affinityLabelVmsServiceAddResponse AffinityLabelVmsServiceAddResponse
 	var vmVar Vm
 	xml.Unmarshal(respBodyBytes, &vmVar)
-	return &vmVar, nil
+	affinityLabelVmsServiceAddResponse.vm = &vmVar
+	return &affinityLabelVmsServiceAddResponse, nil
 }
 
 type AffinityLabelVmsServiceAddResponse struct {
@@ -40456,9 +40570,11 @@ func (p *AffinityLabelsServiceAddRequest) Send() (*AffinityLabelsServiceAddRespo
 	if err != nil {
 		return nil, err
 	}
+	var affinityLabelsServiceAddResponse AffinityLabelsServiceAddResponse
 	var labelVar AffinityLabel
 	xml.Unmarshal(respBodyBytes, &labelVar)
-	return &labelVar, nil
+	affinityLabelsServiceAddResponse.label = &labelVar
+	return &affinityLabelsServiceAddResponse, nil
 }
 
 type AffinityLabelsServiceAddResponse struct {
@@ -42296,9 +42412,11 @@ func (p *AssignedNetworksServiceAddRequest) Send() (*AssignedNetworksServiceAddR
 	if err != nil {
 		return nil, err
 	}
+	var assignedNetworksServiceAddResponse AssignedNetworksServiceAddResponse
 	var networkVar Network
 	xml.Unmarshal(respBodyBytes, &networkVar)
-	return &networkVar, nil
+	assignedNetworksServiceAddResponse.network = &networkVar
+	return &assignedNetworksServiceAddResponse, nil
 }
 
 type AssignedNetworksServiceAddResponse struct {
@@ -43156,9 +43274,11 @@ func (p *QossServiceAddRequest) Send() (*QossServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var qossServiceAddResponse QossServiceAddResponse
 	var qosVar Qos
 	xml.Unmarshal(respBodyBytes, &qosVar)
-	return &qosVar, nil
+	qossServiceAddResponse.qos = &qosVar
+	return &qossServiceAddResponse, nil
 }
 
 type QossServiceAddResponse struct {
@@ -43968,9 +44088,11 @@ func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Send() (*VirtualFuncti
 	if err != nil {
 		return nil, err
 	}
+	var virtualFunctionAllowedNetworksServiceAddResponse VirtualFunctionAllowedNetworksServiceAddResponse
 	var networkVar Network
 	xml.Unmarshal(respBodyBytes, &networkVar)
-	return &networkVar, nil
+	virtualFunctionAllowedNetworksServiceAddResponse.network = &networkVar
+	return &virtualFunctionAllowedNetworksServiceAddResponse, nil
 }
 
 type VirtualFunctionAllowedNetworksServiceAddResponse struct {
@@ -44476,9 +44598,11 @@ func (p *BalancesServiceAddRequest) Send() (*BalancesServiceAddResponse, error) 
 	if err != nil {
 		return nil, err
 	}
+	var balancesServiceAddResponse BalancesServiceAddResponse
 	var balanceVar Balance
 	xml.Unmarshal(respBodyBytes, &balanceVar)
-	return &balanceVar, nil
+	balancesServiceAddResponse.balance = &balanceVar
+	return &balancesServiceAddResponse, nil
 }
 
 type BalancesServiceAddResponse struct {
@@ -45466,9 +45590,11 @@ func (p *NetworkFilterParametersServiceAddRequest) Send() (*NetworkFilterParamet
 	if err != nil {
 		return nil, err
 	}
+	var networkFilterParametersServiceAddResponse NetworkFilterParametersServiceAddResponse
 	var parameterVar NetworkFilterParameter
 	xml.Unmarshal(respBodyBytes, &parameterVar)
-	return &parameterVar, nil
+	networkFilterParametersServiceAddResponse.parameter = &parameterVar
+	return &networkFilterParametersServiceAddResponse, nil
 }
 
 type NetworkFilterParametersServiceAddResponse struct {
@@ -45691,9 +45817,11 @@ func (p *VmNicsServiceAddRequest) Send() (*VmNicsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var vmNicsServiceAddResponse VmNicsServiceAddResponse
 	var nicVar Nic
 	xml.Unmarshal(respBodyBytes, &nicVar)
-	return &nicVar, nil
+	vmNicsServiceAddResponse.nic = &nicVar
+	return &vmNicsServiceAddResponse, nil
 }
 
 type VmNicsServiceAddResponse struct {
@@ -46209,9 +46337,11 @@ func (p *PermitsServiceAddRequest) Send() (*PermitsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var permitsServiceAddResponse PermitsServiceAddResponse
 	var permitVar Permit
 	xml.Unmarshal(respBodyBytes, &permitVar)
-	return &permitVar, nil
+	permitsServiceAddResponse.permit = &permitVar
+	return &permitsServiceAddResponse, nil
 }
 
 type PermitsServiceAddResponse struct {
@@ -48748,9 +48878,11 @@ func (p *ExternalHostProvidersServiceAddRequest) Send() (*ExternalHostProvidersS
 	if err != nil {
 		return nil, err
 	}
+	var externalHostProvidersServiceAddResponse ExternalHostProvidersServiceAddResponse
 	var providerVar ExternalHostProvider
 	xml.Unmarshal(respBodyBytes, &providerVar)
-	return &providerVar, nil
+	externalHostProvidersServiceAddResponse.provider = &providerVar
+	return &externalHostProvidersServiceAddResponse, nil
 }
 
 type ExternalHostProvidersServiceAddResponse struct {
@@ -49234,9 +49366,11 @@ func (p *GlusterVolumesServiceAddRequest) Send() (*GlusterVolumesServiceAddRespo
 	if err != nil {
 		return nil, err
 	}
+	var glusterVolumesServiceAddResponse GlusterVolumesServiceAddResponse
 	var volumeVar GlusterVolume
 	xml.Unmarshal(respBodyBytes, &volumeVar)
-	return &volumeVar, nil
+	glusterVolumesServiceAddResponse.volume = &volumeVar
+	return &glusterVolumesServiceAddResponse, nil
 }
 
 type GlusterVolumesServiceAddResponse struct {
@@ -50842,9 +50976,11 @@ func (p *GlusterBricksServiceAddRequest) Send() (*GlusterBricksServiceAddRespons
 	if err != nil {
 		return nil, err
 	}
+	var glusterBricksServiceAddResponse GlusterBricksServiceAddResponse
 	var bricksVar GlusterBricks
 	xml.Unmarshal(respBodyBytes, &bricksVar)
-	return bricksVar.GlusterBricks, nil
+	glusterBricksServiceAddResponse.bricks = bricksVar.GlusterBricks
+	return &glusterBricksServiceAddResponse, nil
 }
 
 type GlusterBricksServiceAddResponse struct {
@@ -51474,9 +51610,11 @@ func (p *DisksServiceAddRequest) Send() (*DisksServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var disksServiceAddResponse DisksServiceAddResponse
 	var diskVar Disk
 	xml.Unmarshal(respBodyBytes, &diskVar)
-	return &diskVar, nil
+	disksServiceAddResponse.disk = &diskVar
+	return &disksServiceAddResponse, nil
 }
 
 type DisksServiceAddResponse struct {
@@ -51820,9 +51958,11 @@ func (p *InstanceTypeWatchdogsServiceAddRequest) Send() (*InstanceTypeWatchdogsS
 	if err != nil {
 		return nil, err
 	}
+	var instanceTypeWatchdogsServiceAddResponse InstanceTypeWatchdogsServiceAddResponse
 	var watchdogVar Watchdog
 	xml.Unmarshal(respBodyBytes, &watchdogVar)
-	return &watchdogVar, nil
+	instanceTypeWatchdogsServiceAddResponse.watchdog = &watchdogVar
+	return &instanceTypeWatchdogsServiceAddResponse, nil
 }
 
 type InstanceTypeWatchdogsServiceAddResponse struct {
@@ -52047,9 +52187,11 @@ func (p *JobsServiceAddRequest) Send() (*JobsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var jobsServiceAddResponse JobsServiceAddResponse
 	var jobVar Job
 	xml.Unmarshal(respBodyBytes, &jobVar)
-	return &jobVar, nil
+	jobsServiceAddResponse.job = &jobVar
+	return &jobsServiceAddResponse, nil
 }
 
 type JobsServiceAddResponse struct {
@@ -52459,9 +52601,11 @@ func (p *TemplatesServiceAddRequest) Send() (*TemplatesServiceAddResponse, error
 	if err != nil {
 		return nil, err
 	}
+	var templatesServiceAddResponse TemplatesServiceAddResponse
 	var templateVar Template
 	xml.Unmarshal(respBodyBytes, &templateVar)
-	return &templateVar, nil
+	templatesServiceAddResponse.template = &templateVar
+	return &templatesServiceAddResponse, nil
 }
 
 type TemplatesServiceAddResponse struct {
@@ -52897,9 +53041,11 @@ func (p *AssignedAffinityLabelsServiceAddRequest) Send() (*AssignedAffinityLabel
 	if err != nil {
 		return nil, err
 	}
+	var assignedAffinityLabelsServiceAddResponse AssignedAffinityLabelsServiceAddResponse
 	var labelVar AffinityLabel
 	xml.Unmarshal(respBodyBytes, &labelVar)
-	return &labelVar, nil
+	assignedAffinityLabelsServiceAddResponse.label = &labelVar
+	return &assignedAffinityLabelsServiceAddResponse, nil
 }
 
 type AssignedAffinityLabelsServiceAddResponse struct {
@@ -53426,9 +53572,11 @@ func (p *AffinityLabelHostsServiceAddRequest) Send() (*AffinityLabelHostsService
 	if err != nil {
 		return nil, err
 	}
+	var affinityLabelHostsServiceAddResponse AffinityLabelHostsServiceAddResponse
 	var hostVar Host
 	xml.Unmarshal(respBodyBytes, &hostVar)
-	return &hostVar, nil
+	affinityLabelHostsServiceAddResponse.host = &hostVar
+	return &affinityLabelHostsServiceAddResponse, nil
 }
 
 type AffinityLabelHostsServiceAddResponse struct {
@@ -53886,9 +54034,11 @@ func (p *HostsServiceAddRequest) Send() (*HostsServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var hostsServiceAddResponse HostsServiceAddResponse
 	var hostVar Host
 	xml.Unmarshal(respBodyBytes, &hostVar)
-	return &hostVar, nil
+	hostsServiceAddResponse.host = &hostVar
+	return &hostsServiceAddResponse, nil
 }
 
 type HostsServiceAddResponse struct {
@@ -54189,9 +54339,11 @@ func (p *StorageDomainDisksServiceAddRequest) Send() (*StorageDomainDisksService
 	if err != nil {
 		return nil, err
 	}
+	var storageDomainDisksServiceAddResponse StorageDomainDisksServiceAddResponse
 	var diskVar Disk
 	xml.Unmarshal(respBodyBytes, &diskVar)
-	return &diskVar, nil
+	storageDomainDisksServiceAddResponse.disk = &diskVar
+	return &storageDomainDisksServiceAddResponse, nil
 }
 
 type StorageDomainDisksServiceAddResponse struct {
@@ -54419,9 +54571,11 @@ func (p *FiltersServiceAddRequest) Send() (*FiltersServiceAddResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	var filtersServiceAddResponse FiltersServiceAddResponse
 	var filterVar Filter
 	xml.Unmarshal(respBodyBytes, &filterVar)
-	return &filterVar, nil
+	filtersServiceAddResponse.filter = &filterVar
+	return &filtersServiceAddResponse, nil
 }
 
 type FiltersServiceAddResponse struct {
@@ -54642,9 +54796,11 @@ func (p *StorageServerConnectionsServiceAddRequest) Send() (*StorageServerConnec
 	if err != nil {
 		return nil, err
 	}
+	var storageServerConnectionsServiceAddResponse StorageServerConnectionsServiceAddResponse
 	var connectionVar StorageConnection
 	xml.Unmarshal(respBodyBytes, &connectionVar)
-	return &connectionVar, nil
+	storageServerConnectionsServiceAddResponse.connection = &connectionVar
+	return &storageServerConnectionsServiceAddResponse, nil
 }
 
 type StorageServerConnectionsServiceAddResponse struct {
@@ -54876,9 +55032,11 @@ func (p *FenceAgentsServiceAddRequest) Send() (*FenceAgentsServiceAddResponse, e
 	if err != nil {
 		return nil, err
 	}
+	var fenceAgentsServiceAddResponse FenceAgentsServiceAddResponse
 	var agentVar Agent
 	xml.Unmarshal(respBodyBytes, &agentVar)
-	return &agentVar, nil
+	fenceAgentsServiceAddResponse.agent = &agentVar
+	return &fenceAgentsServiceAddResponse, nil
 }
 
 type FenceAgentsServiceAddResponse struct {
@@ -55092,9 +55250,11 @@ func (p *ClustersServiceAddRequest) Send() (*ClustersServiceAddResponse, error) 
 	if err != nil {
 		return nil, err
 	}
+	var clustersServiceAddResponse ClustersServiceAddResponse
 	var clusterVar Cluster
 	xml.Unmarshal(respBodyBytes, &clusterVar)
-	return &clusterVar, nil
+	clustersServiceAddResponse.cluster = &clusterVar
+	return &clustersServiceAddResponse, nil
 }
 
 type ClustersServiceAddResponse struct {
@@ -55353,9 +55513,11 @@ func (p *AssignedPermissionsServiceAddRequest) Send() (*AssignedPermissionsServi
 	if err != nil {
 		return nil, err
 	}
+	var assignedPermissionsServiceAddResponse AssignedPermissionsServiceAddResponse
 	var permissionVar Permission
 	xml.Unmarshal(respBodyBytes, &permissionVar)
-	return &permissionVar, nil
+	assignedPermissionsServiceAddResponse.permission = &permissionVar
+	return &assignedPermissionsServiceAddResponse, nil
 }
 
 type AssignedPermissionsServiceAddResponse struct {
