@@ -44,34 +44,35 @@ import (
     "github.com/imjoey/ovirt-engine-sdk-go/sdk/ovirtsdk4"
 )
 
-var inputRawURL = "https://engine.example.com/ovirt-engine/api"
-
+inputRawURL := "https://10.1.111.229/ovirt-engine/api"
 conn, err := NewConnectionBuilder().
 	URL(inputRawURL).
-	Username("your-username").
-	Password("your-password").
+	Username("admin@internal").
+	Password("qwer1234").
 	Insecure(true).
 	Compress(true).
 	Timeout(time.Second * 10).
 	Build()
-
-// Get the reference to the **system** service
-systemService := conn.SystemService()
-
-// Get the reference to the **clusters** service
-clustersService := systemService.ClustersService()
-
-// Get all the clusters
-clusters, err := clustersService.List(false, false, 100, "", nil, nil, false)
-
-// Print clusters attrs
-for _, cluster := range clusters {
-    fmt.Printf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id,
-        cluster.Cpu.Architecture, *cluster.Cpu.Type)
+if err != nil {
+	t.Fatalf("Make connection failed, reason: %s", err.Error())
 }
 
-// Close the connection
-conn.Close()
+defer conn.Close()
+
+clustersListResponse, err2 := conn.SystemService().ClustersService().
+	List().
+	CaseSensitive(false).
+	Max(100).
+	Send()
+
+if err2 != nil {
+	t.Fatalf("Get clusters failed, reason: %s", err2.Error())
+}
+
+for _, cluster := range clustersListResponse.Clusters() {
+	t.Logf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id,cluster.Cpu.Architecture, *cluster.Cpu.Type)
+}
+
 ```
 
 More usage examples will be added to the `examples` directory soon.
