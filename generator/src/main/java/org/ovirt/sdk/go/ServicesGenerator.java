@@ -223,15 +223,15 @@ public class ServicesGenerator implements GoGenerator {
         else if (GET.equals(methodName) || LIST.equals(methodName)) {
             generateListRequestImplementation(method, service);
         }
-        // else if (REMOVE.equals(methodName)) {
-        //     generateRemoveRequestImplementation(method);
-        // }
-        // else if (UPDATE.equals(methodName)) {
-        //     generateUpdateRequestImplementation(method);
-        // }
-        // else {
-        //     generateActionRequestImplementation(method);
-        // }
+        else if (REMOVE.equals(methodName)) {
+            generateRemoveRequestImplementation(method, service);
+        }
+        else if (UPDATE.equals(methodName)) {
+            generateUpdateRequestImplementation(method, service);
+        }
+        else {
+            generateActionRequestImplementation(method, service);
+        }
         buffer.endBlock();
         // End send method:
         buffer.addLine("}");
@@ -355,7 +355,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, nil)");
+        buffer.addLine("req, err := http.NewRequest(\"GET\", rawURL, nil)");
         buffer.addLine("if err != nil {");
         buffer.startBlock();
         buffer.addLine("return nil, err");
@@ -364,6 +364,162 @@ public class ServicesGenerator implements GoGenerator {
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
         generateResponseParseImplementation(method, service);
+    }
+
+    private void generateRemoveRequestImplementation(Method method, Service service) {
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        buffer.addImport("net/url");
+        buffer.addLine("values := make(url.Values)");
+        method.parameters()
+            .filter(Parameter::isIn)
+            .filter(p -> p.getType() instanceof PrimitiveType)
+            .sorted()
+            .forEach(this::generateRequestParameterQueryBuilder);
+        generateAdditionalQueryParameters();
+        // Generate the final URL
+        buffer.addLine("if len(values) > 0 {");
+        buffer.startBlock();
+        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        // Construct the net/http request
+        buffer.addImport("net/http");
+        buffer.addLine("req, err := http.NewRequest(\"DELETE\", rawURL, nil)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
+    }
+
+    private void generateUpdateRequestImplementation(Method method, Service service) {
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        buffer.addImport("net/url");
+        buffer.addLine("values := make(url.Values)");
+
+        getSecondaryParameters(method)
+            .forEach(this::generateRequestParameterQueryBuilder);
+        generateAdditionalQueryParameters();
+        
+        // Generate the final URL
+        buffer.addLine("if len(values) > 0 {");
+        buffer.startBlock();
+        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        // Generate the net/http request.Body (via bytes.Buffer)
+        buffer.addImport("bytes");
+        buffer.addLine("var body *bytes.Buffer");
+        generateWriteRequestBody(getFirstParameter(method));
+
+        // Construct the net/http request
+        buffer.addImport("net/http");
+        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
+    }
+
+    private void generateActionRequestImplementation(Method method, Service service) {
+        String serviceClassName = goNames.getServiceName(service).getClassName();
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s/%1$s\", p.%2$s.Connection.URL(), p.%2$s.Path)",
+            getPath(method.getName()),
+            goNames.getPrivateMemberStyleName(serviceClassName));
+        buffer.addLine("actionBuilder := NewActionBuilder()");
+        method.parameters()
+            .filter(Parameter::isIn)
+            .sorted()
+            .forEach(parameter -> {
+                String paraArgName = goNames.getParameterStyleName(parameter.getName());
+                String paraMethodName = goNames.getPublicMemberStyleName(parameter.getName());
+                if (GoTypes.isGoPrimitiveType(parameter.getType())) {
+                    buffer.addLine("actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
+                } else {
+                    buffer.addLine("actionBuilder.%1$s(p.%2$s);", paraMethodName, paraArgName);
+                }
+            });
+        buffer.addLine("action, errBuilder := actionBuilder.Build()");
+        buffer.addLine("if errBuilder != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, errBuilder");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addImport("net/url");
+        buffer.addLine("values := make(url.Values)");
+
+        generateAdditionalQueryParameters();
+        
+        // Generate the final URL
+        buffer.addLine("if len(values) > 0 {");
+        buffer.startBlock();
+        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        // Generate the net/http request.Body (via bytes.Buffer)
+        buffer.addImport("bytes");
+        buffer.addLine("var body *bytes.Buffer");
+        buffer.addImport("encoding/xml");
+        buffer.addLine("xmlBytes, err := xml.Marshal(action)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+        buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
+
+        // Construct the net/http request
+        buffer.addImport("net/http");
+        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
+        buffer.addLine("if err != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, err");
+        buffer.endBlock();
+        buffer.addLine("}");
+
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        // Check action
+        List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
+        if (parameters.isEmpty()) {
+            buffer.addLine("_, errCheckAction := CheckAction(resp)");
+        } else {
+            buffer.addLine("action, errCheckAction := CheckAction(resp)");
+        }
+        buffer.addLine("if errCheckAction != nil {");
+        buffer.startBlock();
+        buffer.addLine("return nil, errCheckAction");
+        buffer.endBlock();
+        buffer.addLine("}");
+        
+        if (parameters.isEmpty()) {
+            buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
+        } else {
+            Parameter paraFirst = parameters.get(0);
+            String isPointer = "";
+            if (GoTypes.isGoPrimitiveType(paraFirst.getType())) {
+                isPointer = "*";
+            }
+            buffer.addLine("return &%1$s{%2$s: %3$saction.%4$s}, nil",
+                getResponseClassName(method, service),
+                goNames.getPrivateMemberStyleName(paraFirst.getName()),
+                isPointer,
+                goNames.getPublicMemberStyleName(paraFirst.getName())
+                );
+        }
     }
 
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
@@ -430,21 +586,31 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endBlock();
         buffer.addLine("}");;
         buffer.addLine("defer resp.Body.Close()");
-        // Read resp.Body
-        buffer.addImport("io/ioutil");
-        buffer.addLine("respBodyBytes, err := ioutil.ReadAll(resp.Body)");
-        buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
-        buffer.addLine("}");
+        // Read resp.Body (if method is ActionMethod, no need the resp reading)
+        Name methodName = method.getName();
+        if (methodName.equals(ADD) || methodName.equals(GET) || 
+            methodName.equals(LIST) || methodName.equals(REMOVE) ||
+            methodName.equals(UPDATE)) {
+                buffer.addImport("io/ioutil");
+                List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
+                if (parameters.isEmpty()) {
+                    buffer.addLine("_, errReadBody := ioutil.ReadAll(resp.Body)");
+                } else {
+                    buffer.addLine("respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)");
+                }
+                buffer.addLine("if errReadBody != nil {");
+                buffer.startBlock();
+                buffer.addLine("return nil, errReadBody");
+                buffer.endBlock();
+                buffer.addLine("}");
+        }
     }
 
 
     private void generateResponseParseImplementation(Method method, Service service) {
         List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
         if (parameters.isEmpty()) {
-            buffer.addLine("return new(%1$s)", getResponseClassName(method, service));
+            buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
             buffer.addImport("encoding/xml");
             for (Parameter para : parameters) {
