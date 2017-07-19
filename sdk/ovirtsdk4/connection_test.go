@@ -20,11 +20,19 @@ func TestSend(t *testing.T) {
 		t.Fatalf("Make connection failed, reason: %s", err.Error())
 	}
 	defer conn.Close()
-	clusterList, err := conn.SystemService().ClustersService().List(false, false, 100, "", nil, nil, false)
-	if err != nil {
-		t.Fatalf("Get clusters failed, reason: %s", err.Error())
+
+	clustersListResponse, err2 := conn.SystemService().ClustersService().
+		List().
+		CaseSensitive(false).
+		Max(100).
+		Send()
+
+	if err2 != nil {
+		t.Fatalf("Get clusters failed, reason: %s", err2.Error())
 	}
-	for _, cluster := range clusterList {
+
+	for _, cluster := range clustersListResponse.Clusters() {
 		t.Logf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id, cluster.Cpu.Architecture, *cluster.Cpu.Type)
 	}
+
 }

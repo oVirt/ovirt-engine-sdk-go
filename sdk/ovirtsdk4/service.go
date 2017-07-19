@@ -19,6 +19,8 @@ package ovirtsdk4
 import (
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
 // BaseService represents the base for all the services of the SDK. It contains the
@@ -26,6 +28,37 @@ import (
 type BaseService struct {
 	Connection *Connection
 	Path       string
+}
+
+// CheckFault checks if response contains fault
+func CheckFault(response *http.Response) (*Fault, error) {
+	resBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	var fault Fault
+	err = xml.Unmarshal(resBytes, &fault)
+	if err != nil {
+		return nil, err
+	}
+	return &fault, nil
+}
+
+// CheckAction checks if response contains an Action instance
+func CheckAction(response *http.Response) (*Action, error) {
+	resBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	var action Action
+	err = xml.Unmarshal(resBytes, &action)
+	if err != nil {
+		return nil, err
+	}
+	if action.Fault != nil {
+		return nil, action.Fault
+	}
+	return &action, nil
 }
 
 func checkFault(response *OvResponse) error {
