@@ -16,8 +16,11 @@
 package ovirtsdk4
 
 import (
+	"bytes"
+	"encoding/base64"
 	"encoding/xml"
 	"fmt"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
@@ -101,11 +104,49 @@ func (p *VnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *VnicProfi
 	p.profile = profile
 	return p
 }
-func (p *VnicProfilesServiceAddRequest) Send() *VnicProfilesServiceAddResponse {
+func (p *VnicProfilesServiceAddRequest) Send() (*VnicProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vnicProfilesService.Connection.URL(), p.vnicProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
 
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vnicProfilesService.Connection.username, p.vnicProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vnicProfilesService.Connection.client.Do(req)
+}
+
+type VnicProfilesServiceAddResponse struct {
+	profile *VnicProfile
 }
 
 //
@@ -217,8 +258,12 @@ func (p *VnicProfilesServiceListRequest) Max(max int64) *VnicProfilesServiceList
 	p.max = &max
 	return p
 }
-func (p *VnicProfilesServiceListRequest) Send() *VnicProfilesServiceListResponse {
+func (p *VnicProfilesServiceListRequest) Send() (*VnicProfilesServiceListResponse, error) {
 
+}
+
+type VnicProfilesServiceListResponse struct {
+	profiles []VnicProfile
 }
 
 //
@@ -316,8 +361,12 @@ func (p *SchedulingPolicyUnitServiceGetRequest) Filter(filter bool) *SchedulingP
 	p.filter = &filter
 	return p
 }
-func (p *SchedulingPolicyUnitServiceGetRequest) Send() *SchedulingPolicyUnitServiceGetResponse {
+func (p *SchedulingPolicyUnitServiceGetRequest) Send() (*SchedulingPolicyUnitServiceGetResponse, error) {
 
+}
+
+type SchedulingPolicyUnitServiceGetResponse struct {
+	unit *SchedulingPolicyUnit
 }
 
 //
@@ -377,8 +426,11 @@ func (p *SchedulingPolicyUnitServiceRemoveRequest) Async(async bool) *Scheduling
 	p.async = &async
 	return p
 }
-func (p *SchedulingPolicyUnitServiceRemoveRequest) Send() *SchedulingPolicyUnitServiceRemoveResponse {
+func (p *SchedulingPolicyUnitServiceRemoveRequest) Send() (*SchedulingPolicyUnitServiceRemoveResponse, error) {
 
+}
+
+type SchedulingPolicyUnitServiceRemoveResponse struct {
 }
 
 //
@@ -453,8 +505,12 @@ func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Send() *VirtualFunctionAllowedNetworkServiceGetResponse {
+func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Send() (*VirtualFunctionAllowedNetworkServiceGetResponse, error) {
 
+}
+
+type VirtualFunctionAllowedNetworkServiceGetResponse struct {
+	network *Network
 }
 
 //
@@ -507,8 +563,11 @@ func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Async(async bool) *V
 	p.async = &async
 	return p
 }
-func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Send() *VirtualFunctionAllowedNetworkServiceRemoveResponse {
+func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Send() (*VirtualFunctionAllowedNetworkServiceRemoveResponse, error) {
 
+}
+
+type VirtualFunctionAllowedNetworkServiceRemoveResponse struct {
 }
 
 //
@@ -588,10 +647,49 @@ func (p *TemplateNicsServiceAddRequest) Nic(nic *Nic) *TemplateNicsServiceAddReq
 	p.nic = nic
 	return p
 }
-func (p *TemplateNicsServiceAddRequest) Send() *TemplateNicsServiceAddResponse {
+func (p *TemplateNicsServiceAddRequest) Send() (*TemplateNicsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.templateNicsService.Connection.URL(), p.templateNicsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.nic)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateNicsService.Connection.username, p.templateNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.templateNicsService.Connection.client.Do(req)
+}
+
+type TemplateNicsServiceAddResponse struct {
+	nic *Nic
 }
 
 //
@@ -645,8 +743,12 @@ func (p *TemplateNicsServiceListRequest) Max(max int64) *TemplateNicsServiceList
 	p.max = &max
 	return p
 }
-func (p *TemplateNicsServiceListRequest) Send() *TemplateNicsServiceListResponse {
+func (p *TemplateNicsServiceListRequest) Send() (*TemplateNicsServiceListResponse, error) {
 
+}
+
+type TemplateNicsServiceListResponse struct {
+	nics []Nic
 }
 
 //
@@ -739,8 +841,12 @@ func (p *AffinityLabelServiceGetRequest) Query(key, value string) *AffinityLabel
 	return p
 }
 
-func (p *AffinityLabelServiceGetRequest) Send() *AffinityLabelServiceGetResponse {
+func (p *AffinityLabelServiceGetRequest) Send() (*AffinityLabelServiceGetResponse, error) {
 
+}
+
+type AffinityLabelServiceGetResponse struct {
+	label *AffinityLabel
 }
 
 //
@@ -789,8 +895,11 @@ func (p *AffinityLabelServiceRemoveRequest) Query(key, value string) *AffinityLa
 	return p
 }
 
-func (p *AffinityLabelServiceRemoveRequest) Send() *AffinityLabelServiceRemoveResponse {
+func (p *AffinityLabelServiceRemoveRequest) Send() (*AffinityLabelServiceRemoveResponse, error) {
 
+}
+
+type AffinityLabelServiceRemoveResponse struct {
 }
 
 //
@@ -838,8 +947,12 @@ func (p *AffinityLabelServiceUpdateRequest) Label(label *AffinityLabel) *Affinit
 	p.label = label
 	return p
 }
-func (p *AffinityLabelServiceUpdateRequest) Send() *AffinityLabelServiceUpdateResponse {
+func (p *AffinityLabelServiceUpdateRequest) Send() (*AffinityLabelServiceUpdateResponse, error) {
 
+}
+
+type AffinityLabelServiceUpdateResponse struct {
+	label *AffinityLabel
 }
 
 //
@@ -949,10 +1062,49 @@ func (p *BookmarksServiceAddRequest) Bookmark(bookmark *Bookmark) *BookmarksServ
 	p.bookmark = bookmark
 	return p
 }
-func (p *BookmarksServiceAddRequest) Send() *BookmarksServiceAddResponse {
+func (p *BookmarksServiceAddRequest) Send() (*BookmarksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.bookmarksService.Connection.URL(), p.bookmarksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.bookmark)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.bookmarksService.Connection.username, p.bookmarksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.bookmarksService.Connection.client.Do(req)
+}
+
+type BookmarksServiceAddResponse struct {
+	bookmark *Bookmark
 }
 
 //
@@ -1024,8 +1176,12 @@ func (p *BookmarksServiceListRequest) Max(max int64) *BookmarksServiceListReques
 	p.max = &max
 	return p
 }
-func (p *BookmarksServiceListRequest) Send() *BookmarksServiceListResponse {
+func (p *BookmarksServiceListRequest) Send() (*BookmarksServiceListResponse, error) {
 
+}
+
+type BookmarksServiceListResponse struct {
+	bookmarks []Bookmark
 }
 
 //
@@ -1142,10 +1298,49 @@ func (p *NetworkAttachmentsServiceAddRequest) Attachment(attachment *NetworkAtta
 	p.attachment = attachment
 	return p
 }
-func (p *NetworkAttachmentsServiceAddRequest) Send() *NetworkAttachmentsServiceAddResponse {
+func (p *NetworkAttachmentsServiceAddRequest) Send() (*NetworkAttachmentsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.networkAttachmentsService.Connection.URL(), p.networkAttachmentsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.attachment)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkAttachmentsService.Connection.username, p.networkAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.networkAttachmentsService.Connection.client.Do(req)
+}
+
+type NetworkAttachmentsServiceAddResponse struct {
+	attachment *NetworkAttachment
 }
 
 //
@@ -1199,8 +1394,12 @@ func (p *NetworkAttachmentsServiceListRequest) Max(max int64) *NetworkAttachment
 	p.max = &max
 	return p
 }
-func (p *NetworkAttachmentsServiceListRequest) Send() *NetworkAttachmentsServiceListResponse {
+func (p *NetworkAttachmentsServiceListRequest) Send() (*NetworkAttachmentsServiceListResponse, error) {
 
+}
+
+type NetworkAttachmentsServiceListResponse struct {
+	attachments []NetworkAttachment
 }
 
 //
@@ -1292,8 +1491,12 @@ func (p *OperatingSystemServiceGetRequest) Query(key, value string) *OperatingSy
 	return p
 }
 
-func (p *OperatingSystemServiceGetRequest) Send() *OperatingSystemServiceGetResponse {
+func (p *OperatingSystemServiceGetRequest) Send() (*OperatingSystemServiceGetResponse, error) {
 
+}
+
+type OperatingSystemServiceGetResponse struct {
+	operatingSystem *OperatingSystemInfo
 }
 
 //
@@ -1373,8 +1576,12 @@ func (p *TemplateDisksServiceListRequest) Max(max int64) *TemplateDisksServiceLi
 	p.max = &max
 	return p
 }
-func (p *TemplateDisksServiceListRequest) Send() *TemplateDisksServiceListResponse {
+func (p *TemplateDisksServiceListRequest) Send() (*TemplateDisksServiceListResponse, error) {
 
+}
+
+type TemplateDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -1473,10 +1680,49 @@ func (p *SystemPermissionsServiceAddRequest) Permission(permission *Permission) 
 	p.permission = permission
 	return p
 }
-func (p *SystemPermissionsServiceAddRequest) Send() *SystemPermissionsServiceAddResponse {
+func (p *SystemPermissionsServiceAddRequest) Send() (*SystemPermissionsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.systemPermissionsService.Connection.URL(), p.systemPermissionsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.permission)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.systemPermissionsService.Connection.username, p.systemPermissionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.systemPermissionsService.Connection.client.Do(req)
+}
+
+type SystemPermissionsServiceAddResponse struct {
+	permission *Permission
 }
 
 //
@@ -1576,8 +1822,12 @@ func (p *SystemPermissionsServiceListRequest) Query(key, value string) *SystemPe
 	return p
 }
 
-func (p *SystemPermissionsServiceListRequest) Send() *SystemPermissionsServiceListResponse {
+func (p *SystemPermissionsServiceListRequest) Send() (*SystemPermissionsServiceListResponse, error) {
 
+}
+
+type SystemPermissionsServiceListResponse struct {
+	permissions []Permission
 }
 
 //
@@ -1684,8 +1934,12 @@ func (p *VmReportedDeviceServiceGetRequest) Query(key, value string) *VmReported
 	return p
 }
 
-func (p *VmReportedDeviceServiceGetRequest) Send() *VmReportedDeviceServiceGetResponse {
+func (p *VmReportedDeviceServiceGetRequest) Send() (*VmReportedDeviceServiceGetResponse, error) {
 
+}
+
+type VmReportedDeviceServiceGetResponse struct {
+	reportedDevice *ReportedDevice
 }
 
 //
@@ -1765,8 +2019,12 @@ func (p *SnapshotNicsServiceListRequest) Max(max int64) *SnapshotNicsServiceList
 	p.max = &max
 	return p
 }
-func (p *SnapshotNicsServiceListRequest) Send() *SnapshotNicsServiceListResponse {
+func (p *SnapshotNicsServiceListRequest) Send() (*SnapshotNicsServiceListResponse, error) {
 
+}
+
+type SnapshotNicsServiceListResponse struct {
+	nics []Nic
 }
 
 //
@@ -1863,10 +2121,49 @@ func (p *AssignedVnicProfilesServiceAddRequest) Profile(profile *VnicProfile) *A
 	p.profile = profile
 	return p
 }
-func (p *AssignedVnicProfilesServiceAddRequest) Send() *AssignedVnicProfilesServiceAddResponse {
+func (p *AssignedVnicProfilesServiceAddRequest) Send() (*AssignedVnicProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedVnicProfilesService.Connection.URL(), p.assignedVnicProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedVnicProfilesService.Connection.username, p.assignedVnicProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedVnicProfilesService.Connection.client.Do(req)
+}
+
+type AssignedVnicProfilesServiceAddResponse struct {
+	profile *VnicProfile
 }
 
 //
@@ -1920,8 +2217,12 @@ func (p *AssignedVnicProfilesServiceListRequest) Max(max int64) *AssignedVnicPro
 	p.max = &max
 	return p
 }
-func (p *AssignedVnicProfilesServiceListRequest) Send() *AssignedVnicProfilesServiceListResponse {
+func (p *AssignedVnicProfilesServiceListRequest) Send() (*AssignedVnicProfilesServiceListResponse, error) {
 
+}
+
+type AssignedVnicProfilesServiceListResponse struct {
+	profiles []VnicProfile
 }
 
 //
@@ -2018,10 +2319,49 @@ func (p *QuotaClusterLimitsServiceAddRequest) Limit(limit *QuotaClusterLimit) *Q
 	p.limit = limit
 	return p
 }
-func (p *QuotaClusterLimitsServiceAddRequest) Send() *QuotaClusterLimitsServiceAddResponse {
+func (p *QuotaClusterLimitsServiceAddRequest) Send() (*QuotaClusterLimitsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.quotaClusterLimitsService.Connection.URL(), p.quotaClusterLimitsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.limit)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaClusterLimitsService.Connection.username, p.quotaClusterLimitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.quotaClusterLimitsService.Connection.client.Do(req)
+}
+
+type QuotaClusterLimitsServiceAddResponse struct {
+	limit *QuotaClusterLimit
 }
 
 //
@@ -2075,8 +2415,12 @@ func (p *QuotaClusterLimitsServiceListRequest) Max(max int64) *QuotaClusterLimit
 	p.max = &max
 	return p
 }
-func (p *QuotaClusterLimitsServiceListRequest) Send() *QuotaClusterLimitsServiceListResponse {
+func (p *QuotaClusterLimitsServiceListRequest) Send() (*QuotaClusterLimitsServiceListResponse, error) {
 
+}
+
+type QuotaClusterLimitsServiceListResponse struct {
+	limits []QuotaClusterLimit
 }
 
 //
@@ -2177,10 +2521,49 @@ func (p *NetworksServiceAddRequest) Network(network *Network) *NetworksServiceAd
 	p.network = network
 	return p
 }
-func (p *NetworksServiceAddRequest) Send() *NetworksServiceAddResponse {
+func (p *NetworksServiceAddRequest) Send() (*NetworksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.networksService.Connection.URL(), p.networksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.network)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networksService.Connection.username, p.networksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.networksService.Connection.client.Do(req)
+}
+
+type NetworksServiceAddResponse struct {
+	network *Network
 }
 
 //
@@ -2271,8 +2654,12 @@ func (p *NetworksServiceListRequest) Search(search string) *NetworksServiceListR
 	p.search = &search
 	return p
 }
-func (p *NetworksServiceListRequest) Send() *NetworksServiceListResponse {
+func (p *NetworksServiceListRequest) Send() (*NetworksServiceListResponse, error) {
 
+}
+
+type NetworksServiceListResponse struct {
+	networks []Network
 }
 
 //
@@ -2405,10 +2792,49 @@ func (p *AffinityGroupsServiceAddRequest) Group(group *AffinityGroup) *AffinityG
 	p.group = group
 	return p
 }
-func (p *AffinityGroupsServiceAddRequest) Send() *AffinityGroupsServiceAddResponse {
+func (p *AffinityGroupsServiceAddRequest) Send() (*AffinityGroupsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.affinityGroupsService.Connection.URL(), p.affinityGroupsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.group)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityGroupsService.Connection.username, p.affinityGroupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.affinityGroupsService.Connection.client.Do(req)
+}
+
+type AffinityGroupsServiceAddResponse struct {
+	group *AffinityGroup
 }
 
 //
@@ -2482,8 +2908,12 @@ func (p *AffinityGroupsServiceListRequest) Max(max int64) *AffinityGroupsService
 	p.max = &max
 	return p
 }
-func (p *AffinityGroupsServiceListRequest) Send() *AffinityGroupsServiceListResponse {
+func (p *AffinityGroupsServiceListRequest) Send() (*AffinityGroupsServiceListResponse, error) {
 
+}
+
+type AffinityGroupsServiceListResponse struct {
+	groups []AffinityGroup
 }
 
 //
@@ -2577,8 +3007,12 @@ func (p *DiskSnapshotServiceGetRequest) Query(key, value string) *DiskSnapshotSe
 	return p
 }
 
-func (p *DiskSnapshotServiceGetRequest) Send() *DiskSnapshotServiceGetResponse {
+func (p *DiskSnapshotServiceGetRequest) Send() (*DiskSnapshotServiceGetResponse, error) {
 
+}
+
+type DiskSnapshotServiceGetResponse struct {
+	snapshot *DiskSnapshot
 }
 
 //
@@ -2631,8 +3065,11 @@ func (p *DiskSnapshotServiceRemoveRequest) Async(async bool) *DiskSnapshotServic
 	p.async = &async
 	return p
 }
-func (p *DiskSnapshotServiceRemoveRequest) Send() *DiskSnapshotServiceRemoveResponse {
+func (p *DiskSnapshotServiceRemoveRequest) Send() (*DiskSnapshotServiceRemoveResponse, error) {
 
+}
+
+type DiskSnapshotServiceRemoveResponse struct {
 }
 
 //
@@ -2712,8 +3149,12 @@ func (p *SchedulingPolicyServiceGetRequest) Filter(filter bool) *SchedulingPolic
 	p.filter = &filter
 	return p
 }
-func (p *SchedulingPolicyServiceGetRequest) Send() *SchedulingPolicyServiceGetResponse {
+func (p *SchedulingPolicyServiceGetRequest) Send() (*SchedulingPolicyServiceGetResponse, error) {
 
+}
+
+type SchedulingPolicyServiceGetResponse struct {
+	policy *SchedulingPolicy
 }
 
 //
@@ -2773,8 +3214,11 @@ func (p *SchedulingPolicyServiceRemoveRequest) Async(async bool) *SchedulingPoli
 	p.async = &async
 	return p
 }
-func (p *SchedulingPolicyServiceRemoveRequest) Send() *SchedulingPolicyServiceRemoveResponse {
+func (p *SchedulingPolicyServiceRemoveRequest) Send() (*SchedulingPolicyServiceRemoveResponse, error) {
 
+}
+
+type SchedulingPolicyServiceRemoveResponse struct {
 }
 
 //
@@ -2832,8 +3276,12 @@ func (p *SchedulingPolicyServiceUpdateRequest) Policy(policy *SchedulingPolicy) 
 	p.policy = policy
 	return p
 }
-func (p *SchedulingPolicyServiceUpdateRequest) Send() *SchedulingPolicyServiceUpdateResponse {
+func (p *SchedulingPolicyServiceUpdateRequest) Send() (*SchedulingPolicyServiceUpdateResponse, error) {
 
+}
+
+type SchedulingPolicyServiceUpdateResponse struct {
+	policy *SchedulingPolicy
 }
 
 //
@@ -2947,8 +3395,12 @@ func (p *NetworkAttachmentServiceGetRequest) Query(key, value string) *NetworkAt
 	return p
 }
 
-func (p *NetworkAttachmentServiceGetRequest) Send() *NetworkAttachmentServiceGetResponse {
+func (p *NetworkAttachmentServiceGetRequest) Send() (*NetworkAttachmentServiceGetResponse, error) {
 
+}
+
+type NetworkAttachmentServiceGetResponse struct {
+	attachment *NetworkAttachment
 }
 
 //
@@ -3001,8 +3453,11 @@ func (p *NetworkAttachmentServiceRemoveRequest) Async(async bool) *NetworkAttach
 	p.async = &async
 	return p
 }
-func (p *NetworkAttachmentServiceRemoveRequest) Send() *NetworkAttachmentServiceRemoveResponse {
+func (p *NetworkAttachmentServiceRemoveRequest) Send() (*NetworkAttachmentServiceRemoveResponse, error) {
 
+}
+
+type NetworkAttachmentServiceRemoveResponse struct {
 }
 
 //
@@ -3060,8 +3515,12 @@ func (p *NetworkAttachmentServiceUpdateRequest) Attachment(attachment *NetworkAt
 	p.attachment = attachment
 	return p
 }
-func (p *NetworkAttachmentServiceUpdateRequest) Send() *NetworkAttachmentServiceUpdateResponse {
+func (p *NetworkAttachmentServiceUpdateRequest) Send() (*NetworkAttachmentServiceUpdateResponse, error) {
 
+}
+
+type NetworkAttachmentServiceUpdateResponse struct {
+	attachment *NetworkAttachment
 }
 
 //
@@ -3144,10 +3603,49 @@ func (p *DiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *DiskProfi
 	p.profile = profile
 	return p
 }
-func (p *DiskProfilesServiceAddRequest) Send() *DiskProfilesServiceAddResponse {
+func (p *DiskProfilesServiceAddRequest) Send() (*DiskProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.diskProfilesService.Connection.URL(), p.diskProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskProfilesService.Connection.username, p.diskProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.diskProfilesService.Connection.client.Do(req)
+}
+
+type DiskProfilesServiceAddResponse struct {
+	profile *DiskProfile
 }
 
 //
@@ -3201,8 +3699,12 @@ func (p *DiskProfilesServiceListRequest) Max(max int64) *DiskProfilesServiceList
 	p.max = &max
 	return p
 }
-func (p *DiskProfilesServiceListRequest) Send() *DiskProfilesServiceListResponse {
+func (p *DiskProfilesServiceListRequest) Send() (*DiskProfilesServiceListResponse, error) {
 
+}
+
+type DiskProfilesServiceListResponse struct {
+	profile []DiskProfile
 }
 
 //
@@ -3295,8 +3797,12 @@ func (p *IconServiceGetRequest) Query(key, value string) *IconServiceGetRequest 
 	return p
 }
 
-func (p *IconServiceGetRequest) Send() *IconServiceGetResponse {
+func (p *IconServiceGetRequest) Send() (*IconServiceGetResponse, error) {
 
+}
+
+type IconServiceGetResponse struct {
+	icon *Icon
 }
 
 //
@@ -3386,8 +3892,12 @@ func (p *AssignedAffinityLabelServiceGetRequest) Query(key, value string) *Assig
 	return p
 }
 
-func (p *AssignedAffinityLabelServiceGetRequest) Send() *AssignedAffinityLabelServiceGetResponse {
+func (p *AssignedAffinityLabelServiceGetRequest) Send() (*AssignedAffinityLabelServiceGetResponse, error) {
 
+}
+
+type AssignedAffinityLabelServiceGetResponse struct {
+	label *AffinityLabel
 }
 
 //
@@ -3436,8 +3946,11 @@ func (p *AssignedAffinityLabelServiceRemoveRequest) Query(key, value string) *As
 	return p
 }
 
-func (p *AssignedAffinityLabelServiceRemoveRequest) Send() *AssignedAffinityLabelServiceRemoveResponse {
+func (p *AssignedAffinityLabelServiceRemoveRequest) Send() (*AssignedAffinityLabelServiceRemoveResponse, error) {
 
+}
+
+type AssignedAffinityLabelServiceRemoveResponse struct {
 }
 
 //
@@ -3511,10 +4024,49 @@ func (p *CpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *CpuProfiles
 	p.profile = profile
 	return p
 }
-func (p *CpuProfilesServiceAddRequest) Send() *CpuProfilesServiceAddResponse {
+func (p *CpuProfilesServiceAddRequest) Send() (*CpuProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.cpuProfilesService.Connection.URL(), p.cpuProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.cpuProfilesService.Connection.username, p.cpuProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.cpuProfilesService.Connection.client.Do(req)
+}
+
+type CpuProfilesServiceAddResponse struct {
+	profile *CpuProfile
 }
 
 //
@@ -3568,8 +4120,12 @@ func (p *CpuProfilesServiceListRequest) Max(max int64) *CpuProfilesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *CpuProfilesServiceListRequest) Send() *CpuProfilesServiceListResponse {
+func (p *CpuProfilesServiceListRequest) Send() (*CpuProfilesServiceListResponse, error) {
 
+}
+
+type CpuProfilesServiceListResponse struct {
+	profile []CpuProfile
 }
 
 //
@@ -3666,10 +4222,49 @@ func (p *MacPoolsServiceAddRequest) Pool(pool *MacPool) *MacPoolsServiceAddReque
 	p.pool = pool
 	return p
 }
-func (p *MacPoolsServiceAddRequest) Send() *MacPoolsServiceAddResponse {
+func (p *MacPoolsServiceAddRequest) Send() (*MacPoolsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.macPoolsService.Connection.URL(), p.macPoolsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.pool)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.macPoolsService.Connection.username, p.macPoolsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.macPoolsService.Connection.client.Do(req)
+}
+
+type MacPoolsServiceAddResponse struct {
+	pool *MacPool
 }
 
 //
@@ -3746,8 +4341,12 @@ func (p *MacPoolsServiceListRequest) Max(max int64) *MacPoolsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *MacPoolsServiceListRequest) Send() *MacPoolsServiceListResponse {
+func (p *MacPoolsServiceListRequest) Send() (*MacPoolsServiceListResponse, error) {
 
+}
+
+type MacPoolsServiceListResponse struct {
+	pools []MacPool
 }
 
 //
@@ -3845,10 +4444,49 @@ func (p *AffinityGroupVmsServiceAddRequest) Vm(vm *Vm) *AffinityGroupVmsServiceA
 	p.vm = vm
 	return p
 }
-func (p *AffinityGroupVmsServiceAddRequest) Send() *AffinityGroupVmsServiceAddResponse {
+func (p *AffinityGroupVmsServiceAddRequest) Send() (*AffinityGroupVmsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.affinityGroupVmsService.Connection.URL(), p.affinityGroupVmsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.vm)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityGroupVmsService.Connection.username, p.affinityGroupVmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.affinityGroupVmsService.Connection.client.Do(req)
+}
+
+type AffinityGroupVmsServiceAddResponse struct {
+	vm *Vm
 }
 
 //
@@ -3913,8 +4551,12 @@ func (p *AffinityGroupVmsServiceListRequest) Max(max int64) *AffinityGroupVmsSer
 	p.max = &max
 	return p
 }
-func (p *AffinityGroupVmsServiceListRequest) Send() *AffinityGroupVmsServiceListResponse {
+func (p *AffinityGroupVmsServiceListRequest) Send() (*AffinityGroupVmsServiceListResponse, error) {
 
+}
+
+type AffinityGroupVmsServiceListResponse struct {
+	vms []Vm
 }
 
 //
@@ -4009,8 +4651,12 @@ func (p *QosServiceGetRequest) Query(key, value string) *QosServiceGetRequest {
 	return p
 }
 
-func (p *QosServiceGetRequest) Send() *QosServiceGetResponse {
+func (p *QosServiceGetRequest) Send() (*QosServiceGetResponse, error) {
 
+}
+
+type QosServiceGetResponse struct {
+	qos *Qos
 }
 
 //
@@ -4063,8 +4709,11 @@ func (p *QosServiceRemoveRequest) Async(async bool) *QosServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *QosServiceRemoveRequest) Send() *QosServiceRemoveResponse {
+func (p *QosServiceRemoveRequest) Send() (*QosServiceRemoveResponse, error) {
 
+}
+
+type QosServiceRemoveResponse struct {
 }
 
 //
@@ -4122,8 +4771,12 @@ func (p *QosServiceUpdateRequest) Qos(qos *Qos) *QosServiceUpdateRequest {
 	p.qos = qos
 	return p
 }
-func (p *QosServiceUpdateRequest) Send() *QosServiceUpdateResponse {
+func (p *QosServiceUpdateRequest) Send() (*QosServiceUpdateResponse, error) {
 
+}
+
+type QosServiceUpdateResponse struct {
+	qos *Qos
 }
 
 //
@@ -4207,10 +4860,49 @@ func (p *TagsServiceAddRequest) Tag(tag *Tag) *TagsServiceAddRequest {
 	p.tag = tag
 	return p
 }
-func (p *TagsServiceAddRequest) Send() *TagsServiceAddResponse {
+func (p *TagsServiceAddRequest) Send() (*TagsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.tagsService.Connection.URL(), p.tagsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.tag)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.tagsService.Connection.username, p.tagsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.tagsService.Connection.client.Do(req)
+}
+
+type TagsServiceAddResponse struct {
+	tag *Tag
 }
 
 //
@@ -4293,8 +4985,12 @@ func (p *TagsServiceListRequest) Max(max int64) *TagsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *TagsServiceListRequest) Send() *TagsServiceListResponse {
+func (p *TagsServiceListRequest) Send() (*TagsServiceListResponse, error) {
 
+}
+
+type TagsServiceListResponse struct {
+	tags []Tag
 }
 
 //
@@ -4417,8 +5113,12 @@ func (p *ExternalProviderCertificateServiceGetRequest) Query(key, value string) 
 	return p
 }
 
-func (p *ExternalProviderCertificateServiceGetRequest) Send() *ExternalProviderCertificateServiceGetResponse {
+func (p *ExternalProviderCertificateServiceGetRequest) Send() (*ExternalProviderCertificateServiceGetResponse, error) {
 
+}
+
+type ExternalProviderCertificateServiceGetResponse struct {
+	certificate *Certificate
 }
 
 //
@@ -4499,10 +5199,49 @@ func (p *EventsServiceAddRequest) Event(event *Event) *EventsServiceAddRequest {
 	p.event = event
 	return p
 }
-func (p *EventsServiceAddRequest) Send() *EventsServiceAddResponse {
+func (p *EventsServiceAddRequest) Send() (*EventsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.eventsService.Connection.URL(), p.eventsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.event)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.eventsService.Connection.username, p.eventsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.eventsService.Connection.client.Do(req)
+}
+
+type EventsServiceAddResponse struct {
+	event *Event
 }
 
 //
@@ -4601,8 +5340,12 @@ func (p *EventsServiceListRequest) Search(search string) *EventsServiceListReque
 	p.search = &search
 	return p
 }
-func (p *EventsServiceListRequest) Send() *EventsServiceListResponse {
+func (p *EventsServiceListRequest) Send() (*EventsServiceListResponse, error) {
 
+}
+
+type EventsServiceListResponse struct {
+	events []Event
 }
 
 //
@@ -4769,8 +5512,11 @@ func (p *EventsServiceUndeleteRequest) Async(async bool) *EventsServiceUndeleteR
 	p.async = &async
 	return p
 }
-func (p *EventsServiceUndeleteRequest) Send() *EventsServiceUndeleteResponse {
+func (p *EventsServiceUndeleteRequest) Send() (*EventsServiceUndeleteResponse, error) {
 
+}
+
+type EventsServiceUndeleteResponse struct {
 }
 
 //
@@ -4856,8 +5602,12 @@ func (p *VmWatchdogServiceGetRequest) Query(key, value string) *VmWatchdogServic
 	return p
 }
 
-func (p *VmWatchdogServiceGetRequest) Send() *VmWatchdogServiceGetResponse {
+func (p *VmWatchdogServiceGetRequest) Send() (*VmWatchdogServiceGetResponse, error) {
 
+}
+
+type VmWatchdogServiceGetResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -4911,8 +5661,11 @@ func (p *VmWatchdogServiceRemoveRequest) Async(async bool) *VmWatchdogServiceRem
 	p.async = &async
 	return p
 }
-func (p *VmWatchdogServiceRemoveRequest) Send() *VmWatchdogServiceRemoveResponse {
+func (p *VmWatchdogServiceRemoveRequest) Send() (*VmWatchdogServiceRemoveResponse, error) {
 
+}
+
+type VmWatchdogServiceRemoveResponse struct {
 }
 
 //
@@ -4976,8 +5729,12 @@ func (p *VmWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *VmWatchdo
 	p.watchdog = watchdog
 	return p
 }
-func (p *VmWatchdogServiceUpdateRequest) Send() *VmWatchdogServiceUpdateResponse {
+func (p *VmWatchdogServiceUpdateRequest) Send() (*VmWatchdogServiceUpdateResponse, error) {
 
+}
+
+type VmWatchdogServiceUpdateResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -5087,8 +5844,11 @@ func (p *AttachedStorageDomainServiceActivateRequest) Async(async bool) *Attache
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceActivateRequest) Send() *AttachedStorageDomainServiceActivateResponse {
+func (p *AttachedStorageDomainServiceActivateRequest) Send() (*AttachedStorageDomainServiceActivateResponse, error) {
 
+}
+
+type AttachedStorageDomainServiceActivateResponse struct {
 }
 
 //
@@ -5152,8 +5912,11 @@ func (p *AttachedStorageDomainServiceDeactivateRequest) Async(async bool) *Attac
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceDeactivateRequest) Send() *AttachedStorageDomainServiceDeactivateResponse {
+func (p *AttachedStorageDomainServiceDeactivateRequest) Send() (*AttachedStorageDomainServiceDeactivateResponse, error) {
 
+}
+
+type AttachedStorageDomainServiceDeactivateResponse struct {
 }
 
 //
@@ -5212,8 +5975,12 @@ func (p *AttachedStorageDomainServiceGetRequest) Query(key, value string) *Attac
 	return p
 }
 
-func (p *AttachedStorageDomainServiceGetRequest) Send() *AttachedStorageDomainServiceGetResponse {
+func (p *AttachedStorageDomainServiceGetRequest) Send() (*AttachedStorageDomainServiceGetResponse, error) {
 
+}
+
+type AttachedStorageDomainServiceGetResponse struct {
+	storageDomain *StorageDomain
 }
 
 //
@@ -5266,8 +6033,11 @@ func (p *AttachedStorageDomainServiceRemoveRequest) Async(async bool) *AttachedS
 	p.async = &async
 	return p
 }
-func (p *AttachedStorageDomainServiceRemoveRequest) Send() *AttachedStorageDomainServiceRemoveResponse {
+func (p *AttachedStorageDomainServiceRemoveRequest) Send() (*AttachedStorageDomainServiceRemoveResponse, error) {
 
+}
+
+type AttachedStorageDomainServiceRemoveResponse struct {
 }
 
 //
@@ -5359,10 +6129,49 @@ func (p *AttachedStorageDomainsServiceAddRequest) StorageDomain(storageDomain *S
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainsServiceAddRequest) Send() *AttachedStorageDomainsServiceAddResponse {
+func (p *AttachedStorageDomainsServiceAddRequest) Send() (*AttachedStorageDomainsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainsService.Connection.URL(), p.attachedStorageDomainsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.storageDomain)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainsService.Connection.username, p.attachedStorageDomainsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.attachedStorageDomainsService.Connection.client.Do(req)
+}
+
+type AttachedStorageDomainsServiceAddResponse struct {
+	storageDomain *StorageDomain
 }
 
 //
@@ -5416,8 +6225,12 @@ func (p *AttachedStorageDomainsServiceListRequest) Max(max int64) *AttachedStora
 	p.max = &max
 	return p
 }
-func (p *AttachedStorageDomainsServiceListRequest) Send() *AttachedStorageDomainsServiceListResponse {
+func (p *AttachedStorageDomainsServiceListRequest) Send() (*AttachedStorageDomainsServiceListResponse, error) {
 
+}
+
+type AttachedStorageDomainsServiceListResponse struct {
+	storageDomains []StorageDomain
 }
 
 //
@@ -5509,8 +6322,12 @@ func (p *InstanceTypeWatchdogServiceGetRequest) Query(key, value string) *Instan
 	return p
 }
 
-func (p *InstanceTypeWatchdogServiceGetRequest) Send() *InstanceTypeWatchdogServiceGetResponse {
+func (p *InstanceTypeWatchdogServiceGetRequest) Send() (*InstanceTypeWatchdogServiceGetResponse, error) {
 
+}
+
+type InstanceTypeWatchdogServiceGetResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -5564,8 +6381,11 @@ func (p *InstanceTypeWatchdogServiceRemoveRequest) Async(async bool) *InstanceTy
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeWatchdogServiceRemoveRequest) Send() *InstanceTypeWatchdogServiceRemoveResponse {
+func (p *InstanceTypeWatchdogServiceRemoveRequest) Send() (*InstanceTypeWatchdogServiceRemoveResponse, error) {
 
+}
+
+type InstanceTypeWatchdogServiceRemoveResponse struct {
 }
 
 //
@@ -5624,8 +6444,12 @@ func (p *InstanceTypeWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) 
 	p.watchdog = watchdog
 	return p
 }
-func (p *InstanceTypeWatchdogServiceUpdateRequest) Send() *InstanceTypeWatchdogServiceUpdateResponse {
+func (p *InstanceTypeWatchdogServiceUpdateRequest) Send() (*InstanceTypeWatchdogServiceUpdateResponse, error) {
 
+}
+
+type InstanceTypeWatchdogServiceUpdateResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -5704,8 +6528,12 @@ func (p *QuotaStorageLimitServiceGetRequest) Query(key, value string) *QuotaStor
 	return p
 }
 
-func (p *QuotaStorageLimitServiceGetRequest) Send() *QuotaStorageLimitServiceGetResponse {
+func (p *QuotaStorageLimitServiceGetRequest) Send() (*QuotaStorageLimitServiceGetResponse, error) {
 
+}
+
+type QuotaStorageLimitServiceGetResponse struct {
+	limit *QuotaStorageLimit
 }
 
 //
@@ -5758,8 +6586,11 @@ func (p *QuotaStorageLimitServiceRemoveRequest) Async(async bool) *QuotaStorageL
 	p.async = &async
 	return p
 }
-func (p *QuotaStorageLimitServiceRemoveRequest) Send() *QuotaStorageLimitServiceRemoveResponse {
+func (p *QuotaStorageLimitServiceRemoveRequest) Send() (*QuotaStorageLimitServiceRemoveResponse, error) {
 
+}
+
+type QuotaStorageLimitServiceRemoveResponse struct {
 }
 
 //
@@ -5834,8 +6665,12 @@ func (p *RoleServiceGetRequest) Query(key, value string) *RoleServiceGetRequest 
 	return p
 }
 
-func (p *RoleServiceGetRequest) Send() *RoleServiceGetResponse {
+func (p *RoleServiceGetRequest) Send() (*RoleServiceGetResponse, error) {
 
+}
+
+type RoleServiceGetResponse struct {
+	role *Role
 }
 
 //
@@ -5904,8 +6739,11 @@ func (p *RoleServiceRemoveRequest) Async(async bool) *RoleServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *RoleServiceRemoveRequest) Send() *RoleServiceRemoveResponse {
+func (p *RoleServiceRemoveRequest) Send() (*RoleServiceRemoveResponse, error) {
 
+}
+
+type RoleServiceRemoveResponse struct {
 }
 
 //
@@ -5969,8 +6807,12 @@ func (p *RoleServiceUpdateRequest) Role(role *Role) *RoleServiceUpdateRequest {
 	p.role = role
 	return p
 }
-func (p *RoleServiceUpdateRequest) Send() *RoleServiceUpdateResponse {
+func (p *RoleServiceUpdateRequest) Send() (*RoleServiceUpdateResponse, error) {
 
+}
+
+type RoleServiceUpdateResponse struct {
+	role *Role
 }
 
 //
@@ -6083,8 +6925,12 @@ func (p *AssignedNetworkServiceGetRequest) Query(key, value string) *AssignedNet
 	return p
 }
 
-func (p *AssignedNetworkServiceGetRequest) Send() *AssignedNetworkServiceGetResponse {
+func (p *AssignedNetworkServiceGetRequest) Send() (*AssignedNetworkServiceGetResponse, error) {
 
+}
+
+type AssignedNetworkServiceGetResponse struct {
+	network *Network
 }
 
 //
@@ -6137,8 +6983,11 @@ func (p *AssignedNetworkServiceRemoveRequest) Async(async bool) *AssignedNetwork
 	p.async = &async
 	return p
 }
-func (p *AssignedNetworkServiceRemoveRequest) Send() *AssignedNetworkServiceRemoveResponse {
+func (p *AssignedNetworkServiceRemoveRequest) Send() (*AssignedNetworkServiceRemoveResponse, error) {
 
+}
+
+type AssignedNetworkServiceRemoveResponse struct {
 }
 
 //
@@ -6196,8 +7045,12 @@ func (p *AssignedNetworkServiceUpdateRequest) Network(network *Network) *Assigne
 	p.network = network
 	return p
 }
-func (p *AssignedNetworkServiceUpdateRequest) Send() *AssignedNetworkServiceUpdateResponse {
+func (p *AssignedNetworkServiceUpdateRequest) Send() (*AssignedNetworkServiceUpdateResponse, error) {
 
+}
+
+type AssignedNetworkServiceUpdateResponse struct {
+	network *Network
 }
 
 //
@@ -6276,8 +7129,12 @@ func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Send() *StorageDomainVmDiskAttachmentServiceGetResponse {
+func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Send() (*StorageDomainVmDiskAttachmentServiceGetResponse, error) {
 
+}
+
+type StorageDomainVmDiskAttachmentServiceGetResponse struct {
+	attachment *DiskAttachment
 }
 
 //
@@ -6359,8 +7216,12 @@ func (p *HostNicsServiceListRequest) Max(max int64) *HostNicsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *HostNicsServiceListRequest) Send() *HostNicsServiceListResponse {
+func (p *HostNicsServiceListRequest) Send() (*HostNicsServiceListResponse, error) {
 
+}
+
+type HostNicsServiceListResponse struct {
+	nics []HostNic
 }
 
 //
@@ -6453,8 +7314,12 @@ func (p *VmNumaNodeServiceGetRequest) Query(key, value string) *VmNumaNodeServic
 	return p
 }
 
-func (p *VmNumaNodeServiceGetRequest) Send() *VmNumaNodeServiceGetResponse {
+func (p *VmNumaNodeServiceGetRequest) Send() (*VmNumaNodeServiceGetResponse, error) {
 
+}
+
+type VmNumaNodeServiceGetResponse struct {
+	node *VirtualNumaNode
 }
 
 //
@@ -6507,8 +7372,11 @@ func (p *VmNumaNodeServiceRemoveRequest) Async(async bool) *VmNumaNodeServiceRem
 	p.async = &async
 	return p
 }
-func (p *VmNumaNodeServiceRemoveRequest) Send() *VmNumaNodeServiceRemoveResponse {
+func (p *VmNumaNodeServiceRemoveRequest) Send() (*VmNumaNodeServiceRemoveResponse, error) {
 
+}
+
+type VmNumaNodeServiceRemoveResponse struct {
 }
 
 //
@@ -6572,8 +7440,12 @@ func (p *VmNumaNodeServiceUpdateRequest) Node(node *VirtualNumaNode) *VmNumaNode
 	p.node = node
 	return p
 }
-func (p *VmNumaNodeServiceUpdateRequest) Send() *VmNumaNodeServiceUpdateResponse {
+func (p *VmNumaNodeServiceUpdateRequest) Send() (*VmNumaNodeServiceUpdateResponse, error) {
 
+}
+
+type VmNumaNodeServiceUpdateResponse struct {
+	node *VirtualNumaNode
 }
 
 //
@@ -6674,8 +7546,12 @@ func (p *TemplateCdromsServiceListRequest) Max(max int64) *TemplateCdromsService
 	p.max = &max
 	return p
 }
-func (p *TemplateCdromsServiceListRequest) Send() *TemplateCdromsServiceListResponse {
+func (p *TemplateCdromsServiceListRequest) Send() (*TemplateCdromsServiceListResponse, error) {
 
+}
+
+type TemplateCdromsServiceListResponse struct {
+	cdroms []Cdrom
 }
 
 //
@@ -6768,8 +7644,12 @@ func (p *SnapshotServiceGetRequest) Query(key, value string) *SnapshotServiceGet
 	return p
 }
 
-func (p *SnapshotServiceGetRequest) Send() *SnapshotServiceGetResponse {
+func (p *SnapshotServiceGetRequest) Send() (*SnapshotServiceGetResponse, error) {
 
+}
+
+type SnapshotServiceGetResponse struct {
+	snapshot *Snapshot
 }
 
 //
@@ -6827,8 +7707,11 @@ func (p *SnapshotServiceRemoveRequest) Async(async bool) *SnapshotServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *SnapshotServiceRemoveRequest) Send() *SnapshotServiceRemoveResponse {
+func (p *SnapshotServiceRemoveRequest) Send() (*SnapshotServiceRemoveResponse, error) {
 
+}
+
+type SnapshotServiceRemoveResponse struct {
 }
 
 //
@@ -6900,8 +7783,11 @@ func (p *SnapshotServiceRestoreRequest) RestoreMemory(restoreMemory bool) *Snaps
 	p.restoreMemory = &restoreMemory
 	return p
 }
-func (p *SnapshotServiceRestoreRequest) Send() *SnapshotServiceRestoreResponse {
+func (p *SnapshotServiceRestoreRequest) Send() (*SnapshotServiceRestoreResponse, error) {
 
+}
+
+type SnapshotServiceRestoreResponse struct {
 }
 
 //
@@ -7032,10 +7918,49 @@ func (p *SchedulingPoliciesServiceAddRequest) Policy(policy *SchedulingPolicy) *
 	p.policy = policy
 	return p
 }
-func (p *SchedulingPoliciesServiceAddRequest) Send() *SchedulingPoliciesServiceAddResponse {
+func (p *SchedulingPoliciesServiceAddRequest) Send() (*SchedulingPoliciesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.schedulingPoliciesService.Connection.URL(), p.schedulingPoliciesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.policy)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.schedulingPoliciesService.Connection.username, p.schedulingPoliciesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.schedulingPoliciesService.Connection.client.Do(req)
+}
+
+type SchedulingPoliciesServiceAddResponse struct {
+	policy *SchedulingPolicy
 }
 
 //
@@ -7094,8 +8019,12 @@ func (p *SchedulingPoliciesServiceListRequest) Max(max int64) *SchedulingPolicie
 	p.max = &max
 	return p
 }
-func (p *SchedulingPoliciesServiceListRequest) Send() *SchedulingPoliciesServiceListResponse {
+func (p *SchedulingPoliciesServiceListRequest) Send() (*SchedulingPoliciesServiceListResponse, error) {
 
+}
+
+type SchedulingPoliciesServiceListResponse struct {
+	policies []SchedulingPolicy
 }
 
 //
@@ -7195,10 +8124,49 @@ func (p *WeightsServiceAddRequest) Weight(weight *Weight) *WeightsServiceAddRequ
 	p.weight = weight
 	return p
 }
-func (p *WeightsServiceAddRequest) Send() *WeightsServiceAddResponse {
+func (p *WeightsServiceAddRequest) Send() (*WeightsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.weightsService.Connection.URL(), p.weightsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.weight)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.weightsService.Connection.username, p.weightsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.weightsService.Connection.client.Do(req)
+}
+
+type WeightsServiceAddResponse struct {
+	weight *Weight
 }
 
 //
@@ -7257,8 +8225,12 @@ func (p *WeightsServiceListRequest) Max(max int64) *WeightsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *WeightsServiceListRequest) Send() *WeightsServiceListResponse {
+func (p *WeightsServiceListRequest) Send() (*WeightsServiceListResponse, error) {
 
+}
+
+type WeightsServiceListResponse struct {
+	weights []Weight
 }
 
 //
@@ -7359,10 +8331,49 @@ func (p *VmHostDevicesServiceAddRequest) Device(device *HostDevice) *VmHostDevic
 	p.device = device
 	return p
 }
-func (p *VmHostDevicesServiceAddRequest) Send() *VmHostDevicesServiceAddResponse {
+func (p *VmHostDevicesServiceAddRequest) Send() (*VmHostDevicesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmHostDevicesService.Connection.URL(), p.vmHostDevicesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.device)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmHostDevicesService.Connection.username, p.vmHostDevicesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmHostDevicesService.Connection.client.Do(req)
+}
+
+type VmHostDevicesServiceAddResponse struct {
+	device *HostDevice
 }
 
 //
@@ -7439,8 +8450,12 @@ func (p *VmHostDevicesServiceListRequest) Max(max int64) *VmHostDevicesServiceLi
 	p.max = &max
 	return p
 }
-func (p *VmHostDevicesServiceListRequest) Send() *VmHostDevicesServiceListResponse {
+func (p *VmHostDevicesServiceListRequest) Send() (*VmHostDevicesServiceListResponse, error) {
 
+}
+
+type VmHostDevicesServiceListResponse struct {
+	device []HostDevice
 }
 
 //
@@ -7534,8 +8549,12 @@ func (p *AssignedCpuProfileServiceGetRequest) Query(key, value string) *Assigned
 	return p
 }
 
-func (p *AssignedCpuProfileServiceGetRequest) Send() *AssignedCpuProfileServiceGetResponse {
+func (p *AssignedCpuProfileServiceGetRequest) Send() (*AssignedCpuProfileServiceGetResponse, error) {
 
+}
+
+type AssignedCpuProfileServiceGetResponse struct {
+	profile *CpuProfile
 }
 
 //
@@ -7588,8 +8607,11 @@ func (p *AssignedCpuProfileServiceRemoveRequest) Async(async bool) *AssignedCpuP
 	p.async = &async
 	return p
 }
-func (p *AssignedCpuProfileServiceRemoveRequest) Send() *AssignedCpuProfileServiceRemoveResponse {
+func (p *AssignedCpuProfileServiceRemoveRequest) Send() (*AssignedCpuProfileServiceRemoveResponse, error) {
 
+}
+
+type AssignedCpuProfileServiceRemoveResponse struct {
 }
 
 //
@@ -7664,8 +8686,12 @@ func (p *SnapshotNicServiceGetRequest) Query(key, value string) *SnapshotNicServ
 	return p
 }
 
-func (p *SnapshotNicServiceGetRequest) Send() *SnapshotNicServiceGetResponse {
+func (p *SnapshotNicServiceGetRequest) Send() (*SnapshotNicServiceGetResponse, error) {
 
+}
+
+type SnapshotNicServiceGetResponse struct {
+	nic *Nic
 }
 
 //
@@ -7741,8 +8767,12 @@ func (p *HostDeviceServiceGetRequest) Query(key, value string) *HostDeviceServic
 	return p
 }
 
-func (p *HostDeviceServiceGetRequest) Send() *HostDeviceServiceGetResponse {
+func (p *HostDeviceServiceGetRequest) Send() (*HostDeviceServiceGetResponse, error) {
 
+}
+
+type HostDeviceServiceGetResponse struct {
+	device *HostDevice
 }
 
 //
@@ -7842,10 +8872,49 @@ func (p *ImageTransfersServiceAddRequest) ImageTransfer(imageTransfer *ImageTran
 	p.imageTransfer = imageTransfer
 	return p
 }
-func (p *ImageTransfersServiceAddRequest) Send() *ImageTransfersServiceAddResponse {
+func (p *ImageTransfersServiceAddRequest) Send() (*ImageTransfersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.imageTransfersService.Connection.URL(), p.imageTransfersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.imageTransfer)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.imageTransfersService.Connection.username, p.imageTransfersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.imageTransfersService.Connection.client.Do(req)
+}
+
+type ImageTransfersServiceAddResponse struct {
+	imageTransfer *ImageTransfer
 }
 
 //
@@ -7896,8 +8965,12 @@ func (p *ImageTransfersServiceListRequest) Query(key, value string) *ImageTransf
 	return p
 }
 
-func (p *ImageTransfersServiceListRequest) Send() *ImageTransfersServiceListResponse {
+func (p *ImageTransfersServiceListRequest) Send() (*ImageTransfersServiceListResponse, error) {
 
+}
+
+type ImageTransfersServiceListResponse struct {
+	imageTransfer []ImageTransfer
 }
 
 //
@@ -7991,8 +9064,11 @@ func (p *ExternalProviderServiceImportCertificatesRequest) Certificates(certific
 	p.certificates = certificates
 	return p
 }
-func (p *ExternalProviderServiceImportCertificatesRequest) Send() *ExternalProviderServiceImportCertificatesResponse {
+func (p *ExternalProviderServiceImportCertificatesRequest) Send() (*ExternalProviderServiceImportCertificatesResponse, error) {
 
+}
+
+type ExternalProviderServiceImportCertificatesResponse struct {
 }
 
 //
@@ -8039,8 +9115,11 @@ func (p *ExternalProviderServiceTestConnectivityRequest) Async(async bool) *Exte
 	p.async = &async
 	return p
 }
-func (p *ExternalProviderServiceTestConnectivityRequest) Send() *ExternalProviderServiceTestConnectivityResponse {
+func (p *ExternalProviderServiceTestConnectivityRequest) Send() (*ExternalProviderServiceTestConnectivityResponse, error) {
 
+}
+
+type ExternalProviderServiceTestConnectivityResponse struct {
 }
 
 //
@@ -8127,8 +9206,12 @@ func (p *EventServiceGetRequest) Query(key, value string) *EventServiceGetReques
 	return p
 }
 
-func (p *EventServiceGetRequest) Send() *EventServiceGetResponse {
+func (p *EventServiceGetRequest) Send() (*EventServiceGetResponse, error) {
 
+}
+
+type EventServiceGetResponse struct {
+	event *Event
 }
 
 //
@@ -8206,8 +9289,11 @@ func (p *EventServiceRemoveRequest) Async(async bool) *EventServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *EventServiceRemoveRequest) Send() *EventServiceRemoveResponse {
+func (p *EventServiceRemoveRequest) Send() (*EventServiceRemoveResponse, error) {
 
+}
+
+type EventServiceRemoveResponse struct {
 }
 
 //
@@ -8339,8 +9425,12 @@ func (p *NetworkFiltersServiceListRequest) Query(key, value string) *NetworkFilt
 	return p
 }
 
-func (p *NetworkFiltersServiceListRequest) Send() *NetworkFiltersServiceListResponse {
+func (p *NetworkFiltersServiceListRequest) Send() (*NetworkFiltersServiceListResponse, error) {
 
+}
+
+type NetworkFiltersServiceListResponse struct {
+	filters []NetworkFilter
 }
 
 //
@@ -8431,8 +9521,12 @@ func (p *StatisticServiceGetRequest) Statistic(statistic *Statistic) *StatisticS
 	p.statistic = statistic
 	return p
 }
-func (p *StatisticServiceGetRequest) Send() *StatisticServiceGetResponse {
+func (p *StatisticServiceGetRequest) Send() (*StatisticServiceGetResponse, error) {
 
+}
+
+type StatisticServiceGetResponse struct {
+	statistic *Statistic
 }
 
 //
@@ -8515,10 +9609,49 @@ func (p *ExternalVmImportsServiceAddRequest) Import(import_ *ExternalVmImport) *
 	p.import_ = import_
 	return p
 }
-func (p *ExternalVmImportsServiceAddRequest) Send() *ExternalVmImportsServiceAddResponse {
+func (p *ExternalVmImportsServiceAddRequest) Send() (*ExternalVmImportsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.externalVmImportsService.Connection.URL(), p.externalVmImportsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.import_)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalVmImportsService.Connection.username, p.externalVmImportsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.externalVmImportsService.Connection.client.Do(req)
+}
+
+type ExternalVmImportsServiceAddResponse struct {
+	import_ *ExternalVmImport
 }
 
 //
@@ -8624,8 +9757,12 @@ func (p *AssignedRolesServiceListRequest) Max(max int64) *AssignedRolesServiceLi
 	p.max = &max
 	return p
 }
-func (p *AssignedRolesServiceListRequest) Send() *AssignedRolesServiceListResponse {
+func (p *AssignedRolesServiceListRequest) Send() (*AssignedRolesServiceListResponse, error) {
 
+}
+
+type AssignedRolesServiceListResponse struct {
+	roles []Role
 }
 
 //
@@ -8719,8 +9856,12 @@ func (p *NetworkFilterParameterServiceGetRequest) Query(key, value string) *Netw
 	return p
 }
 
-func (p *NetworkFilterParameterServiceGetRequest) Send() *NetworkFilterParameterServiceGetResponse {
+func (p *NetworkFilterParameterServiceGetRequest) Send() (*NetworkFilterParameterServiceGetResponse, error) {
 
+}
+
+type NetworkFilterParameterServiceGetResponse struct {
+	parameter *NetworkFilterParameter
 }
 
 //
@@ -8769,8 +9910,11 @@ func (p *NetworkFilterParameterServiceRemoveRequest) Query(key, value string) *N
 	return p
 }
 
-func (p *NetworkFilterParameterServiceRemoveRequest) Send() *NetworkFilterParameterServiceRemoveResponse {
+func (p *NetworkFilterParameterServiceRemoveRequest) Send() (*NetworkFilterParameterServiceRemoveResponse, error) {
 
+}
+
+type NetworkFilterParameterServiceRemoveResponse struct {
 }
 
 //
@@ -8823,8 +9967,12 @@ func (p *NetworkFilterParameterServiceUpdateRequest) Parameter(parameter *Networ
 	p.parameter = parameter
 	return p
 }
-func (p *NetworkFilterParameterServiceUpdateRequest) Send() *NetworkFilterParameterServiceUpdateResponse {
+func (p *NetworkFilterParameterServiceUpdateRequest) Send() (*NetworkFilterParameterServiceUpdateResponse, error) {
 
+}
+
+type NetworkFilterParameterServiceUpdateResponse struct {
+	parameter *NetworkFilterParameter
 }
 
 //
@@ -8920,8 +10068,12 @@ func (p *OpenstackImageProviderServiceGetRequest) Query(key, value string) *Open
 	return p
 }
 
-func (p *OpenstackImageProviderServiceGetRequest) Send() *OpenstackImageProviderServiceGetResponse {
+func (p *OpenstackImageProviderServiceGetRequest) Send() (*OpenstackImageProviderServiceGetResponse, error) {
 
+}
+
+type OpenstackImageProviderServiceGetResponse struct {
+	provider *OpenStackImageProvider
 }
 
 //
@@ -8974,8 +10126,11 @@ func (p *OpenstackImageProviderServiceImportCertificatesRequest) Certificates(ce
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackImageProviderServiceImportCertificatesRequest) Send() *OpenstackImageProviderServiceImportCertificatesResponse {
+func (p *OpenstackImageProviderServiceImportCertificatesRequest) Send() (*OpenstackImageProviderServiceImportCertificatesResponse, error) {
 
+}
+
+type OpenstackImageProviderServiceImportCertificatesResponse struct {
 }
 
 //
@@ -9022,8 +10177,11 @@ func (p *OpenstackImageProviderServiceRemoveRequest) Async(async bool) *Openstac
 	p.async = &async
 	return p
 }
-func (p *OpenstackImageProviderServiceRemoveRequest) Send() *OpenstackImageProviderServiceRemoveResponse {
+func (p *OpenstackImageProviderServiceRemoveRequest) Send() (*OpenstackImageProviderServiceRemoveResponse, error) {
 
+}
+
+type OpenstackImageProviderServiceRemoveResponse struct {
 }
 
 //
@@ -9076,8 +10234,11 @@ func (p *OpenstackImageProviderServiceTestConnectivityRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *OpenstackImageProviderServiceTestConnectivityRequest) Send() *OpenstackImageProviderServiceTestConnectivityResponse {
+func (p *OpenstackImageProviderServiceTestConnectivityRequest) Send() (*OpenstackImageProviderServiceTestConnectivityResponse, error) {
 
+}
+
+type OpenstackImageProviderServiceTestConnectivityResponse struct {
 }
 
 //
@@ -9134,8 +10295,12 @@ func (p *OpenstackImageProviderServiceUpdateRequest) Provider(provider *OpenStac
 	p.provider = provider
 	return p
 }
-func (p *OpenstackImageProviderServiceUpdateRequest) Send() *OpenstackImageProviderServiceUpdateResponse {
+func (p *OpenstackImageProviderServiceUpdateRequest) Send() (*OpenstackImageProviderServiceUpdateResponse, error) {
 
+}
+
+type OpenstackImageProviderServiceUpdateResponse struct {
+	provider *OpenStackImageProvider
 }
 
 //
@@ -9237,8 +10402,12 @@ func (p *OpenstackNetworkServiceGetRequest) Query(key, value string) *OpenstackN
 	return p
 }
 
-func (p *OpenstackNetworkServiceGetRequest) Send() *OpenstackNetworkServiceGetResponse {
+func (p *OpenstackNetworkServiceGetRequest) Send() (*OpenstackNetworkServiceGetResponse, error) {
 
+}
+
+type OpenstackNetworkServiceGetResponse struct {
+	network *OpenStackNetwork
 }
 
 //
@@ -9296,8 +10465,11 @@ func (p *OpenstackNetworkServiceImportRequest) DataCenter(dataCenter *DataCenter
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *OpenstackNetworkServiceImportRequest) Send() *OpenstackNetworkServiceImportResponse {
+func (p *OpenstackNetworkServiceImportRequest) Send() (*OpenstackNetworkServiceImportResponse, error) {
 
+}
+
+type OpenstackNetworkServiceImportResponse struct {
 }
 
 //
@@ -9396,10 +10568,49 @@ func (p *OpenstackImageProvidersServiceAddRequest) Provider(provider *OpenStackI
 	p.provider = provider
 	return p
 }
-func (p *OpenstackImageProvidersServiceAddRequest) Send() *OpenstackImageProvidersServiceAddResponse {
+func (p *OpenstackImageProvidersServiceAddRequest) Send() (*OpenstackImageProvidersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.openstackImageProvidersService.Connection.URL(), p.openstackImageProvidersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.provider)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackImageProvidersService.Connection.username, p.openstackImageProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.openstackImageProvidersService.Connection.client.Do(req)
+}
+
+type OpenstackImageProvidersServiceAddResponse struct {
+	provider *OpenStackImageProvider
 }
 
 //
@@ -9453,8 +10664,12 @@ func (p *OpenstackImageProvidersServiceListRequest) Max(max int64) *OpenstackIma
 	p.max = &max
 	return p
 }
-func (p *OpenstackImageProvidersServiceListRequest) Send() *OpenstackImageProvidersServiceListResponse {
+func (p *OpenstackImageProvidersServiceListRequest) Send() (*OpenstackImageProvidersServiceListResponse, error) {
 
+}
+
+type OpenstackImageProvidersServiceListResponse struct {
+	providers []OpenStackImageProvider
 }
 
 //
@@ -9546,8 +10761,12 @@ func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Query(key, value str
 	return p
 }
 
-func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Send() *OpenstackVolumeAuthenticationKeyServiceGetResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Send() (*OpenstackVolumeAuthenticationKeyServiceGetResponse, error) {
 
+}
+
+type OpenstackVolumeAuthenticationKeyServiceGetResponse struct {
+	key *OpenstackVolumeAuthenticationKey
 }
 
 //
@@ -9600,8 +10819,11 @@ func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Send() *OpenstackVolumeAuthenticationKeyServiceRemoveResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Send() (*OpenstackVolumeAuthenticationKeyServiceRemoveResponse, error) {
 
+}
+
+type OpenstackVolumeAuthenticationKeyServiceRemoveResponse struct {
 }
 
 //
@@ -9654,8 +10876,12 @@ func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Key(key *Openstac
 	p.key = key
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Send() *OpenstackVolumeAuthenticationKeyServiceUpdateResponse {
+func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Send() (*OpenstackVolumeAuthenticationKeyServiceUpdateResponse, error) {
 
+}
+
+type OpenstackVolumeAuthenticationKeyServiceUpdateResponse struct {
+	key *OpenstackVolumeAuthenticationKey
 }
 
 //
@@ -9736,8 +10962,12 @@ func (p *OpenstackImagesServiceListRequest) Max(max int64) *OpenstackImagesServi
 	p.max = &max
 	return p
 }
-func (p *OpenstackImagesServiceListRequest) Send() *OpenstackImagesServiceListResponse {
+func (p *OpenstackImagesServiceListRequest) Send() (*OpenstackImagesServiceListResponse, error) {
 
+}
+
+type OpenstackImagesServiceListResponse struct {
+	images []OpenStackImage
 }
 
 //
@@ -9837,10 +11067,49 @@ func (p *OpenstackNetworkProvidersServiceAddRequest) Provider(provider *OpenStac
 	p.provider = provider
 	return p
 }
-func (p *OpenstackNetworkProvidersServiceAddRequest) Send() *OpenstackNetworkProvidersServiceAddResponse {
+func (p *OpenstackNetworkProvidersServiceAddRequest) Send() (*OpenstackNetworkProvidersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.openstackNetworkProvidersService.Connection.URL(), p.openstackNetworkProvidersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.provider)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackNetworkProvidersService.Connection.username, p.openstackNetworkProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.openstackNetworkProvidersService.Connection.client.Do(req)
+}
+
+type OpenstackNetworkProvidersServiceAddResponse struct {
+	provider *OpenStackNetworkProvider
 }
 
 //
@@ -9896,8 +11165,12 @@ func (p *OpenstackNetworkProvidersServiceListRequest) Max(max int64) *OpenstackN
 	p.max = &max
 	return p
 }
-func (p *OpenstackNetworkProvidersServiceListRequest) Send() *OpenstackNetworkProvidersServiceListResponse {
+func (p *OpenstackNetworkProvidersServiceListRequest) Send() (*OpenstackNetworkProvidersServiceListResponse, error) {
 
+}
+
+type OpenstackNetworkProvidersServiceListResponse struct {
+	providers []OpenStackNetworkProvider
 }
 
 //
@@ -9995,10 +11268,49 @@ func (p *OpenstackVolumeProvidersServiceAddRequest) Provider(provider *OpenStack
 	p.provider = provider
 	return p
 }
-func (p *OpenstackVolumeProvidersServiceAddRequest) Send() *OpenstackVolumeProvidersServiceAddResponse {
+func (p *OpenstackVolumeProvidersServiceAddRequest) Send() (*OpenstackVolumeProvidersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeProvidersService.Connection.URL(), p.openstackVolumeProvidersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.provider)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeProvidersService.Connection.username, p.openstackVolumeProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.openstackVolumeProvidersService.Connection.client.Do(req)
+}
+
+type OpenstackVolumeProvidersServiceAddResponse struct {
+	provider *OpenStackVolumeProvider
 }
 
 //
@@ -10073,8 +11385,12 @@ func (p *OpenstackVolumeProvidersServiceListRequest) Max(max int64) *OpenstackVo
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeProvidersServiceListRequest) Send() *OpenstackVolumeProvidersServiceListResponse {
+func (p *OpenstackVolumeProvidersServiceListRequest) Send() (*OpenstackVolumeProvidersServiceListResponse, error) {
 
+}
+
+type OpenstackVolumeProvidersServiceListResponse struct {
+	providers []OpenStackVolumeProvider
 }
 
 //
@@ -10172,8 +11488,12 @@ func (p *OpenstackNetworksServiceListRequest) Max(max int64) *OpenstackNetworksS
 	p.max = &max
 	return p
 }
-func (p *OpenstackNetworksServiceListRequest) Send() *OpenstackNetworksServiceListResponse {
+func (p *OpenstackNetworksServiceListRequest) Send() (*OpenstackNetworksServiceListResponse, error) {
 
+}
+
+type OpenstackNetworksServiceListResponse struct {
+	networks []OpenStackNetwork
 }
 
 //
@@ -10265,8 +11585,12 @@ func (p *OpenstackVolumeProviderServiceGetRequest) Query(key, value string) *Ope
 	return p
 }
 
-func (p *OpenstackVolumeProviderServiceGetRequest) Send() *OpenstackVolumeProviderServiceGetResponse {
+func (p *OpenstackVolumeProviderServiceGetRequest) Send() (*OpenstackVolumeProviderServiceGetResponse, error) {
 
+}
+
+type OpenstackVolumeProviderServiceGetResponse struct {
+	provider *OpenStackVolumeProvider
 }
 
 //
@@ -10319,8 +11643,11 @@ func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Certificates(c
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Send() *OpenstackVolumeProviderServiceImportCertificatesResponse {
+func (p *OpenstackVolumeProviderServiceImportCertificatesRequest) Send() (*OpenstackVolumeProviderServiceImportCertificatesResponse, error) {
 
+}
+
+type OpenstackVolumeProviderServiceImportCertificatesResponse struct {
 }
 
 //
@@ -10367,8 +11694,11 @@ func (p *OpenstackVolumeProviderServiceRemoveRequest) Async(async bool) *Opensta
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeProviderServiceRemoveRequest) Send() *OpenstackVolumeProviderServiceRemoveResponse {
+func (p *OpenstackVolumeProviderServiceRemoveRequest) Send() (*OpenstackVolumeProviderServiceRemoveResponse, error) {
 
+}
+
+type OpenstackVolumeProviderServiceRemoveResponse struct {
 }
 
 //
@@ -10421,8 +11751,11 @@ func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Async(async bool
 	p.async = &async
 	return p
 }
-func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Send() *OpenstackVolumeProviderServiceTestConnectivityResponse {
+func (p *OpenstackVolumeProviderServiceTestConnectivityRequest) Send() (*OpenstackVolumeProviderServiceTestConnectivityResponse, error) {
 
+}
+
+type OpenstackVolumeProviderServiceTestConnectivityResponse struct {
 }
 
 //
@@ -10479,8 +11812,12 @@ func (p *OpenstackVolumeProviderServiceUpdateRequest) Provider(provider *OpenSta
 	p.provider = provider
 	return p
 }
-func (p *OpenstackVolumeProviderServiceUpdateRequest) Send() *OpenstackVolumeProviderServiceUpdateResponse {
+func (p *OpenstackVolumeProviderServiceUpdateRequest) Send() (*OpenstackVolumeProviderServiceUpdateResponse, error) {
 
+}
+
+type OpenstackVolumeProviderServiceUpdateResponse struct {
+	provider *OpenStackVolumeProvider
 }
 
 //
@@ -10599,8 +11936,12 @@ func (p *OpenstackVolumeTypesServiceListRequest) Max(max int64) *OpenstackVolume
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeTypesServiceListRequest) Send() *OpenstackVolumeTypesServiceListResponse {
+func (p *OpenstackVolumeTypesServiceListRequest) Send() (*OpenstackVolumeTypesServiceListResponse, error) {
 
+}
+
+type OpenstackVolumeTypesServiceListResponse struct {
+	types []OpenStackVolumeType
 }
 
 //
@@ -10697,10 +12038,49 @@ func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Key(key *OpenstackV
 	p.key = key
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Send() *OpenstackVolumeAuthenticationKeysServiceAddResponse {
+func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Send() (*OpenstackVolumeAuthenticationKeysServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.openstackVolumeAuthenticationKeysService.Connection.URL(), p.openstackVolumeAuthenticationKeysService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.key)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackVolumeAuthenticationKeysService.Connection.username, p.openstackVolumeAuthenticationKeysService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.openstackVolumeAuthenticationKeysService.Connection.client.Do(req)
+}
+
+type OpenstackVolumeAuthenticationKeysServiceAddResponse struct {
+	key *OpenstackVolumeAuthenticationKey
 }
 
 //
@@ -10754,8 +12134,12 @@ func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Max(max int64) *Op
 	p.max = &max
 	return p
 }
-func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Send() *OpenstackVolumeAuthenticationKeysServiceListResponse {
+func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Send() (*OpenstackVolumeAuthenticationKeysServiceListResponse, error) {
 
+}
+
+type OpenstackVolumeAuthenticationKeysServiceListResponse struct {
+	keys []OpenstackVolumeAuthenticationKey
 }
 
 //
@@ -10847,8 +12231,12 @@ func (p *OpenstackImageServiceGetRequest) Query(key, value string) *OpenstackIma
 	return p
 }
 
-func (p *OpenstackImageServiceGetRequest) Send() *OpenstackImageServiceGetResponse {
+func (p *OpenstackImageServiceGetRequest) Send() (*OpenstackImageServiceGetResponse, error) {
 
+}
+
+type OpenstackImageServiceGetResponse struct {
+	image *OpenStackImage
 }
 
 //
@@ -10926,8 +12314,11 @@ func (p *OpenstackImageServiceImportRequest) Template(template *Template) *Opens
 	p.template = template
 	return p
 }
-func (p *OpenstackImageServiceImportRequest) Send() *OpenstackImageServiceImportResponse {
+func (p *OpenstackImageServiceImportRequest) Send() (*OpenstackImageServiceImportResponse, error) {
 
+}
+
+type OpenstackImageServiceImportResponse struct {
 }
 
 //
@@ -11033,8 +12424,12 @@ func (p *OpenstackVolumeTypeServiceGetRequest) Query(key, value string) *Opensta
 	return p
 }
 
-func (p *OpenstackVolumeTypeServiceGetRequest) Send() *OpenstackVolumeTypeServiceGetResponse {
+func (p *OpenstackVolumeTypeServiceGetRequest) Send() (*OpenstackVolumeTypeServiceGetResponse, error) {
 
+}
+
+type OpenstackVolumeTypeServiceGetResponse struct {
+	type_ *OpenStackVolumeType
 }
 
 //
@@ -11109,8 +12504,12 @@ func (p *OpenstackSubnetServiceGetRequest) Query(key, value string) *OpenstackSu
 	return p
 }
 
-func (p *OpenstackSubnetServiceGetRequest) Send() *OpenstackSubnetServiceGetResponse {
+func (p *OpenstackSubnetServiceGetRequest) Send() (*OpenstackSubnetServiceGetResponse, error) {
 
+}
+
+type OpenstackSubnetServiceGetResponse struct {
+	subnet *OpenStackSubnet
 }
 
 //
@@ -11163,8 +12562,11 @@ func (p *OpenstackSubnetServiceRemoveRequest) Async(async bool) *OpenstackSubnet
 	p.async = &async
 	return p
 }
-func (p *OpenstackSubnetServiceRemoveRequest) Send() *OpenstackSubnetServiceRemoveResponse {
+func (p *OpenstackSubnetServiceRemoveRequest) Send() (*OpenstackSubnetServiceRemoveResponse, error) {
 
+}
+
+type OpenstackSubnetServiceRemoveResponse struct {
 }
 
 //
@@ -11244,10 +12646,49 @@ func (p *OpenstackSubnetsServiceAddRequest) Subnet(subnet *OpenStackSubnet) *Ope
 	p.subnet = subnet
 	return p
 }
-func (p *OpenstackSubnetsServiceAddRequest) Send() *OpenstackSubnetsServiceAddResponse {
+func (p *OpenstackSubnetsServiceAddRequest) Send() (*OpenstackSubnetsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.openstackSubnetsService.Connection.URL(), p.openstackSubnetsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.subnet)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.openstackSubnetsService.Connection.username, p.openstackSubnetsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.openstackSubnetsService.Connection.client.Do(req)
+}
+
+type OpenstackSubnetsServiceAddResponse struct {
+	subnet *OpenStackSubnet
 }
 
 //
@@ -11301,8 +12742,12 @@ func (p *OpenstackSubnetsServiceListRequest) Max(max int64) *OpenstackSubnetsSer
 	p.max = &max
 	return p
 }
-func (p *OpenstackSubnetsServiceListRequest) Send() *OpenstackSubnetsServiceListResponse {
+func (p *OpenstackSubnetsServiceListRequest) Send() (*OpenstackSubnetsServiceListResponse, error) {
 
+}
+
+type OpenstackSubnetsServiceListResponse struct {
+	subnets []OpenStackSubnet
 }
 
 //
@@ -11395,8 +12840,12 @@ func (p *OpenstackNetworkProviderServiceGetRequest) Query(key, value string) *Op
 	return p
 }
 
-func (p *OpenstackNetworkProviderServiceGetRequest) Send() *OpenstackNetworkProviderServiceGetResponse {
+func (p *OpenstackNetworkProviderServiceGetRequest) Send() (*OpenstackNetworkProviderServiceGetResponse, error) {
 
+}
+
+type OpenstackNetworkProviderServiceGetResponse struct {
+	provider *OpenStackNetworkProvider
 }
 
 //
@@ -11455,8 +12904,11 @@ func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Certificates(
 	p.certificates = certificates
 	return p
 }
-func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Send() *OpenstackNetworkProviderServiceImportCertificatesResponse {
+func (p *OpenstackNetworkProviderServiceImportCertificatesRequest) Send() (*OpenstackNetworkProviderServiceImportCertificatesResponse, error) {
 
+}
+
+type OpenstackNetworkProviderServiceImportCertificatesResponse struct {
 }
 
 //
@@ -11503,8 +12955,11 @@ func (p *OpenstackNetworkProviderServiceRemoveRequest) Async(async bool) *Openst
 	p.async = &async
 	return p
 }
-func (p *OpenstackNetworkProviderServiceRemoveRequest) Send() *OpenstackNetworkProviderServiceRemoveResponse {
+func (p *OpenstackNetworkProviderServiceRemoveRequest) Send() (*OpenstackNetworkProviderServiceRemoveResponse, error) {
 
+}
+
+type OpenstackNetworkProviderServiceRemoveResponse struct {
 }
 
 //
@@ -11563,8 +13018,11 @@ func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Async(async boo
 	p.async = &async
 	return p
 }
-func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Send() *OpenstackNetworkProviderServiceTestConnectivityResponse {
+func (p *OpenstackNetworkProviderServiceTestConnectivityRequest) Send() (*OpenstackNetworkProviderServiceTestConnectivityResponse, error) {
 
+}
+
+type OpenstackNetworkProviderServiceTestConnectivityResponse struct {
 }
 
 //
@@ -11621,8 +13079,12 @@ func (p *OpenstackNetworkProviderServiceUpdateRequest) Provider(provider *OpenSt
 	p.provider = provider
 	return p
 }
-func (p *OpenstackNetworkProviderServiceUpdateRequest) Send() *OpenstackNetworkProviderServiceUpdateResponse {
+func (p *OpenstackNetworkProviderServiceUpdateRequest) Send() (*OpenstackNetworkProviderServiceUpdateResponse, error) {
 
+}
+
+type OpenstackNetworkProviderServiceUpdateResponse struct {
+	provider *OpenStackNetworkProvider
 }
 
 //
@@ -11759,8 +13221,11 @@ func (p *TemplateServiceExportRequest) StorageDomain(storageDomain *StorageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *TemplateServiceExportRequest) Send() *TemplateServiceExportResponse {
+func (p *TemplateServiceExportRequest) Send() (*TemplateServiceExportResponse, error) {
 
+}
+
+type TemplateServiceExportResponse struct {
 }
 
 //
@@ -11831,8 +13296,12 @@ func (p *TemplateServiceGetRequest) Filter(filter bool) *TemplateServiceGetReque
 	p.filter = &filter
 	return p
 }
-func (p *TemplateServiceGetRequest) Send() *TemplateServiceGetResponse {
+func (p *TemplateServiceGetRequest) Send() (*TemplateServiceGetResponse, error) {
 
+}
+
+type TemplateServiceGetResponse struct {
+	template *Template
 }
 
 //
@@ -11893,8 +13362,11 @@ func (p *TemplateServiceRemoveRequest) Async(async bool) *TemplateServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *TemplateServiceRemoveRequest) Send() *TemplateServiceRemoveResponse {
+func (p *TemplateServiceRemoveRequest) Send() (*TemplateServiceRemoveResponse, error) {
 
+}
+
+type TemplateServiceRemoveResponse struct {
 }
 
 //
@@ -11947,8 +13419,11 @@ func (p *TemplateServiceSealRequest) Query(key, value string) *TemplateServiceSe
 	return p
 }
 
-func (p *TemplateServiceSealRequest) Send() *TemplateServiceSealResponse {
+func (p *TemplateServiceSealRequest) Send() (*TemplateServiceSealResponse, error) {
 
+}
+
+type TemplateServiceSealResponse struct {
 }
 
 //
@@ -12003,8 +13478,12 @@ func (p *TemplateServiceUpdateRequest) Template(template *Template) *TemplateSer
 	p.template = template
 	return p
 }
-func (p *TemplateServiceUpdateRequest) Send() *TemplateServiceUpdateResponse {
+func (p *TemplateServiceUpdateRequest) Send() (*TemplateServiceUpdateResponse, error) {
 
+}
+
+type TemplateServiceUpdateResponse struct {
+	template *Template
 }
 
 //
@@ -12205,10 +13684,49 @@ func (p *VmWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *VmWatchdogs
 	p.watchdog = watchdog
 	return p
 }
-func (p *VmWatchdogsServiceAddRequest) Send() *VmWatchdogsServiceAddResponse {
+func (p *VmWatchdogsServiceAddRequest) Send() (*VmWatchdogsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmWatchdogsService.Connection.URL(), p.vmWatchdogsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.watchdog)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmWatchdogsService.Connection.username, p.vmWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmWatchdogsService.Connection.client.Do(req)
+}
+
+type VmWatchdogsServiceAddResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -12289,8 +13807,12 @@ func (p *VmWatchdogsServiceListRequest) Max(max int64) *VmWatchdogsServiceListRe
 	p.max = &max
 	return p
 }
-func (p *VmWatchdogsServiceListRequest) Send() *VmWatchdogsServiceListResponse {
+func (p *VmWatchdogsServiceListRequest) Send() (*VmWatchdogsServiceListResponse, error) {
 
+}
+
+type VmWatchdogsServiceListResponse struct {
+	watchdogs []Watchdog
 }
 
 //
@@ -12387,8 +13909,12 @@ func (p *AffinityLabelVmServiceGetRequest) Query(key, value string) *AffinityLab
 	return p
 }
 
-func (p *AffinityLabelVmServiceGetRequest) Send() *AffinityLabelVmServiceGetResponse {
+func (p *AffinityLabelVmServiceGetRequest) Send() (*AffinityLabelVmServiceGetResponse, error) {
 
+}
+
+type AffinityLabelVmServiceGetResponse struct {
+	vm *Vm
 }
 
 //
@@ -12437,8 +13963,11 @@ func (p *AffinityLabelVmServiceRemoveRequest) Query(key, value string) *Affinity
 	return p
 }
 
-func (p *AffinityLabelVmServiceRemoveRequest) Send() *AffinityLabelVmServiceRemoveResponse {
+func (p *AffinityLabelVmServiceRemoveRequest) Send() (*AffinityLabelVmServiceRemoveResponse, error) {
 
+}
+
+type AffinityLabelVmServiceRemoveResponse struct {
 }
 
 //
@@ -12512,8 +14041,11 @@ func (p *VmServiceCancelMigrationRequest) Async(async bool) *VmServiceCancelMigr
 	p.async = &async
 	return p
 }
-func (p *VmServiceCancelMigrationRequest) Send() *VmServiceCancelMigrationResponse {
+func (p *VmServiceCancelMigrationRequest) Send() (*VmServiceCancelMigrationResponse, error) {
 
+}
+
+type VmServiceCancelMigrationResponse struct {
 }
 
 //
@@ -12581,8 +14113,11 @@ func (p *VmServiceCloneRequest) Vm(vm *Vm) *VmServiceCloneRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceCloneRequest) Send() *VmServiceCloneResponse {
+func (p *VmServiceCloneRequest) Send() (*VmServiceCloneResponse, error) {
 
+}
+
+type VmServiceCloneResponse struct {
 }
 
 //
@@ -12636,8 +14171,11 @@ func (p *VmServiceCommitSnapshotRequest) Async(async bool) *VmServiceCommitSnaps
 	p.async = &async
 	return p
 }
-func (p *VmServiceCommitSnapshotRequest) Send() *VmServiceCommitSnapshotResponse {
+func (p *VmServiceCommitSnapshotRequest) Send() (*VmServiceCommitSnapshotResponse, error) {
 
+}
+
+type VmServiceCommitSnapshotResponse struct {
 }
 
 //
@@ -12689,8 +14227,11 @@ func (p *VmServiceDetachRequest) Async(async bool) *VmServiceDetachRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceDetachRequest) Send() *VmServiceDetachResponse {
+func (p *VmServiceDetachRequest) Send() (*VmServiceDetachResponse, error) {
 
+}
+
+type VmServiceDetachResponse struct {
 }
 
 //
@@ -12768,8 +14309,11 @@ func (p *VmServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *Vm
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *VmServiceExportRequest) Send() *VmServiceExportResponse {
+func (p *VmServiceExportRequest) Send() (*VmServiceExportResponse, error) {
 
+}
+
+type VmServiceExportResponse struct {
 }
 
 //
@@ -12848,8 +14392,11 @@ func (p *VmServiceFreezeFilesystemsRequest) Async(async bool) *VmServiceFreezeFi
 	p.async = &async
 	return p
 }
-func (p *VmServiceFreezeFilesystemsRequest) Send() *VmServiceFreezeFilesystemsResponse {
+func (p *VmServiceFreezeFilesystemsRequest) Send() (*VmServiceFreezeFilesystemsResponse, error) {
 
+}
+
+type VmServiceFreezeFilesystemsResponse struct {
 }
 
 //
@@ -12924,8 +14471,12 @@ func (p *VmServiceGetRequest) NextRun(nextRun bool) *VmServiceGetRequest {
 	p.nextRun = &nextRun
 	return p
 }
-func (p *VmServiceGetRequest) Send() *VmServiceGetResponse {
+func (p *VmServiceGetRequest) Send() (*VmServiceGetResponse, error) {
 
+}
+
+type VmServiceGetResponse struct {
+	vm *Vm
 }
 
 //
@@ -13017,8 +14568,11 @@ func (p *VmServiceLogonRequest) Async(async bool) *VmServiceLogonRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceLogonRequest) Send() *VmServiceLogonResponse {
+func (p *VmServiceLogonRequest) Send() (*VmServiceLogonResponse, error) {
 
+}
+
+type VmServiceLogonResponse struct {
 }
 
 //
@@ -13090,8 +14644,11 @@ func (p *VmServiceMaintenanceRequest) MaintenanceEnabled(maintenanceEnabled bool
 	p.maintenanceEnabled = &maintenanceEnabled
 	return p
 }
-func (p *VmServiceMaintenanceRequest) Send() *VmServiceMaintenanceResponse {
+func (p *VmServiceMaintenanceRequest) Send() (*VmServiceMaintenanceResponse, error) {
 
+}
+
+type VmServiceMaintenanceResponse struct {
 }
 
 //
@@ -13174,8 +14731,11 @@ func (p *VmServiceMigrateRequest) Host(host *Host) *VmServiceMigrateRequest {
 	p.host = host
 	return p
 }
-func (p *VmServiceMigrateRequest) Send() *VmServiceMigrateResponse {
+func (p *VmServiceMigrateRequest) Send() (*VmServiceMigrateResponse, error) {
 
+}
+
+type VmServiceMigrateResponse struct {
 }
 
 //
@@ -13272,8 +14832,11 @@ func (p *VmServicePreviewSnapshotRequest) Vm(vm *Vm) *VmServicePreviewSnapshotRe
 	p.vm = vm
 	return p
 }
-func (p *VmServicePreviewSnapshotRequest) Send() *VmServicePreviewSnapshotResponse {
+func (p *VmServicePreviewSnapshotRequest) Send() (*VmServicePreviewSnapshotResponse, error) {
 
+}
+
+type VmServicePreviewSnapshotResponse struct {
 }
 
 //
@@ -13333,8 +14896,11 @@ func (p *VmServiceRebootRequest) Async(async bool) *VmServiceRebootRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceRebootRequest) Send() *VmServiceRebootResponse {
+func (p *VmServiceRebootRequest) Send() (*VmServiceRebootResponse, error) {
 
+}
+
+type VmServiceRebootResponse struct {
 }
 
 //
@@ -13407,8 +14973,11 @@ func (p *VmServiceRemoveRequest) Force(force bool) *VmServiceRemoveRequest {
 	p.force = &force
 	return p
 }
-func (p *VmServiceRemoveRequest) Send() *VmServiceRemoveResponse {
+func (p *VmServiceRemoveRequest) Send() (*VmServiceRemoveResponse, error) {
 
+}
+
+type VmServiceRemoveResponse struct {
 }
 
 //
@@ -13475,8 +15044,11 @@ func (p *VmServiceReorderMacAddressesRequest) Async(async bool) *VmServiceReorde
 	p.async = &async
 	return p
 }
-func (p *VmServiceReorderMacAddressesRequest) Send() *VmServiceReorderMacAddressesResponse {
+func (p *VmServiceReorderMacAddressesRequest) Send() (*VmServiceReorderMacAddressesResponse, error) {
 
+}
+
+type VmServiceReorderMacAddressesResponse struct {
 }
 
 //
@@ -13528,8 +15100,11 @@ func (p *VmServiceShutdownRequest) Async(async bool) *VmServiceShutdownRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceShutdownRequest) Send() *VmServiceShutdownResponse {
+func (p *VmServiceShutdownRequest) Send() (*VmServiceShutdownResponse, error) {
 
+}
+
+type VmServiceShutdownResponse struct {
 }
 
 //
@@ -13617,8 +15192,11 @@ func (p *VmServiceStartRequest) Vm(vm *Vm) *VmServiceStartRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceStartRequest) Send() *VmServiceStartResponse {
+func (p *VmServiceStartRequest) Send() (*VmServiceStartResponse, error) {
 
+}
+
+type VmServiceStartResponse struct {
 }
 
 //
@@ -13717,8 +15295,11 @@ func (p *VmServiceStopRequest) Async(async bool) *VmServiceStopRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceStopRequest) Send() *VmServiceStopResponse {
+func (p *VmServiceStopRequest) Send() (*VmServiceStopResponse, error) {
 
+}
+
+type VmServiceStopResponse struct {
 }
 
 //
@@ -13781,8 +15362,11 @@ func (p *VmServiceSuspendRequest) Async(async bool) *VmServiceSuspendRequest {
 	p.async = &async
 	return p
 }
-func (p *VmServiceSuspendRequest) Send() *VmServiceSuspendResponse {
+func (p *VmServiceSuspendRequest) Send() (*VmServiceSuspendResponse, error) {
 
+}
+
+type VmServiceSuspendResponse struct {
 }
 
 //
@@ -13846,8 +15430,11 @@ func (p *VmServiceThawFilesystemsRequest) Async(async bool) *VmServiceThawFilesy
 	p.async = &async
 	return p
 }
-func (p *VmServiceThawFilesystemsRequest) Send() *VmServiceThawFilesystemsResponse {
+func (p *VmServiceThawFilesystemsRequest) Send() (*VmServiceThawFilesystemsResponse, error) {
 
+}
+
+type VmServiceThawFilesystemsResponse struct {
 }
 
 //
@@ -13917,8 +15504,12 @@ func (p *VmServiceTicketRequest) Ticket(ticket *Ticket) *VmServiceTicketRequest 
 	p.ticket = ticket
 	return p
 }
-func (p *VmServiceTicketRequest) Send() *VmServiceTicketResponse {
+func (p *VmServiceTicketRequest) Send() (*VmServiceTicketResponse, error) {
 
+}
+
+type VmServiceTicketResponse struct {
+	ticket *Ticket
 }
 
 //
@@ -14011,8 +15602,11 @@ func (p *VmServiceUndoSnapshotRequest) Async(async bool) *VmServiceUndoSnapshotR
 	p.async = &async
 	return p
 }
-func (p *VmServiceUndoSnapshotRequest) Send() *VmServiceUndoSnapshotResponse {
+func (p *VmServiceUndoSnapshotRequest) Send() (*VmServiceUndoSnapshotResponse, error) {
 
+}
+
+type VmServiceUndoSnapshotResponse struct {
 }
 
 //
@@ -14074,8 +15668,12 @@ func (p *VmServiceUpdateRequest) Vm(vm *Vm) *VmServiceUpdateRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmServiceUpdateRequest) Send() *VmServiceUpdateResponse {
+func (p *VmServiceUpdateRequest) Send() (*VmServiceUpdateResponse, error) {
 
+}
+
+type VmServiceUpdateResponse struct {
+	vm *Vm
 }
 
 //
@@ -14357,10 +15955,49 @@ func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Console(console *Graphic
 	p.console = console
 	return p
 }
-func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Send() *InstanceTypeGraphicsConsolesServiceAddResponse {
+func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Send() (*InstanceTypeGraphicsConsolesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.instanceTypeGraphicsConsolesService.Connection.URL(), p.instanceTypeGraphicsConsolesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.console)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeGraphicsConsolesService.Connection.username, p.instanceTypeGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.instanceTypeGraphicsConsolesService.Connection.client.Do(req)
+}
+
+type InstanceTypeGraphicsConsolesServiceAddResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -14415,8 +16052,12 @@ func (p *InstanceTypeGraphicsConsolesServiceListRequest) Max(max int64) *Instanc
 	p.max = &max
 	return p
 }
-func (p *InstanceTypeGraphicsConsolesServiceListRequest) Send() *InstanceTypeGraphicsConsolesServiceListResponse {
+func (p *InstanceTypeGraphicsConsolesServiceListRequest) Send() (*InstanceTypeGraphicsConsolesServiceListResponse, error) {
 
+}
+
+type InstanceTypeGraphicsConsolesServiceListResponse struct {
+	consoles []GraphicsConsole
 }
 
 //
@@ -14510,8 +16151,12 @@ func (p *StorageDomainVmServiceGetRequest) Query(key, value string) *StorageDoma
 	return p
 }
 
-func (p *StorageDomainVmServiceGetRequest) Send() *StorageDomainVmServiceGetResponse {
+func (p *StorageDomainVmServiceGetRequest) Send() (*StorageDomainVmServiceGetResponse, error) {
 
+}
+
+type StorageDomainVmServiceGetResponse struct {
+	vm *Vm
 }
 
 //
@@ -14589,8 +16234,11 @@ func (p *StorageDomainVmServiceImportRequest) Vm(vm *Vm) *StorageDomainVmService
 	p.vm = vm
 	return p
 }
-func (p *StorageDomainVmServiceImportRequest) Send() *StorageDomainVmServiceImportResponse {
+func (p *StorageDomainVmServiceImportRequest) Send() (*StorageDomainVmServiceImportResponse, error) {
 
+}
+
+type StorageDomainVmServiceImportResponse struct {
 }
 
 //
@@ -14745,8 +16393,11 @@ func (p *StorageDomainVmServiceRegisterRequest) VnicProfileMappings(vnicProfileM
 	p.vnicProfileMappings = vnicProfileMappings
 	return p
 }
-func (p *StorageDomainVmServiceRegisterRequest) Send() *StorageDomainVmServiceRegisterResponse {
+func (p *StorageDomainVmServiceRegisterRequest) Send() (*StorageDomainVmServiceRegisterResponse, error) {
 
+}
+
+type StorageDomainVmServiceRegisterResponse struct {
 }
 
 //
@@ -14820,8 +16471,11 @@ func (p *StorageDomainVmServiceRemoveRequest) Async(async bool) *StorageDomainVm
 	p.async = &async
 	return p
 }
-func (p *StorageDomainVmServiceRemoveRequest) Send() *StorageDomainVmServiceRemoveResponse {
+func (p *StorageDomainVmServiceRemoveRequest) Send() (*StorageDomainVmServiceRemoveResponse, error) {
 
+}
+
+type StorageDomainVmServiceRemoveResponse struct {
 }
 
 //
@@ -14933,8 +16587,12 @@ func (p *ClusterServiceGetRequest) Filter(filter bool) *ClusterServiceGetRequest
 	p.filter = &filter
 	return p
 }
-func (p *ClusterServiceGetRequest) Send() *ClusterServiceGetResponse {
+func (p *ClusterServiceGetRequest) Send() (*ClusterServiceGetResponse, error) {
 
+}
+
+type ClusterServiceGetResponse struct {
+	cluster *Cluster
 }
 
 //
@@ -15070,8 +16728,11 @@ func (p *ClusterServiceRemoveRequest) Async(async bool) *ClusterServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *ClusterServiceRemoveRequest) Send() *ClusterServiceRemoveResponse {
+func (p *ClusterServiceRemoveRequest) Send() (*ClusterServiceRemoveResponse, error) {
 
+}
+
+type ClusterServiceRemoveResponse struct {
 }
 
 //
@@ -15129,8 +16790,11 @@ func (p *ClusterServiceResetEmulatedMachineRequest) Async(async bool) *ClusterSe
 	p.async = &async
 	return p
 }
-func (p *ClusterServiceResetEmulatedMachineRequest) Send() *ClusterServiceResetEmulatedMachineResponse {
+func (p *ClusterServiceResetEmulatedMachineRequest) Send() (*ClusterServiceResetEmulatedMachineResponse, error) {
 
+}
+
+type ClusterServiceResetEmulatedMachineResponse struct {
 }
 
 //
@@ -15187,8 +16851,12 @@ func (p *ClusterServiceUpdateRequest) Cluster(cluster *Cluster) *ClusterServiceU
 	p.cluster = cluster
 	return p
 }
-func (p *ClusterServiceUpdateRequest) Send() *ClusterServiceUpdateResponse {
+func (p *ClusterServiceUpdateRequest) Send() (*ClusterServiceUpdateResponse, error) {
 
+}
+
+type ClusterServiceUpdateResponse struct {
+	cluster *Cluster
 }
 
 //
@@ -15378,8 +17046,12 @@ func (p *SnapshotDisksServiceListRequest) Max(max int64) *SnapshotDisksServiceLi
 	p.max = &max
 	return p
 }
-func (p *SnapshotDisksServiceListRequest) Send() *SnapshotDisksServiceListResponse {
+func (p *SnapshotDisksServiceListRequest) Send() (*SnapshotDisksServiceListResponse, error) {
 
+}
+
+type SnapshotDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -15476,10 +17148,49 @@ func (p *TemplateGraphicsConsolesServiceAddRequest) Console(console *GraphicsCon
 	p.console = console
 	return p
 }
-func (p *TemplateGraphicsConsolesServiceAddRequest) Send() *TemplateGraphicsConsolesServiceAddResponse {
+func (p *TemplateGraphicsConsolesServiceAddRequest) Send() (*TemplateGraphicsConsolesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.templateGraphicsConsolesService.Connection.URL(), p.templateGraphicsConsolesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.console)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateGraphicsConsolesService.Connection.username, p.templateGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.templateGraphicsConsolesService.Connection.client.Do(req)
+}
+
+type TemplateGraphicsConsolesServiceAddResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -15534,8 +17245,12 @@ func (p *TemplateGraphicsConsolesServiceListRequest) Max(max int64) *TemplateGra
 	p.max = &max
 	return p
 }
-func (p *TemplateGraphicsConsolesServiceListRequest) Send() *TemplateGraphicsConsolesServiceListResponse {
+func (p *TemplateGraphicsConsolesServiceListRequest) Send() (*TemplateGraphicsConsolesServiceListResponse, error) {
 
+}
+
+type TemplateGraphicsConsolesServiceListResponse struct {
+	consoles []GraphicsConsole
 }
 
 //
@@ -15635,8 +17350,11 @@ func (p *VmPoolServiceAllocateVmRequest) Async(async bool) *VmPoolServiceAllocat
 	p.async = &async
 	return p
 }
-func (p *VmPoolServiceAllocateVmRequest) Send() *VmPoolServiceAllocateVmResponse {
+func (p *VmPoolServiceAllocateVmRequest) Send() (*VmPoolServiceAllocateVmResponse, error) {
 
+}
+
+type VmPoolServiceAllocateVmResponse struct {
 }
 
 //
@@ -15699,8 +17417,12 @@ func (p *VmPoolServiceGetRequest) Filter(filter bool) *VmPoolServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *VmPoolServiceGetRequest) Send() *VmPoolServiceGetResponse {
+func (p *VmPoolServiceGetRequest) Send() (*VmPoolServiceGetResponse, error) {
 
+}
+
+type VmPoolServiceGetResponse struct {
+	pool *VmPool
 }
 
 //
@@ -15785,8 +17507,11 @@ func (p *VmPoolServiceRemoveRequest) Async(async bool) *VmPoolServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *VmPoolServiceRemoveRequest) Send() *VmPoolServiceRemoveResponse {
+func (p *VmPoolServiceRemoveRequest) Send() (*VmPoolServiceRemoveResponse, error) {
 
+}
+
+type VmPoolServiceRemoveResponse struct {
 }
 
 //
@@ -15849,8 +17574,12 @@ func (p *VmPoolServiceUpdateRequest) Pool(pool *VmPool) *VmPoolServiceUpdateRequ
 	p.pool = pool
 	return p
 }
-func (p *VmPoolServiceUpdateRequest) Send() *VmPoolServiceUpdateResponse {
+func (p *VmPoolServiceUpdateRequest) Send() (*VmPoolServiceUpdateResponse, error) {
 
+}
+
+type VmPoolServiceUpdateResponse struct {
+	pool *VmPool
 }
 
 //
@@ -15969,10 +17698,49 @@ func (p *QuotasServiceAddRequest) Quota(quota *Quota) *QuotasServiceAddRequest {
 	p.quota = quota
 	return p
 }
-func (p *QuotasServiceAddRequest) Send() *QuotasServiceAddResponse {
+func (p *QuotasServiceAddRequest) Send() (*QuotasServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.quotasService.Connection.URL(), p.quotasService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.quota)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotasService.Connection.username, p.quotasService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.quotasService.Connection.client.Do(req)
+}
+
+type QuotasServiceAddResponse struct {
+	quota *Quota
 }
 
 //
@@ -16039,8 +17807,12 @@ func (p *QuotasServiceListRequest) Max(max int64) *QuotasServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *QuotasServiceListRequest) Send() *QuotasServiceListResponse {
+func (p *QuotasServiceListRequest) Send() (*QuotasServiceListResponse, error) {
 
+}
+
+type QuotasServiceListResponse struct {
+	quotas []Quota
 }
 
 //
@@ -16135,8 +17907,12 @@ func (p *ClusterLevelServiceGetRequest) Query(key, value string) *ClusterLevelSe
 	return p
 }
 
-func (p *ClusterLevelServiceGetRequest) Send() *ClusterLevelServiceGetResponse {
+func (p *ClusterLevelServiceGetRequest) Send() (*ClusterLevelServiceGetResponse, error) {
 
+}
+
+type ClusterLevelServiceGetResponse struct {
+	level *ClusterLevel
 }
 
 //
@@ -16244,8 +18020,12 @@ func (p *StorageDomainContentDiskServiceGetRequest) Filter(filter bool) *Storage
 	p.filter = &filter
 	return p
 }
-func (p *StorageDomainContentDiskServiceGetRequest) Send() *StorageDomainContentDiskServiceGetResponse {
+func (p *StorageDomainContentDiskServiceGetRequest) Send() (*StorageDomainContentDiskServiceGetResponse, error) {
 
+}
+
+type StorageDomainContentDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -16338,8 +18118,12 @@ func (p *VmApplicationsServiceListRequest) Max(max int64) *VmApplicationsService
 	p.max = &max
 	return p
 }
-func (p *VmApplicationsServiceListRequest) Send() *VmApplicationsServiceListResponse {
+func (p *VmApplicationsServiceListRequest) Send() (*VmApplicationsServiceListResponse, error) {
 
+}
+
+type VmApplicationsServiceListResponse struct {
+	applications []Application
 }
 
 //
@@ -16455,8 +18239,12 @@ func (p *FilesServiceListRequest) Search(search string) *FilesServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *FilesServiceListRequest) Send() *FilesServiceListResponse {
+func (p *FilesServiceListRequest) Send() (*FilesServiceListResponse, error) {
 
+}
+
+type FilesServiceListResponse struct {
+	file []File
 }
 
 //
@@ -16562,8 +18350,11 @@ func (p *AffinityGroupVmServiceRemoveRequest) Async(async bool) *AffinityGroupVm
 	p.async = &async
 	return p
 }
-func (p *AffinityGroupVmServiceRemoveRequest) Send() *AffinityGroupVmServiceRemoveResponse {
+func (p *AffinityGroupVmServiceRemoveRequest) Send() (*AffinityGroupVmServiceRemoveResponse, error) {
 
+}
+
+type AffinityGroupVmServiceRemoveResponse struct {
 }
 
 //
@@ -16647,8 +18438,12 @@ func (p *VmCdromServiceGetRequest) Current(current bool) *VmCdromServiceGetReque
 	p.current = &current
 	return p
 }
-func (p *VmCdromServiceGetRequest) Send() *VmCdromServiceGetResponse {
+func (p *VmCdromServiceGetRequest) Send() (*VmCdromServiceGetResponse, error) {
 
+}
+
+type VmCdromServiceGetResponse struct {
+	cdrom *Cdrom
 }
 
 //
@@ -16732,8 +18527,12 @@ func (p *VmCdromServiceUpdateRequest) Current(current bool) *VmCdromServiceUpdat
 	p.current = &current
 	return p
 }
-func (p *VmCdromServiceUpdateRequest) Send() *VmCdromServiceUpdateResponse {
+func (p *VmCdromServiceUpdateRequest) Send() (*VmCdromServiceUpdateResponse, error) {
 
+}
+
+type VmCdromServiceUpdateResponse struct {
+	cdrom *Cdrom
 }
 
 //
@@ -16856,8 +18655,12 @@ func (p *QuotaClusterLimitServiceGetRequest) Query(key, value string) *QuotaClus
 	return p
 }
 
-func (p *QuotaClusterLimitServiceGetRequest) Send() *QuotaClusterLimitServiceGetResponse {
+func (p *QuotaClusterLimitServiceGetRequest) Send() (*QuotaClusterLimitServiceGetResponse, error) {
 
+}
+
+type QuotaClusterLimitServiceGetResponse struct {
+	limit *QuotaClusterLimit
 }
 
 //
@@ -16910,8 +18713,11 @@ func (p *QuotaClusterLimitServiceRemoveRequest) Async(async bool) *QuotaClusterL
 	p.async = &async
 	return p
 }
-func (p *QuotaClusterLimitServiceRemoveRequest) Send() *QuotaClusterLimitServiceRemoveResponse {
+func (p *QuotaClusterLimitServiceRemoveRequest) Send() (*QuotaClusterLimitServiceRemoveResponse, error) {
 
+}
+
+type QuotaClusterLimitServiceRemoveResponse struct {
 }
 
 //
@@ -16987,8 +18793,12 @@ func (p *DiskAttachmentServiceGetRequest) Query(key, value string) *DiskAttachme
 	return p
 }
 
-func (p *DiskAttachmentServiceGetRequest) Send() *DiskAttachmentServiceGetResponse {
+func (p *DiskAttachmentServiceGetRequest) Send() (*DiskAttachmentServiceGetResponse, error) {
 
+}
+
+type DiskAttachmentServiceGetResponse struct {
+	attachment *DiskAttachment
 }
 
 //
@@ -17057,8 +18867,11 @@ func (p *DiskAttachmentServiceRemoveRequest) DetachOnly(detachOnly bool) *DiskAt
 	p.detachOnly = &detachOnly
 	return p
 }
-func (p *DiskAttachmentServiceRemoveRequest) Send() *DiskAttachmentServiceRemoveResponse {
+func (p *DiskAttachmentServiceRemoveRequest) Send() (*DiskAttachmentServiceRemoveResponse, error) {
 
+}
+
+type DiskAttachmentServiceRemoveResponse struct {
 }
 
 //
@@ -17120,8 +18933,12 @@ func (p *DiskAttachmentServiceUpdateRequest) DiskAttachment(diskAttachment *Disk
 	p.diskAttachment = diskAttachment
 	return p
 }
-func (p *DiskAttachmentServiceUpdateRequest) Send() *DiskAttachmentServiceUpdateResponse {
+func (p *DiskAttachmentServiceUpdateRequest) Send() (*DiskAttachmentServiceUpdateResponse, error) {
 
+}
+
+type DiskAttachmentServiceUpdateResponse struct {
+	diskAttachment *DiskAttachment
 }
 
 //
@@ -17213,8 +19030,12 @@ func (p *BookmarkServiceGetRequest) Query(key, value string) *BookmarkServiceGet
 	return p
 }
 
-func (p *BookmarkServiceGetRequest) Send() *BookmarkServiceGetResponse {
+func (p *BookmarkServiceGetRequest) Send() (*BookmarkServiceGetResponse, error) {
 
+}
+
+type BookmarkServiceGetResponse struct {
+	bookmark *Bookmark
 }
 
 //
@@ -17280,8 +19101,11 @@ func (p *BookmarkServiceRemoveRequest) Async(async bool) *BookmarkServiceRemoveR
 	p.async = &async
 	return p
 }
-func (p *BookmarkServiceRemoveRequest) Send() *BookmarkServiceRemoveResponse {
+func (p *BookmarkServiceRemoveRequest) Send() (*BookmarkServiceRemoveResponse, error) {
 
+}
+
+type BookmarkServiceRemoveResponse struct {
 }
 
 //
@@ -17345,8 +19169,12 @@ func (p *BookmarkServiceUpdateRequest) Bookmark(bookmark *Bookmark) *BookmarkSer
 	p.bookmark = bookmark
 	return p
 }
-func (p *BookmarkServiceUpdateRequest) Send() *BookmarkServiceUpdateResponse {
+func (p *BookmarkServiceUpdateRequest) Send() (*BookmarkServiceUpdateResponse, error) {
 
+}
+
+type BookmarkServiceUpdateResponse struct {
+	bookmark *Bookmark
 }
 
 //
@@ -17443,8 +19271,12 @@ func (p *InstanceTypeNicServiceGetRequest) Query(key, value string) *InstanceTyp
 	return p
 }
 
-func (p *InstanceTypeNicServiceGetRequest) Send() *InstanceTypeNicServiceGetResponse {
+func (p *InstanceTypeNicServiceGetRequest) Send() (*InstanceTypeNicServiceGetResponse, error) {
 
+}
+
+type InstanceTypeNicServiceGetResponse struct {
+	nic *Nic
 }
 
 //
@@ -17498,8 +19330,11 @@ func (p *InstanceTypeNicServiceRemoveRequest) Async(async bool) *InstanceTypeNic
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeNicServiceRemoveRequest) Send() *InstanceTypeNicServiceRemoveResponse {
+func (p *InstanceTypeNicServiceRemoveRequest) Send() (*InstanceTypeNicServiceRemoveResponse, error) {
 
+}
+
+type InstanceTypeNicServiceRemoveResponse struct {
 }
 
 //
@@ -17558,8 +19393,12 @@ func (p *InstanceTypeNicServiceUpdateRequest) Nic(nic *Nic) *InstanceTypeNicServ
 	p.nic = nic
 	return p
 }
-func (p *InstanceTypeNicServiceUpdateRequest) Send() *InstanceTypeNicServiceUpdateResponse {
+func (p *InstanceTypeNicServiceUpdateRequest) Send() (*InstanceTypeNicServiceUpdateResponse, error) {
 
+}
+
+type InstanceTypeNicServiceUpdateResponse struct {
+	nic *Nic
 }
 
 //
@@ -17638,8 +19477,12 @@ func (p *AssignedDiskProfileServiceGetRequest) Query(key, value string) *Assigne
 	return p
 }
 
-func (p *AssignedDiskProfileServiceGetRequest) Send() *AssignedDiskProfileServiceGetResponse {
+func (p *AssignedDiskProfileServiceGetRequest) Send() (*AssignedDiskProfileServiceGetResponse, error) {
 
+}
+
+type AssignedDiskProfileServiceGetResponse struct {
+	diskProfile *DiskProfile
 }
 
 //
@@ -17692,8 +19535,11 @@ func (p *AssignedDiskProfileServiceRemoveRequest) Async(async bool) *AssignedDis
 	p.async = &async
 	return p
 }
-func (p *AssignedDiskProfileServiceRemoveRequest) Send() *AssignedDiskProfileServiceRemoveResponse {
+func (p *AssignedDiskProfileServiceRemoveRequest) Send() (*AssignedDiskProfileServiceRemoveResponse, error) {
 
+}
+
+type AssignedDiskProfileServiceRemoveResponse struct {
 }
 
 //
@@ -17773,10 +19619,49 @@ func (p *NetworkLabelsServiceAddRequest) Label(label *NetworkLabel) *NetworkLabe
 	p.label = label
 	return p
 }
-func (p *NetworkLabelsServiceAddRequest) Send() *NetworkLabelsServiceAddResponse {
+func (p *NetworkLabelsServiceAddRequest) Send() (*NetworkLabelsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.networkLabelsService.Connection.URL(), p.networkLabelsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.label)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkLabelsService.Connection.username, p.networkLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.networkLabelsService.Connection.client.Do(req)
+}
+
+type NetworkLabelsServiceAddResponse struct {
+	label *NetworkLabel
 }
 
 //
@@ -17843,8 +19728,12 @@ func (p *NetworkLabelsServiceListRequest) Max(max int64) *NetworkLabelsServiceLi
 	p.max = &max
 	return p
 }
-func (p *NetworkLabelsServiceListRequest) Send() *NetworkLabelsServiceListResponse {
+func (p *NetworkLabelsServiceListRequest) Send() (*NetworkLabelsServiceListResponse, error) {
 
+}
+
+type NetworkLabelsServiceListResponse struct {
+	labels []NetworkLabel
 }
 
 //
@@ -17941,8 +19830,12 @@ func (p *StorageDomainServiceGetRequest) Filter(filter bool) *StorageDomainServi
 	p.filter = &filter
 	return p
 }
-func (p *StorageDomainServiceGetRequest) Send() *StorageDomainServiceGetResponse {
+func (p *StorageDomainServiceGetRequest) Send() (*StorageDomainServiceGetResponse, error) {
 
+}
+
+type StorageDomainServiceGetResponse struct {
+	storageDomain *StorageDomain
 }
 
 //
@@ -18007,8 +19900,12 @@ func (p *StorageDomainServiceIsAttachedRequest) Host(host *Host) *StorageDomainS
 	p.host = host
 	return p
 }
-func (p *StorageDomainServiceIsAttachedRequest) Send() *StorageDomainServiceIsAttachedResponse {
+func (p *StorageDomainServiceIsAttachedRequest) Send() (*StorageDomainServiceIsAttachedResponse, error) {
 
+}
+
+type StorageDomainServiceIsAttachedResponse struct {
+	isAttached bool
 }
 
 //
@@ -18067,8 +19964,11 @@ func (p *StorageDomainServiceReduceLunsRequest) LogicalUnits(logicalUnits []Logi
 	p.logicalUnits = logicalUnits
 	return p
 }
-func (p *StorageDomainServiceReduceLunsRequest) Send() *StorageDomainServiceReduceLunsResponse {
+func (p *StorageDomainServiceReduceLunsRequest) Send() (*StorageDomainServiceReduceLunsResponse, error) {
 
+}
+
+type StorageDomainServiceReduceLunsResponse struct {
 }
 
 //
@@ -18143,8 +20043,11 @@ func (p *StorageDomainServiceRefreshLunsRequest) LogicalUnits(logicalUnits []Log
 	p.logicalUnits = logicalUnits
 	return p
 }
-func (p *StorageDomainServiceRefreshLunsRequest) Send() *StorageDomainServiceRefreshLunsResponse {
+func (p *StorageDomainServiceRefreshLunsRequest) Send() (*StorageDomainServiceRefreshLunsResponse, error) {
 
+}
+
+type StorageDomainServiceRefreshLunsResponse struct {
 }
 
 //
@@ -18234,8 +20137,11 @@ func (p *StorageDomainServiceRemoveRequest) Host(host string) *StorageDomainServ
 	p.host = &host
 	return p
 }
-func (p *StorageDomainServiceRemoveRequest) Send() *StorageDomainServiceRemoveResponse {
+func (p *StorageDomainServiceRemoveRequest) Send() (*StorageDomainServiceRemoveResponse, error) {
 
+}
+
+type StorageDomainServiceRemoveResponse struct {
 }
 
 //
@@ -18328,8 +20234,12 @@ func (p *StorageDomainServiceUpdateRequest) StorageDomain(storageDomain *Storage
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainServiceUpdateRequest) Send() *StorageDomainServiceUpdateResponse {
+func (p *StorageDomainServiceUpdateRequest) Send() (*StorageDomainServiceUpdateResponse, error) {
 
+}
+
+type StorageDomainServiceUpdateResponse struct {
+	storageDomain *StorageDomain
 }
 
 //
@@ -18404,8 +20314,11 @@ func (p *StorageDomainServiceUpdateOvfStoreRequest) Async(async bool) *StorageDo
 	p.async = &async
 	return p
 }
-func (p *StorageDomainServiceUpdateOvfStoreRequest) Send() *StorageDomainServiceUpdateOvfStoreResponse {
+func (p *StorageDomainServiceUpdateOvfStoreRequest) Send() (*StorageDomainServiceUpdateOvfStoreResponse, error) {
 
+}
+
+type StorageDomainServiceUpdateOvfStoreResponse struct {
 }
 
 //
@@ -18609,10 +20522,49 @@ func (p *DataCentersServiceAddRequest) DataCenter(dataCenter *DataCenter) *DataC
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *DataCentersServiceAddRequest) Send() *DataCentersServiceAddResponse {
+func (p *DataCentersServiceAddRequest) Send() (*DataCentersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.dataCentersService.Connection.URL(), p.dataCentersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.dataCenter)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.dataCentersService.Connection.username, p.dataCentersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.dataCentersService.Connection.client.Do(req)
+}
+
+type DataCentersServiceAddResponse struct {
+	dataCenter *DataCenter
 }
 
 //
@@ -18701,8 +20653,12 @@ func (p *DataCentersServiceListRequest) Search(search string) *DataCentersServic
 	p.search = &search
 	return p
 }
-func (p *DataCentersServiceListRequest) Send() *DataCentersServiceListResponse {
+func (p *DataCentersServiceListRequest) Send() (*DataCentersServiceListResponse, error) {
 
+}
+
+type DataCentersServiceListResponse struct {
+	dataCenters []DataCenter
 }
 
 //
@@ -18861,8 +20817,12 @@ func (p *VmApplicationServiceGetRequest) Filter(filter bool) *VmApplicationServi
 	p.filter = &filter
 	return p
 }
-func (p *VmApplicationServiceGetRequest) Send() *VmApplicationServiceGetResponse {
+func (p *VmApplicationServiceGetRequest) Send() (*VmApplicationServiceGetResponse, error) {
 
+}
+
+type VmApplicationServiceGetResponse struct {
+	application *Application
 }
 
 //
@@ -18950,10 +20910,49 @@ func (p *QuotaStorageLimitsServiceAddRequest) Limit(limit *QuotaStorageLimit) *Q
 	p.limit = limit
 	return p
 }
-func (p *QuotaStorageLimitsServiceAddRequest) Send() *QuotaStorageLimitsServiceAddResponse {
+func (p *QuotaStorageLimitsServiceAddRequest) Send() (*QuotaStorageLimitsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.quotaStorageLimitsService.Connection.URL(), p.quotaStorageLimitsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.limit)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.quotaStorageLimitsService.Connection.username, p.quotaStorageLimitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.quotaStorageLimitsService.Connection.client.Do(req)
+}
+
+type QuotaStorageLimitsServiceAddResponse struct {
+	limit *QuotaStorageLimit
 }
 
 //
@@ -19007,8 +21006,12 @@ func (p *QuotaStorageLimitsServiceListRequest) Max(max int64) *QuotaStorageLimit
 	p.max = &max
 	return p
 }
-func (p *QuotaStorageLimitsServiceListRequest) Send() *QuotaStorageLimitsServiceListResponse {
+func (p *QuotaStorageLimitsServiceListRequest) Send() (*QuotaStorageLimitsServiceListResponse, error) {
 
+}
+
+type QuotaStorageLimitsServiceListResponse struct {
+	limits []QuotaStorageLimit
 }
 
 //
@@ -19100,8 +21103,12 @@ func (p *TemplateNicServiceGetRequest) Query(key, value string) *TemplateNicServ
 	return p
 }
 
-func (p *TemplateNicServiceGetRequest) Send() *TemplateNicServiceGetResponse {
+func (p *TemplateNicServiceGetRequest) Send() (*TemplateNicServiceGetResponse, error) {
 
+}
+
+type TemplateNicServiceGetResponse struct {
+	nic *Nic
 }
 
 //
@@ -19154,8 +21161,11 @@ func (p *TemplateNicServiceRemoveRequest) Async(async bool) *TemplateNicServiceR
 	p.async = &async
 	return p
 }
-func (p *TemplateNicServiceRemoveRequest) Send() *TemplateNicServiceRemoveResponse {
+func (p *TemplateNicServiceRemoveRequest) Send() (*TemplateNicServiceRemoveResponse, error) {
 
+}
+
+type TemplateNicServiceRemoveResponse struct {
 }
 
 //
@@ -19213,8 +21223,12 @@ func (p *TemplateNicServiceUpdateRequest) Nic(nic *Nic) *TemplateNicServiceUpdat
 	p.nic = nic
 	return p
 }
-func (p *TemplateNicServiceUpdateRequest) Send() *TemplateNicServiceUpdateResponse {
+func (p *TemplateNicServiceUpdateRequest) Send() (*TemplateNicServiceUpdateResponse, error) {
 
+}
+
+type TemplateNicServiceUpdateResponse struct {
+	nic *Nic
 }
 
 //
@@ -19302,8 +21316,12 @@ func (p *VmCdromsServiceListRequest) Max(max int64) *VmCdromsServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *VmCdromsServiceListRequest) Send() *VmCdromsServiceListResponse {
+func (p *VmCdromsServiceListRequest) Send() (*VmCdromsServiceListResponse, error) {
 
+}
+
+type VmCdromsServiceListResponse struct {
+	cdroms []Cdrom
 }
 
 //
@@ -19403,8 +21421,12 @@ func (p *VmSessionsServiceListRequest) Max(max int64) *VmSessionsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *VmSessionsServiceListRequest) Send() *VmSessionsServiceListResponse {
+func (p *VmSessionsServiceListRequest) Send() (*VmSessionsServiceListResponse, error) {
 
+}
+
+type VmSessionsServiceListResponse struct {
+	sessions []Session
 }
 
 //
@@ -19523,8 +21545,11 @@ func (p *VmDiskServiceActivateRequest) Async(async bool) *VmDiskServiceActivateR
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceActivateRequest) Send() *VmDiskServiceActivateResponse {
+func (p *VmDiskServiceActivateRequest) Send() (*VmDiskServiceActivateResponse, error) {
 
+}
+
+type VmDiskServiceActivateResponse struct {
 }
 
 //
@@ -19576,8 +21601,11 @@ func (p *VmDiskServiceDeactivateRequest) Async(async bool) *VmDiskServiceDeactiv
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceDeactivateRequest) Send() *VmDiskServiceDeactivateResponse {
+func (p *VmDiskServiceDeactivateRequest) Send() (*VmDiskServiceDeactivateResponse, error) {
 
+}
+
+type VmDiskServiceDeactivateResponse struct {
 }
 
 //
@@ -19634,8 +21662,11 @@ func (p *VmDiskServiceExportRequest) Filter(filter bool) *VmDiskServiceExportReq
 	p.filter = &filter
 	return p
 }
-func (p *VmDiskServiceExportRequest) Send() *VmDiskServiceExportResponse {
+func (p *VmDiskServiceExportRequest) Send() (*VmDiskServiceExportResponse, error) {
 
+}
+
+type VmDiskServiceExportResponse struct {
 }
 
 //
@@ -19685,8 +21716,12 @@ func (p *VmDiskServiceGetRequest) Query(key, value string) *VmDiskServiceGetRequ
 	return p
 }
 
-func (p *VmDiskServiceGetRequest) Send() *VmDiskServiceGetResponse {
+func (p *VmDiskServiceGetRequest) Send() (*VmDiskServiceGetResponse, error) {
 
+}
+
+type VmDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -19744,8 +21779,11 @@ func (p *VmDiskServiceMoveRequest) Filter(filter bool) *VmDiskServiceMoveRequest
 	p.filter = &filter
 	return p
 }
-func (p *VmDiskServiceMoveRequest) Send() *VmDiskServiceMoveResponse {
+func (p *VmDiskServiceMoveRequest) Send() (*VmDiskServiceMoveResponse, error) {
 
+}
+
+type VmDiskServiceMoveResponse struct {
 }
 
 //
@@ -19800,8 +21838,11 @@ func (p *VmDiskServiceRemoveRequest) Async(async bool) *VmDiskServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *VmDiskServiceRemoveRequest) Send() *VmDiskServiceRemoveResponse {
+func (p *VmDiskServiceRemoveRequest) Send() (*VmDiskServiceRemoveResponse, error) {
 
+}
+
+type VmDiskServiceRemoveResponse struct {
 }
 
 //
@@ -19863,8 +21904,12 @@ func (p *VmDiskServiceUpdateRequest) Disk(disk *Disk) *VmDiskServiceUpdateReques
 	p.disk = disk
 	return p
 }
-func (p *VmDiskServiceUpdateRequest) Send() *VmDiskServiceUpdateResponse {
+func (p *VmDiskServiceUpdateRequest) Send() (*VmDiskServiceUpdateResponse, error) {
 
+}
+
+type VmDiskServiceUpdateResponse struct {
+	disk *Disk
 }
 
 //
@@ -19966,8 +22011,12 @@ func (p *StorageServerConnectionServiceGetRequest) Query(key, value string) *Sto
 	return p
 }
 
-func (p *StorageServerConnectionServiceGetRequest) Send() *StorageServerConnectionServiceGetResponse {
+func (p *StorageServerConnectionServiceGetRequest) Send() (*StorageServerConnectionServiceGetResponse, error) {
 
+}
+
+type StorageServerConnectionServiceGetResponse struct {
+	conection *StorageConnection
 }
 
 //
@@ -20025,8 +22074,11 @@ func (p *StorageServerConnectionServiceRemoveRequest) Host(host string) *Storage
 	p.host = &host
 	return p
 }
-func (p *StorageServerConnectionServiceRemoveRequest) Send() *StorageServerConnectionServiceRemoveResponse {
+func (p *StorageServerConnectionServiceRemoveRequest) Send() (*StorageServerConnectionServiceRemoveResponse, error) {
 
+}
+
+type StorageServerConnectionServiceRemoveResponse struct {
 }
 
 //
@@ -20102,8 +22154,12 @@ func (p *StorageServerConnectionServiceUpdateRequest) Force(force bool) *Storage
 	p.force = &force
 	return p
 }
-func (p *StorageServerConnectionServiceUpdateRequest) Send() *StorageServerConnectionServiceUpdateResponse {
+func (p *StorageServerConnectionServiceUpdateRequest) Send() (*StorageServerConnectionServiceUpdateResponse, error) {
 
+}
+
+type StorageServerConnectionServiceUpdateResponse struct {
+	connection *StorageConnection
 }
 
 //
@@ -20205,8 +22261,11 @@ func (p *HostServiceActivateRequest) Async(async bool) *HostServiceActivateReque
 	p.async = &async
 	return p
 }
-func (p *HostServiceActivateRequest) Send() *HostServiceActivateResponse {
+func (p *HostServiceActivateRequest) Send() (*HostServiceActivateResponse, error) {
 
+}
+
+type HostServiceActivateResponse struct {
 }
 
 //
@@ -20264,8 +22323,11 @@ func (p *HostServiceApproveRequest) Cluster(cluster *Cluster) *HostServiceApprov
 	p.cluster = cluster
 	return p
 }
-func (p *HostServiceApproveRequest) Send() *HostServiceApproveResponse {
+func (p *HostServiceApproveRequest) Send() (*HostServiceApproveResponse, error) {
 
+}
+
+type HostServiceApproveResponse struct {
 }
 
 //
@@ -20321,8 +22383,11 @@ func (p *HostServiceCommitNetConfigRequest) Async(async bool) *HostServiceCommit
 	p.async = &async
 	return p
 }
-func (p *HostServiceCommitNetConfigRequest) Send() *HostServiceCommitNetConfigResponse {
+func (p *HostServiceCommitNetConfigRequest) Send() (*HostServiceCommitNetConfigResponse, error) {
 
+}
+
+type HostServiceCommitNetConfigResponse struct {
 }
 
 //
@@ -20400,8 +22465,11 @@ func (p *HostServiceDeactivateRequest) StopGlusterService(stopGlusterService boo
 	p.stopGlusterService = &stopGlusterService
 	return p
 }
-func (p *HostServiceDeactivateRequest) Send() *HostServiceDeactivateResponse {
+func (p *HostServiceDeactivateRequest) Send() (*HostServiceDeactivateResponse, error) {
 
+}
+
+type HostServiceDeactivateResponse struct {
 }
 
 //
@@ -20460,8 +22528,11 @@ func (p *HostServiceEnrollCertificateRequest) Async(async bool) *HostServiceEnro
 	p.async = &async
 	return p
 }
-func (p *HostServiceEnrollCertificateRequest) Send() *HostServiceEnrollCertificateResponse {
+func (p *HostServiceEnrollCertificateRequest) Send() (*HostServiceEnrollCertificateResponse, error) {
 
+}
+
+type HostServiceEnrollCertificateResponse struct {
 }
 
 //
@@ -20519,8 +22590,12 @@ func (p *HostServiceFenceRequest) FenceType(fenceType string) *HostServiceFenceR
 	p.fenceType = &fenceType
 	return p
 }
-func (p *HostServiceFenceRequest) Send() *HostServiceFenceResponse {
+func (p *HostServiceFenceRequest) Send() (*HostServiceFenceResponse, error) {
 
+}
+
+type HostServiceFenceResponse struct {
+	powerManagement *PowerManagement
 }
 
 //
@@ -20604,8 +22679,11 @@ func (p *HostServiceForceSelectSpmRequest) Async(async bool) *HostServiceForceSe
 	p.async = &async
 	return p
 }
-func (p *HostServiceForceSelectSpmRequest) Send() *HostServiceForceSelectSpmResponse {
+func (p *HostServiceForceSelectSpmRequest) Send() (*HostServiceForceSelectSpmResponse, error) {
 
+}
+
+type HostServiceForceSelectSpmResponse struct {
 }
 
 //
@@ -20667,8 +22745,12 @@ func (p *HostServiceGetRequest) Filter(filter bool) *HostServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *HostServiceGetRequest) Send() *HostServiceGetResponse {
+func (p *HostServiceGetRequest) Send() (*HostServiceGetResponse, error) {
 
+}
+
+type HostServiceGetResponse struct {
+	host *Host
 }
 
 //
@@ -20759,8 +22841,11 @@ func (p *HostServiceInstallRequest) UndeployHostedEngine(undeployHostedEngine bo
 	p.undeployHostedEngine = &undeployHostedEngine
 	return p
 }
-func (p *HostServiceInstallRequest) Send() *HostServiceInstallResponse {
+func (p *HostServiceInstallRequest) Send() (*HostServiceInstallResponse, error) {
 
+}
+
+type HostServiceInstallResponse struct {
 }
 
 //
@@ -20881,8 +22966,12 @@ func (p *HostServiceIscsiDiscoverRequest) Iscsi(iscsi *IscsiDetails) *HostServic
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceIscsiDiscoverRequest) Send() *HostServiceIscsiDiscoverResponse {
+func (p *HostServiceIscsiDiscoverRequest) Send() (*HostServiceIscsiDiscoverResponse, error) {
 
+}
+
+type HostServiceIscsiDiscoverResponse struct {
+	iscsiTargets []string
 }
 
 //
@@ -20948,8 +23037,11 @@ func (p *HostServiceIscsiLoginRequest) Iscsi(iscsi *IscsiDetails) *HostServiceIs
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceIscsiLoginRequest) Send() *HostServiceIscsiLoginResponse {
+func (p *HostServiceIscsiLoginRequest) Send() (*HostServiceIscsiLoginResponse, error) {
 
+}
+
+type HostServiceIscsiLoginResponse struct {
 }
 
 //
@@ -21005,8 +23097,11 @@ func (p *HostServiceRefreshRequest) Async(async bool) *HostServiceRefreshRequest
 	p.async = &async
 	return p
 }
-func (p *HostServiceRefreshRequest) Send() *HostServiceRefreshResponse {
+func (p *HostServiceRefreshRequest) Send() (*HostServiceRefreshResponse, error) {
 
+}
+
+type HostServiceRefreshResponse struct {
 }
 
 //
@@ -21059,8 +23154,11 @@ func (p *HostServiceRemoveRequest) Async(async bool) *HostServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *HostServiceRemoveRequest) Send() *HostServiceRemoveResponse {
+func (p *HostServiceRemoveRequest) Send() (*HostServiceRemoveResponse, error) {
 
+}
+
+type HostServiceRemoveResponse struct {
 }
 
 //
@@ -21173,8 +23271,11 @@ func (p *HostServiceSetupNetworksRequest) SynchronizedNetworkAttachments(synchro
 	p.synchronizedNetworkAttachments = synchronizedNetworkAttachments
 	return p
 }
-func (p *HostServiceSetupNetworksRequest) Send() *HostServiceSetupNetworksResponse {
+func (p *HostServiceSetupNetworksRequest) Send() (*HostServiceSetupNetworksResponse, error) {
 
+}
+
+type HostServiceSetupNetworksResponse struct {
 }
 
 //
@@ -21400,8 +23501,12 @@ func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Iscsi(iscsi *Iscs
 	p.iscsi = iscsi
 	return p
 }
-func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Send() *HostServiceUnregisteredStorageDomainsDiscoverResponse {
+func (p *HostServiceUnregisteredStorageDomainsDiscoverRequest) Send() (*HostServiceUnregisteredStorageDomainsDiscoverResponse, error) {
 
+}
+
+type HostServiceUnregisteredStorageDomainsDiscoverResponse struct {
+	storageDomains []StorageDomain
 }
 
 //
@@ -21467,8 +23572,12 @@ func (p *HostServiceUpdateRequest) Host(host *Host) *HostServiceUpdateRequest {
 	p.host = host
 	return p
 }
-func (p *HostServiceUpdateRequest) Send() *HostServiceUpdateResponse {
+func (p *HostServiceUpdateRequest) Send() (*HostServiceUpdateResponse, error) {
 
+}
+
+type HostServiceUpdateResponse struct {
+	host *Host
 }
 
 //
@@ -21539,8 +23648,11 @@ func (p *HostServiceUpgradeRequest) Async(async bool) *HostServiceUpgradeRequest
 	p.async = &async
 	return p
 }
-func (p *HostServiceUpgradeRequest) Send() *HostServiceUpgradeResponse {
+func (p *HostServiceUpgradeRequest) Send() (*HostServiceUpgradeResponse, error) {
 
+}
+
+type HostServiceUpgradeResponse struct {
 }
 
 //
@@ -21588,8 +23700,11 @@ func (p *HostServiceUpgradeCheckRequest) Query(key, value string) *HostServiceUp
 	return p
 }
 
-func (p *HostServiceUpgradeCheckRequest) Send() *HostServiceUpgradeCheckResponse {
+func (p *HostServiceUpgradeCheckRequest) Send() (*HostServiceUpgradeCheckResponse, error) {
 
+}
+
+type HostServiceUpgradeCheckResponse struct {
 }
 
 //
@@ -21853,8 +23968,12 @@ func (p *ExternalProviderCertificatesServiceListRequest) Max(max int64) *Externa
 	p.max = &max
 	return p
 }
-func (p *ExternalProviderCertificatesServiceListRequest) Send() *ExternalProviderCertificatesServiceListResponse {
+func (p *ExternalProviderCertificatesServiceListRequest) Send() (*ExternalProviderCertificatesServiceListResponse, error) {
 
+}
+
+type ExternalProviderCertificatesServiceListResponse struct {
+	certificates []Certificate
 }
 
 //
@@ -21947,8 +24066,12 @@ func (p *VmHostDeviceServiceGetRequest) Query(key, value string) *VmHostDeviceSe
 	return p
 }
 
-func (p *VmHostDeviceServiceGetRequest) Send() *VmHostDeviceServiceGetResponse {
+func (p *VmHostDeviceServiceGetRequest) Send() (*VmHostDeviceServiceGetResponse, error) {
 
+}
+
+type VmHostDeviceServiceGetResponse struct {
+	device *HostDevice
 }
 
 //
@@ -22027,8 +24150,11 @@ func (p *VmHostDeviceServiceRemoveRequest) Async(async bool) *VmHostDeviceServic
 	p.async = &async
 	return p
 }
-func (p *VmHostDeviceServiceRemoveRequest) Send() *VmHostDeviceServiceRemoveResponse {
+func (p *VmHostDeviceServiceRemoveRequest) Send() (*VmHostDeviceServiceRemoveResponse, error) {
 
+}
+
+type VmHostDeviceServiceRemoveResponse struct {
 }
 
 //
@@ -22113,8 +24239,12 @@ func (p *TagServiceGetRequest) Query(key, value string) *TagServiceGetRequest {
 	return p
 }
 
-func (p *TagServiceGetRequest) Send() *TagServiceGetResponse {
+func (p *TagServiceGetRequest) Send() (*TagServiceGetResponse, error) {
 
+}
+
+type TagServiceGetResponse struct {
+	tag *Tag
 }
 
 //
@@ -22179,8 +24309,11 @@ func (p *TagServiceRemoveRequest) Async(async bool) *TagServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *TagServiceRemoveRequest) Send() *TagServiceRemoveResponse {
+func (p *TagServiceRemoveRequest) Send() (*TagServiceRemoveResponse, error) {
 
+}
+
+type TagServiceRemoveResponse struct {
 }
 
 //
@@ -22243,8 +24376,12 @@ func (p *TagServiceUpdateRequest) Tag(tag *Tag) *TagServiceUpdateRequest {
 	p.tag = tag
 	return p
 }
-func (p *TagServiceUpdateRequest) Send() *TagServiceUpdateResponse {
+func (p *TagServiceUpdateRequest) Send() (*TagServiceUpdateResponse, error) {
 
+}
+
+type TagServiceUpdateResponse struct {
+	tag *Tag
 }
 
 //
@@ -22354,8 +24491,12 @@ func (p *HostNumaNodesServiceListRequest) Max(max int64) *HostNumaNodesServiceLi
 	p.max = &max
 	return p
 }
-func (p *HostNumaNodesServiceListRequest) Send() *HostNumaNodesServiceListResponse {
+func (p *HostNumaNodesServiceListRequest) Send() (*HostNumaNodesServiceListResponse, error) {
 
+}
+
+type HostNumaNodesServiceListResponse struct {
+	nodes []NumaNode
 }
 
 //
@@ -22453,10 +24594,49 @@ func (p *AssignedTagsServiceAddRequest) Tag(tag *Tag) *AssignedTagsServiceAddReq
 	p.tag = tag
 	return p
 }
-func (p *AssignedTagsServiceAddRequest) Send() *AssignedTagsServiceAddResponse {
+func (p *AssignedTagsServiceAddRequest) Send() (*AssignedTagsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedTagsService.Connection.URL(), p.assignedTagsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.tag)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedTagsService.Connection.username, p.assignedTagsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedTagsService.Connection.client.Do(req)
+}
+
+type AssignedTagsServiceAddResponse struct {
+	tag *Tag
 }
 
 //
@@ -22527,8 +24707,12 @@ func (p *AssignedTagsServiceListRequest) Max(max int64) *AssignedTagsServiceList
 	p.max = &max
 	return p
 }
-func (p *AssignedTagsServiceListRequest) Send() *AssignedTagsServiceListResponse {
+func (p *AssignedTagsServiceListRequest) Send() (*AssignedTagsServiceListResponse, error) {
 
+}
+
+type AssignedTagsServiceListResponse struct {
+	tags []Tag
 }
 
 //
@@ -22642,8 +24826,11 @@ func (p *JobServiceClearRequest) Async(async bool) *JobServiceClearRequest {
 	p.async = &async
 	return p
 }
-func (p *JobServiceClearRequest) Send() *JobServiceClearResponse {
+func (p *JobServiceClearRequest) Send() (*JobServiceClearResponse, error) {
 
+}
+
+type JobServiceClearResponse struct {
 }
 
 //
@@ -22716,8 +24903,11 @@ func (p *JobServiceEndRequest) Succeeded(succeeded bool) *JobServiceEndRequest {
 	p.succeeded = &succeeded
 	return p
 }
-func (p *JobServiceEndRequest) Send() *JobServiceEndResponse {
+func (p *JobServiceEndRequest) Send() (*JobServiceEndResponse, error) {
 
+}
+
+type JobServiceEndResponse struct {
 }
 
 //
@@ -22785,8 +24975,12 @@ func (p *JobServiceGetRequest) Query(key, value string) *JobServiceGetRequest {
 	return p
 }
 
-func (p *JobServiceGetRequest) Send() *JobServiceGetResponse {
+func (p *JobServiceGetRequest) Send() (*JobServiceGetResponse, error) {
 
+}
+
+type JobServiceGetResponse struct {
+	job *Job
 }
 
 //
@@ -22898,8 +25092,12 @@ func (p *FileServiceGetRequest) Query(key, value string) *FileServiceGetRequest 
 	return p
 }
 
-func (p *FileServiceGetRequest) Send() *FileServiceGetResponse {
+func (p *FileServiceGetRequest) Send() (*FileServiceGetResponse, error) {
 
+}
+
+type FileServiceGetResponse struct {
+	file *File
 }
 
 //
@@ -22980,10 +25178,49 @@ func (p *StepsServiceAddRequest) Step(step *Step) *StepsServiceAddRequest {
 	p.step = step
 	return p
 }
-func (p *StepsServiceAddRequest) Send() *StepsServiceAddResponse {
+func (p *StepsServiceAddRequest) Send() (*StepsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.stepsService.Connection.URL(), p.stepsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.step)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.stepsService.Connection.username, p.stepsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.stepsService.Connection.client.Do(req)
+}
+
+type StepsServiceAddResponse struct {
+	step *Step
 }
 
 //
@@ -23076,8 +25313,12 @@ func (p *StepsServiceListRequest) Max(max int64) *StepsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *StepsServiceListRequest) Send() *StepsServiceListResponse {
+func (p *StepsServiceListRequest) Send() (*StepsServiceListResponse, error) {
 
+}
+
+type StepsServiceListResponse struct {
+	steps []Step
 }
 
 //
@@ -23195,8 +25436,12 @@ func (p *StorageDomainServerConnectionServiceGetRequest) Query(key, value string
 	return p
 }
 
-func (p *StorageDomainServerConnectionServiceGetRequest) Send() *StorageDomainServerConnectionServiceGetResponse {
+func (p *StorageDomainServerConnectionServiceGetRequest) Send() (*StorageDomainServerConnectionServiceGetResponse, error) {
 
+}
+
+type StorageDomainServerConnectionServiceGetResponse struct {
+	connection *StorageConnection
 }
 
 //
@@ -23249,8 +25494,11 @@ func (p *StorageDomainServerConnectionServiceRemoveRequest) Async(async bool) *S
 	p.async = &async
 	return p
 }
-func (p *StorageDomainServerConnectionServiceRemoveRequest) Send() *StorageDomainServerConnectionServiceRemoveResponse {
+func (p *StorageDomainServerConnectionServiceRemoveRequest) Send() (*StorageDomainServerConnectionServiceRemoveResponse, error) {
 
+}
+
+type StorageDomainServerConnectionServiceRemoveResponse struct {
 }
 
 //
@@ -23332,10 +25580,49 @@ func (p *RolesServiceAddRequest) Role(role *Role) *RolesServiceAddRequest {
 	p.role = role
 	return p
 }
-func (p *RolesServiceAddRequest) Send() *RolesServiceAddResponse {
+func (p *RolesServiceAddRequest) Send() (*RolesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.rolesService.Connection.URL(), p.rolesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.role)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.rolesService.Connection.username, p.rolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.rolesService.Connection.client.Do(req)
+}
+
+type RolesServiceAddResponse struct {
+	role *Role
 }
 
 //
@@ -23414,8 +25701,12 @@ func (p *RolesServiceListRequest) Max(max int64) *RolesServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *RolesServiceListRequest) Send() *RolesServiceListResponse {
+func (p *RolesServiceListRequest) Send() (*RolesServiceListResponse, error) {
 
+}
+
+type RolesServiceListResponse struct {
+	roles []Role
 }
 
 //
@@ -23672,8 +25963,11 @@ func (p *ImageTransferServiceExtendRequest) Query(key, value string) *ImageTrans
 	return p
 }
 
-func (p *ImageTransferServiceExtendRequest) Send() *ImageTransferServiceExtendResponse {
+func (p *ImageTransferServiceExtendRequest) Send() (*ImageTransferServiceExtendResponse, error) {
 
+}
+
+type ImageTransferServiceExtendResponse struct {
 }
 
 //
@@ -23713,8 +26007,11 @@ func (p *ImageTransferServiceFinalizeRequest) Query(key, value string) *ImageTra
 	return p
 }
 
-func (p *ImageTransferServiceFinalizeRequest) Send() *ImageTransferServiceFinalizeResponse {
+func (p *ImageTransferServiceFinalizeRequest) Send() (*ImageTransferServiceFinalizeResponse, error) {
 
+}
+
+type ImageTransferServiceFinalizeResponse struct {
 }
 
 //
@@ -23758,8 +26055,12 @@ func (p *ImageTransferServiceGetRequest) Query(key, value string) *ImageTransfer
 	return p
 }
 
-func (p *ImageTransferServiceGetRequest) Send() *ImageTransferServiceGetResponse {
+func (p *ImageTransferServiceGetRequest) Send() (*ImageTransferServiceGetResponse, error) {
 
+}
+
+type ImageTransferServiceGetResponse struct {
+	imageTransfer *ImageTransfer
 }
 
 //
@@ -23808,8 +26109,11 @@ func (p *ImageTransferServicePauseRequest) Query(key, value string) *ImageTransf
 	return p
 }
 
-func (p *ImageTransferServicePauseRequest) Send() *ImageTransferServicePauseResponse {
+func (p *ImageTransferServicePauseRequest) Send() (*ImageTransferServicePauseResponse, error) {
 
+}
+
+type ImageTransferServicePauseResponse struct {
 }
 
 //
@@ -23849,8 +26153,11 @@ func (p *ImageTransferServiceResumeRequest) Query(key, value string) *ImageTrans
 	return p
 }
 
-func (p *ImageTransferServiceResumeRequest) Send() *ImageTransferServiceResumeResponse {
+func (p *ImageTransferServiceResumeRequest) Send() (*ImageTransferServiceResumeResponse, error) {
 
+}
+
+type ImageTransferServiceResumeResponse struct {
 }
 
 //
@@ -23927,8 +26234,12 @@ func (p *AssignedVnicProfileServiceGetRequest) Query(key, value string) *Assigne
 	return p
 }
 
-func (p *AssignedVnicProfileServiceGetRequest) Send() *AssignedVnicProfileServiceGetResponse {
+func (p *AssignedVnicProfileServiceGetRequest) Send() (*AssignedVnicProfileServiceGetResponse, error) {
 
+}
+
+type AssignedVnicProfileServiceGetResponse struct {
+	profile *VnicProfile
 }
 
 //
@@ -23981,8 +26292,11 @@ func (p *AssignedVnicProfileServiceRemoveRequest) Async(async bool) *AssignedVni
 	p.async = &async
 	return p
 }
-func (p *AssignedVnicProfileServiceRemoveRequest) Send() *AssignedVnicProfileServiceRemoveResponse {
+func (p *AssignedVnicProfileServiceRemoveRequest) Send() (*AssignedVnicProfileServiceRemoveResponse, error) {
 
+}
+
+type AssignedVnicProfileServiceRemoveResponse struct {
 }
 
 //
@@ -24069,8 +26383,12 @@ func (p *TemplateWatchdogServiceGetRequest) Query(key, value string) *TemplateWa
 	return p
 }
 
-func (p *TemplateWatchdogServiceGetRequest) Send() *TemplateWatchdogServiceGetResponse {
+func (p *TemplateWatchdogServiceGetRequest) Send() (*TemplateWatchdogServiceGetResponse, error) {
 
+}
+
+type TemplateWatchdogServiceGetResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -24123,8 +26441,11 @@ func (p *TemplateWatchdogServiceRemoveRequest) Async(async bool) *TemplateWatchd
 	p.async = &async
 	return p
 }
-func (p *TemplateWatchdogServiceRemoveRequest) Send() *TemplateWatchdogServiceRemoveResponse {
+func (p *TemplateWatchdogServiceRemoveRequest) Send() (*TemplateWatchdogServiceRemoveResponse, error) {
 
+}
+
+type TemplateWatchdogServiceRemoveResponse struct {
 }
 
 //
@@ -24182,8 +26503,12 @@ func (p *TemplateWatchdogServiceUpdateRequest) Watchdog(watchdog *Watchdog) *Tem
 	p.watchdog = watchdog
 	return p
 }
-func (p *TemplateWatchdogServiceUpdateRequest) Send() *TemplateWatchdogServiceUpdateResponse {
+func (p *TemplateWatchdogServiceUpdateRequest) Send() (*TemplateWatchdogServiceUpdateResponse, error) {
 
+}
+
+type TemplateWatchdogServiceUpdateResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -24261,8 +26586,12 @@ func (p *VmSessionServiceGetRequest) Query(key, value string) *VmSessionServiceG
 	return p
 }
 
-func (p *VmSessionServiceGetRequest) Send() *VmSessionServiceGetResponse {
+func (p *VmSessionServiceGetRequest) Send() (*VmSessionServiceGetResponse, error) {
 
+}
+
+type VmSessionServiceGetResponse struct {
+	session *Session
 }
 
 //
@@ -24342,8 +26671,11 @@ func (p *VmNicServiceActivateRequest) Async(async bool) *VmNicServiceActivateReq
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceActivateRequest) Send() *VmNicServiceActivateResponse {
+func (p *VmNicServiceActivateRequest) Send() (*VmNicServiceActivateResponse, error) {
 
+}
+
+type VmNicServiceActivateResponse struct {
 }
 
 //
@@ -24395,8 +26727,11 @@ func (p *VmNicServiceDeactivateRequest) Async(async bool) *VmNicServiceDeactivat
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceDeactivateRequest) Send() *VmNicServiceDeactivateResponse {
+func (p *VmNicServiceDeactivateRequest) Send() (*VmNicServiceDeactivateResponse, error) {
 
+}
+
+type VmNicServiceDeactivateResponse struct {
 }
 
 //
@@ -24443,8 +26778,12 @@ func (p *VmNicServiceGetRequest) Query(key, value string) *VmNicServiceGetReques
 	return p
 }
 
-func (p *VmNicServiceGetRequest) Send() *VmNicServiceGetResponse {
+func (p *VmNicServiceGetRequest) Send() (*VmNicServiceGetResponse, error) {
 
+}
+
+type VmNicServiceGetResponse struct {
+	nic *Nic
 }
 
 //
@@ -24497,8 +26836,11 @@ func (p *VmNicServiceRemoveRequest) Async(async bool) *VmNicServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *VmNicServiceRemoveRequest) Send() *VmNicServiceRemoveResponse {
+func (p *VmNicServiceRemoveRequest) Send() (*VmNicServiceRemoveResponse, error) {
 
+}
+
+type VmNicServiceRemoveResponse struct {
 }
 
 //
@@ -24571,8 +26913,12 @@ func (p *VmNicServiceUpdateRequest) Nic(nic *Nic) *VmNicServiceUpdateRequest {
 	p.nic = nic
 	return p
 }
-func (p *VmNicServiceUpdateRequest) Send() *VmNicServiceUpdateResponse {
+func (p *VmNicServiceUpdateRequest) Send() (*VmNicServiceUpdateResponse, error) {
 
+}
+
+type VmNicServiceUpdateResponse struct {
+	nic *Nic
 }
 
 //
@@ -24718,10 +27064,49 @@ func (p *SnapshotsServiceAddRequest) Snapshot(snapshot *Snapshot) *SnapshotsServ
 	p.snapshot = snapshot
 	return p
 }
-func (p *SnapshotsServiceAddRequest) Send() *SnapshotsServiceAddResponse {
+func (p *SnapshotsServiceAddRequest) Send() (*SnapshotsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.snapshotsService.Connection.URL(), p.snapshotsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.snapshot)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.snapshotsService.Connection.username, p.snapshotsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.snapshotsService.Connection.client.Do(req)
+}
+
+type SnapshotsServiceAddResponse struct {
+	snapshot *Snapshot
 }
 
 //
@@ -24793,8 +27178,12 @@ func (p *SnapshotsServiceListRequest) Max(max int64) *SnapshotsServiceListReques
 	p.max = &max
 	return p
 }
-func (p *SnapshotsServiceListRequest) Send() *SnapshotsServiceListResponse {
+func (p *SnapshotsServiceListRequest) Send() (*SnapshotsServiceListResponse, error) {
 
+}
+
+type SnapshotsServiceListResponse struct {
+	snapshots []Snapshot
 }
 
 //
@@ -24896,8 +27285,12 @@ func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Query(key, value stri
 	return p
 }
 
-func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Send() *StorageDomainVmDiskAttachmentsServiceListResponse {
+func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Send() (*StorageDomainVmDiskAttachmentsServiceListResponse, error) {
 
+}
+
+type StorageDomainVmDiskAttachmentsServiceListResponse struct {
+	attachments []DiskAttachment
 }
 
 //
@@ -24984,8 +27377,12 @@ func (p *ImageServiceGetRequest) Query(key, value string) *ImageServiceGetReques
 	return p
 }
 
-func (p *ImageServiceGetRequest) Send() *ImageServiceGetResponse {
+func (p *ImageServiceGetRequest) Send() (*ImageServiceGetResponse, error) {
 
+}
+
+type ImageServiceGetResponse struct {
+	image *Image
 }
 
 //
@@ -25063,8 +27460,11 @@ func (p *ImageServiceImportRequest) Template(template *Template) *ImageServiceIm
 	p.template = template
 	return p
 }
-func (p *ImageServiceImportRequest) Send() *ImageServiceImportResponse {
+func (p *ImageServiceImportRequest) Send() (*ImageServiceImportResponse, error) {
 
+}
+
+type ImageServiceImportResponse struct {
 }
 
 //
@@ -25160,10 +27560,49 @@ func (p *InstanceTypeNicsServiceAddRequest) Nic(nic *Nic) *InstanceTypeNicsServi
 	p.nic = nic
 	return p
 }
-func (p *InstanceTypeNicsServiceAddRequest) Send() *InstanceTypeNicsServiceAddResponse {
+func (p *InstanceTypeNicsServiceAddRequest) Send() (*InstanceTypeNicsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.instanceTypeNicsService.Connection.URL(), p.instanceTypeNicsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.nic)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeNicsService.Connection.username, p.instanceTypeNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.instanceTypeNicsService.Connection.client.Do(req)
+}
+
+type InstanceTypeNicsServiceAddResponse struct {
+	nic *Nic
 }
 
 //
@@ -25223,8 +27662,12 @@ func (p *InstanceTypeNicsServiceListRequest) Search(search string) *InstanceType
 	p.search = &search
 	return p
 }
-func (p *InstanceTypeNicsServiceListRequest) Send() *InstanceTypeNicsServiceListResponse {
+func (p *InstanceTypeNicsServiceListRequest) Send() (*InstanceTypeNicsServiceListResponse, error) {
 
+}
+
+type InstanceTypeNicsServiceListResponse struct {
+	nics []Nic
 }
 
 //
@@ -25325,8 +27768,12 @@ func (p *OperatingSystemsServiceListRequest) Max(max int64) *OperatingSystemsSer
 	p.max = &max
 	return p
 }
-func (p *OperatingSystemsServiceListRequest) Send() *OperatingSystemsServiceListResponse {
+func (p *OperatingSystemsServiceListRequest) Send() (*OperatingSystemsServiceListResponse, error) {
 
+}
+
+type OperatingSystemsServiceListResponse struct {
+	operatingSystem []OperatingSystemInfo
 }
 
 //
@@ -25419,8 +27866,12 @@ func (p *HostNicServiceGetRequest) Query(key, value string) *HostNicServiceGetRe
 	return p
 }
 
-func (p *HostNicServiceGetRequest) Send() *HostNicServiceGetResponse {
+func (p *HostNicServiceGetRequest) Send() (*HostNicServiceGetResponse, error) {
 
+}
+
+type HostNicServiceGetResponse struct {
+	nic *HostNic
 }
 
 //
@@ -25478,8 +27929,11 @@ func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) VirtualFuncti
 	p.virtualFunctionsConfiguration = virtualFunctionsConfiguration
 	return p
 }
-func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Send() *HostNicServiceUpdateVirtualFunctionsConfigurationResponse {
+func (p *HostNicServiceUpdateVirtualFunctionsConfigurationRequest) Send() (*HostNicServiceUpdateVirtualFunctionsConfigurationResponse, error) {
 
+}
+
+type HostNicServiceUpdateVirtualFunctionsConfigurationResponse struct {
 }
 
 //
@@ -25631,10 +28085,49 @@ func (p *IscsiBondsServiceAddRequest) Bond(bond *IscsiBond) *IscsiBondsServiceAd
 	p.bond = bond
 	return p
 }
-func (p *IscsiBondsServiceAddRequest) Send() *IscsiBondsServiceAddResponse {
+func (p *IscsiBondsServiceAddRequest) Send() (*IscsiBondsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.iscsiBondsService.Connection.URL(), p.iscsiBondsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.bond)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.iscsiBondsService.Connection.username, p.iscsiBondsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.iscsiBondsService.Connection.client.Do(req)
+}
+
+type IscsiBondsServiceAddResponse struct {
+	bond *IscsiBond
 }
 
 //
@@ -25709,8 +28202,12 @@ func (p *IscsiBondsServiceListRequest) Max(max int64) *IscsiBondsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *IscsiBondsServiceListRequest) Send() *IscsiBondsServiceListResponse {
+func (p *IscsiBondsServiceListRequest) Send() (*IscsiBondsServiceListResponse, error) {
 
+}
+
+type IscsiBondsServiceListResponse struct {
+	bonds []IscsiBond
 }
 
 //
@@ -25808,10 +28305,49 @@ func (p *UsersServiceAddRequest) User(user *User) *UsersServiceAddRequest {
 	p.user = user
 	return p
 }
-func (p *UsersServiceAddRequest) Send() *UsersServiceAddResponse {
+func (p *UsersServiceAddRequest) Send() (*UsersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.usersService.Connection.URL(), p.usersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.user)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.usersService.Connection.username, p.usersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.usersService.Connection.client.Do(req)
+}
+
+type UsersServiceAddResponse struct {
+	user *User
 }
 
 //
@@ -25907,8 +28443,12 @@ func (p *UsersServiceListRequest) Search(search string) *UsersServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *UsersServiceListRequest) Send() *UsersServiceListResponse {
+func (p *UsersServiceListRequest) Send() (*UsersServiceListResponse, error) {
 
+}
+
+type UsersServiceListResponse struct {
+	users []User
 }
 
 //
@@ -26038,10 +28578,49 @@ func (p *GroupsServiceAddRequest) Group(group *Group) *GroupsServiceAddRequest {
 	p.group = group
 	return p
 }
-func (p *GroupsServiceAddRequest) Send() *GroupsServiceAddResponse {
+func (p *GroupsServiceAddRequest) Send() (*GroupsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.groupsService.Connection.URL(), p.groupsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.group)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.groupsService.Connection.username, p.groupsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.groupsService.Connection.client.Do(req)
+}
+
+type GroupsServiceAddResponse struct {
+	group *Group
 }
 
 //
@@ -26122,8 +28701,12 @@ func (p *GroupsServiceListRequest) Search(search string) *GroupsServiceListReque
 	p.search = &search
 	return p
 }
-func (p *GroupsServiceListRequest) Send() *GroupsServiceListResponse {
+func (p *GroupsServiceListRequest) Send() (*GroupsServiceListResponse, error) {
 
+}
+
+type GroupsServiceListResponse struct {
+	groups []Group
 }
 
 //
@@ -26224,8 +28807,12 @@ func (p *DomainServiceGetRequest) Query(key, value string) *DomainServiceGetRequ
 	return p
 }
 
-func (p *DomainServiceGetRequest) Send() *DomainServiceGetResponse {
+func (p *DomainServiceGetRequest) Send() (*DomainServiceGetResponse, error) {
 
+}
+
+type DomainServiceGetResponse struct {
+	domain *Domain
 }
 
 //
@@ -26347,10 +28934,49 @@ func (p *SshPublicKeysServiceAddRequest) Key(key *SshPublicKey) *SshPublicKeysSe
 	p.key = key
 	return p
 }
-func (p *SshPublicKeysServiceAddRequest) Send() *SshPublicKeysServiceAddResponse {
+func (p *SshPublicKeysServiceAddRequest) Send() (*SshPublicKeysServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.sshPublicKeysService.Connection.URL(), p.sshPublicKeysService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.key)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.sshPublicKeysService.Connection.username, p.sshPublicKeysService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.sshPublicKeysService.Connection.client.Do(req)
+}
+
+type SshPublicKeysServiceAddResponse struct {
+	key *SshPublicKey
 }
 
 //
@@ -26404,8 +29030,12 @@ func (p *SshPublicKeysServiceListRequest) Max(max int64) *SshPublicKeysServiceLi
 	p.max = &max
 	return p
 }
-func (p *SshPublicKeysServiceListRequest) Send() *SshPublicKeysServiceListResponse {
+func (p *SshPublicKeysServiceListRequest) Send() (*SshPublicKeysServiceListResponse, error) {
 
+}
+
+type SshPublicKeysServiceListResponse struct {
+	keys []SshPublicKey
 }
 
 //
@@ -26498,8 +29128,12 @@ func (p *DomainUserServiceGetRequest) Query(key, value string) *DomainUserServic
 	return p
 }
 
-func (p *DomainUserServiceGetRequest) Send() *DomainUserServiceGetResponse {
+func (p *DomainUserServiceGetRequest) Send() (*DomainUserServiceGetResponse, error) {
 
+}
+
+type DomainUserServiceGetResponse struct {
+	user *User
 }
 
 //
@@ -26597,8 +29231,12 @@ func (p *UserServiceGetRequest) Query(key, value string) *UserServiceGetRequest 
 	return p
 }
 
-func (p *UserServiceGetRequest) Send() *UserServiceGetResponse {
+func (p *UserServiceGetRequest) Send() (*UserServiceGetResponse, error) {
 
+}
+
+type UserServiceGetResponse struct {
+	user *User
 }
 
 //
@@ -26677,8 +29315,11 @@ func (p *UserServiceRemoveRequest) Async(async bool) *UserServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *UserServiceRemoveRequest) Send() *UserServiceRemoveResponse {
+func (p *UserServiceRemoveRequest) Send() (*UserServiceRemoveResponse, error) {
 
+}
+
+type UserServiceRemoveResponse struct {
 }
 
 //
@@ -26812,8 +29453,12 @@ func (p *DomainsServiceListRequest) Max(max int64) *DomainsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *DomainsServiceListRequest) Send() *DomainsServiceListResponse {
+func (p *DomainsServiceListRequest) Send() (*DomainsServiceListResponse, error) {
 
+}
+
+type DomainsServiceListResponse struct {
+	domains []Domain
 }
 
 //
@@ -26940,8 +29585,12 @@ func (p *DomainUsersServiceListRequest) Search(search string) *DomainUsersServic
 	p.search = &search
 	return p
 }
-func (p *DomainUsersServiceListRequest) Send() *DomainUsersServiceListResponse {
+func (p *DomainUsersServiceListRequest) Send() (*DomainUsersServiceListResponse, error) {
 
+}
+
+type DomainUsersServiceListResponse struct {
+	users []User
 }
 
 //
@@ -27078,8 +29727,12 @@ func (p *DomainGroupsServiceListRequest) Search(search string) *DomainGroupsServ
 	p.search = &search
 	return p
 }
-func (p *DomainGroupsServiceListRequest) Send() *DomainGroupsServiceListResponse {
+func (p *DomainGroupsServiceListRequest) Send() (*DomainGroupsServiceListResponse, error) {
 
+}
+
+type DomainGroupsServiceListResponse struct {
+	groups []Group
 }
 
 //
@@ -27179,8 +29832,12 @@ func (p *GroupServiceGetRequest) Query(key, value string) *GroupServiceGetReques
 	return p
 }
 
-func (p *GroupServiceGetRequest) Send() *GroupServiceGetResponse {
+func (p *GroupServiceGetRequest) Send() (*GroupServiceGetResponse, error) {
 
+}
+
+type GroupServiceGetResponse struct {
+	get *Group
 }
 
 //
@@ -27233,8 +29890,11 @@ func (p *GroupServiceRemoveRequest) Async(async bool) *GroupServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *GroupServiceRemoveRequest) Send() *GroupServiceRemoveResponse {
+func (p *GroupServiceRemoveRequest) Send() (*GroupServiceRemoveResponse, error) {
 
+}
+
+type GroupServiceRemoveResponse struct {
 }
 
 //
@@ -27345,8 +30005,12 @@ func (p *DomainGroupServiceGetRequest) Query(key, value string) *DomainGroupServ
 	return p
 }
 
-func (p *DomainGroupServiceGetRequest) Send() *DomainGroupServiceGetResponse {
+func (p *DomainGroupServiceGetRequest) Send() (*DomainGroupServiceGetResponse, error) {
 
+}
+
+type DomainGroupServiceGetResponse struct {
+	get *Group
 }
 
 //
@@ -27421,8 +30085,12 @@ func (p *SshPublicKeyServiceGetRequest) Query(key, value string) *SshPublicKeySe
 	return p
 }
 
-func (p *SshPublicKeyServiceGetRequest) Send() *SshPublicKeyServiceGetResponse {
+func (p *SshPublicKeyServiceGetRequest) Send() (*SshPublicKeyServiceGetResponse, error) {
 
+}
+
+type SshPublicKeyServiceGetResponse struct {
+	key *SshPublicKey
 }
 
 //
@@ -27475,8 +30143,11 @@ func (p *SshPublicKeyServiceRemoveRequest) Async(async bool) *SshPublicKeyServic
 	p.async = &async
 	return p
 }
-func (p *SshPublicKeyServiceRemoveRequest) Send() *SshPublicKeyServiceRemoveResponse {
+func (p *SshPublicKeyServiceRemoveRequest) Send() (*SshPublicKeyServiceRemoveResponse, error) {
 
+}
+
+type SshPublicKeyServiceRemoveResponse struct {
 }
 
 //
@@ -27534,8 +30205,12 @@ func (p *SshPublicKeyServiceUpdateRequest) Key(key *SshPublicKey) *SshPublicKeyS
 	p.key = key
 	return p
 }
-func (p *SshPublicKeyServiceUpdateRequest) Send() *SshPublicKeyServiceUpdateResponse {
+func (p *SshPublicKeyServiceUpdateRequest) Send() (*SshPublicKeyServiceUpdateResponse, error) {
 
+}
+
+type SshPublicKeyServiceUpdateResponse struct {
+	key *SshPublicKey
 }
 
 //
@@ -27613,8 +30288,12 @@ func (p *FenceAgentServiceGetRequest) Query(key, value string) *FenceAgentServic
 	return p
 }
 
-func (p *FenceAgentServiceGetRequest) Send() *FenceAgentServiceGetResponse {
+func (p *FenceAgentServiceGetRequest) Send() (*FenceAgentServiceGetResponse, error) {
 
+}
+
+type FenceAgentServiceGetResponse struct {
+	agent *Agent
 }
 
 //
@@ -27667,8 +30346,11 @@ func (p *FenceAgentServiceRemoveRequest) Async(async bool) *FenceAgentServiceRem
 	p.async = &async
 	return p
 }
-func (p *FenceAgentServiceRemoveRequest) Send() *FenceAgentServiceRemoveResponse {
+func (p *FenceAgentServiceRemoveRequest) Send() (*FenceAgentServiceRemoveResponse, error) {
 
+}
+
+type FenceAgentServiceRemoveResponse struct {
 }
 
 //
@@ -27726,8 +30408,12 @@ func (p *FenceAgentServiceUpdateRequest) Async(async bool) *FenceAgentServiceUpd
 	p.async = &async
 	return p
 }
-func (p *FenceAgentServiceUpdateRequest) Send() *FenceAgentServiceUpdateResponse {
+func (p *FenceAgentServiceUpdateRequest) Send() (*FenceAgentServiceUpdateResponse, error) {
 
+}
+
+type FenceAgentServiceUpdateResponse struct {
+	agent *Agent
 }
 
 //
@@ -27805,8 +30491,12 @@ func (p *MacPoolServiceGetRequest) Query(key, value string) *MacPoolServiceGetRe
 	return p
 }
 
-func (p *MacPoolServiceGetRequest) Send() *MacPoolServiceGetResponse {
+func (p *MacPoolServiceGetRequest) Send() (*MacPoolServiceGetResponse, error) {
 
+}
+
+type MacPoolServiceGetResponse struct {
+	pool *MacPool
 }
 
 //
@@ -27859,8 +30549,11 @@ func (p *MacPoolServiceRemoveRequest) Async(async bool) *MacPoolServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *MacPoolServiceRemoveRequest) Send() *MacPoolServiceRemoveResponse {
+func (p *MacPoolServiceRemoveRequest) Send() (*MacPoolServiceRemoveResponse, error) {
 
+}
+
+type MacPoolServiceRemoveResponse struct {
 }
 
 //
@@ -27924,8 +30617,12 @@ func (p *MacPoolServiceUpdateRequest) Pool(pool *MacPool) *MacPoolServiceUpdateR
 	p.pool = pool
 	return p
 }
-func (p *MacPoolServiceUpdateRequest) Send() *MacPoolServiceUpdateResponse {
+func (p *MacPoolServiceUpdateRequest) Send() (*MacPoolServiceUpdateResponse, error) {
 
+}
+
+type MacPoolServiceUpdateResponse struct {
+	pool *MacPool
 }
 
 //
@@ -28034,10 +30731,49 @@ func (p *AssignedCpuProfilesServiceAddRequest) Profile(profile *CpuProfile) *Ass
 	p.profile = profile
 	return p
 }
-func (p *AssignedCpuProfilesServiceAddRequest) Send() *AssignedCpuProfilesServiceAddResponse {
+func (p *AssignedCpuProfilesServiceAddRequest) Send() (*AssignedCpuProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedCpuProfilesService.Connection.URL(), p.assignedCpuProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedCpuProfilesService.Connection.username, p.assignedCpuProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedCpuProfilesService.Connection.client.Do(req)
+}
+
+type AssignedCpuProfilesServiceAddResponse struct {
+	profile *CpuProfile
 }
 
 //
@@ -28091,8 +30827,12 @@ func (p *AssignedCpuProfilesServiceListRequest) Max(max int64) *AssignedCpuProfi
 	p.max = &max
 	return p
 }
-func (p *AssignedCpuProfilesServiceListRequest) Send() *AssignedCpuProfilesServiceListResponse {
+func (p *AssignedCpuProfilesServiceListRequest) Send() (*AssignedCpuProfilesServiceListResponse, error) {
 
+}
+
+type AssignedCpuProfilesServiceListResponse struct {
+	profiles []CpuProfile
 }
 
 //
@@ -28189,10 +30929,49 @@ func (p *StorageServerConnectionExtensionsServiceAddRequest) Extension(extension
 	p.extension = extension
 	return p
 }
-func (p *StorageServerConnectionExtensionsServiceAddRequest) Send() *StorageServerConnectionExtensionsServiceAddResponse {
+func (p *StorageServerConnectionExtensionsServiceAddRequest) Send() (*StorageServerConnectionExtensionsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionExtensionsService.Connection.URL(), p.storageServerConnectionExtensionsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.extension)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionExtensionsService.Connection.username, p.storageServerConnectionExtensionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.storageServerConnectionExtensionsService.Connection.client.Do(req)
+}
+
+type StorageServerConnectionExtensionsServiceAddResponse struct {
+	extension *StorageConnectionExtension
 }
 
 //
@@ -28263,8 +31042,12 @@ func (p *StorageServerConnectionExtensionsServiceListRequest) Max(max int64) *St
 	p.max = &max
 	return p
 }
-func (p *StorageServerConnectionExtensionsServiceListRequest) Send() *StorageServerConnectionExtensionsServiceListResponse {
+func (p *StorageServerConnectionExtensionsServiceListRequest) Send() (*StorageServerConnectionExtensionsServiceListResponse, error) {
 
+}
+
+type StorageServerConnectionExtensionsServiceListResponse struct {
+	extensions []StorageConnectionExtension
 }
 
 //
@@ -28356,8 +31139,12 @@ func (p *PermissionServiceGetRequest) Query(key, value string) *PermissionServic
 	return p
 }
 
-func (p *PermissionServiceGetRequest) Send() *PermissionServiceGetResponse {
+func (p *PermissionServiceGetRequest) Send() (*PermissionServiceGetResponse, error) {
 
+}
+
+type PermissionServiceGetResponse struct {
+	permission *Permission
 }
 
 //
@@ -28410,8 +31197,11 @@ func (p *PermissionServiceRemoveRequest) Async(async bool) *PermissionServiceRem
 	p.async = &async
 	return p
 }
-func (p *PermissionServiceRemoveRequest) Send() *PermissionServiceRemoveResponse {
+func (p *PermissionServiceRemoveRequest) Send() (*PermissionServiceRemoveResponse, error) {
 
+}
+
+type PermissionServiceRemoveResponse struct {
 }
 
 //
@@ -28486,8 +31276,12 @@ func (p *DiskProfileServiceGetRequest) Query(key, value string) *DiskProfileServ
 	return p
 }
 
-func (p *DiskProfileServiceGetRequest) Send() *DiskProfileServiceGetResponse {
+func (p *DiskProfileServiceGetRequest) Send() (*DiskProfileServiceGetResponse, error) {
 
+}
+
+type DiskProfileServiceGetResponse struct {
+	profile *DiskProfile
 }
 
 //
@@ -28540,8 +31334,11 @@ func (p *DiskProfileServiceRemoveRequest) Async(async bool) *DiskProfileServiceR
 	p.async = &async
 	return p
 }
-func (p *DiskProfileServiceRemoveRequest) Send() *DiskProfileServiceRemoveResponse {
+func (p *DiskProfileServiceRemoveRequest) Send() (*DiskProfileServiceRemoveResponse, error) {
 
+}
+
+type DiskProfileServiceRemoveResponse struct {
 }
 
 //
@@ -28599,8 +31396,12 @@ func (p *DiskProfileServiceUpdateRequest) Profile(profile *DiskProfile) *DiskPro
 	p.profile = profile
 	return p
 }
-func (p *DiskProfileServiceUpdateRequest) Send() *DiskProfileServiceUpdateResponse {
+func (p *DiskProfileServiceUpdateRequest) Send() (*DiskProfileServiceUpdateResponse, error) {
 
+}
+
+type DiskProfileServiceUpdateResponse struct {
+	profile *DiskProfile
 }
 
 //
@@ -28691,8 +31492,12 @@ func (p *AffinityGroupServiceGetRequest) Query(key, value string) *AffinityGroup
 	return p
 }
 
-func (p *AffinityGroupServiceGetRequest) Send() *AffinityGroupServiceGetResponse {
+func (p *AffinityGroupServiceGetRequest) Send() (*AffinityGroupServiceGetResponse, error) {
 
+}
+
+type AffinityGroupServiceGetResponse struct {
+	group *AffinityGroup
 }
 
 //
@@ -28755,8 +31560,11 @@ func (p *AffinityGroupServiceRemoveRequest) Async(async bool) *AffinityGroupServ
 	p.async = &async
 	return p
 }
-func (p *AffinityGroupServiceRemoveRequest) Send() *AffinityGroupServiceRemoveResponse {
+func (p *AffinityGroupServiceRemoveRequest) Send() (*AffinityGroupServiceRemoveResponse, error) {
 
+}
+
+type AffinityGroupServiceRemoveResponse struct {
 }
 
 //
@@ -28819,8 +31627,12 @@ func (p *AffinityGroupServiceUpdateRequest) Group(group *AffinityGroup) *Affinit
 	p.group = group
 	return p
 }
-func (p *AffinityGroupServiceUpdateRequest) Send() *AffinityGroupServiceUpdateResponse {
+func (p *AffinityGroupServiceUpdateRequest) Send() (*AffinityGroupServiceUpdateResponse, error) {
 
+}
+
+type AffinityGroupServiceUpdateResponse struct {
+	group *AffinityGroup
 }
 
 //
@@ -28924,8 +31736,12 @@ func (p *UnmanagedNetworksServiceListRequest) Max(max int64) *UnmanagedNetworksS
 	p.max = &max
 	return p
 }
-func (p *UnmanagedNetworksServiceListRequest) Send() *UnmanagedNetworksServiceListResponse {
+func (p *UnmanagedNetworksServiceListRequest) Send() (*UnmanagedNetworksServiceListResponse, error) {
 
+}
+
+type UnmanagedNetworksServiceListResponse struct {
+	networks []UnmanagedNetwork
 }
 
 //
@@ -29032,16 +31848,55 @@ func (p *VmsServiceAddRequest) Vm(vm *Vm) *VmsServiceAddRequest {
 	p.vm = vm
 	return p
 }
-func (p *VmsServiceAddRequest) Send() *VmsServiceAddResponse {
+func (p *VmsServiceAddRequest) Send() (*VmsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmsService.Connection.URL(), p.vmsService.Path)
 	values := make(url.Values)
-	if clone != null {
-		fmt.Println("test")
+	if p.clone != nil {
+		values["clone"] = []string{fmt.Sprintf("%v", *p.clone)}
 	}
-	if clonePermissions != null {
-		fmt.Println("test")
+	if p.clonePermissions != nil {
+		values["clonePermissions"] = []string{fmt.Sprintf("%v", *p.clonePermissions)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.vm)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmsService.Connection.username, p.vmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmsService.Connection.client.Do(req)
+}
+
+type VmsServiceAddResponse struct {
+	vm *Vm
 }
 
 //
@@ -29254,8 +32109,12 @@ func (p *VmsServiceListRequest) Search(search string) *VmsServiceListRequest {
 	p.search = &search
 	return p
 }
-func (p *VmsServiceListRequest) Send() *VmsServiceListResponse {
+func (p *VmsServiceListRequest) Send() (*VmsServiceListResponse, error) {
 
+}
+
+type VmsServiceListResponse struct {
+	vms []Vm
 }
 
 //
@@ -29373,8 +32232,12 @@ func (p *StorageDomainTemplateServiceGetRequest) Query(key, value string) *Stora
 	return p
 }
 
-func (p *StorageDomainTemplateServiceGetRequest) Send() *StorageDomainTemplateServiceGetResponse {
+func (p *StorageDomainTemplateServiceGetRequest) Send() (*StorageDomainTemplateServiceGetResponse, error) {
 
+}
+
+type StorageDomainTemplateServiceGetResponse struct {
+	template *Template
 }
 
 //
@@ -29457,8 +32320,11 @@ func (p *StorageDomainTemplateServiceImportRequest) Vm(vm *Vm) *StorageDomainTem
 	p.vm = vm
 	return p
 }
-func (p *StorageDomainTemplateServiceImportRequest) Send() *StorageDomainTemplateServiceImportResponse {
+func (p *StorageDomainTemplateServiceImportRequest) Send() (*StorageDomainTemplateServiceImportResponse, error) {
 
+}
+
+type StorageDomainTemplateServiceImportResponse struct {
 }
 
 //
@@ -29568,8 +32434,11 @@ func (p *StorageDomainTemplateServiceRegisterRequest) Template(template *Templat
 	p.template = template
 	return p
 }
-func (p *StorageDomainTemplateServiceRegisterRequest) Send() *StorageDomainTemplateServiceRegisterResponse {
+func (p *StorageDomainTemplateServiceRegisterRequest) Send() (*StorageDomainTemplateServiceRegisterResponse, error) {
 
+}
+
+type StorageDomainTemplateServiceRegisterResponse struct {
 }
 
 //
@@ -29635,8 +32504,11 @@ func (p *StorageDomainTemplateServiceRemoveRequest) Async(async bool) *StorageDo
 	p.async = &async
 	return p
 }
-func (p *StorageDomainTemplateServiceRemoveRequest) Send() *StorageDomainTemplateServiceRemoveResponse {
+func (p *StorageDomainTemplateServiceRemoveRequest) Send() (*StorageDomainTemplateServiceRemoveResponse, error) {
 
+}
+
+type StorageDomainTemplateServiceRemoveResponse struct {
 }
 
 //
@@ -29729,10 +32601,49 @@ func (p *VmPoolsServiceAddRequest) Pool(pool *VmPool) *VmPoolsServiceAddRequest 
 	p.pool = pool
 	return p
 }
-func (p *VmPoolsServiceAddRequest) Send() *VmPoolsServiceAddResponse {
+func (p *VmPoolsServiceAddRequest) Send() (*VmPoolsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmPoolsService.Connection.URL(), p.vmPoolsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.pool)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmPoolsService.Connection.username, p.vmPoolsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmPoolsService.Connection.client.Do(req)
+}
+
+type VmPoolsServiceAddResponse struct {
+	pool *VmPool
 }
 
 //
@@ -29822,8 +32733,12 @@ func (p *VmPoolsServiceListRequest) Search(search string) *VmPoolsServiceListReq
 	p.search = &search
 	return p
 }
-func (p *VmPoolsServiceListRequest) Send() *VmPoolsServiceListResponse {
+func (p *VmPoolsServiceListRequest) Send() (*VmPoolsServiceListResponse, error) {
 
+}
+
+type VmPoolsServiceListResponse struct {
+	pools []VmPool
 }
 
 //
@@ -29947,10 +32862,49 @@ func (p *AssignedDiskProfilesServiceAddRequest) Profile(profile *DiskProfile) *A
 	p.profile = profile
 	return p
 }
-func (p *AssignedDiskProfilesServiceAddRequest) Send() *AssignedDiskProfilesServiceAddResponse {
+func (p *AssignedDiskProfilesServiceAddRequest) Send() (*AssignedDiskProfilesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedDiskProfilesService.Connection.URL(), p.assignedDiskProfilesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.profile)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedDiskProfilesService.Connection.username, p.assignedDiskProfilesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedDiskProfilesService.Connection.client.Do(req)
+}
+
+type AssignedDiskProfilesServiceAddResponse struct {
+	profile *DiskProfile
 }
 
 //
@@ -30004,8 +32958,12 @@ func (p *AssignedDiskProfilesServiceListRequest) Max(max int64) *AssignedDiskPro
 	p.max = &max
 	return p
 }
-func (p *AssignedDiskProfilesServiceListRequest) Send() *AssignedDiskProfilesServiceListResponse {
+func (p *AssignedDiskProfilesServiceListRequest) Send() (*AssignedDiskProfilesServiceListResponse, error) {
 
+}
+
+type AssignedDiskProfilesServiceListResponse struct {
+	profiles []DiskProfile
 }
 
 //
@@ -30113,8 +33071,11 @@ func (p *StepServiceEndRequest) Succeeded(succeeded bool) *StepServiceEndRequest
 	p.succeeded = &succeeded
 	return p
 }
-func (p *StepServiceEndRequest) Send() *StepServiceEndResponse {
+func (p *StepServiceEndRequest) Send() (*StepServiceEndResponse, error) {
 
+}
+
+type StepServiceEndResponse struct {
 }
 
 //
@@ -30183,8 +33144,12 @@ func (p *StepServiceGetRequest) Query(key, value string) *StepServiceGetRequest 
 	return p
 }
 
-func (p *StepServiceGetRequest) Send() *StepServiceGetResponse {
+func (p *StepServiceGetRequest) Send() (*StepServiceGetResponse, error) {
 
+}
+
+type StepServiceGetResponse struct {
+	step *Step
 }
 
 //
@@ -30304,13 +33269,52 @@ func (p *AttachedStorageDomainDisksServiceAddRequest) Unregistered(unregistered 
 	p.unregistered = &unregistered
 	return p
 }
-func (p *AttachedStorageDomainDisksServiceAddRequest) Send() *AttachedStorageDomainDisksServiceAddResponse {
+func (p *AttachedStorageDomainDisksServiceAddRequest) Send() (*AttachedStorageDomainDisksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.attachedStorageDomainDisksService.Connection.URL(), p.attachedStorageDomainDisksService.Path)
 	values := make(url.Values)
-	if unregistered != null {
-		fmt.Println("test")
+	if p.unregistered != nil {
+		values["unregistered"] = []string{fmt.Sprintf("%v", *p.unregistered)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.disk)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.attachedStorageDomainDisksService.Connection.username, p.attachedStorageDomainDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.attachedStorageDomainDisksService.Connection.client.Do(req)
+}
+
+type AttachedStorageDomainDisksServiceAddResponse struct {
+	disk *Disk
 }
 
 //
@@ -30377,8 +33381,12 @@ func (p *AttachedStorageDomainDisksServiceListRequest) Max(max int64) *AttachedS
 	p.max = &max
 	return p
 }
-func (p *AttachedStorageDomainDisksServiceListRequest) Send() *AttachedStorageDomainDisksServiceListResponse {
+func (p *AttachedStorageDomainDisksServiceListRequest) Send() (*AttachedStorageDomainDisksServiceListResponse, error) {
 
+}
+
+type AttachedStorageDomainDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -30486,8 +33494,12 @@ func (p *NetworkFilterServiceGetRequest) Query(key, value string) *NetworkFilter
 	return p
 }
 
-func (p *NetworkFilterServiceGetRequest) Send() *NetworkFilterServiceGetResponse {
+func (p *NetworkFilterServiceGetRequest) Send() (*NetworkFilterServiceGetResponse, error) {
 
+}
+
+type NetworkFilterServiceGetResponse struct {
+	networkFilter *NetworkFilter
 }
 
 //
@@ -30568,10 +33580,49 @@ func (p *VmDisksServiceAddRequest) Disk(disk *Disk) *VmDisksServiceAddRequest {
 	p.disk = disk
 	return p
 }
-func (p *VmDisksServiceAddRequest) Send() *VmDisksServiceAddResponse {
+func (p *VmDisksServiceAddRequest) Send() (*VmDisksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmDisksService.Connection.URL(), p.vmDisksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.disk)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmDisksService.Connection.username, p.vmDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmDisksService.Connection.client.Do(req)
+}
+
+type VmDisksServiceAddResponse struct {
+	disk *Disk
 }
 
 //
@@ -30625,8 +33676,12 @@ func (p *VmDisksServiceListRequest) Max(max int64) *VmDisksServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *VmDisksServiceListRequest) Send() *VmDisksServiceListResponse {
+func (p *VmDisksServiceListRequest) Send() (*VmDisksServiceListResponse, error) {
 
+}
+
+type VmDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -30726,10 +33781,49 @@ func (p *DiskAttachmentsServiceAddRequest) Attachment(attachment *DiskAttachment
 	p.attachment = attachment
 	return p
 }
-func (p *DiskAttachmentsServiceAddRequest) Send() *DiskAttachmentsServiceAddResponse {
+func (p *DiskAttachmentsServiceAddRequest) Send() (*DiskAttachmentsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.diskAttachmentsService.Connection.URL(), p.diskAttachmentsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.attachment)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.diskAttachmentsService.Connection.username, p.diskAttachmentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.diskAttachmentsService.Connection.client.Do(req)
+}
+
+type DiskAttachmentsServiceAddResponse struct {
+	attachment *DiskAttachment
 }
 
 //
@@ -30815,8 +33909,12 @@ func (p *DiskAttachmentsServiceListRequest) Query(key, value string) *DiskAttach
 	return p
 }
 
-func (p *DiskAttachmentsServiceListRequest) Send() *DiskAttachmentsServiceListResponse {
+func (p *DiskAttachmentsServiceListRequest) Send() (*DiskAttachmentsServiceListResponse, error) {
 
+}
+
+type DiskAttachmentsServiceListResponse struct {
+	attachments []DiskAttachment
 }
 
 //
@@ -30918,8 +34016,11 @@ func (p *StorageDomainDiskServiceCopyRequest) StorageDomain(storageDomain *Stora
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceCopyRequest) Send() *StorageDomainDiskServiceCopyResponse {
+func (p *StorageDomainDiskServiceCopyRequest) Send() (*StorageDomainDiskServiceCopyResponse, error) {
 
+}
+
+type StorageDomainDiskServiceCopyResponse struct {
 }
 
 //
@@ -30978,8 +34079,11 @@ func (p *StorageDomainDiskServiceExportRequest) StorageDomain(storageDomain *Sto
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceExportRequest) Send() *StorageDomainDiskServiceExportResponse {
+func (p *StorageDomainDiskServiceExportRequest) Send() (*StorageDomainDiskServiceExportResponse, error) {
 
+}
+
+type StorageDomainDiskServiceExportResponse struct {
 }
 
 //
@@ -31030,8 +34134,12 @@ func (p *StorageDomainDiskServiceGetRequest) Query(key, value string) *StorageDo
 	return p
 }
 
-func (p *StorageDomainDiskServiceGetRequest) Send() *StorageDomainDiskServiceGetResponse {
+func (p *StorageDomainDiskServiceGetRequest) Send() (*StorageDomainDiskServiceGetResponse, error) {
 
+}
+
+type StorageDomainDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -31095,8 +34203,11 @@ func (p *StorageDomainDiskServiceMoveRequest) StorageDomain(storageDomain *Stora
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainDiskServiceMoveRequest) Send() *StorageDomainDiskServiceMoveResponse {
+func (p *StorageDomainDiskServiceMoveRequest) Send() (*StorageDomainDiskServiceMoveResponse, error) {
 
+}
+
+type StorageDomainDiskServiceMoveResponse struct {
 }
 
 //
@@ -31153,8 +34264,11 @@ func (p *StorageDomainDiskServiceRemoveRequest) Query(key, value string) *Storag
 	return p
 }
 
-func (p *StorageDomainDiskServiceRemoveRequest) Send() *StorageDomainDiskServiceRemoveResponse {
+func (p *StorageDomainDiskServiceRemoveRequest) Send() (*StorageDomainDiskServiceRemoveResponse, error) {
 
+}
+
+type StorageDomainDiskServiceRemoveResponse struct {
 }
 
 //
@@ -31199,8 +34313,11 @@ func (p *StorageDomainDiskServiceSparsifyRequest) Query(key, value string) *Stor
 	return p
 }
 
-func (p *StorageDomainDiskServiceSparsifyRequest) Send() *StorageDomainDiskServiceSparsifyResponse {
+func (p *StorageDomainDiskServiceSparsifyRequest) Send() (*StorageDomainDiskServiceSparsifyResponse, error) {
 
+}
+
+type StorageDomainDiskServiceSparsifyResponse struct {
 }
 
 //
@@ -31248,8 +34365,12 @@ func (p *StorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *StorageDomainD
 	p.disk = disk
 	return p
 }
-func (p *StorageDomainDiskServiceUpdateRequest) Send() *StorageDomainDiskServiceUpdateResponse {
+func (p *StorageDomainDiskServiceUpdateRequest) Send() (*StorageDomainDiskServiceUpdateResponse, error) {
 
+}
+
+type StorageDomainDiskServiceUpdateResponse struct {
+	disk *Disk
 }
 
 //
@@ -31364,8 +34485,12 @@ func (p *HostHooksServiceListRequest) Max(max int64) *HostHooksServiceListReques
 	p.max = &max
 	return p
 }
-func (p *HostHooksServiceListRequest) Send() *HostHooksServiceListResponse {
+func (p *HostHooksServiceListRequest) Send() (*HostHooksServiceListResponse, error) {
 
+}
+
+type HostHooksServiceListResponse struct {
+	hooks []Hook
 }
 
 //
@@ -31462,10 +34587,49 @@ func (p *StorageDomainsServiceAddRequest) StorageDomain(storageDomain *StorageDo
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *StorageDomainsServiceAddRequest) Send() *StorageDomainsServiceAddResponse {
+func (p *StorageDomainsServiceAddRequest) Send() (*StorageDomainsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.storageDomainsService.Connection.URL(), p.storageDomainsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.storageDomain)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainsService.Connection.username, p.storageDomainsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.storageDomainsService.Connection.client.Do(req)
+}
+
+type StorageDomainsServiceAddResponse struct {
+	storageDomain *StorageDomain
 }
 
 //
@@ -31596,8 +34760,12 @@ func (p *StorageDomainsServiceListRequest) Search(search string) *StorageDomains
 	p.search = &search
 	return p
 }
-func (p *StorageDomainsServiceListRequest) Send() *StorageDomainsServiceListResponse {
+func (p *StorageDomainsServiceListRequest) Send() (*StorageDomainsServiceListResponse, error) {
 
+}
+
+type StorageDomainsServiceListResponse struct {
+	storageDomains []StorageDomain
 }
 
 //
@@ -31700,8 +34868,12 @@ func (p *NetworkLabelServiceGetRequest) Query(key, value string) *NetworkLabelSe
 	return p
 }
 
-func (p *NetworkLabelServiceGetRequest) Send() *NetworkLabelServiceGetResponse {
+func (p *NetworkLabelServiceGetRequest) Send() (*NetworkLabelServiceGetResponse, error) {
 
+}
+
+type NetworkLabelServiceGetResponse struct {
+	label *NetworkLabel
 }
 
 //
@@ -31754,8 +34926,11 @@ func (p *NetworkLabelServiceRemoveRequest) Async(async bool) *NetworkLabelServic
 	p.async = &async
 	return p
 }
-func (p *NetworkLabelServiceRemoveRequest) Send() *NetworkLabelServiceRemoveResponse {
+func (p *NetworkLabelServiceRemoveRequest) Send() (*NetworkLabelServiceRemoveResponse, error) {
 
+}
+
+type NetworkLabelServiceRemoveResponse struct {
 }
 
 //
@@ -31841,10 +35016,49 @@ func (p *InstanceTypesServiceAddRequest) InstanceType(instanceType *InstanceType
 	p.instanceType = instanceType
 	return p
 }
-func (p *InstanceTypesServiceAddRequest) Send() *InstanceTypesServiceAddResponse {
+func (p *InstanceTypesServiceAddRequest) Send() (*InstanceTypesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.instanceTypesService.Connection.URL(), p.instanceTypesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.instanceType)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypesService.Connection.username, p.instanceTypesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.instanceTypesService.Connection.client.Do(req)
+}
+
+type InstanceTypesServiceAddResponse struct {
+	instanceType *InstanceType
 }
 
 //
@@ -31987,8 +35201,12 @@ func (p *InstanceTypesServiceListRequest) Search(search string) *InstanceTypesSe
 	p.search = &search
 	return p
 }
-func (p *InstanceTypesServiceListRequest) Send() *InstanceTypesServiceListResponse {
+func (p *InstanceTypesServiceListRequest) Send() (*InstanceTypesServiceListResponse, error) {
 
+}
+
+type InstanceTypesServiceListResponse struct {
+	instanceType []InstanceType
 }
 
 //
@@ -32095,10 +35313,49 @@ func (p *StorageDomainServerConnectionsServiceAddRequest) Connection(connection 
 	p.connection = connection
 	return p
 }
-func (p *StorageDomainServerConnectionsServiceAddRequest) Send() *StorageDomainServerConnectionsServiceAddResponse {
+func (p *StorageDomainServerConnectionsServiceAddRequest) Send() (*StorageDomainServerConnectionsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.storageDomainServerConnectionsService.Connection.URL(), p.storageDomainServerConnectionsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.connection)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainServerConnectionsService.Connection.username, p.storageDomainServerConnectionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.storageDomainServerConnectionsService.Connection.client.Do(req)
+}
+
+type StorageDomainServerConnectionsServiceAddResponse struct {
+	connection *StorageConnection
 }
 
 //
@@ -32152,8 +35409,12 @@ func (p *StorageDomainServerConnectionsServiceListRequest) Max(max int64) *Stora
 	p.max = &max
 	return p
 }
-func (p *StorageDomainServerConnectionsServiceListRequest) Send() *StorageDomainServerConnectionsServiceListResponse {
+func (p *StorageDomainServerConnectionsServiceListRequest) Send() (*StorageDomainServerConnectionsServiceListResponse, error) {
 
+}
+
+type StorageDomainServerConnectionsServiceListResponse struct {
+	connections []StorageConnection
 }
 
 //
@@ -32245,8 +35506,12 @@ func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Query(key, value string) 
 	return p
 }
 
-func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Send() *InstanceTypeGraphicsConsoleServiceGetResponse {
+func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Send() (*InstanceTypeGraphicsConsoleServiceGetResponse, error) {
 
+}
+
+type InstanceTypeGraphicsConsoleServiceGetResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -32300,8 +35565,11 @@ func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Async(async bool) *Ins
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Send() *InstanceTypeGraphicsConsoleServiceRemoveResponse {
+func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Send() (*InstanceTypeGraphicsConsoleServiceRemoveResponse, error) {
 
+}
+
+type InstanceTypeGraphicsConsoleServiceRemoveResponse struct {
 }
 
 //
@@ -32377,8 +35645,12 @@ func (p *IscsiBondServiceGetRequest) Query(key, value string) *IscsiBondServiceG
 	return p
 }
 
-func (p *IscsiBondServiceGetRequest) Send() *IscsiBondServiceGetResponse {
+func (p *IscsiBondServiceGetRequest) Send() (*IscsiBondServiceGetResponse, error) {
 
+}
+
+type IscsiBondServiceGetResponse struct {
+	bond *IscsiBond
 }
 
 //
@@ -32431,8 +35703,11 @@ func (p *IscsiBondServiceRemoveRequest) Async(async bool) *IscsiBondServiceRemov
 	p.async = &async
 	return p
 }
-func (p *IscsiBondServiceRemoveRequest) Send() *IscsiBondServiceRemoveResponse {
+func (p *IscsiBondServiceRemoveRequest) Send() (*IscsiBondServiceRemoveResponse, error) {
 
+}
+
+type IscsiBondServiceRemoveResponse struct {
 }
 
 //
@@ -32496,8 +35771,12 @@ func (p *IscsiBondServiceUpdateRequest) Bond(bond *IscsiBond) *IscsiBondServiceU
 	p.bond = bond
 	return p
 }
-func (p *IscsiBondServiceUpdateRequest) Send() *IscsiBondServiceUpdateResponse {
+func (p *IscsiBondServiceUpdateRequest) Send() (*IscsiBondServiceUpdateResponse, error) {
 
+}
+
+type IscsiBondServiceUpdateResponse struct {
+	bond *IscsiBond
 }
 
 //
@@ -32615,8 +35894,12 @@ func (p *TemplateDiskAttachmentServiceGetRequest) Query(key, value string) *Temp
 	return p
 }
 
-func (p *TemplateDiskAttachmentServiceGetRequest) Send() *TemplateDiskAttachmentServiceGetResponse {
+func (p *TemplateDiskAttachmentServiceGetRequest) Send() (*TemplateDiskAttachmentServiceGetResponse, error) {
 
+}
+
+type TemplateDiskAttachmentServiceGetResponse struct {
+	attachment *DiskAttachment
 }
 
 //
@@ -32675,8 +35958,11 @@ func (p *TemplateDiskAttachmentServiceRemoveRequest) StorageDomain(storageDomain
 	p.storageDomain = &storageDomain
 	return p
 }
-func (p *TemplateDiskAttachmentServiceRemoveRequest) Send() *TemplateDiskAttachmentServiceRemoveResponse {
+func (p *TemplateDiskAttachmentServiceRemoveRequest) Send() (*TemplateDiskAttachmentServiceRemoveResponse, error) {
 
+}
+
+type TemplateDiskAttachmentServiceRemoveResponse struct {
 }
 
 //
@@ -32767,8 +36053,12 @@ func (p *HostStorageServiceListRequest) ReportStatus(reportStatus bool) *HostSto
 	p.reportStatus = &reportStatus
 	return p
 }
-func (p *HostStorageServiceListRequest) Send() *HostStorageServiceListResponse {
+func (p *HostStorageServiceListRequest) Send() (*HostStorageServiceListResponse, error) {
 
+}
+
+type HostStorageServiceListResponse struct {
+	storages []HostStorage
 }
 
 //
@@ -32924,8 +36214,12 @@ func (p *WeightServiceGetRequest) Filter(filter bool) *WeightServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *WeightServiceGetRequest) Send() *WeightServiceGetResponse {
+func (p *WeightServiceGetRequest) Send() (*WeightServiceGetResponse, error) {
 
+}
+
+type WeightServiceGetResponse struct {
+	weight *Weight
 }
 
 //
@@ -32985,8 +36279,11 @@ func (p *WeightServiceRemoveRequest) Async(async bool) *WeightServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *WeightServiceRemoveRequest) Send() *WeightServiceRemoveResponse {
+func (p *WeightServiceRemoveRequest) Send() (*WeightServiceRemoveResponse, error) {
 
+}
+
+type WeightServiceRemoveResponse struct {
 }
 
 //
@@ -33066,10 +36363,49 @@ func (p *VmNumaNodesServiceAddRequest) Node(node *VirtualNumaNode) *VmNumaNodesS
 	p.node = node
 	return p
 }
-func (p *VmNumaNodesServiceAddRequest) Send() *VmNumaNodesServiceAddResponse {
+func (p *VmNumaNodesServiceAddRequest) Send() (*VmNumaNodesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmNumaNodesService.Connection.URL(), p.vmNumaNodesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.node)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNumaNodesService.Connection.username, p.vmNumaNodesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmNumaNodesService.Connection.client.Do(req)
+}
+
+type VmNumaNodesServiceAddResponse struct {
+	node *VirtualNumaNode
 }
 
 //
@@ -33146,8 +36482,12 @@ func (p *VmNumaNodesServiceListRequest) Max(max int64) *VmNumaNodesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *VmNumaNodesServiceListRequest) Send() *VmNumaNodesServiceListResponse {
+func (p *VmNumaNodesServiceListRequest) Send() (*VmNumaNodesServiceListResponse, error) {
 
+}
+
+type VmNumaNodesServiceListResponse struct {
+	nodes []VirtualNumaNode
 }
 
 //
@@ -33245,10 +36585,49 @@ func (p *TemplateWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *Templ
 	p.watchdog = watchdog
 	return p
 }
-func (p *TemplateWatchdogsServiceAddRequest) Send() *TemplateWatchdogsServiceAddResponse {
+func (p *TemplateWatchdogsServiceAddRequest) Send() (*TemplateWatchdogsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.templateWatchdogsService.Connection.URL(), p.templateWatchdogsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.watchdog)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templateWatchdogsService.Connection.username, p.templateWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.templateWatchdogsService.Connection.client.Do(req)
+}
+
+type TemplateWatchdogsServiceAddResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -33302,8 +36681,12 @@ func (p *TemplateWatchdogsServiceListRequest) Max(max int64) *TemplateWatchdogsS
 	p.max = &max
 	return p
 }
-func (p *TemplateWatchdogsServiceListRequest) Send() *TemplateWatchdogsServiceListResponse {
+func (p *TemplateWatchdogsServiceListRequest) Send() (*TemplateWatchdogsServiceListResponse, error) {
 
+}
+
+type TemplateWatchdogsServiceListResponse struct {
+	watchdogs []Watchdog
 }
 
 //
@@ -33410,8 +36793,11 @@ func (p *AttachedStorageDomainDiskServiceCopyRequest) StorageDomain(storageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceCopyRequest) Send() *AttachedStorageDomainDiskServiceCopyResponse {
+func (p *AttachedStorageDomainDiskServiceCopyRequest) Send() (*AttachedStorageDomainDiskServiceCopyResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceCopyResponse struct {
 }
 
 //
@@ -33470,8 +36856,11 @@ func (p *AttachedStorageDomainDiskServiceExportRequest) StorageDomain(storageDom
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceExportRequest) Send() *AttachedStorageDomainDiskServiceExportResponse {
+func (p *AttachedStorageDomainDiskServiceExportRequest) Send() (*AttachedStorageDomainDiskServiceExportResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceExportResponse struct {
 }
 
 //
@@ -33522,8 +36911,12 @@ func (p *AttachedStorageDomainDiskServiceGetRequest) Query(key, value string) *A
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceGetRequest) Send() *AttachedStorageDomainDiskServiceGetResponse {
+func (p *AttachedStorageDomainDiskServiceGetRequest) Send() (*AttachedStorageDomainDiskServiceGetResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -33587,8 +36980,11 @@ func (p *AttachedStorageDomainDiskServiceMoveRequest) StorageDomain(storageDomai
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceMoveRequest) Send() *AttachedStorageDomainDiskServiceMoveResponse {
+func (p *AttachedStorageDomainDiskServiceMoveRequest) Send() (*AttachedStorageDomainDiskServiceMoveResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceMoveResponse struct {
 }
 
 //
@@ -33645,8 +37041,11 @@ func (p *AttachedStorageDomainDiskServiceRegisterRequest) Query(key, value strin
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRegisterRequest) Send() *AttachedStorageDomainDiskServiceRegisterResponse {
+func (p *AttachedStorageDomainDiskServiceRegisterRequest) Send() (*AttachedStorageDomainDiskServiceRegisterResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceRegisterResponse struct {
 }
 
 //
@@ -33686,8 +37085,11 @@ func (p *AttachedStorageDomainDiskServiceRemoveRequest) Query(key, value string)
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceRemoveRequest) Send() *AttachedStorageDomainDiskServiceRemoveResponse {
+func (p *AttachedStorageDomainDiskServiceRemoveRequest) Send() (*AttachedStorageDomainDiskServiceRemoveResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceRemoveResponse struct {
 }
 
 //
@@ -33732,8 +37134,11 @@ func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Query(key, value strin
 	return p
 }
 
-func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Send() *AttachedStorageDomainDiskServiceSparsifyResponse {
+func (p *AttachedStorageDomainDiskServiceSparsifyRequest) Send() (*AttachedStorageDomainDiskServiceSparsifyResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceSparsifyResponse struct {
 }
 
 //
@@ -33781,8 +37186,12 @@ func (p *AttachedStorageDomainDiskServiceUpdateRequest) Disk(disk *Disk) *Attach
 	p.disk = disk
 	return p
 }
-func (p *AttachedStorageDomainDiskServiceUpdateRequest) Send() *AttachedStorageDomainDiskServiceUpdateResponse {
+func (p *AttachedStorageDomainDiskServiceUpdateRequest) Send() (*AttachedStorageDomainDiskServiceUpdateResponse, error) {
 
+}
+
+type AttachedStorageDomainDiskServiceUpdateResponse struct {
+	disk *Disk
 }
 
 //
@@ -33893,8 +37302,12 @@ func (p *VnicProfileServiceGetRequest) Query(key, value string) *VnicProfileServ
 	return p
 }
 
-func (p *VnicProfileServiceGetRequest) Send() *VnicProfileServiceGetResponse {
+func (p *VnicProfileServiceGetRequest) Send() (*VnicProfileServiceGetResponse, error) {
 
+}
+
+type VnicProfileServiceGetResponse struct {
+	profile *VnicProfile
 }
 
 //
@@ -33948,8 +37361,11 @@ func (p *VnicProfileServiceRemoveRequest) Async(async bool) *VnicProfileServiceR
 	p.async = &async
 	return p
 }
-func (p *VnicProfileServiceRemoveRequest) Send() *VnicProfileServiceRemoveResponse {
+func (p *VnicProfileServiceRemoveRequest) Send() (*VnicProfileServiceRemoveResponse, error) {
 
+}
+
+type VnicProfileServiceRemoveResponse struct {
 }
 
 //
@@ -34008,8 +37424,12 @@ func (p *VnicProfileServiceUpdateRequest) Profile(profile *VnicProfile) *VnicPro
 	p.profile = profile
 	return p
 }
-func (p *VnicProfileServiceUpdateRequest) Send() *VnicProfileServiceUpdateResponse {
+func (p *VnicProfileServiceUpdateRequest) Send() (*VnicProfileServiceUpdateResponse, error) {
 
+}
+
+type VnicProfileServiceUpdateResponse struct {
+	profile *VnicProfile
 }
 
 //
@@ -34110,10 +37530,49 @@ func (p *VmGraphicsConsolesServiceAddRequest) Console(console *GraphicsConsole) 
 	p.console = console
 	return p
 }
-func (p *VmGraphicsConsolesServiceAddRequest) Send() *VmGraphicsConsolesServiceAddResponse {
+func (p *VmGraphicsConsolesServiceAddRequest) Send() (*VmGraphicsConsolesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmGraphicsConsolesService.Connection.URL(), p.vmGraphicsConsolesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.console)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmGraphicsConsolesService.Connection.username, p.vmGraphicsConsolesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmGraphicsConsolesService.Connection.client.Do(req)
+}
+
+type VmGraphicsConsolesServiceAddResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -34173,8 +37632,12 @@ func (p *VmGraphicsConsolesServiceListRequest) Max(max int64) *VmGraphicsConsole
 	p.max = &max
 	return p
 }
-func (p *VmGraphicsConsolesServiceListRequest) Send() *VmGraphicsConsolesServiceListResponse {
+func (p *VmGraphicsConsolesServiceListRequest) Send() (*VmGraphicsConsolesServiceListResponse, error) {
 
+}
+
+type VmGraphicsConsolesServiceListResponse struct {
+	consoles []GraphicsConsole
 }
 
 //
@@ -34277,8 +37740,12 @@ func (p *PermitServiceGetRequest) Query(key, value string) *PermitServiceGetRequ
 	return p
 }
 
-func (p *PermitServiceGetRequest) Send() *PermitServiceGetResponse {
+func (p *PermitServiceGetRequest) Send() (*PermitServiceGetResponse, error) {
 
+}
+
+type PermitServiceGetResponse struct {
+	permit *Permit
 }
 
 //
@@ -34345,8 +37812,11 @@ func (p *PermitServiceRemoveRequest) Async(async bool) *PermitServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *PermitServiceRemoveRequest) Send() *PermitServiceRemoveResponse {
+func (p *PermitServiceRemoveRequest) Send() (*PermitServiceRemoveResponse, error) {
 
+}
+
+type PermitServiceRemoveResponse struct {
 }
 
 //
@@ -34432,8 +37902,12 @@ func (p *DataCenterServiceGetRequest) Filter(filter bool) *DataCenterServiceGetR
 	p.filter = &filter
 	return p
 }
-func (p *DataCenterServiceGetRequest) Send() *DataCenterServiceGetResponse {
+func (p *DataCenterServiceGetRequest) Send() (*DataCenterServiceGetResponse, error) {
 
+}
+
+type DataCenterServiceGetResponse struct {
+	dataCenter *DataCenter
 }
 
 //
@@ -34533,8 +38007,11 @@ func (p *DataCenterServiceRemoveRequest) Force(force bool) *DataCenterServiceRem
 	p.force = &force
 	return p
 }
-func (p *DataCenterServiceRemoveRequest) Send() *DataCenterServiceRemoveResponse {
+func (p *DataCenterServiceRemoveRequest) Send() (*DataCenterServiceRemoveResponse, error) {
 
+}
+
+type DataCenterServiceRemoveResponse struct {
 }
 
 //
@@ -34608,8 +38085,12 @@ func (p *DataCenterServiceUpdateRequest) DataCenter(dataCenter *DataCenter) *Dat
 	p.dataCenter = dataCenter
 	return p
 }
-func (p *DataCenterServiceUpdateRequest) Send() *DataCenterServiceUpdateResponse {
+func (p *DataCenterServiceUpdateRequest) Send() (*DataCenterServiceUpdateResponse, error) {
 
+}
+
+type DataCenterServiceUpdateResponse struct {
+	dataCenter *DataCenter
 }
 
 //
@@ -34819,8 +38300,12 @@ func (p *StatisticsServiceListRequest) Max(max int64) *StatisticsServiceListRequ
 	p.max = &max
 	return p
 }
-func (p *StatisticsServiceListRequest) Send() *StatisticsServiceListResponse {
+func (p *StatisticsServiceListRequest) Send() (*StatisticsServiceListResponse, error) {
 
+}
+
+type StatisticsServiceListResponse struct {
+	statistics []Statistic
 }
 
 //
@@ -34971,8 +38456,12 @@ func (p *SchedulingPolicyUnitsServiceListRequest) Max(max int64) *SchedulingPoli
 	p.max = &max
 	return p
 }
-func (p *SchedulingPolicyUnitsServiceListRequest) Send() *SchedulingPolicyUnitsServiceListResponse {
+func (p *SchedulingPolicyUnitsServiceListRequest) Send() (*SchedulingPolicyUnitsServiceListResponse, error) {
 
+}
+
+type SchedulingPolicyUnitsServiceListResponse struct {
+	units []SchedulingPolicyUnit
 }
 
 //
@@ -35077,8 +38566,11 @@ func (p *TemplateDiskServiceCopyRequest) Filter(filter bool) *TemplateDiskServic
 	p.filter = &filter
 	return p
 }
-func (p *TemplateDiskServiceCopyRequest) Send() *TemplateDiskServiceCopyResponse {
+func (p *TemplateDiskServiceCopyRequest) Send() (*TemplateDiskServiceCopyResponse, error) {
 
+}
+
+type TemplateDiskServiceCopyResponse struct {
 }
 
 //
@@ -35138,8 +38630,11 @@ func (p *TemplateDiskServiceExportRequest) Filter(filter bool) *TemplateDiskServ
 	p.filter = &filter
 	return p
 }
-func (p *TemplateDiskServiceExportRequest) Send() *TemplateDiskServiceExportResponse {
+func (p *TemplateDiskServiceExportRequest) Send() (*TemplateDiskServiceExportResponse, error) {
 
+}
+
+type TemplateDiskServiceExportResponse struct {
 }
 
 //
@@ -35189,8 +38684,12 @@ func (p *TemplateDiskServiceGetRequest) Query(key, value string) *TemplateDiskSe
 	return p
 }
 
-func (p *TemplateDiskServiceGetRequest) Send() *TemplateDiskServiceGetResponse {
+func (p *TemplateDiskServiceGetRequest) Send() (*TemplateDiskServiceGetResponse, error) {
 
+}
+
+type TemplateDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -35243,8 +38742,11 @@ func (p *TemplateDiskServiceRemoveRequest) Async(async bool) *TemplateDiskServic
 	p.async = &async
 	return p
 }
-func (p *TemplateDiskServiceRemoveRequest) Send() *TemplateDiskServiceRemoveResponse {
+func (p *TemplateDiskServiceRemoveRequest) Send() (*TemplateDiskServiceRemoveResponse, error) {
 
+}
+
+type TemplateDiskServiceRemoveResponse struct {
 }
 
 //
@@ -35327,10 +38829,49 @@ func (p *AffinityLabelVmsServiceAddRequest) Vm(vm *Vm) *AffinityLabelVmsServiceA
 	p.vm = vm
 	return p
 }
-func (p *AffinityLabelVmsServiceAddRequest) Send() *AffinityLabelVmsServiceAddResponse {
+func (p *AffinityLabelVmsServiceAddRequest) Send() (*AffinityLabelVmsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.affinityLabelVmsService.Connection.URL(), p.affinityLabelVmsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.vm)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelVmsService.Connection.username, p.affinityLabelVmsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.affinityLabelVmsService.Connection.client.Do(req)
+}
+
+type AffinityLabelVmsServiceAddResponse struct {
+	vm *Vm
 }
 
 //
@@ -35380,8 +38921,12 @@ func (p *AffinityLabelVmsServiceListRequest) Query(key, value string) *AffinityL
 	return p
 }
 
-func (p *AffinityLabelVmsServiceListRequest) Send() *AffinityLabelVmsServiceListResponse {
+func (p *AffinityLabelVmsServiceListRequest) Send() (*AffinityLabelVmsServiceListResponse, error) {
 
+}
+
+type AffinityLabelVmsServiceListResponse struct {
+	vms []Vm
 }
 
 //
@@ -35474,8 +39019,11 @@ func (p *CopyableServiceCopyRequest) Async(async bool) *CopyableServiceCopyReque
 	p.async = &async
 	return p
 }
-func (p *CopyableServiceCopyRequest) Send() *CopyableServiceCopyResponse {
+func (p *CopyableServiceCopyRequest) Send() (*CopyableServiceCopyResponse, error) {
 
+}
+
+type CopyableServiceCopyResponse struct {
 }
 
 //
@@ -35555,10 +39103,49 @@ func (p *AffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *AffinityL
 	p.label = label
 	return p
 }
-func (p *AffinityLabelsServiceAddRequest) Send() *AffinityLabelsServiceAddResponse {
+func (p *AffinityLabelsServiceAddRequest) Send() (*AffinityLabelsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.affinityLabelsService.Connection.URL(), p.affinityLabelsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.label)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelsService.Connection.username, p.affinityLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.affinityLabelsService.Connection.client.Do(req)
+}
+
+type AffinityLabelsServiceAddResponse struct {
+	label *AffinityLabel
 }
 
 //
@@ -35614,8 +39201,12 @@ func (p *AffinityLabelsServiceListRequest) Max(max int64) *AffinityLabelsService
 	p.max = &max
 	return p
 }
-func (p *AffinityLabelsServiceListRequest) Send() *AffinityLabelsServiceListResponse {
+func (p *AffinityLabelsServiceListRequest) Send() (*AffinityLabelsServiceListResponse, error) {
 
+}
+
+type AffinityLabelsServiceListResponse struct {
+	labels []AffinityLabel
 }
 
 //
@@ -35714,8 +39305,12 @@ func (p *VmGraphicsConsoleServiceGetRequest) Current(current bool) *VmGraphicsCo
 	p.current = &current
 	return p
 }
-func (p *VmGraphicsConsoleServiceGetRequest) Send() *VmGraphicsConsoleServiceGetResponse {
+func (p *VmGraphicsConsoleServiceGetRequest) Send() (*VmGraphicsConsoleServiceGetResponse, error) {
 
+}
+
+type VmGraphicsConsoleServiceGetResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -35781,8 +39376,12 @@ func (p *VmGraphicsConsoleServiceProxyTicketRequest) Async(async bool) *VmGraphi
 	p.async = &async
 	return p
 }
-func (p *VmGraphicsConsoleServiceProxyTicketRequest) Send() *VmGraphicsConsoleServiceProxyTicketResponse {
+func (p *VmGraphicsConsoleServiceProxyTicketRequest) Send() (*VmGraphicsConsoleServiceProxyTicketResponse, error) {
 
+}
+
+type VmGraphicsConsoleServiceProxyTicketResponse struct {
+	proxyTicket *ProxyTicket
 }
 
 //
@@ -35836,8 +39435,12 @@ func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Query(key, v
 	return p
 }
 
-func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Send() *VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse {
+func (p *VmGraphicsConsoleServiceRemoteViewerConnectionFileRequest) Send() (*VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse, error) {
 
+}
+
+type VmGraphicsConsoleServiceRemoteViewerConnectionFileResponse struct {
+	remoteViewerConnectionFile string
 }
 
 //
@@ -35951,8 +39554,11 @@ func (p *VmGraphicsConsoleServiceRemoveRequest) Async(async bool) *VmGraphicsCon
 	p.async = &async
 	return p
 }
-func (p *VmGraphicsConsoleServiceRemoveRequest) Send() *VmGraphicsConsoleServiceRemoveResponse {
+func (p *VmGraphicsConsoleServiceRemoveRequest) Send() (*VmGraphicsConsoleServiceRemoveResponse, error) {
 
+}
+
+type VmGraphicsConsoleServiceRemoveResponse struct {
 }
 
 //
@@ -36006,8 +39612,12 @@ func (p *VmGraphicsConsoleServiceTicketRequest) Ticket(ticket *Ticket) *VmGraphi
 	p.ticket = ticket
 	return p
 }
-func (p *VmGraphicsConsoleServiceTicketRequest) Send() *VmGraphicsConsoleServiceTicketResponse {
+func (p *VmGraphicsConsoleServiceTicketRequest) Send() (*VmGraphicsConsoleServiceTicketResponse, error) {
 
+}
+
+type VmGraphicsConsoleServiceTicketResponse struct {
+	ticket *Ticket
 }
 
 //
@@ -36107,8 +39717,12 @@ func (p *AffinityLabelHostServiceGetRequest) Query(key, value string) *AffinityL
 	return p
 }
 
-func (p *AffinityLabelHostServiceGetRequest) Send() *AffinityLabelHostServiceGetResponse {
+func (p *AffinityLabelHostServiceGetRequest) Send() (*AffinityLabelHostServiceGetResponse, error) {
 
+}
+
+type AffinityLabelHostServiceGetResponse struct {
+	host *Host
 }
 
 //
@@ -36157,8 +39771,11 @@ func (p *AffinityLabelHostServiceRemoveRequest) Query(key, value string) *Affini
 	return p
 }
 
-func (p *AffinityLabelHostServiceRemoveRequest) Send() *AffinityLabelHostServiceRemoveResponse {
+func (p *AffinityLabelHostServiceRemoveRequest) Send() (*AffinityLabelHostServiceRemoveResponse, error) {
 
+}
+
+type AffinityLabelHostServiceRemoveResponse struct {
 }
 
 //
@@ -36228,8 +39845,12 @@ func (p *AssignedTagServiceGetRequest) Query(key, value string) *AssignedTagServ
 	return p
 }
 
-func (p *AssignedTagServiceGetRequest) Send() *AssignedTagServiceGetResponse {
+func (p *AssignedTagServiceGetRequest) Send() (*AssignedTagServiceGetResponse, error) {
 
+}
+
+type AssignedTagServiceGetResponse struct {
+	tag *Tag
 }
 
 //
@@ -36296,8 +39917,11 @@ func (p *AssignedTagServiceRemoveRequest) Async(async bool) *AssignedTagServiceR
 	p.async = &async
 	return p
 }
-func (p *AssignedTagServiceRemoveRequest) Send() *AssignedTagServiceRemoveResponse {
+func (p *AssignedTagServiceRemoveRequest) Send() (*AssignedTagServiceRemoveResponse, error) {
 
+}
+
+type AssignedTagServiceRemoveResponse struct {
 }
 
 //
@@ -36398,8 +40022,11 @@ func (p *DiskServiceCopyRequest) StorageDomain(storageDomain *StorageDomain) *Di
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceCopyRequest) Send() *DiskServiceCopyResponse {
+func (p *DiskServiceCopyRequest) Send() (*DiskServiceCopyResponse, error) {
 
+}
+
+type DiskServiceCopyResponse struct {
 }
 
 //
@@ -36514,8 +40141,11 @@ func (p *DiskServiceExportRequest) StorageDomain(storageDomain *StorageDomain) *
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceExportRequest) Send() *DiskServiceExportResponse {
+func (p *DiskServiceExportRequest) Send() (*DiskServiceExportResponse, error) {
 
+}
+
+type DiskServiceExportResponse struct {
 }
 
 //
@@ -36569,8 +40199,12 @@ func (p *DiskServiceGetRequest) Query(key, value string) *DiskServiceGetRequest 
 	return p
 }
 
-func (p *DiskServiceGetRequest) Send() *DiskServiceGetResponse {
+func (p *DiskServiceGetRequest) Send() (*DiskServiceGetResponse, error) {
 
+}
+
+type DiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -36634,8 +40268,11 @@ func (p *DiskServiceMoveRequest) StorageDomain(storageDomain *StorageDomain) *Di
 	p.storageDomain = storageDomain
 	return p
 }
-func (p *DiskServiceMoveRequest) Send() *DiskServiceMoveResponse {
+func (p *DiskServiceMoveRequest) Send() (*DiskServiceMoveResponse, error) {
 
+}
+
+type DiskServiceMoveResponse struct {
 }
 
 //
@@ -36707,8 +40344,11 @@ func (p *DiskServiceRemoveRequest) Async(async bool) *DiskServiceRemoveRequest {
 	p.async = &async
 	return p
 }
-func (p *DiskServiceRemoveRequest) Send() *DiskServiceRemoveResponse {
+func (p *DiskServiceRemoveRequest) Send() (*DiskServiceRemoveResponse, error) {
 
+}
+
+type DiskServiceRemoveResponse struct {
 }
 
 //
@@ -36757,8 +40397,11 @@ func (p *DiskServiceSparsifyRequest) Query(key, value string) *DiskServiceSparsi
 	return p
 }
 
-func (p *DiskServiceSparsifyRequest) Send() *DiskServiceSparsifyResponse {
+func (p *DiskServiceSparsifyRequest) Send() (*DiskServiceSparsifyResponse, error) {
 
+}
+
+type DiskServiceSparsifyResponse struct {
 }
 
 //
@@ -36807,8 +40450,12 @@ func (p *DiskServiceUpdateRequest) Disk(disk *Disk) *DiskServiceUpdateRequest {
 	p.disk = disk
 	return p
 }
-func (p *DiskServiceUpdateRequest) Send() *DiskServiceUpdateResponse {
+func (p *DiskServiceUpdateRequest) Send() (*DiskServiceUpdateResponse, error) {
 
+}
+
+type DiskServiceUpdateResponse struct {
+	disk *Disk
 }
 
 //
@@ -36932,8 +40579,12 @@ func (p *TemplateDiskAttachmentsServiceListRequest) Query(key, value string) *Te
 	return p
 }
 
-func (p *TemplateDiskAttachmentsServiceListRequest) Send() *TemplateDiskAttachmentsServiceListResponse {
+func (p *TemplateDiskAttachmentsServiceListRequest) Send() (*TemplateDiskAttachmentsServiceListResponse, error) {
 
+}
+
+type TemplateDiskAttachmentsServiceListResponse struct {
+	attachments []DiskAttachment
 }
 
 //
@@ -37035,8 +40686,12 @@ func (p *StorageDomainContentDisksServiceListRequest) Search(search string) *Sto
 	p.search = &search
 	return p
 }
-func (p *StorageDomainContentDisksServiceListRequest) Send() *StorageDomainContentDisksServiceListResponse {
+func (p *StorageDomainContentDisksServiceListRequest) Send() (*StorageDomainContentDisksServiceListResponse, error) {
 
+}
+
+type StorageDomainContentDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -37142,8 +40797,12 @@ func (p *HostDevicesServiceListRequest) Max(max int64) *HostDevicesServiceListRe
 	p.max = &max
 	return p
 }
-func (p *HostDevicesServiceListRequest) Send() *HostDevicesServiceListResponse {
+func (p *HostDevicesServiceListRequest) Send() (*HostDevicesServiceListResponse, error) {
 
+}
+
+type HostDevicesServiceListResponse struct {
+	devices []HostDevice
 }
 
 //
@@ -37242,10 +40901,49 @@ func (p *AssignedNetworksServiceAddRequest) Network(network *Network) *AssignedN
 	p.network = network
 	return p
 }
-func (p *AssignedNetworksServiceAddRequest) Send() *AssignedNetworksServiceAddResponse {
+func (p *AssignedNetworksServiceAddRequest) Send() (*AssignedNetworksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedNetworksService.Connection.URL(), p.assignedNetworksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.network)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedNetworksService.Connection.username, p.assignedNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedNetworksService.Connection.client.Do(req)
+}
+
+type AssignedNetworksServiceAddResponse struct {
+	network *Network
 }
 
 //
@@ -37299,8 +40997,12 @@ func (p *AssignedNetworksServiceListRequest) Max(max int64) *AssignedNetworksSer
 	p.max = &max
 	return p
 }
-func (p *AssignedNetworksServiceListRequest) Send() *AssignedNetworksServiceListResponse {
+func (p *AssignedNetworksServiceListRequest) Send() (*AssignedNetworksServiceListResponse, error) {
 
+}
+
+type AssignedNetworksServiceListResponse struct {
+	networks []Network
 }
 
 //
@@ -37397,8 +41099,12 @@ func (p *StorageServiceGetRequest) ReportStatus(reportStatus bool) *StorageServi
 	p.reportStatus = &reportStatus
 	return p
 }
-func (p *StorageServiceGetRequest) Send() *StorageServiceGetResponse {
+func (p *StorageServiceGetRequest) Send() (*StorageServiceGetResponse, error) {
 
+}
+
+type StorageServiceGetResponse struct {
+	storage *HostStorage
 }
 
 //
@@ -37523,8 +41229,12 @@ func (p *UnmanagedNetworkServiceGetRequest) Query(key, value string) *UnmanagedN
 	return p
 }
 
-func (p *UnmanagedNetworkServiceGetRequest) Send() *UnmanagedNetworkServiceGetResponse {
+func (p *UnmanagedNetworkServiceGetRequest) Send() (*UnmanagedNetworkServiceGetResponse, error) {
 
+}
+
+type UnmanagedNetworkServiceGetResponse struct {
+	network *UnmanagedNetwork
 }
 
 //
@@ -37577,8 +41287,11 @@ func (p *UnmanagedNetworkServiceRemoveRequest) Async(async bool) *UnmanagedNetwo
 	p.async = &async
 	return p
 }
-func (p *UnmanagedNetworkServiceRemoveRequest) Send() *UnmanagedNetworkServiceRemoveResponse {
+func (p *UnmanagedNetworkServiceRemoveRequest) Send() (*UnmanagedNetworkServiceRemoveResponse, error) {
 
+}
+
+type UnmanagedNetworkServiceRemoveResponse struct {
 }
 
 //
@@ -37653,8 +41366,12 @@ func (p *QuotaServiceGetRequest) Query(key, value string) *QuotaServiceGetReques
 	return p
 }
 
-func (p *QuotaServiceGetRequest) Send() *QuotaServiceGetResponse {
+func (p *QuotaServiceGetRequest) Send() (*QuotaServiceGetResponse, error) {
 
+}
+
+type QuotaServiceGetResponse struct {
+	quota *Quota
 }
 
 //
@@ -37724,8 +41441,11 @@ func (p *QuotaServiceRemoveRequest) Async(async bool) *QuotaServiceRemoveRequest
 	p.async = &async
 	return p
 }
-func (p *QuotaServiceRemoveRequest) Send() *QuotaServiceRemoveResponse {
+func (p *QuotaServiceRemoveRequest) Send() (*QuotaServiceRemoveResponse, error) {
 
+}
+
+type QuotaServiceRemoveResponse struct {
 }
 
 //
@@ -37792,8 +41512,12 @@ func (p *QuotaServiceUpdateRequest) Quota(quota *Quota) *QuotaServiceUpdateReque
 	p.quota = quota
 	return p
 }
-func (p *QuotaServiceUpdateRequest) Send() *QuotaServiceUpdateResponse {
+func (p *QuotaServiceUpdateRequest) Send() (*QuotaServiceUpdateResponse, error) {
 
+}
+
+type QuotaServiceUpdateResponse struct {
+	quota *Quota
 }
 
 //
@@ -37922,8 +41646,12 @@ func (p *SnapshotDiskServiceGetRequest) Query(key, value string) *SnapshotDiskSe
 	return p
 }
 
-func (p *SnapshotDiskServiceGetRequest) Send() *SnapshotDiskServiceGetResponse {
+func (p *SnapshotDiskServiceGetRequest) Send() (*SnapshotDiskServiceGetResponse, error) {
 
+}
+
+type SnapshotDiskServiceGetResponse struct {
+	disk *Disk
 }
 
 //
@@ -38003,10 +41731,49 @@ func (p *QossServiceAddRequest) Qos(qos *Qos) *QossServiceAddRequest {
 	p.qos = qos
 	return p
 }
-func (p *QossServiceAddRequest) Send() *QossServiceAddResponse {
+func (p *QossServiceAddRequest) Send() (*QossServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.qossService.Connection.URL(), p.qossService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.qos)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.qossService.Connection.username, p.qossService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.qossService.Connection.client.Do(req)
+}
+
+type QossServiceAddResponse struct {
+	qos *Qos
 }
 
 //
@@ -38060,8 +41827,12 @@ func (p *QossServiceListRequest) Max(max int64) *QossServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *QossServiceListRequest) Send() *QossServiceListResponse {
+func (p *QossServiceListRequest) Send() (*QossServiceListResponse, error) {
 
+}
+
+type QossServiceListResponse struct {
+	qoss []Qos
 }
 
 //
@@ -38154,8 +41925,12 @@ func (p *NetworkServiceGetRequest) Query(key, value string) *NetworkServiceGetRe
 	return p
 }
 
-func (p *NetworkServiceGetRequest) Send() *NetworkServiceGetResponse {
+func (p *NetworkServiceGetRequest) Send() (*NetworkServiceGetResponse, error) {
 
+}
+
+type NetworkServiceGetResponse struct {
+	network *Network
 }
 
 //
@@ -38231,8 +42006,11 @@ func (p *NetworkServiceRemoveRequest) Async(async bool) *NetworkServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *NetworkServiceRemoveRequest) Send() *NetworkServiceRemoveResponse {
+func (p *NetworkServiceRemoveRequest) Send() (*NetworkServiceRemoveResponse, error) {
 
+}
+
+type NetworkServiceRemoveResponse struct {
 }
 
 //
@@ -38304,8 +42082,12 @@ func (p *NetworkServiceUpdateRequest) Network(network *Network) *NetworkServiceU
 	p.network = network
 	return p
 }
-func (p *NetworkServiceUpdateRequest) Send() *NetworkServiceUpdateResponse {
+func (p *NetworkServiceUpdateRequest) Send() (*NetworkServiceUpdateResponse, error) {
 
+}
+
+type NetworkServiceUpdateResponse struct {
+	network *Network
 }
 
 //
@@ -38450,8 +42232,12 @@ func (p *InstanceTypeServiceGetRequest) Query(key, value string) *InstanceTypeSe
 	return p
 }
 
-func (p *InstanceTypeServiceGetRequest) Send() *InstanceTypeServiceGetResponse {
+func (p *InstanceTypeServiceGetRequest) Send() (*InstanceTypeServiceGetResponse, error) {
 
+}
+
+type InstanceTypeServiceGetResponse struct {
+	instanceType *InstanceType
 }
 
 //
@@ -38509,8 +42295,11 @@ func (p *InstanceTypeServiceRemoveRequest) Async(async bool) *InstanceTypeServic
 	p.async = &async
 	return p
 }
-func (p *InstanceTypeServiceRemoveRequest) Send() *InstanceTypeServiceRemoveResponse {
+func (p *InstanceTypeServiceRemoveRequest) Send() (*InstanceTypeServiceRemoveResponse, error) {
 
+}
+
+type InstanceTypeServiceRemoveResponse struct {
 }
 
 //
@@ -38575,8 +42364,12 @@ func (p *InstanceTypeServiceUpdateRequest) InstanceType(instanceType *InstanceTy
 	p.instanceType = instanceType
 	return p
 }
-func (p *InstanceTypeServiceUpdateRequest) Send() *InstanceTypeServiceUpdateResponse {
+func (p *InstanceTypeServiceUpdateRequest) Send() (*InstanceTypeServiceUpdateResponse, error) {
 
+}
+
+type InstanceTypeServiceUpdateResponse struct {
+	instanceType *InstanceType
 }
 
 //
@@ -38723,10 +42516,49 @@ func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Network(network *Netwo
 	p.network = network
 	return p
 }
-func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Send() *VirtualFunctionAllowedNetworksServiceAddResponse {
+func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Send() (*VirtualFunctionAllowedNetworksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.virtualFunctionAllowedNetworksService.Connection.URL(), p.virtualFunctionAllowedNetworksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.network)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.virtualFunctionAllowedNetworksService.Connection.username, p.virtualFunctionAllowedNetworksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.virtualFunctionAllowedNetworksService.Connection.client.Do(req)
+}
+
+type VirtualFunctionAllowedNetworksServiceAddResponse struct {
+	network *Network
 }
 
 //
@@ -38780,8 +42612,12 @@ func (p *VirtualFunctionAllowedNetworksServiceListRequest) Max(max int64) *Virtu
 	p.max = &max
 	return p
 }
-func (p *VirtualFunctionAllowedNetworksServiceListRequest) Send() *VirtualFunctionAllowedNetworksServiceListResponse {
+func (p *VirtualFunctionAllowedNetworksServiceListRequest) Send() (*VirtualFunctionAllowedNetworksServiceListResponse, error) {
 
+}
+
+type VirtualFunctionAllowedNetworksServiceListResponse struct {
+	networks []Network
 }
 
 //
@@ -38873,8 +42709,12 @@ func (p *HostHookServiceGetRequest) Query(key, value string) *HostHookServiceGet
 	return p
 }
 
-func (p *HostHookServiceGetRequest) Send() *HostHookServiceGetResponse {
+func (p *HostHookServiceGetRequest) Send() (*HostHookServiceGetResponse, error) {
 
+}
+
+type HostHookServiceGetResponse struct {
+	hook *Hook
 }
 
 //
@@ -38954,8 +42794,12 @@ func (p *ImagesServiceListRequest) Max(max int64) *ImagesServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *ImagesServiceListRequest) Send() *ImagesServiceListResponse {
+func (p *ImagesServiceListRequest) Send() (*ImagesServiceListResponse, error) {
 
+}
+
+type ImagesServiceListResponse struct {
+	images []Image
 }
 
 //
@@ -39052,8 +42896,12 @@ func (p *SnapshotCdromsServiceListRequest) Max(max int64) *SnapshotCdromsService
 	p.max = &max
 	return p
 }
-func (p *SnapshotCdromsServiceListRequest) Send() *SnapshotCdromsServiceListResponse {
+func (p *SnapshotCdromsServiceListRequest) Send() (*SnapshotCdromsServiceListResponse, error) {
 
+}
+
+type SnapshotCdromsServiceListResponse struct {
+	cdroms []Cdrom
 }
 
 //
@@ -39150,10 +42998,49 @@ func (p *BalancesServiceAddRequest) Balance(balance *Balance) *BalancesServiceAd
 	p.balance = balance
 	return p
 }
-func (p *BalancesServiceAddRequest) Send() *BalancesServiceAddResponse {
+func (p *BalancesServiceAddRequest) Send() (*BalancesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.balancesService.Connection.URL(), p.balancesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.balance)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.balancesService.Connection.username, p.balancesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.balancesService.Connection.client.Do(req)
+}
+
+type BalancesServiceAddResponse struct {
+	balance *Balance
 }
 
 //
@@ -39212,8 +43099,12 @@ func (p *BalancesServiceListRequest) Max(max int64) *BalancesServiceListRequest 
 	p.max = &max
 	return p
 }
-func (p *BalancesServiceListRequest) Send() *BalancesServiceListResponse {
+func (p *BalancesServiceListRequest) Send() (*BalancesServiceListResponse, error) {
 
+}
+
+type BalancesServiceListResponse struct {
+	balances []Balance
 }
 
 //
@@ -39309,8 +43200,12 @@ func (p *TemplateCdromServiceGetRequest) Query(key, value string) *TemplateCdrom
 	return p
 }
 
-func (p *TemplateCdromServiceGetRequest) Send() *TemplateCdromServiceGetResponse {
+func (p *TemplateCdromServiceGetRequest) Send() (*TemplateCdromServiceGetResponse, error) {
 
+}
+
+type TemplateCdromServiceGetResponse struct {
+	cdrom *Cdrom
 }
 
 //
@@ -39396,8 +43291,11 @@ func (p *MoveableServiceMoveRequest) Async(async bool) *MoveableServiceMoveReque
 	p.async = &async
 	return p
 }
-func (p *MoveableServiceMoveRequest) Send() *MoveableServiceMoveResponse {
+func (p *MoveableServiceMoveRequest) Send() (*MoveableServiceMoveResponse, error) {
 
+}
+
+type MoveableServiceMoveResponse struct {
 }
 
 //
@@ -39471,8 +43369,12 @@ func (p *CpuProfileServiceGetRequest) Query(key, value string) *CpuProfileServic
 	return p
 }
 
-func (p *CpuProfileServiceGetRequest) Send() *CpuProfileServiceGetResponse {
+func (p *CpuProfileServiceGetRequest) Send() (*CpuProfileServiceGetResponse, error) {
 
+}
+
+type CpuProfileServiceGetResponse struct {
+	profile *CpuProfile
 }
 
 //
@@ -39525,8 +43427,11 @@ func (p *CpuProfileServiceRemoveRequest) Async(async bool) *CpuProfileServiceRem
 	p.async = &async
 	return p
 }
-func (p *CpuProfileServiceRemoveRequest) Send() *CpuProfileServiceRemoveResponse {
+func (p *CpuProfileServiceRemoveRequest) Send() (*CpuProfileServiceRemoveResponse, error) {
 
+}
+
+type CpuProfileServiceRemoveResponse struct {
 }
 
 //
@@ -39584,8 +43489,12 @@ func (p *CpuProfileServiceUpdateRequest) Profile(profile *CpuProfile) *CpuProfil
 	p.profile = profile
 	return p
 }
-func (p *CpuProfileServiceUpdateRequest) Send() *CpuProfileServiceUpdateResponse {
+func (p *CpuProfileServiceUpdateRequest) Send() (*CpuProfileServiceUpdateResponse, error) {
 
+}
+
+type CpuProfileServiceUpdateResponse struct {
+	profile *CpuProfile
 }
 
 //
@@ -39714,8 +43623,12 @@ func (p *StorageServerConnectionExtensionServiceGetRequest) Query(key, value str
 	return p
 }
 
-func (p *StorageServerConnectionExtensionServiceGetRequest) Send() *StorageServerConnectionExtensionServiceGetResponse {
+func (p *StorageServerConnectionExtensionServiceGetRequest) Send() (*StorageServerConnectionExtensionServiceGetResponse, error) {
 
+}
+
+type StorageServerConnectionExtensionServiceGetResponse struct {
+	extension *StorageConnectionExtension
 }
 
 //
@@ -39768,8 +43681,11 @@ func (p *StorageServerConnectionExtensionServiceRemoveRequest) Async(async bool)
 	p.async = &async
 	return p
 }
-func (p *StorageServerConnectionExtensionServiceRemoveRequest) Send() *StorageServerConnectionExtensionServiceRemoveResponse {
+func (p *StorageServerConnectionExtensionServiceRemoveRequest) Send() (*StorageServerConnectionExtensionServiceRemoveResponse, error) {
 
+}
+
+type StorageServerConnectionExtensionServiceRemoveResponse struct {
 }
 
 //
@@ -39827,8 +43743,12 @@ func (p *StorageServerConnectionExtensionServiceUpdateRequest) Extension(extensi
 	p.extension = extension
 	return p
 }
-func (p *StorageServerConnectionExtensionServiceUpdateRequest) Send() *StorageServerConnectionExtensionServiceUpdateResponse {
+func (p *StorageServerConnectionExtensionServiceUpdateRequest) Send() (*StorageServerConnectionExtensionServiceUpdateResponse, error) {
 
+}
+
+type StorageServerConnectionExtensionServiceUpdateResponse struct {
+	extension *StorageConnectionExtension
 }
 
 //
@@ -39924,8 +43844,12 @@ func (p *ClusterLevelsServiceListRequest) Query(key, value string) *ClusterLevel
 	return p
 }
 
-func (p *ClusterLevelsServiceListRequest) Send() *ClusterLevelsServiceListResponse {
+func (p *ClusterLevelsServiceListRequest) Send() (*ClusterLevelsServiceListResponse, error) {
 
+}
+
+type ClusterLevelsServiceListResponse struct {
+	levels []ClusterLevel
 }
 
 //
@@ -40032,10 +43956,49 @@ func (p *NetworkFilterParametersServiceAddRequest) Parameter(parameter *NetworkF
 	p.parameter = parameter
 	return p
 }
-func (p *NetworkFilterParametersServiceAddRequest) Send() *NetworkFilterParametersServiceAddResponse {
+func (p *NetworkFilterParametersServiceAddRequest) Send() (*NetworkFilterParametersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.networkFilterParametersService.Connection.URL(), p.networkFilterParametersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.parameter)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.networkFilterParametersService.Connection.username, p.networkFilterParametersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.networkFilterParametersService.Connection.client.Do(req)
+}
+
+type NetworkFilterParametersServiceAddResponse struct {
+	parameter *NetworkFilterParameter
 }
 
 //
@@ -40104,8 +44067,12 @@ func (p *NetworkFilterParametersServiceListRequest) Query(key, value string) *Ne
 	return p
 }
 
-func (p *NetworkFilterParametersServiceListRequest) Send() *NetworkFilterParametersServiceListResponse {
+func (p *NetworkFilterParametersServiceListRequest) Send() (*NetworkFilterParametersServiceListResponse, error) {
 
+}
+
+type NetworkFilterParametersServiceListResponse struct {
+	parameters []NetworkFilterParameter
 }
 
 //
@@ -40197,10 +44164,49 @@ func (p *VmNicsServiceAddRequest) Nic(nic *Nic) *VmNicsServiceAddRequest {
 	p.nic = nic
 	return p
 }
-func (p *VmNicsServiceAddRequest) Send() *VmNicsServiceAddResponse {
+func (p *VmNicsServiceAddRequest) Send() (*VmNicsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.vmNicsService.Connection.URL(), p.vmNicsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.nic)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.vmNicsService.Connection.username, p.vmNicsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.vmNicsService.Connection.client.Do(req)
+}
+
+type VmNicsServiceAddResponse struct {
+	nic *Nic
 }
 
 //
@@ -40300,8 +44306,12 @@ func (p *VmNicsServiceListRequest) Max(max int64) *VmNicsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *VmNicsServiceListRequest) Send() *VmNicsServiceListResponse {
+func (p *VmNicsServiceListRequest) Send() (*VmNicsServiceListResponse, error) {
 
+}
+
+type VmNicsServiceListResponse struct {
+	nics []Nic
 }
 
 //
@@ -40398,8 +44408,12 @@ func (p *VmReportedDevicesServiceListRequest) Max(max int64) *VmReportedDevicesS
 	p.max = &max
 	return p
 }
-func (p *VmReportedDevicesServiceListRequest) Send() *VmReportedDevicesServiceListResponse {
+func (p *VmReportedDevicesServiceListRequest) Send() (*VmReportedDevicesServiceListResponse, error) {
 
+}
+
+type VmReportedDevicesServiceListResponse struct {
+	reportedDevice []ReportedDevice
 }
 
 //
@@ -40496,8 +44510,12 @@ func (p *BalanceServiceGetRequest) Filter(filter bool) *BalanceServiceGetRequest
 	p.filter = &filter
 	return p
 }
-func (p *BalanceServiceGetRequest) Send() *BalanceServiceGetResponse {
+func (p *BalanceServiceGetRequest) Send() (*BalanceServiceGetResponse, error) {
 
+}
+
+type BalanceServiceGetResponse struct {
+	balance *Balance
 }
 
 //
@@ -40557,8 +44575,11 @@ func (p *BalanceServiceRemoveRequest) Async(async bool) *BalanceServiceRemoveReq
 	p.async = &async
 	return p
 }
-func (p *BalanceServiceRemoveRequest) Send() *BalanceServiceRemoveResponse {
+func (p *BalanceServiceRemoveRequest) Send() (*BalanceServiceRemoveResponse, error) {
 
+}
+
+type BalanceServiceRemoveResponse struct {
 }
 
 //
@@ -40639,10 +44660,49 @@ func (p *PermitsServiceAddRequest) Permit(permit *Permit) *PermitsServiceAddRequ
 	p.permit = permit
 	return p
 }
-func (p *PermitsServiceAddRequest) Send() *PermitsServiceAddResponse {
+func (p *PermitsServiceAddRequest) Send() (*PermitsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.permitsService.Connection.URL(), p.permitsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.permit)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.permitsService.Connection.username, p.permitsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.permitsService.Connection.client.Do(req)
+}
+
+type PermitsServiceAddResponse struct {
+	permit *Permit
 }
 
 //
@@ -40713,8 +44773,12 @@ func (p *PermitsServiceListRequest) Max(max int64) *PermitsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *PermitsServiceListRequest) Send() *PermitsServiceListResponse {
+func (p *PermitsServiceListRequest) Send() (*PermitsServiceListResponse, error) {
 
+}
+
+type PermitsServiceListResponse struct {
+	permits []Permit
 }
 
 //
@@ -40832,8 +44896,12 @@ func (p *StorageDomainTemplatesServiceListRequest) Max(max int64) *StorageDomain
 	p.max = &max
 	return p
 }
-func (p *StorageDomainTemplatesServiceListRequest) Send() *StorageDomainTemplatesServiceListResponse {
+func (p *StorageDomainTemplatesServiceListRequest) Send() (*StorageDomainTemplatesServiceListResponse, error) {
 
+}
+
+type StorageDomainTemplatesServiceListResponse struct {
+	templates []Template
 }
 
 //
@@ -40925,8 +44993,12 @@ func (p *SystemServiceGetRequest) Query(key, value string) *SystemServiceGetRequ
 	return p
 }
 
-func (p *SystemServiceGetRequest) Send() *SystemServiceGetResponse {
+func (p *SystemServiceGetRequest) Send() (*SystemServiceGetResponse, error) {
 
+}
+
+type SystemServiceGetResponse struct {
+	api *Api
 }
 
 //
@@ -41053,8 +45125,11 @@ func (p *SystemServiceReloadConfigurationsRequest) Async(async bool) *SystemServ
 	p.async = &async
 	return p
 }
-func (p *SystemServiceReloadConfigurationsRequest) Send() *SystemServiceReloadConfigurationsResponse {
+func (p *SystemServiceReloadConfigurationsRequest) Send() (*SystemServiceReloadConfigurationsResponse, error) {
 
+}
+
+type SystemServiceReloadConfigurationsResponse struct {
 }
 
 //
@@ -41592,8 +45667,12 @@ func (p *ExternalHostServiceGetRequest) Query(key, value string) *ExternalHostSe
 	return p
 }
 
-func (p *ExternalHostServiceGetRequest) Send() *ExternalHostServiceGetResponse {
+func (p *ExternalHostServiceGetRequest) Send() (*ExternalHostServiceGetResponse, error) {
 
+}
+
+type ExternalHostServiceGetResponse struct {
+	host *ExternalHost
 }
 
 //
@@ -41668,8 +45747,12 @@ func (p *ExternalHostGroupServiceGetRequest) Query(key, value string) *ExternalH
 	return p
 }
 
-func (p *ExternalHostGroupServiceGetRequest) Send() *ExternalHostGroupServiceGetResponse {
+func (p *ExternalHostGroupServiceGetRequest) Send() (*ExternalHostGroupServiceGetResponse, error) {
 
+}
+
+type ExternalHostGroupServiceGetResponse struct {
+	group *ExternalHostGroup
 }
 
 //
@@ -41745,8 +45828,12 @@ func (p *KatelloErratumServiceGetRequest) Query(key, value string) *KatelloErrat
 	return p
 }
 
-func (p *KatelloErratumServiceGetRequest) Send() *KatelloErratumServiceGetResponse {
+func (p *KatelloErratumServiceGetRequest) Send() (*KatelloErratumServiceGetResponse, error) {
 
+}
+
+type KatelloErratumServiceGetResponse struct {
+	erratum *KatelloErratum
 }
 
 //
@@ -41845,8 +45932,12 @@ func (p *ExternalDiscoveredHostServiceGetRequest) Query(key, value string) *Exte
 	return p
 }
 
-func (p *ExternalDiscoveredHostServiceGetRequest) Send() *ExternalDiscoveredHostServiceGetResponse {
+func (p *ExternalDiscoveredHostServiceGetRequest) Send() (*ExternalDiscoveredHostServiceGetResponse, error) {
 
+}
+
+type ExternalDiscoveredHostServiceGetResponse struct {
+	host *ExternalDiscoveredHost
 }
 
 //
@@ -41928,8 +46019,12 @@ func (p *EngineKatelloErrataServiceListRequest) Max(max int64) *EngineKatelloErr
 	p.max = &max
 	return p
 }
-func (p *EngineKatelloErrataServiceListRequest) Send() *EngineKatelloErrataServiceListResponse {
+func (p *EngineKatelloErrataServiceListRequest) Send() (*EngineKatelloErrataServiceListResponse, error) {
 
+}
+
+type EngineKatelloErrataServiceListResponse struct {
+	errata []KatelloErratum
 }
 
 //
@@ -42050,8 +46145,12 @@ func (p *ExternalComputeResourceServiceGetRequest) Query(key, value string) *Ext
 	return p
 }
 
-func (p *ExternalComputeResourceServiceGetRequest) Send() *ExternalComputeResourceServiceGetResponse {
+func (p *ExternalComputeResourceServiceGetRequest) Send() (*ExternalComputeResourceServiceGetResponse, error) {
 
+}
+
+type ExternalComputeResourceServiceGetResponse struct {
+	resource *ExternalComputeResource
 }
 
 //
@@ -42131,8 +46230,12 @@ func (p *ExternalHostGroupsServiceListRequest) Max(max int64) *ExternalHostGroup
 	p.max = &max
 	return p
 }
-func (p *ExternalHostGroupsServiceListRequest) Send() *ExternalHostGroupsServiceListResponse {
+func (p *ExternalHostGroupsServiceListRequest) Send() (*ExternalHostGroupsServiceListResponse, error) {
 
+}
+
+type ExternalHostGroupsServiceListResponse struct {
+	groups []ExternalHostGroup
 }
 
 //
@@ -42224,8 +46327,12 @@ func (p *ExternalHostProviderServiceGetRequest) Query(key, value string) *Extern
 	return p
 }
 
-func (p *ExternalHostProviderServiceGetRequest) Send() *ExternalHostProviderServiceGetResponse {
+func (p *ExternalHostProviderServiceGetRequest) Send() (*ExternalHostProviderServiceGetResponse, error) {
 
+}
+
+type ExternalHostProviderServiceGetResponse struct {
+	provider *ExternalHostProvider
 }
 
 //
@@ -42278,8 +46385,11 @@ func (p *ExternalHostProviderServiceImportCertificatesRequest) Certificates(cert
 	p.certificates = certificates
 	return p
 }
-func (p *ExternalHostProviderServiceImportCertificatesRequest) Send() *ExternalHostProviderServiceImportCertificatesResponse {
+func (p *ExternalHostProviderServiceImportCertificatesRequest) Send() (*ExternalHostProviderServiceImportCertificatesResponse, error) {
 
+}
+
+type ExternalHostProviderServiceImportCertificatesResponse struct {
 }
 
 //
@@ -42326,8 +46436,11 @@ func (p *ExternalHostProviderServiceRemoveRequest) Async(async bool) *ExternalHo
 	p.async = &async
 	return p
 }
-func (p *ExternalHostProviderServiceRemoveRequest) Send() *ExternalHostProviderServiceRemoveResponse {
+func (p *ExternalHostProviderServiceRemoveRequest) Send() (*ExternalHostProviderServiceRemoveResponse, error) {
 
+}
+
+type ExternalHostProviderServiceRemoveResponse struct {
 }
 
 //
@@ -42380,8 +46493,11 @@ func (p *ExternalHostProviderServiceTestConnectivityRequest) Async(async bool) *
 	p.async = &async
 	return p
 }
-func (p *ExternalHostProviderServiceTestConnectivityRequest) Send() *ExternalHostProviderServiceTestConnectivityResponse {
+func (p *ExternalHostProviderServiceTestConnectivityRequest) Send() (*ExternalHostProviderServiceTestConnectivityResponse, error) {
 
+}
+
+type ExternalHostProviderServiceTestConnectivityResponse struct {
 }
 
 //
@@ -42438,8 +46554,12 @@ func (p *ExternalHostProviderServiceUpdateRequest) Provider(provider *ExternalHo
 	p.provider = provider
 	return p
 }
-func (p *ExternalHostProviderServiceUpdateRequest) Send() *ExternalHostProviderServiceUpdateResponse {
+func (p *ExternalHostProviderServiceUpdateRequest) Send() (*ExternalHostProviderServiceUpdateResponse, error) {
 
+}
+
+type ExternalHostProviderServiceUpdateResponse struct {
+	provider *ExternalHostProvider
 }
 
 //
@@ -42584,8 +46704,12 @@ func (p *KatelloErrataServiceListRequest) Max(max int64) *KatelloErrataServiceLi
 	p.max = &max
 	return p
 }
-func (p *KatelloErrataServiceListRequest) Send() *KatelloErrataServiceListResponse {
+func (p *KatelloErrataServiceListRequest) Send() (*KatelloErrataServiceListResponse, error) {
 
+}
+
+type KatelloErrataServiceListResponse struct {
+	errata []KatelloErratum
 }
 
 //
@@ -42711,8 +46835,12 @@ func (p *ExternalDiscoveredHostsServiceListRequest) Max(max int64) *ExternalDisc
 	p.max = &max
 	return p
 }
-func (p *ExternalDiscoveredHostsServiceListRequest) Send() *ExternalDiscoveredHostsServiceListResponse {
+func (p *ExternalDiscoveredHostsServiceListRequest) Send() (*ExternalDiscoveredHostsServiceListResponse, error) {
 
+}
+
+type ExternalDiscoveredHostsServiceListResponse struct {
+	hosts []ExternalDiscoveredHost
 }
 
 //
@@ -42809,8 +46937,12 @@ func (p *ExternalHostsServiceListRequest) Max(max int64) *ExternalHostsServiceLi
 	p.max = &max
 	return p
 }
-func (p *ExternalHostsServiceListRequest) Send() *ExternalHostsServiceListResponse {
+func (p *ExternalHostsServiceListRequest) Send() (*ExternalHostsServiceListResponse, error) {
 
+}
+
+type ExternalHostsServiceListResponse struct {
+	hosts []ExternalHost
 }
 
 //
@@ -42907,8 +47039,12 @@ func (p *ExternalComputeResourcesServiceListRequest) Max(max int64) *ExternalCom
 	p.max = &max
 	return p
 }
-func (p *ExternalComputeResourcesServiceListRequest) Send() *ExternalComputeResourcesServiceListResponse {
+func (p *ExternalComputeResourcesServiceListRequest) Send() (*ExternalComputeResourcesServiceListResponse, error) {
 
+}
+
+type ExternalComputeResourcesServiceListResponse struct {
+	resources []ExternalComputeResource
 }
 
 //
@@ -43005,10 +47141,49 @@ func (p *ExternalHostProvidersServiceAddRequest) Provider(provider *ExternalHost
 	p.provider = provider
 	return p
 }
-func (p *ExternalHostProvidersServiceAddRequest) Send() *ExternalHostProvidersServiceAddResponse {
+func (p *ExternalHostProvidersServiceAddRequest) Send() (*ExternalHostProvidersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.externalHostProvidersService.Connection.URL(), p.externalHostProvidersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.provider)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.externalHostProvidersService.Connection.username, p.externalHostProvidersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.externalHostProvidersService.Connection.client.Do(req)
+}
+
+type ExternalHostProvidersServiceAddResponse struct {
+	provider *ExternalHostProvider
 }
 
 //
@@ -43062,8 +47237,12 @@ func (p *ExternalHostProvidersServiceListRequest) Max(max int64) *ExternalHostPr
 	p.max = &max
 	return p
 }
-func (p *ExternalHostProvidersServiceListRequest) Send() *ExternalHostProvidersServiceListResponse {
+func (p *ExternalHostProvidersServiceListRequest) Send() (*ExternalHostProvidersServiceListResponse, error) {
 
+}
+
+type ExternalHostProvidersServiceListResponse struct {
+	providers []ExternalHostProvider
 }
 
 //
@@ -43156,8 +47335,12 @@ func (p *GlusterBrickServiceGetRequest) Query(key, value string) *GlusterBrickSe
 	return p
 }
 
-func (p *GlusterBrickServiceGetRequest) Send() *GlusterBrickServiceGetResponse {
+func (p *GlusterBrickServiceGetRequest) Send() (*GlusterBrickServiceGetResponse, error) {
 
+}
+
+type GlusterBrickServiceGetResponse struct {
+	brick *GlusterBrick
 }
 
 //
@@ -43253,8 +47436,11 @@ func (p *GlusterBrickServiceRemoveRequest) Async(async bool) *GlusterBrickServic
 	p.async = &async
 	return p
 }
-func (p *GlusterBrickServiceRemoveRequest) Send() *GlusterBrickServiceRemoveResponse {
+func (p *GlusterBrickServiceRemoveRequest) Send() (*GlusterBrickServiceRemoveResponse, error) {
 
+}
+
+type GlusterBrickServiceRemoveResponse struct {
 }
 
 //
@@ -43321,8 +47507,11 @@ func (p *GlusterBrickServiceReplaceRequest) Force(force bool) *GlusterBrickServi
 	p.force = &force
 	return p
 }
-func (p *GlusterBrickServiceReplaceRequest) Send() *GlusterBrickServiceReplaceResponse {
+func (p *GlusterBrickServiceReplaceRequest) Send() (*GlusterBrickServiceReplaceResponse, error) {
 
+}
+
+type GlusterBrickServiceReplaceResponse struct {
 }
 
 //
@@ -43420,10 +47609,49 @@ func (p *GlusterVolumesServiceAddRequest) Volume(volume *GlusterVolume) *Gluster
 	p.volume = volume
 	return p
 }
-func (p *GlusterVolumesServiceAddRequest) Send() *GlusterVolumesServiceAddResponse {
+func (p *GlusterVolumesServiceAddRequest) Send() (*GlusterVolumesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.glusterVolumesService.Connection.URL(), p.glusterVolumesService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.volume)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterVolumesService.Connection.username, p.glusterVolumesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.glusterVolumesService.Connection.client.Do(req)
+}
+
+type GlusterVolumesServiceAddResponse struct {
+	volume *GlusterVolume
 }
 
 //
@@ -43524,8 +47752,12 @@ func (p *GlusterVolumesServiceListRequest) Search(search string) *GlusterVolumes
 	p.search = &search
 	return p
 }
-func (p *GlusterVolumesServiceListRequest) Send() *GlusterVolumesServiceListResponse {
+func (p *GlusterVolumesServiceListRequest) Send() (*GlusterVolumesServiceListResponse, error) {
 
+}
+
+type GlusterVolumesServiceListResponse struct {
+	volumes []GlusterVolume
 }
 
 //
@@ -43634,8 +47866,12 @@ func (p *GlusterVolumeServiceGetRequest) Query(key, value string) *GlusterVolume
 	return p
 }
 
-func (p *GlusterVolumeServiceGetRequest) Send() *GlusterVolumeServiceGetResponse {
+func (p *GlusterVolumeServiceGetRequest) Send() (*GlusterVolumeServiceGetResponse, error) {
 
+}
+
+type GlusterVolumeServiceGetResponse struct {
+	volume *GlusterVolume
 }
 
 //
@@ -43720,8 +47956,12 @@ func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Query(key, value strin
 	return p
 }
 
-func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Send() *GlusterVolumeServiceGetProfileStatisticsResponse {
+func (p *GlusterVolumeServiceGetProfileStatisticsRequest) Send() (*GlusterVolumeServiceGetProfileStatisticsResponse, error) {
 
+}
+
+type GlusterVolumeServiceGetProfileStatisticsResponse struct {
+	details *GlusterVolumeProfileDetails
 }
 
 //
@@ -43789,8 +48029,11 @@ func (p *GlusterVolumeServiceRebalanceRequest) Force(force bool) *GlusterVolumeS
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceRebalanceRequest) Send() *GlusterVolumeServiceRebalanceResponse {
+func (p *GlusterVolumeServiceRebalanceRequest) Send() (*GlusterVolumeServiceRebalanceResponse, error) {
 
+}
+
+type GlusterVolumeServiceRebalanceResponse struct {
 }
 
 //
@@ -43861,8 +48104,11 @@ func (p *GlusterVolumeServiceRemoveRequest) Async(async bool) *GlusterVolumeServ
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceRemoveRequest) Send() *GlusterVolumeServiceRemoveResponse {
+func (p *GlusterVolumeServiceRemoveRequest) Send() (*GlusterVolumeServiceRemoveResponse, error) {
 
+}
+
+type GlusterVolumeServiceRemoveResponse struct {
 }
 
 //
@@ -43921,8 +48167,11 @@ func (p *GlusterVolumeServiceResetAllOptionsRequest) Async(async bool) *GlusterV
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceResetAllOptionsRequest) Send() *GlusterVolumeServiceResetAllOptionsResponse {
+func (p *GlusterVolumeServiceResetAllOptionsRequest) Send() (*GlusterVolumeServiceResetAllOptionsResponse, error) {
 
+}
+
+type GlusterVolumeServiceResetAllOptionsResponse struct {
 }
 
 //
@@ -43991,8 +48240,11 @@ func (p *GlusterVolumeServiceResetOptionRequest) Option(option *Option) *Gluster
 	p.option = option
 	return p
 }
-func (p *GlusterVolumeServiceResetOptionRequest) Send() *GlusterVolumeServiceResetOptionResponse {
+func (p *GlusterVolumeServiceResetOptionRequest) Send() (*GlusterVolumeServiceResetOptionResponse, error) {
 
+}
+
+type GlusterVolumeServiceResetOptionResponse struct {
 }
 
 //
@@ -44068,8 +48320,11 @@ func (p *GlusterVolumeServiceSetOptionRequest) Option(option *Option) *GlusterVo
 	p.option = option
 	return p
 }
-func (p *GlusterVolumeServiceSetOptionRequest) Send() *GlusterVolumeServiceSetOptionResponse {
+func (p *GlusterVolumeServiceSetOptionRequest) Send() (*GlusterVolumeServiceSetOptionResponse, error) {
 
+}
+
+type GlusterVolumeServiceSetOptionResponse struct {
 }
 
 //
@@ -44143,8 +48398,11 @@ func (p *GlusterVolumeServiceStartRequest) Force(force bool) *GlusterVolumeServi
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceStartRequest) Send() *GlusterVolumeServiceStartResponse {
+func (p *GlusterVolumeServiceStartRequest) Send() (*GlusterVolumeServiceStartResponse, error) {
 
+}
+
+type GlusterVolumeServiceStartResponse struct {
 }
 
 //
@@ -44207,8 +48465,11 @@ func (p *GlusterVolumeServiceStartProfileRequest) Async(async bool) *GlusterVolu
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStartProfileRequest) Send() *GlusterVolumeServiceStartProfileResponse {
+func (p *GlusterVolumeServiceStartProfileRequest) Send() (*GlusterVolumeServiceStartProfileResponse, error) {
 
+}
+
+type GlusterVolumeServiceStartProfileResponse struct {
 }
 
 //
@@ -44271,8 +48532,11 @@ func (p *GlusterVolumeServiceStopRequest) Force(force bool) *GlusterVolumeServic
 	p.force = &force
 	return p
 }
-func (p *GlusterVolumeServiceStopRequest) Send() *GlusterVolumeServiceStopResponse {
+func (p *GlusterVolumeServiceStopRequest) Send() (*GlusterVolumeServiceStopResponse, error) {
 
+}
+
+type GlusterVolumeServiceStopResponse struct {
 }
 
 //
@@ -44333,8 +48597,11 @@ func (p *GlusterVolumeServiceStopProfileRequest) Async(async bool) *GlusterVolum
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStopProfileRequest) Send() *GlusterVolumeServiceStopProfileResponse {
+func (p *GlusterVolumeServiceStopProfileRequest) Send() (*GlusterVolumeServiceStopProfileResponse, error) {
 
+}
+
+type GlusterVolumeServiceStopProfileResponse struct {
 }
 
 //
@@ -44392,8 +48659,11 @@ func (p *GlusterVolumeServiceStopRebalanceRequest) Async(async bool) *GlusterVol
 	p.async = &async
 	return p
 }
-func (p *GlusterVolumeServiceStopRebalanceRequest) Send() *GlusterVolumeServiceStopRebalanceResponse {
+func (p *GlusterVolumeServiceStopRebalanceRequest) Send() (*GlusterVolumeServiceStopRebalanceResponse, error) {
 
+}
+
+type GlusterVolumeServiceStopRebalanceResponse struct {
 }
 
 //
@@ -44504,8 +48774,11 @@ func (p *GlusterHookServiceDisableRequest) Async(async bool) *GlusterHookService
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceDisableRequest) Send() *GlusterHookServiceDisableResponse {
+func (p *GlusterHookServiceDisableRequest) Send() (*GlusterHookServiceDisableResponse, error) {
 
+}
+
+type GlusterHookServiceDisableResponse struct {
 }
 
 //
@@ -44559,8 +48832,11 @@ func (p *GlusterHookServiceEnableRequest) Async(async bool) *GlusterHookServiceE
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceEnableRequest) Send() *GlusterHookServiceEnableResponse {
+func (p *GlusterHookServiceEnableRequest) Send() (*GlusterHookServiceEnableResponse, error) {
 
+}
+
+type GlusterHookServiceEnableResponse struct {
 }
 
 //
@@ -44609,8 +48885,12 @@ func (p *GlusterHookServiceGetRequest) Query(key, value string) *GlusterHookServ
 	return p
 }
 
-func (p *GlusterHookServiceGetRequest) Send() *GlusterHookServiceGetResponse {
+func (p *GlusterHookServiceGetRequest) Send() (*GlusterHookServiceGetResponse, error) {
 
+}
+
+type GlusterHookServiceGetResponse struct {
+	hook *GlusterHook
 }
 
 //
@@ -44663,8 +48943,11 @@ func (p *GlusterHookServiceRemoveRequest) Async(async bool) *GlusterHookServiceR
 	p.async = &async
 	return p
 }
-func (p *GlusterHookServiceRemoveRequest) Send() *GlusterHookServiceRemoveResponse {
+func (p *GlusterHookServiceRemoveRequest) Send() (*GlusterHookServiceRemoveResponse, error) {
 
+}
+
+type GlusterHookServiceRemoveResponse struct {
 }
 
 //
@@ -44728,8 +49011,11 @@ func (p *GlusterHookServiceResolveRequest) ResolutionType(resolutionType string)
 	p.resolutionType = &resolutionType
 	return p
 }
-func (p *GlusterHookServiceResolveRequest) Send() *GlusterHookServiceResolveResponse {
+func (p *GlusterHookServiceResolveRequest) Send() (*GlusterHookServiceResolveResponse, error) {
 
+}
+
+type GlusterHookServiceResolveResponse struct {
 }
 
 //
@@ -44825,8 +49111,11 @@ func (p *GlusterBricksServiceActivateRequest) Bricks(bricks []GlusterBrick) *Glu
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceActivateRequest) Send() *GlusterBricksServiceActivateResponse {
+func (p *GlusterBricksServiceActivateRequest) Send() (*GlusterBricksServiceActivateResponse, error) {
 
+}
+
+type GlusterBricksServiceActivateResponse struct {
 }
 
 //
@@ -44911,16 +49200,55 @@ func (p *GlusterBricksServiceAddRequest) StripeCount(stripeCount int64) *Gluster
 	p.stripeCount = &stripeCount
 	return p
 }
-func (p *GlusterBricksServiceAddRequest) Send() *GlusterBricksServiceAddResponse {
+func (p *GlusterBricksServiceAddRequest) Send() (*GlusterBricksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.glusterBricksService.Connection.URL(), p.glusterBricksService.Path)
 	values := make(url.Values)
-	if replicaCount != null {
-		fmt.Println("test")
+	if p.replicaCount != nil {
+		values["replicaCount"] = []string{fmt.Sprintf("%v", *p.replicaCount)}
 	}
-	if stripeCount != null {
-		fmt.Println("test")
+	if p.stripeCount != nil {
+		values["stripeCount"] = []string{fmt.Sprintf("%v", *p.stripeCount)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.bricks)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.glusterBricksService.Connection.username, p.glusterBricksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.glusterBricksService.Connection.client.Do(req)
+}
+
+type GlusterBricksServiceAddResponse struct {
+	bricks []GlusterBrick
 }
 
 //
@@ -45002,8 +49330,12 @@ func (p *GlusterBricksServiceListRequest) Max(max int64) *GlusterBricksServiceLi
 	p.max = &max
 	return p
 }
-func (p *GlusterBricksServiceListRequest) Send() *GlusterBricksServiceListResponse {
+func (p *GlusterBricksServiceListRequest) Send() (*GlusterBricksServiceListResponse, error) {
 
+}
+
+type GlusterBricksServiceListResponse struct {
+	bricks []GlusterBrick
 }
 
 //
@@ -45092,8 +49424,11 @@ func (p *GlusterBricksServiceMigrateRequest) Bricks(bricks []GlusterBrick) *Glus
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceMigrateRequest) Send() *GlusterBricksServiceMigrateResponse {
+func (p *GlusterBricksServiceMigrateRequest) Send() (*GlusterBricksServiceMigrateResponse, error) {
 
+}
+
+type GlusterBricksServiceMigrateResponse struct {
 }
 
 //
@@ -45181,8 +49516,11 @@ func (p *GlusterBricksServiceRemoveRequest) ReplicaCount(replicaCount int64) *Gl
 	p.replicaCount = &replicaCount
 	return p
 }
-func (p *GlusterBricksServiceRemoveRequest) Send() *GlusterBricksServiceRemoveResponse {
+func (p *GlusterBricksServiceRemoveRequest) Send() (*GlusterBricksServiceRemoveResponse, error) {
 
+}
+
+type GlusterBricksServiceRemoveResponse struct {
 }
 
 //
@@ -45264,8 +49602,11 @@ func (p *GlusterBricksServiceStopMigrateRequest) Bricks(bricks []GlusterBrick) *
 	p.bricks = bricks
 	return p
 }
-func (p *GlusterBricksServiceStopMigrateRequest) Send() *GlusterBricksServiceStopMigrateResponse {
+func (p *GlusterBricksServiceStopMigrateRequest) Send() (*GlusterBricksServiceStopMigrateResponse, error) {
 
+}
+
+type GlusterBricksServiceStopMigrateResponse struct {
 }
 
 //
@@ -45377,8 +49718,12 @@ func (p *GlusterHooksServiceListRequest) Max(max int64) *GlusterHooksServiceList
 	p.max = &max
 	return p
 }
-func (p *GlusterHooksServiceListRequest) Send() *GlusterHooksServiceListResponse {
+func (p *GlusterHooksServiceListRequest) Send() (*GlusterHooksServiceListResponse, error) {
 
+}
+
+type GlusterHooksServiceListResponse struct {
+	hooks []GlusterHook
 }
 
 //
@@ -45476,10 +49821,49 @@ func (p *DisksServiceAddRequest) Disk(disk *Disk) *DisksServiceAddRequest {
 	p.disk = disk
 	return p
 }
-func (p *DisksServiceAddRequest) Send() *DisksServiceAddResponse {
+func (p *DisksServiceAddRequest) Send() (*DisksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.disksService.Connection.URL(), p.disksService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.disk)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.disksService.Connection.username, p.disksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.disksService.Connection.client.Do(req)
+}
+
+type DisksServiceAddResponse struct {
+	disk *Disk
 }
 
 //
@@ -45627,8 +50011,12 @@ func (p *DisksServiceListRequest) Search(search string) *DisksServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *DisksServiceListRequest) Send() *DisksServiceListResponse {
+func (p *DisksServiceListRequest) Send() (*DisksServiceListResponse, error) {
 
+}
+
+type DisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -45762,10 +50150,49 @@ func (p *InstanceTypeWatchdogsServiceAddRequest) Watchdog(watchdog *Watchdog) *I
 	p.watchdog = watchdog
 	return p
 }
-func (p *InstanceTypeWatchdogsServiceAddRequest) Send() *InstanceTypeWatchdogsServiceAddResponse {
+func (p *InstanceTypeWatchdogsServiceAddRequest) Send() (*InstanceTypeWatchdogsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.instanceTypeWatchdogsService.Connection.URL(), p.instanceTypeWatchdogsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.watchdog)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.instanceTypeWatchdogsService.Connection.username, p.instanceTypeWatchdogsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.instanceTypeWatchdogsService.Connection.client.Do(req)
+}
+
+type InstanceTypeWatchdogsServiceAddResponse struct {
+	watchdog *Watchdog
 }
 
 //
@@ -45825,8 +50252,12 @@ func (p *InstanceTypeWatchdogsServiceListRequest) Search(search string) *Instanc
 	p.search = &search
 	return p
 }
-func (p *InstanceTypeWatchdogsServiceListRequest) Send() *InstanceTypeWatchdogsServiceListResponse {
+func (p *InstanceTypeWatchdogsServiceListRequest) Send() (*InstanceTypeWatchdogsServiceListResponse, error) {
 
+}
+
+type InstanceTypeWatchdogsServiceListResponse struct {
+	watchdogs []Watchdog
 }
 
 //
@@ -45929,10 +50360,49 @@ func (p *JobsServiceAddRequest) Job(job *Job) *JobsServiceAddRequest {
 	p.job = job
 	return p
 }
-func (p *JobsServiceAddRequest) Send() *JobsServiceAddResponse {
+func (p *JobsServiceAddRequest) Send() (*JobsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.jobsService.Connection.URL(), p.jobsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.job)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.jobsService.Connection.username, p.jobsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.jobsService.Connection.client.Do(req)
+}
+
+type JobsServiceAddResponse struct {
+	job *Job
 }
 
 //
@@ -46023,8 +50493,12 @@ func (p *JobsServiceListRequest) Max(max int64) *JobsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *JobsServiceListRequest) Send() *JobsServiceListResponse {
+func (p *JobsServiceListRequest) Send() (*JobsServiceListResponse, error) {
 
+}
+
+type JobsServiceListResponse struct {
+	jobs []Job
 }
 
 //
@@ -46150,8 +50624,12 @@ func (p *IconsServiceListRequest) Max(max int64) *IconsServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *IconsServiceListRequest) Send() *IconsServiceListResponse {
+func (p *IconsServiceListRequest) Send() (*IconsServiceListResponse, error) {
 
+}
+
+type IconsServiceListResponse struct {
+	icons []Icon
 }
 
 //
@@ -46271,13 +50749,52 @@ func (p *TemplatesServiceAddRequest) Template(template *Template) *TemplatesServ
 	p.template = template
 	return p
 }
-func (p *TemplatesServiceAddRequest) Send() *TemplatesServiceAddResponse {
+func (p *TemplatesServiceAddRequest) Send() (*TemplatesServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.templatesService.Connection.URL(), p.templatesService.Path)
 	values := make(url.Values)
-	if clonePermissions != null {
-		fmt.Println("test")
+	if p.clonePermissions != nil {
+		values["clonePermissions"] = []string{fmt.Sprintf("%v", *p.clonePermissions)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.template)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.templatesService.Connection.username, p.templatesService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.templatesService.Connection.client.Do(req)
+}
+
+type TemplatesServiceAddResponse struct {
+	template *Template
 }
 
 //
@@ -46382,8 +50899,12 @@ func (p *TemplatesServiceListRequest) Search(search string) *TemplatesServiceLis
 	p.search = &search
 	return p
 }
-func (p *TemplatesServiceListRequest) Send() *TemplatesServiceListResponse {
+func (p *TemplatesServiceListRequest) Send() (*TemplatesServiceListResponse, error) {
 
+}
+
+type TemplatesServiceListResponse struct {
+	templates []Template
 }
 
 //
@@ -46499,8 +51020,12 @@ func (p *FilterServiceGetRequest) Filter(filter bool) *FilterServiceGetRequest {
 	p.filter = &filter
 	return p
 }
-func (p *FilterServiceGetRequest) Send() *FilterServiceGetResponse {
+func (p *FilterServiceGetRequest) Send() (*FilterServiceGetResponse, error) {
 
+}
+
+type FilterServiceGetResponse struct {
+	result *Filter
 }
 
 //
@@ -46560,8 +51085,11 @@ func (p *FilterServiceRemoveRequest) Async(async bool) *FilterServiceRemoveReque
 	p.async = &async
 	return p
 }
-func (p *FilterServiceRemoveRequest) Send() *FilterServiceRemoveResponse {
+func (p *FilterServiceRemoveRequest) Send() (*FilterServiceRemoveResponse, error) {
 
+}
+
+type FilterServiceRemoveResponse struct {
 }
 
 //
@@ -46643,10 +51171,49 @@ func (p *AssignedAffinityLabelsServiceAddRequest) Label(label *AffinityLabel) *A
 	p.label = label
 	return p
 }
-func (p *AssignedAffinityLabelsServiceAddRequest) Send() *AssignedAffinityLabelsServiceAddResponse {
+func (p *AssignedAffinityLabelsServiceAddRequest) Send() (*AssignedAffinityLabelsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedAffinityLabelsService.Connection.URL(), p.assignedAffinityLabelsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.label)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedAffinityLabelsService.Connection.username, p.assignedAffinityLabelsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedAffinityLabelsService.Connection.client.Do(req)
+}
+
+type AssignedAffinityLabelsServiceAddResponse struct {
+	label *AffinityLabel
 }
 
 //
@@ -46696,8 +51263,12 @@ func (p *AssignedAffinityLabelsServiceListRequest) Query(key, value string) *Ass
 	return p
 }
 
-func (p *AssignedAffinityLabelsServiceListRequest) Send() *AssignedAffinityLabelsServiceListResponse {
+func (p *AssignedAffinityLabelsServiceListRequest) Send() (*AssignedAffinityLabelsServiceListResponse, error) {
 
+}
+
+type AssignedAffinityLabelsServiceListResponse struct {
+	label []AffinityLabel
 }
 
 //
@@ -46785,8 +51356,12 @@ func (p *SnapshotCdromServiceGetRequest) Query(key, value string) *SnapshotCdrom
 	return p
 }
 
-func (p *SnapshotCdromServiceGetRequest) Send() *SnapshotCdromServiceGetResponse {
+func (p *SnapshotCdromServiceGetRequest) Send() (*SnapshotCdromServiceGetResponse, error) {
 
+}
+
+type SnapshotCdromServiceGetResponse struct {
+	cdrom *Cdrom
 }
 
 //
@@ -46861,8 +51436,12 @@ func (p *HostNumaNodeServiceGetRequest) Query(key, value string) *HostNumaNodeSe
 	return p
 }
 
-func (p *HostNumaNodeServiceGetRequest) Send() *HostNumaNodeServiceGetResponse {
+func (p *HostNumaNodeServiceGetRequest) Send() (*HostNumaNodeServiceGetResponse, error) {
 
+}
+
+type HostNumaNodeServiceGetResponse struct {
+	node *NumaNode
 }
 
 //
@@ -46949,8 +51528,12 @@ func (p *TemplateGraphicsConsoleServiceGetRequest) Query(key, value string) *Tem
 	return p
 }
 
-func (p *TemplateGraphicsConsoleServiceGetRequest) Send() *TemplateGraphicsConsoleServiceGetResponse {
+func (p *TemplateGraphicsConsoleServiceGetRequest) Send() (*TemplateGraphicsConsoleServiceGetResponse, error) {
 
+}
+
+type TemplateGraphicsConsoleServiceGetResponse struct {
+	console *GraphicsConsole
 }
 
 //
@@ -47004,8 +51587,11 @@ func (p *TemplateGraphicsConsoleServiceRemoveRequest) Async(async bool) *Templat
 	p.async = &async
 	return p
 }
-func (p *TemplateGraphicsConsoleServiceRemoveRequest) Send() *TemplateGraphicsConsoleServiceRemoveResponse {
+func (p *TemplateGraphicsConsoleServiceRemoveRequest) Send() (*TemplateGraphicsConsoleServiceRemoveResponse, error) {
 
+}
+
+type TemplateGraphicsConsoleServiceRemoveResponse struct {
 }
 
 //
@@ -47089,10 +51675,49 @@ func (p *AffinityLabelHostsServiceAddRequest) Host(host *Host) *AffinityLabelHos
 	p.host = host
 	return p
 }
-func (p *AffinityLabelHostsServiceAddRequest) Send() *AffinityLabelHostsServiceAddResponse {
+func (p *AffinityLabelHostsServiceAddRequest) Send() (*AffinityLabelHostsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.affinityLabelHostsService.Connection.URL(), p.affinityLabelHostsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.host)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.affinityLabelHostsService.Connection.username, p.affinityLabelHostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.affinityLabelHostsService.Connection.client.Do(req)
+}
+
+type AffinityLabelHostsServiceAddResponse struct {
+	host *Host
 }
 
 //
@@ -47142,8 +51767,12 @@ func (p *AffinityLabelHostsServiceListRequest) Query(key, value string) *Affinit
 	return p
 }
 
-func (p *AffinityLabelHostsServiceListRequest) Send() *AffinityLabelHostsServiceListResponse {
+func (p *AffinityLabelHostsServiceListRequest) Send() (*AffinityLabelHostsServiceListResponse, error) {
 
+}
+
+type AffinityLabelHostsServiceListResponse struct {
+	hosts []Host
 }
 
 //
@@ -47236,8 +51865,12 @@ func (p *DiskSnapshotsServiceListRequest) Max(max int64) *DiskSnapshotsServiceLi
 	p.max = &max
 	return p
 }
-func (p *DiskSnapshotsServiceListRequest) Send() *DiskSnapshotsServiceListResponse {
+func (p *DiskSnapshotsServiceListRequest) Send() (*DiskSnapshotsServiceListResponse, error) {
 
+}
+
+type DiskSnapshotsServiceListResponse struct {
+	snapshots []DiskSnapshot
 }
 
 //
@@ -47359,8 +51992,12 @@ func (p *StorageDomainVmsServiceListRequest) Max(max int64) *StorageDomainVmsSer
 	p.max = &max
 	return p
 }
-func (p *StorageDomainVmsServiceListRequest) Send() *StorageDomainVmsServiceListResponse {
+func (p *StorageDomainVmsServiceListRequest) Send() (*StorageDomainVmsServiceListResponse, error) {
 
+}
+
+type StorageDomainVmsServiceListResponse struct {
+	vm []Vm
 }
 
 //
@@ -47469,16 +52106,55 @@ func (p *HostsServiceAddRequest) UndeployHostedEngine(undeployHostedEngine bool)
 	p.undeployHostedEngine = &undeployHostedEngine
 	return p
 }
-func (p *HostsServiceAddRequest) Send() *HostsServiceAddResponse {
+func (p *HostsServiceAddRequest) Send() (*HostsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.hostsService.Connection.URL(), p.hostsService.Path)
 	values := make(url.Values)
-	if deployHostedEngine != null {
-		fmt.Println("test")
+	if p.deployHostedEngine != nil {
+		values["deployHostedEngine"] = []string{fmt.Sprintf("%v", *p.deployHostedEngine)}
 	}
-	if undeployHostedEngine != null {
-		fmt.Println("test")
+	if p.undeployHostedEngine != nil {
+		values["undeployHostedEngine"] = []string{fmt.Sprintf("%v", *p.undeployHostedEngine)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.host)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.hostsService.Connection.username, p.hostsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.hostsService.Connection.client.Do(req)
+}
+
+type HostsServiceAddResponse struct {
+	host *Host
 }
 
 //
@@ -47581,8 +52257,12 @@ func (p *HostsServiceListRequest) Search(search string) *HostsServiceListRequest
 	p.search = &search
 	return p
 }
-func (p *HostsServiceListRequest) Send() *HostsServiceListResponse {
+func (p *HostsServiceListRequest) Send() (*HostsServiceListResponse, error) {
 
+}
+
+type HostsServiceListResponse struct {
+	hosts []Host
 }
 
 //
@@ -47715,13 +52395,52 @@ func (p *StorageDomainDisksServiceAddRequest) Unregistered(unregistered bool) *S
 	p.unregistered = &unregistered
 	return p
 }
-func (p *StorageDomainDisksServiceAddRequest) Send() *StorageDomainDisksServiceAddResponse {
+func (p *StorageDomainDisksServiceAddRequest) Send() (*StorageDomainDisksServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.storageDomainDisksService.Connection.URL(), p.storageDomainDisksService.Path)
 	values := make(url.Values)
-	if unregistered != null {
-		fmt.Println("test")
+	if p.unregistered != nil {
+		values["unregistered"] = []string{fmt.Sprintf("%v", *p.unregistered)}
 	}
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.disk)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageDomainDisksService.Connection.username, p.storageDomainDisksService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.storageDomainDisksService.Connection.client.Do(req)
+}
+
+type StorageDomainDisksServiceAddResponse struct {
+	disk *Disk
 }
 
 //
@@ -47788,8 +52507,12 @@ func (p *StorageDomainDisksServiceListRequest) Max(max int64) *StorageDomainDisk
 	p.max = &max
 	return p
 }
-func (p *StorageDomainDisksServiceListRequest) Send() *StorageDomainDisksServiceListResponse {
+func (p *StorageDomainDisksServiceListRequest) Send() (*StorageDomainDisksServiceListResponse, error) {
 
+}
+
+type StorageDomainDisksServiceListResponse struct {
+	disks []Disk
 }
 
 //
@@ -47888,10 +52611,49 @@ func (p *FiltersServiceAddRequest) Filter(filter *Filter) *FiltersServiceAddRequ
 	p.filter = filter
 	return p
 }
-func (p *FiltersServiceAddRequest) Send() *FiltersServiceAddResponse {
+func (p *FiltersServiceAddRequest) Send() (*FiltersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.filtersService.Connection.URL(), p.filtersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.filter)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.filtersService.Connection.username, p.filtersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.filtersService.Connection.client.Do(req)
+}
+
+type FiltersServiceAddResponse struct {
+	filter *Filter
 }
 
 //
@@ -47950,8 +52712,12 @@ func (p *FiltersServiceListRequest) Max(max int64) *FiltersServiceListRequest {
 	p.max = &max
 	return p
 }
-func (p *FiltersServiceListRequest) Send() *FiltersServiceListResponse {
+func (p *FiltersServiceListRequest) Send() (*FiltersServiceListResponse, error) {
 
+}
+
+type FiltersServiceListResponse struct {
+	filters []Filter
 }
 
 //
@@ -48051,10 +52817,49 @@ func (p *StorageServerConnectionsServiceAddRequest) Connection(connection *Stora
 	p.connection = connection
 	return p
 }
-func (p *StorageServerConnectionsServiceAddRequest) Send() *StorageServerConnectionsServiceAddResponse {
+func (p *StorageServerConnectionsServiceAddRequest) Send() (*StorageServerConnectionsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.storageServerConnectionsService.Connection.URL(), p.storageServerConnectionsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.connection)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.storageServerConnectionsService.Connection.username, p.storageServerConnectionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.storageServerConnectionsService.Connection.client.Do(req)
+}
+
+type StorageServerConnectionsServiceAddResponse struct {
+	connection *StorageConnection
 }
 
 //
@@ -48127,8 +52932,12 @@ func (p *StorageServerConnectionsServiceListRequest) Max(max int64) *StorageServ
 	p.max = &max
 	return p
 }
-func (p *StorageServerConnectionsServiceListRequest) Send() *StorageServerConnectionsServiceListResponse {
+func (p *StorageServerConnectionsServiceListRequest) Send() (*StorageServerConnectionsServiceListResponse, error) {
 
+}
+
+type StorageServerConnectionsServiceListResponse struct {
+	connections []StorageConnection
 }
 
 //
@@ -48225,10 +53034,49 @@ func (p *FenceAgentsServiceAddRequest) Agent(agent *Agent) *FenceAgentsServiceAd
 	p.agent = agent
 	return p
 }
-func (p *FenceAgentsServiceAddRequest) Send() *FenceAgentsServiceAddResponse {
+func (p *FenceAgentsServiceAddRequest) Send() (*FenceAgentsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.fenceAgentsService.Connection.URL(), p.fenceAgentsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.agent)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.fenceAgentsService.Connection.username, p.fenceAgentsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.fenceAgentsService.Connection.client.Do(req)
+}
+
+type FenceAgentsServiceAddResponse struct {
+	agent *Agent
 }
 
 //
@@ -48282,8 +53130,12 @@ func (p *FenceAgentsServiceListRequest) Max(max int64) *FenceAgentsServiceListRe
 	p.max = &max
 	return p
 }
-func (p *FenceAgentsServiceListRequest) Send() *FenceAgentsServiceListResponse {
+func (p *FenceAgentsServiceListRequest) Send() (*FenceAgentsServiceListResponse, error) {
 
+}
+
+type FenceAgentsServiceListResponse struct {
+	agents []Agent
 }
 
 //
@@ -48381,10 +53233,49 @@ func (p *ClustersServiceAddRequest) Cluster(cluster *Cluster) *ClustersServiceAd
 	p.cluster = cluster
 	return p
 }
-func (p *ClustersServiceAddRequest) Send() *ClustersServiceAddResponse {
+func (p *ClustersServiceAddRequest) Send() (*ClustersServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.clustersService.Connection.URL(), p.clustersService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.cluster)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.clustersService.Connection.username, p.clustersService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.clustersService.Connection.client.Do(req)
+}
+
+type ClustersServiceAddResponse struct {
+	cluster *Cluster
 }
 
 //
@@ -48471,8 +53362,12 @@ func (p *ClustersServiceListRequest) Search(search string) *ClustersServiceListR
 	p.search = &search
 	return p
 }
-func (p *ClustersServiceListRequest) Send() *ClustersServiceListResponse {
+func (p *ClustersServiceListRequest) Send() (*ClustersServiceListResponse, error) {
 
+}
+
+type ClustersServiceListResponse struct {
+	clusters []Cluster
 }
 
 //
@@ -48582,10 +53477,49 @@ func (p *AssignedPermissionsServiceAddRequest) Permission(permission *Permission
 	p.permission = permission
 	return p
 }
-func (p *AssignedPermissionsServiceAddRequest) Send() *AssignedPermissionsServiceAddResponse {
+func (p *AssignedPermissionsServiceAddRequest) Send() (*AssignedPermissionsServiceAddResponse, error) {
 
 	rawURL := fmt.Sprintf("%s%s", p.assignedPermissionsService.Connection.URL(), p.assignedPermissionsService.Path)
 	values := make(url.Values)
+	if p.query != nil {
+		for k, v := range p.query {
+			values[k] = []string{v}
+		}
+	}
+	if len(values) > 0 {
+		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
+	}
+	var body *bytes.Buffer
+	xmlBytes, err := xml.Marshal(p.permission)
+	if err != nil {
+		return nil, err
+	}
+	body = bytes.NewBuffer(xmlBytes)
+	req, err := http.NewRequest("POST", rawURL, body)
+	if err != nil {
+		return nil, err
+	}
+
+	if p.header != nil {
+		for hk, hv := range p.header {
+			req.Header.Add(hk, hv)
+		}
+	}
+
+	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
+	req.Header.Add("Version", "4")
+	req.Header.Add("Content-Type", "application/xml")
+	req.Header.Add("Accept", "application/xml")
+	rawAuthStr := fmt.Sprintf("%s:%s", p.assignedPermissionsService.Connection.username, p.assignedPermissionsService.Connection.username)
+	// Generate base64(username:password)
+	auth := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))
+	req.Header.Add("Authorization", auth)
+	// Send the request and wait for the response:
+	resp, err := p.assignedPermissionsService.Connection.client.Do(req)
+}
+
+type AssignedPermissionsServiceAddResponse struct {
+	permission *Permission
 }
 
 //
@@ -48685,8 +53619,12 @@ func (p *AssignedPermissionsServiceListRequest) Query(key, value string) *Assign
 	return p
 }
 
-func (p *AssignedPermissionsServiceListRequest) Send() *AssignedPermissionsServiceListResponse {
+func (p *AssignedPermissionsServiceListRequest) Send() (*AssignedPermissionsServiceListResponse, error) {
 
+}
+
+type AssignedPermissionsServiceListResponse struct {
+	permissions []Permission
 }
 
 //

@@ -323,7 +323,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"GET\", rawURL, body)");
+        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, body)");
         buffer.addLine("if err != nil {");
         buffer.startBlock();
         buffer.addLine("return nil, err");
@@ -343,9 +343,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateAdditionalQueryParameters() {
-        buffer.addLine("if p.query != nil) {");
+        buffer.addLine("if p.query != nil {");
         buffer.startBlock();
-        buffer.addLine("for k, v range p.query {");
+        buffer.addLine("for k, v := range p.query {");
         buffer.startBlock();
         buffer.addLine("values[k] = []string{v}");
         buffer.endBlock();
@@ -374,21 +374,23 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateCommonRequestImplementation(Method method, Service service, String[] codes) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
-            goNames.getPrivateMemberStyleName(serviceClassName));
+        String serviceAsPrivateMemberName = goNames.getPrivateMemberStyleName(serviceClassName);
         
         generateAdditionalHeadersParameters();
         buffer.addLine("req.Header.Add(\"User-Agent\", fmt.Sprintf(\"GoSDK/%%s\", SDK_VERSION))");
         buffer.addLine("req.Header.Add(\"Version\", \"4\")");
         buffer.addLine("req.Header.Add(\"Content-Type\", \"application/xml\")");
         buffer.addLine("req.Header.Add(\"Accept\", \"application/xml\")");
-        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection, %2$s)", );
-	// // 		Generate base64(username:password)
-	// rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
-	// req.Header.Add("Authorization",
-	// 	fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
+        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection.username, p.%1$s.Connection.username)",
+            serviceAsPrivateMemberName);
+        buffer.addCommentLine("Generate base64(username:password)");
+        buffer.addImport("encoding/base64");
+        buffer.addLine("auth := fmt.Sprintf(\"Basic %%s\", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))");
+        buffer.addLine("req.Header.Add(\"Authorization\", auth)");
+        buffer.addCommentLine("Send the request and wait for the response:");
+        buffer.addLine("resp, err := p.%1$s.Connection.client.Do(req)",
+            serviceAsPrivateMemberName);
 
-	// // Send the request and wait for the response:
 	// resp, err := c.client.Do(req)
 	// if err != nil {
 	// 	return &result, err
@@ -408,46 +410,6 @@ public class ServicesGenerator implements GoGenerator {
 	// }
 
 	// return &result, nil
-
-
-
-        buffer.addLine("HttpResponse response = getConnection().send(request);");
-        buffer.addLine("if (");
-        buffer.addLine("  response.getStatusLine().getStatusCode() == %1$s", codes[0]);
-        for (int i = 1; i < codes.length; i++) {
-            buffer.addLine("  || response.getStatusLine().getStatusCode() == %1$s", codes[i]);
-        }
-        buffer.addLine(") {");
-        List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
-        if (parameters.isEmpty()) {
-            buffer.addLine("EntityUtils.consumeQuietly(response.getEntity());");
-            buffer.addLine("return new %1$s();", getResponseImplName(method));
-        }
-        else {
-            buffer.addLine("try (");
-            buffer.addLine("  XmlReader reader = new XmlReader(response.getEntity().getContent())");
-            buffer.addLine(") {");
-            parameters.stream()
-                .sorted()
-                .forEach(this::generateRequestReaderImplementation);
-            buffer.addLine("}");
-            buffer.addLine("catch (IOException ex) {");
-            buffer.addLine(  "throw new Error(\"Failed to read response\", ex);");
-            buffer.addLine("}");
-            buffer.addLine("finally {");
-            buffer.addLine(  "EntityUtils.consumeQuietly(response.getEntity());");
-            buffer.addLine("}");
-        }
-        buffer.addLine("}");
-        buffer.addLine("else {");
-        buffer.addLine(  "checkFault(response);");
-        if (parameters.isEmpty()) {
-            buffer.addLine("return new %1$s();", getResponseClassName(method));
-        }
-        else {
-            buffer.addLine("return new %1$s(null);", getResponseClassName(method));
-        }
-        buffer.addLine("}");
     }
 
     private void generateAdditionalHeadersParameters() {
@@ -465,7 +427,26 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateResponse(Method method, Service service) {
-        // Begin class
+        Name methodName = method.getName();
+        String request = getRequestClassName(method, service);
+        String response = getResponseClassName(method, service);
+        buffer.addLine("type %1$s struct {", response);
+        buffer.startBlock();
+        // Generate the methods and appropriate constructors to get the output parameters:
+        method.parameters()
+            .filter(Parameter::isOut)
+            .sorted()
+            .forEach(this::generateResponseMember);
+        buffer.endBlock();
+        buffer.addLine("}");
+    }
+
+    private void generateResponseMember(Parameter parameter) {
+        Type type = parameter.getType();
+        Name name = parameter.getName();
+        String memberName = goNames.getPrivateMemberStyleName(name);
+        GoTypeReference reference = goNames.getTypeReference(type);
+        buffer.addLine("%1$s %2$s", memberName, reference.getText());
     }
 
     private void generateAddHttpPost(Method method, Service service) {
