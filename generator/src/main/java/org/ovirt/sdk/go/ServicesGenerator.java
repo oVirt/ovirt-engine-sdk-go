@@ -97,11 +97,11 @@ public class ServicesGenerator implements GoGenerator {
         // Generate struct definition
         generateDoc(service);
         buffer.addLine("type %1$s struct {", serviceName.getClassName());
+
         // Generate struct members definition
-        buffer.startBlock();
         //      with Service struct mixin
         buffer.addLine("BaseService");
-        buffer.endBlock();
+
         // Generate struct ending
         buffer.addLine("}");
         buffer.addLine();
@@ -134,13 +134,12 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(
             "func New%1$s(connection *Connection, path string) *%2$s {",
             serviceClassName, serviceClassName);
-        buffer.startBlock();
-        //      inititalize struct
+
+        // Inititalize struct
         buffer.addLine("var result %1$s", serviceClassName);
         buffer.addLine("result.Connection = connection");
         buffer.addLine("result.Path = path");
         buffer.addLine("return &result");
-        buffer.endBlock();
 
         // Generate constructor ending
         buffer.addLine("}");
@@ -159,11 +158,9 @@ public class ServicesGenerator implements GoGenerator {
         GoClassName serviceClassName = goNames.getServiceName(service);
         buffer.addLine("func (p *%1$s) %2$s() *%3$s {",
             serviceClassName.getClassName(), methodNameString, request);
-        buffer.startBlock();
         buffer.addLine("return &%1$s{%2$s: p}",
             request,
             goNames.getPrivateMemberStyleName(serviceClassName.getClassName()));
-        buffer.endBlock();
         buffer.addLine("}");
     }
 
@@ -173,7 +170,7 @@ public class ServicesGenerator implements GoGenerator {
         String request = getRequestClassName(method, service);
 
         buffer.addLine("type %1$s struct {", request);
-        buffer.startBlock();
+
         // Service itself
         buffer.addLine("%1$s *%2$s", 
             goNames.getPrivateMemberStyleName(goNames.getServiceName(service).getClassName()),
@@ -187,7 +184,6 @@ public class ServicesGenerator implements GoGenerator {
             .filter(Parameter::isIn)
             .sorted().forEach(this::generateRequestParameter);
         
-        buffer.endBlock();
         buffer.addLine("}");
         // End class
 
@@ -205,7 +201,7 @@ public class ServicesGenerator implements GoGenerator {
         // Generate send method:
         buffer.addLine("func (p *%1$s) Send() (*%2$s, error) {",
             request, getResponseClassName(method, service));
-        buffer.startBlock();
+
         // Generate method code based on response type:
         if (ADD.equals(methodName)) {
             generateAddRequestImplementation(method, service);
@@ -222,7 +218,7 @@ public class ServicesGenerator implements GoGenerator {
         else {
             generateActionRequestImplementation(method, service);
         }
-        buffer.endBlock();
+
         // End send method:
         buffer.addLine("}");
         buffer.addLine();
@@ -241,15 +237,11 @@ public class ServicesGenerator implements GoGenerator {
         for (String para : commonParameters) {
             buffer.addLine("func (p *%1$s) %2$s(key, value string) *%1$s {",
                 requestClassName, GoNames.capitalize(para));
-            buffer.startBlock();
-            buffer.addLine("if p.%1$s == nil {", para);
-            buffer.startBlock();
-            buffer.addLine("p.%1$s = make(map[string]string)", para);
-            buffer.endBlock();
-            buffer.addLine("}");
-            buffer.addLine("p.%1$s[key] = value", para);
-            buffer.addLine("return p");
-            buffer.endBlock();
+            buffer.addLine(  "if p.%1$s == nil {", para);
+            buffer.addLine(    "p.%1$s = make(map[string]string)", para);
+            buffer.addLine(  "}");
+            buffer.addLine(  "p.%1$s[key] = value", para);
+            buffer.addLine(  "return p");
             buffer.addLine("}");
             buffer.addLine();
         }
@@ -276,7 +268,6 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
-        buffer.startBlock();
         if (GoTypes.isGoPrimitiveType(paraType)) {
             buffer.addLine("p.%1$s = &%1$s", paraName);
         } else {
@@ -284,7 +275,6 @@ public class ServicesGenerator implements GoGenerator {
         }
         buffer.addLine("return p");
         
-        buffer.endBlock();
         buffer.addLine("}");
     }
 
@@ -301,9 +291,7 @@ public class ServicesGenerator implements GoGenerator {
         
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.startBlock();
-        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
-        buffer.endBlock();
+        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Generate the net/http request.Body (via bytes.Buffer)
@@ -315,9 +303,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, body)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
@@ -338,18 +324,14 @@ public class ServicesGenerator implements GoGenerator {
         generateAdditionalQueryParameters();
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.startBlock();
-        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
-        buffer.endBlock();
+        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"GET\", rawURL, nil)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
@@ -370,18 +352,14 @@ public class ServicesGenerator implements GoGenerator {
         generateAdditionalQueryParameters();
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.startBlock();
-        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
-        buffer.endBlock();
+        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"DELETE\", rawURL, nil)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
@@ -401,9 +379,7 @@ public class ServicesGenerator implements GoGenerator {
         
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.startBlock();
-        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
-        buffer.endBlock();
+        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Generate the net/http request.Body (via bytes.Buffer)
@@ -415,9 +391,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
@@ -444,9 +418,7 @@ public class ServicesGenerator implements GoGenerator {
             });
         buffer.addLine("action, errBuilder := actionBuilder.Build()");
         buffer.addLine("if errBuilder != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, errBuilder");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, errBuilder");
         buffer.addLine("}");
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -455,9 +427,7 @@ public class ServicesGenerator implements GoGenerator {
         
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.startBlock();
-        buffer.addLine("rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
-        buffer.endBlock();
+        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Generate the net/http request.Body (via bytes.Buffer)
@@ -466,9 +436,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("encoding/xml");
         buffer.addLine("xmlBytes, err := xml.Marshal(action)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
         buffer.addLine("return nil, err");
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
 
@@ -476,9 +444,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
         generateCommonRequestImplementation(method, service, new String[]{"200"});
@@ -490,9 +456,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("action, errCheckAction := CheckAction(resp)");
         }
         buffer.addLine("if errCheckAction != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, errCheckAction");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, errCheckAction");
         buffer.addLine("}");
         
         if (parameters.isEmpty()) {
@@ -515,21 +479,15 @@ public class ServicesGenerator implements GoGenerator {
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
         String value = goNames.getPrivateMemberStyleName(parameter.getName());
         buffer.addLine("if p.%1$s != nil {", value);
-        buffer.startBlock();
-        buffer.addLine("values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%1$s)}", value);
-        buffer.endBlock();
+        buffer.addLine(  "values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%1$s)}", value);
         buffer.addLine("}");
     }
 
     private void generateAdditionalQueryParameters() {
         buffer.addLine("if p.query != nil {");
-        buffer.startBlock();
-        buffer.addLine("for k, v := range p.query {");
-        buffer.startBlock();
-        buffer.addLine("values[k] = []string{v}");
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.endBlock();
+        buffer.addLine(  "for k, v := range p.query {");
+        buffer.addLine(    "values[k] = []string{v}");
+        buffer.addLine(  "}");
         buffer.addLine("}");
     }
 
@@ -543,9 +501,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addImport("encoding/xml");
             buffer.addLine("xmlBytes, err := xml.Marshal(p.%1$s)", paraName);
             buffer.addLine("if err != nil {");
-            buffer.startBlock();
-            buffer.addLine("return nil, err");
-            buffer.endBlock();
+            buffer.addLine(  "return nil, err");
             buffer.addLine("}");
             buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
         }
@@ -571,9 +527,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("resp, err := p.%1$s.Connection.client.Do(req)",
             serviceAsPrivateMemberName);
         buffer.addLine("if err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, err");
-        buffer.endBlock();
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");;
         buffer.addLine("defer resp.Body.Close()");
         // Read resp.Body (if method is ActionMethod, no need the resp reading)
@@ -589,9 +543,7 @@ public class ServicesGenerator implements GoGenerator {
                     buffer.addLine("respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)");
                 }
                 buffer.addLine("if errReadBody != nil {");
-                buffer.startBlock();
-                buffer.addLine("return nil, errReadBody");
-                buffer.endBlock();
+                buffer.addLine(  "return nil, errReadBody");
                 buffer.addLine("}");
         }
     }
@@ -678,13 +630,9 @@ public class ServicesGenerator implements GoGenerator {
     private void generateAdditionalHeadersParameters() {
         buffer.addLine();
         buffer.addLine("if p.header != nil {");
-        buffer.startBlock();
-        buffer.addLine("for hk, hv := range p.header {");
-        buffer.startBlock();
-        buffer.addLine("req.Header.Add(hk, hv)");
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.endBlock();
+        buffer.addLine(  "for hk, hv := range p.header {");
+        buffer.addLine(    "req.Header.Add(hk, hv)");
+        buffer.addLine(  "}");
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -692,12 +640,10 @@ public class ServicesGenerator implements GoGenerator {
     private void generateResponse(Method method, Service service) {
         String response = getResponseClassName(method, service);
         buffer.addLine("type %1$s struct {", response);
-        buffer.startBlock();
         method.parameters()
             .filter(Parameter::isOut)
             .sorted()
             .forEach(this::generateResponseParameter);
-        buffer.endBlock();
         buffer.addLine("}");
 
         // Generate Repsonse parameter getter method
@@ -729,19 +675,15 @@ public class ServicesGenerator implements GoGenerator {
             goNames.getPublicMethodStyleName(memberName),
             reference.getText()
             );
-        buffer.startBlock();
-        buffer.addLine("return p.%1$s", memberName);
-        buffer.endBlock();
+        buffer.addLine(  "return p.%1$s", memberName);
         buffer.addLine("}");
     }
 
     private void generateStr(Service service) {
         GoClassName serviceName = goNames.getServiceName(service);
-        buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
-        buffer.startBlock();
         buffer.addImport("fmt");
-        buffer.addLine("return fmt.Sprintf(\"%1$s:%%s\", op.Path)", serviceName.getClassName());
-        buffer.endBlock();
+        buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
+        buffer.addLine(  "return fmt.Sprintf(\"%1$s:%%s\", op.Path)", serviceName.getClassName());
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -774,13 +716,11 @@ public class ServicesGenerator implements GoGenerator {
             methodName, argName, parameterTypeReference.getText(),
             locatorServiceName.getClassName());
 
-        buffer.startBlock();
         buffer.addImport("fmt");
         buffer.addLine(
             "return New%1$s(op.Connection, fmt.Sprintf(\"%%s/%%s\", op.Path, %2$s))",
             locatorServiceName.getClassName(),
             argName);
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -797,13 +737,11 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("func (op *%1$s) %2$sService() *%3$s {",
             receiverClassName.getClassName(), methodName, locatorServiceName.getClassName());
 
-        buffer.startBlock();
         buffer.addImport("fmt");
         buffer.addLine(
             "return New%1$s(op.Connection, fmt.Sprintf(\"%%s/%2$s\", op.Path))",
             locatorServiceName.getClassName(),
             urlSegment);
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -817,31 +755,24 @@ public class ServicesGenerator implements GoGenerator {
 
         // Begin method:
         buffer.addLine("func (op *%1$s) Service(path string) (interface{}, error) {", serviceName.getClassName());
-        buffer.startBlock();
-        buffer.addLine("if path == \"\" {");
-        buffer.startBlock();
-        buffer.addLine("return op, nil");
-        buffer.endBlock();
-        buffer.addLine("}");
+        buffer.addLine(  "if path == \"\" {");
+        buffer.addLine(    "return op, nil");
+        buffer.addLine(  "}");
 
         // Generate the code that checks if the path corresponds to any of the locators without parameters:
         service.locators().filter(x -> x.getParameters().isEmpty()).sorted().forEach(locator -> {
             Name name = locator.getName();
             String segment = getPath(name);
+            buffer.addImport("strings");
             buffer.addLine("if path == \"%1$s\" {", segment);
-            buffer.startBlock();
             buffer.addLine(  "return op.%1$sService(), nil", goNames.getPublicMethodStyleName(name));
-            buffer.endBlock();
             buffer.addLine("}");
             buffer.addLine("if strings.HasPrefix(path, \"%1$s/\") {", segment);
-            buffer.addImport("strings");
-            buffer.startBlock();
             buffer.addLine(
                 "return op.%1$sService().Service(path[%2$d:])",
                 goNames.getPublicMemberStyleName(name),
                 segment.length() + 1
             );
-            buffer.endBlock();
             buffer.addLine("}");
         });
 
@@ -854,9 +785,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addImport("strings");
             buffer.addLine("index := strings.Index(path, \"/\")");
             buffer.addLine("if index == -1 {");
-            buffer.startBlock();
-            buffer.addLine("return *(op.%1$sService(path)), nil", goNames.getPublicMemberStyleName(name));
-            buffer.endBlock();
+            buffer.addLine(  "return *(op.%1$sService(path)), nil", goNames.getPublicMemberStyleName(name));
             buffer.addLine("}");
             buffer.addLine(
                 "return op.%1$sService(path[:index]).Service(path[index + 1:])",
@@ -868,7 +797,6 @@ public class ServicesGenerator implements GoGenerator {
         }
 
         // End method:
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
     }

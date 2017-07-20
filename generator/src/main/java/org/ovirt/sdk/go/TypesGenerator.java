@@ -110,9 +110,7 @@ public class TypesGenerator implements GoGenerator {
         //      Add  Error method for type Fault
         buffer.addLine();
         buffer.addLine("func (fault *Fault) Error() string {");
-        buffer.startBlock();
-        buffer.addLine("return fmt.Sprintf(\"Error details is %%s, reason is %%s\", fault.Detail, fault.Reason)");
-        buffer.endBlock();
+        buffer.addLine(  "return fmt.Sprintf(\"Error details is %%s, reason is %%s\", fault.Detail, fault.Reason)");
         buffer.addLine("}");
     }
 
@@ -122,17 +120,14 @@ public class TypesGenerator implements GoGenerator {
         Type base = type.getBase();
         // Define []Struct
         buffer.addLine("type %1$ss struct {", typeName.getClassName());
-        buffer.startBlock();
         //  Add xml.Name
-        buffer.addLine("XMLName xml.Name `xml:\"%1$ss\"`", typeName.getClassName().toLowerCase());
-        buffer.addLine("%1$ss []%1$s `xml:\"%2$s,omitempty\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
-        buffer.endBlock();
+        buffer.addLine(  "XMLName xml.Name `xml:\"%1$ss\"`", typeName.getClassName().toLowerCase());
+        buffer.addLine(  "%1$ss []%1$s `xml:\"%2$s,omitempty\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
         buffer.addLine("}");
         buffer.addLine();
         // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getClassName());
-        buffer.startBlock();
-        // Ignore Base-class mixin, fill in all 
+        // Ignore Base-class mixin, fill in all
         buffer.addLine("OvStruct");
 
         // Constructor with a named parameter for each attribute and link:
@@ -143,11 +138,9 @@ public class TypesGenerator implements GoGenerator {
         allMembers.addAll(declaredMembers);
         allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
 
-        buffer.endBlock();
         buffer.addLine();
 
         // End class:
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -167,26 +160,21 @@ public class TypesGenerator implements GoGenerator {
 
         // Begin class:
         buffer.addLine("type %1$sBuilder struct {", typePrivateClassName);
-        buffer.startBlock();
         //      Add properties of TypeBuilder
-        buffer.addLine("%1$s *%2$s", typePrivateMemberName,
-            typeName.getClassName());
-        buffer.addLine("err error");
+        buffer.addLine(  "%1$s *%2$s", typePrivateMemberName, typeName.getClassName());
+        buffer.addLine(  "err error");
         // End class:
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
 
         // Define NewStructBuilder function
         buffer.addLine("func New%1$sBuilder() *%2$sBuilder {",
             typeClassName, typePrivateClassName);
-        buffer.startBlock();
         buffer.addLine("return &%1$sBuilder{%2$s: &%3$s{}, err: nil}",
             typePrivateClassName,
             typePrivateMemberName,
             typeClassName
             );
-        buffer.endBlock();
         buffer.addLine("}");
         buffer.addLine();
 
@@ -197,16 +185,11 @@ public class TypesGenerator implements GoGenerator {
         }
 
         // Generate Build method
-        buffer.addLine("func (builder *%1$sBuilder) Build() (*%2$s, error) {",
-            typePrivateClassName, typeClassName);
-        buffer.startBlock();
-        buffer.addLine("if builder.err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return nil, builder.err");
-        buffer.endBlock();
-        buffer.addLine("}");
-        buffer.addLine("return builder.%1$s, nil", typePrivateMemberName);
-        buffer.endBlock();
+        buffer.addLine("func (builder *%1$sBuilder) Build() (*%2$s, error) {", typePrivateClassName, typeClassName);
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "return nil, builder.err");
+        buffer.addLine(  "}");
+        buffer.addLine(  "return builder.%1$s, nil", typePrivateMemberName);
         buffer.addLine("}");
     }
 
@@ -219,9 +202,7 @@ public class TypesGenerator implements GoGenerator {
 
         // Type definition
         buffer.addLine("const (");
-        buffer.startBlock();
         type.values().sorted().forEach(this::generateEnumValue);
-        buffer.endBlock();
         buffer.addLine(")");
 
         // End definition:
@@ -244,7 +225,7 @@ public class TypesGenerator implements GoGenerator {
         GoTypeReference memberTypeReference = goNames.getRefTypeReference(member.getType());
         buffer.addImports(memberTypeReference.getImports());
         buffer.addLine(
-            "%1$s    %2$s   `xml:\"%3$s,omitempty\"` ",
+            "%1$s %2$s `xml:\"%3$s,omitempty\"` ",
             goNames.getPublicMemberStyleName(member.getName()),
             memberTypeReference.getText(),
             goNames.getTagStyleName(member.getName())
@@ -264,13 +245,10 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine("func (builder *%1$sBuilder) %2$s(%3$s %4$s) *%1$sBuilder {",
             typePrivateClassName, goNames.getPublicMethodStyleName(member.getName()),
             goNames.getParameterStyleName(member.getName()), memberTypeReference.getText());
-        buffer.startBlock();
         //      Check if has errors
-        buffer.addLine("if builder.err != nil {");
-        buffer.startBlock();
-        buffer.addLine("return builder");
-        buffer.endBlock();
-        buffer.addLine("}");
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "return builder");
+        buffer.addLine(  "}");
         buffer.addLine();
         //      Method Body
         String settedValue = goNames.getParameterStyleName(member.getName());
@@ -278,13 +256,12 @@ public class TypesGenerator implements GoGenerator {
             settedValue = "&" + settedValue;
         }
         
-        buffer.addLine("builder.%1$s.%2$s = %3$s",
+        buffer.addLine(  "builder.%1$s.%2$s = %3$s",
             typePrivateMemberName,
             goNames.getPublicMemberStyleName(member.getName()),
             settedValue
             );
-        buffer.addLine("return builder");
-        buffer.endBlock();
+        buffer.addLine(  "return builder");
         buffer.addLine("}");
         buffer.addLine();
     }
