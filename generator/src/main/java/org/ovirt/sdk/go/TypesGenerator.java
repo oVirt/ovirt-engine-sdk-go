@@ -17,18 +17,17 @@ limitations under the License.
 package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.EnumValue;
 import org.ovirt.api.metamodel.concepts.Model;
@@ -76,28 +75,18 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateTypes(Model model) {
-        Deque<StructType> pending = model.types()
+        // Get the list of struct types:
+        List<StructType> structs = model.types()
             .filter(StructType.class::isInstance)
             .map(StructType.class::cast)
             .sorted()
-            .collect(toCollection(ArrayDeque::new));
-        Deque<StructType> structs = new ArrayDeque<>(pending.size());
-        while (!pending.isEmpty()) {
-            StructType current = pending.removeFirst();
-            StructType base = (StructType) current.getBase();
-            if (base == null || structs.contains(base)) {
-                structs.addLast(current);
-            }
-            else {
-                pending.addLast(current);
-            }
-        }
-        structs.stream()
-            .forEach(this::generateStruct);
+            .collect(toList());
 
-        // Generate the StructBuilder
-        structs.stream()
-            .forEach(this::generateStructBuilder);
+        // Generate the type:
+        structs.forEach(this::generateStruct);
+
+        // Generate the builder:
+        structs.forEach(this::generateStructBuilder);
 
         // Enum types don't need any special order, so we sort them only by name:
         model.types()
