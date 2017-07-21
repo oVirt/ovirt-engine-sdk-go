@@ -52,9 +52,6 @@ public class GoBuffer {
     // The source lines:
     private List<String> lines = new ArrayList<>();
 
-    // The current indentation level:
-    private int level;
-
     /**
      * Sets the file name.
      */
@@ -67,22 +64,6 @@ public class GoBuffer {
      */
     public void setPackageName(String newPackageName) {
         packageName = newPackageName;
-    }
-
-    /**
-     * Starts an indented block.
-     */
-    public void startBlock() {
-        level++;
-    }
-
-    /**
-     * Ends an indented block.
-     */
-    public void endBlock() {
-        if (level > 0) {
-            level--;
-        }
     }
 
     /**
@@ -122,11 +103,6 @@ public class GoBuffer {
         Formatter formatter = new Formatter(buffer);
         formatter.format(format, args);
 
-        // Indent the line:
-        for (int i = 0; i < level; i++) {
-            buffer.insert(0, "    ");
-        }
-
         // Add the line to the list:
         lines.add(buffer.toString());
     }
@@ -136,10 +112,6 @@ public class GoBuffer {
      */
     public void addRawLine(String line) {
         StringBuilder buffer = new StringBuilder(line);
-        // Indent the line:
-        for (int i = 0; i < level; i++) {
-            buffer.insert(0, "    ");
-        }
 
         // Add the line to the list:
         lines.add(buffer.toString());
@@ -188,19 +160,16 @@ public class GoBuffer {
         buffer.append("// See the License for the specific language governing permissions and\n");
         buffer.append("// limitations under the License.\n");
         buffer.append("//\n");
+        buffer.append("");
 
         // Package:
         buffer.append("package ovirtsdk4");
-        buffer.append("\n");
         buffer.append("\n");
 
         // Add the imports:
         if (!imports.isEmpty()) {
             buffer.append("import (\n");
             imports.stream().sorted().forEach(line -> {
-                // four blanks
-                buffer.append("    ");
-                // "fmt"
                 buffer.append("\"" + line + "\"");
                 buffer.append("\n");
             });
@@ -239,6 +208,26 @@ public class GoBuffer {
         System.out.println("Writing file \"" + file.getAbsolutePath() + "\".");
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             writer.write(toString());
+        }
+
+        // Run the gofmt tool to format the file according to the standard Go rules:
+        Process gofmt = new ProcessBuilder()
+            .command("gofmt", "-w", file.getAbsolutePath())
+            .inheritIO()
+            .start();
+        try {
+            int code = gofmt.waitFor();
+            if (code != 0) {
+                throw new IOException(
+                    "Execution of \"gofmt\" on file \"" + file.getAbsolutePath() + "\" failed with exit code " + code
+                );
+            }
+        }
+        catch (InterruptedException exception) {
+            throw new IOException(
+                "Interrupted while waiting for to execute \"gofmt\" on file \"" + file.getAbsolutePath() + "\"",
+                exception
+            );
         }
     }
 }
