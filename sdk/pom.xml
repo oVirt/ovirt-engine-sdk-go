@@ -101,6 +101,23 @@ limitations under the License.
             </configuration>
           </execution>
 
+          <!-- Compile the Go code: -->
+          <execution>
+            <id>compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${go.command}</executable>
+              <arguments>
+                <argument>build</argument>
+                <argument>-v</argument>
+                <argument>./ovirtsdk4</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
           <!-- Run the tests: -->
           <execution>
             <id>test</id>
