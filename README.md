@@ -1,4 +1,5 @@
-# oVirt Go SDK
+# oVirt Go SDK [![Build Status](https://travis-ci.org/imjoey/ovirt-engine-sdk-go.svg?branch=master)](https://travis-ci.org/imjoey/ovirt-engine-sdk-go)
+
 Go SDK for oVirt 4.0+, main functions are finished, excluding error processing...
 
 Project completion is almost 80%.
