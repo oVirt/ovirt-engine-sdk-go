@@ -21,6 +21,118 @@ import (
 	"time"
 )
 
+type Actions struct {
+	XMLName xml.Name `xml:"actions"`
+	Actions []Action `xml:"action,omitempty"`
+}
+
+type Action struct {
+	OvStruct
+	AllowPartialImport             *bool                                 `xml:"allow_partial_import,omitempty"`
+	Async                          *bool                                 `xml:"async,omitempty"`
+	Bricks                         []GlusterBrick                        `xml:"bricks,omitempty"`
+	Certificates                   []Certificate                         `xml:"certificates,omitempty"`
+	CheckConnectivity              *bool                                 `xml:"check_connectivity,omitempty"`
+	Clone                          *bool                                 `xml:"clone,omitempty"`
+	Cluster                        *Cluster                              `xml:"cluster,omitempty"`
+	CollapseSnapshots              *bool                                 `xml:"collapse_snapshots,omitempty"`
+	Comment                        *string                               `xml:"comment,omitempty"`
+	ConnectivityTimeout            *int64                                `xml:"connectivity_timeout,omitempty"`
+	DataCenter                     *DataCenter                           `xml:"data_center,omitempty"`
+	DeployHostedEngine             *bool                                 `xml:"deploy_hosted_engine,omitempty"`
+	Description                    *string                               `xml:"description,omitempty"`
+	Details                        *GlusterVolumeProfileDetails          `xml:"details,omitempty"`
+	DiscardSnapshots               *bool                                 `xml:"discard_snapshots,omitempty"`
+	Disk                           *Disk                                 `xml:"disk,omitempty"`
+	Disks                          []Disk                                `xml:"disks,omitempty"`
+	Exclusive                      *bool                                 `xml:"exclusive,omitempty"`
+	Fault                          *Fault                                `xml:"fault,omitempty"`
+	FenceType                      *string                               `xml:"fence_type,omitempty"`
+	Filter                         *bool                                 `xml:"filter,omitempty"`
+	FixLayout                      *bool                                 `xml:"fix_layout,omitempty"`
+	Force                          *bool                                 `xml:"force,omitempty"`
+	GracePeriod                    *GracePeriod                          `xml:"grace_period,omitempty"`
+	Host                           *Host                                 `xml:"host,omitempty"`
+	Id                             *string                               `xml:"id,attr,omitempty"`
+	Image                          *string                               `xml:"image,omitempty"`
+	ImportAsTemplate               *bool                                 `xml:"import_as_template,omitempty"`
+	IsAttached                     *bool                                 `xml:"is_attached,omitempty"`
+	Iscsi                          *IscsiDetails                         `xml:"iscsi,omitempty"`
+	IscsiTargets                   []string                              `xml:"iscsi_targets,omitempty"`
+	Job                            *Job                                  `xml:"job,omitempty"`
+	LogicalUnits                   []LogicalUnit                         `xml:"logical_units,omitempty"`
+	MaintenanceEnabled             *bool                                 `xml:"maintenance_enabled,omitempty"`
+	ModifiedBonds                  []HostNic                             `xml:"modified_bonds,omitempty"`
+	ModifiedLabels                 []NetworkLabel                        `xml:"modified_labels,omitempty"`
+	ModifiedNetworkAttachments     []NetworkAttachment                   `xml:"modified_network_attachments,omitempty"`
+	Name                           *string                               `xml:"name,omitempty"`
+	Option                         *Option                               `xml:"option,omitempty"`
+	Pause                          *bool                                 `xml:"pause,omitempty"`
+	PowerManagement                *PowerManagement                      `xml:"power_management,omitempty"`
+	ProxyTicket                    *ProxyTicket                          `xml:"proxy_ticket,omitempty"`
+	Reason                         *string                               `xml:"reason,omitempty"`
+	ReassignBadMacs                *bool                                 `xml:"reassign_bad_macs,omitempty"`
+	RemoteViewerConnectionFile     *string                               `xml:"remote_viewer_connection_file,omitempty"`
+	RemovedBonds                   []HostNic                             `xml:"removed_bonds,omitempty"`
+	RemovedLabels                  []NetworkLabel                        `xml:"removed_labels,omitempty"`
+	RemovedNetworkAttachments      []NetworkAttachment                   `xml:"removed_network_attachments,omitempty"`
+	ResolutionType                 *string                               `xml:"resolution_type,omitempty"`
+	RestoreMemory                  *bool                                 `xml:"restore_memory,omitempty"`
+	RootPassword                   *string                               `xml:"root_password,omitempty"`
+	Snapshot                       *Snapshot                             `xml:"snapshot,omitempty"`
+	Ssh                            *Ssh                                  `xml:"ssh,omitempty"`
+	Status                         *string                               `xml:"status,omitempty"`
+	StopGlusterService             *bool                                 `xml:"stop_gluster_service,omitempty"`
+	StorageDomain                  *StorageDomain                        `xml:"storage_domain,omitempty"`
+	StorageDomains                 []StorageDomain                       `xml:"storage_domains,omitempty"`
+	Succeeded                      *bool                                 `xml:"succeeded,omitempty"`
+	SynchronizedNetworkAttachments []NetworkAttachment                   `xml:"synchronized_network_attachments,omitempty"`
+	Template                       *Template                             `xml:"template,omitempty"`
+	Ticket                         *Ticket                               `xml:"ticket,omitempty"`
+	UndeployHostedEngine           *bool                                 `xml:"undeploy_hosted_engine,omitempty"`
+	UseCloudInit                   *bool                                 `xml:"use_cloud_init,omitempty"`
+	UseSysprep                     *bool                                 `xml:"use_sysprep,omitempty"`
+	VirtualFunctionsConfiguration  *HostNicVirtualFunctionsConfiguration `xml:"virtual_functions_configuration,omitempty"`
+	Vm                             *Vm                                   `xml:"vm,omitempty"`
+	VnicProfileMappings            []VnicProfileMapping                  `xml:"vnic_profile_mappings,omitempty"`
+}
+
+type AffinityGroups struct {
+	XMLName        xml.Name        `xml:"affinitygroups"`
+	AffinityGroups []AffinityGroup `xml:"affinity_group,omitempty"`
+}
+
+type AffinityGroup struct {
+	OvStruct
+	Cluster     *Cluster      `xml:"cluster,omitempty"`
+	Comment     *string       `xml:"comment,omitempty"`
+	Description *string       `xml:"description,omitempty"`
+	Enforcing   *bool         `xml:"enforcing,omitempty"`
+	Hosts       []Host        `xml:"hosts,omitempty"`
+	HostsRule   *AffinityRule `xml:"hosts_rule,omitempty"`
+	Id          *string       `xml:"id,attr,omitempty"`
+	Name        *string       `xml:"name,omitempty"`
+	Positive    *bool         `xml:"positive,omitempty"`
+	Vms         []Vm          `xml:"vms,omitempty"`
+	VmsRule     *AffinityRule `xml:"vms_rule,omitempty"`
+}
+
+type AffinityLabels struct {
+	XMLName        xml.Name        `xml:"affinitylabels"`
+	AffinityLabels []AffinityLabel `xml:"affinity_label,omitempty"`
+}
+
+type AffinityLabel struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Hosts       []Host  `xml:"hosts,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	ReadOnly    *bool   `xml:"read_only,omitempty"`
+	Vms         []Vm    `xml:"vms,omitempty"`
+}
+
 type AffinityRules struct {
 	XMLName       xml.Name       `xml:"affinityrules"`
 	AffinityRules []AffinityRule `xml:"affinity_rule,omitempty"`
@@ -31,6 +143,29 @@ type AffinityRule struct {
 	Enabled   *bool `xml:"enabled,omitempty"`
 	Enforcing *bool `xml:"enforcing,omitempty"`
 	Positive  *bool `xml:"positive,omitempty"`
+}
+
+type Agents struct {
+	XMLName xml.Name `xml:"agents"`
+	Agents  []Agent  `xml:"agent,omitempty"`
+}
+
+type Agent struct {
+	OvStruct
+	Address        *string  `xml:"address,omitempty"`
+	Comment        *string  `xml:"comment,omitempty"`
+	Concurrent     *bool    `xml:"concurrent,omitempty"`
+	Description    *string  `xml:"description,omitempty"`
+	EncryptOptions *bool    `xml:"encrypt_options,omitempty"`
+	Host           *Host    `xml:"host,omitempty"`
+	Id             *string  `xml:"id,attr,omitempty"`
+	Name           *string  `xml:"name,omitempty"`
+	Options        []Option `xml:"options,omitempty"`
+	Order          *int64   `xml:"order,omitempty"`
+	Password       *string  `xml:"password,omitempty"`
+	Port           *int64   `xml:"port,omitempty"`
+	Type           *string  `xml:"type,omitempty"`
+	Username       *string  `xml:"username,omitempty"`
 }
 
 type AgentConfigurations struct {
@@ -85,6 +220,50 @@ type ApiSummaryItem struct {
 	Total  *int64 `xml:"total,omitempty"`
 }
 
+type Applications struct {
+	XMLName      xml.Name      `xml:"applications"`
+	Applications []Application `xml:"application,omitempty"`
+}
+
+type Application struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	Vm          *Vm     `xml:"vm,omitempty"`
+}
+
+type AuthorizedKeys struct {
+	XMLName        xml.Name        `xml:"authorizedkeys"`
+	AuthorizedKeys []AuthorizedKey `xml:"authorized_key,omitempty"`
+}
+
+type AuthorizedKey struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Key         *string `xml:"key,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	User        *User   `xml:"user,omitempty"`
+}
+
+type Balances struct {
+	XMLName  xml.Name  `xml:"balances"`
+	Balances []Balance `xml:"balance,omitempty"`
+}
+
+type Balance struct {
+	OvStruct
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	SchedulingPolicy     *SchedulingPolicy     `xml:"scheduling_policy,omitempty"`
+	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
+}
+
 type Bioss struct {
 	XMLName xml.Name `xml:"bioss"`
 	Bioss   []Bios   `xml:"bios,omitempty"`
@@ -118,6 +297,20 @@ type Bonding struct {
 	Slaves       []HostNic `xml:"slaves,omitempty"`
 }
 
+type Bookmarks struct {
+	XMLName   xml.Name   `xml:"bookmarks"`
+	Bookmarks []Bookmark `xml:"bookmark,omitempty"`
+}
+
+type Bookmark struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	Value       *string `xml:"value,omitempty"`
+}
+
 type Boots struct {
 	XMLName xml.Name `xml:"boots"`
 	Boots   []Boot   `xml:"boot,omitempty"`
@@ -138,6 +331,51 @@ type BootMenu struct {
 	Enabled *bool `xml:"enabled,omitempty"`
 }
 
+type BrickProfileDetails struct {
+	XMLName             xml.Name             `xml:"brickprofiledetails"`
+	BrickProfileDetails []BrickProfileDetail `xml:"brick_profile_detail,omitempty"`
+}
+
+type BrickProfileDetail struct {
+	OvStruct
+	Brick          *GlusterBrick   `xml:"brick,omitempty"`
+	ProfileDetails []ProfileDetail `xml:"profile_details,omitempty"`
+}
+
+type Cdroms struct {
+	XMLName xml.Name `xml:"cdroms"`
+	Cdroms  []Cdrom  `xml:"cdrom,omitempty"`
+}
+
+type Cdrom struct {
+	OvStruct
+	Comment      *string       `xml:"comment,omitempty"`
+	Description  *string       `xml:"description,omitempty"`
+	File         *File         `xml:"file,omitempty"`
+	Id           *string       `xml:"id,attr,omitempty"`
+	InstanceType *InstanceType `xml:"instance_type,omitempty"`
+	Name         *string       `xml:"name,omitempty"`
+	Template     *Template     `xml:"template,omitempty"`
+	Vm           *Vm           `xml:"vm,omitempty"`
+	Vms          []Vm          `xml:"vms,omitempty"`
+}
+
+type Certificates struct {
+	XMLName      xml.Name      `xml:"certificates"`
+	Certificates []Certificate `xml:"certificate,omitempty"`
+}
+
+type Certificate struct {
+	OvStruct
+	Comment      *string `xml:"comment,omitempty"`
+	Content      *string `xml:"content,omitempty"`
+	Description  *string `xml:"description,omitempty"`
+	Id           *string `xml:"id,attr,omitempty"`
+	Name         *string `xml:"name,omitempty"`
+	Organization *string `xml:"organization,omitempty"`
+	Subject      *string `xml:"subject,omitempty"`
+}
+
 type CloudInits struct {
 	XMLName    xml.Name    `xml:"cloudinits"`
 	CloudInits []CloudInit `xml:"cloud_init,omitempty"`
@@ -152,6 +390,68 @@ type CloudInit struct {
 	RegenerateSshKeys    *bool                 `xml:"regenerate_ssh_keys,omitempty"`
 	Timezone             *string               `xml:"timezone,omitempty"`
 	Users                []User                `xml:"users,omitempty"`
+}
+
+type Clusters struct {
+	XMLName  xml.Name  `xml:"clusters"`
+	Clusters []Cluster `xml:"cluster,omitempty"`
+}
+
+type Cluster struct {
+	OvStruct
+	AffinityGroups                   []AffinityGroup   `xml:"affinity_groups,omitempty"`
+	BallooningEnabled                *bool             `xml:"ballooning_enabled,omitempty"`
+	Comment                          *string           `xml:"comment,omitempty"`
+	Cpu                              *Cpu              `xml:"cpu,omitempty"`
+	CpuProfiles                      []CpuProfile      `xml:"cpu_profiles,omitempty"`
+	CustomSchedulingPolicyProperties []Property        `xml:"custom_scheduling_policy_properties,omitempty"`
+	DataCenter                       *DataCenter       `xml:"data_center,omitempty"`
+	Description                      *string           `xml:"description,omitempty"`
+	Display                          *Display          `xml:"display,omitempty"`
+	ErrorHandling                    *ErrorHandling    `xml:"error_handling,omitempty"`
+	FencingPolicy                    *FencingPolicy    `xml:"fencing_policy,omitempty"`
+	GlusterHooks                     []GlusterHook     `xml:"gluster_hooks,omitempty"`
+	GlusterService                   *bool             `xml:"gluster_service,omitempty"`
+	GlusterTunedProfile              *string           `xml:"gluster_tuned_profile,omitempty"`
+	GlusterVolumes                   []GlusterVolume   `xml:"gluster_volumes,omitempty"`
+	HaReservation                    *bool             `xml:"ha_reservation,omitempty"`
+	Id                               *string           `xml:"id,attr,omitempty"`
+	Ksm                              *Ksm              `xml:"ksm,omitempty"`
+	MacPool                          *MacPool          `xml:"mac_pool,omitempty"`
+	MaintenanceReasonRequired        *bool             `xml:"maintenance_reason_required,omitempty"`
+	ManagementNetwork                *Network          `xml:"management_network,omitempty"`
+	MemoryPolicy                     *MemoryPolicy     `xml:"memory_policy,omitempty"`
+	Migration                        *MigrationOptions `xml:"migration,omitempty"`
+	Name                             *string           `xml:"name,omitempty"`
+	NetworkFilters                   []NetworkFilter   `xml:"network_filters,omitempty"`
+	Networks                         []Network         `xml:"networks,omitempty"`
+	OptionalReason                   *bool             `xml:"optional_reason,omitempty"`
+	Permissions                      []Permission      `xml:"permissions,omitempty"`
+	RequiredRngSources               []RngSource       `xml:"required_rng_sources,omitempty"`
+	SchedulingPolicy                 *SchedulingPolicy `xml:"scheduling_policy,omitempty"`
+	SerialNumber                     *SerialNumber     `xml:"serial_number,omitempty"`
+	SupportedVersions                []Version         `xml:"supported_versions,omitempty"`
+	SwitchType                       SwitchType        `xml:"switch_type,omitempty"`
+	ThreadsAsCores                   *bool             `xml:"threads_as_cores,omitempty"`
+	TrustedService                   *bool             `xml:"trusted_service,omitempty"`
+	TunnelMigration                  *bool             `xml:"tunnel_migration,omitempty"`
+	Version                          *Version          `xml:"version,omitempty"`
+	VirtService                      *bool             `xml:"virt_service,omitempty"`
+}
+
+type ClusterLevels struct {
+	XMLName       xml.Name       `xml:"clusterlevels"`
+	ClusterLevels []ClusterLevel `xml:"cluster_level,omitempty"`
+}
+
+type ClusterLevel struct {
+	OvStruct
+	Comment     *string   `xml:"comment,omitempty"`
+	CpuTypes    []CpuType `xml:"cpu_types,omitempty"`
+	Description *string   `xml:"description,omitempty"`
+	Id          *string   `xml:"id,attr,omitempty"`
+	Name        *string   `xml:"name,omitempty"`
+	Permits     []Permit  `xml:"permits,omitempty"`
 }
 
 type Configurations struct {
@@ -204,6 +504,22 @@ type Cpu struct {
 	Type         *string      `xml:"type,omitempty"`
 }
 
+type CpuProfiles struct {
+	XMLName     xml.Name     `xml:"cpuprofiles"`
+	CpuProfiles []CpuProfile `xml:"cpu_profile,omitempty"`
+}
+
+type CpuProfile struct {
+	OvStruct
+	Cluster     *Cluster     `xml:"cluster,omitempty"`
+	Comment     *string      `xml:"comment,omitempty"`
+	Description *string      `xml:"description,omitempty"`
+	Id          *string      `xml:"id,attr,omitempty"`
+	Name        *string      `xml:"name,omitempty"`
+	Permissions []Permission `xml:"permissions,omitempty"`
+	Qos         *Qos         `xml:"qos,omitempty"`
+}
+
 type CpuTopologys struct {
 	XMLName      xml.Name      `xml:"cputopologys"`
 	CpuTopologys []CpuTopology `xml:"cpu_topology,omitempty"`
@@ -250,6 +566,181 @@ type CustomProperty struct {
 	Value  *string `xml:"value,omitempty"`
 }
 
+type DataCenters struct {
+	XMLName     xml.Name     `xml:"datacenters"`
+	DataCenters []DataCenter `xml:"data_center,omitempty"`
+}
+
+type DataCenter struct {
+	OvStruct
+	Clusters          []Cluster        `xml:"clusters,omitempty"`
+	Comment           *string          `xml:"comment,omitempty"`
+	Description       *string          `xml:"description,omitempty"`
+	Id                *string          `xml:"id,attr,omitempty"`
+	IscsiBonds        []IscsiBond      `xml:"iscsi_bonds,omitempty"`
+	Local             *bool            `xml:"local,omitempty"`
+	MacPool           *MacPool         `xml:"mac_pool,omitempty"`
+	Name              *string          `xml:"name,omitempty"`
+	Networks          []Network        `xml:"networks,omitempty"`
+	Permissions       []Permission     `xml:"permissions,omitempty"`
+	Qoss              []Qos            `xml:"qoss,omitempty"`
+	QuotaMode         QuotaModeType    `xml:"quota_mode,omitempty"`
+	Quotas            []Quota          `xml:"quotas,omitempty"`
+	Status            DataCenterStatus `xml:"status,omitempty"`
+	StorageDomains    []StorageDomain  `xml:"storage_domains,omitempty"`
+	StorageFormat     StorageFormat    `xml:"storage_format,omitempty"`
+	SupportedVersions []Version        `xml:"supported_versions,omitempty"`
+	Version           *Version         `xml:"version,omitempty"`
+}
+
+type Devices struct {
+	XMLName xml.Name `xml:"devices"`
+	Devices []Device `xml:"device,omitempty"`
+}
+
+type Device struct {
+	OvStruct
+	Comment      *string       `xml:"comment,omitempty"`
+	Description  *string       `xml:"description,omitempty"`
+	Id           *string       `xml:"id,attr,omitempty"`
+	InstanceType *InstanceType `xml:"instance_type,omitempty"`
+	Name         *string       `xml:"name,omitempty"`
+	Template     *Template     `xml:"template,omitempty"`
+	Vm           *Vm           `xml:"vm,omitempty"`
+	Vms          []Vm          `xml:"vms,omitempty"`
+}
+
+type Disks struct {
+	XMLName xml.Name `xml:"disks"`
+	Disks   []Disk   `xml:"disk,omitempty"`
+}
+
+type Disk struct {
+	OvStruct
+	Active              *bool                `xml:"active,omitempty"`
+	ActualSize          *int64               `xml:"actual_size,omitempty"`
+	Alias               *string              `xml:"alias,omitempty"`
+	Bootable            *bool                `xml:"bootable,omitempty"`
+	Comment             *string              `xml:"comment,omitempty"`
+	Description         *string              `xml:"description,omitempty"`
+	DiskProfile         *DiskProfile         `xml:"disk_profile,omitempty"`
+	Format              DiskFormat           `xml:"format,omitempty"`
+	Id                  *string              `xml:"id,attr,omitempty"`
+	ImageId             *string              `xml:"image_id,omitempty"`
+	InitialSize         *int64               `xml:"initial_size,omitempty"`
+	InstanceType        *InstanceType        `xml:"instance_type,omitempty"`
+	Interface           DiskInterface        `xml:"interface,omitempty"`
+	LogicalName         *string              `xml:"logical_name,omitempty"`
+	LunStorage          *HostStorage         `xml:"lun_storage,omitempty"`
+	Name                *string              `xml:"name,omitempty"`
+	OpenstackVolumeType *OpenStackVolumeType `xml:"openstack_volume_type,omitempty"`
+	Permissions         []Permission         `xml:"permissions,omitempty"`
+	PropagateErrors     *bool                `xml:"propagate_errors,omitempty"`
+	ProvisionedSize     *int64               `xml:"provisioned_size,omitempty"`
+	QcowVersion         QcowVersion          `xml:"qcow_version,omitempty"`
+	Quota               *Quota               `xml:"quota,omitempty"`
+	ReadOnly            *bool                `xml:"read_only,omitempty"`
+	Sgio                ScsiGenericIO        `xml:"sgio,omitempty"`
+	Shareable           *bool                `xml:"shareable,omitempty"`
+	Snapshot            *Snapshot            `xml:"snapshot,omitempty"`
+	Sparse              *bool                `xml:"sparse,omitempty"`
+	Statistics          []Statistic          `xml:"statistics,omitempty"`
+	Status              DiskStatus           `xml:"status,omitempty"`
+	StorageDomain       *StorageDomain       `xml:"storage_domain,omitempty"`
+	StorageDomains      []StorageDomain      `xml:"storage_domains,omitempty"`
+	StorageType         DiskStorageType      `xml:"storage_type,omitempty"`
+	Template            *Template            `xml:"template,omitempty"`
+	UsesScsiReservation *bool                `xml:"uses_scsi_reservation,omitempty"`
+	Vm                  *Vm                  `xml:"vm,omitempty"`
+	Vms                 []Vm                 `xml:"vms,omitempty"`
+	WipeAfterDelete     *bool                `xml:"wipe_after_delete,omitempty"`
+}
+
+type DiskAttachments struct {
+	XMLName         xml.Name         `xml:"diskattachments"`
+	DiskAttachments []DiskAttachment `xml:"disk_attachment,omitempty"`
+}
+
+type DiskAttachment struct {
+	OvStruct
+	Active              *bool         `xml:"active,omitempty"`
+	Bootable            *bool         `xml:"bootable,omitempty"`
+	Comment             *string       `xml:"comment,omitempty"`
+	Description         *string       `xml:"description,omitempty"`
+	Disk                *Disk         `xml:"disk,omitempty"`
+	Id                  *string       `xml:"id,attr,omitempty"`
+	Interface           DiskInterface `xml:"interface,omitempty"`
+	LogicalName         *string       `xml:"logical_name,omitempty"`
+	Name                *string       `xml:"name,omitempty"`
+	PassDiscard         *bool         `xml:"pass_discard,omitempty"`
+	Template            *Template     `xml:"template,omitempty"`
+	UsesScsiReservation *bool         `xml:"uses_scsi_reservation,omitempty"`
+	Vm                  *Vm           `xml:"vm,omitempty"`
+}
+
+type DiskProfiles struct {
+	XMLName      xml.Name      `xml:"diskprofiles"`
+	DiskProfiles []DiskProfile `xml:"disk_profile,omitempty"`
+}
+
+type DiskProfile struct {
+	OvStruct
+	Comment       *string        `xml:"comment,omitempty"`
+	Description   *string        `xml:"description,omitempty"`
+	Id            *string        `xml:"id,attr,omitempty"`
+	Name          *string        `xml:"name,omitempty"`
+	Permissions   []Permission   `xml:"permissions,omitempty"`
+	Qos           *Qos           `xml:"qos,omitempty"`
+	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
+}
+
+type DiskSnapshots struct {
+	XMLName       xml.Name       `xml:"disksnapshots"`
+	DiskSnapshots []DiskSnapshot `xml:"disk_snapshot,omitempty"`
+}
+
+type DiskSnapshot struct {
+	OvStruct
+	Active              *bool                `xml:"active,omitempty"`
+	ActualSize          *int64               `xml:"actual_size,omitempty"`
+	Alias               *string              `xml:"alias,omitempty"`
+	Bootable            *bool                `xml:"bootable,omitempty"`
+	Comment             *string              `xml:"comment,omitempty"`
+	Description         *string              `xml:"description,omitempty"`
+	Disk                *Disk                `xml:"disk,omitempty"`
+	DiskProfile         *DiskProfile         `xml:"disk_profile,omitempty"`
+	Format              DiskFormat           `xml:"format,omitempty"`
+	Id                  *string              `xml:"id,attr,omitempty"`
+	ImageId             *string              `xml:"image_id,omitempty"`
+	InitialSize         *int64               `xml:"initial_size,omitempty"`
+	InstanceType        *InstanceType        `xml:"instance_type,omitempty"`
+	Interface           DiskInterface        `xml:"interface,omitempty"`
+	LogicalName         *string              `xml:"logical_name,omitempty"`
+	LunStorage          *HostStorage         `xml:"lun_storage,omitempty"`
+	Name                *string              `xml:"name,omitempty"`
+	OpenstackVolumeType *OpenStackVolumeType `xml:"openstack_volume_type,omitempty"`
+	Permissions         []Permission         `xml:"permissions,omitempty"`
+	PropagateErrors     *bool                `xml:"propagate_errors,omitempty"`
+	ProvisionedSize     *int64               `xml:"provisioned_size,omitempty"`
+	QcowVersion         QcowVersion          `xml:"qcow_version,omitempty"`
+	Quota               *Quota               `xml:"quota,omitempty"`
+	ReadOnly            *bool                `xml:"read_only,omitempty"`
+	Sgio                ScsiGenericIO        `xml:"sgio,omitempty"`
+	Shareable           *bool                `xml:"shareable,omitempty"`
+	Snapshot            *Snapshot            `xml:"snapshot,omitempty"`
+	Sparse              *bool                `xml:"sparse,omitempty"`
+	Statistics          []Statistic          `xml:"statistics,omitempty"`
+	Status              DiskStatus           `xml:"status,omitempty"`
+	StorageDomain       *StorageDomain       `xml:"storage_domain,omitempty"`
+	StorageDomains      []StorageDomain      `xml:"storage_domains,omitempty"`
+	StorageType         DiskStorageType      `xml:"storage_type,omitempty"`
+	Template            *Template            `xml:"template,omitempty"`
+	UsesScsiReservation *bool                `xml:"uses_scsi_reservation,omitempty"`
+	Vm                  *Vm                  `xml:"vm,omitempty"`
+	Vms                 []Vm                 `xml:"vms,omitempty"`
+	WipeAfterDelete     *bool                `xml:"wipe_after_delete,omitempty"`
+}
+
 type Displays struct {
 	XMLName  xml.Name  `xml:"displays"`
 	Displays []Display `xml:"display,omitempty"`
@@ -294,6 +785,22 @@ type DnsResolverConfiguration struct {
 	NameServers []string `xml:"name_servers,omitempty"`
 }
 
+type Domains struct {
+	XMLName xml.Name `xml:"domains"`
+	Domains []Domain `xml:"domain,omitempty"`
+}
+
+type Domain struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Groups      []Group `xml:"groups,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	User        *User   `xml:"user,omitempty"`
+	Users       []User  `xml:"users,omitempty"`
+}
+
 type EntityProfileDetails struct {
 	XMLName              xml.Name              `xml:"entityprofiledetails"`
 	EntityProfileDetails []EntityProfileDetail `xml:"entity_profile_detail,omitempty"`
@@ -312,6 +819,145 @@ type ErrorHandlings struct {
 type ErrorHandling struct {
 	OvStruct
 	OnError MigrateOnError `xml:"on_error,omitempty"`
+}
+
+type Events struct {
+	XMLName xml.Name `xml:"events"`
+	Events  []Event  `xml:"event,omitempty"`
+}
+
+type Event struct {
+	OvStruct
+	Cluster       *Cluster       `xml:"cluster,omitempty"`
+	Code          *int64         `xml:"code,omitempty"`
+	Comment       *string        `xml:"comment,omitempty"`
+	CorrelationId *string        `xml:"correlation_id,omitempty"`
+	CustomData    *string        `xml:"custom_data,omitempty"`
+	CustomId      *int64         `xml:"custom_id,omitempty"`
+	DataCenter    *DataCenter    `xml:"data_center,omitempty"`
+	Description   *string        `xml:"description,omitempty"`
+	FloodRate     *int64         `xml:"flood_rate,omitempty"`
+	Host          *Host          `xml:"host,omitempty"`
+	Id            *string        `xml:"id,attr,omitempty"`
+	Name          *string        `xml:"name,omitempty"`
+	Origin        *string        `xml:"origin,omitempty"`
+	Severity      LogSeverity    `xml:"severity,omitempty"`
+	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
+	Template      *Template      `xml:"template,omitempty"`
+	Time          time.Time      `xml:"time,omitempty"`
+	User          *User          `xml:"user,omitempty"`
+	Vm            *Vm            `xml:"vm,omitempty"`
+}
+
+type ExternalComputeResources struct {
+	XMLName                  xml.Name                  `xml:"externalcomputeresources"`
+	ExternalComputeResources []ExternalComputeResource `xml:"external_compute_resource,omitempty"`
+}
+
+type ExternalComputeResource struct {
+	OvStruct
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	Provider             *string               `xml:"provider,omitempty"`
+	Url                  *string               `xml:"url,omitempty"`
+	User                 *string               `xml:"user,omitempty"`
+}
+
+type ExternalDiscoveredHosts struct {
+	XMLName                 xml.Name                 `xml:"externaldiscoveredhosts"`
+	ExternalDiscoveredHosts []ExternalDiscoveredHost `xml:"external_discovered_host,omitempty"`
+}
+
+type ExternalDiscoveredHost struct {
+	OvStruct
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Ip                   *string               `xml:"ip,omitempty"`
+	LastReport           *string               `xml:"last_report,omitempty"`
+	Mac                  *string               `xml:"mac,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	SubnetName           *string               `xml:"subnet_name,omitempty"`
+}
+
+type ExternalHosts struct {
+	XMLName       xml.Name       `xml:"externalhosts"`
+	ExternalHosts []ExternalHost `xml:"external_host,omitempty"`
+}
+
+type ExternalHost struct {
+	OvStruct
+	Address              *string               `xml:"address,omitempty"`
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+}
+
+type ExternalHostGroups struct {
+	XMLName            xml.Name            `xml:"externalhostgroups"`
+	ExternalHostGroups []ExternalHostGroup `xml:"external_host_group,omitempty"`
+}
+
+type ExternalHostGroup struct {
+	OvStruct
+	ArchitectureName     *string               `xml:"architecture_name,omitempty"`
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	DomainName           *string               `xml:"domain_name,omitempty"`
+	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	OperatingSystemName  *string               `xml:"operating_system_name,omitempty"`
+	SubnetName           *string               `xml:"subnet_name,omitempty"`
+}
+
+type ExternalHostProviders struct {
+	XMLName               xml.Name               `xml:"externalhostproviders"`
+	ExternalHostProviders []ExternalHostProvider `xml:"external_host_provider,omitempty"`
+}
+
+type ExternalHostProvider struct {
+	OvStruct
+	AuthenticationUrl      *string                   `xml:"authentication_url,omitempty"`
+	Certificates           []Certificate             `xml:"certificates,omitempty"`
+	Comment                *string                   `xml:"comment,omitempty"`
+	ComputeResources       []ExternalComputeResource `xml:"compute_resources,omitempty"`
+	Description            *string                   `xml:"description,omitempty"`
+	DiscoveredHosts        []ExternalDiscoveredHost  `xml:"discovered_hosts,omitempty"`
+	HostGroups             []ExternalHostGroup       `xml:"host_groups,omitempty"`
+	Hosts                  []Host                    `xml:"hosts,omitempty"`
+	Id                     *string                   `xml:"id,attr,omitempty"`
+	Name                   *string                   `xml:"name,omitempty"`
+	Password               *string                   `xml:"password,omitempty"`
+	Properties             []Property                `xml:"properties,omitempty"`
+	RequiresAuthentication *bool                     `xml:"requires_authentication,omitempty"`
+	Url                    *string                   `xml:"url,omitempty"`
+	Username               *string                   `xml:"username,omitempty"`
+}
+
+type ExternalProviders struct {
+	XMLName           xml.Name           `xml:"externalproviders"`
+	ExternalProviders []ExternalProvider `xml:"external_provider,omitempty"`
+}
+
+type ExternalProvider struct {
+	OvStruct
+	AuthenticationUrl      *string    `xml:"authentication_url,omitempty"`
+	Comment                *string    `xml:"comment,omitempty"`
+	Description            *string    `xml:"description,omitempty"`
+	Id                     *string    `xml:"id,attr,omitempty"`
+	Name                   *string    `xml:"name,omitempty"`
+	Password               *string    `xml:"password,omitempty"`
+	Properties             []Property `xml:"properties,omitempty"`
+	RequiresAuthentication *bool      `xml:"requires_authentication,omitempty"`
+	Url                    *string    `xml:"url,omitempty"`
+	Username               *string    `xml:"username,omitempty"`
 }
 
 type ExternalVmImports struct {
@@ -361,6 +1007,55 @@ type FencingPolicy struct {
 	SkipIfSdActive            *SkipIfSdActive           `xml:"skip_if_sd_active,omitempty"`
 }
 
+type Files struct {
+	XMLName xml.Name `xml:"files"`
+	Files   []File   `xml:"file,omitempty"`
+}
+
+type File struct {
+	OvStruct
+	Comment       *string        `xml:"comment,omitempty"`
+	Content       *string        `xml:"content,omitempty"`
+	Description   *string        `xml:"description,omitempty"`
+	Id            *string        `xml:"id,attr,omitempty"`
+	Name          *string        `xml:"name,omitempty"`
+	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
+	Type          *string        `xml:"type,omitempty"`
+}
+
+type Filters struct {
+	XMLName xml.Name `xml:"filters"`
+	Filters []Filter `xml:"filter,omitempty"`
+}
+
+type Filter struct {
+	OvStruct
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	Position             *int64                `xml:"position,omitempty"`
+	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
+}
+
+type Floppys struct {
+	XMLName xml.Name `xml:"floppys"`
+	Floppys []Floppy `xml:"floppy,omitempty"`
+}
+
+type Floppy struct {
+	OvStruct
+	Comment      *string       `xml:"comment,omitempty"`
+	Description  *string       `xml:"description,omitempty"`
+	File         *File         `xml:"file,omitempty"`
+	Id           *string       `xml:"id,attr,omitempty"`
+	InstanceType *InstanceType `xml:"instance_type,omitempty"`
+	Name         *string       `xml:"name,omitempty"`
+	Template     *Template     `xml:"template,omitempty"`
+	Vm           *Vm           `xml:"vm,omitempty"`
+	Vms          []Vm          `xml:"vms,omitempty"`
+}
+
 type FopStatistics struct {
 	XMLName       xml.Name       `xml:"fopstatistics"`
 	FopStatistics []FopStatistic `xml:"fop_statistic,omitempty"`
@@ -370,6 +1065,59 @@ type FopStatistic struct {
 	OvStruct
 	Name       *string     `xml:"name,omitempty"`
 	Statistics []Statistic `xml:"statistics,omitempty"`
+}
+
+type GlusterBricks struct {
+	XMLName       xml.Name       `xml:"glusterbricks"`
+	GlusterBricks []GlusterBrick `xml:"gluster_brick,omitempty"`
+}
+
+type GlusterBrick struct {
+	OvStruct
+	BrickDir       *string             `xml:"brick_dir,omitempty"`
+	Comment        *string             `xml:"comment,omitempty"`
+	Description    *string             `xml:"description,omitempty"`
+	Device         *string             `xml:"device,omitempty"`
+	FsName         *string             `xml:"fs_name,omitempty"`
+	GlusterClients []GlusterClient     `xml:"gluster_clients,omitempty"`
+	GlusterVolume  *GlusterVolume      `xml:"gluster_volume,omitempty"`
+	Id             *string             `xml:"id,attr,omitempty"`
+	InstanceType   *InstanceType       `xml:"instance_type,omitempty"`
+	MemoryPools    []GlusterMemoryPool `xml:"memory_pools,omitempty"`
+	MntOptions     *string             `xml:"mnt_options,omitempty"`
+	Name           *string             `xml:"name,omitempty"`
+	Pid            *int64              `xml:"pid,omitempty"`
+	Port           *int64              `xml:"port,omitempty"`
+	ServerId       *string             `xml:"server_id,omitempty"`
+	Statistics     []Statistic         `xml:"statistics,omitempty"`
+	Status         GlusterBrickStatus  `xml:"status,omitempty"`
+	Template       *Template           `xml:"template,omitempty"`
+	Vm             *Vm                 `xml:"vm,omitempty"`
+	Vms            []Vm                `xml:"vms,omitempty"`
+}
+
+type GlusterBrickAdvancedDetailss struct {
+	XMLName                      xml.Name                      `xml:"glusterbrickadvanceddetailss"`
+	GlusterBrickAdvancedDetailss []GlusterBrickAdvancedDetails `xml:"gluster_brick_advanced_details,omitempty"`
+}
+
+type GlusterBrickAdvancedDetails struct {
+	OvStruct
+	Comment        *string             `xml:"comment,omitempty"`
+	Description    *string             `xml:"description,omitempty"`
+	Device         *string             `xml:"device,omitempty"`
+	FsName         *string             `xml:"fs_name,omitempty"`
+	GlusterClients []GlusterClient     `xml:"gluster_clients,omitempty"`
+	Id             *string             `xml:"id,attr,omitempty"`
+	InstanceType   *InstanceType       `xml:"instance_type,omitempty"`
+	MemoryPools    []GlusterMemoryPool `xml:"memory_pools,omitempty"`
+	MntOptions     *string             `xml:"mnt_options,omitempty"`
+	Name           *string             `xml:"name,omitempty"`
+	Pid            *int64              `xml:"pid,omitempty"`
+	Port           *int64              `xml:"port,omitempty"`
+	Template       *Template           `xml:"template,omitempty"`
+	Vm             *Vm                 `xml:"vm,omitempty"`
+	Vms            []Vm                `xml:"vms,omitempty"`
 }
 
 type GlusterBrickMemoryInfos struct {
@@ -395,6 +1143,106 @@ type GlusterClient struct {
 	HostName     *string `xml:"host_name,omitempty"`
 }
 
+type GlusterHooks struct {
+	XMLName      xml.Name      `xml:"glusterhooks"`
+	GlusterHooks []GlusterHook `xml:"gluster_hook,omitempty"`
+}
+
+type GlusterHook struct {
+	OvStruct
+	Checksum       *string             `xml:"checksum,omitempty"`
+	Cluster        *Cluster            `xml:"cluster,omitempty"`
+	Comment        *string             `xml:"comment,omitempty"`
+	ConflictStatus *int64              `xml:"conflict_status,omitempty"`
+	Conflicts      *string             `xml:"conflicts,omitempty"`
+	Content        *string             `xml:"content,omitempty"`
+	ContentType    HookContentType     `xml:"content_type,omitempty"`
+	Description    *string             `xml:"description,omitempty"`
+	GlusterCommand *string             `xml:"gluster_command,omitempty"`
+	Id             *string             `xml:"id,attr,omitempty"`
+	Name           *string             `xml:"name,omitempty"`
+	ServerHooks    []GlusterServerHook `xml:"server_hooks,omitempty"`
+	Stage          HookStage           `xml:"stage,omitempty"`
+	Status         GlusterHookStatus   `xml:"status,omitempty"`
+}
+
+type GlusterMemoryPools struct {
+	XMLName            xml.Name            `xml:"glustermemorypools"`
+	GlusterMemoryPools []GlusterMemoryPool `xml:"gluster_memory_pool,omitempty"`
+}
+
+type GlusterMemoryPool struct {
+	OvStruct
+	AllocCount  *int64  `xml:"alloc_count,omitempty"`
+	ColdCount   *int64  `xml:"cold_count,omitempty"`
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	HotCount    *int64  `xml:"hot_count,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	MaxAlloc    *int64  `xml:"max_alloc,omitempty"`
+	MaxStdalloc *int64  `xml:"max_stdalloc,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+	PaddedSize  *int64  `xml:"padded_size,omitempty"`
+	PoolMisses  *int64  `xml:"pool_misses,omitempty"`
+	Type        *string `xml:"type,omitempty"`
+}
+
+type GlusterServerHooks struct {
+	XMLName            xml.Name            `xml:"glusterserverhooks"`
+	GlusterServerHooks []GlusterServerHook `xml:"gluster_server_hook,omitempty"`
+}
+
+type GlusterServerHook struct {
+	OvStruct
+	Checksum    *string           `xml:"checksum,omitempty"`
+	Comment     *string           `xml:"comment,omitempty"`
+	ContentType HookContentType   `xml:"content_type,omitempty"`
+	Description *string           `xml:"description,omitempty"`
+	Host        *Host             `xml:"host,omitempty"`
+	Id          *string           `xml:"id,attr,omitempty"`
+	Name        *string           `xml:"name,omitempty"`
+	Status      GlusterHookStatus `xml:"status,omitempty"`
+}
+
+type GlusterVolumes struct {
+	XMLName        xml.Name        `xml:"glustervolumes"`
+	GlusterVolumes []GlusterVolume `xml:"gluster_volume,omitempty"`
+}
+
+type GlusterVolume struct {
+	OvStruct
+	Bricks          []GlusterBrick      `xml:"bricks,omitempty"`
+	Cluster         *Cluster            `xml:"cluster,omitempty"`
+	Comment         *string             `xml:"comment,omitempty"`
+	Description     *string             `xml:"description,omitempty"`
+	DisperseCount   *int64              `xml:"disperse_count,omitempty"`
+	Id              *string             `xml:"id,attr,omitempty"`
+	Name            *string             `xml:"name,omitempty"`
+	Options         []Option            `xml:"options,omitempty"`
+	RedundancyCount *int64              `xml:"redundancy_count,omitempty"`
+	ReplicaCount    *int64              `xml:"replica_count,omitempty"`
+	Statistics      []Statistic         `xml:"statistics,omitempty"`
+	Status          GlusterVolumeStatus `xml:"status,omitempty"`
+	StripeCount     *int64              `xml:"stripe_count,omitempty"`
+	TransportTypes  []TransportType     `xml:"transport_types,omitempty"`
+	VolumeType      GlusterVolumeType   `xml:"volume_type,omitempty"`
+}
+
+type GlusterVolumeProfileDetailss struct {
+	XMLName                      xml.Name                      `xml:"glustervolumeprofiledetailss"`
+	GlusterVolumeProfileDetailss []GlusterVolumeProfileDetails `xml:"gluster_volume_profile_details,omitempty"`
+}
+
+type GlusterVolumeProfileDetails struct {
+	OvStruct
+	BrickProfileDetails []BrickProfileDetail `xml:"brick_profile_details,omitempty"`
+	Comment             *string              `xml:"comment,omitempty"`
+	Description         *string              `xml:"description,omitempty"`
+	Id                  *string              `xml:"id,attr,omitempty"`
+	Name                *string              `xml:"name,omitempty"`
+	NfsProfileDetails   []NfsProfileDetail   `xml:"nfs_profile_details,omitempty"`
+}
+
 type GracePeriods struct {
 	XMLName      xml.Name      `xml:"graceperiods"`
 	GracePeriods []GracePeriod `xml:"grace_period,omitempty"`
@@ -403,6 +1251,45 @@ type GracePeriods struct {
 type GracePeriod struct {
 	OvStruct
 	Expiry *int64 `xml:"expiry,omitempty"`
+}
+
+type GraphicsConsoles struct {
+	XMLName          xml.Name          `xml:"graphicsconsoles"`
+	GraphicsConsoles []GraphicsConsole `xml:"graphics_console,omitempty"`
+}
+
+type GraphicsConsole struct {
+	OvStruct
+	Address      *string       `xml:"address,omitempty"`
+	Comment      *string       `xml:"comment,omitempty"`
+	Description  *string       `xml:"description,omitempty"`
+	Id           *string       `xml:"id,attr,omitempty"`
+	InstanceType *InstanceType `xml:"instance_type,omitempty"`
+	Name         *string       `xml:"name,omitempty"`
+	Port         *int64        `xml:"port,omitempty"`
+	Protocol     GraphicsType  `xml:"protocol,omitempty"`
+	Template     *Template     `xml:"template,omitempty"`
+	TlsPort      *int64        `xml:"tls_port,omitempty"`
+	Vm           *Vm           `xml:"vm,omitempty"`
+}
+
+type Groups struct {
+	XMLName xml.Name `xml:"groups"`
+	Groups  []Group  `xml:"group,omitempty"`
+}
+
+type Group struct {
+	OvStruct
+	Comment       *string      `xml:"comment,omitempty"`
+	Description   *string      `xml:"description,omitempty"`
+	Domain        *Domain      `xml:"domain,omitempty"`
+	DomainEntryId *string      `xml:"domain_entry_id,omitempty"`
+	Id            *string      `xml:"id,attr,omitempty"`
+	Name          *string      `xml:"name,omitempty"`
+	Namespace     *string      `xml:"namespace,omitempty"`
+	Permissions   []Permission `xml:"permissions,omitempty"`
+	Roles         []Role       `xml:"roles,omitempty"`
+	Tags          []Tag        `xml:"tags,omitempty"`
 }
 
 type GuestOperatingSystems struct {
@@ -447,6 +1334,106 @@ type HighAvailability struct {
 	Priority *int64 `xml:"priority,omitempty"`
 }
 
+type Hooks struct {
+	XMLName xml.Name `xml:"hooks"`
+	Hooks   []Hook   `xml:"hook,omitempty"`
+}
+
+type Hook struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	EventName   *string `xml:"event_name,omitempty"`
+	Host        *Host   `xml:"host,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	Md5         *string `xml:"md5,omitempty"`
+	Name        *string `xml:"name,omitempty"`
+}
+
+type Hosts struct {
+	XMLName xml.Name `xml:"hosts"`
+	Hosts   []Host   `xml:"host,omitempty"`
+}
+
+type Host struct {
+	OvStruct
+	Address                     *string                      `xml:"address,omitempty"`
+	AffinityLabels              []AffinityLabel              `xml:"affinity_labels,omitempty"`
+	Agents                      []Agent                      `xml:"agents,omitempty"`
+	AutoNumaStatus              AutoNumaStatus               `xml:"auto_numa_status,omitempty"`
+	Certificate                 *Certificate                 `xml:"certificate,omitempty"`
+	Cluster                     *Cluster                     `xml:"cluster,omitempty"`
+	Comment                     *string                      `xml:"comment,omitempty"`
+	Cpu                         *Cpu                         `xml:"cpu,omitempty"`
+	Description                 *string                      `xml:"description,omitempty"`
+	DevicePassthrough           *HostDevicePassthrough       `xml:"device_passthrough,omitempty"`
+	Devices                     []Device                     `xml:"devices,omitempty"`
+	Display                     *Display                     `xml:"display,omitempty"`
+	ExternalHostProvider        *ExternalHostProvider        `xml:"external_host_provider,omitempty"`
+	ExternalStatus              ExternalStatus               `xml:"external_status,omitempty"`
+	HardwareInformation         *HardwareInformation         `xml:"hardware_information,omitempty"`
+	Hooks                       []Hook                       `xml:"hooks,omitempty"`
+	HostedEngine                *HostedEngine                `xml:"hosted_engine,omitempty"`
+	Id                          *string                      `xml:"id,attr,omitempty"`
+	Iscsi                       *IscsiDetails                `xml:"iscsi,omitempty"`
+	KatelloErrata               []KatelloErratum             `xml:"katello_errata,omitempty"`
+	KdumpStatus                 KdumpStatus                  `xml:"kdump_status,omitempty"`
+	Ksm                         *Ksm                         `xml:"ksm,omitempty"`
+	LibvirtVersion              *Version                     `xml:"libvirt_version,omitempty"`
+	MaxSchedulingMemory         *int64                       `xml:"max_scheduling_memory,omitempty"`
+	Memory                      *int64                       `xml:"memory,omitempty"`
+	Name                        *string                      `xml:"name,omitempty"`
+	NetworkAttachments          []NetworkAttachment          `xml:"network_attachments,omitempty"`
+	Nics                        []Nic                        `xml:"nics,omitempty"`
+	NumaNodes                   []NumaNode                   `xml:"numa_nodes,omitempty"`
+	NumaSupported               *bool                        `xml:"numa_supported,omitempty"`
+	Os                          *OperatingSystem             `xml:"os,omitempty"`
+	OverrideIptables            *bool                        `xml:"override_iptables,omitempty"`
+	Permissions                 []Permission                 `xml:"permissions,omitempty"`
+	Port                        *int64                       `xml:"port,omitempty"`
+	PowerManagement             *PowerManagement             `xml:"power_management,omitempty"`
+	Protocol                    HostProtocol                 `xml:"protocol,omitempty"`
+	RootPassword                *string                      `xml:"root_password,omitempty"`
+	SeLinux                     *SeLinux                     `xml:"se_linux,omitempty"`
+	Spm                         *Spm                         `xml:"spm,omitempty"`
+	Ssh                         *Ssh                         `xml:"ssh,omitempty"`
+	Statistics                  []Statistic                  `xml:"statistics,omitempty"`
+	Status                      HostStatus                   `xml:"status,omitempty"`
+	StatusDetail                *string                      `xml:"status_detail,omitempty"`
+	StorageConnectionExtensions []StorageConnectionExtension `xml:"storage_connection_extensions,omitempty"`
+	Storages                    []HostStorage                `xml:"storages,omitempty"`
+	Summary                     *VmSummary                   `xml:"summary,omitempty"`
+	Tags                        []Tag                        `xml:"tags,omitempty"`
+	TransparentHugePages        *TransparentHugePages        `xml:"transparent_huge_pages,omitempty"`
+	Type                        HostType                     `xml:"type,omitempty"`
+	UnmanagedNetworks           []UnmanagedNetwork           `xml:"unmanaged_networks,omitempty"`
+	UpdateAvailable             *bool                        `xml:"update_available,omitempty"`
+	Version                     *Version                     `xml:"version,omitempty"`
+}
+
+type HostDevices struct {
+	XMLName     xml.Name     `xml:"hostdevices"`
+	HostDevices []HostDevice `xml:"host_device,omitempty"`
+}
+
+type HostDevice struct {
+	OvStruct
+	Capability       *string     `xml:"capability,omitempty"`
+	Comment          *string     `xml:"comment,omitempty"`
+	Description      *string     `xml:"description,omitempty"`
+	Host             *Host       `xml:"host,omitempty"`
+	Id               *string     `xml:"id,attr,omitempty"`
+	IommuGroup       *int64      `xml:"iommu_group,omitempty"`
+	Name             *string     `xml:"name,omitempty"`
+	ParentDevice     *HostDevice `xml:"parent_device,omitempty"`
+	PhysicalFunction *HostDevice `xml:"physical_function,omitempty"`
+	Placeholder      *bool       `xml:"placeholder,omitempty"`
+	Product          *Product    `xml:"product,omitempty"`
+	Vendor           *Vendor     `xml:"vendor,omitempty"`
+	VirtualFunctions *int64      `xml:"virtual_functions,omitempty"`
+	Vm               *Vm         `xml:"vm,omitempty"`
+}
+
 type HostDevicePassthroughs struct {
 	XMLName                xml.Name                `xml:"hostdevicepassthroughs"`
 	HostDevicePassthroughs []HostDevicePassthrough `xml:"host_device_passthrough,omitempty"`
@@ -455,6 +1442,43 @@ type HostDevicePassthroughs struct {
 type HostDevicePassthrough struct {
 	OvStruct
 	Enabled *bool `xml:"enabled,omitempty"`
+}
+
+type HostNics struct {
+	XMLName  xml.Name  `xml:"hostnics"`
+	HostNics []HostNic `xml:"host_nic,omitempty"`
+}
+
+type HostNic struct {
+	OvStruct
+	AdAggregatorId                *int64                                `xml:"ad_aggregator_id,omitempty"`
+	BaseInterface                 *string                               `xml:"base_interface,omitempty"`
+	Bonding                       *Bonding                              `xml:"bonding,omitempty"`
+	BootProtocol                  BootProtocol                          `xml:"boot_protocol,omitempty"`
+	Bridged                       *bool                                 `xml:"bridged,omitempty"`
+	CheckConnectivity             *bool                                 `xml:"check_connectivity,omitempty"`
+	Comment                       *string                               `xml:"comment,omitempty"`
+	CustomConfiguration           *bool                                 `xml:"custom_configuration,omitempty"`
+	Description                   *string                               `xml:"description,omitempty"`
+	Host                          *Host                                 `xml:"host,omitempty"`
+	Id                            *string                               `xml:"id,attr,omitempty"`
+	Ip                            *Ip                                   `xml:"ip,omitempty"`
+	Ipv6                          *Ip                                   `xml:"ipv6,omitempty"`
+	Ipv6BootProtocol              BootProtocol                          `xml:"ipv6_boot_protocol,omitempty"`
+	Mac                           *Mac                                  `xml:"mac,omitempty"`
+	Mtu                           *int64                                `xml:"mtu,omitempty"`
+	Name                          *string                               `xml:"name,omitempty"`
+	Network                       *Network                              `xml:"network,omitempty"`
+	NetworkLabels                 []NetworkLabel                        `xml:"network_labels,omitempty"`
+	OverrideConfiguration         *bool                                 `xml:"override_configuration,omitempty"`
+	PhysicalFunction              *HostNic                              `xml:"physical_function,omitempty"`
+	Properties                    []Property                            `xml:"properties,omitempty"`
+	Qos                           *Qos                                  `xml:"qos,omitempty"`
+	Speed                         *int64                                `xml:"speed,omitempty"`
+	Statistics                    []Statistic                           `xml:"statistics,omitempty"`
+	Status                        NicStatus                             `xml:"status,omitempty"`
+	VirtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration `xml:"virtual_functions_configuration,omitempty"`
+	Vlan                          *Vlan                                 `xml:"vlan,omitempty"`
 }
 
 type HostNicVirtualFunctionsConfigurations struct {
@@ -469,6 +1493,36 @@ type HostNicVirtualFunctionsConfiguration struct {
 	NumberOfVirtualFunctions    *int64 `xml:"number_of_virtual_functions,omitempty"`
 }
 
+type HostStorages struct {
+	XMLName      xml.Name      `xml:"hoststorages"`
+	HostStorages []HostStorage `xml:"host_storage,omitempty"`
+}
+
+type HostStorage struct {
+	OvStruct
+	Address      *string       `xml:"address,omitempty"`
+	Comment      *string       `xml:"comment,omitempty"`
+	Description  *string       `xml:"description,omitempty"`
+	Host         *Host         `xml:"host,omitempty"`
+	Id           *string       `xml:"id,attr,omitempty"`
+	LogicalUnits []LogicalUnit `xml:"logical_units,omitempty"`
+	MountOptions *string       `xml:"mount_options,omitempty"`
+	Name         *string       `xml:"name,omitempty"`
+	NfsRetrans   *int64        `xml:"nfs_retrans,omitempty"`
+	NfsTimeo     *int64        `xml:"nfs_timeo,omitempty"`
+	NfsVersion   NfsVersion    `xml:"nfs_version,omitempty"`
+	OverrideLuns *bool         `xml:"override_luns,omitempty"`
+	Password     *string       `xml:"password,omitempty"`
+	Path         *string       `xml:"path,omitempty"`
+	Port         *int64        `xml:"port,omitempty"`
+	Portal       *string       `xml:"portal,omitempty"`
+	Target       *string       `xml:"target,omitempty"`
+	Type         StorageType   `xml:"type,omitempty"`
+	Username     *string       `xml:"username,omitempty"`
+	VfsType      *string       `xml:"vfs_type,omitempty"`
+	VolumeGroup  *VolumeGroup  `xml:"volume_group,omitempty"`
+}
+
 type HostedEngines struct {
 	XMLName       xml.Name       `xml:"hostedengines"`
 	HostedEngines []HostedEngine `xml:"hosted_engine,omitempty"`
@@ -481,6 +1535,21 @@ type HostedEngine struct {
 	GlobalMaintenance *bool  `xml:"global_maintenance,omitempty"`
 	LocalMaintenance  *bool  `xml:"local_maintenance,omitempty"`
 	Score             *int64 `xml:"score,omitempty"`
+}
+
+type Icons struct {
+	XMLName xml.Name `xml:"icons"`
+	Icons   []Icon   `xml:"icon,omitempty"`
+}
+
+type Icon struct {
+	OvStruct
+	Comment     *string `xml:"comment,omitempty"`
+	Data        *string `xml:"data,omitempty"`
+	Description *string `xml:"description,omitempty"`
+	Id          *string `xml:"id,attr,omitempty"`
+	MediaType   *string `xml:"media_type,omitempty"`
+	Name        *string `xml:"name,omitempty"`
 }
 
 type Identifieds struct {
@@ -557,6 +1626,68 @@ type Initialization struct {
 	UserLocale        *string            `xml:"user_locale,omitempty"`
 	UserName          *string            `xml:"user_name,omitempty"`
 	WindowsLicenseKey *string            `xml:"windows_license_key,omitempty"`
+}
+
+type InstanceTypes struct {
+	XMLName       xml.Name       `xml:"instancetypes"`
+	InstanceTypes []InstanceType `xml:"instance_type,omitempty"`
+}
+
+type InstanceType struct {
+	OvStruct
+	Bios                       *Bios               `xml:"bios,omitempty"`
+	Cdroms                     []Cdrom             `xml:"cdroms,omitempty"`
+	Cluster                    *Cluster            `xml:"cluster,omitempty"`
+	Comment                    *string             `xml:"comment,omitempty"`
+	Console                    *Console            `xml:"console,omitempty"`
+	Cpu                        *Cpu                `xml:"cpu,omitempty"`
+	CpuProfile                 *CpuProfile         `xml:"cpu_profile,omitempty"`
+	CpuShares                  *int64              `xml:"cpu_shares,omitempty"`
+	CreationTime               time.Time           `xml:"creation_time,omitempty"`
+	CustomCompatibilityVersion *Version            `xml:"custom_compatibility_version,omitempty"`
+	CustomCpuModel             *string             `xml:"custom_cpu_model,omitempty"`
+	CustomEmulatedMachine      *string             `xml:"custom_emulated_machine,omitempty"`
+	CustomProperties           []CustomProperty    `xml:"custom_properties,omitempty"`
+	DeleteProtected            *bool               `xml:"delete_protected,omitempty"`
+	Description                *string             `xml:"description,omitempty"`
+	DiskAttachments            []DiskAttachment    `xml:"disk_attachments,omitempty"`
+	Display                    *Display            `xml:"display,omitempty"`
+	Domain                     *Domain             `xml:"domain,omitempty"`
+	GraphicsConsoles           []GraphicsConsole   `xml:"graphics_consoles,omitempty"`
+	HighAvailability           *HighAvailability   `xml:"high_availability,omitempty"`
+	Id                         *string             `xml:"id,attr,omitempty"`
+	Initialization             *Initialization     `xml:"initialization,omitempty"`
+	Io                         *Io                 `xml:"io,omitempty"`
+	LargeIcon                  *Icon               `xml:"large_icon,omitempty"`
+	Lease                      *StorageDomainLease `xml:"lease,omitempty"`
+	Memory                     *int64              `xml:"memory,omitempty"`
+	MemoryPolicy               *MemoryPolicy       `xml:"memory_policy,omitempty"`
+	Migration                  *MigrationOptions   `xml:"migration,omitempty"`
+	MigrationDowntime          *int64              `xml:"migration_downtime,omitempty"`
+	Name                       *string             `xml:"name,omitempty"`
+	Nics                       []Nic               `xml:"nics,omitempty"`
+	Origin                     *string             `xml:"origin,omitempty"`
+	Os                         *OperatingSystem    `xml:"os,omitempty"`
+	Permissions                []Permission        `xml:"permissions,omitempty"`
+	Quota                      *Quota              `xml:"quota,omitempty"`
+	RngDevice                  *RngDevice          `xml:"rng_device,omitempty"`
+	SerialNumber               *SerialNumber       `xml:"serial_number,omitempty"`
+	SmallIcon                  *Icon               `xml:"small_icon,omitempty"`
+	SoundcardEnabled           *bool               `xml:"soundcard_enabled,omitempty"`
+	Sso                        *Sso                `xml:"sso,omitempty"`
+	StartPaused                *bool               `xml:"start_paused,omitempty"`
+	Stateless                  *bool               `xml:"stateless,omitempty"`
+	Status                     TemplateStatus      `xml:"status,omitempty"`
+	StorageDomain              *StorageDomain      `xml:"storage_domain,omitempty"`
+	Tags                       []Tag               `xml:"tags,omitempty"`
+	TimeZone                   *TimeZone           `xml:"time_zone,omitempty"`
+	TunnelMigration            *bool               `xml:"tunnel_migration,omitempty"`
+	Type                       VmType              `xml:"type,omitempty"`
+	Usb                        *Usb                `xml:"usb,omitempty"`
+	Version                    *TemplateVersion    `xml:"version,omitempty"`
+	VirtioScsi                 *VirtioScsi         `xml:"virtio_scsi,omitempty"`
+	Vm                         *Vm                 `xml:"vm,omitempty"`
+	Watchdogs                  []Watchdog          `xml:"watchdogs,omitempty"`
 }
 
 type Ios struct {
@@ -940,6 +2071,38 @@ type NfsProfileDetail struct {
 	ProfileDetails []ProfileDetail `xml:"profile_details,omitempty"`
 }
 
+type Nics struct {
+	XMLName xml.Name `xml:"nics"`
+	Nics    []Nic    `xml:"nic,omitempty"`
+}
+
+type Nic struct {
+	OvStruct
+	BootProtocol                   BootProtocol             `xml:"boot_protocol,omitempty"`
+	Comment                        *string                  `xml:"comment,omitempty"`
+	Description                    *string                  `xml:"description,omitempty"`
+	Id                             *string                  `xml:"id,attr,omitempty"`
+	InstanceType                   *InstanceType            `xml:"instance_type,omitempty"`
+	Interface                      NicInterface             `xml:"interface,omitempty"`
+	Linked                         *bool                    `xml:"linked,omitempty"`
+	Mac                            *Mac                     `xml:"mac,omitempty"`
+	Name                           *string                  `xml:"name,omitempty"`
+	Network                        *Network                 `xml:"network,omitempty"`
+	NetworkAttachments             []NetworkAttachment      `xml:"network_attachments,omitempty"`
+	NetworkFilterParameters        []NetworkFilterParameter `xml:"network_filter_parameters,omitempty"`
+	NetworkLabels                  []NetworkLabel           `xml:"network_labels,omitempty"`
+	OnBoot                         *bool                    `xml:"on_boot,omitempty"`
+	Plugged                        *bool                    `xml:"plugged,omitempty"`
+	ReportedDevices                []ReportedDevice         `xml:"reported_devices,omitempty"`
+	Statistics                     []Statistic              `xml:"statistics,omitempty"`
+	Template                       *Template                `xml:"template,omitempty"`
+	VirtualFunctionAllowedLabels   []NetworkLabel           `xml:"virtual_function_allowed_labels,omitempty"`
+	VirtualFunctionAllowedNetworks []Network                `xml:"virtual_function_allowed_networks,omitempty"`
+	Vm                             *Vm                      `xml:"vm,omitempty"`
+	Vms                            []Vm                     `xml:"vms,omitempty"`
+	VnicProfile                    *VnicProfile             `xml:"vnic_profile,omitempty"`
+}
+
 type NicConfigurations struct {
 	XMLName           xml.Name           `xml:"nicconfigurations"`
 	NicConfigurations []NicConfiguration `xml:"nic_configuration,omitempty"`
@@ -1000,6 +2163,28 @@ type OpenStackImage struct {
 	OpenstackImageProvider *OpenStackImageProvider `xml:"openstack_image_provider,omitempty"`
 }
 
+type OpenStackImageProviders struct {
+	XMLName                 xml.Name                 `xml:"openstackimageproviders"`
+	OpenStackImageProviders []OpenStackImageProvider `xml:"open_stack_image_provider,omitempty"`
+}
+
+type OpenStackImageProvider struct {
+	OvStruct
+	AuthenticationUrl      *string          `xml:"authentication_url,omitempty"`
+	Certificates           []Certificate    `xml:"certificates,omitempty"`
+	Comment                *string          `xml:"comment,omitempty"`
+	Description            *string          `xml:"description,omitempty"`
+	Id                     *string          `xml:"id,attr,omitempty"`
+	Images                 []OpenStackImage `xml:"images,omitempty"`
+	Name                   *string          `xml:"name,omitempty"`
+	Password               *string          `xml:"password,omitempty"`
+	Properties             []Property       `xml:"properties,omitempty"`
+	RequiresAuthentication *bool            `xml:"requires_authentication,omitempty"`
+	TenantName             *string          `xml:"tenant_name,omitempty"`
+	Url                    *string          `xml:"url,omitempty"`
+	Username               *string          `xml:"username,omitempty"`
+}
+
 type OpenStackNetworks struct {
 	XMLName           xml.Name           `xml:"openstacknetworks"`
 	OpenStackNetworks []OpenStackNetwork `xml:"open_stack_network,omitempty"`
@@ -1012,6 +2197,53 @@ type OpenStackNetwork struct {
 	Id                       *string                   `xml:"id,attr,omitempty"`
 	Name                     *string                   `xml:"name,omitempty"`
 	OpenstackNetworkProvider *OpenStackNetworkProvider `xml:"openstack_network_provider,omitempty"`
+}
+
+type OpenStackNetworkProviders struct {
+	XMLName                   xml.Name                   `xml:"openstacknetworkproviders"`
+	OpenStackNetworkProviders []OpenStackNetworkProvider `xml:"open_stack_network_provider,omitempty"`
+}
+
+type OpenStackNetworkProvider struct {
+	OvStruct
+	AgentConfiguration     *AgentConfiguration          `xml:"agent_configuration,omitempty"`
+	AuthenticationUrl      *string                      `xml:"authentication_url,omitempty"`
+	Certificates           []Certificate                `xml:"certificates,omitempty"`
+	Comment                *string                      `xml:"comment,omitempty"`
+	Description            *string                      `xml:"description,omitempty"`
+	Id                     *string                      `xml:"id,attr,omitempty"`
+	Name                   *string                      `xml:"name,omitempty"`
+	Networks               []OpenStackNetwork           `xml:"networks,omitempty"`
+	Password               *string                      `xml:"password,omitempty"`
+	PluginType             NetworkPluginType            `xml:"plugin_type,omitempty"`
+	Properties             []Property                   `xml:"properties,omitempty"`
+	ReadOnly               *bool                        `xml:"read_only,omitempty"`
+	RequiresAuthentication *bool                        `xml:"requires_authentication,omitempty"`
+	Subnets                []OpenStackSubnet            `xml:"subnets,omitempty"`
+	TenantName             *string                      `xml:"tenant_name,omitempty"`
+	Type                   OpenStackNetworkProviderType `xml:"type,omitempty"`
+	Url                    *string                      `xml:"url,omitempty"`
+	Username               *string                      `xml:"username,omitempty"`
+}
+
+type OpenStackProviders struct {
+	XMLName            xml.Name            `xml:"openstackproviders"`
+	OpenStackProviders []OpenStackProvider `xml:"open_stack_provider,omitempty"`
+}
+
+type OpenStackProvider struct {
+	OvStruct
+	AuthenticationUrl      *string    `xml:"authentication_url,omitempty"`
+	Comment                *string    `xml:"comment,omitempty"`
+	Description            *string    `xml:"description,omitempty"`
+	Id                     *string    `xml:"id,attr,omitempty"`
+	Name                   *string    `xml:"name,omitempty"`
+	Password               *string    `xml:"password,omitempty"`
+	Properties             []Property `xml:"properties,omitempty"`
+	RequiresAuthentication *bool      `xml:"requires_authentication,omitempty"`
+	TenantName             *string    `xml:"tenant_name,omitempty"`
+	Url                    *string    `xml:"url,omitempty"`
+	Username               *string    `xml:"username,omitempty"`
 }
 
 type OpenStackSubnets struct {
@@ -1030,6 +2262,30 @@ type OpenStackSubnet struct {
 	IpVersion        *string           `xml:"ip_version,omitempty"`
 	Name             *string           `xml:"name,omitempty"`
 	OpenstackNetwork *OpenStackNetwork `xml:"openstack_network,omitempty"`
+}
+
+type OpenStackVolumeProviders struct {
+	XMLName                  xml.Name                  `xml:"openstackvolumeproviders"`
+	OpenStackVolumeProviders []OpenStackVolumeProvider `xml:"open_stack_volume_provider,omitempty"`
+}
+
+type OpenStackVolumeProvider struct {
+	OvStruct
+	AuthenticationKeys     []OpenstackVolumeAuthenticationKey `xml:"authentication_keys,omitempty"`
+	AuthenticationUrl      *string                            `xml:"authentication_url,omitempty"`
+	Certificates           []Certificate                      `xml:"certificates,omitempty"`
+	Comment                *string                            `xml:"comment,omitempty"`
+	DataCenter             *DataCenter                        `xml:"data_center,omitempty"`
+	Description            *string                            `xml:"description,omitempty"`
+	Id                     *string                            `xml:"id,attr,omitempty"`
+	Name                   *string                            `xml:"name,omitempty"`
+	Password               *string                            `xml:"password,omitempty"`
+	Properties             []Property                         `xml:"properties,omitempty"`
+	RequiresAuthentication *bool                              `xml:"requires_authentication,omitempty"`
+	TenantName             *string                            `xml:"tenant_name,omitempty"`
+	Url                    *string                            `xml:"url,omitempty"`
+	Username               *string                            `xml:"username,omitempty"`
+	VolumeTypes            []OpenStackVolumeType              `xml:"volume_types,omitempty"`
 }
 
 type OpenStackVolumeTypes struct {
@@ -1536,6 +2792,100 @@ type SkipIfSdActive struct {
 	Enabled *bool `xml:"enabled,omitempty"`
 }
 
+type Snapshots struct {
+	XMLName   xml.Name   `xml:"snapshots"`
+	Snapshots []Snapshot `xml:"snapshot,omitempty"`
+}
+
+type Snapshot struct {
+	OvStruct
+	AffinityLabels             []AffinityLabel       `xml:"affinity_labels,omitempty"`
+	Applications               []Application         `xml:"applications,omitempty"`
+	Bios                       *Bios                 `xml:"bios,omitempty"`
+	Cdroms                     []Cdrom               `xml:"cdroms,omitempty"`
+	Cluster                    *Cluster              `xml:"cluster,omitempty"`
+	Comment                    *string               `xml:"comment,omitempty"`
+	Console                    *Console              `xml:"console,omitempty"`
+	Cpu                        *Cpu                  `xml:"cpu,omitempty"`
+	CpuProfile                 *CpuProfile           `xml:"cpu_profile,omitempty"`
+	CpuShares                  *int64                `xml:"cpu_shares,omitempty"`
+	CreationTime               time.Time             `xml:"creation_time,omitempty"`
+	CustomCompatibilityVersion *Version              `xml:"custom_compatibility_version,omitempty"`
+	CustomCpuModel             *string               `xml:"custom_cpu_model,omitempty"`
+	CustomEmulatedMachine      *string               `xml:"custom_emulated_machine,omitempty"`
+	CustomProperties           []CustomProperty      `xml:"custom_properties,omitempty"`
+	Date                       time.Time             `xml:"date,omitempty"`
+	DeleteProtected            *bool                 `xml:"delete_protected,omitempty"`
+	Description                *string               `xml:"description,omitempty"`
+	DiskAttachments            []DiskAttachment      `xml:"disk_attachments,omitempty"`
+	Display                    *Display              `xml:"display,omitempty"`
+	Domain                     *Domain               `xml:"domain,omitempty"`
+	ExternalHostProvider       *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Floppies                   []Floppy              `xml:"floppies,omitempty"`
+	Fqdn                       *string               `xml:"fqdn,omitempty"`
+	GraphicsConsoles           []GraphicsConsole     `xml:"graphics_consoles,omitempty"`
+	GuestOperatingSystem       *GuestOperatingSystem `xml:"guest_operating_system,omitempty"`
+	GuestTimeZone              *TimeZone             `xml:"guest_time_zone,omitempty"`
+	HighAvailability           *HighAvailability     `xml:"high_availability,omitempty"`
+	Host                       *Host                 `xml:"host,omitempty"`
+	HostDevices                []HostDevice          `xml:"host_devices,omitempty"`
+	Id                         *string               `xml:"id,attr,omitempty"`
+	Initialization             *Initialization       `xml:"initialization,omitempty"`
+	InstanceType               *InstanceType         `xml:"instance_type,omitempty"`
+	Io                         *Io                   `xml:"io,omitempty"`
+	KatelloErrata              []KatelloErratum      `xml:"katello_errata,omitempty"`
+	LargeIcon                  *Icon                 `xml:"large_icon,omitempty"`
+	Lease                      *StorageDomainLease   `xml:"lease,omitempty"`
+	Memory                     *int64                `xml:"memory,omitempty"`
+	MemoryPolicy               *MemoryPolicy         `xml:"memory_policy,omitempty"`
+	Migration                  *MigrationOptions     `xml:"migration,omitempty"`
+	MigrationDowntime          *int64                `xml:"migration_downtime,omitempty"`
+	Name                       *string               `xml:"name,omitempty"`
+	NextRunConfigurationExists *bool                 `xml:"next_run_configuration_exists,omitempty"`
+	Nics                       []Nic                 `xml:"nics,omitempty"`
+	NumaNodes                  []NumaNode            `xml:"numa_nodes,omitempty"`
+	NumaTuneMode               NumaTuneMode          `xml:"numa_tune_mode,omitempty"`
+	Origin                     *string               `xml:"origin,omitempty"`
+	OriginalTemplate           *Template             `xml:"original_template,omitempty"`
+	Os                         *OperatingSystem      `xml:"os,omitempty"`
+	Payloads                   []Payload             `xml:"payloads,omitempty"`
+	Permissions                []Permission          `xml:"permissions,omitempty"`
+	PersistMemorystate         *bool                 `xml:"persist_memorystate,omitempty"`
+	PlacementPolicy            *VmPlacementPolicy    `xml:"placement_policy,omitempty"`
+	Quota                      *Quota                `xml:"quota,omitempty"`
+	ReportedDevices            []ReportedDevice      `xml:"reported_devices,omitempty"`
+	RngDevice                  *RngDevice            `xml:"rng_device,omitempty"`
+	RunOnce                    *bool                 `xml:"run_once,omitempty"`
+	SerialNumber               *SerialNumber         `xml:"serial_number,omitempty"`
+	Sessions                   []Session             `xml:"sessions,omitempty"`
+	SmallIcon                  *Icon                 `xml:"small_icon,omitempty"`
+	SnapshotStatus             SnapshotStatus        `xml:"snapshot_status,omitempty"`
+	SnapshotType               SnapshotType          `xml:"snapshot_type,omitempty"`
+	Snapshots                  []Snapshot            `xml:"snapshots,omitempty"`
+	SoundcardEnabled           *bool                 `xml:"soundcard_enabled,omitempty"`
+	Sso                        *Sso                  `xml:"sso,omitempty"`
+	StartPaused                *bool                 `xml:"start_paused,omitempty"`
+	StartTime                  time.Time             `xml:"start_time,omitempty"`
+	Stateless                  *bool                 `xml:"stateless,omitempty"`
+	Statistics                 []Statistic           `xml:"statistics,omitempty"`
+	Status                     VmStatus              `xml:"status,omitempty"`
+	StatusDetail               *string               `xml:"status_detail,omitempty"`
+	StopReason                 *string               `xml:"stop_reason,omitempty"`
+	StopTime                   time.Time             `xml:"stop_time,omitempty"`
+	StorageDomain              *StorageDomain        `xml:"storage_domain,omitempty"`
+	Tags                       []Tag                 `xml:"tags,omitempty"`
+	Template                   *Template             `xml:"template,omitempty"`
+	TimeZone                   *TimeZone             `xml:"time_zone,omitempty"`
+	TunnelMigration            *bool                 `xml:"tunnel_migration,omitempty"`
+	Type                       VmType                `xml:"type,omitempty"`
+	Usb                        *Usb                  `xml:"usb,omitempty"`
+	UseLatestTemplateVersion   *bool                 `xml:"use_latest_template_version,omitempty"`
+	VirtioScsi                 *VirtioScsi           `xml:"virtio_scsi,omitempty"`
+	Vm                         *Vm                   `xml:"vm,omitempty"`
+	VmPool                     *VmPool               `xml:"vm_pool,omitempty"`
+	Watchdogs                  []Watchdog            `xml:"watchdogs,omitempty"`
+}
+
 type SpecialObjectss struct {
 	XMLName         xml.Name         `xml:"specialobjectss"`
 	SpecialObjectss []SpecialObjects `xml:"special_objects,omitempty"`
@@ -1765,6 +3115,68 @@ type Tag struct {
 	Vm          *Vm       `xml:"vm,omitempty"`
 }
 
+type Templates struct {
+	XMLName   xml.Name   `xml:"templates"`
+	Templates []Template `xml:"template,omitempty"`
+}
+
+type Template struct {
+	OvStruct
+	Bios                       *Bios               `xml:"bios,omitempty"`
+	Cdroms                     []Cdrom             `xml:"cdroms,omitempty"`
+	Cluster                    *Cluster            `xml:"cluster,omitempty"`
+	Comment                    *string             `xml:"comment,omitempty"`
+	Console                    *Console            `xml:"console,omitempty"`
+	Cpu                        *Cpu                `xml:"cpu,omitempty"`
+	CpuProfile                 *CpuProfile         `xml:"cpu_profile,omitempty"`
+	CpuShares                  *int64              `xml:"cpu_shares,omitempty"`
+	CreationTime               time.Time           `xml:"creation_time,omitempty"`
+	CustomCompatibilityVersion *Version            `xml:"custom_compatibility_version,omitempty"`
+	CustomCpuModel             *string             `xml:"custom_cpu_model,omitempty"`
+	CustomEmulatedMachine      *string             `xml:"custom_emulated_machine,omitempty"`
+	CustomProperties           []CustomProperty    `xml:"custom_properties,omitempty"`
+	DeleteProtected            *bool               `xml:"delete_protected,omitempty"`
+	Description                *string             `xml:"description,omitempty"`
+	DiskAttachments            []DiskAttachment    `xml:"disk_attachments,omitempty"`
+	Display                    *Display            `xml:"display,omitempty"`
+	Domain                     *Domain             `xml:"domain,omitempty"`
+	GraphicsConsoles           []GraphicsConsole   `xml:"graphics_consoles,omitempty"`
+	HighAvailability           *HighAvailability   `xml:"high_availability,omitempty"`
+	Id                         *string             `xml:"id,attr,omitempty"`
+	Initialization             *Initialization     `xml:"initialization,omitempty"`
+	Io                         *Io                 `xml:"io,omitempty"`
+	LargeIcon                  *Icon               `xml:"large_icon,omitempty"`
+	Lease                      *StorageDomainLease `xml:"lease,omitempty"`
+	Memory                     *int64              `xml:"memory,omitempty"`
+	MemoryPolicy               *MemoryPolicy       `xml:"memory_policy,omitempty"`
+	Migration                  *MigrationOptions   `xml:"migration,omitempty"`
+	MigrationDowntime          *int64              `xml:"migration_downtime,omitempty"`
+	Name                       *string             `xml:"name,omitempty"`
+	Nics                       []Nic               `xml:"nics,omitempty"`
+	Origin                     *string             `xml:"origin,omitempty"`
+	Os                         *OperatingSystem    `xml:"os,omitempty"`
+	Permissions                []Permission        `xml:"permissions,omitempty"`
+	Quota                      *Quota              `xml:"quota,omitempty"`
+	RngDevice                  *RngDevice          `xml:"rng_device,omitempty"`
+	SerialNumber               *SerialNumber       `xml:"serial_number,omitempty"`
+	SmallIcon                  *Icon               `xml:"small_icon,omitempty"`
+	SoundcardEnabled           *bool               `xml:"soundcard_enabled,omitempty"`
+	Sso                        *Sso                `xml:"sso,omitempty"`
+	StartPaused                *bool               `xml:"start_paused,omitempty"`
+	Stateless                  *bool               `xml:"stateless,omitempty"`
+	Status                     TemplateStatus      `xml:"status,omitempty"`
+	StorageDomain              *StorageDomain      `xml:"storage_domain,omitempty"`
+	Tags                       []Tag               `xml:"tags,omitempty"`
+	TimeZone                   *TimeZone           `xml:"time_zone,omitempty"`
+	TunnelMigration            *bool               `xml:"tunnel_migration,omitempty"`
+	Type                       VmType              `xml:"type,omitempty"`
+	Usb                        *Usb                `xml:"usb,omitempty"`
+	Version                    *TemplateVersion    `xml:"version,omitempty"`
+	VirtioScsi                 *VirtioScsi         `xml:"virtio_scsi,omitempty"`
+	Vm                         *Vm                 `xml:"vm,omitempty"`
+	Watchdogs                  []Watchdog          `xml:"watchdogs,omitempty"`
+}
+
 type TemplateVersions struct {
 	XMLName          xml.Name          `xml:"templateversions"`
 	TemplateVersions []TemplateVersion `xml:"template_version,omitempty"`
@@ -1957,6 +3369,95 @@ type Vlan struct {
 	Id *int64 `xml:"id,attr,omitempty"`
 }
 
+type Vms struct {
+	XMLName xml.Name `xml:"vms"`
+	Vms     []Vm     `xml:"vm,omitempty"`
+}
+
+type Vm struct {
+	OvStruct
+	AffinityLabels             []AffinityLabel       `xml:"affinity_labels,omitempty"`
+	Applications               []Application         `xml:"applications,omitempty"`
+	Bios                       *Bios                 `xml:"bios,omitempty"`
+	Cdroms                     []Cdrom               `xml:"cdroms,omitempty"`
+	Cluster                    *Cluster              `xml:"cluster,omitempty"`
+	Comment                    *string               `xml:"comment,omitempty"`
+	Console                    *Console              `xml:"console,omitempty"`
+	Cpu                        *Cpu                  `xml:"cpu,omitempty"`
+	CpuProfile                 *CpuProfile           `xml:"cpu_profile,omitempty"`
+	CpuShares                  *int64                `xml:"cpu_shares,omitempty"`
+	CreationTime               time.Time             `xml:"creation_time,omitempty"`
+	CustomCompatibilityVersion *Version              `xml:"custom_compatibility_version,omitempty"`
+	CustomCpuModel             *string               `xml:"custom_cpu_model,omitempty"`
+	CustomEmulatedMachine      *string               `xml:"custom_emulated_machine,omitempty"`
+	CustomProperties           []CustomProperty      `xml:"custom_properties,omitempty"`
+	DeleteProtected            *bool                 `xml:"delete_protected,omitempty"`
+	Description                *string               `xml:"description,omitempty"`
+	DiskAttachments            []DiskAttachment      `xml:"disk_attachments,omitempty"`
+	Display                    *Display              `xml:"display,omitempty"`
+	Domain                     *Domain               `xml:"domain,omitempty"`
+	ExternalHostProvider       *ExternalHostProvider `xml:"external_host_provider,omitempty"`
+	Floppies                   []Floppy              `xml:"floppies,omitempty"`
+	Fqdn                       *string               `xml:"fqdn,omitempty"`
+	GraphicsConsoles           []GraphicsConsole     `xml:"graphics_consoles,omitempty"`
+	GuestOperatingSystem       *GuestOperatingSystem `xml:"guest_operating_system,omitempty"`
+	GuestTimeZone              *TimeZone             `xml:"guest_time_zone,omitempty"`
+	HighAvailability           *HighAvailability     `xml:"high_availability,omitempty"`
+	Host                       *Host                 `xml:"host,omitempty"`
+	HostDevices                []HostDevice          `xml:"host_devices,omitempty"`
+	Id                         *string               `xml:"id,attr,omitempty"`
+	Initialization             *Initialization       `xml:"initialization,omitempty"`
+	InstanceType               *InstanceType         `xml:"instance_type,omitempty"`
+	Io                         *Io                   `xml:"io,omitempty"`
+	KatelloErrata              []KatelloErratum      `xml:"katello_errata,omitempty"`
+	LargeIcon                  *Icon                 `xml:"large_icon,omitempty"`
+	Lease                      *StorageDomainLease   `xml:"lease,omitempty"`
+	Memory                     *int64                `xml:"memory,omitempty"`
+	MemoryPolicy               *MemoryPolicy         `xml:"memory_policy,omitempty"`
+	Migration                  *MigrationOptions     `xml:"migration,omitempty"`
+	MigrationDowntime          *int64                `xml:"migration_downtime,omitempty"`
+	Name                       *string               `xml:"name,omitempty"`
+	NextRunConfigurationExists *bool                 `xml:"next_run_configuration_exists,omitempty"`
+	Nics                       []Nic                 `xml:"nics,omitempty"`
+	NumaNodes                  []NumaNode            `xml:"numa_nodes,omitempty"`
+	NumaTuneMode               NumaTuneMode          `xml:"numa_tune_mode,omitempty"`
+	Origin                     *string               `xml:"origin,omitempty"`
+	OriginalTemplate           *Template             `xml:"original_template,omitempty"`
+	Os                         *OperatingSystem      `xml:"os,omitempty"`
+	Payloads                   []Payload             `xml:"payloads,omitempty"`
+	Permissions                []Permission          `xml:"permissions,omitempty"`
+	PlacementPolicy            *VmPlacementPolicy    `xml:"placement_policy,omitempty"`
+	Quota                      *Quota                `xml:"quota,omitempty"`
+	ReportedDevices            []ReportedDevice      `xml:"reported_devices,omitempty"`
+	RngDevice                  *RngDevice            `xml:"rng_device,omitempty"`
+	RunOnce                    *bool                 `xml:"run_once,omitempty"`
+	SerialNumber               *SerialNumber         `xml:"serial_number,omitempty"`
+	Sessions                   []Session             `xml:"sessions,omitempty"`
+	SmallIcon                  *Icon                 `xml:"small_icon,omitempty"`
+	Snapshots                  []Snapshot            `xml:"snapshots,omitempty"`
+	SoundcardEnabled           *bool                 `xml:"soundcard_enabled,omitempty"`
+	Sso                        *Sso                  `xml:"sso,omitempty"`
+	StartPaused                *bool                 `xml:"start_paused,omitempty"`
+	StartTime                  time.Time             `xml:"start_time,omitempty"`
+	Stateless                  *bool                 `xml:"stateless,omitempty"`
+	Statistics                 []Statistic           `xml:"statistics,omitempty"`
+	Status                     VmStatus              `xml:"status,omitempty"`
+	StatusDetail               *string               `xml:"status_detail,omitempty"`
+	StopReason                 *string               `xml:"stop_reason,omitempty"`
+	StopTime                   time.Time             `xml:"stop_time,omitempty"`
+	StorageDomain              *StorageDomain        `xml:"storage_domain,omitempty"`
+	Tags                       []Tag                 `xml:"tags,omitempty"`
+	Template                   *Template             `xml:"template,omitempty"`
+	TimeZone                   *TimeZone             `xml:"time_zone,omitempty"`
+	TunnelMigration            *bool                 `xml:"tunnel_migration,omitempty"`
+	Type                       VmType                `xml:"type,omitempty"`
+	Usb                        *Usb                  `xml:"usb,omitempty"`
+	UseLatestTemplateVersion   *bool                 `xml:"use_latest_template_version,omitempty"`
+	VirtioScsi                 *VirtioScsi           `xml:"virtio_scsi,omitempty"`
+	VmPool                     *VmPool               `xml:"vm_pool,omitempty"`
+	Watchdogs                  []Watchdog            `xml:"watchdogs,omitempty"`
+}
+
 type VmBases struct {
 	XMLName xml.Name `xml:"vmbases"`
 	VmBases []VmBase `xml:"vm_base,omitempty"`
@@ -2115,1247 +3616,6 @@ type VolumeGroup struct {
 	Name         *string       `xml:"name,omitempty"`
 }
 
-type Weights struct {
-	XMLName xml.Name `xml:"weights"`
-	Weights []Weight `xml:"weight,omitempty"`
-}
-
-type Weight struct {
-	OvStruct
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	Factor               *int64                `xml:"factor,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	SchedulingPolicy     *SchedulingPolicy     `xml:"scheduling_policy,omitempty"`
-	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
-}
-
-type Actions struct {
-	XMLName xml.Name `xml:"actions"`
-	Actions []Action `xml:"action,omitempty"`
-}
-
-type Action struct {
-	OvStruct
-	AllowPartialImport             *bool                                 `xml:"allow_partial_import,omitempty"`
-	Async                          *bool                                 `xml:"async,omitempty"`
-	Bricks                         []GlusterBrick                        `xml:"bricks,omitempty"`
-	Certificates                   []Certificate                         `xml:"certificates,omitempty"`
-	CheckConnectivity              *bool                                 `xml:"check_connectivity,omitempty"`
-	Clone                          *bool                                 `xml:"clone,omitempty"`
-	Cluster                        *Cluster                              `xml:"cluster,omitempty"`
-	CollapseSnapshots              *bool                                 `xml:"collapse_snapshots,omitempty"`
-	Comment                        *string                               `xml:"comment,omitempty"`
-	ConnectivityTimeout            *int64                                `xml:"connectivity_timeout,omitempty"`
-	DataCenter                     *DataCenter                           `xml:"data_center,omitempty"`
-	DeployHostedEngine             *bool                                 `xml:"deploy_hosted_engine,omitempty"`
-	Description                    *string                               `xml:"description,omitempty"`
-	Details                        *GlusterVolumeProfileDetails          `xml:"details,omitempty"`
-	DiscardSnapshots               *bool                                 `xml:"discard_snapshots,omitempty"`
-	Disk                           *Disk                                 `xml:"disk,omitempty"`
-	Disks                          []Disk                                `xml:"disks,omitempty"`
-	Exclusive                      *bool                                 `xml:"exclusive,omitempty"`
-	Fault                          *Fault                                `xml:"fault,omitempty"`
-	FenceType                      *string                               `xml:"fence_type,omitempty"`
-	Filter                         *bool                                 `xml:"filter,omitempty"`
-	FixLayout                      *bool                                 `xml:"fix_layout,omitempty"`
-	Force                          *bool                                 `xml:"force,omitempty"`
-	GracePeriod                    *GracePeriod                          `xml:"grace_period,omitempty"`
-	Host                           *Host                                 `xml:"host,omitempty"`
-	Id                             *string                               `xml:"id,attr,omitempty"`
-	Image                          *string                               `xml:"image,omitempty"`
-	ImportAsTemplate               *bool                                 `xml:"import_as_template,omitempty"`
-	IsAttached                     *bool                                 `xml:"is_attached,omitempty"`
-	Iscsi                          *IscsiDetails                         `xml:"iscsi,omitempty"`
-	IscsiTargets                   []string                              `xml:"iscsi_targets,omitempty"`
-	Job                            *Job                                  `xml:"job,omitempty"`
-	LogicalUnits                   []LogicalUnit                         `xml:"logical_units,omitempty"`
-	MaintenanceEnabled             *bool                                 `xml:"maintenance_enabled,omitempty"`
-	ModifiedBonds                  []HostNic                             `xml:"modified_bonds,omitempty"`
-	ModifiedLabels                 []NetworkLabel                        `xml:"modified_labels,omitempty"`
-	ModifiedNetworkAttachments     []NetworkAttachment                   `xml:"modified_network_attachments,omitempty"`
-	Name                           *string                               `xml:"name,omitempty"`
-	Option                         *Option                               `xml:"option,omitempty"`
-	Pause                          *bool                                 `xml:"pause,omitempty"`
-	PowerManagement                *PowerManagement                      `xml:"power_management,omitempty"`
-	ProxyTicket                    *ProxyTicket                          `xml:"proxy_ticket,omitempty"`
-	Reason                         *string                               `xml:"reason,omitempty"`
-	ReassignBadMacs                *bool                                 `xml:"reassign_bad_macs,omitempty"`
-	RemoteViewerConnectionFile     *string                               `xml:"remote_viewer_connection_file,omitempty"`
-	RemovedBonds                   []HostNic                             `xml:"removed_bonds,omitempty"`
-	RemovedLabels                  []NetworkLabel                        `xml:"removed_labels,omitempty"`
-	RemovedNetworkAttachments      []NetworkAttachment                   `xml:"removed_network_attachments,omitempty"`
-	ResolutionType                 *string                               `xml:"resolution_type,omitempty"`
-	RestoreMemory                  *bool                                 `xml:"restore_memory,omitempty"`
-	RootPassword                   *string                               `xml:"root_password,omitempty"`
-	Snapshot                       *Snapshot                             `xml:"snapshot,omitempty"`
-	Ssh                            *Ssh                                  `xml:"ssh,omitempty"`
-	Status                         *string                               `xml:"status,omitempty"`
-	StopGlusterService             *bool                                 `xml:"stop_gluster_service,omitempty"`
-	StorageDomain                  *StorageDomain                        `xml:"storage_domain,omitempty"`
-	StorageDomains                 []StorageDomain                       `xml:"storage_domains,omitempty"`
-	Succeeded                      *bool                                 `xml:"succeeded,omitempty"`
-	SynchronizedNetworkAttachments []NetworkAttachment                   `xml:"synchronized_network_attachments,omitempty"`
-	Template                       *Template                             `xml:"template,omitempty"`
-	Ticket                         *Ticket                               `xml:"ticket,omitempty"`
-	UndeployHostedEngine           *bool                                 `xml:"undeploy_hosted_engine,omitempty"`
-	UseCloudInit                   *bool                                 `xml:"use_cloud_init,omitempty"`
-	UseSysprep                     *bool                                 `xml:"use_sysprep,omitempty"`
-	VirtualFunctionsConfiguration  *HostNicVirtualFunctionsConfiguration `xml:"virtual_functions_configuration,omitempty"`
-	Vm                             *Vm                                   `xml:"vm,omitempty"`
-	VnicProfileMappings            []VnicProfileMapping                  `xml:"vnic_profile_mappings,omitempty"`
-}
-
-type AffinityGroups struct {
-	XMLName        xml.Name        `xml:"affinitygroups"`
-	AffinityGroups []AffinityGroup `xml:"affinity_group,omitempty"`
-}
-
-type AffinityGroup struct {
-	OvStruct
-	Cluster     *Cluster      `xml:"cluster,omitempty"`
-	Comment     *string       `xml:"comment,omitempty"`
-	Description *string       `xml:"description,omitempty"`
-	Enforcing   *bool         `xml:"enforcing,omitempty"`
-	Hosts       []Host        `xml:"hosts,omitempty"`
-	HostsRule   *AffinityRule `xml:"hosts_rule,omitempty"`
-	Id          *string       `xml:"id,attr,omitempty"`
-	Name        *string       `xml:"name,omitempty"`
-	Positive    *bool         `xml:"positive,omitempty"`
-	Vms         []Vm          `xml:"vms,omitempty"`
-	VmsRule     *AffinityRule `xml:"vms_rule,omitempty"`
-}
-
-type AffinityLabels struct {
-	XMLName        xml.Name        `xml:"affinitylabels"`
-	AffinityLabels []AffinityLabel `xml:"affinity_label,omitempty"`
-}
-
-type AffinityLabel struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Hosts       []Host  `xml:"hosts,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	ReadOnly    *bool   `xml:"read_only,omitempty"`
-	Vms         []Vm    `xml:"vms,omitempty"`
-}
-
-type Agents struct {
-	XMLName xml.Name `xml:"agents"`
-	Agents  []Agent  `xml:"agent,omitempty"`
-}
-
-type Agent struct {
-	OvStruct
-	Address        *string  `xml:"address,omitempty"`
-	Comment        *string  `xml:"comment,omitempty"`
-	Concurrent     *bool    `xml:"concurrent,omitempty"`
-	Description    *string  `xml:"description,omitempty"`
-	EncryptOptions *bool    `xml:"encrypt_options,omitempty"`
-	Host           *Host    `xml:"host,omitempty"`
-	Id             *string  `xml:"id,attr,omitempty"`
-	Name           *string  `xml:"name,omitempty"`
-	Options        []Option `xml:"options,omitempty"`
-	Order          *int64   `xml:"order,omitempty"`
-	Password       *string  `xml:"password,omitempty"`
-	Port           *int64   `xml:"port,omitempty"`
-	Type           *string  `xml:"type,omitempty"`
-	Username       *string  `xml:"username,omitempty"`
-}
-
-type Applications struct {
-	XMLName      xml.Name      `xml:"applications"`
-	Applications []Application `xml:"application,omitempty"`
-}
-
-type Application struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	Vm          *Vm     `xml:"vm,omitempty"`
-}
-
-type AuthorizedKeys struct {
-	XMLName        xml.Name        `xml:"authorizedkeys"`
-	AuthorizedKeys []AuthorizedKey `xml:"authorized_key,omitempty"`
-}
-
-type AuthorizedKey struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Key         *string `xml:"key,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	User        *User   `xml:"user,omitempty"`
-}
-
-type Balances struct {
-	XMLName  xml.Name  `xml:"balances"`
-	Balances []Balance `xml:"balance,omitempty"`
-}
-
-type Balance struct {
-	OvStruct
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	SchedulingPolicy     *SchedulingPolicy     `xml:"scheduling_policy,omitempty"`
-	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
-}
-
-type Bookmarks struct {
-	XMLName   xml.Name   `xml:"bookmarks"`
-	Bookmarks []Bookmark `xml:"bookmark,omitempty"`
-}
-
-type Bookmark struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	Value       *string `xml:"value,omitempty"`
-}
-
-type BrickProfileDetails struct {
-	XMLName             xml.Name             `xml:"brickprofiledetails"`
-	BrickProfileDetails []BrickProfileDetail `xml:"brick_profile_detail,omitempty"`
-}
-
-type BrickProfileDetail struct {
-	OvStruct
-	Brick          *GlusterBrick   `xml:"brick,omitempty"`
-	ProfileDetails []ProfileDetail `xml:"profile_details,omitempty"`
-}
-
-type Certificates struct {
-	XMLName      xml.Name      `xml:"certificates"`
-	Certificates []Certificate `xml:"certificate,omitempty"`
-}
-
-type Certificate struct {
-	OvStruct
-	Comment      *string `xml:"comment,omitempty"`
-	Content      *string `xml:"content,omitempty"`
-	Description  *string `xml:"description,omitempty"`
-	Id           *string `xml:"id,attr,omitempty"`
-	Name         *string `xml:"name,omitempty"`
-	Organization *string `xml:"organization,omitempty"`
-	Subject      *string `xml:"subject,omitempty"`
-}
-
-type Clusters struct {
-	XMLName  xml.Name  `xml:"clusters"`
-	Clusters []Cluster `xml:"cluster,omitempty"`
-}
-
-type Cluster struct {
-	OvStruct
-	AffinityGroups                   []AffinityGroup   `xml:"affinity_groups,omitempty"`
-	BallooningEnabled                *bool             `xml:"ballooning_enabled,omitempty"`
-	Comment                          *string           `xml:"comment,omitempty"`
-	Cpu                              *Cpu              `xml:"cpu,omitempty"`
-	CpuProfiles                      []CpuProfile      `xml:"cpu_profiles,omitempty"`
-	CustomSchedulingPolicyProperties []Property        `xml:"custom_scheduling_policy_properties,omitempty"`
-	DataCenter                       *DataCenter       `xml:"data_center,omitempty"`
-	Description                      *string           `xml:"description,omitempty"`
-	Display                          *Display          `xml:"display,omitempty"`
-	ErrorHandling                    *ErrorHandling    `xml:"error_handling,omitempty"`
-	FencingPolicy                    *FencingPolicy    `xml:"fencing_policy,omitempty"`
-	GlusterHooks                     []GlusterHook     `xml:"gluster_hooks,omitempty"`
-	GlusterService                   *bool             `xml:"gluster_service,omitempty"`
-	GlusterTunedProfile              *string           `xml:"gluster_tuned_profile,omitempty"`
-	GlusterVolumes                   []GlusterVolume   `xml:"gluster_volumes,omitempty"`
-	HaReservation                    *bool             `xml:"ha_reservation,omitempty"`
-	Id                               *string           `xml:"id,attr,omitempty"`
-	Ksm                              *Ksm              `xml:"ksm,omitempty"`
-	MacPool                          *MacPool          `xml:"mac_pool,omitempty"`
-	MaintenanceReasonRequired        *bool             `xml:"maintenance_reason_required,omitempty"`
-	ManagementNetwork                *Network          `xml:"management_network,omitempty"`
-	MemoryPolicy                     *MemoryPolicy     `xml:"memory_policy,omitempty"`
-	Migration                        *MigrationOptions `xml:"migration,omitempty"`
-	Name                             *string           `xml:"name,omitempty"`
-	NetworkFilters                   []NetworkFilter   `xml:"network_filters,omitempty"`
-	Networks                         []Network         `xml:"networks,omitempty"`
-	OptionalReason                   *bool             `xml:"optional_reason,omitempty"`
-	Permissions                      []Permission      `xml:"permissions,omitempty"`
-	RequiredRngSources               []RngSource       `xml:"required_rng_sources,omitempty"`
-	SchedulingPolicy                 *SchedulingPolicy `xml:"scheduling_policy,omitempty"`
-	SerialNumber                     *SerialNumber     `xml:"serial_number,omitempty"`
-	SupportedVersions                []Version         `xml:"supported_versions,omitempty"`
-	SwitchType                       SwitchType        `xml:"switch_type,omitempty"`
-	ThreadsAsCores                   *bool             `xml:"threads_as_cores,omitempty"`
-	TrustedService                   *bool             `xml:"trusted_service,omitempty"`
-	TunnelMigration                  *bool             `xml:"tunnel_migration,omitempty"`
-	Version                          *Version          `xml:"version,omitempty"`
-	VirtService                      *bool             `xml:"virt_service,omitempty"`
-}
-
-type ClusterLevels struct {
-	XMLName       xml.Name       `xml:"clusterlevels"`
-	ClusterLevels []ClusterLevel `xml:"cluster_level,omitempty"`
-}
-
-type ClusterLevel struct {
-	OvStruct
-	Comment     *string   `xml:"comment,omitempty"`
-	CpuTypes    []CpuType `xml:"cpu_types,omitempty"`
-	Description *string   `xml:"description,omitempty"`
-	Id          *string   `xml:"id,attr,omitempty"`
-	Name        *string   `xml:"name,omitempty"`
-	Permits     []Permit  `xml:"permits,omitempty"`
-}
-
-type CpuProfiles struct {
-	XMLName     xml.Name     `xml:"cpuprofiles"`
-	CpuProfiles []CpuProfile `xml:"cpu_profile,omitempty"`
-}
-
-type CpuProfile struct {
-	OvStruct
-	Cluster     *Cluster     `xml:"cluster,omitempty"`
-	Comment     *string      `xml:"comment,omitempty"`
-	Description *string      `xml:"description,omitempty"`
-	Id          *string      `xml:"id,attr,omitempty"`
-	Name        *string      `xml:"name,omitempty"`
-	Permissions []Permission `xml:"permissions,omitempty"`
-	Qos         *Qos         `xml:"qos,omitempty"`
-}
-
-type DataCenters struct {
-	XMLName     xml.Name     `xml:"datacenters"`
-	DataCenters []DataCenter `xml:"data_center,omitempty"`
-}
-
-type DataCenter struct {
-	OvStruct
-	Clusters          []Cluster        `xml:"clusters,omitempty"`
-	Comment           *string          `xml:"comment,omitempty"`
-	Description       *string          `xml:"description,omitempty"`
-	Id                *string          `xml:"id,attr,omitempty"`
-	IscsiBonds        []IscsiBond      `xml:"iscsi_bonds,omitempty"`
-	Local             *bool            `xml:"local,omitempty"`
-	MacPool           *MacPool         `xml:"mac_pool,omitempty"`
-	Name              *string          `xml:"name,omitempty"`
-	Networks          []Network        `xml:"networks,omitempty"`
-	Permissions       []Permission     `xml:"permissions,omitempty"`
-	Qoss              []Qos            `xml:"qoss,omitempty"`
-	QuotaMode         QuotaModeType    `xml:"quota_mode,omitempty"`
-	Quotas            []Quota          `xml:"quotas,omitempty"`
-	Status            DataCenterStatus `xml:"status,omitempty"`
-	StorageDomains    []StorageDomain  `xml:"storage_domains,omitempty"`
-	StorageFormat     StorageFormat    `xml:"storage_format,omitempty"`
-	SupportedVersions []Version        `xml:"supported_versions,omitempty"`
-	Version           *Version         `xml:"version,omitempty"`
-}
-
-type Devices struct {
-	XMLName xml.Name `xml:"devices"`
-	Devices []Device `xml:"device,omitempty"`
-}
-
-type Device struct {
-	OvStruct
-	Comment      *string       `xml:"comment,omitempty"`
-	Description  *string       `xml:"description,omitempty"`
-	Id           *string       `xml:"id,attr,omitempty"`
-	InstanceType *InstanceType `xml:"instance_type,omitempty"`
-	Name         *string       `xml:"name,omitempty"`
-	Template     *Template     `xml:"template,omitempty"`
-	Vm           *Vm           `xml:"vm,omitempty"`
-	Vms          []Vm          `xml:"vms,omitempty"`
-}
-
-type Disks struct {
-	XMLName xml.Name `xml:"disks"`
-	Disks   []Disk   `xml:"disk,omitempty"`
-}
-
-type Disk struct {
-	OvStruct
-	Active              *bool                `xml:"active,omitempty"`
-	ActualSize          *int64               `xml:"actual_size,omitempty"`
-	Alias               *string              `xml:"alias,omitempty"`
-	Bootable            *bool                `xml:"bootable,omitempty"`
-	Comment             *string              `xml:"comment,omitempty"`
-	Description         *string              `xml:"description,omitempty"`
-	DiskProfile         *DiskProfile         `xml:"disk_profile,omitempty"`
-	Format              DiskFormat           `xml:"format,omitempty"`
-	Id                  *string              `xml:"id,attr,omitempty"`
-	ImageId             *string              `xml:"image_id,omitempty"`
-	InitialSize         *int64               `xml:"initial_size,omitempty"`
-	InstanceType        *InstanceType        `xml:"instance_type,omitempty"`
-	Interface           DiskInterface        `xml:"interface,omitempty"`
-	LogicalName         *string              `xml:"logical_name,omitempty"`
-	LunStorage          *HostStorage         `xml:"lun_storage,omitempty"`
-	Name                *string              `xml:"name,omitempty"`
-	OpenstackVolumeType *OpenStackVolumeType `xml:"openstack_volume_type,omitempty"`
-	Permissions         []Permission         `xml:"permissions,omitempty"`
-	PropagateErrors     *bool                `xml:"propagate_errors,omitempty"`
-	ProvisionedSize     *int64               `xml:"provisioned_size,omitempty"`
-	QcowVersion         QcowVersion          `xml:"qcow_version,omitempty"`
-	Quota               *Quota               `xml:"quota,omitempty"`
-	ReadOnly            *bool                `xml:"read_only,omitempty"`
-	Sgio                ScsiGenericIO        `xml:"sgio,omitempty"`
-	Shareable           *bool                `xml:"shareable,omitempty"`
-	Snapshot            *Snapshot            `xml:"snapshot,omitempty"`
-	Sparse              *bool                `xml:"sparse,omitempty"`
-	Statistics          []Statistic          `xml:"statistics,omitempty"`
-	Status              DiskStatus           `xml:"status,omitempty"`
-	StorageDomain       *StorageDomain       `xml:"storage_domain,omitempty"`
-	StorageDomains      []StorageDomain      `xml:"storage_domains,omitempty"`
-	StorageType         DiskStorageType      `xml:"storage_type,omitempty"`
-	Template            *Template            `xml:"template,omitempty"`
-	UsesScsiReservation *bool                `xml:"uses_scsi_reservation,omitempty"`
-	Vm                  *Vm                  `xml:"vm,omitempty"`
-	Vms                 []Vm                 `xml:"vms,omitempty"`
-	WipeAfterDelete     *bool                `xml:"wipe_after_delete,omitempty"`
-}
-
-type DiskAttachments struct {
-	XMLName         xml.Name         `xml:"diskattachments"`
-	DiskAttachments []DiskAttachment `xml:"disk_attachment,omitempty"`
-}
-
-type DiskAttachment struct {
-	OvStruct
-	Active              *bool         `xml:"active,omitempty"`
-	Bootable            *bool         `xml:"bootable,omitempty"`
-	Comment             *string       `xml:"comment,omitempty"`
-	Description         *string       `xml:"description,omitempty"`
-	Disk                *Disk         `xml:"disk,omitempty"`
-	Id                  *string       `xml:"id,attr,omitempty"`
-	Interface           DiskInterface `xml:"interface,omitempty"`
-	LogicalName         *string       `xml:"logical_name,omitempty"`
-	Name                *string       `xml:"name,omitempty"`
-	PassDiscard         *bool         `xml:"pass_discard,omitempty"`
-	Template            *Template     `xml:"template,omitempty"`
-	UsesScsiReservation *bool         `xml:"uses_scsi_reservation,omitempty"`
-	Vm                  *Vm           `xml:"vm,omitempty"`
-}
-
-type DiskProfiles struct {
-	XMLName      xml.Name      `xml:"diskprofiles"`
-	DiskProfiles []DiskProfile `xml:"disk_profile,omitempty"`
-}
-
-type DiskProfile struct {
-	OvStruct
-	Comment       *string        `xml:"comment,omitempty"`
-	Description   *string        `xml:"description,omitempty"`
-	Id            *string        `xml:"id,attr,omitempty"`
-	Name          *string        `xml:"name,omitempty"`
-	Permissions   []Permission   `xml:"permissions,omitempty"`
-	Qos           *Qos           `xml:"qos,omitempty"`
-	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
-}
-
-type DiskSnapshots struct {
-	XMLName       xml.Name       `xml:"disksnapshots"`
-	DiskSnapshots []DiskSnapshot `xml:"disk_snapshot,omitempty"`
-}
-
-type DiskSnapshot struct {
-	OvStruct
-	Active              *bool                `xml:"active,omitempty"`
-	ActualSize          *int64               `xml:"actual_size,omitempty"`
-	Alias               *string              `xml:"alias,omitempty"`
-	Bootable            *bool                `xml:"bootable,omitempty"`
-	Comment             *string              `xml:"comment,omitempty"`
-	Description         *string              `xml:"description,omitempty"`
-	Disk                *Disk                `xml:"disk,omitempty"`
-	DiskProfile         *DiskProfile         `xml:"disk_profile,omitempty"`
-	Format              DiskFormat           `xml:"format,omitempty"`
-	Id                  *string              `xml:"id,attr,omitempty"`
-	ImageId             *string              `xml:"image_id,omitempty"`
-	InitialSize         *int64               `xml:"initial_size,omitempty"`
-	InstanceType        *InstanceType        `xml:"instance_type,omitempty"`
-	Interface           DiskInterface        `xml:"interface,omitempty"`
-	LogicalName         *string              `xml:"logical_name,omitempty"`
-	LunStorage          *HostStorage         `xml:"lun_storage,omitempty"`
-	Name                *string              `xml:"name,omitempty"`
-	OpenstackVolumeType *OpenStackVolumeType `xml:"openstack_volume_type,omitempty"`
-	Permissions         []Permission         `xml:"permissions,omitempty"`
-	PropagateErrors     *bool                `xml:"propagate_errors,omitempty"`
-	ProvisionedSize     *int64               `xml:"provisioned_size,omitempty"`
-	QcowVersion         QcowVersion          `xml:"qcow_version,omitempty"`
-	Quota               *Quota               `xml:"quota,omitempty"`
-	ReadOnly            *bool                `xml:"read_only,omitempty"`
-	Sgio                ScsiGenericIO        `xml:"sgio,omitempty"`
-	Shareable           *bool                `xml:"shareable,omitempty"`
-	Snapshot            *Snapshot            `xml:"snapshot,omitempty"`
-	Sparse              *bool                `xml:"sparse,omitempty"`
-	Statistics          []Statistic          `xml:"statistics,omitempty"`
-	Status              DiskStatus           `xml:"status,omitempty"`
-	StorageDomain       *StorageDomain       `xml:"storage_domain,omitempty"`
-	StorageDomains      []StorageDomain      `xml:"storage_domains,omitempty"`
-	StorageType         DiskStorageType      `xml:"storage_type,omitempty"`
-	Template            *Template            `xml:"template,omitempty"`
-	UsesScsiReservation *bool                `xml:"uses_scsi_reservation,omitempty"`
-	Vm                  *Vm                  `xml:"vm,omitempty"`
-	Vms                 []Vm                 `xml:"vms,omitempty"`
-	WipeAfterDelete     *bool                `xml:"wipe_after_delete,omitempty"`
-}
-
-type Domains struct {
-	XMLName xml.Name `xml:"domains"`
-	Domains []Domain `xml:"domain,omitempty"`
-}
-
-type Domain struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Groups      []Group `xml:"groups,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	User        *User   `xml:"user,omitempty"`
-	Users       []User  `xml:"users,omitempty"`
-}
-
-type Events struct {
-	XMLName xml.Name `xml:"events"`
-	Events  []Event  `xml:"event,omitempty"`
-}
-
-type Event struct {
-	OvStruct
-	Cluster       *Cluster       `xml:"cluster,omitempty"`
-	Code          *int64         `xml:"code,omitempty"`
-	Comment       *string        `xml:"comment,omitempty"`
-	CorrelationId *string        `xml:"correlation_id,omitempty"`
-	CustomData    *string        `xml:"custom_data,omitempty"`
-	CustomId      *int64         `xml:"custom_id,omitempty"`
-	DataCenter    *DataCenter    `xml:"data_center,omitempty"`
-	Description   *string        `xml:"description,omitempty"`
-	FloodRate     *int64         `xml:"flood_rate,omitempty"`
-	Host          *Host          `xml:"host,omitempty"`
-	Id            *string        `xml:"id,attr,omitempty"`
-	Name          *string        `xml:"name,omitempty"`
-	Origin        *string        `xml:"origin,omitempty"`
-	Severity      LogSeverity    `xml:"severity,omitempty"`
-	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
-	Template      *Template      `xml:"template,omitempty"`
-	Time          time.Time      `xml:"time,omitempty"`
-	User          *User          `xml:"user,omitempty"`
-	Vm            *Vm            `xml:"vm,omitempty"`
-}
-
-type ExternalComputeResources struct {
-	XMLName                  xml.Name                  `xml:"externalcomputeresources"`
-	ExternalComputeResources []ExternalComputeResource `xml:"external_compute_resource,omitempty"`
-}
-
-type ExternalComputeResource struct {
-	OvStruct
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	Provider             *string               `xml:"provider,omitempty"`
-	Url                  *string               `xml:"url,omitempty"`
-	User                 *string               `xml:"user,omitempty"`
-}
-
-type ExternalDiscoveredHosts struct {
-	XMLName                 xml.Name                 `xml:"externaldiscoveredhosts"`
-	ExternalDiscoveredHosts []ExternalDiscoveredHost `xml:"external_discovered_host,omitempty"`
-}
-
-type ExternalDiscoveredHost struct {
-	OvStruct
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Ip                   *string               `xml:"ip,omitempty"`
-	LastReport           *string               `xml:"last_report,omitempty"`
-	Mac                  *string               `xml:"mac,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	SubnetName           *string               `xml:"subnet_name,omitempty"`
-}
-
-type ExternalHosts struct {
-	XMLName       xml.Name       `xml:"externalhosts"`
-	ExternalHosts []ExternalHost `xml:"external_host,omitempty"`
-}
-
-type ExternalHost struct {
-	OvStruct
-	Address              *string               `xml:"address,omitempty"`
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-}
-
-type ExternalHostGroups struct {
-	XMLName            xml.Name            `xml:"externalhostgroups"`
-	ExternalHostGroups []ExternalHostGroup `xml:"external_host_group,omitempty"`
-}
-
-type ExternalHostGroup struct {
-	OvStruct
-	ArchitectureName     *string               `xml:"architecture_name,omitempty"`
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	DomainName           *string               `xml:"domain_name,omitempty"`
-	ExternalHostProvider *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	OperatingSystemName  *string               `xml:"operating_system_name,omitempty"`
-	SubnetName           *string               `xml:"subnet_name,omitempty"`
-}
-
-type ExternalProviders struct {
-	XMLName           xml.Name           `xml:"externalproviders"`
-	ExternalProviders []ExternalProvider `xml:"external_provider,omitempty"`
-}
-
-type ExternalProvider struct {
-	OvStruct
-	AuthenticationUrl      *string    `xml:"authentication_url,omitempty"`
-	Comment                *string    `xml:"comment,omitempty"`
-	Description            *string    `xml:"description,omitempty"`
-	Id                     *string    `xml:"id,attr,omitempty"`
-	Name                   *string    `xml:"name,omitempty"`
-	Password               *string    `xml:"password,omitempty"`
-	Properties             []Property `xml:"properties,omitempty"`
-	RequiresAuthentication *bool      `xml:"requires_authentication,omitempty"`
-	Url                    *string    `xml:"url,omitempty"`
-	Username               *string    `xml:"username,omitempty"`
-}
-
-type Files struct {
-	XMLName xml.Name `xml:"files"`
-	Files   []File   `xml:"file,omitempty"`
-}
-
-type File struct {
-	OvStruct
-	Comment       *string        `xml:"comment,omitempty"`
-	Content       *string        `xml:"content,omitempty"`
-	Description   *string        `xml:"description,omitempty"`
-	Id            *string        `xml:"id,attr,omitempty"`
-	Name          *string        `xml:"name,omitempty"`
-	StorageDomain *StorageDomain `xml:"storage_domain,omitempty"`
-	Type          *string        `xml:"type,omitempty"`
-}
-
-type Filters struct {
-	XMLName xml.Name `xml:"filters"`
-	Filters []Filter `xml:"filter,omitempty"`
-}
-
-type Filter struct {
-	OvStruct
-	Comment              *string               `xml:"comment,omitempty"`
-	Description          *string               `xml:"description,omitempty"`
-	Id                   *string               `xml:"id,attr,omitempty"`
-	Name                 *string               `xml:"name,omitempty"`
-	Position             *int64                `xml:"position,omitempty"`
-	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
-}
-
-type Floppys struct {
-	XMLName xml.Name `xml:"floppys"`
-	Floppys []Floppy `xml:"floppy,omitempty"`
-}
-
-type Floppy struct {
-	OvStruct
-	Comment      *string       `xml:"comment,omitempty"`
-	Description  *string       `xml:"description,omitempty"`
-	File         *File         `xml:"file,omitempty"`
-	Id           *string       `xml:"id,attr,omitempty"`
-	InstanceType *InstanceType `xml:"instance_type,omitempty"`
-	Name         *string       `xml:"name,omitempty"`
-	Template     *Template     `xml:"template,omitempty"`
-	Vm           *Vm           `xml:"vm,omitempty"`
-	Vms          []Vm          `xml:"vms,omitempty"`
-}
-
-type GlusterBrickAdvancedDetailss struct {
-	XMLName                      xml.Name                      `xml:"glusterbrickadvanceddetailss"`
-	GlusterBrickAdvancedDetailss []GlusterBrickAdvancedDetails `xml:"gluster_brick_advanced_details,omitempty"`
-}
-
-type GlusterBrickAdvancedDetails struct {
-	OvStruct
-	Comment        *string             `xml:"comment,omitempty"`
-	Description    *string             `xml:"description,omitempty"`
-	Device         *string             `xml:"device,omitempty"`
-	FsName         *string             `xml:"fs_name,omitempty"`
-	GlusterClients []GlusterClient     `xml:"gluster_clients,omitempty"`
-	Id             *string             `xml:"id,attr,omitempty"`
-	InstanceType   *InstanceType       `xml:"instance_type,omitempty"`
-	MemoryPools    []GlusterMemoryPool `xml:"memory_pools,omitempty"`
-	MntOptions     *string             `xml:"mnt_options,omitempty"`
-	Name           *string             `xml:"name,omitempty"`
-	Pid            *int64              `xml:"pid,omitempty"`
-	Port           *int64              `xml:"port,omitempty"`
-	Template       *Template           `xml:"template,omitempty"`
-	Vm             *Vm                 `xml:"vm,omitempty"`
-	Vms            []Vm                `xml:"vms,omitempty"`
-}
-
-type GlusterHooks struct {
-	XMLName      xml.Name      `xml:"glusterhooks"`
-	GlusterHooks []GlusterHook `xml:"gluster_hook,omitempty"`
-}
-
-type GlusterHook struct {
-	OvStruct
-	Checksum       *string             `xml:"checksum,omitempty"`
-	Cluster        *Cluster            `xml:"cluster,omitempty"`
-	Comment        *string             `xml:"comment,omitempty"`
-	ConflictStatus *int64              `xml:"conflict_status,omitempty"`
-	Conflicts      *string             `xml:"conflicts,omitempty"`
-	Content        *string             `xml:"content,omitempty"`
-	ContentType    HookContentType     `xml:"content_type,omitempty"`
-	Description    *string             `xml:"description,omitempty"`
-	GlusterCommand *string             `xml:"gluster_command,omitempty"`
-	Id             *string             `xml:"id,attr,omitempty"`
-	Name           *string             `xml:"name,omitempty"`
-	ServerHooks    []GlusterServerHook `xml:"server_hooks,omitempty"`
-	Stage          HookStage           `xml:"stage,omitempty"`
-	Status         GlusterHookStatus   `xml:"status,omitempty"`
-}
-
-type GlusterMemoryPools struct {
-	XMLName            xml.Name            `xml:"glustermemorypools"`
-	GlusterMemoryPools []GlusterMemoryPool `xml:"gluster_memory_pool,omitempty"`
-}
-
-type GlusterMemoryPool struct {
-	OvStruct
-	AllocCount  *int64  `xml:"alloc_count,omitempty"`
-	ColdCount   *int64  `xml:"cold_count,omitempty"`
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	HotCount    *int64  `xml:"hot_count,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	MaxAlloc    *int64  `xml:"max_alloc,omitempty"`
-	MaxStdalloc *int64  `xml:"max_stdalloc,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-	PaddedSize  *int64  `xml:"padded_size,omitempty"`
-	PoolMisses  *int64  `xml:"pool_misses,omitempty"`
-	Type        *string `xml:"type,omitempty"`
-}
-
-type GlusterServerHooks struct {
-	XMLName            xml.Name            `xml:"glusterserverhooks"`
-	GlusterServerHooks []GlusterServerHook `xml:"gluster_server_hook,omitempty"`
-}
-
-type GlusterServerHook struct {
-	OvStruct
-	Checksum    *string           `xml:"checksum,omitempty"`
-	Comment     *string           `xml:"comment,omitempty"`
-	ContentType HookContentType   `xml:"content_type,omitempty"`
-	Description *string           `xml:"description,omitempty"`
-	Host        *Host             `xml:"host,omitempty"`
-	Id          *string           `xml:"id,attr,omitempty"`
-	Name        *string           `xml:"name,omitempty"`
-	Status      GlusterHookStatus `xml:"status,omitempty"`
-}
-
-type GlusterVolumes struct {
-	XMLName        xml.Name        `xml:"glustervolumes"`
-	GlusterVolumes []GlusterVolume `xml:"gluster_volume,omitempty"`
-}
-
-type GlusterVolume struct {
-	OvStruct
-	Bricks          []GlusterBrick      `xml:"bricks,omitempty"`
-	Cluster         *Cluster            `xml:"cluster,omitempty"`
-	Comment         *string             `xml:"comment,omitempty"`
-	Description     *string             `xml:"description,omitempty"`
-	DisperseCount   *int64              `xml:"disperse_count,omitempty"`
-	Id              *string             `xml:"id,attr,omitempty"`
-	Name            *string             `xml:"name,omitempty"`
-	Options         []Option            `xml:"options,omitempty"`
-	RedundancyCount *int64              `xml:"redundancy_count,omitempty"`
-	ReplicaCount    *int64              `xml:"replica_count,omitempty"`
-	Statistics      []Statistic         `xml:"statistics,omitempty"`
-	Status          GlusterVolumeStatus `xml:"status,omitempty"`
-	StripeCount     *int64              `xml:"stripe_count,omitempty"`
-	TransportTypes  []TransportType     `xml:"transport_types,omitempty"`
-	VolumeType      GlusterVolumeType   `xml:"volume_type,omitempty"`
-}
-
-type GlusterVolumeProfileDetailss struct {
-	XMLName                      xml.Name                      `xml:"glustervolumeprofiledetailss"`
-	GlusterVolumeProfileDetailss []GlusterVolumeProfileDetails `xml:"gluster_volume_profile_details,omitempty"`
-}
-
-type GlusterVolumeProfileDetails struct {
-	OvStruct
-	BrickProfileDetails []BrickProfileDetail `xml:"brick_profile_details,omitempty"`
-	Comment             *string              `xml:"comment,omitempty"`
-	Description         *string              `xml:"description,omitempty"`
-	Id                  *string              `xml:"id,attr,omitempty"`
-	Name                *string              `xml:"name,omitempty"`
-	NfsProfileDetails   []NfsProfileDetail   `xml:"nfs_profile_details,omitempty"`
-}
-
-type GraphicsConsoles struct {
-	XMLName          xml.Name          `xml:"graphicsconsoles"`
-	GraphicsConsoles []GraphicsConsole `xml:"graphics_console,omitempty"`
-}
-
-type GraphicsConsole struct {
-	OvStruct
-	Address      *string       `xml:"address,omitempty"`
-	Comment      *string       `xml:"comment,omitempty"`
-	Description  *string       `xml:"description,omitempty"`
-	Id           *string       `xml:"id,attr,omitempty"`
-	InstanceType *InstanceType `xml:"instance_type,omitempty"`
-	Name         *string       `xml:"name,omitempty"`
-	Port         *int64        `xml:"port,omitempty"`
-	Protocol     GraphicsType  `xml:"protocol,omitempty"`
-	Template     *Template     `xml:"template,omitempty"`
-	TlsPort      *int64        `xml:"tls_port,omitempty"`
-	Vm           *Vm           `xml:"vm,omitempty"`
-}
-
-type Groups struct {
-	XMLName xml.Name `xml:"groups"`
-	Groups  []Group  `xml:"group,omitempty"`
-}
-
-type Group struct {
-	OvStruct
-	Comment       *string      `xml:"comment,omitempty"`
-	Description   *string      `xml:"description,omitempty"`
-	Domain        *Domain      `xml:"domain,omitempty"`
-	DomainEntryId *string      `xml:"domain_entry_id,omitempty"`
-	Id            *string      `xml:"id,attr,omitempty"`
-	Name          *string      `xml:"name,omitempty"`
-	Namespace     *string      `xml:"namespace,omitempty"`
-	Permissions   []Permission `xml:"permissions,omitempty"`
-	Roles         []Role       `xml:"roles,omitempty"`
-	Tags          []Tag        `xml:"tags,omitempty"`
-}
-
-type Hooks struct {
-	XMLName xml.Name `xml:"hooks"`
-	Hooks   []Hook   `xml:"hook,omitempty"`
-}
-
-type Hook struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	EventName   *string `xml:"event_name,omitempty"`
-	Host        *Host   `xml:"host,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	Md5         *string `xml:"md5,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-}
-
-type Hosts struct {
-	XMLName xml.Name `xml:"hosts"`
-	Hosts   []Host   `xml:"host,omitempty"`
-}
-
-type Host struct {
-	OvStruct
-	Address                     *string                      `xml:"address,omitempty"`
-	AffinityLabels              []AffinityLabel              `xml:"affinity_labels,omitempty"`
-	Agents                      []Agent                      `xml:"agents,omitempty"`
-	AutoNumaStatus              AutoNumaStatus               `xml:"auto_numa_status,omitempty"`
-	Certificate                 *Certificate                 `xml:"certificate,omitempty"`
-	Cluster                     *Cluster                     `xml:"cluster,omitempty"`
-	Comment                     *string                      `xml:"comment,omitempty"`
-	Cpu                         *Cpu                         `xml:"cpu,omitempty"`
-	Description                 *string                      `xml:"description,omitempty"`
-	DevicePassthrough           *HostDevicePassthrough       `xml:"device_passthrough,omitempty"`
-	Devices                     []Device                     `xml:"devices,omitempty"`
-	Display                     *Display                     `xml:"display,omitempty"`
-	ExternalHostProvider        *ExternalHostProvider        `xml:"external_host_provider,omitempty"`
-	ExternalStatus              ExternalStatus               `xml:"external_status,omitempty"`
-	HardwareInformation         *HardwareInformation         `xml:"hardware_information,omitempty"`
-	Hooks                       []Hook                       `xml:"hooks,omitempty"`
-	HostedEngine                *HostedEngine                `xml:"hosted_engine,omitempty"`
-	Id                          *string                      `xml:"id,attr,omitempty"`
-	Iscsi                       *IscsiDetails                `xml:"iscsi,omitempty"`
-	KatelloErrata               []KatelloErratum             `xml:"katello_errata,omitempty"`
-	KdumpStatus                 KdumpStatus                  `xml:"kdump_status,omitempty"`
-	Ksm                         *Ksm                         `xml:"ksm,omitempty"`
-	LibvirtVersion              *Version                     `xml:"libvirt_version,omitempty"`
-	MaxSchedulingMemory         *int64                       `xml:"max_scheduling_memory,omitempty"`
-	Memory                      *int64                       `xml:"memory,omitempty"`
-	Name                        *string                      `xml:"name,omitempty"`
-	NetworkAttachments          []NetworkAttachment          `xml:"network_attachments,omitempty"`
-	Nics                        []Nic                        `xml:"nics,omitempty"`
-	NumaNodes                   []NumaNode                   `xml:"numa_nodes,omitempty"`
-	NumaSupported               *bool                        `xml:"numa_supported,omitempty"`
-	Os                          *OperatingSystem             `xml:"os,omitempty"`
-	OverrideIptables            *bool                        `xml:"override_iptables,omitempty"`
-	Permissions                 []Permission                 `xml:"permissions,omitempty"`
-	Port                        *int64                       `xml:"port,omitempty"`
-	PowerManagement             *PowerManagement             `xml:"power_management,omitempty"`
-	Protocol                    HostProtocol                 `xml:"protocol,omitempty"`
-	RootPassword                *string                      `xml:"root_password,omitempty"`
-	SeLinux                     *SeLinux                     `xml:"se_linux,omitempty"`
-	Spm                         *Spm                         `xml:"spm,omitempty"`
-	Ssh                         *Ssh                         `xml:"ssh,omitempty"`
-	Statistics                  []Statistic                  `xml:"statistics,omitempty"`
-	Status                      HostStatus                   `xml:"status,omitempty"`
-	StatusDetail                *string                      `xml:"status_detail,omitempty"`
-	StorageConnectionExtensions []StorageConnectionExtension `xml:"storage_connection_extensions,omitempty"`
-	Storages                    []HostStorage                `xml:"storages,omitempty"`
-	Summary                     *VmSummary                   `xml:"summary,omitempty"`
-	Tags                        []Tag                        `xml:"tags,omitempty"`
-	TransparentHugePages        *TransparentHugePages        `xml:"transparent_huge_pages,omitempty"`
-	Type                        HostType                     `xml:"type,omitempty"`
-	UnmanagedNetworks           []UnmanagedNetwork           `xml:"unmanaged_networks,omitempty"`
-	UpdateAvailable             *bool                        `xml:"update_available,omitempty"`
-	Version                     *Version                     `xml:"version,omitempty"`
-}
-
-type HostDevices struct {
-	XMLName     xml.Name     `xml:"hostdevices"`
-	HostDevices []HostDevice `xml:"host_device,omitempty"`
-}
-
-type HostDevice struct {
-	OvStruct
-	Capability       *string     `xml:"capability,omitempty"`
-	Comment          *string     `xml:"comment,omitempty"`
-	Description      *string     `xml:"description,omitempty"`
-	Host             *Host       `xml:"host,omitempty"`
-	Id               *string     `xml:"id,attr,omitempty"`
-	IommuGroup       *int64      `xml:"iommu_group,omitempty"`
-	Name             *string     `xml:"name,omitempty"`
-	ParentDevice     *HostDevice `xml:"parent_device,omitempty"`
-	PhysicalFunction *HostDevice `xml:"physical_function,omitempty"`
-	Placeholder      *bool       `xml:"placeholder,omitempty"`
-	Product          *Product    `xml:"product,omitempty"`
-	Vendor           *Vendor     `xml:"vendor,omitempty"`
-	VirtualFunctions *int64      `xml:"virtual_functions,omitempty"`
-	Vm               *Vm         `xml:"vm,omitempty"`
-}
-
-type HostNics struct {
-	XMLName  xml.Name  `xml:"hostnics"`
-	HostNics []HostNic `xml:"host_nic,omitempty"`
-}
-
-type HostNic struct {
-	OvStruct
-	AdAggregatorId                *int64                                `xml:"ad_aggregator_id,omitempty"`
-	BaseInterface                 *string                               `xml:"base_interface,omitempty"`
-	Bonding                       *Bonding                              `xml:"bonding,omitempty"`
-	BootProtocol                  BootProtocol                          `xml:"boot_protocol,omitempty"`
-	Bridged                       *bool                                 `xml:"bridged,omitempty"`
-	CheckConnectivity             *bool                                 `xml:"check_connectivity,omitempty"`
-	Comment                       *string                               `xml:"comment,omitempty"`
-	CustomConfiguration           *bool                                 `xml:"custom_configuration,omitempty"`
-	Description                   *string                               `xml:"description,omitempty"`
-	Host                          *Host                                 `xml:"host,omitempty"`
-	Id                            *string                               `xml:"id,attr,omitempty"`
-	Ip                            *Ip                                   `xml:"ip,omitempty"`
-	Ipv6                          *Ip                                   `xml:"ipv6,omitempty"`
-	Ipv6BootProtocol              BootProtocol                          `xml:"ipv6_boot_protocol,omitempty"`
-	Mac                           *Mac                                  `xml:"mac,omitempty"`
-	Mtu                           *int64                                `xml:"mtu,omitempty"`
-	Name                          *string                               `xml:"name,omitempty"`
-	Network                       *Network                              `xml:"network,omitempty"`
-	NetworkLabels                 []NetworkLabel                        `xml:"network_labels,omitempty"`
-	OverrideConfiguration         *bool                                 `xml:"override_configuration,omitempty"`
-	PhysicalFunction              *HostNic                              `xml:"physical_function,omitempty"`
-	Properties                    []Property                            `xml:"properties,omitempty"`
-	Qos                           *Qos                                  `xml:"qos,omitempty"`
-	Speed                         *int64                                `xml:"speed,omitempty"`
-	Statistics                    []Statistic                           `xml:"statistics,omitempty"`
-	Status                        NicStatus                             `xml:"status,omitempty"`
-	VirtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration `xml:"virtual_functions_configuration,omitempty"`
-	Vlan                          *Vlan                                 `xml:"vlan,omitempty"`
-}
-
-type HostStorages struct {
-	XMLName      xml.Name      `xml:"hoststorages"`
-	HostStorages []HostStorage `xml:"host_storage,omitempty"`
-}
-
-type HostStorage struct {
-	OvStruct
-	Address      *string       `xml:"address,omitempty"`
-	Comment      *string       `xml:"comment,omitempty"`
-	Description  *string       `xml:"description,omitempty"`
-	Host         *Host         `xml:"host,omitempty"`
-	Id           *string       `xml:"id,attr,omitempty"`
-	LogicalUnits []LogicalUnit `xml:"logical_units,omitempty"`
-	MountOptions *string       `xml:"mount_options,omitempty"`
-	Name         *string       `xml:"name,omitempty"`
-	NfsRetrans   *int64        `xml:"nfs_retrans,omitempty"`
-	NfsTimeo     *int64        `xml:"nfs_timeo,omitempty"`
-	NfsVersion   NfsVersion    `xml:"nfs_version,omitempty"`
-	OverrideLuns *bool         `xml:"override_luns,omitempty"`
-	Password     *string       `xml:"password,omitempty"`
-	Path         *string       `xml:"path,omitempty"`
-	Port         *int64        `xml:"port,omitempty"`
-	Portal       *string       `xml:"portal,omitempty"`
-	Target       *string       `xml:"target,omitempty"`
-	Type         StorageType   `xml:"type,omitempty"`
-	Username     *string       `xml:"username,omitempty"`
-	VfsType      *string       `xml:"vfs_type,omitempty"`
-	VolumeGroup  *VolumeGroup  `xml:"volume_group,omitempty"`
-}
-
-type Icons struct {
-	XMLName xml.Name `xml:"icons"`
-	Icons   []Icon   `xml:"icon,omitempty"`
-}
-
-type Icon struct {
-	OvStruct
-	Comment     *string `xml:"comment,omitempty"`
-	Data        *string `xml:"data,omitempty"`
-	Description *string `xml:"description,omitempty"`
-	Id          *string `xml:"id,attr,omitempty"`
-	MediaType   *string `xml:"media_type,omitempty"`
-	Name        *string `xml:"name,omitempty"`
-}
-
-type Nics struct {
-	XMLName xml.Name `xml:"nics"`
-	Nics    []Nic    `xml:"nic,omitempty"`
-}
-
-type Nic struct {
-	OvStruct
-	BootProtocol                   BootProtocol             `xml:"boot_protocol,omitempty"`
-	Comment                        *string                  `xml:"comment,omitempty"`
-	Description                    *string                  `xml:"description,omitempty"`
-	Id                             *string                  `xml:"id,attr,omitempty"`
-	InstanceType                   *InstanceType            `xml:"instance_type,omitempty"`
-	Interface                      NicInterface             `xml:"interface,omitempty"`
-	Linked                         *bool                    `xml:"linked,omitempty"`
-	Mac                            *Mac                     `xml:"mac,omitempty"`
-	Name                           *string                  `xml:"name,omitempty"`
-	Network                        *Network                 `xml:"network,omitempty"`
-	NetworkAttachments             []NetworkAttachment      `xml:"network_attachments,omitempty"`
-	NetworkFilterParameters        []NetworkFilterParameter `xml:"network_filter_parameters,omitempty"`
-	NetworkLabels                  []NetworkLabel           `xml:"network_labels,omitempty"`
-	OnBoot                         *bool                    `xml:"on_boot,omitempty"`
-	Plugged                        *bool                    `xml:"plugged,omitempty"`
-	ReportedDevices                []ReportedDevice         `xml:"reported_devices,omitempty"`
-	Statistics                     []Statistic              `xml:"statistics,omitempty"`
-	Template                       *Template                `xml:"template,omitempty"`
-	VirtualFunctionAllowedLabels   []NetworkLabel           `xml:"virtual_function_allowed_labels,omitempty"`
-	VirtualFunctionAllowedNetworks []Network                `xml:"virtual_function_allowed_networks,omitempty"`
-	Vm                             *Vm                      `xml:"vm,omitempty"`
-	Vms                            []Vm                     `xml:"vms,omitempty"`
-	VnicProfile                    *VnicProfile             `xml:"vnic_profile,omitempty"`
-}
-
-type OpenStackProviders struct {
-	XMLName            xml.Name            `xml:"openstackproviders"`
-	OpenStackProviders []OpenStackProvider `xml:"open_stack_provider,omitempty"`
-}
-
-type OpenStackProvider struct {
-	OvStruct
-	AuthenticationUrl      *string    `xml:"authentication_url,omitempty"`
-	Comment                *string    `xml:"comment,omitempty"`
-	Description            *string    `xml:"description,omitempty"`
-	Id                     *string    `xml:"id,attr,omitempty"`
-	Name                   *string    `xml:"name,omitempty"`
-	Password               *string    `xml:"password,omitempty"`
-	Properties             []Property `xml:"properties,omitempty"`
-	RequiresAuthentication *bool      `xml:"requires_authentication,omitempty"`
-	TenantName             *string    `xml:"tenant_name,omitempty"`
-	Url                    *string    `xml:"url,omitempty"`
-	Username               *string    `xml:"username,omitempty"`
-}
-
-type OpenStackVolumeProviders struct {
-	XMLName                  xml.Name                  `xml:"openstackvolumeproviders"`
-	OpenStackVolumeProviders []OpenStackVolumeProvider `xml:"open_stack_volume_provider,omitempty"`
-}
-
-type OpenStackVolumeProvider struct {
-	OvStruct
-	AuthenticationKeys     []OpenstackVolumeAuthenticationKey `xml:"authentication_keys,omitempty"`
-	AuthenticationUrl      *string                            `xml:"authentication_url,omitempty"`
-	Certificates           []Certificate                      `xml:"certificates,omitempty"`
-	Comment                *string                            `xml:"comment,omitempty"`
-	DataCenter             *DataCenter                        `xml:"data_center,omitempty"`
-	Description            *string                            `xml:"description,omitempty"`
-	Id                     *string                            `xml:"id,attr,omitempty"`
-	Name                   *string                            `xml:"name,omitempty"`
-	Password               *string                            `xml:"password,omitempty"`
-	Properties             []Property                         `xml:"properties,omitempty"`
-	RequiresAuthentication *bool                              `xml:"requires_authentication,omitempty"`
-	TenantName             *string                            `xml:"tenant_name,omitempty"`
-	Url                    *string                            `xml:"url,omitempty"`
-	Username               *string                            `xml:"username,omitempty"`
-	VolumeTypes            []OpenStackVolumeType              `xml:"volume_types,omitempty"`
-}
-
-type Templates struct {
-	XMLName   xml.Name   `xml:"templates"`
-	Templates []Template `xml:"template,omitempty"`
-}
-
-type Template struct {
-	OvStruct
-	Bios                       *Bios               `xml:"bios,omitempty"`
-	Cdroms                     []Cdrom             `xml:"cdroms,omitempty"`
-	Cluster                    *Cluster            `xml:"cluster,omitempty"`
-	Comment                    *string             `xml:"comment,omitempty"`
-	Console                    *Console            `xml:"console,omitempty"`
-	Cpu                        *Cpu                `xml:"cpu,omitempty"`
-	CpuProfile                 *CpuProfile         `xml:"cpu_profile,omitempty"`
-	CpuShares                  *int64              `xml:"cpu_shares,omitempty"`
-	CreationTime               time.Time           `xml:"creation_time,omitempty"`
-	CustomCompatibilityVersion *Version            `xml:"custom_compatibility_version,omitempty"`
-	CustomCpuModel             *string             `xml:"custom_cpu_model,omitempty"`
-	CustomEmulatedMachine      *string             `xml:"custom_emulated_machine,omitempty"`
-	CustomProperties           []CustomProperty    `xml:"custom_properties,omitempty"`
-	DeleteProtected            *bool               `xml:"delete_protected,omitempty"`
-	Description                *string             `xml:"description,omitempty"`
-	DiskAttachments            []DiskAttachment    `xml:"disk_attachments,omitempty"`
-	Display                    *Display            `xml:"display,omitempty"`
-	Domain                     *Domain             `xml:"domain,omitempty"`
-	GraphicsConsoles           []GraphicsConsole   `xml:"graphics_consoles,omitempty"`
-	HighAvailability           *HighAvailability   `xml:"high_availability,omitempty"`
-	Id                         *string             `xml:"id,attr,omitempty"`
-	Initialization             *Initialization     `xml:"initialization,omitempty"`
-	Io                         *Io                 `xml:"io,omitempty"`
-	LargeIcon                  *Icon               `xml:"large_icon,omitempty"`
-	Lease                      *StorageDomainLease `xml:"lease,omitempty"`
-	Memory                     *int64              `xml:"memory,omitempty"`
-	MemoryPolicy               *MemoryPolicy       `xml:"memory_policy,omitempty"`
-	Migration                  *MigrationOptions   `xml:"migration,omitempty"`
-	MigrationDowntime          *int64              `xml:"migration_downtime,omitempty"`
-	Name                       *string             `xml:"name,omitempty"`
-	Nics                       []Nic               `xml:"nics,omitempty"`
-	Origin                     *string             `xml:"origin,omitempty"`
-	Os                         *OperatingSystem    `xml:"os,omitempty"`
-	Permissions                []Permission        `xml:"permissions,omitempty"`
-	Quota                      *Quota              `xml:"quota,omitempty"`
-	RngDevice                  *RngDevice          `xml:"rng_device,omitempty"`
-	SerialNumber               *SerialNumber       `xml:"serial_number,omitempty"`
-	SmallIcon                  *Icon               `xml:"small_icon,omitempty"`
-	SoundcardEnabled           *bool               `xml:"soundcard_enabled,omitempty"`
-	Sso                        *Sso                `xml:"sso,omitempty"`
-	StartPaused                *bool               `xml:"start_paused,omitempty"`
-	Stateless                  *bool               `xml:"stateless,omitempty"`
-	Status                     TemplateStatus      `xml:"status,omitempty"`
-	StorageDomain              *StorageDomain      `xml:"storage_domain,omitempty"`
-	Tags                       []Tag               `xml:"tags,omitempty"`
-	TimeZone                   *TimeZone           `xml:"time_zone,omitempty"`
-	TunnelMigration            *bool               `xml:"tunnel_migration,omitempty"`
-	Type                       VmType              `xml:"type,omitempty"`
-	Usb                        *Usb                `xml:"usb,omitempty"`
-	Version                    *TemplateVersion    `xml:"version,omitempty"`
-	VirtioScsi                 *VirtioScsi         `xml:"virtio_scsi,omitempty"`
-	Vm                         *Vm                 `xml:"vm,omitempty"`
-	Watchdogs                  []Watchdog          `xml:"watchdogs,omitempty"`
-}
-
-type Vms struct {
-	XMLName xml.Name `xml:"vms"`
-	Vms     []Vm     `xml:"vm,omitempty"`
-}
-
-type Vm struct {
-	OvStruct
-	AffinityLabels             []AffinityLabel       `xml:"affinity_labels,omitempty"`
-	Applications               []Application         `xml:"applications,omitempty"`
-	Bios                       *Bios                 `xml:"bios,omitempty"`
-	Cdroms                     []Cdrom               `xml:"cdroms,omitempty"`
-	Cluster                    *Cluster              `xml:"cluster,omitempty"`
-	Comment                    *string               `xml:"comment,omitempty"`
-	Console                    *Console              `xml:"console,omitempty"`
-	Cpu                        *Cpu                  `xml:"cpu,omitempty"`
-	CpuProfile                 *CpuProfile           `xml:"cpu_profile,omitempty"`
-	CpuShares                  *int64                `xml:"cpu_shares,omitempty"`
-	CreationTime               time.Time             `xml:"creation_time,omitempty"`
-	CustomCompatibilityVersion *Version              `xml:"custom_compatibility_version,omitempty"`
-	CustomCpuModel             *string               `xml:"custom_cpu_model,omitempty"`
-	CustomEmulatedMachine      *string               `xml:"custom_emulated_machine,omitempty"`
-	CustomProperties           []CustomProperty      `xml:"custom_properties,omitempty"`
-	DeleteProtected            *bool                 `xml:"delete_protected,omitempty"`
-	Description                *string               `xml:"description,omitempty"`
-	DiskAttachments            []DiskAttachment      `xml:"disk_attachments,omitempty"`
-	Display                    *Display              `xml:"display,omitempty"`
-	Domain                     *Domain               `xml:"domain,omitempty"`
-	ExternalHostProvider       *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Floppies                   []Floppy              `xml:"floppies,omitempty"`
-	Fqdn                       *string               `xml:"fqdn,omitempty"`
-	GraphicsConsoles           []GraphicsConsole     `xml:"graphics_consoles,omitempty"`
-	GuestOperatingSystem       *GuestOperatingSystem `xml:"guest_operating_system,omitempty"`
-	GuestTimeZone              *TimeZone             `xml:"guest_time_zone,omitempty"`
-	HighAvailability           *HighAvailability     `xml:"high_availability,omitempty"`
-	Host                       *Host                 `xml:"host,omitempty"`
-	HostDevices                []HostDevice          `xml:"host_devices,omitempty"`
-	Id                         *string               `xml:"id,attr,omitempty"`
-	Initialization             *Initialization       `xml:"initialization,omitempty"`
-	InstanceType               *InstanceType         `xml:"instance_type,omitempty"`
-	Io                         *Io                   `xml:"io,omitempty"`
-	KatelloErrata              []KatelloErratum      `xml:"katello_errata,omitempty"`
-	LargeIcon                  *Icon                 `xml:"large_icon,omitempty"`
-	Lease                      *StorageDomainLease   `xml:"lease,omitempty"`
-	Memory                     *int64                `xml:"memory,omitempty"`
-	MemoryPolicy               *MemoryPolicy         `xml:"memory_policy,omitempty"`
-	Migration                  *MigrationOptions     `xml:"migration,omitempty"`
-	MigrationDowntime          *int64                `xml:"migration_downtime,omitempty"`
-	Name                       *string               `xml:"name,omitempty"`
-	NextRunConfigurationExists *bool                 `xml:"next_run_configuration_exists,omitempty"`
-	Nics                       []Nic                 `xml:"nics,omitempty"`
-	NumaNodes                  []NumaNode            `xml:"numa_nodes,omitempty"`
-	NumaTuneMode               NumaTuneMode          `xml:"numa_tune_mode,omitempty"`
-	Origin                     *string               `xml:"origin,omitempty"`
-	OriginalTemplate           *Template             `xml:"original_template,omitempty"`
-	Os                         *OperatingSystem      `xml:"os,omitempty"`
-	Payloads                   []Payload             `xml:"payloads,omitempty"`
-	Permissions                []Permission          `xml:"permissions,omitempty"`
-	PlacementPolicy            *VmPlacementPolicy    `xml:"placement_policy,omitempty"`
-	Quota                      *Quota                `xml:"quota,omitempty"`
-	ReportedDevices            []ReportedDevice      `xml:"reported_devices,omitempty"`
-	RngDevice                  *RngDevice            `xml:"rng_device,omitempty"`
-	RunOnce                    *bool                 `xml:"run_once,omitempty"`
-	SerialNumber               *SerialNumber         `xml:"serial_number,omitempty"`
-	Sessions                   []Session             `xml:"sessions,omitempty"`
-	SmallIcon                  *Icon                 `xml:"small_icon,omitempty"`
-	Snapshots                  []Snapshot            `xml:"snapshots,omitempty"`
-	SoundcardEnabled           *bool                 `xml:"soundcard_enabled,omitempty"`
-	Sso                        *Sso                  `xml:"sso,omitempty"`
-	StartPaused                *bool                 `xml:"start_paused,omitempty"`
-	StartTime                  time.Time             `xml:"start_time,omitempty"`
-	Stateless                  *bool                 `xml:"stateless,omitempty"`
-	Statistics                 []Statistic           `xml:"statistics,omitempty"`
-	Status                     VmStatus              `xml:"status,omitempty"`
-	StatusDetail               *string               `xml:"status_detail,omitempty"`
-	StopReason                 *string               `xml:"stop_reason,omitempty"`
-	StopTime                   time.Time             `xml:"stop_time,omitempty"`
-	StorageDomain              *StorageDomain        `xml:"storage_domain,omitempty"`
-	Tags                       []Tag                 `xml:"tags,omitempty"`
-	Template                   *Template             `xml:"template,omitempty"`
-	TimeZone                   *TimeZone             `xml:"time_zone,omitempty"`
-	TunnelMigration            *bool                 `xml:"tunnel_migration,omitempty"`
-	Type                       VmType                `xml:"type,omitempty"`
-	Usb                        *Usb                  `xml:"usb,omitempty"`
-	UseLatestTemplateVersion   *bool                 `xml:"use_latest_template_version,omitempty"`
-	VirtioScsi                 *VirtioScsi           `xml:"virtio_scsi,omitempty"`
-	VmPool                     *VmPool               `xml:"vm_pool,omitempty"`
-	Watchdogs                  []Watchdog            `xml:"watchdogs,omitempty"`
-}
-
 type Watchdogs struct {
 	XMLName   xml.Name   `xml:"watchdogs"`
 	Watchdogs []Watchdog `xml:"watchdog,omitempty"`
@@ -3375,280 +3635,833 @@ type Watchdog struct {
 	Vms          []Vm           `xml:"vms,omitempty"`
 }
 
-type Cdroms struct {
-	XMLName xml.Name `xml:"cdroms"`
-	Cdroms  []Cdrom  `xml:"cdrom,omitempty"`
+type Weights struct {
+	XMLName xml.Name `xml:"weights"`
+	Weights []Weight `xml:"weight,omitempty"`
 }
 
-type Cdrom struct {
+type Weight struct {
 	OvStruct
-	Comment      *string       `xml:"comment,omitempty"`
-	Description  *string       `xml:"description,omitempty"`
-	File         *File         `xml:"file,omitempty"`
-	Id           *string       `xml:"id,attr,omitempty"`
-	InstanceType *InstanceType `xml:"instance_type,omitempty"`
-	Name         *string       `xml:"name,omitempty"`
-	Template     *Template     `xml:"template,omitempty"`
-	Vm           *Vm           `xml:"vm,omitempty"`
-	Vms          []Vm          `xml:"vms,omitempty"`
+	Comment              *string               `xml:"comment,omitempty"`
+	Description          *string               `xml:"description,omitempty"`
+	Factor               *int64                `xml:"factor,omitempty"`
+	Id                   *string               `xml:"id,attr,omitempty"`
+	Name                 *string               `xml:"name,omitempty"`
+	SchedulingPolicy     *SchedulingPolicy     `xml:"scheduling_policy,omitempty"`
+	SchedulingPolicyUnit *SchedulingPolicyUnit `xml:"scheduling_policy_unit,omitempty"`
 }
 
-type ExternalHostProviders struct {
-	XMLName               xml.Name               `xml:"externalhostproviders"`
-	ExternalHostProviders []ExternalHostProvider `xml:"external_host_provider,omitempty"`
+type actionBuilder struct {
+	action *Action
+	err    error
 }
 
-type ExternalHostProvider struct {
-	OvStruct
-	AuthenticationUrl      *string                   `xml:"authentication_url,omitempty"`
-	Certificates           []Certificate             `xml:"certificates,omitempty"`
-	Comment                *string                   `xml:"comment,omitempty"`
-	ComputeResources       []ExternalComputeResource `xml:"compute_resources,omitempty"`
-	Description            *string                   `xml:"description,omitempty"`
-	DiscoveredHosts        []ExternalDiscoveredHost  `xml:"discovered_hosts,omitempty"`
-	HostGroups             []ExternalHostGroup       `xml:"host_groups,omitempty"`
-	Hosts                  []Host                    `xml:"hosts,omitempty"`
-	Id                     *string                   `xml:"id,attr,omitempty"`
-	Name                   *string                   `xml:"name,omitempty"`
-	Password               *string                   `xml:"password,omitempty"`
-	Properties             []Property                `xml:"properties,omitempty"`
-	RequiresAuthentication *bool                     `xml:"requires_authentication,omitempty"`
-	Url                    *string                   `xml:"url,omitempty"`
-	Username               *string                   `xml:"username,omitempty"`
+func NewActionBuilder() *actionBuilder {
+	return &actionBuilder{action: &Action{}, err: nil}
 }
 
-type GlusterBricks struct {
-	XMLName       xml.Name       `xml:"glusterbricks"`
-	GlusterBricks []GlusterBrick `xml:"gluster_brick,omitempty"`
+func (builder *actionBuilder) AllowPartialImport(allowPartialImport bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.AllowPartialImport = &allowPartialImport
+	return builder
 }
 
-type GlusterBrick struct {
-	OvStruct
-	BrickDir       *string             `xml:"brick_dir,omitempty"`
-	Comment        *string             `xml:"comment,omitempty"`
-	Description    *string             `xml:"description,omitempty"`
-	Device         *string             `xml:"device,omitempty"`
-	FsName         *string             `xml:"fs_name,omitempty"`
-	GlusterClients []GlusterClient     `xml:"gluster_clients,omitempty"`
-	GlusterVolume  *GlusterVolume      `xml:"gluster_volume,omitempty"`
-	Id             *string             `xml:"id,attr,omitempty"`
-	InstanceType   *InstanceType       `xml:"instance_type,omitempty"`
-	MemoryPools    []GlusterMemoryPool `xml:"memory_pools,omitempty"`
-	MntOptions     *string             `xml:"mnt_options,omitempty"`
-	Name           *string             `xml:"name,omitempty"`
-	Pid            *int64              `xml:"pid,omitempty"`
-	Port           *int64              `xml:"port,omitempty"`
-	ServerId       *string             `xml:"server_id,omitempty"`
-	Statistics     []Statistic         `xml:"statistics,omitempty"`
-	Status         GlusterBrickStatus  `xml:"status,omitempty"`
-	Template       *Template           `xml:"template,omitempty"`
-	Vm             *Vm                 `xml:"vm,omitempty"`
-	Vms            []Vm                `xml:"vms,omitempty"`
+func (builder *actionBuilder) Async(async bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Async = &async
+	return builder
 }
 
-type InstanceTypes struct {
-	XMLName       xml.Name       `xml:"instancetypes"`
-	InstanceTypes []InstanceType `xml:"instance_type,omitempty"`
+func (builder *actionBuilder) Bricks(bricks []GlusterBrick) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Bricks = bricks
+	return builder
 }
 
-type InstanceType struct {
-	OvStruct
-	Bios                       *Bios               `xml:"bios,omitempty"`
-	Cdroms                     []Cdrom             `xml:"cdroms,omitempty"`
-	Cluster                    *Cluster            `xml:"cluster,omitempty"`
-	Comment                    *string             `xml:"comment,omitempty"`
-	Console                    *Console            `xml:"console,omitempty"`
-	Cpu                        *Cpu                `xml:"cpu,omitempty"`
-	CpuProfile                 *CpuProfile         `xml:"cpu_profile,omitempty"`
-	CpuShares                  *int64              `xml:"cpu_shares,omitempty"`
-	CreationTime               time.Time           `xml:"creation_time,omitempty"`
-	CustomCompatibilityVersion *Version            `xml:"custom_compatibility_version,omitempty"`
-	CustomCpuModel             *string             `xml:"custom_cpu_model,omitempty"`
-	CustomEmulatedMachine      *string             `xml:"custom_emulated_machine,omitempty"`
-	CustomProperties           []CustomProperty    `xml:"custom_properties,omitempty"`
-	DeleteProtected            *bool               `xml:"delete_protected,omitempty"`
-	Description                *string             `xml:"description,omitempty"`
-	DiskAttachments            []DiskAttachment    `xml:"disk_attachments,omitempty"`
-	Display                    *Display            `xml:"display,omitempty"`
-	Domain                     *Domain             `xml:"domain,omitempty"`
-	GraphicsConsoles           []GraphicsConsole   `xml:"graphics_consoles,omitempty"`
-	HighAvailability           *HighAvailability   `xml:"high_availability,omitempty"`
-	Id                         *string             `xml:"id,attr,omitempty"`
-	Initialization             *Initialization     `xml:"initialization,omitempty"`
-	Io                         *Io                 `xml:"io,omitempty"`
-	LargeIcon                  *Icon               `xml:"large_icon,omitempty"`
-	Lease                      *StorageDomainLease `xml:"lease,omitempty"`
-	Memory                     *int64              `xml:"memory,omitempty"`
-	MemoryPolicy               *MemoryPolicy       `xml:"memory_policy,omitempty"`
-	Migration                  *MigrationOptions   `xml:"migration,omitempty"`
-	MigrationDowntime          *int64              `xml:"migration_downtime,omitempty"`
-	Name                       *string             `xml:"name,omitempty"`
-	Nics                       []Nic               `xml:"nics,omitempty"`
-	Origin                     *string             `xml:"origin,omitempty"`
-	Os                         *OperatingSystem    `xml:"os,omitempty"`
-	Permissions                []Permission        `xml:"permissions,omitempty"`
-	Quota                      *Quota              `xml:"quota,omitempty"`
-	RngDevice                  *RngDevice          `xml:"rng_device,omitempty"`
-	SerialNumber               *SerialNumber       `xml:"serial_number,omitempty"`
-	SmallIcon                  *Icon               `xml:"small_icon,omitempty"`
-	SoundcardEnabled           *bool               `xml:"soundcard_enabled,omitempty"`
-	Sso                        *Sso                `xml:"sso,omitempty"`
-	StartPaused                *bool               `xml:"start_paused,omitempty"`
-	Stateless                  *bool               `xml:"stateless,omitempty"`
-	Status                     TemplateStatus      `xml:"status,omitempty"`
-	StorageDomain              *StorageDomain      `xml:"storage_domain,omitempty"`
-	Tags                       []Tag               `xml:"tags,omitempty"`
-	TimeZone                   *TimeZone           `xml:"time_zone,omitempty"`
-	TunnelMigration            *bool               `xml:"tunnel_migration,omitempty"`
-	Type                       VmType              `xml:"type,omitempty"`
-	Usb                        *Usb                `xml:"usb,omitempty"`
-	Version                    *TemplateVersion    `xml:"version,omitempty"`
-	VirtioScsi                 *VirtioScsi         `xml:"virtio_scsi,omitempty"`
-	Vm                         *Vm                 `xml:"vm,omitempty"`
-	Watchdogs                  []Watchdog          `xml:"watchdogs,omitempty"`
+func (builder *actionBuilder) Certificates(certificates []Certificate) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Certificates = certificates
+	return builder
 }
 
-type OpenStackImageProviders struct {
-	XMLName                 xml.Name                 `xml:"openstackimageproviders"`
-	OpenStackImageProviders []OpenStackImageProvider `xml:"open_stack_image_provider,omitempty"`
+func (builder *actionBuilder) CheckConnectivity(checkConnectivity bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.CheckConnectivity = &checkConnectivity
+	return builder
 }
 
-type OpenStackImageProvider struct {
-	OvStruct
-	AuthenticationUrl      *string          `xml:"authentication_url,omitempty"`
-	Certificates           []Certificate    `xml:"certificates,omitempty"`
-	Comment                *string          `xml:"comment,omitempty"`
-	Description            *string          `xml:"description,omitempty"`
-	Id                     *string          `xml:"id,attr,omitempty"`
-	Images                 []OpenStackImage `xml:"images,omitempty"`
-	Name                   *string          `xml:"name,omitempty"`
-	Password               *string          `xml:"password,omitempty"`
-	Properties             []Property       `xml:"properties,omitempty"`
-	RequiresAuthentication *bool            `xml:"requires_authentication,omitempty"`
-	TenantName             *string          `xml:"tenant_name,omitempty"`
-	Url                    *string          `xml:"url,omitempty"`
-	Username               *string          `xml:"username,omitempty"`
+func (builder *actionBuilder) Clone(clone bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Clone = &clone
+	return builder
 }
 
-type OpenStackNetworkProviders struct {
-	XMLName                   xml.Name                   `xml:"openstacknetworkproviders"`
-	OpenStackNetworkProviders []OpenStackNetworkProvider `xml:"open_stack_network_provider,omitempty"`
+func (builder *actionBuilder) Cluster(cluster *Cluster) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Cluster = cluster
+	return builder
 }
 
-type OpenStackNetworkProvider struct {
-	OvStruct
-	AgentConfiguration     *AgentConfiguration          `xml:"agent_configuration,omitempty"`
-	AuthenticationUrl      *string                      `xml:"authentication_url,omitempty"`
-	Certificates           []Certificate                `xml:"certificates,omitempty"`
-	Comment                *string                      `xml:"comment,omitempty"`
-	Description            *string                      `xml:"description,omitempty"`
-	Id                     *string                      `xml:"id,attr,omitempty"`
-	Name                   *string                      `xml:"name,omitempty"`
-	Networks               []OpenStackNetwork           `xml:"networks,omitempty"`
-	Password               *string                      `xml:"password,omitempty"`
-	PluginType             NetworkPluginType            `xml:"plugin_type,omitempty"`
-	Properties             []Property                   `xml:"properties,omitempty"`
-	ReadOnly               *bool                        `xml:"read_only,omitempty"`
-	RequiresAuthentication *bool                        `xml:"requires_authentication,omitempty"`
-	Subnets                []OpenStackSubnet            `xml:"subnets,omitempty"`
-	TenantName             *string                      `xml:"tenant_name,omitempty"`
-	Type                   OpenStackNetworkProviderType `xml:"type,omitempty"`
-	Url                    *string                      `xml:"url,omitempty"`
-	Username               *string                      `xml:"username,omitempty"`
+func (builder *actionBuilder) CollapseSnapshots(collapseSnapshots bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.CollapseSnapshots = &collapseSnapshots
+	return builder
 }
 
-type Snapshots struct {
-	XMLName   xml.Name   `xml:"snapshots"`
-	Snapshots []Snapshot `xml:"snapshot,omitempty"`
+func (builder *actionBuilder) Comment(comment string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Comment = &comment
+	return builder
 }
 
-type Snapshot struct {
-	OvStruct
-	AffinityLabels             []AffinityLabel       `xml:"affinity_labels,omitempty"`
-	Applications               []Application         `xml:"applications,omitempty"`
-	Bios                       *Bios                 `xml:"bios,omitempty"`
-	Cdroms                     []Cdrom               `xml:"cdroms,omitempty"`
-	Cluster                    *Cluster              `xml:"cluster,omitempty"`
-	Comment                    *string               `xml:"comment,omitempty"`
-	Console                    *Console              `xml:"console,omitempty"`
-	Cpu                        *Cpu                  `xml:"cpu,omitempty"`
-	CpuProfile                 *CpuProfile           `xml:"cpu_profile,omitempty"`
-	CpuShares                  *int64                `xml:"cpu_shares,omitempty"`
-	CreationTime               time.Time             `xml:"creation_time,omitempty"`
-	CustomCompatibilityVersion *Version              `xml:"custom_compatibility_version,omitempty"`
-	CustomCpuModel             *string               `xml:"custom_cpu_model,omitempty"`
-	CustomEmulatedMachine      *string               `xml:"custom_emulated_machine,omitempty"`
-	CustomProperties           []CustomProperty      `xml:"custom_properties,omitempty"`
-	Date                       time.Time             `xml:"date,omitempty"`
-	DeleteProtected            *bool                 `xml:"delete_protected,omitempty"`
-	Description                *string               `xml:"description,omitempty"`
-	DiskAttachments            []DiskAttachment      `xml:"disk_attachments,omitempty"`
-	Display                    *Display              `xml:"display,omitempty"`
-	Domain                     *Domain               `xml:"domain,omitempty"`
-	ExternalHostProvider       *ExternalHostProvider `xml:"external_host_provider,omitempty"`
-	Floppies                   []Floppy              `xml:"floppies,omitempty"`
-	Fqdn                       *string               `xml:"fqdn,omitempty"`
-	GraphicsConsoles           []GraphicsConsole     `xml:"graphics_consoles,omitempty"`
-	GuestOperatingSystem       *GuestOperatingSystem `xml:"guest_operating_system,omitempty"`
-	GuestTimeZone              *TimeZone             `xml:"guest_time_zone,omitempty"`
-	HighAvailability           *HighAvailability     `xml:"high_availability,omitempty"`
-	Host                       *Host                 `xml:"host,omitempty"`
-	HostDevices                []HostDevice          `xml:"host_devices,omitempty"`
-	Id                         *string               `xml:"id,attr,omitempty"`
-	Initialization             *Initialization       `xml:"initialization,omitempty"`
-	InstanceType               *InstanceType         `xml:"instance_type,omitempty"`
-	Io                         *Io                   `xml:"io,omitempty"`
-	KatelloErrata              []KatelloErratum      `xml:"katello_errata,omitempty"`
-	LargeIcon                  *Icon                 `xml:"large_icon,omitempty"`
-	Lease                      *StorageDomainLease   `xml:"lease,omitempty"`
-	Memory                     *int64                `xml:"memory,omitempty"`
-	MemoryPolicy               *MemoryPolicy         `xml:"memory_policy,omitempty"`
-	Migration                  *MigrationOptions     `xml:"migration,omitempty"`
-	MigrationDowntime          *int64                `xml:"migration_downtime,omitempty"`
-	Name                       *string               `xml:"name,omitempty"`
-	NextRunConfigurationExists *bool                 `xml:"next_run_configuration_exists,omitempty"`
-	Nics                       []Nic                 `xml:"nics,omitempty"`
-	NumaNodes                  []NumaNode            `xml:"numa_nodes,omitempty"`
-	NumaTuneMode               NumaTuneMode          `xml:"numa_tune_mode,omitempty"`
-	Origin                     *string               `xml:"origin,omitempty"`
-	OriginalTemplate           *Template             `xml:"original_template,omitempty"`
-	Os                         *OperatingSystem      `xml:"os,omitempty"`
-	Payloads                   []Payload             `xml:"payloads,omitempty"`
-	Permissions                []Permission          `xml:"permissions,omitempty"`
-	PersistMemorystate         *bool                 `xml:"persist_memorystate,omitempty"`
-	PlacementPolicy            *VmPlacementPolicy    `xml:"placement_policy,omitempty"`
-	Quota                      *Quota                `xml:"quota,omitempty"`
-	ReportedDevices            []ReportedDevice      `xml:"reported_devices,omitempty"`
-	RngDevice                  *RngDevice            `xml:"rng_device,omitempty"`
-	RunOnce                    *bool                 `xml:"run_once,omitempty"`
-	SerialNumber               *SerialNumber         `xml:"serial_number,omitempty"`
-	Sessions                   []Session             `xml:"sessions,omitempty"`
-	SmallIcon                  *Icon                 `xml:"small_icon,omitempty"`
-	SnapshotStatus             SnapshotStatus        `xml:"snapshot_status,omitempty"`
-	SnapshotType               SnapshotType          `xml:"snapshot_type,omitempty"`
-	Snapshots                  []Snapshot            `xml:"snapshots,omitempty"`
-	SoundcardEnabled           *bool                 `xml:"soundcard_enabled,omitempty"`
-	Sso                        *Sso                  `xml:"sso,omitempty"`
-	StartPaused                *bool                 `xml:"start_paused,omitempty"`
-	StartTime                  time.Time             `xml:"start_time,omitempty"`
-	Stateless                  *bool                 `xml:"stateless,omitempty"`
-	Statistics                 []Statistic           `xml:"statistics,omitempty"`
-	Status                     VmStatus              `xml:"status,omitempty"`
-	StatusDetail               *string               `xml:"status_detail,omitempty"`
-	StopReason                 *string               `xml:"stop_reason,omitempty"`
-	StopTime                   time.Time             `xml:"stop_time,omitempty"`
-	StorageDomain              *StorageDomain        `xml:"storage_domain,omitempty"`
-	Tags                       []Tag                 `xml:"tags,omitempty"`
-	Template                   *Template             `xml:"template,omitempty"`
-	TimeZone                   *TimeZone             `xml:"time_zone,omitempty"`
-	TunnelMigration            *bool                 `xml:"tunnel_migration,omitempty"`
-	Type                       VmType                `xml:"type,omitempty"`
-	Usb                        *Usb                  `xml:"usb,omitempty"`
-	UseLatestTemplateVersion   *bool                 `xml:"use_latest_template_version,omitempty"`
-	VirtioScsi                 *VirtioScsi           `xml:"virtio_scsi,omitempty"`
-	Vm                         *Vm                   `xml:"vm,omitempty"`
-	VmPool                     *VmPool               `xml:"vm_pool,omitempty"`
-	Watchdogs                  []Watchdog            `xml:"watchdogs,omitempty"`
+func (builder *actionBuilder) ConnectivityTimeout(connectivityTimeout int64) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ConnectivityTimeout = &connectivityTimeout
+	return builder
+}
+
+func (builder *actionBuilder) DataCenter(dataCenter *DataCenter) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.DataCenter = dataCenter
+	return builder
+}
+
+func (builder *actionBuilder) DeployHostedEngine(deployHostedEngine bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.DeployHostedEngine = &deployHostedEngine
+	return builder
+}
+
+func (builder *actionBuilder) Description(description string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Description = &description
+	return builder
+}
+
+func (builder *actionBuilder) Details(details *GlusterVolumeProfileDetails) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Details = details
+	return builder
+}
+
+func (builder *actionBuilder) DiscardSnapshots(discardSnapshots bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.DiscardSnapshots = &discardSnapshots
+	return builder
+}
+
+func (builder *actionBuilder) Disk(disk *Disk) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Disk = disk
+	return builder
+}
+
+func (builder *actionBuilder) Disks(disks []Disk) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Disks = disks
+	return builder
+}
+
+func (builder *actionBuilder) Exclusive(exclusive bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Exclusive = &exclusive
+	return builder
+}
+
+func (builder *actionBuilder) Fault(fault *Fault) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Fault = fault
+	return builder
+}
+
+func (builder *actionBuilder) FenceType(fenceType string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.FenceType = &fenceType
+	return builder
+}
+
+func (builder *actionBuilder) Filter(filter bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Filter = &filter
+	return builder
+}
+
+func (builder *actionBuilder) FixLayout(fixLayout bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.FixLayout = &fixLayout
+	return builder
+}
+
+func (builder *actionBuilder) Force(force bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Force = &force
+	return builder
+}
+
+func (builder *actionBuilder) GracePeriod(gracePeriod *GracePeriod) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.GracePeriod = gracePeriod
+	return builder
+}
+
+func (builder *actionBuilder) Host(host *Host) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Host = host
+	return builder
+}
+
+func (builder *actionBuilder) Id(id string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Id = &id
+	return builder
+}
+
+func (builder *actionBuilder) Image(image string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Image = &image
+	return builder
+}
+
+func (builder *actionBuilder) ImportAsTemplate(importAsTemplate bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ImportAsTemplate = &importAsTemplate
+	return builder
+}
+
+func (builder *actionBuilder) IsAttached(isAttached bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.IsAttached = &isAttached
+	return builder
+}
+
+func (builder *actionBuilder) Iscsi(iscsi *IscsiDetails) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Iscsi = iscsi
+	return builder
+}
+
+func (builder *actionBuilder) IscsiTargets(iscsiTargets []string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.IscsiTargets = iscsiTargets
+	return builder
+}
+
+func (builder *actionBuilder) Job(job *Job) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Job = job
+	return builder
+}
+
+func (builder *actionBuilder) LogicalUnits(logicalUnits []LogicalUnit) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.LogicalUnits = logicalUnits
+	return builder
+}
+
+func (builder *actionBuilder) MaintenanceEnabled(maintenanceEnabled bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.MaintenanceEnabled = &maintenanceEnabled
+	return builder
+}
+
+func (builder *actionBuilder) ModifiedBonds(modifiedBonds []HostNic) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ModifiedBonds = modifiedBonds
+	return builder
+}
+
+func (builder *actionBuilder) ModifiedLabels(modifiedLabels []NetworkLabel) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ModifiedLabels = modifiedLabels
+	return builder
+}
+
+func (builder *actionBuilder) ModifiedNetworkAttachments(modifiedNetworkAttachments []NetworkAttachment) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ModifiedNetworkAttachments = modifiedNetworkAttachments
+	return builder
+}
+
+func (builder *actionBuilder) Name(name string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Name = &name
+	return builder
+}
+
+func (builder *actionBuilder) Option(option *Option) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Option = option
+	return builder
+}
+
+func (builder *actionBuilder) Pause(pause bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Pause = &pause
+	return builder
+}
+
+func (builder *actionBuilder) PowerManagement(powerManagement *PowerManagement) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.PowerManagement = powerManagement
+	return builder
+}
+
+func (builder *actionBuilder) ProxyTicket(proxyTicket *ProxyTicket) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ProxyTicket = proxyTicket
+	return builder
+}
+
+func (builder *actionBuilder) Reason(reason string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Reason = &reason
+	return builder
+}
+
+func (builder *actionBuilder) ReassignBadMacs(reassignBadMacs bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ReassignBadMacs = &reassignBadMacs
+	return builder
+}
+
+func (builder *actionBuilder) RemoteViewerConnectionFile(remoteViewerConnectionFile string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RemoteViewerConnectionFile = &remoteViewerConnectionFile
+	return builder
+}
+
+func (builder *actionBuilder) RemovedBonds(removedBonds []HostNic) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RemovedBonds = removedBonds
+	return builder
+}
+
+func (builder *actionBuilder) RemovedLabels(removedLabels []NetworkLabel) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RemovedLabels = removedLabels
+	return builder
+}
+
+func (builder *actionBuilder) RemovedNetworkAttachments(removedNetworkAttachments []NetworkAttachment) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RemovedNetworkAttachments = removedNetworkAttachments
+	return builder
+}
+
+func (builder *actionBuilder) ResolutionType(resolutionType string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.ResolutionType = &resolutionType
+	return builder
+}
+
+func (builder *actionBuilder) RestoreMemory(restoreMemory bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RestoreMemory = &restoreMemory
+	return builder
+}
+
+func (builder *actionBuilder) RootPassword(rootPassword string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.RootPassword = &rootPassword
+	return builder
+}
+
+func (builder *actionBuilder) Snapshot(snapshot *Snapshot) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Snapshot = snapshot
+	return builder
+}
+
+func (builder *actionBuilder) Ssh(ssh *Ssh) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Ssh = ssh
+	return builder
+}
+
+func (builder *actionBuilder) Status(status string) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Status = &status
+	return builder
+}
+
+func (builder *actionBuilder) StopGlusterService(stopGlusterService bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.StopGlusterService = &stopGlusterService
+	return builder
+}
+
+func (builder *actionBuilder) StorageDomain(storageDomain *StorageDomain) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *actionBuilder) StorageDomains(storageDomains []StorageDomain) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.StorageDomains = storageDomains
+	return builder
+}
+
+func (builder *actionBuilder) Succeeded(succeeded bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Succeeded = &succeeded
+	return builder
+}
+
+func (builder *actionBuilder) SynchronizedNetworkAttachments(synchronizedNetworkAttachments []NetworkAttachment) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.SynchronizedNetworkAttachments = synchronizedNetworkAttachments
+	return builder
+}
+
+func (builder *actionBuilder) Template(template *Template) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Template = template
+	return builder
+}
+
+func (builder *actionBuilder) Ticket(ticket *Ticket) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Ticket = ticket
+	return builder
+}
+
+func (builder *actionBuilder) UndeployHostedEngine(undeployHostedEngine bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.UndeployHostedEngine = &undeployHostedEngine
+	return builder
+}
+
+func (builder *actionBuilder) UseCloudInit(useCloudInit bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.UseCloudInit = &useCloudInit
+	return builder
+}
+
+func (builder *actionBuilder) UseSysprep(useSysprep bool) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.UseSysprep = &useSysprep
+	return builder
+}
+
+func (builder *actionBuilder) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.VirtualFunctionsConfiguration = virtualFunctionsConfiguration
+	return builder
+}
+
+func (builder *actionBuilder) Vm(vm *Vm) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.Vm = vm
+	return builder
+}
+
+func (builder *actionBuilder) VnicProfileMappings(vnicProfileMappings []VnicProfileMapping) *actionBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.action.VnicProfileMappings = vnicProfileMappings
+	return builder
+}
+
+func (builder *actionBuilder) Build() (*Action, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.action, nil
+}
+
+type affinityGroupBuilder struct {
+	affinityGroup *AffinityGroup
+	err           error
+}
+
+func NewAffinityGroupBuilder() *affinityGroupBuilder {
+	return &affinityGroupBuilder{affinityGroup: &AffinityGroup{}, err: nil}
+}
+
+func (builder *affinityGroupBuilder) Cluster(cluster *Cluster) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Cluster = cluster
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Comment(comment string) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Comment = &comment
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Description(description string) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Description = &description
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Enforcing(enforcing bool) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Enforcing = &enforcing
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Hosts(hosts []Host) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Hosts = hosts
+	return builder
+}
+
+func (builder *affinityGroupBuilder) HostsRule(hostsRule *AffinityRule) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.HostsRule = hostsRule
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Id(id string) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Id = &id
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Name(name string) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Name = &name
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Positive(positive bool) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Positive = &positive
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Vms(vms []Vm) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.Vms = vms
+	return builder
+}
+
+func (builder *affinityGroupBuilder) VmsRule(vmsRule *AffinityRule) *affinityGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityGroup.VmsRule = vmsRule
+	return builder
+}
+
+func (builder *affinityGroupBuilder) Build() (*AffinityGroup, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.affinityGroup, nil
+}
+
+type affinityLabelBuilder struct {
+	affinityLabel *AffinityLabel
+	err           error
+}
+
+func NewAffinityLabelBuilder() *affinityLabelBuilder {
+	return &affinityLabelBuilder{affinityLabel: &AffinityLabel{}, err: nil}
+}
+
+func (builder *affinityLabelBuilder) Comment(comment string) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Comment = &comment
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Description(description string) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Description = &description
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Hosts(hosts []Host) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Hosts = hosts
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Id(id string) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Id = &id
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Name(name string) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Name = &name
+	return builder
+}
+
+func (builder *affinityLabelBuilder) ReadOnly(readOnly bool) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.ReadOnly = &readOnly
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Vms(vms []Vm) *affinityLabelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.affinityLabel.Vms = vms
+	return builder
+}
+
+func (builder *affinityLabelBuilder) Build() (*AffinityLabel, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.affinityLabel, nil
 }
 
 type affinityRuleBuilder struct {
@@ -3692,6 +4505,148 @@ func (builder *affinityRuleBuilder) Build() (*AffinityRule, error) {
 		return nil, builder.err
 	}
 	return builder.affinityRule, nil
+}
+
+type agentBuilder struct {
+	agent *Agent
+	err   error
+}
+
+func NewAgentBuilder() *agentBuilder {
+	return &agentBuilder{agent: &Agent{}, err: nil}
+}
+
+func (builder *agentBuilder) Address(address string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Address = &address
+	return builder
+}
+
+func (builder *agentBuilder) Comment(comment string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Comment = &comment
+	return builder
+}
+
+func (builder *agentBuilder) Concurrent(concurrent bool) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Concurrent = &concurrent
+	return builder
+}
+
+func (builder *agentBuilder) Description(description string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Description = &description
+	return builder
+}
+
+func (builder *agentBuilder) EncryptOptions(encryptOptions bool) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.EncryptOptions = &encryptOptions
+	return builder
+}
+
+func (builder *agentBuilder) Host(host *Host) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Host = host
+	return builder
+}
+
+func (builder *agentBuilder) Id(id string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Id = &id
+	return builder
+}
+
+func (builder *agentBuilder) Name(name string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Name = &name
+	return builder
+}
+
+func (builder *agentBuilder) Options(options []Option) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Options = options
+	return builder
+}
+
+func (builder *agentBuilder) Order(order int64) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Order = &order
+	return builder
+}
+
+func (builder *agentBuilder) Password(password string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Password = &password
+	return builder
+}
+
+func (builder *agentBuilder) Port(port int64) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Port = &port
+	return builder
+}
+
+func (builder *agentBuilder) Type(type_ string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Type = &type_
+	return builder
+}
+
+func (builder *agentBuilder) Username(username string) *agentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.agent.Username = &username
+	return builder
+}
+
+func (builder *agentBuilder) Build() (*Agent, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.agent, nil
 }
 
 type agentConfigurationBuilder struct {
@@ -3902,6 +4857,207 @@ func (builder *apiSummaryItemBuilder) Build() (*ApiSummaryItem, error) {
 	return builder.apiSummaryItem, nil
 }
 
+type applicationBuilder struct {
+	application *Application
+	err         error
+}
+
+func NewApplicationBuilder() *applicationBuilder {
+	return &applicationBuilder{application: &Application{}, err: nil}
+}
+
+func (builder *applicationBuilder) Comment(comment string) *applicationBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.application.Comment = &comment
+	return builder
+}
+
+func (builder *applicationBuilder) Description(description string) *applicationBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.application.Description = &description
+	return builder
+}
+
+func (builder *applicationBuilder) Id(id string) *applicationBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.application.Id = &id
+	return builder
+}
+
+func (builder *applicationBuilder) Name(name string) *applicationBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.application.Name = &name
+	return builder
+}
+
+func (builder *applicationBuilder) Vm(vm *Vm) *applicationBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.application.Vm = vm
+	return builder
+}
+
+func (builder *applicationBuilder) Build() (*Application, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.application, nil
+}
+
+type authorizedKeyBuilder struct {
+	authorizedKey *AuthorizedKey
+	err           error
+}
+
+func NewAuthorizedKeyBuilder() *authorizedKeyBuilder {
+	return &authorizedKeyBuilder{authorizedKey: &AuthorizedKey{}, err: nil}
+}
+
+func (builder *authorizedKeyBuilder) Comment(comment string) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.Comment = &comment
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) Description(description string) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.Description = &description
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) Id(id string) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.Id = &id
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) Key(key string) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.Key = &key
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) Name(name string) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.Name = &name
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) User(user *User) *authorizedKeyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.authorizedKey.User = user
+	return builder
+}
+
+func (builder *authorizedKeyBuilder) Build() (*AuthorizedKey, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.authorizedKey, nil
+}
+
+type balanceBuilder struct {
+	balance *Balance
+	err     error
+}
+
+func NewBalanceBuilder() *balanceBuilder {
+	return &balanceBuilder{balance: &Balance{}, err: nil}
+}
+
+func (builder *balanceBuilder) Comment(comment string) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.Comment = &comment
+	return builder
+}
+
+func (builder *balanceBuilder) Description(description string) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.Description = &description
+	return builder
+}
+
+func (builder *balanceBuilder) Id(id string) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.Id = &id
+	return builder
+}
+
+func (builder *balanceBuilder) Name(name string) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.Name = &name
+	return builder
+}
+
+func (builder *balanceBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.SchedulingPolicy = schedulingPolicy
+	return builder
+}
+
+func (builder *balanceBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *balanceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.balance.SchedulingPolicyUnit = schedulingPolicyUnit
+	return builder
+}
+
+func (builder *balanceBuilder) Build() (*Balance, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.balance, nil
+}
+
 type biosBuilder struct {
 	bios *Bios
 	err  error
@@ -4004,6 +5160,67 @@ func (builder *bondingBuilder) Build() (*Bonding, error) {
 	return builder.bonding, nil
 }
 
+type bookmarkBuilder struct {
+	bookmark *Bookmark
+	err      error
+}
+
+func NewBookmarkBuilder() *bookmarkBuilder {
+	return &bookmarkBuilder{bookmark: &Bookmark{}, err: nil}
+}
+
+func (builder *bookmarkBuilder) Comment(comment string) *bookmarkBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.bookmark.Comment = &comment
+	return builder
+}
+
+func (builder *bookmarkBuilder) Description(description string) *bookmarkBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.bookmark.Description = &description
+	return builder
+}
+
+func (builder *bookmarkBuilder) Id(id string) *bookmarkBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.bookmark.Id = &id
+	return builder
+}
+
+func (builder *bookmarkBuilder) Name(name string) *bookmarkBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.bookmark.Name = &name
+	return builder
+}
+
+func (builder *bookmarkBuilder) Value(value string) *bookmarkBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.bookmark.Value = &value
+	return builder
+}
+
+func (builder *bookmarkBuilder) Build() (*Bookmark, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.bookmark, nil
+}
+
 type bootBuilder struct {
 	boot *Boot
 	err  error
@@ -4052,6 +5269,216 @@ func (builder *bootMenuBuilder) Build() (*BootMenu, error) {
 		return nil, builder.err
 	}
 	return builder.bootMenu, nil
+}
+
+type brickProfileDetailBuilder struct {
+	brickProfileDetail *BrickProfileDetail
+	err                error
+}
+
+func NewBrickProfileDetailBuilder() *brickProfileDetailBuilder {
+	return &brickProfileDetailBuilder{brickProfileDetail: &BrickProfileDetail{}, err: nil}
+}
+
+func (builder *brickProfileDetailBuilder) Brick(brick *GlusterBrick) *brickProfileDetailBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.brickProfileDetail.Brick = brick
+	return builder
+}
+
+func (builder *brickProfileDetailBuilder) ProfileDetails(profileDetails []ProfileDetail) *brickProfileDetailBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.brickProfileDetail.ProfileDetails = profileDetails
+	return builder
+}
+
+func (builder *brickProfileDetailBuilder) Build() (*BrickProfileDetail, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.brickProfileDetail, nil
+}
+
+type cdromBuilder struct {
+	cdrom *Cdrom
+	err   error
+}
+
+func NewCdromBuilder() *cdromBuilder {
+	return &cdromBuilder{cdrom: &Cdrom{}, err: nil}
+}
+
+func (builder *cdromBuilder) Comment(comment string) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Comment = &comment
+	return builder
+}
+
+func (builder *cdromBuilder) Description(description string) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Description = &description
+	return builder
+}
+
+func (builder *cdromBuilder) File(file *File) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.File = file
+	return builder
+}
+
+func (builder *cdromBuilder) Id(id string) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Id = &id
+	return builder
+}
+
+func (builder *cdromBuilder) InstanceType(instanceType *InstanceType) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.InstanceType = instanceType
+	return builder
+}
+
+func (builder *cdromBuilder) Name(name string) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Name = &name
+	return builder
+}
+
+func (builder *cdromBuilder) Template(template *Template) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Template = template
+	return builder
+}
+
+func (builder *cdromBuilder) Vm(vm *Vm) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Vm = vm
+	return builder
+}
+
+func (builder *cdromBuilder) Vms(vms []Vm) *cdromBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cdrom.Vms = vms
+	return builder
+}
+
+func (builder *cdromBuilder) Build() (*Cdrom, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.cdrom, nil
+}
+
+type certificateBuilder struct {
+	certificate *Certificate
+	err         error
+}
+
+func NewCertificateBuilder() *certificateBuilder {
+	return &certificateBuilder{certificate: &Certificate{}, err: nil}
+}
+
+func (builder *certificateBuilder) Comment(comment string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Comment = &comment
+	return builder
+}
+
+func (builder *certificateBuilder) Content(content string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Content = &content
+	return builder
+}
+
+func (builder *certificateBuilder) Description(description string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Description = &description
+	return builder
+}
+
+func (builder *certificateBuilder) Id(id string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Id = &id
+	return builder
+}
+
+func (builder *certificateBuilder) Name(name string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Name = &name
+	return builder
+}
+
+func (builder *certificateBuilder) Organization(organization string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Organization = &organization
+	return builder
+}
+
+func (builder *certificateBuilder) Subject(subject string) *certificateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.certificate.Subject = &subject
+	return builder
+}
+
+func (builder *certificateBuilder) Build() (*Certificate, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.certificate, nil
 }
 
 type cloudInitBuilder struct {
@@ -4131,6 +5558,434 @@ func (builder *cloudInitBuilder) Build() (*CloudInit, error) {
 		return nil, builder.err
 	}
 	return builder.cloudInit, nil
+}
+
+type clusterBuilder struct {
+	cluster *Cluster
+	err     error
+}
+
+func NewClusterBuilder() *clusterBuilder {
+	return &clusterBuilder{cluster: &Cluster{}, err: nil}
+}
+
+func (builder *clusterBuilder) AffinityGroups(affinityGroups []AffinityGroup) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.AffinityGroups = affinityGroups
+	return builder
+}
+
+func (builder *clusterBuilder) BallooningEnabled(ballooningEnabled bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.BallooningEnabled = &ballooningEnabled
+	return builder
+}
+
+func (builder *clusterBuilder) Comment(comment string) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Comment = &comment
+	return builder
+}
+
+func (builder *clusterBuilder) Cpu(cpu *Cpu) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Cpu = cpu
+	return builder
+}
+
+func (builder *clusterBuilder) CpuProfiles(cpuProfiles []CpuProfile) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.CpuProfiles = cpuProfiles
+	return builder
+}
+
+func (builder *clusterBuilder) CustomSchedulingPolicyProperties(customSchedulingPolicyProperties []Property) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.CustomSchedulingPolicyProperties = customSchedulingPolicyProperties
+	return builder
+}
+
+func (builder *clusterBuilder) DataCenter(dataCenter *DataCenter) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.DataCenter = dataCenter
+	return builder
+}
+
+func (builder *clusterBuilder) Description(description string) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Description = &description
+	return builder
+}
+
+func (builder *clusterBuilder) Display(display *Display) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Display = display
+	return builder
+}
+
+func (builder *clusterBuilder) ErrorHandling(errorHandling *ErrorHandling) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.ErrorHandling = errorHandling
+	return builder
+}
+
+func (builder *clusterBuilder) FencingPolicy(fencingPolicy *FencingPolicy) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.FencingPolicy = fencingPolicy
+	return builder
+}
+
+func (builder *clusterBuilder) GlusterHooks(glusterHooks []GlusterHook) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.GlusterHooks = glusterHooks
+	return builder
+}
+
+func (builder *clusterBuilder) GlusterService(glusterService bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.GlusterService = &glusterService
+	return builder
+}
+
+func (builder *clusterBuilder) GlusterTunedProfile(glusterTunedProfile string) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.GlusterTunedProfile = &glusterTunedProfile
+	return builder
+}
+
+func (builder *clusterBuilder) GlusterVolumes(glusterVolumes []GlusterVolume) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.GlusterVolumes = glusterVolumes
+	return builder
+}
+
+func (builder *clusterBuilder) HaReservation(haReservation bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.HaReservation = &haReservation
+	return builder
+}
+
+func (builder *clusterBuilder) Id(id string) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Id = &id
+	return builder
+}
+
+func (builder *clusterBuilder) Ksm(ksm *Ksm) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Ksm = ksm
+	return builder
+}
+
+func (builder *clusterBuilder) MacPool(macPool *MacPool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.MacPool = macPool
+	return builder
+}
+
+func (builder *clusterBuilder) MaintenanceReasonRequired(maintenanceReasonRequired bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.MaintenanceReasonRequired = &maintenanceReasonRequired
+	return builder
+}
+
+func (builder *clusterBuilder) ManagementNetwork(managementNetwork *Network) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.ManagementNetwork = managementNetwork
+	return builder
+}
+
+func (builder *clusterBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.MemoryPolicy = memoryPolicy
+	return builder
+}
+
+func (builder *clusterBuilder) Migration(migration *MigrationOptions) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Migration = migration
+	return builder
+}
+
+func (builder *clusterBuilder) Name(name string) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Name = &name
+	return builder
+}
+
+func (builder *clusterBuilder) NetworkFilters(networkFilters []NetworkFilter) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.NetworkFilters = networkFilters
+	return builder
+}
+
+func (builder *clusterBuilder) Networks(networks []Network) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Networks = networks
+	return builder
+}
+
+func (builder *clusterBuilder) OptionalReason(optionalReason bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.OptionalReason = &optionalReason
+	return builder
+}
+
+func (builder *clusterBuilder) Permissions(permissions []Permission) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Permissions = permissions
+	return builder
+}
+
+func (builder *clusterBuilder) RequiredRngSources(requiredRngSources []RngSource) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.RequiredRngSources = requiredRngSources
+	return builder
+}
+
+func (builder *clusterBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.SchedulingPolicy = schedulingPolicy
+	return builder
+}
+
+func (builder *clusterBuilder) SerialNumber(serialNumber *SerialNumber) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.SerialNumber = serialNumber
+	return builder
+}
+
+func (builder *clusterBuilder) SupportedVersions(supportedVersions []Version) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.SupportedVersions = supportedVersions
+	return builder
+}
+
+func (builder *clusterBuilder) SwitchType(switchType SwitchType) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.SwitchType = switchType
+	return builder
+}
+
+func (builder *clusterBuilder) ThreadsAsCores(threadsAsCores bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.ThreadsAsCores = &threadsAsCores
+	return builder
+}
+
+func (builder *clusterBuilder) TrustedService(trustedService bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.TrustedService = &trustedService
+	return builder
+}
+
+func (builder *clusterBuilder) TunnelMigration(tunnelMigration bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.TunnelMigration = &tunnelMigration
+	return builder
+}
+
+func (builder *clusterBuilder) Version(version *Version) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.Version = version
+	return builder
+}
+
+func (builder *clusterBuilder) VirtService(virtService bool) *clusterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cluster.VirtService = &virtService
+	return builder
+}
+
+func (builder *clusterBuilder) Build() (*Cluster, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.cluster, nil
+}
+
+type clusterLevelBuilder struct {
+	clusterLevel *ClusterLevel
+	err          error
+}
+
+func NewClusterLevelBuilder() *clusterLevelBuilder {
+	return &clusterLevelBuilder{clusterLevel: &ClusterLevel{}, err: nil}
+}
+
+func (builder *clusterLevelBuilder) Comment(comment string) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.Comment = &comment
+	return builder
+}
+
+func (builder *clusterLevelBuilder) CpuTypes(cpuTypes []CpuType) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.CpuTypes = cpuTypes
+	return builder
+}
+
+func (builder *clusterLevelBuilder) Description(description string) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.Description = &description
+	return builder
+}
+
+func (builder *clusterLevelBuilder) Id(id string) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.Id = &id
+	return builder
+}
+
+func (builder *clusterLevelBuilder) Name(name string) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.Name = &name
+	return builder
+}
+
+func (builder *clusterLevelBuilder) Permits(permits []Permit) *clusterLevelBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.clusterLevel.Permits = permits
+	return builder
+}
+
+func (builder *clusterLevelBuilder) Build() (*ClusterLevel, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.clusterLevel, nil
 }
 
 type configurationBuilder struct {
@@ -4323,6 +6178,85 @@ func (builder *cpuBuilder) Build() (*Cpu, error) {
 	return builder.cpu, nil
 }
 
+type cpuProfileBuilder struct {
+	cpuProfile *CpuProfile
+	err        error
+}
+
+func NewCpuProfileBuilder() *cpuProfileBuilder {
+	return &cpuProfileBuilder{cpuProfile: &CpuProfile{}, err: nil}
+}
+
+func (builder *cpuProfileBuilder) Cluster(cluster *Cluster) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Cluster = cluster
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Comment(comment string) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Comment = &comment
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Description(description string) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Description = &description
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Id(id string) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Id = &id
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Name(name string) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Name = &name
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Permissions(permissions []Permission) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Permissions = permissions
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Qos(qos *Qos) *cpuProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.cpuProfile.Qos = qos
+	return builder
+}
+
+func (builder *cpuProfileBuilder) Build() (*CpuProfile, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.cpuProfile, nil
+}
+
 type cpuTopologyBuilder struct {
 	cpuTopology *CpuTopology
 	err         error
@@ -4475,6 +6409,1191 @@ func (builder *customPropertyBuilder) Build() (*CustomProperty, error) {
 		return nil, builder.err
 	}
 	return builder.customProperty, nil
+}
+
+type dataCenterBuilder struct {
+	dataCenter *DataCenter
+	err        error
+}
+
+func NewDataCenterBuilder() *dataCenterBuilder {
+	return &dataCenterBuilder{dataCenter: &DataCenter{}, err: nil}
+}
+
+func (builder *dataCenterBuilder) Clusters(clusters []Cluster) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Clusters = clusters
+	return builder
+}
+
+func (builder *dataCenterBuilder) Comment(comment string) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Comment = &comment
+	return builder
+}
+
+func (builder *dataCenterBuilder) Description(description string) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Description = &description
+	return builder
+}
+
+func (builder *dataCenterBuilder) Id(id string) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Id = &id
+	return builder
+}
+
+func (builder *dataCenterBuilder) IscsiBonds(iscsiBonds []IscsiBond) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.IscsiBonds = iscsiBonds
+	return builder
+}
+
+func (builder *dataCenterBuilder) Local(local bool) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Local = &local
+	return builder
+}
+
+func (builder *dataCenterBuilder) MacPool(macPool *MacPool) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.MacPool = macPool
+	return builder
+}
+
+func (builder *dataCenterBuilder) Name(name string) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Name = &name
+	return builder
+}
+
+func (builder *dataCenterBuilder) Networks(networks []Network) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Networks = networks
+	return builder
+}
+
+func (builder *dataCenterBuilder) Permissions(permissions []Permission) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Permissions = permissions
+	return builder
+}
+
+func (builder *dataCenterBuilder) Qoss(qoss []Qos) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Qoss = qoss
+	return builder
+}
+
+func (builder *dataCenterBuilder) QuotaMode(quotaMode QuotaModeType) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.QuotaMode = quotaMode
+	return builder
+}
+
+func (builder *dataCenterBuilder) Quotas(quotas []Quota) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Quotas = quotas
+	return builder
+}
+
+func (builder *dataCenterBuilder) Status(status DataCenterStatus) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Status = status
+	return builder
+}
+
+func (builder *dataCenterBuilder) StorageDomains(storageDomains []StorageDomain) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.StorageDomains = storageDomains
+	return builder
+}
+
+func (builder *dataCenterBuilder) StorageFormat(storageFormat StorageFormat) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.StorageFormat = storageFormat
+	return builder
+}
+
+func (builder *dataCenterBuilder) SupportedVersions(supportedVersions []Version) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.SupportedVersions = supportedVersions
+	return builder
+}
+
+func (builder *dataCenterBuilder) Version(version *Version) *dataCenterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.dataCenter.Version = version
+	return builder
+}
+
+func (builder *dataCenterBuilder) Build() (*DataCenter, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.dataCenter, nil
+}
+
+type deviceBuilder struct {
+	device *Device
+	err    error
+}
+
+func NewDeviceBuilder() *deviceBuilder {
+	return &deviceBuilder{device: &Device{}, err: nil}
+}
+
+func (builder *deviceBuilder) Comment(comment string) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Comment = &comment
+	return builder
+}
+
+func (builder *deviceBuilder) Description(description string) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Description = &description
+	return builder
+}
+
+func (builder *deviceBuilder) Id(id string) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Id = &id
+	return builder
+}
+
+func (builder *deviceBuilder) InstanceType(instanceType *InstanceType) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.InstanceType = instanceType
+	return builder
+}
+
+func (builder *deviceBuilder) Name(name string) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Name = &name
+	return builder
+}
+
+func (builder *deviceBuilder) Template(template *Template) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Template = template
+	return builder
+}
+
+func (builder *deviceBuilder) Vm(vm *Vm) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Vm = vm
+	return builder
+}
+
+func (builder *deviceBuilder) Vms(vms []Vm) *deviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.device.Vms = vms
+	return builder
+}
+
+func (builder *deviceBuilder) Build() (*Device, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.device, nil
+}
+
+type diskBuilder struct {
+	disk *Disk
+	err  error
+}
+
+func NewDiskBuilder() *diskBuilder {
+	return &diskBuilder{disk: &Disk{}, err: nil}
+}
+
+func (builder *diskBuilder) Active(active bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Active = &active
+	return builder
+}
+
+func (builder *diskBuilder) ActualSize(actualSize int64) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.ActualSize = &actualSize
+	return builder
+}
+
+func (builder *diskBuilder) Alias(alias string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Alias = &alias
+	return builder
+}
+
+func (builder *diskBuilder) Bootable(bootable bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Bootable = &bootable
+	return builder
+}
+
+func (builder *diskBuilder) Comment(comment string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Comment = &comment
+	return builder
+}
+
+func (builder *diskBuilder) Description(description string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Description = &description
+	return builder
+}
+
+func (builder *diskBuilder) DiskProfile(diskProfile *DiskProfile) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.DiskProfile = diskProfile
+	return builder
+}
+
+func (builder *diskBuilder) Format(format DiskFormat) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Format = format
+	return builder
+}
+
+func (builder *diskBuilder) Id(id string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Id = &id
+	return builder
+}
+
+func (builder *diskBuilder) ImageId(imageId string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.ImageId = &imageId
+	return builder
+}
+
+func (builder *diskBuilder) InitialSize(initialSize int64) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.InitialSize = &initialSize
+	return builder
+}
+
+func (builder *diskBuilder) InstanceType(instanceType *InstanceType) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.InstanceType = instanceType
+	return builder
+}
+
+func (builder *diskBuilder) Interface(interface_ DiskInterface) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Interface = interface_
+	return builder
+}
+
+func (builder *diskBuilder) LogicalName(logicalName string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.LogicalName = &logicalName
+	return builder
+}
+
+func (builder *diskBuilder) LunStorage(lunStorage *HostStorage) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.LunStorage = lunStorage
+	return builder
+}
+
+func (builder *diskBuilder) Name(name string) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Name = &name
+	return builder
+}
+
+func (builder *diskBuilder) OpenstackVolumeType(openstackVolumeType *OpenStackVolumeType) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.OpenstackVolumeType = openstackVolumeType
+	return builder
+}
+
+func (builder *diskBuilder) Permissions(permissions []Permission) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Permissions = permissions
+	return builder
+}
+
+func (builder *diskBuilder) PropagateErrors(propagateErrors bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.PropagateErrors = &propagateErrors
+	return builder
+}
+
+func (builder *diskBuilder) ProvisionedSize(provisionedSize int64) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.ProvisionedSize = &provisionedSize
+	return builder
+}
+
+func (builder *diskBuilder) QcowVersion(qcowVersion QcowVersion) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.QcowVersion = qcowVersion
+	return builder
+}
+
+func (builder *diskBuilder) Quota(quota *Quota) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Quota = quota
+	return builder
+}
+
+func (builder *diskBuilder) ReadOnly(readOnly bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.ReadOnly = &readOnly
+	return builder
+}
+
+func (builder *diskBuilder) Sgio(sgio ScsiGenericIO) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Sgio = sgio
+	return builder
+}
+
+func (builder *diskBuilder) Shareable(shareable bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Shareable = &shareable
+	return builder
+}
+
+func (builder *diskBuilder) Snapshot(snapshot *Snapshot) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Snapshot = snapshot
+	return builder
+}
+
+func (builder *diskBuilder) Sparse(sparse bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Sparse = &sparse
+	return builder
+}
+
+func (builder *diskBuilder) Statistics(statistics []Statistic) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Statistics = statistics
+	return builder
+}
+
+func (builder *diskBuilder) Status(status DiskStatus) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Status = status
+	return builder
+}
+
+func (builder *diskBuilder) StorageDomain(storageDomain *StorageDomain) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *diskBuilder) StorageDomains(storageDomains []StorageDomain) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.StorageDomains = storageDomains
+	return builder
+}
+
+func (builder *diskBuilder) StorageType(storageType DiskStorageType) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.StorageType = storageType
+	return builder
+}
+
+func (builder *diskBuilder) Template(template *Template) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Template = template
+	return builder
+}
+
+func (builder *diskBuilder) UsesScsiReservation(usesScsiReservation bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.UsesScsiReservation = &usesScsiReservation
+	return builder
+}
+
+func (builder *diskBuilder) Vm(vm *Vm) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Vm = vm
+	return builder
+}
+
+func (builder *diskBuilder) Vms(vms []Vm) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.Vms = vms
+	return builder
+}
+
+func (builder *diskBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.disk.WipeAfterDelete = &wipeAfterDelete
+	return builder
+}
+
+func (builder *diskBuilder) Build() (*Disk, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.disk, nil
+}
+
+type diskAttachmentBuilder struct {
+	diskAttachment *DiskAttachment
+	err            error
+}
+
+func NewDiskAttachmentBuilder() *diskAttachmentBuilder {
+	return &diskAttachmentBuilder{diskAttachment: &DiskAttachment{}, err: nil}
+}
+
+func (builder *diskAttachmentBuilder) Active(active bool) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Active = &active
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Bootable(bootable bool) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Bootable = &bootable
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Comment(comment string) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Comment = &comment
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Description(description string) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Description = &description
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Disk(disk *Disk) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Disk = disk
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Id(id string) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Id = &id
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Interface(interface_ DiskInterface) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Interface = interface_
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) LogicalName(logicalName string) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.LogicalName = &logicalName
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Name(name string) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Name = &name
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) PassDiscard(passDiscard bool) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.PassDiscard = &passDiscard
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Template(template *Template) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Template = template
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) UsesScsiReservation(usesScsiReservation bool) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.UsesScsiReservation = &usesScsiReservation
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Vm(vm *Vm) *diskAttachmentBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskAttachment.Vm = vm
+	return builder
+}
+
+func (builder *diskAttachmentBuilder) Build() (*DiskAttachment, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.diskAttachment, nil
+}
+
+type diskProfileBuilder struct {
+	diskProfile *DiskProfile
+	err         error
+}
+
+func NewDiskProfileBuilder() *diskProfileBuilder {
+	return &diskProfileBuilder{diskProfile: &DiskProfile{}, err: nil}
+}
+
+func (builder *diskProfileBuilder) Comment(comment string) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Comment = &comment
+	return builder
+}
+
+func (builder *diskProfileBuilder) Description(description string) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Description = &description
+	return builder
+}
+
+func (builder *diskProfileBuilder) Id(id string) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Id = &id
+	return builder
+}
+
+func (builder *diskProfileBuilder) Name(name string) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Name = &name
+	return builder
+}
+
+func (builder *diskProfileBuilder) Permissions(permissions []Permission) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Permissions = permissions
+	return builder
+}
+
+func (builder *diskProfileBuilder) Qos(qos *Qos) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.Qos = qos
+	return builder
+}
+
+func (builder *diskProfileBuilder) StorageDomain(storageDomain *StorageDomain) *diskProfileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskProfile.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *diskProfileBuilder) Build() (*DiskProfile, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.diskProfile, nil
+}
+
+type diskSnapshotBuilder struct {
+	diskSnapshot *DiskSnapshot
+	err          error
+}
+
+func NewDiskSnapshotBuilder() *diskSnapshotBuilder {
+	return &diskSnapshotBuilder{diskSnapshot: &DiskSnapshot{}, err: nil}
+}
+
+func (builder *diskSnapshotBuilder) Active(active bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Active = &active
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) ActualSize(actualSize int64) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.ActualSize = &actualSize
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Alias(alias string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Alias = &alias
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Bootable(bootable bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Bootable = &bootable
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Comment(comment string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Comment = &comment
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Description(description string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Description = &description
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Disk(disk *Disk) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Disk = disk
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) DiskProfile(diskProfile *DiskProfile) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.DiskProfile = diskProfile
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Format(format DiskFormat) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Format = format
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Id(id string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Id = &id
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) ImageId(imageId string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.ImageId = &imageId
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) InitialSize(initialSize int64) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.InitialSize = &initialSize
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) InstanceType(instanceType *InstanceType) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.InstanceType = instanceType
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Interface(interface_ DiskInterface) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Interface = interface_
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) LogicalName(logicalName string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.LogicalName = &logicalName
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) LunStorage(lunStorage *HostStorage) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.LunStorage = lunStorage
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Name(name string) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Name = &name
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) OpenstackVolumeType(openstackVolumeType *OpenStackVolumeType) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.OpenstackVolumeType = openstackVolumeType
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Permissions(permissions []Permission) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Permissions = permissions
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) PropagateErrors(propagateErrors bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.PropagateErrors = &propagateErrors
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) ProvisionedSize(provisionedSize int64) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.ProvisionedSize = &provisionedSize
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) QcowVersion(qcowVersion QcowVersion) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.QcowVersion = qcowVersion
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Quota(quota *Quota) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Quota = quota
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) ReadOnly(readOnly bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.ReadOnly = &readOnly
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Sgio(sgio ScsiGenericIO) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Sgio = sgio
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Shareable(shareable bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Shareable = &shareable
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Snapshot(snapshot *Snapshot) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Snapshot = snapshot
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Sparse(sparse bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Sparse = &sparse
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Statistics(statistics []Statistic) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Statistics = statistics
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Status(status DiskStatus) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Status = status
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) StorageDomain(storageDomain *StorageDomain) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) StorageDomains(storageDomains []StorageDomain) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.StorageDomains = storageDomains
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) StorageType(storageType DiskStorageType) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.StorageType = storageType
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Template(template *Template) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Template = template
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) UsesScsiReservation(usesScsiReservation bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.UsesScsiReservation = &usesScsiReservation
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Vm(vm *Vm) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Vm = vm
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Vms(vms []Vm) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.Vms = vms
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskSnapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.diskSnapshot.WipeAfterDelete = &wipeAfterDelete
+	return builder
+}
+
+func (builder *diskSnapshotBuilder) Build() (*DiskSnapshot, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.diskSnapshot, nil
 }
 
 type displayBuilder struct {
@@ -4678,6 +7797,85 @@ func (builder *dnsResolverConfigurationBuilder) Build() (*DnsResolverConfigurati
 	return builder.dnsResolverConfiguration, nil
 }
 
+type domainBuilder struct {
+	domain *Domain
+	err    error
+}
+
+func NewDomainBuilder() *domainBuilder {
+	return &domainBuilder{domain: &Domain{}, err: nil}
+}
+
+func (builder *domainBuilder) Comment(comment string) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Comment = &comment
+	return builder
+}
+
+func (builder *domainBuilder) Description(description string) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Description = &description
+	return builder
+}
+
+func (builder *domainBuilder) Groups(groups []Group) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Groups = groups
+	return builder
+}
+
+func (builder *domainBuilder) Id(id string) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Id = &id
+	return builder
+}
+
+func (builder *domainBuilder) Name(name string) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Name = &name
+	return builder
+}
+
+func (builder *domainBuilder) User(user *User) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.User = user
+	return builder
+}
+
+func (builder *domainBuilder) Users(users []User) *domainBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.domain.Users = users
+	return builder
+}
+
+func (builder *domainBuilder) Build() (*Domain, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.domain, nil
+}
+
 type entityProfileDetailBuilder struct {
 	entityProfileDetail *EntityProfileDetail
 	err                 error
@@ -4726,6 +7924,802 @@ func (builder *errorHandlingBuilder) Build() (*ErrorHandling, error) {
 		return nil, builder.err
 	}
 	return builder.errorHandling, nil
+}
+
+type eventBuilder struct {
+	event *Event
+	err   error
+}
+
+func NewEventBuilder() *eventBuilder {
+	return &eventBuilder{event: &Event{}, err: nil}
+}
+
+func (builder *eventBuilder) Cluster(cluster *Cluster) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Cluster = cluster
+	return builder
+}
+
+func (builder *eventBuilder) Code(code int64) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Code = &code
+	return builder
+}
+
+func (builder *eventBuilder) Comment(comment string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Comment = &comment
+	return builder
+}
+
+func (builder *eventBuilder) CorrelationId(correlationId string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.CorrelationId = &correlationId
+	return builder
+}
+
+func (builder *eventBuilder) CustomData(customData string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.CustomData = &customData
+	return builder
+}
+
+func (builder *eventBuilder) CustomId(customId int64) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.CustomId = &customId
+	return builder
+}
+
+func (builder *eventBuilder) DataCenter(dataCenter *DataCenter) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.DataCenter = dataCenter
+	return builder
+}
+
+func (builder *eventBuilder) Description(description string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Description = &description
+	return builder
+}
+
+func (builder *eventBuilder) FloodRate(floodRate int64) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.FloodRate = &floodRate
+	return builder
+}
+
+func (builder *eventBuilder) Host(host *Host) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Host = host
+	return builder
+}
+
+func (builder *eventBuilder) Id(id string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Id = &id
+	return builder
+}
+
+func (builder *eventBuilder) Name(name string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Name = &name
+	return builder
+}
+
+func (builder *eventBuilder) Origin(origin string) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Origin = &origin
+	return builder
+}
+
+func (builder *eventBuilder) Severity(severity LogSeverity) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Severity = severity
+	return builder
+}
+
+func (builder *eventBuilder) StorageDomain(storageDomain *StorageDomain) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *eventBuilder) Template(template *Template) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Template = template
+	return builder
+}
+
+func (builder *eventBuilder) Time(time time.Time) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Time = time
+	return builder
+}
+
+func (builder *eventBuilder) User(user *User) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.User = user
+	return builder
+}
+
+func (builder *eventBuilder) Vm(vm *Vm) *eventBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.event.Vm = vm
+	return builder
+}
+
+func (builder *eventBuilder) Build() (*Event, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.event, nil
+}
+
+type externalComputeResourceBuilder struct {
+	externalComputeResource *ExternalComputeResource
+	err                     error
+}
+
+func NewExternalComputeResourceBuilder() *externalComputeResourceBuilder {
+	return &externalComputeResourceBuilder{externalComputeResource: &ExternalComputeResource{}, err: nil}
+}
+
+func (builder *externalComputeResourceBuilder) Comment(comment string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Comment = &comment
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Description(description string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Description = &description
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Id(id string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Id = &id
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Name(name string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Name = &name
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Provider(provider string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Provider = &provider
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Url(url string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.Url = &url
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) User(user string) *externalComputeResourceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalComputeResource.User = &user
+	return builder
+}
+
+func (builder *externalComputeResourceBuilder) Build() (*ExternalComputeResource, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalComputeResource, nil
+}
+
+type externalDiscoveredHostBuilder struct {
+	externalDiscoveredHost *ExternalDiscoveredHost
+	err                    error
+}
+
+func NewExternalDiscoveredHostBuilder() *externalDiscoveredHostBuilder {
+	return &externalDiscoveredHostBuilder{externalDiscoveredHost: &ExternalDiscoveredHost{}, err: nil}
+}
+
+func (builder *externalDiscoveredHostBuilder) Comment(comment string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Comment = &comment
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Description(description string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Description = &description
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Id(id string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Id = &id
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Ip(ip string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Ip = &ip
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) LastReport(lastReport string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.LastReport = &lastReport
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Mac(mac string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Mac = &mac
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Name(name string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.Name = &name
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) SubnetName(subnetName string) *externalDiscoveredHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalDiscoveredHost.SubnetName = &subnetName
+	return builder
+}
+
+func (builder *externalDiscoveredHostBuilder) Build() (*ExternalDiscoveredHost, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalDiscoveredHost, nil
+}
+
+type externalHostBuilder struct {
+	externalHost *ExternalHost
+	err          error
+}
+
+func NewExternalHostBuilder() *externalHostBuilder {
+	return &externalHostBuilder{externalHost: &ExternalHost{}, err: nil}
+}
+
+func (builder *externalHostBuilder) Address(address string) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.Address = &address
+	return builder
+}
+
+func (builder *externalHostBuilder) Comment(comment string) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.Comment = &comment
+	return builder
+}
+
+func (builder *externalHostBuilder) Description(description string) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.Description = &description
+	return builder
+}
+
+func (builder *externalHostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *externalHostBuilder) Id(id string) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.Id = &id
+	return builder
+}
+
+func (builder *externalHostBuilder) Name(name string) *externalHostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHost.Name = &name
+	return builder
+}
+
+func (builder *externalHostBuilder) Build() (*ExternalHost, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalHost, nil
+}
+
+type externalHostGroupBuilder struct {
+	externalHostGroup *ExternalHostGroup
+	err               error
+}
+
+func NewExternalHostGroupBuilder() *externalHostGroupBuilder {
+	return &externalHostGroupBuilder{externalHostGroup: &ExternalHostGroup{}, err: nil}
+}
+
+func (builder *externalHostGroupBuilder) ArchitectureName(architectureName string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.ArchitectureName = &architectureName
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) Comment(comment string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.Comment = &comment
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) Description(description string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.Description = &description
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) DomainName(domainName string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.DomainName = &domainName
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) Id(id string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.Id = &id
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) Name(name string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.Name = &name
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) OperatingSystemName(operatingSystemName string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.OperatingSystemName = &operatingSystemName
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) SubnetName(subnetName string) *externalHostGroupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostGroup.SubnetName = &subnetName
+	return builder
+}
+
+func (builder *externalHostGroupBuilder) Build() (*ExternalHostGroup, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalHostGroup, nil
+}
+
+type externalHostProviderBuilder struct {
+	externalHostProvider *ExternalHostProvider
+	err                  error
+}
+
+func NewExternalHostProviderBuilder() *externalHostProviderBuilder {
+	return &externalHostProviderBuilder{externalHostProvider: &ExternalHostProvider{}, err: nil}
+}
+
+func (builder *externalHostProviderBuilder) AuthenticationUrl(authenticationUrl string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Certificates(certificates []Certificate) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Certificates = certificates
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Comment(comment string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Comment = &comment
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) ComputeResources(computeResources []ExternalComputeResource) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.ComputeResources = computeResources
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Description(description string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Description = &description
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) DiscoveredHosts(discoveredHosts []ExternalDiscoveredHost) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.DiscoveredHosts = discoveredHosts
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) HostGroups(hostGroups []ExternalHostGroup) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.HostGroups = hostGroups
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Hosts(hosts []Host) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Hosts = hosts
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Id(id string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Id = &id
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Name(name string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Name = &name
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Password(password string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Password = &password
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Properties(properties []Property) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Properties = properties
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Url(url string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Url = &url
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Username(username string) *externalHostProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalHostProvider.Username = &username
+	return builder
+}
+
+func (builder *externalHostProviderBuilder) Build() (*ExternalHostProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalHostProvider, nil
+}
+
+type externalProviderBuilder struct {
+	externalProvider *ExternalProvider
+	err              error
+}
+
+func NewExternalProviderBuilder() *externalProviderBuilder {
+	return &externalProviderBuilder{externalProvider: &ExternalProvider{}, err: nil}
+}
+
+func (builder *externalProviderBuilder) AuthenticationUrl(authenticationUrl string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *externalProviderBuilder) Comment(comment string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Comment = &comment
+	return builder
+}
+
+func (builder *externalProviderBuilder) Description(description string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Description = &description
+	return builder
+}
+
+func (builder *externalProviderBuilder) Id(id string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Id = &id
+	return builder
+}
+
+func (builder *externalProviderBuilder) Name(name string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Name = &name
+	return builder
+}
+
+func (builder *externalProviderBuilder) Password(password string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Password = &password
+	return builder
+}
+
+func (builder *externalProviderBuilder) Properties(properties []Property) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Properties = properties
+	return builder
+}
+
+func (builder *externalProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *externalProviderBuilder) Url(url string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Url = &url
+	return builder
+}
+
+func (builder *externalProviderBuilder) Username(username string) *externalProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.externalProvider.Username = &username
+	return builder
+}
+
+func (builder *externalProviderBuilder) Build() (*ExternalProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.externalProvider, nil
 }
 
 type externalVmImportBuilder struct {
@@ -4956,6 +8950,252 @@ func (builder *fencingPolicyBuilder) Build() (*FencingPolicy, error) {
 	return builder.fencingPolicy, nil
 }
 
+type fileBuilder struct {
+	file *File
+	err  error
+}
+
+func NewFileBuilder() *fileBuilder {
+	return &fileBuilder{file: &File{}, err: nil}
+}
+
+func (builder *fileBuilder) Comment(comment string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Comment = &comment
+	return builder
+}
+
+func (builder *fileBuilder) Content(content string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Content = &content
+	return builder
+}
+
+func (builder *fileBuilder) Description(description string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Description = &description
+	return builder
+}
+
+func (builder *fileBuilder) Id(id string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Id = &id
+	return builder
+}
+
+func (builder *fileBuilder) Name(name string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Name = &name
+	return builder
+}
+
+func (builder *fileBuilder) StorageDomain(storageDomain *StorageDomain) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *fileBuilder) Type(type_ string) *fileBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.file.Type = &type_
+	return builder
+}
+
+func (builder *fileBuilder) Build() (*File, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.file, nil
+}
+
+type filterBuilder struct {
+	filter *Filter
+	err    error
+}
+
+func NewFilterBuilder() *filterBuilder {
+	return &filterBuilder{filter: &Filter{}, err: nil}
+}
+
+func (builder *filterBuilder) Comment(comment string) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.Comment = &comment
+	return builder
+}
+
+func (builder *filterBuilder) Description(description string) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.Description = &description
+	return builder
+}
+
+func (builder *filterBuilder) Id(id string) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.Id = &id
+	return builder
+}
+
+func (builder *filterBuilder) Name(name string) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.Name = &name
+	return builder
+}
+
+func (builder *filterBuilder) Position(position int64) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.Position = &position
+	return builder
+}
+
+func (builder *filterBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *filterBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.filter.SchedulingPolicyUnit = schedulingPolicyUnit
+	return builder
+}
+
+func (builder *filterBuilder) Build() (*Filter, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.filter, nil
+}
+
+type floppyBuilder struct {
+	floppy *Floppy
+	err    error
+}
+
+func NewFloppyBuilder() *floppyBuilder {
+	return &floppyBuilder{floppy: &Floppy{}, err: nil}
+}
+
+func (builder *floppyBuilder) Comment(comment string) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Comment = &comment
+	return builder
+}
+
+func (builder *floppyBuilder) Description(description string) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Description = &description
+	return builder
+}
+
+func (builder *floppyBuilder) File(file *File) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.File = file
+	return builder
+}
+
+func (builder *floppyBuilder) Id(id string) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Id = &id
+	return builder
+}
+
+func (builder *floppyBuilder) InstanceType(instanceType *InstanceType) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.InstanceType = instanceType
+	return builder
+}
+
+func (builder *floppyBuilder) Name(name string) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Name = &name
+	return builder
+}
+
+func (builder *floppyBuilder) Template(template *Template) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Template = template
+	return builder
+}
+
+func (builder *floppyBuilder) Vm(vm *Vm) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Vm = vm
+	return builder
+}
+
+func (builder *floppyBuilder) Vms(vms []Vm) *floppyBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.floppy.Vms = vms
+	return builder
+}
+
+func (builder *floppyBuilder) Build() (*Floppy, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.floppy, nil
+}
+
 type fopStatisticBuilder struct {
 	fopStatistic *FopStatistic
 	err          error
@@ -4988,6 +9228,353 @@ func (builder *fopStatisticBuilder) Build() (*FopStatistic, error) {
 		return nil, builder.err
 	}
 	return builder.fopStatistic, nil
+}
+
+type glusterBrickBuilder struct {
+	glusterBrick *GlusterBrick
+	err          error
+}
+
+func NewGlusterBrickBuilder() *glusterBrickBuilder {
+	return &glusterBrickBuilder{glusterBrick: &GlusterBrick{}, err: nil}
+}
+
+func (builder *glusterBrickBuilder) BrickDir(brickDir string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.BrickDir = &brickDir
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Comment(comment string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Comment = &comment
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Description(description string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Description = &description
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Device(device string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Device = &device
+	return builder
+}
+
+func (builder *glusterBrickBuilder) FsName(fsName string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.FsName = &fsName
+	return builder
+}
+
+func (builder *glusterBrickBuilder) GlusterClients(glusterClients []GlusterClient) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.GlusterClients = glusterClients
+	return builder
+}
+
+func (builder *glusterBrickBuilder) GlusterVolume(glusterVolume *GlusterVolume) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.GlusterVolume = glusterVolume
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Id(id string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Id = &id
+	return builder
+}
+
+func (builder *glusterBrickBuilder) InstanceType(instanceType *InstanceType) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.InstanceType = instanceType
+	return builder
+}
+
+func (builder *glusterBrickBuilder) MemoryPools(memoryPools []GlusterMemoryPool) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.MemoryPools = memoryPools
+	return builder
+}
+
+func (builder *glusterBrickBuilder) MntOptions(mntOptions string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.MntOptions = &mntOptions
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Name(name string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Name = &name
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Pid(pid int64) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Pid = &pid
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Port(port int64) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Port = &port
+	return builder
+}
+
+func (builder *glusterBrickBuilder) ServerId(serverId string) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.ServerId = &serverId
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Statistics(statistics []Statistic) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Statistics = statistics
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Status(status GlusterBrickStatus) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Status = status
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Template(template *Template) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Template = template
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Vm(vm *Vm) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Vm = vm
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Vms(vms []Vm) *glusterBrickBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrick.Vms = vms
+	return builder
+}
+
+func (builder *glusterBrickBuilder) Build() (*GlusterBrick, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterBrick, nil
+}
+
+type glusterBrickAdvancedDetailsBuilder struct {
+	glusterBrickAdvancedDetails *GlusterBrickAdvancedDetails
+	err                         error
+}
+
+func NewGlusterBrickAdvancedDetailsBuilder() *glusterBrickAdvancedDetailsBuilder {
+	return &glusterBrickAdvancedDetailsBuilder{glusterBrickAdvancedDetails: &GlusterBrickAdvancedDetails{}, err: nil}
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Comment(comment string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Comment = &comment
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Description(description string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Description = &description
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Device(device string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Device = &device
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) FsName(fsName string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.FsName = &fsName
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) GlusterClients(glusterClients []GlusterClient) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.GlusterClients = glusterClients
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Id(id string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Id = &id
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) InstanceType(instanceType *InstanceType) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.InstanceType = instanceType
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) MemoryPools(memoryPools []GlusterMemoryPool) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.MemoryPools = memoryPools
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) MntOptions(mntOptions string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.MntOptions = &mntOptions
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Name(name string) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Name = &name
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Pid(pid int64) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Pid = &pid
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Port(port int64) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Port = &port
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Template(template *Template) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Template = template
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Vm(vm *Vm) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Vm = vm
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Vms(vms []Vm) *glusterBrickAdvancedDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterBrickAdvancedDetails.Vms = vms
+	return builder
+}
+
+func (builder *glusterBrickAdvancedDetailsBuilder) Build() (*GlusterBrickAdvancedDetails, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterBrickAdvancedDetails, nil
 }
 
 type glusterBrickMemoryInfoBuilder struct {
@@ -5067,6 +9654,581 @@ func (builder *glusterClientBuilder) Build() (*GlusterClient, error) {
 	return builder.glusterClient, nil
 }
 
+type glusterHookBuilder struct {
+	glusterHook *GlusterHook
+	err         error
+}
+
+func NewGlusterHookBuilder() *glusterHookBuilder {
+	return &glusterHookBuilder{glusterHook: &GlusterHook{}, err: nil}
+}
+
+func (builder *glusterHookBuilder) Checksum(checksum string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Checksum = &checksum
+	return builder
+}
+
+func (builder *glusterHookBuilder) Cluster(cluster *Cluster) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Cluster = cluster
+	return builder
+}
+
+func (builder *glusterHookBuilder) Comment(comment string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Comment = &comment
+	return builder
+}
+
+func (builder *glusterHookBuilder) ConflictStatus(conflictStatus int64) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.ConflictStatus = &conflictStatus
+	return builder
+}
+
+func (builder *glusterHookBuilder) Conflicts(conflicts string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Conflicts = &conflicts
+	return builder
+}
+
+func (builder *glusterHookBuilder) Content(content string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Content = &content
+	return builder
+}
+
+func (builder *glusterHookBuilder) ContentType(contentType HookContentType) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.ContentType = contentType
+	return builder
+}
+
+func (builder *glusterHookBuilder) Description(description string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Description = &description
+	return builder
+}
+
+func (builder *glusterHookBuilder) GlusterCommand(glusterCommand string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.GlusterCommand = &glusterCommand
+	return builder
+}
+
+func (builder *glusterHookBuilder) Id(id string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Id = &id
+	return builder
+}
+
+func (builder *glusterHookBuilder) Name(name string) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Name = &name
+	return builder
+}
+
+func (builder *glusterHookBuilder) ServerHooks(serverHooks []GlusterServerHook) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.ServerHooks = serverHooks
+	return builder
+}
+
+func (builder *glusterHookBuilder) Stage(stage HookStage) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Stage = stage
+	return builder
+}
+
+func (builder *glusterHookBuilder) Status(status GlusterHookStatus) *glusterHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterHook.Status = status
+	return builder
+}
+
+func (builder *glusterHookBuilder) Build() (*GlusterHook, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterHook, nil
+}
+
+type glusterMemoryPoolBuilder struct {
+	glusterMemoryPool *GlusterMemoryPool
+	err               error
+}
+
+func NewGlusterMemoryPoolBuilder() *glusterMemoryPoolBuilder {
+	return &glusterMemoryPoolBuilder{glusterMemoryPool: &GlusterMemoryPool{}, err: nil}
+}
+
+func (builder *glusterMemoryPoolBuilder) AllocCount(allocCount int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.AllocCount = &allocCount
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) ColdCount(coldCount int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.ColdCount = &coldCount
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Comment(comment string) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.Comment = &comment
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Description(description string) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.Description = &description
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) HotCount(hotCount int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.HotCount = &hotCount
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Id(id string) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.Id = &id
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) MaxAlloc(maxAlloc int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.MaxAlloc = &maxAlloc
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) MaxStdalloc(maxStdalloc int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.MaxStdalloc = &maxStdalloc
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Name(name string) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.Name = &name
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) PaddedSize(paddedSize int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.PaddedSize = &paddedSize
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) PoolMisses(poolMisses int64) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.PoolMisses = &poolMisses
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Type(type_ string) *glusterMemoryPoolBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterMemoryPool.Type = &type_
+	return builder
+}
+
+func (builder *glusterMemoryPoolBuilder) Build() (*GlusterMemoryPool, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterMemoryPool, nil
+}
+
+type glusterServerHookBuilder struct {
+	glusterServerHook *GlusterServerHook
+	err               error
+}
+
+func NewGlusterServerHookBuilder() *glusterServerHookBuilder {
+	return &glusterServerHookBuilder{glusterServerHook: &GlusterServerHook{}, err: nil}
+}
+
+func (builder *glusterServerHookBuilder) Checksum(checksum string) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Checksum = &checksum
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Comment(comment string) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Comment = &comment
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) ContentType(contentType HookContentType) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.ContentType = contentType
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Description(description string) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Description = &description
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Host(host *Host) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Host = host
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Id(id string) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Id = &id
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Name(name string) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Name = &name
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Status(status GlusterHookStatus) *glusterServerHookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterServerHook.Status = status
+	return builder
+}
+
+func (builder *glusterServerHookBuilder) Build() (*GlusterServerHook, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterServerHook, nil
+}
+
+type glusterVolumeBuilder struct {
+	glusterVolume *GlusterVolume
+	err           error
+}
+
+func NewGlusterVolumeBuilder() *glusterVolumeBuilder {
+	return &glusterVolumeBuilder{glusterVolume: &GlusterVolume{}, err: nil}
+}
+
+func (builder *glusterVolumeBuilder) Bricks(bricks []GlusterBrick) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Bricks = bricks
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Cluster(cluster *Cluster) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Cluster = cluster
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Comment(comment string) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Comment = &comment
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Description(description string) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Description = &description
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) DisperseCount(disperseCount int64) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.DisperseCount = &disperseCount
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Id(id string) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Id = &id
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Name(name string) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Name = &name
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Options(options []Option) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Options = options
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) RedundancyCount(redundancyCount int64) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.RedundancyCount = &redundancyCount
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) ReplicaCount(replicaCount int64) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.ReplicaCount = &replicaCount
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Statistics(statistics []Statistic) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Statistics = statistics
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Status(status GlusterVolumeStatus) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.Status = status
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) StripeCount(stripeCount int64) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.StripeCount = &stripeCount
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) TransportTypes(transportTypes []TransportType) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.TransportTypes = transportTypes
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) VolumeType(volumeType GlusterVolumeType) *glusterVolumeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolume.VolumeType = volumeType
+	return builder
+}
+
+func (builder *glusterVolumeBuilder) Build() (*GlusterVolume, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterVolume, nil
+}
+
+type glusterVolumeProfileDetailsBuilder struct {
+	glusterVolumeProfileDetails *GlusterVolumeProfileDetails
+	err                         error
+}
+
+func NewGlusterVolumeProfileDetailsBuilder() *glusterVolumeProfileDetailsBuilder {
+	return &glusterVolumeProfileDetailsBuilder{glusterVolumeProfileDetails: &GlusterVolumeProfileDetails{}, err: nil}
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) BrickProfileDetails(brickProfileDetails []BrickProfileDetail) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.BrickProfileDetails = brickProfileDetails
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) Comment(comment string) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.Comment = &comment
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) Description(description string) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.Description = &description
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) Id(id string) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.Id = &id
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) Name(name string) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.Name = &name
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) NfsProfileDetails(nfsProfileDetails []NfsProfileDetail) *glusterVolumeProfileDetailsBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.glusterVolumeProfileDetails.NfsProfileDetails = nfsProfileDetails
+	return builder
+}
+
+func (builder *glusterVolumeProfileDetailsBuilder) Build() (*GlusterVolumeProfileDetails, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.glusterVolumeProfileDetails, nil
+}
+
 type gracePeriodBuilder struct {
 	gracePeriod *GracePeriod
 	err         error
@@ -5090,6 +10252,227 @@ func (builder *gracePeriodBuilder) Build() (*GracePeriod, error) {
 		return nil, builder.err
 	}
 	return builder.gracePeriod, nil
+}
+
+type graphicsConsoleBuilder struct {
+	graphicsConsole *GraphicsConsole
+	err             error
+}
+
+func NewGraphicsConsoleBuilder() *graphicsConsoleBuilder {
+	return &graphicsConsoleBuilder{graphicsConsole: &GraphicsConsole{}, err: nil}
+}
+
+func (builder *graphicsConsoleBuilder) Address(address string) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Address = &address
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Comment(comment string) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Comment = &comment
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Description(description string) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Description = &description
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Id(id string) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Id = &id
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) InstanceType(instanceType *InstanceType) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.InstanceType = instanceType
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Name(name string) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Name = &name
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Port(port int64) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Port = &port
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Protocol(protocol GraphicsType) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Protocol = protocol
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Template(template *Template) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Template = template
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) TlsPort(tlsPort int64) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.TlsPort = &tlsPort
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Vm(vm *Vm) *graphicsConsoleBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.graphicsConsole.Vm = vm
+	return builder
+}
+
+func (builder *graphicsConsoleBuilder) Build() (*GraphicsConsole, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.graphicsConsole, nil
+}
+
+type groupBuilder struct {
+	group *Group
+	err   error
+}
+
+func NewGroupBuilder() *groupBuilder {
+	return &groupBuilder{group: &Group{}, err: nil}
+}
+
+func (builder *groupBuilder) Comment(comment string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Comment = &comment
+	return builder
+}
+
+func (builder *groupBuilder) Description(description string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Description = &description
+	return builder
+}
+
+func (builder *groupBuilder) Domain(domain *Domain) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Domain = domain
+	return builder
+}
+
+func (builder *groupBuilder) DomainEntryId(domainEntryId string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.DomainEntryId = &domainEntryId
+	return builder
+}
+
+func (builder *groupBuilder) Id(id string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Id = &id
+	return builder
+}
+
+func (builder *groupBuilder) Name(name string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Name = &name
+	return builder
+}
+
+func (builder *groupBuilder) Namespace(namespace string) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Namespace = &namespace
+	return builder
+}
+
+func (builder *groupBuilder) Permissions(permissions []Permission) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Permissions = permissions
+	return builder
+}
+
+func (builder *groupBuilder) Roles(roles []Role) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Roles = roles
+	return builder
+}
+
+func (builder *groupBuilder) Tags(tags []Tag) *groupBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.group.Tags = tags
+	return builder
+}
+
+func (builder *groupBuilder) Build() (*Group, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.group, nil
 }
 
 type guestOperatingSystemBuilder struct {
@@ -5275,6 +10658,711 @@ func (builder *highAvailabilityBuilder) Build() (*HighAvailability, error) {
 	return builder.highAvailability, nil
 }
 
+type hookBuilder struct {
+	hook *Hook
+	err  error
+}
+
+func NewHookBuilder() *hookBuilder {
+	return &hookBuilder{hook: &Hook{}, err: nil}
+}
+
+func (builder *hookBuilder) Comment(comment string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Comment = &comment
+	return builder
+}
+
+func (builder *hookBuilder) Description(description string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Description = &description
+	return builder
+}
+
+func (builder *hookBuilder) EventName(eventName string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.EventName = &eventName
+	return builder
+}
+
+func (builder *hookBuilder) Host(host *Host) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Host = host
+	return builder
+}
+
+func (builder *hookBuilder) Id(id string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Id = &id
+	return builder
+}
+
+func (builder *hookBuilder) Md5(md5 string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Md5 = &md5
+	return builder
+}
+
+func (builder *hookBuilder) Name(name string) *hookBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hook.Name = &name
+	return builder
+}
+
+func (builder *hookBuilder) Build() (*Hook, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.hook, nil
+}
+
+type hostBuilder struct {
+	host *Host
+	err  error
+}
+
+func NewHostBuilder() *hostBuilder {
+	return &hostBuilder{host: &Host{}, err: nil}
+}
+
+func (builder *hostBuilder) Address(address string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Address = &address
+	return builder
+}
+
+func (builder *hostBuilder) AffinityLabels(affinityLabels []AffinityLabel) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.AffinityLabels = affinityLabels
+	return builder
+}
+
+func (builder *hostBuilder) Agents(agents []Agent) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Agents = agents
+	return builder
+}
+
+func (builder *hostBuilder) AutoNumaStatus(autoNumaStatus AutoNumaStatus) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.AutoNumaStatus = autoNumaStatus
+	return builder
+}
+
+func (builder *hostBuilder) Certificate(certificate *Certificate) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Certificate = certificate
+	return builder
+}
+
+func (builder *hostBuilder) Cluster(cluster *Cluster) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Cluster = cluster
+	return builder
+}
+
+func (builder *hostBuilder) Comment(comment string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Comment = &comment
+	return builder
+}
+
+func (builder *hostBuilder) Cpu(cpu *Cpu) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Cpu = cpu
+	return builder
+}
+
+func (builder *hostBuilder) Description(description string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Description = &description
+	return builder
+}
+
+func (builder *hostBuilder) DevicePassthrough(devicePassthrough *HostDevicePassthrough) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.DevicePassthrough = devicePassthrough
+	return builder
+}
+
+func (builder *hostBuilder) Devices(devices []Device) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Devices = devices
+	return builder
+}
+
+func (builder *hostBuilder) Display(display *Display) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Display = display
+	return builder
+}
+
+func (builder *hostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *hostBuilder) ExternalStatus(externalStatus ExternalStatus) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.ExternalStatus = externalStatus
+	return builder
+}
+
+func (builder *hostBuilder) HardwareInformation(hardwareInformation *HardwareInformation) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.HardwareInformation = hardwareInformation
+	return builder
+}
+
+func (builder *hostBuilder) Hooks(hooks []Hook) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Hooks = hooks
+	return builder
+}
+
+func (builder *hostBuilder) HostedEngine(hostedEngine *HostedEngine) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.HostedEngine = hostedEngine
+	return builder
+}
+
+func (builder *hostBuilder) Id(id string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Id = &id
+	return builder
+}
+
+func (builder *hostBuilder) Iscsi(iscsi *IscsiDetails) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Iscsi = iscsi
+	return builder
+}
+
+func (builder *hostBuilder) KatelloErrata(katelloErrata []KatelloErratum) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.KatelloErrata = katelloErrata
+	return builder
+}
+
+func (builder *hostBuilder) KdumpStatus(kdumpStatus KdumpStatus) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.KdumpStatus = kdumpStatus
+	return builder
+}
+
+func (builder *hostBuilder) Ksm(ksm *Ksm) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Ksm = ksm
+	return builder
+}
+
+func (builder *hostBuilder) LibvirtVersion(libvirtVersion *Version) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.LibvirtVersion = libvirtVersion
+	return builder
+}
+
+func (builder *hostBuilder) MaxSchedulingMemory(maxSchedulingMemory int64) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.MaxSchedulingMemory = &maxSchedulingMemory
+	return builder
+}
+
+func (builder *hostBuilder) Memory(memory int64) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Memory = &memory
+	return builder
+}
+
+func (builder *hostBuilder) Name(name string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Name = &name
+	return builder
+}
+
+func (builder *hostBuilder) NetworkAttachments(networkAttachments []NetworkAttachment) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.NetworkAttachments = networkAttachments
+	return builder
+}
+
+func (builder *hostBuilder) Nics(nics []Nic) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Nics = nics
+	return builder
+}
+
+func (builder *hostBuilder) NumaNodes(numaNodes []NumaNode) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.NumaNodes = numaNodes
+	return builder
+}
+
+func (builder *hostBuilder) NumaSupported(numaSupported bool) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.NumaSupported = &numaSupported
+	return builder
+}
+
+func (builder *hostBuilder) Os(os *OperatingSystem) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Os = os
+	return builder
+}
+
+func (builder *hostBuilder) OverrideIptables(overrideIptables bool) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.OverrideIptables = &overrideIptables
+	return builder
+}
+
+func (builder *hostBuilder) Permissions(permissions []Permission) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Permissions = permissions
+	return builder
+}
+
+func (builder *hostBuilder) Port(port int64) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Port = &port
+	return builder
+}
+
+func (builder *hostBuilder) PowerManagement(powerManagement *PowerManagement) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.PowerManagement = powerManagement
+	return builder
+}
+
+func (builder *hostBuilder) Protocol(protocol HostProtocol) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Protocol = protocol
+	return builder
+}
+
+func (builder *hostBuilder) RootPassword(rootPassword string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.RootPassword = &rootPassword
+	return builder
+}
+
+func (builder *hostBuilder) SeLinux(seLinux *SeLinux) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.SeLinux = seLinux
+	return builder
+}
+
+func (builder *hostBuilder) Spm(spm *Spm) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Spm = spm
+	return builder
+}
+
+func (builder *hostBuilder) Ssh(ssh *Ssh) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Ssh = ssh
+	return builder
+}
+
+func (builder *hostBuilder) Statistics(statistics []Statistic) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Statistics = statistics
+	return builder
+}
+
+func (builder *hostBuilder) Status(status HostStatus) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Status = status
+	return builder
+}
+
+func (builder *hostBuilder) StatusDetail(statusDetail string) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.StatusDetail = &statusDetail
+	return builder
+}
+
+func (builder *hostBuilder) StorageConnectionExtensions(storageConnectionExtensions []StorageConnectionExtension) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.StorageConnectionExtensions = storageConnectionExtensions
+	return builder
+}
+
+func (builder *hostBuilder) Storages(storages []HostStorage) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Storages = storages
+	return builder
+}
+
+func (builder *hostBuilder) Summary(summary *VmSummary) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Summary = summary
+	return builder
+}
+
+func (builder *hostBuilder) Tags(tags []Tag) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Tags = tags
+	return builder
+}
+
+func (builder *hostBuilder) TransparentHugePages(transparentHugePages *TransparentHugePages) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.TransparentHugePages = transparentHugePages
+	return builder
+}
+
+func (builder *hostBuilder) Type(type_ HostType) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Type = type_
+	return builder
+}
+
+func (builder *hostBuilder) UnmanagedNetworks(unmanagedNetworks []UnmanagedNetwork) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.UnmanagedNetworks = unmanagedNetworks
+	return builder
+}
+
+func (builder *hostBuilder) UpdateAvailable(updateAvailable bool) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.UpdateAvailable = &updateAvailable
+	return builder
+}
+
+func (builder *hostBuilder) Version(version *Version) *hostBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.host.Version = version
+	return builder
+}
+
+func (builder *hostBuilder) Build() (*Host, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.host, nil
+}
+
+type hostDeviceBuilder struct {
+	hostDevice *HostDevice
+	err        error
+}
+
+func NewHostDeviceBuilder() *hostDeviceBuilder {
+	return &hostDeviceBuilder{hostDevice: &HostDevice{}, err: nil}
+}
+
+func (builder *hostDeviceBuilder) Capability(capability string) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Capability = &capability
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Comment(comment string) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Comment = &comment
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Description(description string) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Description = &description
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Host(host *Host) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Host = host
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Id(id string) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Id = &id
+	return builder
+}
+
+func (builder *hostDeviceBuilder) IommuGroup(iommuGroup int64) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.IommuGroup = &iommuGroup
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Name(name string) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Name = &name
+	return builder
+}
+
+func (builder *hostDeviceBuilder) ParentDevice(parentDevice *HostDevice) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.ParentDevice = parentDevice
+	return builder
+}
+
+func (builder *hostDeviceBuilder) PhysicalFunction(physicalFunction *HostDevice) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.PhysicalFunction = physicalFunction
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Placeholder(placeholder bool) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Placeholder = &placeholder
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Product(product *Product) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Product = product
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Vendor(vendor *Vendor) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Vendor = vendor
+	return builder
+}
+
+func (builder *hostDeviceBuilder) VirtualFunctions(virtualFunctions int64) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.VirtualFunctions = &virtualFunctions
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Vm(vm *Vm) *hostDeviceBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostDevice.Vm = vm
+	return builder
+}
+
+func (builder *hostDeviceBuilder) Build() (*HostDevice, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.hostDevice, nil
+}
+
 type hostDevicePassthroughBuilder struct {
 	hostDevicePassthrough *HostDevicePassthrough
 	err                   error
@@ -5298,6 +11386,274 @@ func (builder *hostDevicePassthroughBuilder) Build() (*HostDevicePassthrough, er
 		return nil, builder.err
 	}
 	return builder.hostDevicePassthrough, nil
+}
+
+type hostNicBuilder struct {
+	hostNic *HostNic
+	err     error
+}
+
+func NewHostNicBuilder() *hostNicBuilder {
+	return &hostNicBuilder{hostNic: &HostNic{}, err: nil}
+}
+
+func (builder *hostNicBuilder) AdAggregatorId(adAggregatorId int64) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.AdAggregatorId = &adAggregatorId
+	return builder
+}
+
+func (builder *hostNicBuilder) BaseInterface(baseInterface string) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.BaseInterface = &baseInterface
+	return builder
+}
+
+func (builder *hostNicBuilder) Bonding(bonding *Bonding) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Bonding = bonding
+	return builder
+}
+
+func (builder *hostNicBuilder) BootProtocol(bootProtocol BootProtocol) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.BootProtocol = bootProtocol
+	return builder
+}
+
+func (builder *hostNicBuilder) Bridged(bridged bool) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Bridged = &bridged
+	return builder
+}
+
+func (builder *hostNicBuilder) CheckConnectivity(checkConnectivity bool) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.CheckConnectivity = &checkConnectivity
+	return builder
+}
+
+func (builder *hostNicBuilder) Comment(comment string) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Comment = &comment
+	return builder
+}
+
+func (builder *hostNicBuilder) CustomConfiguration(customConfiguration bool) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.CustomConfiguration = &customConfiguration
+	return builder
+}
+
+func (builder *hostNicBuilder) Description(description string) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Description = &description
+	return builder
+}
+
+func (builder *hostNicBuilder) Host(host *Host) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Host = host
+	return builder
+}
+
+func (builder *hostNicBuilder) Id(id string) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Id = &id
+	return builder
+}
+
+func (builder *hostNicBuilder) Ip(ip *Ip) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Ip = ip
+	return builder
+}
+
+func (builder *hostNicBuilder) Ipv6(ipv6 *Ip) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Ipv6 = ipv6
+	return builder
+}
+
+func (builder *hostNicBuilder) Ipv6BootProtocol(ipv6BootProtocol BootProtocol) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Ipv6BootProtocol = ipv6BootProtocol
+	return builder
+}
+
+func (builder *hostNicBuilder) Mac(mac *Mac) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Mac = mac
+	return builder
+}
+
+func (builder *hostNicBuilder) Mtu(mtu int64) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Mtu = &mtu
+	return builder
+}
+
+func (builder *hostNicBuilder) Name(name string) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Name = &name
+	return builder
+}
+
+func (builder *hostNicBuilder) Network(network *Network) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Network = network
+	return builder
+}
+
+func (builder *hostNicBuilder) NetworkLabels(networkLabels []NetworkLabel) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.NetworkLabels = networkLabels
+	return builder
+}
+
+func (builder *hostNicBuilder) OverrideConfiguration(overrideConfiguration bool) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.OverrideConfiguration = &overrideConfiguration
+	return builder
+}
+
+func (builder *hostNicBuilder) PhysicalFunction(physicalFunction *HostNic) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.PhysicalFunction = physicalFunction
+	return builder
+}
+
+func (builder *hostNicBuilder) Properties(properties []Property) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Properties = properties
+	return builder
+}
+
+func (builder *hostNicBuilder) Qos(qos *Qos) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Qos = qos
+	return builder
+}
+
+func (builder *hostNicBuilder) Speed(speed int64) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Speed = &speed
+	return builder
+}
+
+func (builder *hostNicBuilder) Statistics(statistics []Statistic) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Statistics = statistics
+	return builder
+}
+
+func (builder *hostNicBuilder) Status(status NicStatus) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Status = status
+	return builder
+}
+
+func (builder *hostNicBuilder) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.VirtualFunctionsConfiguration = virtualFunctionsConfiguration
+	return builder
+}
+
+func (builder *hostNicBuilder) Vlan(vlan *Vlan) *hostNicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostNic.Vlan = vlan
+	return builder
+}
+
+func (builder *hostNicBuilder) Build() (*HostNic, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.hostNic, nil
 }
 
 type hostNicVirtualFunctionsConfigurationBuilder struct {
@@ -5341,6 +11697,211 @@ func (builder *hostNicVirtualFunctionsConfigurationBuilder) Build() (*HostNicVir
 		return nil, builder.err
 	}
 	return builder.hostNicVirtualFunctionsConfiguration, nil
+}
+
+type hostStorageBuilder struct {
+	hostStorage *HostStorage
+	err         error
+}
+
+func NewHostStorageBuilder() *hostStorageBuilder {
+	return &hostStorageBuilder{hostStorage: &HostStorage{}, err: nil}
+}
+
+func (builder *hostStorageBuilder) Address(address string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Address = &address
+	return builder
+}
+
+func (builder *hostStorageBuilder) Comment(comment string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Comment = &comment
+	return builder
+}
+
+func (builder *hostStorageBuilder) Description(description string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Description = &description
+	return builder
+}
+
+func (builder *hostStorageBuilder) Host(host *Host) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Host = host
+	return builder
+}
+
+func (builder *hostStorageBuilder) Id(id string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Id = &id
+	return builder
+}
+
+func (builder *hostStorageBuilder) LogicalUnits(logicalUnits []LogicalUnit) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.LogicalUnits = logicalUnits
+	return builder
+}
+
+func (builder *hostStorageBuilder) MountOptions(mountOptions string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.MountOptions = &mountOptions
+	return builder
+}
+
+func (builder *hostStorageBuilder) Name(name string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Name = &name
+	return builder
+}
+
+func (builder *hostStorageBuilder) NfsRetrans(nfsRetrans int64) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.NfsRetrans = &nfsRetrans
+	return builder
+}
+
+func (builder *hostStorageBuilder) NfsTimeo(nfsTimeo int64) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.NfsTimeo = &nfsTimeo
+	return builder
+}
+
+func (builder *hostStorageBuilder) NfsVersion(nfsVersion NfsVersion) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.NfsVersion = nfsVersion
+	return builder
+}
+
+func (builder *hostStorageBuilder) OverrideLuns(overrideLuns bool) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.OverrideLuns = &overrideLuns
+	return builder
+}
+
+func (builder *hostStorageBuilder) Password(password string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Password = &password
+	return builder
+}
+
+func (builder *hostStorageBuilder) Path(path string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Path = &path
+	return builder
+}
+
+func (builder *hostStorageBuilder) Port(port int64) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Port = &port
+	return builder
+}
+
+func (builder *hostStorageBuilder) Portal(portal string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Portal = &portal
+	return builder
+}
+
+func (builder *hostStorageBuilder) Target(target string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Target = &target
+	return builder
+}
+
+func (builder *hostStorageBuilder) Type(type_ StorageType) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Type = type_
+	return builder
+}
+
+func (builder *hostStorageBuilder) Username(username string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.Username = &username
+	return builder
+}
+
+func (builder *hostStorageBuilder) VfsType(vfsType string) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.VfsType = &vfsType
+	return builder
+}
+
+func (builder *hostStorageBuilder) VolumeGroup(volumeGroup *VolumeGroup) *hostStorageBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.hostStorage.VolumeGroup = volumeGroup
+	return builder
+}
+
+func (builder *hostStorageBuilder) Build() (*HostStorage, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.hostStorage, nil
 }
 
 type hostedEngineBuilder struct {
@@ -5402,6 +11963,76 @@ func (builder *hostedEngineBuilder) Build() (*HostedEngine, error) {
 		return nil, builder.err
 	}
 	return builder.hostedEngine, nil
+}
+
+type iconBuilder struct {
+	icon *Icon
+	err  error
+}
+
+func NewIconBuilder() *iconBuilder {
+	return &iconBuilder{icon: &Icon{}, err: nil}
+}
+
+func (builder *iconBuilder) Comment(comment string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.Comment = &comment
+	return builder
+}
+
+func (builder *iconBuilder) Data(data string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.Data = &data
+	return builder
+}
+
+func (builder *iconBuilder) Description(description string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.Description = &description
+	return builder
+}
+
+func (builder *iconBuilder) Id(id string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.Id = &id
+	return builder
+}
+
+func (builder *iconBuilder) MediaType(mediaType string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.MediaType = &mediaType
+	return builder
+}
+
+func (builder *iconBuilder) Name(name string) *iconBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.icon.Name = &name
+	return builder
+}
+
+func (builder *iconBuilder) Build() (*Icon, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.icon, nil
 }
 
 type identifiedBuilder struct {
@@ -5826,6 +12457,499 @@ func (builder *initializationBuilder) Build() (*Initialization, error) {
 		return nil, builder.err
 	}
 	return builder.initialization, nil
+}
+
+type instanceTypeBuilder struct {
+	instanceType *InstanceType
+	err          error
+}
+
+func NewInstanceTypeBuilder() *instanceTypeBuilder {
+	return &instanceTypeBuilder{instanceType: &InstanceType{}, err: nil}
+}
+
+func (builder *instanceTypeBuilder) Bios(bios *Bios) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Bios = bios
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Cdroms(cdroms []Cdrom) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Cdroms = cdroms
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Cluster(cluster *Cluster) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Cluster = cluster
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Comment(comment string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Comment = &comment
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Console(console *Console) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Console = console
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Cpu(cpu *Cpu) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Cpu = cpu
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CpuProfile(cpuProfile *CpuProfile) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CpuProfile = cpuProfile
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CpuShares(cpuShares int64) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CpuShares = &cpuShares
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CreationTime(creationTime time.Time) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CreationTime = creationTime
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CustomCompatibilityVersion = customCompatibilityVersion
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CustomCpuModel(customCpuModel string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CustomCpuModel = &customCpuModel
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CustomEmulatedMachine(customEmulatedMachine string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CustomEmulatedMachine = &customEmulatedMachine
+	return builder
+}
+
+func (builder *instanceTypeBuilder) CustomProperties(customProperties []CustomProperty) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.CustomProperties = customProperties
+	return builder
+}
+
+func (builder *instanceTypeBuilder) DeleteProtected(deleteProtected bool) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.DeleteProtected = &deleteProtected
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Description(description string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Description = &description
+	return builder
+}
+
+func (builder *instanceTypeBuilder) DiskAttachments(diskAttachments []DiskAttachment) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.DiskAttachments = diskAttachments
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Display(display *Display) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Display = display
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Domain(domain *Domain) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Domain = domain
+	return builder
+}
+
+func (builder *instanceTypeBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.GraphicsConsoles = graphicsConsoles
+	return builder
+}
+
+func (builder *instanceTypeBuilder) HighAvailability(highAvailability *HighAvailability) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.HighAvailability = highAvailability
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Id(id string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Id = &id
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Initialization(initialization *Initialization) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Initialization = initialization
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Io(io *Io) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Io = io
+	return builder
+}
+
+func (builder *instanceTypeBuilder) LargeIcon(largeIcon *Icon) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.LargeIcon = largeIcon
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Lease(lease *StorageDomainLease) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Lease = lease
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Memory(memory int64) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Memory = &memory
+	return builder
+}
+
+func (builder *instanceTypeBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.MemoryPolicy = memoryPolicy
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Migration(migration *MigrationOptions) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Migration = migration
+	return builder
+}
+
+func (builder *instanceTypeBuilder) MigrationDowntime(migrationDowntime int64) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.MigrationDowntime = &migrationDowntime
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Name(name string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Name = &name
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Nics(nics []Nic) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Nics = nics
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Origin(origin string) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Origin = &origin
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Os(os *OperatingSystem) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Os = os
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Permissions(permissions []Permission) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Permissions = permissions
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Quota(quota *Quota) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Quota = quota
+	return builder
+}
+
+func (builder *instanceTypeBuilder) RngDevice(rngDevice *RngDevice) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.RngDevice = rngDevice
+	return builder
+}
+
+func (builder *instanceTypeBuilder) SerialNumber(serialNumber *SerialNumber) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.SerialNumber = serialNumber
+	return builder
+}
+
+func (builder *instanceTypeBuilder) SmallIcon(smallIcon *Icon) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.SmallIcon = smallIcon
+	return builder
+}
+
+func (builder *instanceTypeBuilder) SoundcardEnabled(soundcardEnabled bool) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.SoundcardEnabled = &soundcardEnabled
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Sso(sso *Sso) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Sso = sso
+	return builder
+}
+
+func (builder *instanceTypeBuilder) StartPaused(startPaused bool) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.StartPaused = &startPaused
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Stateless(stateless bool) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Stateless = &stateless
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Status(status TemplateStatus) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Status = status
+	return builder
+}
+
+func (builder *instanceTypeBuilder) StorageDomain(storageDomain *StorageDomain) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Tags(tags []Tag) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Tags = tags
+	return builder
+}
+
+func (builder *instanceTypeBuilder) TimeZone(timeZone *TimeZone) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.TimeZone = timeZone
+	return builder
+}
+
+func (builder *instanceTypeBuilder) TunnelMigration(tunnelMigration bool) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.TunnelMigration = &tunnelMigration
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Type(type_ VmType) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Type = type_
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Usb(usb *Usb) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Usb = usb
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Version(version *TemplateVersion) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Version = version
+	return builder
+}
+
+func (builder *instanceTypeBuilder) VirtioScsi(virtioScsi *VirtioScsi) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.VirtioScsi = virtioScsi
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Vm(vm *Vm) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Vm = vm
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Watchdogs(watchdogs []Watchdog) *instanceTypeBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.instanceType.Watchdogs = watchdogs
+	return builder
+}
+
+func (builder *instanceTypeBuilder) Build() (*InstanceType, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.instanceType, nil
 }
 
 type ioBuilder struct {
@@ -7632,6 +14756,229 @@ func (builder *nfsProfileDetailBuilder) Build() (*NfsProfileDetail, error) {
 	return builder.nfsProfileDetail, nil
 }
 
+type nicBuilder struct {
+	nic *Nic
+	err error
+}
+
+func NewNicBuilder() *nicBuilder {
+	return &nicBuilder{nic: &Nic{}, err: nil}
+}
+
+func (builder *nicBuilder) BootProtocol(bootProtocol BootProtocol) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.BootProtocol = bootProtocol
+	return builder
+}
+
+func (builder *nicBuilder) Comment(comment string) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Comment = &comment
+	return builder
+}
+
+func (builder *nicBuilder) Description(description string) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Description = &description
+	return builder
+}
+
+func (builder *nicBuilder) Id(id string) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Id = &id
+	return builder
+}
+
+func (builder *nicBuilder) InstanceType(instanceType *InstanceType) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.InstanceType = instanceType
+	return builder
+}
+
+func (builder *nicBuilder) Interface(interface_ NicInterface) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Interface = interface_
+	return builder
+}
+
+func (builder *nicBuilder) Linked(linked bool) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Linked = &linked
+	return builder
+}
+
+func (builder *nicBuilder) Mac(mac *Mac) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Mac = mac
+	return builder
+}
+
+func (builder *nicBuilder) Name(name string) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Name = &name
+	return builder
+}
+
+func (builder *nicBuilder) Network(network *Network) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Network = network
+	return builder
+}
+
+func (builder *nicBuilder) NetworkAttachments(networkAttachments []NetworkAttachment) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.NetworkAttachments = networkAttachments
+	return builder
+}
+
+func (builder *nicBuilder) NetworkFilterParameters(networkFilterParameters []NetworkFilterParameter) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.NetworkFilterParameters = networkFilterParameters
+	return builder
+}
+
+func (builder *nicBuilder) NetworkLabels(networkLabels []NetworkLabel) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.NetworkLabels = networkLabels
+	return builder
+}
+
+func (builder *nicBuilder) OnBoot(onBoot bool) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.OnBoot = &onBoot
+	return builder
+}
+
+func (builder *nicBuilder) Plugged(plugged bool) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Plugged = &plugged
+	return builder
+}
+
+func (builder *nicBuilder) ReportedDevices(reportedDevices []ReportedDevice) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.ReportedDevices = reportedDevices
+	return builder
+}
+
+func (builder *nicBuilder) Statistics(statistics []Statistic) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Statistics = statistics
+	return builder
+}
+
+func (builder *nicBuilder) Template(template *Template) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Template = template
+	return builder
+}
+
+func (builder *nicBuilder) VirtualFunctionAllowedLabels(virtualFunctionAllowedLabels []NetworkLabel) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.VirtualFunctionAllowedLabels = virtualFunctionAllowedLabels
+	return builder
+}
+
+func (builder *nicBuilder) VirtualFunctionAllowedNetworks(virtualFunctionAllowedNetworks []Network) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.VirtualFunctionAllowedNetworks = virtualFunctionAllowedNetworks
+	return builder
+}
+
+func (builder *nicBuilder) Vm(vm *Vm) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Vm = vm
+	return builder
+}
+
+func (builder *nicBuilder) Vms(vms []Vm) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.Vms = vms
+	return builder
+}
+
+func (builder *nicBuilder) VnicProfile(vnicProfile *VnicProfile) *nicBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.nic.VnicProfile = vnicProfile
+	return builder
+}
+
+func (builder *nicBuilder) Build() (*Nic, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.nic, nil
+}
+
 type nicConfigurationBuilder struct {
 	nicConfiguration *NicConfiguration
 	err              error
@@ -7912,6 +15259,139 @@ func (builder *openStackImageBuilder) Build() (*OpenStackImage, error) {
 	return builder.openStackImage, nil
 }
 
+type openStackImageProviderBuilder struct {
+	openStackImageProvider *OpenStackImageProvider
+	err                    error
+}
+
+func NewOpenStackImageProviderBuilder() *openStackImageProviderBuilder {
+	return &openStackImageProviderBuilder{openStackImageProvider: &OpenStackImageProvider{}, err: nil}
+}
+
+func (builder *openStackImageProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Certificates(certificates []Certificate) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Certificates = certificates
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Comment(comment string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Comment = &comment
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Description(description string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Description = &description
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Id(id string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Id = &id
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Images(images []OpenStackImage) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Images = images
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Name(name string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Name = &name
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Password(password string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Password = &password
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Properties(properties []Property) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Properties = properties
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) TenantName(tenantName string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.TenantName = &tenantName
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Url(url string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Url = &url
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Username(username string) *openStackImageProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackImageProvider.Username = &username
+	return builder
+}
+
+func (builder *openStackImageProviderBuilder) Build() (*OpenStackImageProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.openStackImageProvider, nil
+}
+
 type openStackNetworkBuilder struct {
 	openStackNetwork *OpenStackNetwork
 	err              error
@@ -7971,6 +15451,299 @@ func (builder *openStackNetworkBuilder) Build() (*OpenStackNetwork, error) {
 		return nil, builder.err
 	}
 	return builder.openStackNetwork, nil
+}
+
+type openStackNetworkProviderBuilder struct {
+	openStackNetworkProvider *OpenStackNetworkProvider
+	err                      error
+}
+
+func NewOpenStackNetworkProviderBuilder() *openStackNetworkProviderBuilder {
+	return &openStackNetworkProviderBuilder{openStackNetworkProvider: &OpenStackNetworkProvider{}, err: nil}
+}
+
+func (builder *openStackNetworkProviderBuilder) AgentConfiguration(agentConfiguration *AgentConfiguration) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.AgentConfiguration = agentConfiguration
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Certificates(certificates []Certificate) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Certificates = certificates
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Comment(comment string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Comment = &comment
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Description(description string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Description = &description
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Id(id string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Id = &id
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Name(name string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Name = &name
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Networks(networks []OpenStackNetwork) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Networks = networks
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Password(password string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Password = &password
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) PluginType(pluginType NetworkPluginType) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.PluginType = pluginType
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Properties(properties []Property) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Properties = properties
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) ReadOnly(readOnly bool) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.ReadOnly = &readOnly
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Subnets(subnets []OpenStackSubnet) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Subnets = subnets
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) TenantName(tenantName string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.TenantName = &tenantName
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Type(type_ OpenStackNetworkProviderType) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Type = type_
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Url(url string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Url = &url
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Username(username string) *openStackNetworkProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackNetworkProvider.Username = &username
+	return builder
+}
+
+func (builder *openStackNetworkProviderBuilder) Build() (*OpenStackNetworkProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.openStackNetworkProvider, nil
+}
+
+type openStackProviderBuilder struct {
+	openStackProvider *OpenStackProvider
+	err               error
+}
+
+func NewOpenStackProviderBuilder() *openStackProviderBuilder {
+	return &openStackProviderBuilder{openStackProvider: &OpenStackProvider{}, err: nil}
+}
+
+func (builder *openStackProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Comment(comment string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Comment = &comment
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Description(description string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Description = &description
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Id(id string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Id = &id
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Name(name string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Name = &name
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Password(password string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Password = &password
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Properties(properties []Property) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Properties = properties
+	return builder
+}
+
+func (builder *openStackProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *openStackProviderBuilder) TenantName(tenantName string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.TenantName = &tenantName
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Url(url string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Url = &url
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Username(username string) *openStackProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackProvider.Username = &username
+	return builder
+}
+
+func (builder *openStackProviderBuilder) Build() (*OpenStackProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.openStackProvider, nil
 }
 
 type openStackSubnetBuilder struct {
@@ -8068,6 +15841,157 @@ func (builder *openStackSubnetBuilder) Build() (*OpenStackSubnet, error) {
 		return nil, builder.err
 	}
 	return builder.openStackSubnet, nil
+}
+
+type openStackVolumeProviderBuilder struct {
+	openStackVolumeProvider *OpenStackVolumeProvider
+	err                     error
+}
+
+func NewOpenStackVolumeProviderBuilder() *openStackVolumeProviderBuilder {
+	return &openStackVolumeProviderBuilder{openStackVolumeProvider: &OpenStackVolumeProvider{}, err: nil}
+}
+
+func (builder *openStackVolumeProviderBuilder) AuthenticationKeys(authenticationKeys []OpenstackVolumeAuthenticationKey) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.AuthenticationKeys = authenticationKeys
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.AuthenticationUrl = &authenticationUrl
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Certificates(certificates []Certificate) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Certificates = certificates
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Comment(comment string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Comment = &comment
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) DataCenter(dataCenter *DataCenter) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.DataCenter = dataCenter
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Description(description string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Description = &description
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Id(id string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Id = &id
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Name(name string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Name = &name
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Password(password string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Password = &password
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Properties(properties []Property) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Properties = properties
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.RequiresAuthentication = &requiresAuthentication
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) TenantName(tenantName string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.TenantName = &tenantName
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Url(url string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Url = &url
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Username(username string) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.Username = &username
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) VolumeTypes(volumeTypes []OpenStackVolumeType) *openStackVolumeProviderBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.openStackVolumeProvider.VolumeTypes = volumeTypes
+	return builder
+}
+
+func (builder *openStackVolumeProviderBuilder) Build() (*OpenStackVolumeProvider, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.openStackVolumeProvider, nil
 }
 
 type openStackVolumeTypeBuilder struct {
@@ -10396,6 +18320,787 @@ func (builder *skipIfSdActiveBuilder) Build() (*SkipIfSdActive, error) {
 	return builder.skipIfSdActive, nil
 }
 
+type snapshotBuilder struct {
+	snapshot *Snapshot
+	err      error
+}
+
+func NewSnapshotBuilder() *snapshotBuilder {
+	return &snapshotBuilder{snapshot: &Snapshot{}, err: nil}
+}
+
+func (builder *snapshotBuilder) AffinityLabels(affinityLabels []AffinityLabel) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.AffinityLabels = affinityLabels
+	return builder
+}
+
+func (builder *snapshotBuilder) Applications(applications []Application) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Applications = applications
+	return builder
+}
+
+func (builder *snapshotBuilder) Bios(bios *Bios) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Bios = bios
+	return builder
+}
+
+func (builder *snapshotBuilder) Cdroms(cdroms []Cdrom) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Cdroms = cdroms
+	return builder
+}
+
+func (builder *snapshotBuilder) Cluster(cluster *Cluster) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Cluster = cluster
+	return builder
+}
+
+func (builder *snapshotBuilder) Comment(comment string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Comment = &comment
+	return builder
+}
+
+func (builder *snapshotBuilder) Console(console *Console) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Console = console
+	return builder
+}
+
+func (builder *snapshotBuilder) Cpu(cpu *Cpu) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Cpu = cpu
+	return builder
+}
+
+func (builder *snapshotBuilder) CpuProfile(cpuProfile *CpuProfile) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CpuProfile = cpuProfile
+	return builder
+}
+
+func (builder *snapshotBuilder) CpuShares(cpuShares int64) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CpuShares = &cpuShares
+	return builder
+}
+
+func (builder *snapshotBuilder) CreationTime(creationTime time.Time) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CreationTime = creationTime
+	return builder
+}
+
+func (builder *snapshotBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CustomCompatibilityVersion = customCompatibilityVersion
+	return builder
+}
+
+func (builder *snapshotBuilder) CustomCpuModel(customCpuModel string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CustomCpuModel = &customCpuModel
+	return builder
+}
+
+func (builder *snapshotBuilder) CustomEmulatedMachine(customEmulatedMachine string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CustomEmulatedMachine = &customEmulatedMachine
+	return builder
+}
+
+func (builder *snapshotBuilder) CustomProperties(customProperties []CustomProperty) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.CustomProperties = customProperties
+	return builder
+}
+
+func (builder *snapshotBuilder) Date(date time.Time) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Date = date
+	return builder
+}
+
+func (builder *snapshotBuilder) DeleteProtected(deleteProtected bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.DeleteProtected = &deleteProtected
+	return builder
+}
+
+func (builder *snapshotBuilder) Description(description string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Description = &description
+	return builder
+}
+
+func (builder *snapshotBuilder) DiskAttachments(diskAttachments []DiskAttachment) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.DiskAttachments = diskAttachments
+	return builder
+}
+
+func (builder *snapshotBuilder) Display(display *Display) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Display = display
+	return builder
+}
+
+func (builder *snapshotBuilder) Domain(domain *Domain) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Domain = domain
+	return builder
+}
+
+func (builder *snapshotBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *snapshotBuilder) Floppies(floppies []Floppy) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Floppies = floppies
+	return builder
+}
+
+func (builder *snapshotBuilder) Fqdn(fqdn string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Fqdn = &fqdn
+	return builder
+}
+
+func (builder *snapshotBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.GraphicsConsoles = graphicsConsoles
+	return builder
+}
+
+func (builder *snapshotBuilder) GuestOperatingSystem(guestOperatingSystem *GuestOperatingSystem) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.GuestOperatingSystem = guestOperatingSystem
+	return builder
+}
+
+func (builder *snapshotBuilder) GuestTimeZone(guestTimeZone *TimeZone) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.GuestTimeZone = guestTimeZone
+	return builder
+}
+
+func (builder *snapshotBuilder) HighAvailability(highAvailability *HighAvailability) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.HighAvailability = highAvailability
+	return builder
+}
+
+func (builder *snapshotBuilder) Host(host *Host) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Host = host
+	return builder
+}
+
+func (builder *snapshotBuilder) HostDevices(hostDevices []HostDevice) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.HostDevices = hostDevices
+	return builder
+}
+
+func (builder *snapshotBuilder) Id(id string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Id = &id
+	return builder
+}
+
+func (builder *snapshotBuilder) Initialization(initialization *Initialization) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Initialization = initialization
+	return builder
+}
+
+func (builder *snapshotBuilder) InstanceType(instanceType *InstanceType) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.InstanceType = instanceType
+	return builder
+}
+
+func (builder *snapshotBuilder) Io(io *Io) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Io = io
+	return builder
+}
+
+func (builder *snapshotBuilder) KatelloErrata(katelloErrata []KatelloErratum) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.KatelloErrata = katelloErrata
+	return builder
+}
+
+func (builder *snapshotBuilder) LargeIcon(largeIcon *Icon) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.LargeIcon = largeIcon
+	return builder
+}
+
+func (builder *snapshotBuilder) Lease(lease *StorageDomainLease) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Lease = lease
+	return builder
+}
+
+func (builder *snapshotBuilder) Memory(memory int64) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Memory = &memory
+	return builder
+}
+
+func (builder *snapshotBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.MemoryPolicy = memoryPolicy
+	return builder
+}
+
+func (builder *snapshotBuilder) Migration(migration *MigrationOptions) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Migration = migration
+	return builder
+}
+
+func (builder *snapshotBuilder) MigrationDowntime(migrationDowntime int64) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.MigrationDowntime = &migrationDowntime
+	return builder
+}
+
+func (builder *snapshotBuilder) Name(name string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Name = &name
+	return builder
+}
+
+func (builder *snapshotBuilder) NextRunConfigurationExists(nextRunConfigurationExists bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.NextRunConfigurationExists = &nextRunConfigurationExists
+	return builder
+}
+
+func (builder *snapshotBuilder) Nics(nics []Nic) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Nics = nics
+	return builder
+}
+
+func (builder *snapshotBuilder) NumaNodes(numaNodes []NumaNode) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.NumaNodes = numaNodes
+	return builder
+}
+
+func (builder *snapshotBuilder) NumaTuneMode(numaTuneMode NumaTuneMode) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.NumaTuneMode = numaTuneMode
+	return builder
+}
+
+func (builder *snapshotBuilder) Origin(origin string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Origin = &origin
+	return builder
+}
+
+func (builder *snapshotBuilder) OriginalTemplate(originalTemplate *Template) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.OriginalTemplate = originalTemplate
+	return builder
+}
+
+func (builder *snapshotBuilder) Os(os *OperatingSystem) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Os = os
+	return builder
+}
+
+func (builder *snapshotBuilder) Payloads(payloads []Payload) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Payloads = payloads
+	return builder
+}
+
+func (builder *snapshotBuilder) Permissions(permissions []Permission) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Permissions = permissions
+	return builder
+}
+
+func (builder *snapshotBuilder) PersistMemorystate(persistMemorystate bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.PersistMemorystate = &persistMemorystate
+	return builder
+}
+
+func (builder *snapshotBuilder) PlacementPolicy(placementPolicy *VmPlacementPolicy) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.PlacementPolicy = placementPolicy
+	return builder
+}
+
+func (builder *snapshotBuilder) Quota(quota *Quota) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Quota = quota
+	return builder
+}
+
+func (builder *snapshotBuilder) ReportedDevices(reportedDevices []ReportedDevice) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.ReportedDevices = reportedDevices
+	return builder
+}
+
+func (builder *snapshotBuilder) RngDevice(rngDevice *RngDevice) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.RngDevice = rngDevice
+	return builder
+}
+
+func (builder *snapshotBuilder) RunOnce(runOnce bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.RunOnce = &runOnce
+	return builder
+}
+
+func (builder *snapshotBuilder) SerialNumber(serialNumber *SerialNumber) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.SerialNumber = serialNumber
+	return builder
+}
+
+func (builder *snapshotBuilder) Sessions(sessions []Session) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Sessions = sessions
+	return builder
+}
+
+func (builder *snapshotBuilder) SmallIcon(smallIcon *Icon) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.SmallIcon = smallIcon
+	return builder
+}
+
+func (builder *snapshotBuilder) SnapshotStatus(snapshotStatus SnapshotStatus) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.SnapshotStatus = snapshotStatus
+	return builder
+}
+
+func (builder *snapshotBuilder) SnapshotType(snapshotType SnapshotType) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.SnapshotType = snapshotType
+	return builder
+}
+
+func (builder *snapshotBuilder) Snapshots(snapshots []Snapshot) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Snapshots = snapshots
+	return builder
+}
+
+func (builder *snapshotBuilder) SoundcardEnabled(soundcardEnabled bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.SoundcardEnabled = &soundcardEnabled
+	return builder
+}
+
+func (builder *snapshotBuilder) Sso(sso *Sso) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Sso = sso
+	return builder
+}
+
+func (builder *snapshotBuilder) StartPaused(startPaused bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StartPaused = &startPaused
+	return builder
+}
+
+func (builder *snapshotBuilder) StartTime(startTime time.Time) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StartTime = startTime
+	return builder
+}
+
+func (builder *snapshotBuilder) Stateless(stateless bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Stateless = &stateless
+	return builder
+}
+
+func (builder *snapshotBuilder) Statistics(statistics []Statistic) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Statistics = statistics
+	return builder
+}
+
+func (builder *snapshotBuilder) Status(status VmStatus) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Status = status
+	return builder
+}
+
+func (builder *snapshotBuilder) StatusDetail(statusDetail string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StatusDetail = &statusDetail
+	return builder
+}
+
+func (builder *snapshotBuilder) StopReason(stopReason string) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StopReason = &stopReason
+	return builder
+}
+
+func (builder *snapshotBuilder) StopTime(stopTime time.Time) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StopTime = stopTime
+	return builder
+}
+
+func (builder *snapshotBuilder) StorageDomain(storageDomain *StorageDomain) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *snapshotBuilder) Tags(tags []Tag) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Tags = tags
+	return builder
+}
+
+func (builder *snapshotBuilder) Template(template *Template) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Template = template
+	return builder
+}
+
+func (builder *snapshotBuilder) TimeZone(timeZone *TimeZone) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.TimeZone = timeZone
+	return builder
+}
+
+func (builder *snapshotBuilder) TunnelMigration(tunnelMigration bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.TunnelMigration = &tunnelMigration
+	return builder
+}
+
+func (builder *snapshotBuilder) Type(type_ VmType) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Type = type_
+	return builder
+}
+
+func (builder *snapshotBuilder) Usb(usb *Usb) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Usb = usb
+	return builder
+}
+
+func (builder *snapshotBuilder) UseLatestTemplateVersion(useLatestTemplateVersion bool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.UseLatestTemplateVersion = &useLatestTemplateVersion
+	return builder
+}
+
+func (builder *snapshotBuilder) VirtioScsi(virtioScsi *VirtioScsi) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.VirtioScsi = virtioScsi
+	return builder
+}
+
+func (builder *snapshotBuilder) Vm(vm *Vm) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Vm = vm
+	return builder
+}
+
+func (builder *snapshotBuilder) VmPool(vmPool *VmPool) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.VmPool = vmPool
+	return builder
+}
+
+func (builder *snapshotBuilder) Watchdogs(watchdogs []Watchdog) *snapshotBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.snapshot.Watchdogs = watchdogs
+	return builder
+}
+
+func (builder *snapshotBuilder) Build() (*Snapshot, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.snapshot, nil
+}
+
 type specialObjectsBuilder struct {
 	specialObjects *SpecialObjects
 	err            error
@@ -11677,6 +20382,499 @@ func (builder *tagBuilder) Build() (*Tag, error) {
 	return builder.tag, nil
 }
 
+type templateBuilder struct {
+	template *Template
+	err      error
+}
+
+func NewTemplateBuilder() *templateBuilder {
+	return &templateBuilder{template: &Template{}, err: nil}
+}
+
+func (builder *templateBuilder) Bios(bios *Bios) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Bios = bios
+	return builder
+}
+
+func (builder *templateBuilder) Cdroms(cdroms []Cdrom) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Cdroms = cdroms
+	return builder
+}
+
+func (builder *templateBuilder) Cluster(cluster *Cluster) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Cluster = cluster
+	return builder
+}
+
+func (builder *templateBuilder) Comment(comment string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Comment = &comment
+	return builder
+}
+
+func (builder *templateBuilder) Console(console *Console) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Console = console
+	return builder
+}
+
+func (builder *templateBuilder) Cpu(cpu *Cpu) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Cpu = cpu
+	return builder
+}
+
+func (builder *templateBuilder) CpuProfile(cpuProfile *CpuProfile) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CpuProfile = cpuProfile
+	return builder
+}
+
+func (builder *templateBuilder) CpuShares(cpuShares int64) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CpuShares = &cpuShares
+	return builder
+}
+
+func (builder *templateBuilder) CreationTime(creationTime time.Time) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CreationTime = creationTime
+	return builder
+}
+
+func (builder *templateBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CustomCompatibilityVersion = customCompatibilityVersion
+	return builder
+}
+
+func (builder *templateBuilder) CustomCpuModel(customCpuModel string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CustomCpuModel = &customCpuModel
+	return builder
+}
+
+func (builder *templateBuilder) CustomEmulatedMachine(customEmulatedMachine string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CustomEmulatedMachine = &customEmulatedMachine
+	return builder
+}
+
+func (builder *templateBuilder) CustomProperties(customProperties []CustomProperty) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.CustomProperties = customProperties
+	return builder
+}
+
+func (builder *templateBuilder) DeleteProtected(deleteProtected bool) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.DeleteProtected = &deleteProtected
+	return builder
+}
+
+func (builder *templateBuilder) Description(description string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Description = &description
+	return builder
+}
+
+func (builder *templateBuilder) DiskAttachments(diskAttachments []DiskAttachment) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.DiskAttachments = diskAttachments
+	return builder
+}
+
+func (builder *templateBuilder) Display(display *Display) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Display = display
+	return builder
+}
+
+func (builder *templateBuilder) Domain(domain *Domain) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Domain = domain
+	return builder
+}
+
+func (builder *templateBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.GraphicsConsoles = graphicsConsoles
+	return builder
+}
+
+func (builder *templateBuilder) HighAvailability(highAvailability *HighAvailability) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.HighAvailability = highAvailability
+	return builder
+}
+
+func (builder *templateBuilder) Id(id string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Id = &id
+	return builder
+}
+
+func (builder *templateBuilder) Initialization(initialization *Initialization) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Initialization = initialization
+	return builder
+}
+
+func (builder *templateBuilder) Io(io *Io) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Io = io
+	return builder
+}
+
+func (builder *templateBuilder) LargeIcon(largeIcon *Icon) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.LargeIcon = largeIcon
+	return builder
+}
+
+func (builder *templateBuilder) Lease(lease *StorageDomainLease) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Lease = lease
+	return builder
+}
+
+func (builder *templateBuilder) Memory(memory int64) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Memory = &memory
+	return builder
+}
+
+func (builder *templateBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.MemoryPolicy = memoryPolicy
+	return builder
+}
+
+func (builder *templateBuilder) Migration(migration *MigrationOptions) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Migration = migration
+	return builder
+}
+
+func (builder *templateBuilder) MigrationDowntime(migrationDowntime int64) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.MigrationDowntime = &migrationDowntime
+	return builder
+}
+
+func (builder *templateBuilder) Name(name string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Name = &name
+	return builder
+}
+
+func (builder *templateBuilder) Nics(nics []Nic) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Nics = nics
+	return builder
+}
+
+func (builder *templateBuilder) Origin(origin string) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Origin = &origin
+	return builder
+}
+
+func (builder *templateBuilder) Os(os *OperatingSystem) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Os = os
+	return builder
+}
+
+func (builder *templateBuilder) Permissions(permissions []Permission) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Permissions = permissions
+	return builder
+}
+
+func (builder *templateBuilder) Quota(quota *Quota) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Quota = quota
+	return builder
+}
+
+func (builder *templateBuilder) RngDevice(rngDevice *RngDevice) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.RngDevice = rngDevice
+	return builder
+}
+
+func (builder *templateBuilder) SerialNumber(serialNumber *SerialNumber) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.SerialNumber = serialNumber
+	return builder
+}
+
+func (builder *templateBuilder) SmallIcon(smallIcon *Icon) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.SmallIcon = smallIcon
+	return builder
+}
+
+func (builder *templateBuilder) SoundcardEnabled(soundcardEnabled bool) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.SoundcardEnabled = &soundcardEnabled
+	return builder
+}
+
+func (builder *templateBuilder) Sso(sso *Sso) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Sso = sso
+	return builder
+}
+
+func (builder *templateBuilder) StartPaused(startPaused bool) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.StartPaused = &startPaused
+	return builder
+}
+
+func (builder *templateBuilder) Stateless(stateless bool) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Stateless = &stateless
+	return builder
+}
+
+func (builder *templateBuilder) Status(status TemplateStatus) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Status = status
+	return builder
+}
+
+func (builder *templateBuilder) StorageDomain(storageDomain *StorageDomain) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *templateBuilder) Tags(tags []Tag) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Tags = tags
+	return builder
+}
+
+func (builder *templateBuilder) TimeZone(timeZone *TimeZone) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.TimeZone = timeZone
+	return builder
+}
+
+func (builder *templateBuilder) TunnelMigration(tunnelMigration bool) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.TunnelMigration = &tunnelMigration
+	return builder
+}
+
+func (builder *templateBuilder) Type(type_ VmType) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Type = type_
+	return builder
+}
+
+func (builder *templateBuilder) Usb(usb *Usb) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Usb = usb
+	return builder
+}
+
+func (builder *templateBuilder) Version(version *TemplateVersion) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Version = version
+	return builder
+}
+
+func (builder *templateBuilder) VirtioScsi(virtioScsi *VirtioScsi) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.VirtioScsi = virtioScsi
+	return builder
+}
+
+func (builder *templateBuilder) Vm(vm *Vm) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Vm = vm
+	return builder
+}
+
+func (builder *templateBuilder) Watchdogs(watchdogs []Watchdog) *templateBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.template.Watchdogs = watchdogs
+	return builder
+}
+
+func (builder *templateBuilder) Build() (*Template, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.template, nil
+}
+
 type templateVersionBuilder struct {
 	templateVersion *TemplateVersion
 	err             error
@@ -12493,6 +21691,742 @@ func (builder *vlanBuilder) Build() (*Vlan, error) {
 		return nil, builder.err
 	}
 	return builder.vlan, nil
+}
+
+type vmBuilder struct {
+	vm  *Vm
+	err error
+}
+
+func NewVmBuilder() *vmBuilder {
+	return &vmBuilder{vm: &Vm{}, err: nil}
+}
+
+func (builder *vmBuilder) AffinityLabels(affinityLabels []AffinityLabel) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.AffinityLabels = affinityLabels
+	return builder
+}
+
+func (builder *vmBuilder) Applications(applications []Application) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Applications = applications
+	return builder
+}
+
+func (builder *vmBuilder) Bios(bios *Bios) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Bios = bios
+	return builder
+}
+
+func (builder *vmBuilder) Cdroms(cdroms []Cdrom) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Cdroms = cdroms
+	return builder
+}
+
+func (builder *vmBuilder) Cluster(cluster *Cluster) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Cluster = cluster
+	return builder
+}
+
+func (builder *vmBuilder) Comment(comment string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Comment = &comment
+	return builder
+}
+
+func (builder *vmBuilder) Console(console *Console) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Console = console
+	return builder
+}
+
+func (builder *vmBuilder) Cpu(cpu *Cpu) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Cpu = cpu
+	return builder
+}
+
+func (builder *vmBuilder) CpuProfile(cpuProfile *CpuProfile) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CpuProfile = cpuProfile
+	return builder
+}
+
+func (builder *vmBuilder) CpuShares(cpuShares int64) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CpuShares = &cpuShares
+	return builder
+}
+
+func (builder *vmBuilder) CreationTime(creationTime time.Time) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CreationTime = creationTime
+	return builder
+}
+
+func (builder *vmBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CustomCompatibilityVersion = customCompatibilityVersion
+	return builder
+}
+
+func (builder *vmBuilder) CustomCpuModel(customCpuModel string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CustomCpuModel = &customCpuModel
+	return builder
+}
+
+func (builder *vmBuilder) CustomEmulatedMachine(customEmulatedMachine string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CustomEmulatedMachine = &customEmulatedMachine
+	return builder
+}
+
+func (builder *vmBuilder) CustomProperties(customProperties []CustomProperty) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.CustomProperties = customProperties
+	return builder
+}
+
+func (builder *vmBuilder) DeleteProtected(deleteProtected bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.DeleteProtected = &deleteProtected
+	return builder
+}
+
+func (builder *vmBuilder) Description(description string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Description = &description
+	return builder
+}
+
+func (builder *vmBuilder) DiskAttachments(diskAttachments []DiskAttachment) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.DiskAttachments = diskAttachments
+	return builder
+}
+
+func (builder *vmBuilder) Display(display *Display) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Display = display
+	return builder
+}
+
+func (builder *vmBuilder) Domain(domain *Domain) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Domain = domain
+	return builder
+}
+
+func (builder *vmBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.ExternalHostProvider = externalHostProvider
+	return builder
+}
+
+func (builder *vmBuilder) Floppies(floppies []Floppy) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Floppies = floppies
+	return builder
+}
+
+func (builder *vmBuilder) Fqdn(fqdn string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Fqdn = &fqdn
+	return builder
+}
+
+func (builder *vmBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.GraphicsConsoles = graphicsConsoles
+	return builder
+}
+
+func (builder *vmBuilder) GuestOperatingSystem(guestOperatingSystem *GuestOperatingSystem) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.GuestOperatingSystem = guestOperatingSystem
+	return builder
+}
+
+func (builder *vmBuilder) GuestTimeZone(guestTimeZone *TimeZone) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.GuestTimeZone = guestTimeZone
+	return builder
+}
+
+func (builder *vmBuilder) HighAvailability(highAvailability *HighAvailability) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.HighAvailability = highAvailability
+	return builder
+}
+
+func (builder *vmBuilder) Host(host *Host) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Host = host
+	return builder
+}
+
+func (builder *vmBuilder) HostDevices(hostDevices []HostDevice) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.HostDevices = hostDevices
+	return builder
+}
+
+func (builder *vmBuilder) Id(id string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Id = &id
+	return builder
+}
+
+func (builder *vmBuilder) Initialization(initialization *Initialization) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Initialization = initialization
+	return builder
+}
+
+func (builder *vmBuilder) InstanceType(instanceType *InstanceType) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.InstanceType = instanceType
+	return builder
+}
+
+func (builder *vmBuilder) Io(io *Io) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Io = io
+	return builder
+}
+
+func (builder *vmBuilder) KatelloErrata(katelloErrata []KatelloErratum) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.KatelloErrata = katelloErrata
+	return builder
+}
+
+func (builder *vmBuilder) LargeIcon(largeIcon *Icon) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.LargeIcon = largeIcon
+	return builder
+}
+
+func (builder *vmBuilder) Lease(lease *StorageDomainLease) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Lease = lease
+	return builder
+}
+
+func (builder *vmBuilder) Memory(memory int64) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Memory = &memory
+	return builder
+}
+
+func (builder *vmBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.MemoryPolicy = memoryPolicy
+	return builder
+}
+
+func (builder *vmBuilder) Migration(migration *MigrationOptions) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Migration = migration
+	return builder
+}
+
+func (builder *vmBuilder) MigrationDowntime(migrationDowntime int64) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.MigrationDowntime = &migrationDowntime
+	return builder
+}
+
+func (builder *vmBuilder) Name(name string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Name = &name
+	return builder
+}
+
+func (builder *vmBuilder) NextRunConfigurationExists(nextRunConfigurationExists bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.NextRunConfigurationExists = &nextRunConfigurationExists
+	return builder
+}
+
+func (builder *vmBuilder) Nics(nics []Nic) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Nics = nics
+	return builder
+}
+
+func (builder *vmBuilder) NumaNodes(numaNodes []NumaNode) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.NumaNodes = numaNodes
+	return builder
+}
+
+func (builder *vmBuilder) NumaTuneMode(numaTuneMode NumaTuneMode) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.NumaTuneMode = numaTuneMode
+	return builder
+}
+
+func (builder *vmBuilder) Origin(origin string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Origin = &origin
+	return builder
+}
+
+func (builder *vmBuilder) OriginalTemplate(originalTemplate *Template) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.OriginalTemplate = originalTemplate
+	return builder
+}
+
+func (builder *vmBuilder) Os(os *OperatingSystem) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Os = os
+	return builder
+}
+
+func (builder *vmBuilder) Payloads(payloads []Payload) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Payloads = payloads
+	return builder
+}
+
+func (builder *vmBuilder) Permissions(permissions []Permission) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Permissions = permissions
+	return builder
+}
+
+func (builder *vmBuilder) PlacementPolicy(placementPolicy *VmPlacementPolicy) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.PlacementPolicy = placementPolicy
+	return builder
+}
+
+func (builder *vmBuilder) Quota(quota *Quota) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Quota = quota
+	return builder
+}
+
+func (builder *vmBuilder) ReportedDevices(reportedDevices []ReportedDevice) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.ReportedDevices = reportedDevices
+	return builder
+}
+
+func (builder *vmBuilder) RngDevice(rngDevice *RngDevice) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.RngDevice = rngDevice
+	return builder
+}
+
+func (builder *vmBuilder) RunOnce(runOnce bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.RunOnce = &runOnce
+	return builder
+}
+
+func (builder *vmBuilder) SerialNumber(serialNumber *SerialNumber) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.SerialNumber = serialNumber
+	return builder
+}
+
+func (builder *vmBuilder) Sessions(sessions []Session) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Sessions = sessions
+	return builder
+}
+
+func (builder *vmBuilder) SmallIcon(smallIcon *Icon) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.SmallIcon = smallIcon
+	return builder
+}
+
+func (builder *vmBuilder) Snapshots(snapshots []Snapshot) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Snapshots = snapshots
+	return builder
+}
+
+func (builder *vmBuilder) SoundcardEnabled(soundcardEnabled bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.SoundcardEnabled = &soundcardEnabled
+	return builder
+}
+
+func (builder *vmBuilder) Sso(sso *Sso) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Sso = sso
+	return builder
+}
+
+func (builder *vmBuilder) StartPaused(startPaused bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StartPaused = &startPaused
+	return builder
+}
+
+func (builder *vmBuilder) StartTime(startTime time.Time) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StartTime = startTime
+	return builder
+}
+
+func (builder *vmBuilder) Stateless(stateless bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Stateless = &stateless
+	return builder
+}
+
+func (builder *vmBuilder) Statistics(statistics []Statistic) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Statistics = statistics
+	return builder
+}
+
+func (builder *vmBuilder) Status(status VmStatus) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Status = status
+	return builder
+}
+
+func (builder *vmBuilder) StatusDetail(statusDetail string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StatusDetail = &statusDetail
+	return builder
+}
+
+func (builder *vmBuilder) StopReason(stopReason string) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StopReason = &stopReason
+	return builder
+}
+
+func (builder *vmBuilder) StopTime(stopTime time.Time) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StopTime = stopTime
+	return builder
+}
+
+func (builder *vmBuilder) StorageDomain(storageDomain *StorageDomain) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.StorageDomain = storageDomain
+	return builder
+}
+
+func (builder *vmBuilder) Tags(tags []Tag) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Tags = tags
+	return builder
+}
+
+func (builder *vmBuilder) Template(template *Template) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Template = template
+	return builder
+}
+
+func (builder *vmBuilder) TimeZone(timeZone *TimeZone) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.TimeZone = timeZone
+	return builder
+}
+
+func (builder *vmBuilder) TunnelMigration(tunnelMigration bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.TunnelMigration = &tunnelMigration
+	return builder
+}
+
+func (builder *vmBuilder) Type(type_ VmType) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Type = type_
+	return builder
+}
+
+func (builder *vmBuilder) Usb(usb *Usb) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Usb = usb
+	return builder
+}
+
+func (builder *vmBuilder) UseLatestTemplateVersion(useLatestTemplateVersion bool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.UseLatestTemplateVersion = &useLatestTemplateVersion
+	return builder
+}
+
+func (builder *vmBuilder) VirtioScsi(virtioScsi *VirtioScsi) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.VirtioScsi = virtioScsi
+	return builder
+}
+
+func (builder *vmBuilder) VmPool(vmPool *VmPool) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.VmPool = vmPool
+	return builder
+}
+
+func (builder *vmBuilder) Watchdogs(watchdogs []Watchdog) *vmBuilder {
+	if builder.err != nil {
+		return builder
+	}
+
+	builder.vm.Watchdogs = watchdogs
+	return builder
+}
+
+func (builder *vmBuilder) Build() (*Vm, error) {
+	if builder.err != nil {
+		return nil, builder.err
+	}
+	return builder.vm, nil
 }
 
 type vmBaseBuilder struct {
@@ -13397,7990 +23331,6 @@ func (builder *volumeGroupBuilder) Build() (*VolumeGroup, error) {
 	return builder.volumeGroup, nil
 }
 
-type weightBuilder struct {
-	weight *Weight
-	err    error
-}
-
-func NewWeightBuilder() *weightBuilder {
-	return &weightBuilder{weight: &Weight{}, err: nil}
-}
-
-func (builder *weightBuilder) Comment(comment string) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.Comment = &comment
-	return builder
-}
-
-func (builder *weightBuilder) Description(description string) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.Description = &description
-	return builder
-}
-
-func (builder *weightBuilder) Factor(factor int64) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.Factor = &factor
-	return builder
-}
-
-func (builder *weightBuilder) Id(id string) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.Id = &id
-	return builder
-}
-
-func (builder *weightBuilder) Name(name string) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.Name = &name
-	return builder
-}
-
-func (builder *weightBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.SchedulingPolicy = schedulingPolicy
-	return builder
-}
-
-func (builder *weightBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *weightBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.weight.SchedulingPolicyUnit = schedulingPolicyUnit
-	return builder
-}
-
-func (builder *weightBuilder) Build() (*Weight, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.weight, nil
-}
-
-type actionBuilder struct {
-	action *Action
-	err    error
-}
-
-func NewActionBuilder() *actionBuilder {
-	return &actionBuilder{action: &Action{}, err: nil}
-}
-
-func (builder *actionBuilder) AllowPartialImport(allowPartialImport bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.AllowPartialImport = &allowPartialImport
-	return builder
-}
-
-func (builder *actionBuilder) Async(async bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Async = &async
-	return builder
-}
-
-func (builder *actionBuilder) Bricks(bricks []GlusterBrick) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Bricks = bricks
-	return builder
-}
-
-func (builder *actionBuilder) Certificates(certificates []Certificate) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Certificates = certificates
-	return builder
-}
-
-func (builder *actionBuilder) CheckConnectivity(checkConnectivity bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.CheckConnectivity = &checkConnectivity
-	return builder
-}
-
-func (builder *actionBuilder) Clone(clone bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Clone = &clone
-	return builder
-}
-
-func (builder *actionBuilder) Cluster(cluster *Cluster) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Cluster = cluster
-	return builder
-}
-
-func (builder *actionBuilder) CollapseSnapshots(collapseSnapshots bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.CollapseSnapshots = &collapseSnapshots
-	return builder
-}
-
-func (builder *actionBuilder) Comment(comment string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Comment = &comment
-	return builder
-}
-
-func (builder *actionBuilder) ConnectivityTimeout(connectivityTimeout int64) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ConnectivityTimeout = &connectivityTimeout
-	return builder
-}
-
-func (builder *actionBuilder) DataCenter(dataCenter *DataCenter) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.DataCenter = dataCenter
-	return builder
-}
-
-func (builder *actionBuilder) DeployHostedEngine(deployHostedEngine bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.DeployHostedEngine = &deployHostedEngine
-	return builder
-}
-
-func (builder *actionBuilder) Description(description string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Description = &description
-	return builder
-}
-
-func (builder *actionBuilder) Details(details *GlusterVolumeProfileDetails) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Details = details
-	return builder
-}
-
-func (builder *actionBuilder) DiscardSnapshots(discardSnapshots bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.DiscardSnapshots = &discardSnapshots
-	return builder
-}
-
-func (builder *actionBuilder) Disk(disk *Disk) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Disk = disk
-	return builder
-}
-
-func (builder *actionBuilder) Disks(disks []Disk) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Disks = disks
-	return builder
-}
-
-func (builder *actionBuilder) Exclusive(exclusive bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Exclusive = &exclusive
-	return builder
-}
-
-func (builder *actionBuilder) Fault(fault *Fault) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Fault = fault
-	return builder
-}
-
-func (builder *actionBuilder) FenceType(fenceType string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.FenceType = &fenceType
-	return builder
-}
-
-func (builder *actionBuilder) Filter(filter bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Filter = &filter
-	return builder
-}
-
-func (builder *actionBuilder) FixLayout(fixLayout bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.FixLayout = &fixLayout
-	return builder
-}
-
-func (builder *actionBuilder) Force(force bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Force = &force
-	return builder
-}
-
-func (builder *actionBuilder) GracePeriod(gracePeriod *GracePeriod) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.GracePeriod = gracePeriod
-	return builder
-}
-
-func (builder *actionBuilder) Host(host *Host) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Host = host
-	return builder
-}
-
-func (builder *actionBuilder) Id(id string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Id = &id
-	return builder
-}
-
-func (builder *actionBuilder) Image(image string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Image = &image
-	return builder
-}
-
-func (builder *actionBuilder) ImportAsTemplate(importAsTemplate bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ImportAsTemplate = &importAsTemplate
-	return builder
-}
-
-func (builder *actionBuilder) IsAttached(isAttached bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.IsAttached = &isAttached
-	return builder
-}
-
-func (builder *actionBuilder) Iscsi(iscsi *IscsiDetails) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Iscsi = iscsi
-	return builder
-}
-
-func (builder *actionBuilder) IscsiTargets(iscsiTargets []string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.IscsiTargets = iscsiTargets
-	return builder
-}
-
-func (builder *actionBuilder) Job(job *Job) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Job = job
-	return builder
-}
-
-func (builder *actionBuilder) LogicalUnits(logicalUnits []LogicalUnit) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.LogicalUnits = logicalUnits
-	return builder
-}
-
-func (builder *actionBuilder) MaintenanceEnabled(maintenanceEnabled bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.MaintenanceEnabled = &maintenanceEnabled
-	return builder
-}
-
-func (builder *actionBuilder) ModifiedBonds(modifiedBonds []HostNic) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ModifiedBonds = modifiedBonds
-	return builder
-}
-
-func (builder *actionBuilder) ModifiedLabels(modifiedLabels []NetworkLabel) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ModifiedLabels = modifiedLabels
-	return builder
-}
-
-func (builder *actionBuilder) ModifiedNetworkAttachments(modifiedNetworkAttachments []NetworkAttachment) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ModifiedNetworkAttachments = modifiedNetworkAttachments
-	return builder
-}
-
-func (builder *actionBuilder) Name(name string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Name = &name
-	return builder
-}
-
-func (builder *actionBuilder) Option(option *Option) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Option = option
-	return builder
-}
-
-func (builder *actionBuilder) Pause(pause bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Pause = &pause
-	return builder
-}
-
-func (builder *actionBuilder) PowerManagement(powerManagement *PowerManagement) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.PowerManagement = powerManagement
-	return builder
-}
-
-func (builder *actionBuilder) ProxyTicket(proxyTicket *ProxyTicket) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ProxyTicket = proxyTicket
-	return builder
-}
-
-func (builder *actionBuilder) Reason(reason string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Reason = &reason
-	return builder
-}
-
-func (builder *actionBuilder) ReassignBadMacs(reassignBadMacs bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ReassignBadMacs = &reassignBadMacs
-	return builder
-}
-
-func (builder *actionBuilder) RemoteViewerConnectionFile(remoteViewerConnectionFile string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RemoteViewerConnectionFile = &remoteViewerConnectionFile
-	return builder
-}
-
-func (builder *actionBuilder) RemovedBonds(removedBonds []HostNic) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RemovedBonds = removedBonds
-	return builder
-}
-
-func (builder *actionBuilder) RemovedLabels(removedLabels []NetworkLabel) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RemovedLabels = removedLabels
-	return builder
-}
-
-func (builder *actionBuilder) RemovedNetworkAttachments(removedNetworkAttachments []NetworkAttachment) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RemovedNetworkAttachments = removedNetworkAttachments
-	return builder
-}
-
-func (builder *actionBuilder) ResolutionType(resolutionType string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.ResolutionType = &resolutionType
-	return builder
-}
-
-func (builder *actionBuilder) RestoreMemory(restoreMemory bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RestoreMemory = &restoreMemory
-	return builder
-}
-
-func (builder *actionBuilder) RootPassword(rootPassword string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.RootPassword = &rootPassword
-	return builder
-}
-
-func (builder *actionBuilder) Snapshot(snapshot *Snapshot) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Snapshot = snapshot
-	return builder
-}
-
-func (builder *actionBuilder) Ssh(ssh *Ssh) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Ssh = ssh
-	return builder
-}
-
-func (builder *actionBuilder) Status(status string) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Status = &status
-	return builder
-}
-
-func (builder *actionBuilder) StopGlusterService(stopGlusterService bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.StopGlusterService = &stopGlusterService
-	return builder
-}
-
-func (builder *actionBuilder) StorageDomain(storageDomain *StorageDomain) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *actionBuilder) StorageDomains(storageDomains []StorageDomain) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.StorageDomains = storageDomains
-	return builder
-}
-
-func (builder *actionBuilder) Succeeded(succeeded bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Succeeded = &succeeded
-	return builder
-}
-
-func (builder *actionBuilder) SynchronizedNetworkAttachments(synchronizedNetworkAttachments []NetworkAttachment) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.SynchronizedNetworkAttachments = synchronizedNetworkAttachments
-	return builder
-}
-
-func (builder *actionBuilder) Template(template *Template) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Template = template
-	return builder
-}
-
-func (builder *actionBuilder) Ticket(ticket *Ticket) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Ticket = ticket
-	return builder
-}
-
-func (builder *actionBuilder) UndeployHostedEngine(undeployHostedEngine bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.UndeployHostedEngine = &undeployHostedEngine
-	return builder
-}
-
-func (builder *actionBuilder) UseCloudInit(useCloudInit bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.UseCloudInit = &useCloudInit
-	return builder
-}
-
-func (builder *actionBuilder) UseSysprep(useSysprep bool) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.UseSysprep = &useSysprep
-	return builder
-}
-
-func (builder *actionBuilder) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.VirtualFunctionsConfiguration = virtualFunctionsConfiguration
-	return builder
-}
-
-func (builder *actionBuilder) Vm(vm *Vm) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.Vm = vm
-	return builder
-}
-
-func (builder *actionBuilder) VnicProfileMappings(vnicProfileMappings []VnicProfileMapping) *actionBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.action.VnicProfileMappings = vnicProfileMappings
-	return builder
-}
-
-func (builder *actionBuilder) Build() (*Action, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.action, nil
-}
-
-type affinityGroupBuilder struct {
-	affinityGroup *AffinityGroup
-	err           error
-}
-
-func NewAffinityGroupBuilder() *affinityGroupBuilder {
-	return &affinityGroupBuilder{affinityGroup: &AffinityGroup{}, err: nil}
-}
-
-func (builder *affinityGroupBuilder) Cluster(cluster *Cluster) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Cluster = cluster
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Comment(comment string) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Comment = &comment
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Description(description string) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Description = &description
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Enforcing(enforcing bool) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Enforcing = &enforcing
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Hosts(hosts []Host) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Hosts = hosts
-	return builder
-}
-
-func (builder *affinityGroupBuilder) HostsRule(hostsRule *AffinityRule) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.HostsRule = hostsRule
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Id(id string) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Id = &id
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Name(name string) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Name = &name
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Positive(positive bool) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Positive = &positive
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Vms(vms []Vm) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.Vms = vms
-	return builder
-}
-
-func (builder *affinityGroupBuilder) VmsRule(vmsRule *AffinityRule) *affinityGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityGroup.VmsRule = vmsRule
-	return builder
-}
-
-func (builder *affinityGroupBuilder) Build() (*AffinityGroup, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.affinityGroup, nil
-}
-
-type affinityLabelBuilder struct {
-	affinityLabel *AffinityLabel
-	err           error
-}
-
-func NewAffinityLabelBuilder() *affinityLabelBuilder {
-	return &affinityLabelBuilder{affinityLabel: &AffinityLabel{}, err: nil}
-}
-
-func (builder *affinityLabelBuilder) Comment(comment string) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Comment = &comment
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Description(description string) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Description = &description
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Hosts(hosts []Host) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Hosts = hosts
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Id(id string) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Id = &id
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Name(name string) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Name = &name
-	return builder
-}
-
-func (builder *affinityLabelBuilder) ReadOnly(readOnly bool) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.ReadOnly = &readOnly
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Vms(vms []Vm) *affinityLabelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.affinityLabel.Vms = vms
-	return builder
-}
-
-func (builder *affinityLabelBuilder) Build() (*AffinityLabel, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.affinityLabel, nil
-}
-
-type agentBuilder struct {
-	agent *Agent
-	err   error
-}
-
-func NewAgentBuilder() *agentBuilder {
-	return &agentBuilder{agent: &Agent{}, err: nil}
-}
-
-func (builder *agentBuilder) Address(address string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Address = &address
-	return builder
-}
-
-func (builder *agentBuilder) Comment(comment string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Comment = &comment
-	return builder
-}
-
-func (builder *agentBuilder) Concurrent(concurrent bool) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Concurrent = &concurrent
-	return builder
-}
-
-func (builder *agentBuilder) Description(description string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Description = &description
-	return builder
-}
-
-func (builder *agentBuilder) EncryptOptions(encryptOptions bool) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.EncryptOptions = &encryptOptions
-	return builder
-}
-
-func (builder *agentBuilder) Host(host *Host) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Host = host
-	return builder
-}
-
-func (builder *agentBuilder) Id(id string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Id = &id
-	return builder
-}
-
-func (builder *agentBuilder) Name(name string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Name = &name
-	return builder
-}
-
-func (builder *agentBuilder) Options(options []Option) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Options = options
-	return builder
-}
-
-func (builder *agentBuilder) Order(order int64) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Order = &order
-	return builder
-}
-
-func (builder *agentBuilder) Password(password string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Password = &password
-	return builder
-}
-
-func (builder *agentBuilder) Port(port int64) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Port = &port
-	return builder
-}
-
-func (builder *agentBuilder) Type(type_ string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Type = &type_
-	return builder
-}
-
-func (builder *agentBuilder) Username(username string) *agentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.agent.Username = &username
-	return builder
-}
-
-func (builder *agentBuilder) Build() (*Agent, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.agent, nil
-}
-
-type applicationBuilder struct {
-	application *Application
-	err         error
-}
-
-func NewApplicationBuilder() *applicationBuilder {
-	return &applicationBuilder{application: &Application{}, err: nil}
-}
-
-func (builder *applicationBuilder) Comment(comment string) *applicationBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.application.Comment = &comment
-	return builder
-}
-
-func (builder *applicationBuilder) Description(description string) *applicationBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.application.Description = &description
-	return builder
-}
-
-func (builder *applicationBuilder) Id(id string) *applicationBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.application.Id = &id
-	return builder
-}
-
-func (builder *applicationBuilder) Name(name string) *applicationBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.application.Name = &name
-	return builder
-}
-
-func (builder *applicationBuilder) Vm(vm *Vm) *applicationBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.application.Vm = vm
-	return builder
-}
-
-func (builder *applicationBuilder) Build() (*Application, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.application, nil
-}
-
-type authorizedKeyBuilder struct {
-	authorizedKey *AuthorizedKey
-	err           error
-}
-
-func NewAuthorizedKeyBuilder() *authorizedKeyBuilder {
-	return &authorizedKeyBuilder{authorizedKey: &AuthorizedKey{}, err: nil}
-}
-
-func (builder *authorizedKeyBuilder) Comment(comment string) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.Comment = &comment
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) Description(description string) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.Description = &description
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) Id(id string) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.Id = &id
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) Key(key string) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.Key = &key
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) Name(name string) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.Name = &name
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) User(user *User) *authorizedKeyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.authorizedKey.User = user
-	return builder
-}
-
-func (builder *authorizedKeyBuilder) Build() (*AuthorizedKey, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.authorizedKey, nil
-}
-
-type balanceBuilder struct {
-	balance *Balance
-	err     error
-}
-
-func NewBalanceBuilder() *balanceBuilder {
-	return &balanceBuilder{balance: &Balance{}, err: nil}
-}
-
-func (builder *balanceBuilder) Comment(comment string) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.Comment = &comment
-	return builder
-}
-
-func (builder *balanceBuilder) Description(description string) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.Description = &description
-	return builder
-}
-
-func (builder *balanceBuilder) Id(id string) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.Id = &id
-	return builder
-}
-
-func (builder *balanceBuilder) Name(name string) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.Name = &name
-	return builder
-}
-
-func (builder *balanceBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.SchedulingPolicy = schedulingPolicy
-	return builder
-}
-
-func (builder *balanceBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *balanceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.balance.SchedulingPolicyUnit = schedulingPolicyUnit
-	return builder
-}
-
-func (builder *balanceBuilder) Build() (*Balance, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.balance, nil
-}
-
-type bookmarkBuilder struct {
-	bookmark *Bookmark
-	err      error
-}
-
-func NewBookmarkBuilder() *bookmarkBuilder {
-	return &bookmarkBuilder{bookmark: &Bookmark{}, err: nil}
-}
-
-func (builder *bookmarkBuilder) Comment(comment string) *bookmarkBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.bookmark.Comment = &comment
-	return builder
-}
-
-func (builder *bookmarkBuilder) Description(description string) *bookmarkBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.bookmark.Description = &description
-	return builder
-}
-
-func (builder *bookmarkBuilder) Id(id string) *bookmarkBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.bookmark.Id = &id
-	return builder
-}
-
-func (builder *bookmarkBuilder) Name(name string) *bookmarkBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.bookmark.Name = &name
-	return builder
-}
-
-func (builder *bookmarkBuilder) Value(value string) *bookmarkBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.bookmark.Value = &value
-	return builder
-}
-
-func (builder *bookmarkBuilder) Build() (*Bookmark, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.bookmark, nil
-}
-
-type brickProfileDetailBuilder struct {
-	brickProfileDetail *BrickProfileDetail
-	err                error
-}
-
-func NewBrickProfileDetailBuilder() *brickProfileDetailBuilder {
-	return &brickProfileDetailBuilder{brickProfileDetail: &BrickProfileDetail{}, err: nil}
-}
-
-func (builder *brickProfileDetailBuilder) Brick(brick *GlusterBrick) *brickProfileDetailBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.brickProfileDetail.Brick = brick
-	return builder
-}
-
-func (builder *brickProfileDetailBuilder) ProfileDetails(profileDetails []ProfileDetail) *brickProfileDetailBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.brickProfileDetail.ProfileDetails = profileDetails
-	return builder
-}
-
-func (builder *brickProfileDetailBuilder) Build() (*BrickProfileDetail, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.brickProfileDetail, nil
-}
-
-type certificateBuilder struct {
-	certificate *Certificate
-	err         error
-}
-
-func NewCertificateBuilder() *certificateBuilder {
-	return &certificateBuilder{certificate: &Certificate{}, err: nil}
-}
-
-func (builder *certificateBuilder) Comment(comment string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Comment = &comment
-	return builder
-}
-
-func (builder *certificateBuilder) Content(content string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Content = &content
-	return builder
-}
-
-func (builder *certificateBuilder) Description(description string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Description = &description
-	return builder
-}
-
-func (builder *certificateBuilder) Id(id string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Id = &id
-	return builder
-}
-
-func (builder *certificateBuilder) Name(name string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Name = &name
-	return builder
-}
-
-func (builder *certificateBuilder) Organization(organization string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Organization = &organization
-	return builder
-}
-
-func (builder *certificateBuilder) Subject(subject string) *certificateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.certificate.Subject = &subject
-	return builder
-}
-
-func (builder *certificateBuilder) Build() (*Certificate, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.certificate, nil
-}
-
-type clusterBuilder struct {
-	cluster *Cluster
-	err     error
-}
-
-func NewClusterBuilder() *clusterBuilder {
-	return &clusterBuilder{cluster: &Cluster{}, err: nil}
-}
-
-func (builder *clusterBuilder) AffinityGroups(affinityGroups []AffinityGroup) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.AffinityGroups = affinityGroups
-	return builder
-}
-
-func (builder *clusterBuilder) BallooningEnabled(ballooningEnabled bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.BallooningEnabled = &ballooningEnabled
-	return builder
-}
-
-func (builder *clusterBuilder) Comment(comment string) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Comment = &comment
-	return builder
-}
-
-func (builder *clusterBuilder) Cpu(cpu *Cpu) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Cpu = cpu
-	return builder
-}
-
-func (builder *clusterBuilder) CpuProfiles(cpuProfiles []CpuProfile) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.CpuProfiles = cpuProfiles
-	return builder
-}
-
-func (builder *clusterBuilder) CustomSchedulingPolicyProperties(customSchedulingPolicyProperties []Property) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.CustomSchedulingPolicyProperties = customSchedulingPolicyProperties
-	return builder
-}
-
-func (builder *clusterBuilder) DataCenter(dataCenter *DataCenter) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.DataCenter = dataCenter
-	return builder
-}
-
-func (builder *clusterBuilder) Description(description string) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Description = &description
-	return builder
-}
-
-func (builder *clusterBuilder) Display(display *Display) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Display = display
-	return builder
-}
-
-func (builder *clusterBuilder) ErrorHandling(errorHandling *ErrorHandling) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.ErrorHandling = errorHandling
-	return builder
-}
-
-func (builder *clusterBuilder) FencingPolicy(fencingPolicy *FencingPolicy) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.FencingPolicy = fencingPolicy
-	return builder
-}
-
-func (builder *clusterBuilder) GlusterHooks(glusterHooks []GlusterHook) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.GlusterHooks = glusterHooks
-	return builder
-}
-
-func (builder *clusterBuilder) GlusterService(glusterService bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.GlusterService = &glusterService
-	return builder
-}
-
-func (builder *clusterBuilder) GlusterTunedProfile(glusterTunedProfile string) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.GlusterTunedProfile = &glusterTunedProfile
-	return builder
-}
-
-func (builder *clusterBuilder) GlusterVolumes(glusterVolumes []GlusterVolume) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.GlusterVolumes = glusterVolumes
-	return builder
-}
-
-func (builder *clusterBuilder) HaReservation(haReservation bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.HaReservation = &haReservation
-	return builder
-}
-
-func (builder *clusterBuilder) Id(id string) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Id = &id
-	return builder
-}
-
-func (builder *clusterBuilder) Ksm(ksm *Ksm) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Ksm = ksm
-	return builder
-}
-
-func (builder *clusterBuilder) MacPool(macPool *MacPool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.MacPool = macPool
-	return builder
-}
-
-func (builder *clusterBuilder) MaintenanceReasonRequired(maintenanceReasonRequired bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.MaintenanceReasonRequired = &maintenanceReasonRequired
-	return builder
-}
-
-func (builder *clusterBuilder) ManagementNetwork(managementNetwork *Network) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.ManagementNetwork = managementNetwork
-	return builder
-}
-
-func (builder *clusterBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.MemoryPolicy = memoryPolicy
-	return builder
-}
-
-func (builder *clusterBuilder) Migration(migration *MigrationOptions) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Migration = migration
-	return builder
-}
-
-func (builder *clusterBuilder) Name(name string) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Name = &name
-	return builder
-}
-
-func (builder *clusterBuilder) NetworkFilters(networkFilters []NetworkFilter) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.NetworkFilters = networkFilters
-	return builder
-}
-
-func (builder *clusterBuilder) Networks(networks []Network) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Networks = networks
-	return builder
-}
-
-func (builder *clusterBuilder) OptionalReason(optionalReason bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.OptionalReason = &optionalReason
-	return builder
-}
-
-func (builder *clusterBuilder) Permissions(permissions []Permission) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Permissions = permissions
-	return builder
-}
-
-func (builder *clusterBuilder) RequiredRngSources(requiredRngSources []RngSource) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.RequiredRngSources = requiredRngSources
-	return builder
-}
-
-func (builder *clusterBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.SchedulingPolicy = schedulingPolicy
-	return builder
-}
-
-func (builder *clusterBuilder) SerialNumber(serialNumber *SerialNumber) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.SerialNumber = serialNumber
-	return builder
-}
-
-func (builder *clusterBuilder) SupportedVersions(supportedVersions []Version) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.SupportedVersions = supportedVersions
-	return builder
-}
-
-func (builder *clusterBuilder) SwitchType(switchType SwitchType) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.SwitchType = switchType
-	return builder
-}
-
-func (builder *clusterBuilder) ThreadsAsCores(threadsAsCores bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.ThreadsAsCores = &threadsAsCores
-	return builder
-}
-
-func (builder *clusterBuilder) TrustedService(trustedService bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.TrustedService = &trustedService
-	return builder
-}
-
-func (builder *clusterBuilder) TunnelMigration(tunnelMigration bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.TunnelMigration = &tunnelMigration
-	return builder
-}
-
-func (builder *clusterBuilder) Version(version *Version) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.Version = version
-	return builder
-}
-
-func (builder *clusterBuilder) VirtService(virtService bool) *clusterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cluster.VirtService = &virtService
-	return builder
-}
-
-func (builder *clusterBuilder) Build() (*Cluster, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.cluster, nil
-}
-
-type clusterLevelBuilder struct {
-	clusterLevel *ClusterLevel
-	err          error
-}
-
-func NewClusterLevelBuilder() *clusterLevelBuilder {
-	return &clusterLevelBuilder{clusterLevel: &ClusterLevel{}, err: nil}
-}
-
-func (builder *clusterLevelBuilder) Comment(comment string) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.Comment = &comment
-	return builder
-}
-
-func (builder *clusterLevelBuilder) CpuTypes(cpuTypes []CpuType) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.CpuTypes = cpuTypes
-	return builder
-}
-
-func (builder *clusterLevelBuilder) Description(description string) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.Description = &description
-	return builder
-}
-
-func (builder *clusterLevelBuilder) Id(id string) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.Id = &id
-	return builder
-}
-
-func (builder *clusterLevelBuilder) Name(name string) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.Name = &name
-	return builder
-}
-
-func (builder *clusterLevelBuilder) Permits(permits []Permit) *clusterLevelBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.clusterLevel.Permits = permits
-	return builder
-}
-
-func (builder *clusterLevelBuilder) Build() (*ClusterLevel, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.clusterLevel, nil
-}
-
-type cpuProfileBuilder struct {
-	cpuProfile *CpuProfile
-	err        error
-}
-
-func NewCpuProfileBuilder() *cpuProfileBuilder {
-	return &cpuProfileBuilder{cpuProfile: &CpuProfile{}, err: nil}
-}
-
-func (builder *cpuProfileBuilder) Cluster(cluster *Cluster) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Cluster = cluster
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Comment(comment string) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Comment = &comment
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Description(description string) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Description = &description
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Id(id string) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Id = &id
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Name(name string) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Name = &name
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Permissions(permissions []Permission) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Permissions = permissions
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Qos(qos *Qos) *cpuProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cpuProfile.Qos = qos
-	return builder
-}
-
-func (builder *cpuProfileBuilder) Build() (*CpuProfile, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.cpuProfile, nil
-}
-
-type dataCenterBuilder struct {
-	dataCenter *DataCenter
-	err        error
-}
-
-func NewDataCenterBuilder() *dataCenterBuilder {
-	return &dataCenterBuilder{dataCenter: &DataCenter{}, err: nil}
-}
-
-func (builder *dataCenterBuilder) Clusters(clusters []Cluster) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Clusters = clusters
-	return builder
-}
-
-func (builder *dataCenterBuilder) Comment(comment string) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Comment = &comment
-	return builder
-}
-
-func (builder *dataCenterBuilder) Description(description string) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Description = &description
-	return builder
-}
-
-func (builder *dataCenterBuilder) Id(id string) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Id = &id
-	return builder
-}
-
-func (builder *dataCenterBuilder) IscsiBonds(iscsiBonds []IscsiBond) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.IscsiBonds = iscsiBonds
-	return builder
-}
-
-func (builder *dataCenterBuilder) Local(local bool) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Local = &local
-	return builder
-}
-
-func (builder *dataCenterBuilder) MacPool(macPool *MacPool) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.MacPool = macPool
-	return builder
-}
-
-func (builder *dataCenterBuilder) Name(name string) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Name = &name
-	return builder
-}
-
-func (builder *dataCenterBuilder) Networks(networks []Network) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Networks = networks
-	return builder
-}
-
-func (builder *dataCenterBuilder) Permissions(permissions []Permission) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Permissions = permissions
-	return builder
-}
-
-func (builder *dataCenterBuilder) Qoss(qoss []Qos) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Qoss = qoss
-	return builder
-}
-
-func (builder *dataCenterBuilder) QuotaMode(quotaMode QuotaModeType) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.QuotaMode = quotaMode
-	return builder
-}
-
-func (builder *dataCenterBuilder) Quotas(quotas []Quota) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Quotas = quotas
-	return builder
-}
-
-func (builder *dataCenterBuilder) Status(status DataCenterStatus) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Status = status
-	return builder
-}
-
-func (builder *dataCenterBuilder) StorageDomains(storageDomains []StorageDomain) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.StorageDomains = storageDomains
-	return builder
-}
-
-func (builder *dataCenterBuilder) StorageFormat(storageFormat StorageFormat) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.StorageFormat = storageFormat
-	return builder
-}
-
-func (builder *dataCenterBuilder) SupportedVersions(supportedVersions []Version) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.SupportedVersions = supportedVersions
-	return builder
-}
-
-func (builder *dataCenterBuilder) Version(version *Version) *dataCenterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.dataCenter.Version = version
-	return builder
-}
-
-func (builder *dataCenterBuilder) Build() (*DataCenter, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.dataCenter, nil
-}
-
-type deviceBuilder struct {
-	device *Device
-	err    error
-}
-
-func NewDeviceBuilder() *deviceBuilder {
-	return &deviceBuilder{device: &Device{}, err: nil}
-}
-
-func (builder *deviceBuilder) Comment(comment string) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Comment = &comment
-	return builder
-}
-
-func (builder *deviceBuilder) Description(description string) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Description = &description
-	return builder
-}
-
-func (builder *deviceBuilder) Id(id string) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Id = &id
-	return builder
-}
-
-func (builder *deviceBuilder) InstanceType(instanceType *InstanceType) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.InstanceType = instanceType
-	return builder
-}
-
-func (builder *deviceBuilder) Name(name string) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Name = &name
-	return builder
-}
-
-func (builder *deviceBuilder) Template(template *Template) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Template = template
-	return builder
-}
-
-func (builder *deviceBuilder) Vm(vm *Vm) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Vm = vm
-	return builder
-}
-
-func (builder *deviceBuilder) Vms(vms []Vm) *deviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.device.Vms = vms
-	return builder
-}
-
-func (builder *deviceBuilder) Build() (*Device, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.device, nil
-}
-
-type diskBuilder struct {
-	disk *Disk
-	err  error
-}
-
-func NewDiskBuilder() *diskBuilder {
-	return &diskBuilder{disk: &Disk{}, err: nil}
-}
-
-func (builder *diskBuilder) Active(active bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Active = &active
-	return builder
-}
-
-func (builder *diskBuilder) ActualSize(actualSize int64) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.ActualSize = &actualSize
-	return builder
-}
-
-func (builder *diskBuilder) Alias(alias string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Alias = &alias
-	return builder
-}
-
-func (builder *diskBuilder) Bootable(bootable bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Bootable = &bootable
-	return builder
-}
-
-func (builder *diskBuilder) Comment(comment string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Comment = &comment
-	return builder
-}
-
-func (builder *diskBuilder) Description(description string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Description = &description
-	return builder
-}
-
-func (builder *diskBuilder) DiskProfile(diskProfile *DiskProfile) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.DiskProfile = diskProfile
-	return builder
-}
-
-func (builder *diskBuilder) Format(format DiskFormat) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Format = format
-	return builder
-}
-
-func (builder *diskBuilder) Id(id string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Id = &id
-	return builder
-}
-
-func (builder *diskBuilder) ImageId(imageId string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.ImageId = &imageId
-	return builder
-}
-
-func (builder *diskBuilder) InitialSize(initialSize int64) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.InitialSize = &initialSize
-	return builder
-}
-
-func (builder *diskBuilder) InstanceType(instanceType *InstanceType) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.InstanceType = instanceType
-	return builder
-}
-
-func (builder *diskBuilder) Interface(interface_ DiskInterface) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Interface = interface_
-	return builder
-}
-
-func (builder *diskBuilder) LogicalName(logicalName string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.LogicalName = &logicalName
-	return builder
-}
-
-func (builder *diskBuilder) LunStorage(lunStorage *HostStorage) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.LunStorage = lunStorage
-	return builder
-}
-
-func (builder *diskBuilder) Name(name string) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Name = &name
-	return builder
-}
-
-func (builder *diskBuilder) OpenstackVolumeType(openstackVolumeType *OpenStackVolumeType) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.OpenstackVolumeType = openstackVolumeType
-	return builder
-}
-
-func (builder *diskBuilder) Permissions(permissions []Permission) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Permissions = permissions
-	return builder
-}
-
-func (builder *diskBuilder) PropagateErrors(propagateErrors bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.PropagateErrors = &propagateErrors
-	return builder
-}
-
-func (builder *diskBuilder) ProvisionedSize(provisionedSize int64) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.ProvisionedSize = &provisionedSize
-	return builder
-}
-
-func (builder *diskBuilder) QcowVersion(qcowVersion QcowVersion) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.QcowVersion = qcowVersion
-	return builder
-}
-
-func (builder *diskBuilder) Quota(quota *Quota) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Quota = quota
-	return builder
-}
-
-func (builder *diskBuilder) ReadOnly(readOnly bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.ReadOnly = &readOnly
-	return builder
-}
-
-func (builder *diskBuilder) Sgio(sgio ScsiGenericIO) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Sgio = sgio
-	return builder
-}
-
-func (builder *diskBuilder) Shareable(shareable bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Shareable = &shareable
-	return builder
-}
-
-func (builder *diskBuilder) Snapshot(snapshot *Snapshot) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Snapshot = snapshot
-	return builder
-}
-
-func (builder *diskBuilder) Sparse(sparse bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Sparse = &sparse
-	return builder
-}
-
-func (builder *diskBuilder) Statistics(statistics []Statistic) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Statistics = statistics
-	return builder
-}
-
-func (builder *diskBuilder) Status(status DiskStatus) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Status = status
-	return builder
-}
-
-func (builder *diskBuilder) StorageDomain(storageDomain *StorageDomain) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *diskBuilder) StorageDomains(storageDomains []StorageDomain) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.StorageDomains = storageDomains
-	return builder
-}
-
-func (builder *diskBuilder) StorageType(storageType DiskStorageType) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.StorageType = storageType
-	return builder
-}
-
-func (builder *diskBuilder) Template(template *Template) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Template = template
-	return builder
-}
-
-func (builder *diskBuilder) UsesScsiReservation(usesScsiReservation bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.UsesScsiReservation = &usesScsiReservation
-	return builder
-}
-
-func (builder *diskBuilder) Vm(vm *Vm) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Vm = vm
-	return builder
-}
-
-func (builder *diskBuilder) Vms(vms []Vm) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.Vms = vms
-	return builder
-}
-
-func (builder *diskBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.disk.WipeAfterDelete = &wipeAfterDelete
-	return builder
-}
-
-func (builder *diskBuilder) Build() (*Disk, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.disk, nil
-}
-
-type diskAttachmentBuilder struct {
-	diskAttachment *DiskAttachment
-	err            error
-}
-
-func NewDiskAttachmentBuilder() *diskAttachmentBuilder {
-	return &diskAttachmentBuilder{diskAttachment: &DiskAttachment{}, err: nil}
-}
-
-func (builder *diskAttachmentBuilder) Active(active bool) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Active = &active
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Bootable(bootable bool) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Bootable = &bootable
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Comment(comment string) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Comment = &comment
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Description(description string) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Description = &description
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Disk(disk *Disk) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Disk = disk
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Id(id string) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Id = &id
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Interface(interface_ DiskInterface) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Interface = interface_
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) LogicalName(logicalName string) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.LogicalName = &logicalName
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Name(name string) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Name = &name
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) PassDiscard(passDiscard bool) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.PassDiscard = &passDiscard
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Template(template *Template) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Template = template
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) UsesScsiReservation(usesScsiReservation bool) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.UsesScsiReservation = &usesScsiReservation
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Vm(vm *Vm) *diskAttachmentBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskAttachment.Vm = vm
-	return builder
-}
-
-func (builder *diskAttachmentBuilder) Build() (*DiskAttachment, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.diskAttachment, nil
-}
-
-type diskProfileBuilder struct {
-	diskProfile *DiskProfile
-	err         error
-}
-
-func NewDiskProfileBuilder() *diskProfileBuilder {
-	return &diskProfileBuilder{diskProfile: &DiskProfile{}, err: nil}
-}
-
-func (builder *diskProfileBuilder) Comment(comment string) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Comment = &comment
-	return builder
-}
-
-func (builder *diskProfileBuilder) Description(description string) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Description = &description
-	return builder
-}
-
-func (builder *diskProfileBuilder) Id(id string) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Id = &id
-	return builder
-}
-
-func (builder *diskProfileBuilder) Name(name string) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Name = &name
-	return builder
-}
-
-func (builder *diskProfileBuilder) Permissions(permissions []Permission) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Permissions = permissions
-	return builder
-}
-
-func (builder *diskProfileBuilder) Qos(qos *Qos) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.Qos = qos
-	return builder
-}
-
-func (builder *diskProfileBuilder) StorageDomain(storageDomain *StorageDomain) *diskProfileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskProfile.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *diskProfileBuilder) Build() (*DiskProfile, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.diskProfile, nil
-}
-
-type diskSnapshotBuilder struct {
-	diskSnapshot *DiskSnapshot
-	err          error
-}
-
-func NewDiskSnapshotBuilder() *diskSnapshotBuilder {
-	return &diskSnapshotBuilder{diskSnapshot: &DiskSnapshot{}, err: nil}
-}
-
-func (builder *diskSnapshotBuilder) Active(active bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Active = &active
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) ActualSize(actualSize int64) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.ActualSize = &actualSize
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Alias(alias string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Alias = &alias
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Bootable(bootable bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Bootable = &bootable
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Comment(comment string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Comment = &comment
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Description(description string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Description = &description
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Disk(disk *Disk) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Disk = disk
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) DiskProfile(diskProfile *DiskProfile) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.DiskProfile = diskProfile
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Format(format DiskFormat) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Format = format
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Id(id string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Id = &id
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) ImageId(imageId string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.ImageId = &imageId
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) InitialSize(initialSize int64) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.InitialSize = &initialSize
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) InstanceType(instanceType *InstanceType) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.InstanceType = instanceType
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Interface(interface_ DiskInterface) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Interface = interface_
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) LogicalName(logicalName string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.LogicalName = &logicalName
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) LunStorage(lunStorage *HostStorage) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.LunStorage = lunStorage
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Name(name string) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Name = &name
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) OpenstackVolumeType(openstackVolumeType *OpenStackVolumeType) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.OpenstackVolumeType = openstackVolumeType
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Permissions(permissions []Permission) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Permissions = permissions
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) PropagateErrors(propagateErrors bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.PropagateErrors = &propagateErrors
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) ProvisionedSize(provisionedSize int64) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.ProvisionedSize = &provisionedSize
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) QcowVersion(qcowVersion QcowVersion) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.QcowVersion = qcowVersion
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Quota(quota *Quota) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Quota = quota
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) ReadOnly(readOnly bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.ReadOnly = &readOnly
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Sgio(sgio ScsiGenericIO) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Sgio = sgio
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Shareable(shareable bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Shareable = &shareable
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Snapshot(snapshot *Snapshot) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Snapshot = snapshot
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Sparse(sparse bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Sparse = &sparse
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Statistics(statistics []Statistic) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Statistics = statistics
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Status(status DiskStatus) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Status = status
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) StorageDomain(storageDomain *StorageDomain) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) StorageDomains(storageDomains []StorageDomain) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.StorageDomains = storageDomains
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) StorageType(storageType DiskStorageType) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.StorageType = storageType
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Template(template *Template) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Template = template
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) UsesScsiReservation(usesScsiReservation bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.UsesScsiReservation = &usesScsiReservation
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Vm(vm *Vm) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Vm = vm
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Vms(vms []Vm) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.Vms = vms
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) WipeAfterDelete(wipeAfterDelete bool) *diskSnapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.diskSnapshot.WipeAfterDelete = &wipeAfterDelete
-	return builder
-}
-
-func (builder *diskSnapshotBuilder) Build() (*DiskSnapshot, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.diskSnapshot, nil
-}
-
-type domainBuilder struct {
-	domain *Domain
-	err    error
-}
-
-func NewDomainBuilder() *domainBuilder {
-	return &domainBuilder{domain: &Domain{}, err: nil}
-}
-
-func (builder *domainBuilder) Comment(comment string) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Comment = &comment
-	return builder
-}
-
-func (builder *domainBuilder) Description(description string) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Description = &description
-	return builder
-}
-
-func (builder *domainBuilder) Groups(groups []Group) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Groups = groups
-	return builder
-}
-
-func (builder *domainBuilder) Id(id string) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Id = &id
-	return builder
-}
-
-func (builder *domainBuilder) Name(name string) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Name = &name
-	return builder
-}
-
-func (builder *domainBuilder) User(user *User) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.User = user
-	return builder
-}
-
-func (builder *domainBuilder) Users(users []User) *domainBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.domain.Users = users
-	return builder
-}
-
-func (builder *domainBuilder) Build() (*Domain, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.domain, nil
-}
-
-type eventBuilder struct {
-	event *Event
-	err   error
-}
-
-func NewEventBuilder() *eventBuilder {
-	return &eventBuilder{event: &Event{}, err: nil}
-}
-
-func (builder *eventBuilder) Cluster(cluster *Cluster) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Cluster = cluster
-	return builder
-}
-
-func (builder *eventBuilder) Code(code int64) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Code = &code
-	return builder
-}
-
-func (builder *eventBuilder) Comment(comment string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Comment = &comment
-	return builder
-}
-
-func (builder *eventBuilder) CorrelationId(correlationId string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.CorrelationId = &correlationId
-	return builder
-}
-
-func (builder *eventBuilder) CustomData(customData string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.CustomData = &customData
-	return builder
-}
-
-func (builder *eventBuilder) CustomId(customId int64) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.CustomId = &customId
-	return builder
-}
-
-func (builder *eventBuilder) DataCenter(dataCenter *DataCenter) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.DataCenter = dataCenter
-	return builder
-}
-
-func (builder *eventBuilder) Description(description string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Description = &description
-	return builder
-}
-
-func (builder *eventBuilder) FloodRate(floodRate int64) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.FloodRate = &floodRate
-	return builder
-}
-
-func (builder *eventBuilder) Host(host *Host) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Host = host
-	return builder
-}
-
-func (builder *eventBuilder) Id(id string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Id = &id
-	return builder
-}
-
-func (builder *eventBuilder) Name(name string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Name = &name
-	return builder
-}
-
-func (builder *eventBuilder) Origin(origin string) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Origin = &origin
-	return builder
-}
-
-func (builder *eventBuilder) Severity(severity LogSeverity) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Severity = severity
-	return builder
-}
-
-func (builder *eventBuilder) StorageDomain(storageDomain *StorageDomain) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *eventBuilder) Template(template *Template) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Template = template
-	return builder
-}
-
-func (builder *eventBuilder) Time(time time.Time) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Time = time
-	return builder
-}
-
-func (builder *eventBuilder) User(user *User) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.User = user
-	return builder
-}
-
-func (builder *eventBuilder) Vm(vm *Vm) *eventBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.event.Vm = vm
-	return builder
-}
-
-func (builder *eventBuilder) Build() (*Event, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.event, nil
-}
-
-type externalComputeResourceBuilder struct {
-	externalComputeResource *ExternalComputeResource
-	err                     error
-}
-
-func NewExternalComputeResourceBuilder() *externalComputeResourceBuilder {
-	return &externalComputeResourceBuilder{externalComputeResource: &ExternalComputeResource{}, err: nil}
-}
-
-func (builder *externalComputeResourceBuilder) Comment(comment string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Comment = &comment
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Description(description string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Description = &description
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Id(id string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Id = &id
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Name(name string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Name = &name
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Provider(provider string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Provider = &provider
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Url(url string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.Url = &url
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) User(user string) *externalComputeResourceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalComputeResource.User = &user
-	return builder
-}
-
-func (builder *externalComputeResourceBuilder) Build() (*ExternalComputeResource, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalComputeResource, nil
-}
-
-type externalDiscoveredHostBuilder struct {
-	externalDiscoveredHost *ExternalDiscoveredHost
-	err                    error
-}
-
-func NewExternalDiscoveredHostBuilder() *externalDiscoveredHostBuilder {
-	return &externalDiscoveredHostBuilder{externalDiscoveredHost: &ExternalDiscoveredHost{}, err: nil}
-}
-
-func (builder *externalDiscoveredHostBuilder) Comment(comment string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Comment = &comment
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Description(description string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Description = &description
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Id(id string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Id = &id
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Ip(ip string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Ip = &ip
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) LastReport(lastReport string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.LastReport = &lastReport
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Mac(mac string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Mac = &mac
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Name(name string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.Name = &name
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) SubnetName(subnetName string) *externalDiscoveredHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalDiscoveredHost.SubnetName = &subnetName
-	return builder
-}
-
-func (builder *externalDiscoveredHostBuilder) Build() (*ExternalDiscoveredHost, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalDiscoveredHost, nil
-}
-
-type externalHostBuilder struct {
-	externalHost *ExternalHost
-	err          error
-}
-
-func NewExternalHostBuilder() *externalHostBuilder {
-	return &externalHostBuilder{externalHost: &ExternalHost{}, err: nil}
-}
-
-func (builder *externalHostBuilder) Address(address string) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.Address = &address
-	return builder
-}
-
-func (builder *externalHostBuilder) Comment(comment string) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.Comment = &comment
-	return builder
-}
-
-func (builder *externalHostBuilder) Description(description string) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.Description = &description
-	return builder
-}
-
-func (builder *externalHostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *externalHostBuilder) Id(id string) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.Id = &id
-	return builder
-}
-
-func (builder *externalHostBuilder) Name(name string) *externalHostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHost.Name = &name
-	return builder
-}
-
-func (builder *externalHostBuilder) Build() (*ExternalHost, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalHost, nil
-}
-
-type externalHostGroupBuilder struct {
-	externalHostGroup *ExternalHostGroup
-	err               error
-}
-
-func NewExternalHostGroupBuilder() *externalHostGroupBuilder {
-	return &externalHostGroupBuilder{externalHostGroup: &ExternalHostGroup{}, err: nil}
-}
-
-func (builder *externalHostGroupBuilder) ArchitectureName(architectureName string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.ArchitectureName = &architectureName
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) Comment(comment string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.Comment = &comment
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) Description(description string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.Description = &description
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) DomainName(domainName string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.DomainName = &domainName
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) Id(id string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.Id = &id
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) Name(name string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.Name = &name
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) OperatingSystemName(operatingSystemName string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.OperatingSystemName = &operatingSystemName
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) SubnetName(subnetName string) *externalHostGroupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostGroup.SubnetName = &subnetName
-	return builder
-}
-
-func (builder *externalHostGroupBuilder) Build() (*ExternalHostGroup, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalHostGroup, nil
-}
-
-type externalProviderBuilder struct {
-	externalProvider *ExternalProvider
-	err              error
-}
-
-func NewExternalProviderBuilder() *externalProviderBuilder {
-	return &externalProviderBuilder{externalProvider: &ExternalProvider{}, err: nil}
-}
-
-func (builder *externalProviderBuilder) AuthenticationUrl(authenticationUrl string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *externalProviderBuilder) Comment(comment string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Comment = &comment
-	return builder
-}
-
-func (builder *externalProviderBuilder) Description(description string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Description = &description
-	return builder
-}
-
-func (builder *externalProviderBuilder) Id(id string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Id = &id
-	return builder
-}
-
-func (builder *externalProviderBuilder) Name(name string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Name = &name
-	return builder
-}
-
-func (builder *externalProviderBuilder) Password(password string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Password = &password
-	return builder
-}
-
-func (builder *externalProviderBuilder) Properties(properties []Property) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Properties = properties
-	return builder
-}
-
-func (builder *externalProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *externalProviderBuilder) Url(url string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Url = &url
-	return builder
-}
-
-func (builder *externalProviderBuilder) Username(username string) *externalProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalProvider.Username = &username
-	return builder
-}
-
-func (builder *externalProviderBuilder) Build() (*ExternalProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalProvider, nil
-}
-
-type fileBuilder struct {
-	file *File
-	err  error
-}
-
-func NewFileBuilder() *fileBuilder {
-	return &fileBuilder{file: &File{}, err: nil}
-}
-
-func (builder *fileBuilder) Comment(comment string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Comment = &comment
-	return builder
-}
-
-func (builder *fileBuilder) Content(content string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Content = &content
-	return builder
-}
-
-func (builder *fileBuilder) Description(description string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Description = &description
-	return builder
-}
-
-func (builder *fileBuilder) Id(id string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Id = &id
-	return builder
-}
-
-func (builder *fileBuilder) Name(name string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Name = &name
-	return builder
-}
-
-func (builder *fileBuilder) StorageDomain(storageDomain *StorageDomain) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *fileBuilder) Type(type_ string) *fileBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.file.Type = &type_
-	return builder
-}
-
-func (builder *fileBuilder) Build() (*File, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.file, nil
-}
-
-type filterBuilder struct {
-	filter *Filter
-	err    error
-}
-
-func NewFilterBuilder() *filterBuilder {
-	return &filterBuilder{filter: &Filter{}, err: nil}
-}
-
-func (builder *filterBuilder) Comment(comment string) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.Comment = &comment
-	return builder
-}
-
-func (builder *filterBuilder) Description(description string) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.Description = &description
-	return builder
-}
-
-func (builder *filterBuilder) Id(id string) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.Id = &id
-	return builder
-}
-
-func (builder *filterBuilder) Name(name string) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.Name = &name
-	return builder
-}
-
-func (builder *filterBuilder) Position(position int64) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.Position = &position
-	return builder
-}
-
-func (builder *filterBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *filterBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.filter.SchedulingPolicyUnit = schedulingPolicyUnit
-	return builder
-}
-
-func (builder *filterBuilder) Build() (*Filter, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.filter, nil
-}
-
-type floppyBuilder struct {
-	floppy *Floppy
-	err    error
-}
-
-func NewFloppyBuilder() *floppyBuilder {
-	return &floppyBuilder{floppy: &Floppy{}, err: nil}
-}
-
-func (builder *floppyBuilder) Comment(comment string) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Comment = &comment
-	return builder
-}
-
-func (builder *floppyBuilder) Description(description string) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Description = &description
-	return builder
-}
-
-func (builder *floppyBuilder) File(file *File) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.File = file
-	return builder
-}
-
-func (builder *floppyBuilder) Id(id string) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Id = &id
-	return builder
-}
-
-func (builder *floppyBuilder) InstanceType(instanceType *InstanceType) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.InstanceType = instanceType
-	return builder
-}
-
-func (builder *floppyBuilder) Name(name string) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Name = &name
-	return builder
-}
-
-func (builder *floppyBuilder) Template(template *Template) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Template = template
-	return builder
-}
-
-func (builder *floppyBuilder) Vm(vm *Vm) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Vm = vm
-	return builder
-}
-
-func (builder *floppyBuilder) Vms(vms []Vm) *floppyBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.floppy.Vms = vms
-	return builder
-}
-
-func (builder *floppyBuilder) Build() (*Floppy, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.floppy, nil
-}
-
-type glusterBrickAdvancedDetailsBuilder struct {
-	glusterBrickAdvancedDetails *GlusterBrickAdvancedDetails
-	err                         error
-}
-
-func NewGlusterBrickAdvancedDetailsBuilder() *glusterBrickAdvancedDetailsBuilder {
-	return &glusterBrickAdvancedDetailsBuilder{glusterBrickAdvancedDetails: &GlusterBrickAdvancedDetails{}, err: nil}
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Comment(comment string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Comment = &comment
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Description(description string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Description = &description
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Device(device string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Device = &device
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) FsName(fsName string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.FsName = &fsName
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) GlusterClients(glusterClients []GlusterClient) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.GlusterClients = glusterClients
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Id(id string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Id = &id
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) InstanceType(instanceType *InstanceType) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.InstanceType = instanceType
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) MemoryPools(memoryPools []GlusterMemoryPool) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.MemoryPools = memoryPools
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) MntOptions(mntOptions string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.MntOptions = &mntOptions
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Name(name string) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Name = &name
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Pid(pid int64) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Pid = &pid
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Port(port int64) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Port = &port
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Template(template *Template) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Template = template
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Vm(vm *Vm) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Vm = vm
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Vms(vms []Vm) *glusterBrickAdvancedDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrickAdvancedDetails.Vms = vms
-	return builder
-}
-
-func (builder *glusterBrickAdvancedDetailsBuilder) Build() (*GlusterBrickAdvancedDetails, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterBrickAdvancedDetails, nil
-}
-
-type glusterHookBuilder struct {
-	glusterHook *GlusterHook
-	err         error
-}
-
-func NewGlusterHookBuilder() *glusterHookBuilder {
-	return &glusterHookBuilder{glusterHook: &GlusterHook{}, err: nil}
-}
-
-func (builder *glusterHookBuilder) Checksum(checksum string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Checksum = &checksum
-	return builder
-}
-
-func (builder *glusterHookBuilder) Cluster(cluster *Cluster) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Cluster = cluster
-	return builder
-}
-
-func (builder *glusterHookBuilder) Comment(comment string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Comment = &comment
-	return builder
-}
-
-func (builder *glusterHookBuilder) ConflictStatus(conflictStatus int64) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.ConflictStatus = &conflictStatus
-	return builder
-}
-
-func (builder *glusterHookBuilder) Conflicts(conflicts string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Conflicts = &conflicts
-	return builder
-}
-
-func (builder *glusterHookBuilder) Content(content string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Content = &content
-	return builder
-}
-
-func (builder *glusterHookBuilder) ContentType(contentType HookContentType) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.ContentType = contentType
-	return builder
-}
-
-func (builder *glusterHookBuilder) Description(description string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Description = &description
-	return builder
-}
-
-func (builder *glusterHookBuilder) GlusterCommand(glusterCommand string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.GlusterCommand = &glusterCommand
-	return builder
-}
-
-func (builder *glusterHookBuilder) Id(id string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Id = &id
-	return builder
-}
-
-func (builder *glusterHookBuilder) Name(name string) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Name = &name
-	return builder
-}
-
-func (builder *glusterHookBuilder) ServerHooks(serverHooks []GlusterServerHook) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.ServerHooks = serverHooks
-	return builder
-}
-
-func (builder *glusterHookBuilder) Stage(stage HookStage) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Stage = stage
-	return builder
-}
-
-func (builder *glusterHookBuilder) Status(status GlusterHookStatus) *glusterHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterHook.Status = status
-	return builder
-}
-
-func (builder *glusterHookBuilder) Build() (*GlusterHook, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterHook, nil
-}
-
-type glusterMemoryPoolBuilder struct {
-	glusterMemoryPool *GlusterMemoryPool
-	err               error
-}
-
-func NewGlusterMemoryPoolBuilder() *glusterMemoryPoolBuilder {
-	return &glusterMemoryPoolBuilder{glusterMemoryPool: &GlusterMemoryPool{}, err: nil}
-}
-
-func (builder *glusterMemoryPoolBuilder) AllocCount(allocCount int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.AllocCount = &allocCount
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) ColdCount(coldCount int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.ColdCount = &coldCount
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Comment(comment string) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.Comment = &comment
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Description(description string) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.Description = &description
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) HotCount(hotCount int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.HotCount = &hotCount
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Id(id string) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.Id = &id
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) MaxAlloc(maxAlloc int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.MaxAlloc = &maxAlloc
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) MaxStdalloc(maxStdalloc int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.MaxStdalloc = &maxStdalloc
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Name(name string) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.Name = &name
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) PaddedSize(paddedSize int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.PaddedSize = &paddedSize
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) PoolMisses(poolMisses int64) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.PoolMisses = &poolMisses
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Type(type_ string) *glusterMemoryPoolBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterMemoryPool.Type = &type_
-	return builder
-}
-
-func (builder *glusterMemoryPoolBuilder) Build() (*GlusterMemoryPool, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterMemoryPool, nil
-}
-
-type glusterServerHookBuilder struct {
-	glusterServerHook *GlusterServerHook
-	err               error
-}
-
-func NewGlusterServerHookBuilder() *glusterServerHookBuilder {
-	return &glusterServerHookBuilder{glusterServerHook: &GlusterServerHook{}, err: nil}
-}
-
-func (builder *glusterServerHookBuilder) Checksum(checksum string) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Checksum = &checksum
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Comment(comment string) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Comment = &comment
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) ContentType(contentType HookContentType) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.ContentType = contentType
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Description(description string) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Description = &description
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Host(host *Host) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Host = host
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Id(id string) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Id = &id
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Name(name string) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Name = &name
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Status(status GlusterHookStatus) *glusterServerHookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterServerHook.Status = status
-	return builder
-}
-
-func (builder *glusterServerHookBuilder) Build() (*GlusterServerHook, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterServerHook, nil
-}
-
-type glusterVolumeBuilder struct {
-	glusterVolume *GlusterVolume
-	err           error
-}
-
-func NewGlusterVolumeBuilder() *glusterVolumeBuilder {
-	return &glusterVolumeBuilder{glusterVolume: &GlusterVolume{}, err: nil}
-}
-
-func (builder *glusterVolumeBuilder) Bricks(bricks []GlusterBrick) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Bricks = bricks
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Cluster(cluster *Cluster) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Cluster = cluster
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Comment(comment string) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Comment = &comment
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Description(description string) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Description = &description
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) DisperseCount(disperseCount int64) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.DisperseCount = &disperseCount
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Id(id string) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Id = &id
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Name(name string) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Name = &name
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Options(options []Option) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Options = options
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) RedundancyCount(redundancyCount int64) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.RedundancyCount = &redundancyCount
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) ReplicaCount(replicaCount int64) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.ReplicaCount = &replicaCount
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Statistics(statistics []Statistic) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Statistics = statistics
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Status(status GlusterVolumeStatus) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.Status = status
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) StripeCount(stripeCount int64) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.StripeCount = &stripeCount
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) TransportTypes(transportTypes []TransportType) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.TransportTypes = transportTypes
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) VolumeType(volumeType GlusterVolumeType) *glusterVolumeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolume.VolumeType = volumeType
-	return builder
-}
-
-func (builder *glusterVolumeBuilder) Build() (*GlusterVolume, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterVolume, nil
-}
-
-type glusterVolumeProfileDetailsBuilder struct {
-	glusterVolumeProfileDetails *GlusterVolumeProfileDetails
-	err                         error
-}
-
-func NewGlusterVolumeProfileDetailsBuilder() *glusterVolumeProfileDetailsBuilder {
-	return &glusterVolumeProfileDetailsBuilder{glusterVolumeProfileDetails: &GlusterVolumeProfileDetails{}, err: nil}
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) BrickProfileDetails(brickProfileDetails []BrickProfileDetail) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.BrickProfileDetails = brickProfileDetails
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) Comment(comment string) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.Comment = &comment
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) Description(description string) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.Description = &description
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) Id(id string) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.Id = &id
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) Name(name string) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.Name = &name
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) NfsProfileDetails(nfsProfileDetails []NfsProfileDetail) *glusterVolumeProfileDetailsBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterVolumeProfileDetails.NfsProfileDetails = nfsProfileDetails
-	return builder
-}
-
-func (builder *glusterVolumeProfileDetailsBuilder) Build() (*GlusterVolumeProfileDetails, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterVolumeProfileDetails, nil
-}
-
-type graphicsConsoleBuilder struct {
-	graphicsConsole *GraphicsConsole
-	err             error
-}
-
-func NewGraphicsConsoleBuilder() *graphicsConsoleBuilder {
-	return &graphicsConsoleBuilder{graphicsConsole: &GraphicsConsole{}, err: nil}
-}
-
-func (builder *graphicsConsoleBuilder) Address(address string) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Address = &address
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Comment(comment string) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Comment = &comment
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Description(description string) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Description = &description
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Id(id string) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Id = &id
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) InstanceType(instanceType *InstanceType) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.InstanceType = instanceType
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Name(name string) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Name = &name
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Port(port int64) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Port = &port
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Protocol(protocol GraphicsType) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Protocol = protocol
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Template(template *Template) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Template = template
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) TlsPort(tlsPort int64) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.TlsPort = &tlsPort
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Vm(vm *Vm) *graphicsConsoleBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.graphicsConsole.Vm = vm
-	return builder
-}
-
-func (builder *graphicsConsoleBuilder) Build() (*GraphicsConsole, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.graphicsConsole, nil
-}
-
-type groupBuilder struct {
-	group *Group
-	err   error
-}
-
-func NewGroupBuilder() *groupBuilder {
-	return &groupBuilder{group: &Group{}, err: nil}
-}
-
-func (builder *groupBuilder) Comment(comment string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Comment = &comment
-	return builder
-}
-
-func (builder *groupBuilder) Description(description string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Description = &description
-	return builder
-}
-
-func (builder *groupBuilder) Domain(domain *Domain) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Domain = domain
-	return builder
-}
-
-func (builder *groupBuilder) DomainEntryId(domainEntryId string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.DomainEntryId = &domainEntryId
-	return builder
-}
-
-func (builder *groupBuilder) Id(id string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Id = &id
-	return builder
-}
-
-func (builder *groupBuilder) Name(name string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Name = &name
-	return builder
-}
-
-func (builder *groupBuilder) Namespace(namespace string) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Namespace = &namespace
-	return builder
-}
-
-func (builder *groupBuilder) Permissions(permissions []Permission) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Permissions = permissions
-	return builder
-}
-
-func (builder *groupBuilder) Roles(roles []Role) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Roles = roles
-	return builder
-}
-
-func (builder *groupBuilder) Tags(tags []Tag) *groupBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.group.Tags = tags
-	return builder
-}
-
-func (builder *groupBuilder) Build() (*Group, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.group, nil
-}
-
-type hookBuilder struct {
-	hook *Hook
-	err  error
-}
-
-func NewHookBuilder() *hookBuilder {
-	return &hookBuilder{hook: &Hook{}, err: nil}
-}
-
-func (builder *hookBuilder) Comment(comment string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Comment = &comment
-	return builder
-}
-
-func (builder *hookBuilder) Description(description string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Description = &description
-	return builder
-}
-
-func (builder *hookBuilder) EventName(eventName string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.EventName = &eventName
-	return builder
-}
-
-func (builder *hookBuilder) Host(host *Host) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Host = host
-	return builder
-}
-
-func (builder *hookBuilder) Id(id string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Id = &id
-	return builder
-}
-
-func (builder *hookBuilder) Md5(md5 string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Md5 = &md5
-	return builder
-}
-
-func (builder *hookBuilder) Name(name string) *hookBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hook.Name = &name
-	return builder
-}
-
-func (builder *hookBuilder) Build() (*Hook, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.hook, nil
-}
-
-type hostBuilder struct {
-	host *Host
-	err  error
-}
-
-func NewHostBuilder() *hostBuilder {
-	return &hostBuilder{host: &Host{}, err: nil}
-}
-
-func (builder *hostBuilder) Address(address string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Address = &address
-	return builder
-}
-
-func (builder *hostBuilder) AffinityLabels(affinityLabels []AffinityLabel) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.AffinityLabels = affinityLabels
-	return builder
-}
-
-func (builder *hostBuilder) Agents(agents []Agent) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Agents = agents
-	return builder
-}
-
-func (builder *hostBuilder) AutoNumaStatus(autoNumaStatus AutoNumaStatus) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.AutoNumaStatus = autoNumaStatus
-	return builder
-}
-
-func (builder *hostBuilder) Certificate(certificate *Certificate) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Certificate = certificate
-	return builder
-}
-
-func (builder *hostBuilder) Cluster(cluster *Cluster) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Cluster = cluster
-	return builder
-}
-
-func (builder *hostBuilder) Comment(comment string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Comment = &comment
-	return builder
-}
-
-func (builder *hostBuilder) Cpu(cpu *Cpu) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Cpu = cpu
-	return builder
-}
-
-func (builder *hostBuilder) Description(description string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Description = &description
-	return builder
-}
-
-func (builder *hostBuilder) DevicePassthrough(devicePassthrough *HostDevicePassthrough) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.DevicePassthrough = devicePassthrough
-	return builder
-}
-
-func (builder *hostBuilder) Devices(devices []Device) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Devices = devices
-	return builder
-}
-
-func (builder *hostBuilder) Display(display *Display) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Display = display
-	return builder
-}
-
-func (builder *hostBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *hostBuilder) ExternalStatus(externalStatus ExternalStatus) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.ExternalStatus = externalStatus
-	return builder
-}
-
-func (builder *hostBuilder) HardwareInformation(hardwareInformation *HardwareInformation) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.HardwareInformation = hardwareInformation
-	return builder
-}
-
-func (builder *hostBuilder) Hooks(hooks []Hook) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Hooks = hooks
-	return builder
-}
-
-func (builder *hostBuilder) HostedEngine(hostedEngine *HostedEngine) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.HostedEngine = hostedEngine
-	return builder
-}
-
-func (builder *hostBuilder) Id(id string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Id = &id
-	return builder
-}
-
-func (builder *hostBuilder) Iscsi(iscsi *IscsiDetails) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Iscsi = iscsi
-	return builder
-}
-
-func (builder *hostBuilder) KatelloErrata(katelloErrata []KatelloErratum) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.KatelloErrata = katelloErrata
-	return builder
-}
-
-func (builder *hostBuilder) KdumpStatus(kdumpStatus KdumpStatus) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.KdumpStatus = kdumpStatus
-	return builder
-}
-
-func (builder *hostBuilder) Ksm(ksm *Ksm) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Ksm = ksm
-	return builder
-}
-
-func (builder *hostBuilder) LibvirtVersion(libvirtVersion *Version) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.LibvirtVersion = libvirtVersion
-	return builder
-}
-
-func (builder *hostBuilder) MaxSchedulingMemory(maxSchedulingMemory int64) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.MaxSchedulingMemory = &maxSchedulingMemory
-	return builder
-}
-
-func (builder *hostBuilder) Memory(memory int64) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Memory = &memory
-	return builder
-}
-
-func (builder *hostBuilder) Name(name string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Name = &name
-	return builder
-}
-
-func (builder *hostBuilder) NetworkAttachments(networkAttachments []NetworkAttachment) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.NetworkAttachments = networkAttachments
-	return builder
-}
-
-func (builder *hostBuilder) Nics(nics []Nic) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Nics = nics
-	return builder
-}
-
-func (builder *hostBuilder) NumaNodes(numaNodes []NumaNode) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.NumaNodes = numaNodes
-	return builder
-}
-
-func (builder *hostBuilder) NumaSupported(numaSupported bool) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.NumaSupported = &numaSupported
-	return builder
-}
-
-func (builder *hostBuilder) Os(os *OperatingSystem) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Os = os
-	return builder
-}
-
-func (builder *hostBuilder) OverrideIptables(overrideIptables bool) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.OverrideIptables = &overrideIptables
-	return builder
-}
-
-func (builder *hostBuilder) Permissions(permissions []Permission) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Permissions = permissions
-	return builder
-}
-
-func (builder *hostBuilder) Port(port int64) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Port = &port
-	return builder
-}
-
-func (builder *hostBuilder) PowerManagement(powerManagement *PowerManagement) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.PowerManagement = powerManagement
-	return builder
-}
-
-func (builder *hostBuilder) Protocol(protocol HostProtocol) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Protocol = protocol
-	return builder
-}
-
-func (builder *hostBuilder) RootPassword(rootPassword string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.RootPassword = &rootPassword
-	return builder
-}
-
-func (builder *hostBuilder) SeLinux(seLinux *SeLinux) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.SeLinux = seLinux
-	return builder
-}
-
-func (builder *hostBuilder) Spm(spm *Spm) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Spm = spm
-	return builder
-}
-
-func (builder *hostBuilder) Ssh(ssh *Ssh) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Ssh = ssh
-	return builder
-}
-
-func (builder *hostBuilder) Statistics(statistics []Statistic) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Statistics = statistics
-	return builder
-}
-
-func (builder *hostBuilder) Status(status HostStatus) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Status = status
-	return builder
-}
-
-func (builder *hostBuilder) StatusDetail(statusDetail string) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.StatusDetail = &statusDetail
-	return builder
-}
-
-func (builder *hostBuilder) StorageConnectionExtensions(storageConnectionExtensions []StorageConnectionExtension) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.StorageConnectionExtensions = storageConnectionExtensions
-	return builder
-}
-
-func (builder *hostBuilder) Storages(storages []HostStorage) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Storages = storages
-	return builder
-}
-
-func (builder *hostBuilder) Summary(summary *VmSummary) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Summary = summary
-	return builder
-}
-
-func (builder *hostBuilder) Tags(tags []Tag) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Tags = tags
-	return builder
-}
-
-func (builder *hostBuilder) TransparentHugePages(transparentHugePages *TransparentHugePages) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.TransparentHugePages = transparentHugePages
-	return builder
-}
-
-func (builder *hostBuilder) Type(type_ HostType) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Type = type_
-	return builder
-}
-
-func (builder *hostBuilder) UnmanagedNetworks(unmanagedNetworks []UnmanagedNetwork) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.UnmanagedNetworks = unmanagedNetworks
-	return builder
-}
-
-func (builder *hostBuilder) UpdateAvailable(updateAvailable bool) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.UpdateAvailable = &updateAvailable
-	return builder
-}
-
-func (builder *hostBuilder) Version(version *Version) *hostBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.host.Version = version
-	return builder
-}
-
-func (builder *hostBuilder) Build() (*Host, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.host, nil
-}
-
-type hostDeviceBuilder struct {
-	hostDevice *HostDevice
-	err        error
-}
-
-func NewHostDeviceBuilder() *hostDeviceBuilder {
-	return &hostDeviceBuilder{hostDevice: &HostDevice{}, err: nil}
-}
-
-func (builder *hostDeviceBuilder) Capability(capability string) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Capability = &capability
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Comment(comment string) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Comment = &comment
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Description(description string) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Description = &description
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Host(host *Host) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Host = host
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Id(id string) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Id = &id
-	return builder
-}
-
-func (builder *hostDeviceBuilder) IommuGroup(iommuGroup int64) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.IommuGroup = &iommuGroup
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Name(name string) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Name = &name
-	return builder
-}
-
-func (builder *hostDeviceBuilder) ParentDevice(parentDevice *HostDevice) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.ParentDevice = parentDevice
-	return builder
-}
-
-func (builder *hostDeviceBuilder) PhysicalFunction(physicalFunction *HostDevice) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.PhysicalFunction = physicalFunction
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Placeholder(placeholder bool) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Placeholder = &placeholder
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Product(product *Product) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Product = product
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Vendor(vendor *Vendor) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Vendor = vendor
-	return builder
-}
-
-func (builder *hostDeviceBuilder) VirtualFunctions(virtualFunctions int64) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.VirtualFunctions = &virtualFunctions
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Vm(vm *Vm) *hostDeviceBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostDevice.Vm = vm
-	return builder
-}
-
-func (builder *hostDeviceBuilder) Build() (*HostDevice, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.hostDevice, nil
-}
-
-type hostNicBuilder struct {
-	hostNic *HostNic
-	err     error
-}
-
-func NewHostNicBuilder() *hostNicBuilder {
-	return &hostNicBuilder{hostNic: &HostNic{}, err: nil}
-}
-
-func (builder *hostNicBuilder) AdAggregatorId(adAggregatorId int64) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.AdAggregatorId = &adAggregatorId
-	return builder
-}
-
-func (builder *hostNicBuilder) BaseInterface(baseInterface string) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.BaseInterface = &baseInterface
-	return builder
-}
-
-func (builder *hostNicBuilder) Bonding(bonding *Bonding) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Bonding = bonding
-	return builder
-}
-
-func (builder *hostNicBuilder) BootProtocol(bootProtocol BootProtocol) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.BootProtocol = bootProtocol
-	return builder
-}
-
-func (builder *hostNicBuilder) Bridged(bridged bool) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Bridged = &bridged
-	return builder
-}
-
-func (builder *hostNicBuilder) CheckConnectivity(checkConnectivity bool) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.CheckConnectivity = &checkConnectivity
-	return builder
-}
-
-func (builder *hostNicBuilder) Comment(comment string) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Comment = &comment
-	return builder
-}
-
-func (builder *hostNicBuilder) CustomConfiguration(customConfiguration bool) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.CustomConfiguration = &customConfiguration
-	return builder
-}
-
-func (builder *hostNicBuilder) Description(description string) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Description = &description
-	return builder
-}
-
-func (builder *hostNicBuilder) Host(host *Host) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Host = host
-	return builder
-}
-
-func (builder *hostNicBuilder) Id(id string) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Id = &id
-	return builder
-}
-
-func (builder *hostNicBuilder) Ip(ip *Ip) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Ip = ip
-	return builder
-}
-
-func (builder *hostNicBuilder) Ipv6(ipv6 *Ip) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Ipv6 = ipv6
-	return builder
-}
-
-func (builder *hostNicBuilder) Ipv6BootProtocol(ipv6BootProtocol BootProtocol) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Ipv6BootProtocol = ipv6BootProtocol
-	return builder
-}
-
-func (builder *hostNicBuilder) Mac(mac *Mac) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Mac = mac
-	return builder
-}
-
-func (builder *hostNicBuilder) Mtu(mtu int64) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Mtu = &mtu
-	return builder
-}
-
-func (builder *hostNicBuilder) Name(name string) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Name = &name
-	return builder
-}
-
-func (builder *hostNicBuilder) Network(network *Network) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Network = network
-	return builder
-}
-
-func (builder *hostNicBuilder) NetworkLabels(networkLabels []NetworkLabel) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.NetworkLabels = networkLabels
-	return builder
-}
-
-func (builder *hostNicBuilder) OverrideConfiguration(overrideConfiguration bool) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.OverrideConfiguration = &overrideConfiguration
-	return builder
-}
-
-func (builder *hostNicBuilder) PhysicalFunction(physicalFunction *HostNic) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.PhysicalFunction = physicalFunction
-	return builder
-}
-
-func (builder *hostNicBuilder) Properties(properties []Property) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Properties = properties
-	return builder
-}
-
-func (builder *hostNicBuilder) Qos(qos *Qos) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Qos = qos
-	return builder
-}
-
-func (builder *hostNicBuilder) Speed(speed int64) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Speed = &speed
-	return builder
-}
-
-func (builder *hostNicBuilder) Statistics(statistics []Statistic) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Statistics = statistics
-	return builder
-}
-
-func (builder *hostNicBuilder) Status(status NicStatus) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Status = status
-	return builder
-}
-
-func (builder *hostNicBuilder) VirtualFunctionsConfiguration(virtualFunctionsConfiguration *HostNicVirtualFunctionsConfiguration) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.VirtualFunctionsConfiguration = virtualFunctionsConfiguration
-	return builder
-}
-
-func (builder *hostNicBuilder) Vlan(vlan *Vlan) *hostNicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostNic.Vlan = vlan
-	return builder
-}
-
-func (builder *hostNicBuilder) Build() (*HostNic, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.hostNic, nil
-}
-
-type hostStorageBuilder struct {
-	hostStorage *HostStorage
-	err         error
-}
-
-func NewHostStorageBuilder() *hostStorageBuilder {
-	return &hostStorageBuilder{hostStorage: &HostStorage{}, err: nil}
-}
-
-func (builder *hostStorageBuilder) Address(address string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Address = &address
-	return builder
-}
-
-func (builder *hostStorageBuilder) Comment(comment string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Comment = &comment
-	return builder
-}
-
-func (builder *hostStorageBuilder) Description(description string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Description = &description
-	return builder
-}
-
-func (builder *hostStorageBuilder) Host(host *Host) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Host = host
-	return builder
-}
-
-func (builder *hostStorageBuilder) Id(id string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Id = &id
-	return builder
-}
-
-func (builder *hostStorageBuilder) LogicalUnits(logicalUnits []LogicalUnit) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.LogicalUnits = logicalUnits
-	return builder
-}
-
-func (builder *hostStorageBuilder) MountOptions(mountOptions string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.MountOptions = &mountOptions
-	return builder
-}
-
-func (builder *hostStorageBuilder) Name(name string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Name = &name
-	return builder
-}
-
-func (builder *hostStorageBuilder) NfsRetrans(nfsRetrans int64) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.NfsRetrans = &nfsRetrans
-	return builder
-}
-
-func (builder *hostStorageBuilder) NfsTimeo(nfsTimeo int64) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.NfsTimeo = &nfsTimeo
-	return builder
-}
-
-func (builder *hostStorageBuilder) NfsVersion(nfsVersion NfsVersion) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.NfsVersion = nfsVersion
-	return builder
-}
-
-func (builder *hostStorageBuilder) OverrideLuns(overrideLuns bool) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.OverrideLuns = &overrideLuns
-	return builder
-}
-
-func (builder *hostStorageBuilder) Password(password string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Password = &password
-	return builder
-}
-
-func (builder *hostStorageBuilder) Path(path string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Path = &path
-	return builder
-}
-
-func (builder *hostStorageBuilder) Port(port int64) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Port = &port
-	return builder
-}
-
-func (builder *hostStorageBuilder) Portal(portal string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Portal = &portal
-	return builder
-}
-
-func (builder *hostStorageBuilder) Target(target string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Target = &target
-	return builder
-}
-
-func (builder *hostStorageBuilder) Type(type_ StorageType) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Type = type_
-	return builder
-}
-
-func (builder *hostStorageBuilder) Username(username string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.Username = &username
-	return builder
-}
-
-func (builder *hostStorageBuilder) VfsType(vfsType string) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.VfsType = &vfsType
-	return builder
-}
-
-func (builder *hostStorageBuilder) VolumeGroup(volumeGroup *VolumeGroup) *hostStorageBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.hostStorage.VolumeGroup = volumeGroup
-	return builder
-}
-
-func (builder *hostStorageBuilder) Build() (*HostStorage, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.hostStorage, nil
-}
-
-type iconBuilder struct {
-	icon *Icon
-	err  error
-}
-
-func NewIconBuilder() *iconBuilder {
-	return &iconBuilder{icon: &Icon{}, err: nil}
-}
-
-func (builder *iconBuilder) Comment(comment string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.Comment = &comment
-	return builder
-}
-
-func (builder *iconBuilder) Data(data string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.Data = &data
-	return builder
-}
-
-func (builder *iconBuilder) Description(description string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.Description = &description
-	return builder
-}
-
-func (builder *iconBuilder) Id(id string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.Id = &id
-	return builder
-}
-
-func (builder *iconBuilder) MediaType(mediaType string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.MediaType = &mediaType
-	return builder
-}
-
-func (builder *iconBuilder) Name(name string) *iconBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.icon.Name = &name
-	return builder
-}
-
-func (builder *iconBuilder) Build() (*Icon, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.icon, nil
-}
-
-type nicBuilder struct {
-	nic *Nic
-	err error
-}
-
-func NewNicBuilder() *nicBuilder {
-	return &nicBuilder{nic: &Nic{}, err: nil}
-}
-
-func (builder *nicBuilder) BootProtocol(bootProtocol BootProtocol) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.BootProtocol = bootProtocol
-	return builder
-}
-
-func (builder *nicBuilder) Comment(comment string) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Comment = &comment
-	return builder
-}
-
-func (builder *nicBuilder) Description(description string) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Description = &description
-	return builder
-}
-
-func (builder *nicBuilder) Id(id string) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Id = &id
-	return builder
-}
-
-func (builder *nicBuilder) InstanceType(instanceType *InstanceType) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.InstanceType = instanceType
-	return builder
-}
-
-func (builder *nicBuilder) Interface(interface_ NicInterface) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Interface = interface_
-	return builder
-}
-
-func (builder *nicBuilder) Linked(linked bool) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Linked = &linked
-	return builder
-}
-
-func (builder *nicBuilder) Mac(mac *Mac) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Mac = mac
-	return builder
-}
-
-func (builder *nicBuilder) Name(name string) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Name = &name
-	return builder
-}
-
-func (builder *nicBuilder) Network(network *Network) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Network = network
-	return builder
-}
-
-func (builder *nicBuilder) NetworkAttachments(networkAttachments []NetworkAttachment) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.NetworkAttachments = networkAttachments
-	return builder
-}
-
-func (builder *nicBuilder) NetworkFilterParameters(networkFilterParameters []NetworkFilterParameter) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.NetworkFilterParameters = networkFilterParameters
-	return builder
-}
-
-func (builder *nicBuilder) NetworkLabels(networkLabels []NetworkLabel) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.NetworkLabels = networkLabels
-	return builder
-}
-
-func (builder *nicBuilder) OnBoot(onBoot bool) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.OnBoot = &onBoot
-	return builder
-}
-
-func (builder *nicBuilder) Plugged(plugged bool) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Plugged = &plugged
-	return builder
-}
-
-func (builder *nicBuilder) ReportedDevices(reportedDevices []ReportedDevice) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.ReportedDevices = reportedDevices
-	return builder
-}
-
-func (builder *nicBuilder) Statistics(statistics []Statistic) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Statistics = statistics
-	return builder
-}
-
-func (builder *nicBuilder) Template(template *Template) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Template = template
-	return builder
-}
-
-func (builder *nicBuilder) VirtualFunctionAllowedLabels(virtualFunctionAllowedLabels []NetworkLabel) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.VirtualFunctionAllowedLabels = virtualFunctionAllowedLabels
-	return builder
-}
-
-func (builder *nicBuilder) VirtualFunctionAllowedNetworks(virtualFunctionAllowedNetworks []Network) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.VirtualFunctionAllowedNetworks = virtualFunctionAllowedNetworks
-	return builder
-}
-
-func (builder *nicBuilder) Vm(vm *Vm) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Vm = vm
-	return builder
-}
-
-func (builder *nicBuilder) Vms(vms []Vm) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.Vms = vms
-	return builder
-}
-
-func (builder *nicBuilder) VnicProfile(vnicProfile *VnicProfile) *nicBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.nic.VnicProfile = vnicProfile
-	return builder
-}
-
-func (builder *nicBuilder) Build() (*Nic, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.nic, nil
-}
-
-type openStackProviderBuilder struct {
-	openStackProvider *OpenStackProvider
-	err               error
-}
-
-func NewOpenStackProviderBuilder() *openStackProviderBuilder {
-	return &openStackProviderBuilder{openStackProvider: &OpenStackProvider{}, err: nil}
-}
-
-func (builder *openStackProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Comment(comment string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Comment = &comment
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Description(description string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Description = &description
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Id(id string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Id = &id
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Name(name string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Name = &name
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Password(password string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Password = &password
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Properties(properties []Property) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Properties = properties
-	return builder
-}
-
-func (builder *openStackProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *openStackProviderBuilder) TenantName(tenantName string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.TenantName = &tenantName
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Url(url string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Url = &url
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Username(username string) *openStackProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackProvider.Username = &username
-	return builder
-}
-
-func (builder *openStackProviderBuilder) Build() (*OpenStackProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.openStackProvider, nil
-}
-
-type openStackVolumeProviderBuilder struct {
-	openStackVolumeProvider *OpenStackVolumeProvider
-	err                     error
-}
-
-func NewOpenStackVolumeProviderBuilder() *openStackVolumeProviderBuilder {
-	return &openStackVolumeProviderBuilder{openStackVolumeProvider: &OpenStackVolumeProvider{}, err: nil}
-}
-
-func (builder *openStackVolumeProviderBuilder) AuthenticationKeys(authenticationKeys []OpenstackVolumeAuthenticationKey) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.AuthenticationKeys = authenticationKeys
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Certificates(certificates []Certificate) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Certificates = certificates
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Comment(comment string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Comment = &comment
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) DataCenter(dataCenter *DataCenter) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.DataCenter = dataCenter
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Description(description string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Description = &description
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Id(id string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Id = &id
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Name(name string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Name = &name
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Password(password string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Password = &password
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Properties(properties []Property) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Properties = properties
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) TenantName(tenantName string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.TenantName = &tenantName
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Url(url string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Url = &url
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Username(username string) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.Username = &username
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) VolumeTypes(volumeTypes []OpenStackVolumeType) *openStackVolumeProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackVolumeProvider.VolumeTypes = volumeTypes
-	return builder
-}
-
-func (builder *openStackVolumeProviderBuilder) Build() (*OpenStackVolumeProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.openStackVolumeProvider, nil
-}
-
-type templateBuilder struct {
-	template *Template
-	err      error
-}
-
-func NewTemplateBuilder() *templateBuilder {
-	return &templateBuilder{template: &Template{}, err: nil}
-}
-
-func (builder *templateBuilder) Bios(bios *Bios) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Bios = bios
-	return builder
-}
-
-func (builder *templateBuilder) Cdroms(cdroms []Cdrom) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Cdroms = cdroms
-	return builder
-}
-
-func (builder *templateBuilder) Cluster(cluster *Cluster) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Cluster = cluster
-	return builder
-}
-
-func (builder *templateBuilder) Comment(comment string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Comment = &comment
-	return builder
-}
-
-func (builder *templateBuilder) Console(console *Console) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Console = console
-	return builder
-}
-
-func (builder *templateBuilder) Cpu(cpu *Cpu) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Cpu = cpu
-	return builder
-}
-
-func (builder *templateBuilder) CpuProfile(cpuProfile *CpuProfile) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CpuProfile = cpuProfile
-	return builder
-}
-
-func (builder *templateBuilder) CpuShares(cpuShares int64) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CpuShares = &cpuShares
-	return builder
-}
-
-func (builder *templateBuilder) CreationTime(creationTime time.Time) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CreationTime = creationTime
-	return builder
-}
-
-func (builder *templateBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CustomCompatibilityVersion = customCompatibilityVersion
-	return builder
-}
-
-func (builder *templateBuilder) CustomCpuModel(customCpuModel string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CustomCpuModel = &customCpuModel
-	return builder
-}
-
-func (builder *templateBuilder) CustomEmulatedMachine(customEmulatedMachine string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CustomEmulatedMachine = &customEmulatedMachine
-	return builder
-}
-
-func (builder *templateBuilder) CustomProperties(customProperties []CustomProperty) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.CustomProperties = customProperties
-	return builder
-}
-
-func (builder *templateBuilder) DeleteProtected(deleteProtected bool) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.DeleteProtected = &deleteProtected
-	return builder
-}
-
-func (builder *templateBuilder) Description(description string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Description = &description
-	return builder
-}
-
-func (builder *templateBuilder) DiskAttachments(diskAttachments []DiskAttachment) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.DiskAttachments = diskAttachments
-	return builder
-}
-
-func (builder *templateBuilder) Display(display *Display) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Display = display
-	return builder
-}
-
-func (builder *templateBuilder) Domain(domain *Domain) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Domain = domain
-	return builder
-}
-
-func (builder *templateBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.GraphicsConsoles = graphicsConsoles
-	return builder
-}
-
-func (builder *templateBuilder) HighAvailability(highAvailability *HighAvailability) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.HighAvailability = highAvailability
-	return builder
-}
-
-func (builder *templateBuilder) Id(id string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Id = &id
-	return builder
-}
-
-func (builder *templateBuilder) Initialization(initialization *Initialization) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Initialization = initialization
-	return builder
-}
-
-func (builder *templateBuilder) Io(io *Io) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Io = io
-	return builder
-}
-
-func (builder *templateBuilder) LargeIcon(largeIcon *Icon) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.LargeIcon = largeIcon
-	return builder
-}
-
-func (builder *templateBuilder) Lease(lease *StorageDomainLease) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Lease = lease
-	return builder
-}
-
-func (builder *templateBuilder) Memory(memory int64) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Memory = &memory
-	return builder
-}
-
-func (builder *templateBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.MemoryPolicy = memoryPolicy
-	return builder
-}
-
-func (builder *templateBuilder) Migration(migration *MigrationOptions) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Migration = migration
-	return builder
-}
-
-func (builder *templateBuilder) MigrationDowntime(migrationDowntime int64) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.MigrationDowntime = &migrationDowntime
-	return builder
-}
-
-func (builder *templateBuilder) Name(name string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Name = &name
-	return builder
-}
-
-func (builder *templateBuilder) Nics(nics []Nic) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Nics = nics
-	return builder
-}
-
-func (builder *templateBuilder) Origin(origin string) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Origin = &origin
-	return builder
-}
-
-func (builder *templateBuilder) Os(os *OperatingSystem) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Os = os
-	return builder
-}
-
-func (builder *templateBuilder) Permissions(permissions []Permission) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Permissions = permissions
-	return builder
-}
-
-func (builder *templateBuilder) Quota(quota *Quota) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Quota = quota
-	return builder
-}
-
-func (builder *templateBuilder) RngDevice(rngDevice *RngDevice) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.RngDevice = rngDevice
-	return builder
-}
-
-func (builder *templateBuilder) SerialNumber(serialNumber *SerialNumber) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.SerialNumber = serialNumber
-	return builder
-}
-
-func (builder *templateBuilder) SmallIcon(smallIcon *Icon) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.SmallIcon = smallIcon
-	return builder
-}
-
-func (builder *templateBuilder) SoundcardEnabled(soundcardEnabled bool) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.SoundcardEnabled = &soundcardEnabled
-	return builder
-}
-
-func (builder *templateBuilder) Sso(sso *Sso) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Sso = sso
-	return builder
-}
-
-func (builder *templateBuilder) StartPaused(startPaused bool) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.StartPaused = &startPaused
-	return builder
-}
-
-func (builder *templateBuilder) Stateless(stateless bool) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Stateless = &stateless
-	return builder
-}
-
-func (builder *templateBuilder) Status(status TemplateStatus) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Status = status
-	return builder
-}
-
-func (builder *templateBuilder) StorageDomain(storageDomain *StorageDomain) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *templateBuilder) Tags(tags []Tag) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Tags = tags
-	return builder
-}
-
-func (builder *templateBuilder) TimeZone(timeZone *TimeZone) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.TimeZone = timeZone
-	return builder
-}
-
-func (builder *templateBuilder) TunnelMigration(tunnelMigration bool) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.TunnelMigration = &tunnelMigration
-	return builder
-}
-
-func (builder *templateBuilder) Type(type_ VmType) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Type = type_
-	return builder
-}
-
-func (builder *templateBuilder) Usb(usb *Usb) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Usb = usb
-	return builder
-}
-
-func (builder *templateBuilder) Version(version *TemplateVersion) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Version = version
-	return builder
-}
-
-func (builder *templateBuilder) VirtioScsi(virtioScsi *VirtioScsi) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.VirtioScsi = virtioScsi
-	return builder
-}
-
-func (builder *templateBuilder) Vm(vm *Vm) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Vm = vm
-	return builder
-}
-
-func (builder *templateBuilder) Watchdogs(watchdogs []Watchdog) *templateBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.template.Watchdogs = watchdogs
-	return builder
-}
-
-func (builder *templateBuilder) Build() (*Template, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.template, nil
-}
-
-type vmBuilder struct {
-	vm  *Vm
-	err error
-}
-
-func NewVmBuilder() *vmBuilder {
-	return &vmBuilder{vm: &Vm{}, err: nil}
-}
-
-func (builder *vmBuilder) AffinityLabels(affinityLabels []AffinityLabel) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.AffinityLabels = affinityLabels
-	return builder
-}
-
-func (builder *vmBuilder) Applications(applications []Application) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Applications = applications
-	return builder
-}
-
-func (builder *vmBuilder) Bios(bios *Bios) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Bios = bios
-	return builder
-}
-
-func (builder *vmBuilder) Cdroms(cdroms []Cdrom) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Cdroms = cdroms
-	return builder
-}
-
-func (builder *vmBuilder) Cluster(cluster *Cluster) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Cluster = cluster
-	return builder
-}
-
-func (builder *vmBuilder) Comment(comment string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Comment = &comment
-	return builder
-}
-
-func (builder *vmBuilder) Console(console *Console) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Console = console
-	return builder
-}
-
-func (builder *vmBuilder) Cpu(cpu *Cpu) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Cpu = cpu
-	return builder
-}
-
-func (builder *vmBuilder) CpuProfile(cpuProfile *CpuProfile) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CpuProfile = cpuProfile
-	return builder
-}
-
-func (builder *vmBuilder) CpuShares(cpuShares int64) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CpuShares = &cpuShares
-	return builder
-}
-
-func (builder *vmBuilder) CreationTime(creationTime time.Time) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CreationTime = creationTime
-	return builder
-}
-
-func (builder *vmBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CustomCompatibilityVersion = customCompatibilityVersion
-	return builder
-}
-
-func (builder *vmBuilder) CustomCpuModel(customCpuModel string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CustomCpuModel = &customCpuModel
-	return builder
-}
-
-func (builder *vmBuilder) CustomEmulatedMachine(customEmulatedMachine string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CustomEmulatedMachine = &customEmulatedMachine
-	return builder
-}
-
-func (builder *vmBuilder) CustomProperties(customProperties []CustomProperty) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.CustomProperties = customProperties
-	return builder
-}
-
-func (builder *vmBuilder) DeleteProtected(deleteProtected bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.DeleteProtected = &deleteProtected
-	return builder
-}
-
-func (builder *vmBuilder) Description(description string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Description = &description
-	return builder
-}
-
-func (builder *vmBuilder) DiskAttachments(diskAttachments []DiskAttachment) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.DiskAttachments = diskAttachments
-	return builder
-}
-
-func (builder *vmBuilder) Display(display *Display) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Display = display
-	return builder
-}
-
-func (builder *vmBuilder) Domain(domain *Domain) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Domain = domain
-	return builder
-}
-
-func (builder *vmBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *vmBuilder) Floppies(floppies []Floppy) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Floppies = floppies
-	return builder
-}
-
-func (builder *vmBuilder) Fqdn(fqdn string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Fqdn = &fqdn
-	return builder
-}
-
-func (builder *vmBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.GraphicsConsoles = graphicsConsoles
-	return builder
-}
-
-func (builder *vmBuilder) GuestOperatingSystem(guestOperatingSystem *GuestOperatingSystem) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.GuestOperatingSystem = guestOperatingSystem
-	return builder
-}
-
-func (builder *vmBuilder) GuestTimeZone(guestTimeZone *TimeZone) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.GuestTimeZone = guestTimeZone
-	return builder
-}
-
-func (builder *vmBuilder) HighAvailability(highAvailability *HighAvailability) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.HighAvailability = highAvailability
-	return builder
-}
-
-func (builder *vmBuilder) Host(host *Host) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Host = host
-	return builder
-}
-
-func (builder *vmBuilder) HostDevices(hostDevices []HostDevice) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.HostDevices = hostDevices
-	return builder
-}
-
-func (builder *vmBuilder) Id(id string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Id = &id
-	return builder
-}
-
-func (builder *vmBuilder) Initialization(initialization *Initialization) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Initialization = initialization
-	return builder
-}
-
-func (builder *vmBuilder) InstanceType(instanceType *InstanceType) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.InstanceType = instanceType
-	return builder
-}
-
-func (builder *vmBuilder) Io(io *Io) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Io = io
-	return builder
-}
-
-func (builder *vmBuilder) KatelloErrata(katelloErrata []KatelloErratum) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.KatelloErrata = katelloErrata
-	return builder
-}
-
-func (builder *vmBuilder) LargeIcon(largeIcon *Icon) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.LargeIcon = largeIcon
-	return builder
-}
-
-func (builder *vmBuilder) Lease(lease *StorageDomainLease) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Lease = lease
-	return builder
-}
-
-func (builder *vmBuilder) Memory(memory int64) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Memory = &memory
-	return builder
-}
-
-func (builder *vmBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.MemoryPolicy = memoryPolicy
-	return builder
-}
-
-func (builder *vmBuilder) Migration(migration *MigrationOptions) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Migration = migration
-	return builder
-}
-
-func (builder *vmBuilder) MigrationDowntime(migrationDowntime int64) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.MigrationDowntime = &migrationDowntime
-	return builder
-}
-
-func (builder *vmBuilder) Name(name string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Name = &name
-	return builder
-}
-
-func (builder *vmBuilder) NextRunConfigurationExists(nextRunConfigurationExists bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.NextRunConfigurationExists = &nextRunConfigurationExists
-	return builder
-}
-
-func (builder *vmBuilder) Nics(nics []Nic) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Nics = nics
-	return builder
-}
-
-func (builder *vmBuilder) NumaNodes(numaNodes []NumaNode) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.NumaNodes = numaNodes
-	return builder
-}
-
-func (builder *vmBuilder) NumaTuneMode(numaTuneMode NumaTuneMode) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.NumaTuneMode = numaTuneMode
-	return builder
-}
-
-func (builder *vmBuilder) Origin(origin string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Origin = &origin
-	return builder
-}
-
-func (builder *vmBuilder) OriginalTemplate(originalTemplate *Template) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.OriginalTemplate = originalTemplate
-	return builder
-}
-
-func (builder *vmBuilder) Os(os *OperatingSystem) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Os = os
-	return builder
-}
-
-func (builder *vmBuilder) Payloads(payloads []Payload) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Payloads = payloads
-	return builder
-}
-
-func (builder *vmBuilder) Permissions(permissions []Permission) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Permissions = permissions
-	return builder
-}
-
-func (builder *vmBuilder) PlacementPolicy(placementPolicy *VmPlacementPolicy) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.PlacementPolicy = placementPolicy
-	return builder
-}
-
-func (builder *vmBuilder) Quota(quota *Quota) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Quota = quota
-	return builder
-}
-
-func (builder *vmBuilder) ReportedDevices(reportedDevices []ReportedDevice) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.ReportedDevices = reportedDevices
-	return builder
-}
-
-func (builder *vmBuilder) RngDevice(rngDevice *RngDevice) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.RngDevice = rngDevice
-	return builder
-}
-
-func (builder *vmBuilder) RunOnce(runOnce bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.RunOnce = &runOnce
-	return builder
-}
-
-func (builder *vmBuilder) SerialNumber(serialNumber *SerialNumber) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.SerialNumber = serialNumber
-	return builder
-}
-
-func (builder *vmBuilder) Sessions(sessions []Session) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Sessions = sessions
-	return builder
-}
-
-func (builder *vmBuilder) SmallIcon(smallIcon *Icon) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.SmallIcon = smallIcon
-	return builder
-}
-
-func (builder *vmBuilder) Snapshots(snapshots []Snapshot) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Snapshots = snapshots
-	return builder
-}
-
-func (builder *vmBuilder) SoundcardEnabled(soundcardEnabled bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.SoundcardEnabled = &soundcardEnabled
-	return builder
-}
-
-func (builder *vmBuilder) Sso(sso *Sso) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Sso = sso
-	return builder
-}
-
-func (builder *vmBuilder) StartPaused(startPaused bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StartPaused = &startPaused
-	return builder
-}
-
-func (builder *vmBuilder) StartTime(startTime time.Time) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StartTime = startTime
-	return builder
-}
-
-func (builder *vmBuilder) Stateless(stateless bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Stateless = &stateless
-	return builder
-}
-
-func (builder *vmBuilder) Statistics(statistics []Statistic) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Statistics = statistics
-	return builder
-}
-
-func (builder *vmBuilder) Status(status VmStatus) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Status = status
-	return builder
-}
-
-func (builder *vmBuilder) StatusDetail(statusDetail string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StatusDetail = &statusDetail
-	return builder
-}
-
-func (builder *vmBuilder) StopReason(stopReason string) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StopReason = &stopReason
-	return builder
-}
-
-func (builder *vmBuilder) StopTime(stopTime time.Time) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StopTime = stopTime
-	return builder
-}
-
-func (builder *vmBuilder) StorageDomain(storageDomain *StorageDomain) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *vmBuilder) Tags(tags []Tag) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Tags = tags
-	return builder
-}
-
-func (builder *vmBuilder) Template(template *Template) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Template = template
-	return builder
-}
-
-func (builder *vmBuilder) TimeZone(timeZone *TimeZone) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.TimeZone = timeZone
-	return builder
-}
-
-func (builder *vmBuilder) TunnelMigration(tunnelMigration bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.TunnelMigration = &tunnelMigration
-	return builder
-}
-
-func (builder *vmBuilder) Type(type_ VmType) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Type = type_
-	return builder
-}
-
-func (builder *vmBuilder) Usb(usb *Usb) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Usb = usb
-	return builder
-}
-
-func (builder *vmBuilder) UseLatestTemplateVersion(useLatestTemplateVersion bool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.UseLatestTemplateVersion = &useLatestTemplateVersion
-	return builder
-}
-
-func (builder *vmBuilder) VirtioScsi(virtioScsi *VirtioScsi) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.VirtioScsi = virtioScsi
-	return builder
-}
-
-func (builder *vmBuilder) VmPool(vmPool *VmPool) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.VmPool = vmPool
-	return builder
-}
-
-func (builder *vmBuilder) Watchdogs(watchdogs []Watchdog) *vmBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.vm.Watchdogs = watchdogs
-	return builder
-}
-
-func (builder *vmBuilder) Build() (*Vm, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.vm, nil
-}
-
 type watchdogBuilder struct {
 	watchdog *Watchdog
 	err      error
@@ -21487,2033 +23437,83 @@ func (builder *watchdogBuilder) Build() (*Watchdog, error) {
 	return builder.watchdog, nil
 }
 
-type cdromBuilder struct {
-	cdrom *Cdrom
-	err   error
+type weightBuilder struct {
+	weight *Weight
+	err    error
 }
 
-func NewCdromBuilder() *cdromBuilder {
-	return &cdromBuilder{cdrom: &Cdrom{}, err: nil}
+func NewWeightBuilder() *weightBuilder {
+	return &weightBuilder{weight: &Weight{}, err: nil}
 }
 
-func (builder *cdromBuilder) Comment(comment string) *cdromBuilder {
+func (builder *weightBuilder) Comment(comment string) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.Comment = &comment
+	builder.weight.Comment = &comment
 	return builder
 }
 
-func (builder *cdromBuilder) Description(description string) *cdromBuilder {
+func (builder *weightBuilder) Description(description string) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.Description = &description
+	builder.weight.Description = &description
 	return builder
 }
 
-func (builder *cdromBuilder) File(file *File) *cdromBuilder {
+func (builder *weightBuilder) Factor(factor int64) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.File = file
+	builder.weight.Factor = &factor
 	return builder
 }
 
-func (builder *cdromBuilder) Id(id string) *cdromBuilder {
+func (builder *weightBuilder) Id(id string) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.Id = &id
+	builder.weight.Id = &id
 	return builder
 }
 
-func (builder *cdromBuilder) InstanceType(instanceType *InstanceType) *cdromBuilder {
+func (builder *weightBuilder) Name(name string) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.InstanceType = instanceType
+	builder.weight.Name = &name
 	return builder
 }
 
-func (builder *cdromBuilder) Name(name string) *cdromBuilder {
+func (builder *weightBuilder) SchedulingPolicy(schedulingPolicy *SchedulingPolicy) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.Name = &name
+	builder.weight.SchedulingPolicy = schedulingPolicy
 	return builder
 }
 
-func (builder *cdromBuilder) Template(template *Template) *cdromBuilder {
+func (builder *weightBuilder) SchedulingPolicyUnit(schedulingPolicyUnit *SchedulingPolicyUnit) *weightBuilder {
 	if builder.err != nil {
 		return builder
 	}
 
-	builder.cdrom.Template = template
+	builder.weight.SchedulingPolicyUnit = schedulingPolicyUnit
 	return builder
 }
 
-func (builder *cdromBuilder) Vm(vm *Vm) *cdromBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cdrom.Vm = vm
-	return builder
-}
-
-func (builder *cdromBuilder) Vms(vms []Vm) *cdromBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.cdrom.Vms = vms
-	return builder
-}
-
-func (builder *cdromBuilder) Build() (*Cdrom, error) {
+func (builder *weightBuilder) Build() (*Weight, error) {
 	if builder.err != nil {
 		return nil, builder.err
 	}
-	return builder.cdrom, nil
-}
-
-type externalHostProviderBuilder struct {
-	externalHostProvider *ExternalHostProvider
-	err                  error
-}
-
-func NewExternalHostProviderBuilder() *externalHostProviderBuilder {
-	return &externalHostProviderBuilder{externalHostProvider: &ExternalHostProvider{}, err: nil}
-}
-
-func (builder *externalHostProviderBuilder) AuthenticationUrl(authenticationUrl string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Certificates(certificates []Certificate) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Certificates = certificates
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Comment(comment string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Comment = &comment
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) ComputeResources(computeResources []ExternalComputeResource) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.ComputeResources = computeResources
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Description(description string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Description = &description
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) DiscoveredHosts(discoveredHosts []ExternalDiscoveredHost) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.DiscoveredHosts = discoveredHosts
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) HostGroups(hostGroups []ExternalHostGroup) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.HostGroups = hostGroups
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Hosts(hosts []Host) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Hosts = hosts
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Id(id string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Id = &id
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Name(name string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Name = &name
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Password(password string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Password = &password
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Properties(properties []Property) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Properties = properties
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Url(url string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Url = &url
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Username(username string) *externalHostProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.externalHostProvider.Username = &username
-	return builder
-}
-
-func (builder *externalHostProviderBuilder) Build() (*ExternalHostProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.externalHostProvider, nil
-}
-
-type glusterBrickBuilder struct {
-	glusterBrick *GlusterBrick
-	err          error
-}
-
-func NewGlusterBrickBuilder() *glusterBrickBuilder {
-	return &glusterBrickBuilder{glusterBrick: &GlusterBrick{}, err: nil}
-}
-
-func (builder *glusterBrickBuilder) BrickDir(brickDir string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.BrickDir = &brickDir
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Comment(comment string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Comment = &comment
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Description(description string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Description = &description
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Device(device string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Device = &device
-	return builder
-}
-
-func (builder *glusterBrickBuilder) FsName(fsName string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.FsName = &fsName
-	return builder
-}
-
-func (builder *glusterBrickBuilder) GlusterClients(glusterClients []GlusterClient) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.GlusterClients = glusterClients
-	return builder
-}
-
-func (builder *glusterBrickBuilder) GlusterVolume(glusterVolume *GlusterVolume) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.GlusterVolume = glusterVolume
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Id(id string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Id = &id
-	return builder
-}
-
-func (builder *glusterBrickBuilder) InstanceType(instanceType *InstanceType) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.InstanceType = instanceType
-	return builder
-}
-
-func (builder *glusterBrickBuilder) MemoryPools(memoryPools []GlusterMemoryPool) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.MemoryPools = memoryPools
-	return builder
-}
-
-func (builder *glusterBrickBuilder) MntOptions(mntOptions string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.MntOptions = &mntOptions
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Name(name string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Name = &name
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Pid(pid int64) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Pid = &pid
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Port(port int64) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Port = &port
-	return builder
-}
-
-func (builder *glusterBrickBuilder) ServerId(serverId string) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.ServerId = &serverId
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Statistics(statistics []Statistic) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Statistics = statistics
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Status(status GlusterBrickStatus) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Status = status
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Template(template *Template) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Template = template
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Vm(vm *Vm) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Vm = vm
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Vms(vms []Vm) *glusterBrickBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.glusterBrick.Vms = vms
-	return builder
-}
-
-func (builder *glusterBrickBuilder) Build() (*GlusterBrick, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.glusterBrick, nil
-}
-
-type instanceTypeBuilder struct {
-	instanceType *InstanceType
-	err          error
-}
-
-func NewInstanceTypeBuilder() *instanceTypeBuilder {
-	return &instanceTypeBuilder{instanceType: &InstanceType{}, err: nil}
-}
-
-func (builder *instanceTypeBuilder) Bios(bios *Bios) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Bios = bios
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Cdroms(cdroms []Cdrom) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Cdroms = cdroms
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Cluster(cluster *Cluster) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Cluster = cluster
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Comment(comment string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Comment = &comment
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Console(console *Console) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Console = console
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Cpu(cpu *Cpu) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Cpu = cpu
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CpuProfile(cpuProfile *CpuProfile) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CpuProfile = cpuProfile
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CpuShares(cpuShares int64) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CpuShares = &cpuShares
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CreationTime(creationTime time.Time) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CreationTime = creationTime
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CustomCompatibilityVersion = customCompatibilityVersion
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CustomCpuModel(customCpuModel string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CustomCpuModel = &customCpuModel
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CustomEmulatedMachine(customEmulatedMachine string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CustomEmulatedMachine = &customEmulatedMachine
-	return builder
-}
-
-func (builder *instanceTypeBuilder) CustomProperties(customProperties []CustomProperty) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.CustomProperties = customProperties
-	return builder
-}
-
-func (builder *instanceTypeBuilder) DeleteProtected(deleteProtected bool) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.DeleteProtected = &deleteProtected
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Description(description string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Description = &description
-	return builder
-}
-
-func (builder *instanceTypeBuilder) DiskAttachments(diskAttachments []DiskAttachment) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.DiskAttachments = diskAttachments
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Display(display *Display) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Display = display
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Domain(domain *Domain) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Domain = domain
-	return builder
-}
-
-func (builder *instanceTypeBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.GraphicsConsoles = graphicsConsoles
-	return builder
-}
-
-func (builder *instanceTypeBuilder) HighAvailability(highAvailability *HighAvailability) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.HighAvailability = highAvailability
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Id(id string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Id = &id
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Initialization(initialization *Initialization) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Initialization = initialization
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Io(io *Io) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Io = io
-	return builder
-}
-
-func (builder *instanceTypeBuilder) LargeIcon(largeIcon *Icon) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.LargeIcon = largeIcon
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Lease(lease *StorageDomainLease) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Lease = lease
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Memory(memory int64) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Memory = &memory
-	return builder
-}
-
-func (builder *instanceTypeBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.MemoryPolicy = memoryPolicy
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Migration(migration *MigrationOptions) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Migration = migration
-	return builder
-}
-
-func (builder *instanceTypeBuilder) MigrationDowntime(migrationDowntime int64) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.MigrationDowntime = &migrationDowntime
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Name(name string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Name = &name
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Nics(nics []Nic) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Nics = nics
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Origin(origin string) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Origin = &origin
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Os(os *OperatingSystem) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Os = os
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Permissions(permissions []Permission) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Permissions = permissions
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Quota(quota *Quota) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Quota = quota
-	return builder
-}
-
-func (builder *instanceTypeBuilder) RngDevice(rngDevice *RngDevice) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.RngDevice = rngDevice
-	return builder
-}
-
-func (builder *instanceTypeBuilder) SerialNumber(serialNumber *SerialNumber) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.SerialNumber = serialNumber
-	return builder
-}
-
-func (builder *instanceTypeBuilder) SmallIcon(smallIcon *Icon) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.SmallIcon = smallIcon
-	return builder
-}
-
-func (builder *instanceTypeBuilder) SoundcardEnabled(soundcardEnabled bool) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.SoundcardEnabled = &soundcardEnabled
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Sso(sso *Sso) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Sso = sso
-	return builder
-}
-
-func (builder *instanceTypeBuilder) StartPaused(startPaused bool) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.StartPaused = &startPaused
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Stateless(stateless bool) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Stateless = &stateless
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Status(status TemplateStatus) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Status = status
-	return builder
-}
-
-func (builder *instanceTypeBuilder) StorageDomain(storageDomain *StorageDomain) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Tags(tags []Tag) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Tags = tags
-	return builder
-}
-
-func (builder *instanceTypeBuilder) TimeZone(timeZone *TimeZone) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.TimeZone = timeZone
-	return builder
-}
-
-func (builder *instanceTypeBuilder) TunnelMigration(tunnelMigration bool) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.TunnelMigration = &tunnelMigration
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Type(type_ VmType) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Type = type_
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Usb(usb *Usb) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Usb = usb
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Version(version *TemplateVersion) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Version = version
-	return builder
-}
-
-func (builder *instanceTypeBuilder) VirtioScsi(virtioScsi *VirtioScsi) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.VirtioScsi = virtioScsi
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Vm(vm *Vm) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Vm = vm
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Watchdogs(watchdogs []Watchdog) *instanceTypeBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.instanceType.Watchdogs = watchdogs
-	return builder
-}
-
-func (builder *instanceTypeBuilder) Build() (*InstanceType, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.instanceType, nil
-}
-
-type openStackImageProviderBuilder struct {
-	openStackImageProvider *OpenStackImageProvider
-	err                    error
-}
-
-func NewOpenStackImageProviderBuilder() *openStackImageProviderBuilder {
-	return &openStackImageProviderBuilder{openStackImageProvider: &OpenStackImageProvider{}, err: nil}
-}
-
-func (builder *openStackImageProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Certificates(certificates []Certificate) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Certificates = certificates
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Comment(comment string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Comment = &comment
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Description(description string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Description = &description
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Id(id string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Id = &id
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Images(images []OpenStackImage) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Images = images
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Name(name string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Name = &name
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Password(password string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Password = &password
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Properties(properties []Property) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Properties = properties
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) TenantName(tenantName string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.TenantName = &tenantName
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Url(url string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Url = &url
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Username(username string) *openStackImageProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackImageProvider.Username = &username
-	return builder
-}
-
-func (builder *openStackImageProviderBuilder) Build() (*OpenStackImageProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.openStackImageProvider, nil
-}
-
-type openStackNetworkProviderBuilder struct {
-	openStackNetworkProvider *OpenStackNetworkProvider
-	err                      error
-}
-
-func NewOpenStackNetworkProviderBuilder() *openStackNetworkProviderBuilder {
-	return &openStackNetworkProviderBuilder{openStackNetworkProvider: &OpenStackNetworkProvider{}, err: nil}
-}
-
-func (builder *openStackNetworkProviderBuilder) AgentConfiguration(agentConfiguration *AgentConfiguration) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.AgentConfiguration = agentConfiguration
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) AuthenticationUrl(authenticationUrl string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.AuthenticationUrl = &authenticationUrl
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Certificates(certificates []Certificate) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Certificates = certificates
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Comment(comment string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Comment = &comment
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Description(description string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Description = &description
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Id(id string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Id = &id
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Name(name string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Name = &name
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Networks(networks []OpenStackNetwork) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Networks = networks
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Password(password string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Password = &password
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) PluginType(pluginType NetworkPluginType) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.PluginType = pluginType
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Properties(properties []Property) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Properties = properties
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) ReadOnly(readOnly bool) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.ReadOnly = &readOnly
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) RequiresAuthentication(requiresAuthentication bool) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.RequiresAuthentication = &requiresAuthentication
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Subnets(subnets []OpenStackSubnet) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Subnets = subnets
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) TenantName(tenantName string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.TenantName = &tenantName
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Type(type_ OpenStackNetworkProviderType) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Type = type_
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Url(url string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Url = &url
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Username(username string) *openStackNetworkProviderBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.openStackNetworkProvider.Username = &username
-	return builder
-}
-
-func (builder *openStackNetworkProviderBuilder) Build() (*OpenStackNetworkProvider, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.openStackNetworkProvider, nil
-}
-
-type snapshotBuilder struct {
-	snapshot *Snapshot
-	err      error
-}
-
-func NewSnapshotBuilder() *snapshotBuilder {
-	return &snapshotBuilder{snapshot: &Snapshot{}, err: nil}
-}
-
-func (builder *snapshotBuilder) AffinityLabels(affinityLabels []AffinityLabel) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.AffinityLabels = affinityLabels
-	return builder
-}
-
-func (builder *snapshotBuilder) Applications(applications []Application) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Applications = applications
-	return builder
-}
-
-func (builder *snapshotBuilder) Bios(bios *Bios) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Bios = bios
-	return builder
-}
-
-func (builder *snapshotBuilder) Cdroms(cdroms []Cdrom) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Cdroms = cdroms
-	return builder
-}
-
-func (builder *snapshotBuilder) Cluster(cluster *Cluster) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Cluster = cluster
-	return builder
-}
-
-func (builder *snapshotBuilder) Comment(comment string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Comment = &comment
-	return builder
-}
-
-func (builder *snapshotBuilder) Console(console *Console) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Console = console
-	return builder
-}
-
-func (builder *snapshotBuilder) Cpu(cpu *Cpu) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Cpu = cpu
-	return builder
-}
-
-func (builder *snapshotBuilder) CpuProfile(cpuProfile *CpuProfile) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CpuProfile = cpuProfile
-	return builder
-}
-
-func (builder *snapshotBuilder) CpuShares(cpuShares int64) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CpuShares = &cpuShares
-	return builder
-}
-
-func (builder *snapshotBuilder) CreationTime(creationTime time.Time) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CreationTime = creationTime
-	return builder
-}
-
-func (builder *snapshotBuilder) CustomCompatibilityVersion(customCompatibilityVersion *Version) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CustomCompatibilityVersion = customCompatibilityVersion
-	return builder
-}
-
-func (builder *snapshotBuilder) CustomCpuModel(customCpuModel string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CustomCpuModel = &customCpuModel
-	return builder
-}
-
-func (builder *snapshotBuilder) CustomEmulatedMachine(customEmulatedMachine string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CustomEmulatedMachine = &customEmulatedMachine
-	return builder
-}
-
-func (builder *snapshotBuilder) CustomProperties(customProperties []CustomProperty) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.CustomProperties = customProperties
-	return builder
-}
-
-func (builder *snapshotBuilder) Date(date time.Time) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Date = date
-	return builder
-}
-
-func (builder *snapshotBuilder) DeleteProtected(deleteProtected bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.DeleteProtected = &deleteProtected
-	return builder
-}
-
-func (builder *snapshotBuilder) Description(description string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Description = &description
-	return builder
-}
-
-func (builder *snapshotBuilder) DiskAttachments(diskAttachments []DiskAttachment) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.DiskAttachments = diskAttachments
-	return builder
-}
-
-func (builder *snapshotBuilder) Display(display *Display) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Display = display
-	return builder
-}
-
-func (builder *snapshotBuilder) Domain(domain *Domain) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Domain = domain
-	return builder
-}
-
-func (builder *snapshotBuilder) ExternalHostProvider(externalHostProvider *ExternalHostProvider) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.ExternalHostProvider = externalHostProvider
-	return builder
-}
-
-func (builder *snapshotBuilder) Floppies(floppies []Floppy) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Floppies = floppies
-	return builder
-}
-
-func (builder *snapshotBuilder) Fqdn(fqdn string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Fqdn = &fqdn
-	return builder
-}
-
-func (builder *snapshotBuilder) GraphicsConsoles(graphicsConsoles []GraphicsConsole) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.GraphicsConsoles = graphicsConsoles
-	return builder
-}
-
-func (builder *snapshotBuilder) GuestOperatingSystem(guestOperatingSystem *GuestOperatingSystem) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.GuestOperatingSystem = guestOperatingSystem
-	return builder
-}
-
-func (builder *snapshotBuilder) GuestTimeZone(guestTimeZone *TimeZone) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.GuestTimeZone = guestTimeZone
-	return builder
-}
-
-func (builder *snapshotBuilder) HighAvailability(highAvailability *HighAvailability) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.HighAvailability = highAvailability
-	return builder
-}
-
-func (builder *snapshotBuilder) Host(host *Host) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Host = host
-	return builder
-}
-
-func (builder *snapshotBuilder) HostDevices(hostDevices []HostDevice) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.HostDevices = hostDevices
-	return builder
-}
-
-func (builder *snapshotBuilder) Id(id string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Id = &id
-	return builder
-}
-
-func (builder *snapshotBuilder) Initialization(initialization *Initialization) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Initialization = initialization
-	return builder
-}
-
-func (builder *snapshotBuilder) InstanceType(instanceType *InstanceType) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.InstanceType = instanceType
-	return builder
-}
-
-func (builder *snapshotBuilder) Io(io *Io) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Io = io
-	return builder
-}
-
-func (builder *snapshotBuilder) KatelloErrata(katelloErrata []KatelloErratum) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.KatelloErrata = katelloErrata
-	return builder
-}
-
-func (builder *snapshotBuilder) LargeIcon(largeIcon *Icon) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.LargeIcon = largeIcon
-	return builder
-}
-
-func (builder *snapshotBuilder) Lease(lease *StorageDomainLease) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Lease = lease
-	return builder
-}
-
-func (builder *snapshotBuilder) Memory(memory int64) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Memory = &memory
-	return builder
-}
-
-func (builder *snapshotBuilder) MemoryPolicy(memoryPolicy *MemoryPolicy) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.MemoryPolicy = memoryPolicy
-	return builder
-}
-
-func (builder *snapshotBuilder) Migration(migration *MigrationOptions) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Migration = migration
-	return builder
-}
-
-func (builder *snapshotBuilder) MigrationDowntime(migrationDowntime int64) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.MigrationDowntime = &migrationDowntime
-	return builder
-}
-
-func (builder *snapshotBuilder) Name(name string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Name = &name
-	return builder
-}
-
-func (builder *snapshotBuilder) NextRunConfigurationExists(nextRunConfigurationExists bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.NextRunConfigurationExists = &nextRunConfigurationExists
-	return builder
-}
-
-func (builder *snapshotBuilder) Nics(nics []Nic) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Nics = nics
-	return builder
-}
-
-func (builder *snapshotBuilder) NumaNodes(numaNodes []NumaNode) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.NumaNodes = numaNodes
-	return builder
-}
-
-func (builder *snapshotBuilder) NumaTuneMode(numaTuneMode NumaTuneMode) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.NumaTuneMode = numaTuneMode
-	return builder
-}
-
-func (builder *snapshotBuilder) Origin(origin string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Origin = &origin
-	return builder
-}
-
-func (builder *snapshotBuilder) OriginalTemplate(originalTemplate *Template) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.OriginalTemplate = originalTemplate
-	return builder
-}
-
-func (builder *snapshotBuilder) Os(os *OperatingSystem) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Os = os
-	return builder
-}
-
-func (builder *snapshotBuilder) Payloads(payloads []Payload) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Payloads = payloads
-	return builder
-}
-
-func (builder *snapshotBuilder) Permissions(permissions []Permission) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Permissions = permissions
-	return builder
-}
-
-func (builder *snapshotBuilder) PersistMemorystate(persistMemorystate bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.PersistMemorystate = &persistMemorystate
-	return builder
-}
-
-func (builder *snapshotBuilder) PlacementPolicy(placementPolicy *VmPlacementPolicy) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.PlacementPolicy = placementPolicy
-	return builder
-}
-
-func (builder *snapshotBuilder) Quota(quota *Quota) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Quota = quota
-	return builder
-}
-
-func (builder *snapshotBuilder) ReportedDevices(reportedDevices []ReportedDevice) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.ReportedDevices = reportedDevices
-	return builder
-}
-
-func (builder *snapshotBuilder) RngDevice(rngDevice *RngDevice) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.RngDevice = rngDevice
-	return builder
-}
-
-func (builder *snapshotBuilder) RunOnce(runOnce bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.RunOnce = &runOnce
-	return builder
-}
-
-func (builder *snapshotBuilder) SerialNumber(serialNumber *SerialNumber) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.SerialNumber = serialNumber
-	return builder
-}
-
-func (builder *snapshotBuilder) Sessions(sessions []Session) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Sessions = sessions
-	return builder
-}
-
-func (builder *snapshotBuilder) SmallIcon(smallIcon *Icon) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.SmallIcon = smallIcon
-	return builder
-}
-
-func (builder *snapshotBuilder) SnapshotStatus(snapshotStatus SnapshotStatus) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.SnapshotStatus = snapshotStatus
-	return builder
-}
-
-func (builder *snapshotBuilder) SnapshotType(snapshotType SnapshotType) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.SnapshotType = snapshotType
-	return builder
-}
-
-func (builder *snapshotBuilder) Snapshots(snapshots []Snapshot) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Snapshots = snapshots
-	return builder
-}
-
-func (builder *snapshotBuilder) SoundcardEnabled(soundcardEnabled bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.SoundcardEnabled = &soundcardEnabled
-	return builder
-}
-
-func (builder *snapshotBuilder) Sso(sso *Sso) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Sso = sso
-	return builder
-}
-
-func (builder *snapshotBuilder) StartPaused(startPaused bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StartPaused = &startPaused
-	return builder
-}
-
-func (builder *snapshotBuilder) StartTime(startTime time.Time) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StartTime = startTime
-	return builder
-}
-
-func (builder *snapshotBuilder) Stateless(stateless bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Stateless = &stateless
-	return builder
-}
-
-func (builder *snapshotBuilder) Statistics(statistics []Statistic) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Statistics = statistics
-	return builder
-}
-
-func (builder *snapshotBuilder) Status(status VmStatus) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Status = status
-	return builder
-}
-
-func (builder *snapshotBuilder) StatusDetail(statusDetail string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StatusDetail = &statusDetail
-	return builder
-}
-
-func (builder *snapshotBuilder) StopReason(stopReason string) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StopReason = &stopReason
-	return builder
-}
-
-func (builder *snapshotBuilder) StopTime(stopTime time.Time) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StopTime = stopTime
-	return builder
-}
-
-func (builder *snapshotBuilder) StorageDomain(storageDomain *StorageDomain) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.StorageDomain = storageDomain
-	return builder
-}
-
-func (builder *snapshotBuilder) Tags(tags []Tag) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Tags = tags
-	return builder
-}
-
-func (builder *snapshotBuilder) Template(template *Template) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Template = template
-	return builder
-}
-
-func (builder *snapshotBuilder) TimeZone(timeZone *TimeZone) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.TimeZone = timeZone
-	return builder
-}
-
-func (builder *snapshotBuilder) TunnelMigration(tunnelMigration bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.TunnelMigration = &tunnelMigration
-	return builder
-}
-
-func (builder *snapshotBuilder) Type(type_ VmType) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Type = type_
-	return builder
-}
-
-func (builder *snapshotBuilder) Usb(usb *Usb) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Usb = usb
-	return builder
-}
-
-func (builder *snapshotBuilder) UseLatestTemplateVersion(useLatestTemplateVersion bool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.UseLatestTemplateVersion = &useLatestTemplateVersion
-	return builder
-}
-
-func (builder *snapshotBuilder) VirtioScsi(virtioScsi *VirtioScsi) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.VirtioScsi = virtioScsi
-	return builder
-}
-
-func (builder *snapshotBuilder) Vm(vm *Vm) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Vm = vm
-	return builder
-}
-
-func (builder *snapshotBuilder) VmPool(vmPool *VmPool) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.VmPool = vmPool
-	return builder
-}
-
-func (builder *snapshotBuilder) Watchdogs(watchdogs []Watchdog) *snapshotBuilder {
-	if builder.err != nil {
-		return builder
-	}
-
-	builder.snapshot.Watchdogs = watchdogs
-	return builder
-}
-
-func (builder *snapshotBuilder) Build() (*Snapshot, error) {
-	if builder.err != nil {
-		return nil, builder.err
-	}
-	return builder.snapshot, nil
+	return builder.weight, nil
 }
 
 type AccessProtocol string
