@@ -13,12 +13,6 @@ oVirt Engine API.
 You must install the Go binary and setup the Go environments, including
 `GOROOT` and `GOPATH`.
 
-The build phrase (using maven) uses `goimports` to format the generated 
-codes, so you must install it as following:
-```bash
-$ go get -u -v golang.org/x/tools/cmd/goimports
-```
-
 Most of the source code of the Go SDK is automatically generated
 from the API model (Java).
 

@@ -109,6 +109,7 @@ public class TypesGenerator implements GoGenerator {
         // Customize type generation
         //      Add  Error method for type Fault
         buffer.addLine();
+        buffer.addImport("fmt");
         buffer.addLine("func (fault *Fault) Error() string {");
         buffer.addLine(  "return fmt.Sprintf(\"Error details is %%s, reason is %%s\", fault.Detail, fault.Reason)");
         buffer.addLine("}");
@@ -121,6 +122,7 @@ public class TypesGenerator implements GoGenerator {
         // Define []Struct
         buffer.addLine("type %1$ss struct {", typeName.getClassName());
         //  Add xml.Name
+        buffer.addImport("encoding/xml");
         buffer.addLine(  "XMLName xml.Name `xml:\"%1$ss\"`", typeName.getClassName().toLowerCase());
         buffer.addLine(  "%1$ss []%1$s `xml:\"%2$s,omitempty\"`", typeName.getClassName(), goNames.getTagStyleName(type.getName()));
         buffer.addLine("}");

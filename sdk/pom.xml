@@ -101,22 +101,6 @@ limitations under the License.
             </configuration>
           </execution>
 
-          <!-- Run code format by goimports -->
-          <execution>
-            <id>goimports-format</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>goimports</executable>
-              <arguments>
-                <argument>-w</argument>
-                <argument>ovirtsdk4</argument>
-              </arguments>
-            </configuration>
-          </execution>
-
           <!-- Run the tests: -->
           <execution>
             <id>test</id>
