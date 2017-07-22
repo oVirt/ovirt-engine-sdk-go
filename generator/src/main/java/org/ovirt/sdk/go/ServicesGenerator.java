@@ -306,7 +306,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateCommonRequestImplementation(method, service, new String[]{"200", "201", "202"});
         generateResponseParseImplementation(method, service);
 	}
 
@@ -447,7 +447,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateCommonRequestImplementation(method, service, null);
         // Check action
         List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
         if (parameters.isEmpty()) {
@@ -530,6 +530,14 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");;
         buffer.addLine("defer resp.Body.Close()");
+
+        // Check the response status code
+        if (codes != null && codes.length > 0) {
+            buffer.addLine("if !Contains(resp.StatusCode, []int{%1$s}) {", String.join(",", codes));
+            buffer.addLine("  return nil, CheckFault(resp)");
+            buffer.addLine("}");
+        }
+
         // Read resp.Body (if method is ActionMethod, no need the resp reading)
         Name methodName = method.getName();
         if (methodName.equals(ADD) || methodName.equals(GET) || 

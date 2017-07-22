@@ -146,6 +146,9 @@ func (p *VnicProfilesServiceAddRequest) Send() (*VnicProfilesServiceAddResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -234,6 +237,9 @@ func (p *VnicProfilesServiceListRequest) Send() (*VnicProfilesServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -359,6 +365,9 @@ func (p *SchedulingPolicyUnitServiceGetRequest) Send() (*SchedulingPolicyUnitSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -447,6 +456,9 @@ func (p *SchedulingPolicyUnitServiceRemoveRequest) Send() (*SchedulingPolicyUnit
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -546,6 +558,9 @@ func (p *VirtualFunctionAllowedNetworkServiceGetRequest) Send() (*VirtualFunctio
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -634,6 +649,9 @@ func (p *VirtualFunctionAllowedNetworkServiceRemoveRequest) Send() (*VirtualFunc
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -744,6 +762,9 @@ func (p *TemplateNicsServiceAddRequest) Send() (*TemplateNicsServiceAddResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -832,6 +853,9 @@ func (p *TemplateNicsServiceListRequest) Send() (*TemplateNicsServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -950,6 +974,9 @@ func (p *AffinityLabelServiceGetRequest) Send() (*AffinityLabelServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1030,6 +1057,9 @@ func (p *AffinityLabelServiceRemoveRequest) Send() (*AffinityLabelServiceRemoveR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1113,6 +1143,9 @@ func (p *AffinityLabelServiceUpdateRequest) Send() (*AffinityLabelServiceUpdateR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1258,6 +1291,9 @@ func (p *BookmarksServiceAddRequest) Send() (*BookmarksServiceAddResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1346,6 +1382,9 @@ func (p *BookmarksServiceListRequest) Send() (*BookmarksServiceListResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1475,6 +1514,9 @@ func (p *NetworkAttachmentsServiceAddRequest) Send() (*NetworkAttachmentsService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1563,6 +1605,9 @@ func (p *NetworkAttachmentsServiceListRequest) Send() (*NetworkAttachmentsServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1680,6 +1725,9 @@ func (p *OperatingSystemServiceGetRequest) Send() (*OperatingSystemServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1795,6 +1843,9 @@ func (p *TemplateDisksServiceListRequest) Send() (*TemplateDisksServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -1925,6 +1976,9 @@ func (p *SystemPermissionsServiceAddRequest) Send() (*SystemPermissionsServiceAd
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2005,6 +2059,9 @@ func (p *SystemPermissionsServiceListRequest) Send() (*SystemPermissionsServiceL
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2124,6 +2181,9 @@ func (p *VmReportedDeviceServiceGetRequest) Send() (*VmReportedDeviceServiceGetR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2239,6 +2299,9 @@ func (p *SnapshotNicsServiceListRequest) Send() (*SnapshotNicsServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2367,6 +2430,9 @@ func (p *AssignedVnicProfilesServiceAddRequest) Send() (*AssignedVnicProfilesSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2455,6 +2521,9 @@ func (p *AssignedVnicProfilesServiceListRequest) Send() (*AssignedVnicProfilesSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2583,6 +2652,9 @@ func (p *QuotaClusterLimitsServiceAddRequest) Send() (*QuotaClusterLimitsService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2671,6 +2743,9 @@ func (p *QuotaClusterLimitsServiceListRequest) Send() (*QuotaClusterLimitsServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2803,6 +2878,9 @@ func (p *NetworksServiceAddRequest) Send() (*NetworksServiceAddResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -2907,6 +2985,9 @@ func (p *NetworksServiceListRequest) Send() (*NetworksServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3037,6 +3118,9 @@ func (p *AffinityGroupsServiceAddRequest) Send() (*AffinityGroupsServiceAddRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3125,6 +3209,9 @@ func (p *AffinityGroupsServiceListRequest) Send() (*AffinityGroupsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3243,6 +3330,9 @@ func (p *DiskSnapshotServiceGetRequest) Send() (*DiskSnapshotServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3331,6 +3421,9 @@ func (p *DiskSnapshotServiceRemoveRequest) Send() (*DiskSnapshotServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3438,6 +3531,9 @@ func (p *SchedulingPolicyServiceGetRequest) Send() (*SchedulingPolicyServiceGetR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3526,6 +3622,9 @@ func (p *SchedulingPolicyServiceRemoveRequest) Send() (*SchedulingPolicyServiceR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3617,6 +3716,9 @@ func (p *SchedulingPolicyServiceUpdateRequest) Send() (*SchedulingPolicyServiceU
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3760,6 +3862,9 @@ func (p *NetworkAttachmentServiceGetRequest) Send() (*NetworkAttachmentServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3848,6 +3953,9 @@ func (p *NetworkAttachmentServiceRemoveRequest) Send() (*NetworkAttachmentServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -3939,6 +4047,9 @@ func (p *NetworkAttachmentServiceUpdateRequest) Send() (*NetworkAttachmentServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4057,6 +4168,9 @@ func (p *DiskProfilesServiceAddRequest) Send() (*DiskProfilesServiceAddResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4145,6 +4259,9 @@ func (p *DiskProfilesServiceListRequest) Send() (*DiskProfilesServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4263,6 +4380,9 @@ func (p *IconServiceGetRequest) Send() (*IconServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4372,6 +4492,9 @@ func (p *AssignedAffinityLabelServiceGetRequest) Send() (*AssignedAffinityLabelS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4452,6 +4575,9 @@ func (p *AssignedAffinityLabelServiceRemoveRequest) Send() (*AssignedAffinityLab
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4562,6 +4688,9 @@ func (p *CpuProfilesServiceAddRequest) Send() (*CpuProfilesServiceAddResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4650,6 +4779,9 @@ func (p *CpuProfilesServiceListRequest) Send() (*CpuProfilesServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4778,6 +4910,9 @@ func (p *MacPoolsServiceAddRequest) Send() (*MacPoolsServiceAddResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4866,6 +5001,9 @@ func (p *MacPoolsServiceListRequest) Send() (*MacPoolsServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -4995,6 +5133,9 @@ func (p *AffinityGroupVmsServiceAddRequest) Send() (*AffinityGroupVmsServiceAddR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5083,6 +5224,9 @@ func (p *AffinityGroupVmsServiceListRequest) Send() (*AffinityGroupVmsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5201,6 +5345,9 @@ func (p *QosServiceGetRequest) Send() (*QosServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5289,6 +5436,9 @@ func (p *QosServiceRemoveRequest) Send() (*QosServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5380,6 +5530,9 @@ func (p *QosServiceUpdateRequest) Send() (*QosServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5499,6 +5652,9 @@ func (p *TagsServiceAddRequest) Send() (*TagsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5587,6 +5743,9 @@ func (p *TagsServiceListRequest) Send() (*TagsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5705,6 +5864,9 @@ func (p *ExternalProviderCertificateServiceGetRequest) Send() (*ExternalProvider
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5824,6 +5986,9 @@ func (p *EventsServiceAddRequest) Send() (*EventsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -5936,6 +6101,9 @@ func (p *EventsServiceListRequest) Send() (*EventsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6144,6 +6312,9 @@ func (p *VmWatchdogServiceGetRequest) Send() (*VmWatchdogServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6232,6 +6403,9 @@ func (p *VmWatchdogServiceRemoveRequest) Send() (*VmWatchdogServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6323,6 +6497,9 @@ func (p *VmWatchdogServiceUpdateRequest) Send() (*VmWatchdogServiceUpdateRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6608,6 +6785,9 @@ func (p *AttachedStorageDomainServiceGetRequest) Send() (*AttachedStorageDomainS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6696,6 +6876,9 @@ func (p *AttachedStorageDomainServiceRemoveRequest) Send() (*AttachedStorageDoma
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6818,6 +7001,9 @@ func (p *AttachedStorageDomainsServiceAddRequest) Send() (*AttachedStorageDomain
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -6906,6 +7092,9 @@ func (p *AttachedStorageDomainsServiceListRequest) Send() (*AttachedStorageDomai
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7023,6 +7212,9 @@ func (p *InstanceTypeWatchdogServiceGetRequest) Send() (*InstanceTypeWatchdogSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7111,6 +7303,9 @@ func (p *InstanceTypeWatchdogServiceRemoveRequest) Send() (*InstanceTypeWatchdog
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7202,6 +7397,9 @@ func (p *InstanceTypeWatchdogServiceUpdateRequest) Send() (*InstanceTypeWatchdog
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7309,6 +7507,9 @@ func (p *QuotaStorageLimitServiceGetRequest) Send() (*QuotaStorageLimitServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7397,6 +7598,9 @@ func (p *QuotaStorageLimitServiceRemoveRequest) Send() (*QuotaStorageLimitServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7496,6 +7700,9 @@ func (p *RoleServiceGetRequest) Send() (*RoleServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7584,6 +7791,9 @@ func (p *RoleServiceRemoveRequest) Send() (*RoleServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7675,6 +7885,9 @@ func (p *RoleServiceUpdateRequest) Send() (*RoleServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7795,6 +8008,9 @@ func (p *AssignedNetworkServiceGetRequest) Send() (*AssignedNetworkServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7883,6 +8099,9 @@ func (p *AssignedNetworkServiceRemoveRequest) Send() (*AssignedNetworkServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -7974,6 +8193,9 @@ func (p *AssignedNetworkServiceUpdateRequest) Send() (*AssignedNetworkServiceUpd
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8082,6 +8304,9 @@ func (p *StorageDomainVmDiskAttachmentServiceGetRequest) Send() (*StorageDomainV
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8198,6 +8423,9 @@ func (p *HostNicsServiceListRequest) Send() (*HostNicsServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8316,6 +8544,9 @@ func (p *VmNumaNodeServiceGetRequest) Send() (*VmNumaNodeServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8404,6 +8635,9 @@ func (p *VmNumaNodeServiceRemoveRequest) Send() (*VmNumaNodeServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8495,6 +8729,9 @@ func (p *VmNumaNodeServiceUpdateRequest) Send() (*VmNumaNodeServiceUpdateRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8611,6 +8848,9 @@ func (p *TemplateCdromsServiceListRequest) Send() (*TemplateCdromsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8729,6 +8969,9 @@ func (p *SnapshotServiceGetRequest) Send() (*SnapshotServiceGetResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -8825,6 +9068,9 @@ func (p *SnapshotServiceRemoveRequest) Send() (*SnapshotServiceRemoveResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9072,6 +9318,9 @@ func (p *SchedulingPoliciesServiceAddRequest) Send() (*SchedulingPoliciesService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9168,6 +9417,9 @@ func (p *SchedulingPoliciesServiceListRequest) Send() (*SchedulingPoliciesServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9296,6 +9548,9 @@ func (p *WeightsServiceAddRequest) Send() (*WeightsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9392,6 +9647,9 @@ func (p *WeightsServiceListRequest) Send() (*WeightsServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9521,6 +9779,9 @@ func (p *VmHostDevicesServiceAddRequest) Send() (*VmHostDevicesServiceAddRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9609,6 +9870,9 @@ func (p *VmHostDevicesServiceListRequest) Send() (*VmHostDevicesServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9727,6 +9991,9 @@ func (p *AssignedCpuProfileServiceGetRequest) Send() (*AssignedCpuProfileService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9815,6 +10082,9 @@ func (p *AssignedCpuProfileServiceRemoveRequest) Send() (*AssignedCpuProfileServ
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -9914,6 +10184,9 @@ func (p *SnapshotNicServiceGetRequest) Send() (*SnapshotNicServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10022,6 +10295,9 @@ func (p *HostDeviceServiceGetRequest) Send() (*HostDeviceServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10143,6 +10419,9 @@ func (p *ImageTransfersServiceAddRequest) Send() (*ImageTransfersServiceAddRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10223,6 +10502,9 @@ func (p *ImageTransfersServiceListRequest) Send() (*ImageTransfersServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10560,6 +10842,9 @@ func (p *EventServiceGetRequest) Send() (*EventServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10648,6 +10933,9 @@ func (p *EventServiceRemoveRequest) Send() (*EventServiceRemoveResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10798,6 +11086,9 @@ func (p *NetworkFiltersServiceListRequest) Send() (*NetworkFiltersServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -10920,6 +11211,9 @@ func (p *StatisticServiceGetRequest) Send() (*StatisticServiceGetResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11039,6 +11333,9 @@ func (p *ExternalVmImportsServiceAddRequest) Send() (*ExternalVmImportsServiceAd
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11155,6 +11452,9 @@ func (p *AssignedRolesServiceListRequest) Send() (*AssignedRolesServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11274,6 +11574,9 @@ func (p *NetworkFilterParameterServiceGetRequest) Send() (*NetworkFilterParamete
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11354,6 +11657,9 @@ func (p *NetworkFilterParameterServiceRemoveRequest) Send() (*NetworkFilterParam
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11437,6 +11743,9 @@ func (p *NetworkFilterParameterServiceUpdateRequest) Send() (*NetworkFilterParam
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11544,6 +11853,9 @@ func (p *OpenstackImageProviderServiceGetRequest) Send() (*OpenstackImageProvide
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11721,6 +12033,9 @@ func (p *OpenstackImageProviderServiceRemoveRequest) Send() (*OpenstackImageProv
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -11901,6 +12216,9 @@ func (p *OpenstackImageProviderServiceUpdateRequest) Send() (*OpenstackImageProv
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12032,6 +12350,9 @@ func (p *OpenstackNetworkServiceGetRequest) Send() (*OpenstackNetworkServiceGetR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12257,6 +12578,9 @@ func (p *OpenstackImageProvidersServiceAddRequest) Send() (*OpenstackImageProvid
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12345,6 +12669,9 @@ func (p *OpenstackImageProvidersServiceListRequest) Send() (*OpenstackImageProvi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12462,6 +12789,9 @@ func (p *OpenstackVolumeAuthenticationKeyServiceGetRequest) Send() (*OpenstackVo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12550,6 +12880,9 @@ func (p *OpenstackVolumeAuthenticationKeyServiceRemoveRequest) Send() (*Openstac
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12633,6 +12966,9 @@ func (p *OpenstackVolumeAuthenticationKeyServiceUpdateRequest) Send() (*Openstac
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12748,6 +13084,9 @@ func (p *OpenstackImagesServiceListRequest) Send() (*OpenstackImagesServiceListR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12878,6 +13217,9 @@ func (p *OpenstackNetworkProvidersServiceAddRequest) Send() (*OpenstackNetworkPr
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -12966,6 +13308,9 @@ func (p *OpenstackNetworkProvidersServiceListRequest) Send() (*OpenstackNetworkP
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13095,6 +13440,9 @@ func (p *OpenstackVolumeProvidersServiceAddRequest) Send() (*OpenstackVolumeProv
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13183,6 +13531,9 @@ func (p *OpenstackVolumeProvidersServiceListRequest) Send() (*OpenstackVolumePro
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13308,6 +13659,9 @@ func (p *OpenstackNetworksServiceListRequest) Send() (*OpenstackNetworksServiceL
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13425,6 +13779,9 @@ func (p *OpenstackVolumeProviderServiceGetRequest) Send() (*OpenstackVolumeProvi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13602,6 +13959,9 @@ func (p *OpenstackVolumeProviderServiceRemoveRequest) Send() (*OpenstackVolumePr
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13782,6 +14142,9 @@ func (p *OpenstackVolumeProviderServiceUpdateRequest) Send() (*OpenstackVolumePr
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -13933,6 +14296,9 @@ func (p *OpenstackVolumeTypesServiceListRequest) Send() (*OpenstackVolumeTypesSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14061,6 +14427,9 @@ func (p *OpenstackVolumeAuthenticationKeysServiceAddRequest) Send() (*OpenstackV
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14149,6 +14518,9 @@ func (p *OpenstackVolumeAuthenticationKeysServiceListRequest) Send() (*Openstack
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14266,6 +14638,9 @@ func (p *OpenstackImageServiceGetRequest) Send() (*OpenstackImageServiceGetRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14492,6 +14867,9 @@ func (p *OpenstackVolumeTypeServiceGetRequest) Send() (*OpenstackVolumeTypeServi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14599,6 +14977,9 @@ func (p *OpenstackSubnetServiceGetRequest) Send() (*OpenstackSubnetServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14687,6 +15068,9 @@ func (p *OpenstackSubnetServiceRemoveRequest) Send() (*OpenstackSubnetServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14797,6 +15181,9 @@ func (p *OpenstackSubnetsServiceAddRequest) Send() (*OpenstackSubnetsServiceAddR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -14885,6 +15272,9 @@ func (p *OpenstackSubnetsServiceListRequest) Send() (*OpenstackSubnetsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15003,6 +15393,9 @@ func (p *OpenstackNetworkProviderServiceGetRequest) Send() (*OpenstackNetworkPro
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15180,6 +15573,9 @@ func (p *OpenstackNetworkProviderServiceRemoveRequest) Send() (*OpenstackNetwork
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15360,6 +15756,9 @@ func (p *OpenstackNetworkProviderServiceUpdateRequest) Send() (*OpenstackNetwork
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15596,6 +15995,9 @@ func (p *TemplateServiceGetRequest) Send() (*TemplateServiceGetResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15684,6 +16086,9 @@ func (p *TemplateServiceRemoveRequest) Send() (*TemplateServiceRemoveResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -15858,6 +16263,9 @@ func (p *TemplateServiceUpdateRequest) Send() (*TemplateServiceUpdateResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -16069,6 +16477,9 @@ func (p *VmWatchdogsServiceAddRequest) Send() (*VmWatchdogsServiceAddResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -16157,6 +16568,9 @@ func (p *VmWatchdogsServiceListRequest) Send() (*VmWatchdogsServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -16278,6 +16692,9 @@ func (p *AffinityLabelVmServiceGetRequest) Send() (*AffinityLabelVmServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -16358,6 +16775,9 @@ func (p *AffinityLabelVmServiceRemoveRequest) Send() (*AffinityLabelVmServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -17039,6 +17459,9 @@ func (p *VmServiceGetRequest) Send() (*VmServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -17636,6 +18059,9 @@ func (p *VmServiceRemoveRequest) Send() (*VmServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -18487,6 +18913,9 @@ func (p *VmServiceUpdateRequest) Send() (*VmServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -18802,6 +19231,9 @@ func (p *InstanceTypeGraphicsConsolesServiceAddRequest) Send() (*InstanceTypeGra
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -18890,6 +19322,9 @@ func (p *InstanceTypeGraphicsConsolesServiceListRequest) Send() (*InstanceTypeGr
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19008,6 +19443,9 @@ func (p *StorageDomainVmServiceGetRequest) Send() (*StorageDomainVmServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19340,6 +19778,9 @@ func (p *StorageDomainVmServiceRemoveRequest) Send() (*StorageDomainVmServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19473,6 +19914,9 @@ func (p *ClusterServiceGetRequest) Send() (*ClusterServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19561,6 +20005,9 @@ func (p *ClusterServiceRemoveRequest) Send() (*ClusterServiceRemoveResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19741,6 +20188,9 @@ func (p *ClusterServiceUpdateRequest) Send() (*ClusterServiceUpdateResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -19947,6 +20397,9 @@ func (p *SnapshotDisksServiceListRequest) Send() (*SnapshotDisksServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20075,6 +20528,9 @@ func (p *TemplateGraphicsConsolesServiceAddRequest) Send() (*TemplateGraphicsCon
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20163,6 +20619,9 @@ func (p *TemplateGraphicsConsolesServiceListRequest) Send() (*TemplateGraphicsCo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20379,6 +20838,9 @@ func (p *VmPoolServiceGetRequest) Send() (*VmPoolServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20467,6 +20929,9 @@ func (p *VmPoolServiceRemoveRequest) Send() (*VmPoolServiceRemoveResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20558,6 +21023,9 @@ func (p *VmPoolServiceUpdateRequest) Send() (*VmPoolServiceUpdateResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20689,6 +21157,9 @@ func (p *QuotasServiceAddRequest) Send() (*QuotasServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20777,6 +21248,9 @@ func (p *QuotasServiceListRequest) Send() (*QuotasServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -20896,6 +21370,9 @@ func (p *ClusterLevelServiceGetRequest) Send() (*ClusterLevelServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21011,6 +21488,9 @@ func (p *StorageDomainContentDiskServiceGetRequest) Send() (*StorageDomainConten
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21135,6 +21615,9 @@ func (p *VmApplicationsServiceListRequest) Send() (*VmApplicationsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21281,6 +21764,9 @@ func (p *FilesServiceListRequest) Send() (*FilesServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21407,6 +21893,9 @@ func (p *AffinityGroupVmServiceRemoveRequest) Send() (*AffinityGroupVmServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21517,6 +22006,9 @@ func (p *VmCdromServiceGetRequest) Send() (*VmCdromServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21616,6 +22108,9 @@ func (p *VmCdromServiceUpdateRequest) Send() (*VmCdromServiceUpdateResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21723,6 +22218,9 @@ func (p *QuotaClusterLimitServiceGetRequest) Send() (*QuotaClusterLimitServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21811,6 +22309,9 @@ func (p *QuotaClusterLimitServiceRemoveRequest) Send() (*QuotaClusterLimitServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21911,6 +22412,9 @@ func (p *DiskAttachmentServiceGetRequest) Send() (*DiskAttachmentServiceGetRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -21999,6 +22503,9 @@ func (p *DiskAttachmentServiceRemoveRequest) Send() (*DiskAttachmentServiceRemov
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22082,6 +22589,9 @@ func (p *DiskAttachmentServiceUpdateRequest) Send() (*DiskAttachmentServiceUpdat
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22190,6 +22700,9 @@ func (p *BookmarkServiceGetRequest) Send() (*BookmarkServiceGetResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22278,6 +22791,9 @@ func (p *BookmarkServiceRemoveRequest) Send() (*BookmarkServiceRemoveResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22369,6 +22885,9 @@ func (p *BookmarkServiceUpdateRequest) Send() (*BookmarkServiceUpdateResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22476,6 +22995,9 @@ func (p *InstanceTypeNicServiceGetRequest) Send() (*InstanceTypeNicServiceGetRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22564,6 +23086,9 @@ func (p *InstanceTypeNicServiceRemoveRequest) Send() (*InstanceTypeNicServiceRem
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22655,6 +23180,9 @@ func (p *InstanceTypeNicServiceUpdateRequest) Send() (*InstanceTypeNicServiceUpd
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22762,6 +23290,9 @@ func (p *AssignedDiskProfileServiceGetRequest) Send() (*AssignedDiskProfileServi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22850,6 +23381,9 @@ func (p *AssignedDiskProfileServiceRemoveRequest) Send() (*AssignedDiskProfileSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -22960,6 +23494,9 @@ func (p *NetworkLabelsServiceAddRequest) Send() (*NetworkLabelsServiceAddRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -23048,6 +23585,9 @@ func (p *NetworkLabelsServiceListRequest) Send() (*NetworkLabelsServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -23173,6 +23713,9 @@ func (p *StorageDomainServiceGetRequest) Send() (*StorageDomainServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -23568,6 +24111,9 @@ func (p *StorageDomainServiceRemoveRequest) Send() (*StorageDomainServiceRemoveR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -23659,6 +24205,9 @@ func (p *StorageDomainServiceUpdateRequest) Send() (*StorageDomainServiceUpdateR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -23978,6 +24527,9 @@ func (p *DataCentersServiceAddRequest) Send() (*DataCentersServiceAddResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24090,6 +24642,9 @@ func (p *DataCentersServiceListRequest) Send() (*DataCentersServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24217,6 +24772,9 @@ func (p *VmApplicationServiceGetRequest) Send() (*VmApplicationServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24335,6 +24893,9 @@ func (p *QuotaStorageLimitsServiceAddRequest) Send() (*QuotaStorageLimitsService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24423,6 +24984,9 @@ func (p *QuotaStorageLimitsServiceListRequest) Send() (*QuotaStorageLimitsServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24540,6 +25104,9 @@ func (p *TemplateNicServiceGetRequest) Send() (*TemplateNicServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24628,6 +25195,9 @@ func (p *TemplateNicServiceRemoveRequest) Send() (*TemplateNicServiceRemoveRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24719,6 +25289,9 @@ func (p *TemplateNicServiceUpdateRequest) Send() (*TemplateNicServiceUpdateRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24839,6 +25412,9 @@ func (p *VmCdromsServiceListRequest) Send() (*VmCdromsServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -24966,6 +25542,9 @@ func (p *VmSessionsServiceListRequest) Send() (*VmSessionsServiceListResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25357,6 +25936,9 @@ func (p *VmDiskServiceGetRequest) Send() (*VmDiskServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25540,6 +26122,9 @@ func (p *VmDiskServiceRemoveRequest) Send() (*VmDiskServiceRemoveResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25631,6 +26216,9 @@ func (p *VmDiskServiceUpdateRequest) Send() (*VmDiskServiceUpdateResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25762,6 +26350,9 @@ func (p *StorageServerConnectionServiceGetRequest) Send() (*StorageServerConnect
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25858,6 +26449,9 @@ func (p *StorageServerConnectionServiceRemoveRequest) Send() (*StorageServerConn
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -25957,6 +26551,9 @@ func (p *StorageServerConnectionServiceUpdateRequest) Send() (*StorageServerConn
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -26724,6 +27321,9 @@ func (p *HostServiceGetRequest) Send() (*HostServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -27220,6 +27820,9 @@ func (p *HostServiceRemoveRequest) Send() (*HostServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -27553,6 +28156,9 @@ func (p *HostServiceUpdateRequest) Send() (*HostServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28028,6 +28634,9 @@ func (p *ExternalProviderCertificatesServiceListRequest) Send() (*ExternalProvid
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28146,6 +28755,9 @@ func (p *VmHostDeviceServiceGetRequest) Send() (*VmHostDeviceServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28234,6 +28846,9 @@ func (p *VmHostDeviceServiceRemoveRequest) Send() (*VmHostDeviceServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28334,6 +28949,9 @@ func (p *TagServiceGetRequest) Send() (*TagServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28422,6 +29040,9 @@ func (p *TagServiceRemoveRequest) Send() (*TagServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28513,6 +29134,9 @@ func (p *TagServiceUpdateRequest) Send() (*TagServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28628,6 +29252,9 @@ func (p *HostNumaNodesServiceListRequest) Send() (*HostNumaNodesServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28757,6 +29384,9 @@ func (p *AssignedTagsServiceAddRequest) Send() (*AssignedTagsServiceAddResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -28845,6 +29475,9 @@ func (p *AssignedTagsServiceListRequest) Send() (*AssignedTagsServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29154,6 +29787,9 @@ func (p *JobServiceGetRequest) Send() (*JobServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29274,6 +29910,9 @@ func (p *FileServiceGetRequest) Send() (*FileServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29393,6 +30032,9 @@ func (p *StepsServiceAddRequest) Send() (*StepsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29481,6 +30123,9 @@ func (p *StepsServiceListRequest) Send() (*StepsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29599,6 +30244,9 @@ func (p *StorageDomainServerConnectionServiceGetRequest) Send() (*StorageDomainS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29687,6 +30335,9 @@ func (p *StorageDomainServerConnectionServiceRemoveRequest) Send() (*StorageDoma
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29798,6 +30449,9 @@ func (p *RolesServiceAddRequest) Send() (*RolesServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -29886,6 +30540,9 @@ func (p *RolesServiceListRequest) Send() (*RolesServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30315,6 +30972,9 @@ func (p *ImageTransferServiceGetRequest) Send() (*ImageTransferServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30588,6 +31248,9 @@ func (p *AssignedVnicProfileServiceGetRequest) Send() (*AssignedVnicProfileServi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30676,6 +31339,9 @@ func (p *AssignedVnicProfileServiceRemoveRequest) Send() (*AssignedVnicProfileSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30787,6 +31453,9 @@ func (p *TemplateWatchdogServiceGetRequest) Send() (*TemplateWatchdogServiceGetR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30875,6 +31544,9 @@ func (p *TemplateWatchdogServiceRemoveRequest) Send() (*TemplateWatchdogServiceR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -30966,6 +31638,9 @@ func (p *TemplateWatchdogServiceUpdateRequest) Send() (*TemplateWatchdogServiceU
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31073,6 +31748,9 @@ func (p *VmSessionServiceGetRequest) Send() (*VmSessionServiceGetResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31358,6 +32036,9 @@ func (p *VmNicServiceGetRequest) Send() (*VmNicServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31446,6 +32127,9 @@ func (p *VmNicServiceRemoveRequest) Send() (*VmNicServiceRemoveResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31537,6 +32221,9 @@ func (p *VmNicServiceUpdateRequest) Send() (*VmNicServiceUpdateResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31693,6 +32380,9 @@ func (p *SnapshotsServiceAddRequest) Send() (*SnapshotsServiceAddResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31789,6 +32479,9 @@ func (p *SnapshotsServiceListRequest) Send() (*SnapshotsServiceListResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -31907,6 +32600,9 @@ func (p *StorageDomainVmDiskAttachmentsServiceListRequest) Send() (*StorageDomai
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32025,6 +32721,9 @@ func (p *ImageServiceGetRequest) Send() (*ImageServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32262,6 +32961,9 @@ func (p *InstanceTypeNicsServiceAddRequest) Send() (*InstanceTypeNicsServiceAddR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32358,6 +33060,9 @@ func (p *InstanceTypeNicsServiceListRequest) Send() (*InstanceTypeNicsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32483,6 +33188,9 @@ func (p *OperatingSystemsServiceListRequest) Send() (*OperatingSystemsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32601,6 +33309,9 @@ func (p *HostNicServiceGetRequest) Send() (*HostNicServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32880,6 +33591,9 @@ func (p *IscsiBondsServiceAddRequest) Send() (*IscsiBondsServiceAddResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -32968,6 +33682,9 @@ func (p *IscsiBondsServiceListRequest) Send() (*IscsiBondsServiceListResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33097,6 +33814,9 @@ func (p *UsersServiceAddRequest) Send() (*UsersServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33201,6 +33921,9 @@ func (p *UsersServiceListRequest) Send() (*UsersServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33329,6 +34052,9 @@ func (p *GroupsServiceAddRequest) Send() (*GroupsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33433,6 +34159,9 @@ func (p *GroupsServiceListRequest) Send() (*GroupsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33551,6 +34280,9 @@ func (p *DomainServiceGetRequest) Send() (*DomainServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33695,6 +34427,9 @@ func (p *SshPublicKeysServiceAddRequest) Send() (*SshPublicKeysServiceAddRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33783,6 +34518,9 @@ func (p *SshPublicKeysServiceListRequest) Send() (*SshPublicKeysServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -33901,6 +34639,9 @@ func (p *DomainUserServiceGetRequest) Send() (*DomainUserServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34012,6 +34753,9 @@ func (p *UserServiceGetRequest) Send() (*UserServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34100,6 +34844,9 @@ func (p *UserServiceRemoveRequest) Send() (*UserServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34256,6 +35003,9 @@ func (p *DomainsServiceListRequest) Send() (*DomainsServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34399,6 +35149,9 @@ func (p *DomainUsersServiceListRequest) Send() (*DomainUsersServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34541,6 +35294,9 @@ func (p *DomainGroupsServiceListRequest) Send() (*DomainGroupsServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34658,6 +35414,9 @@ func (p *GroupServiceGetRequest) Send() (*GroupServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34746,6 +35505,9 @@ func (p *GroupServiceRemoveRequest) Send() (*GroupServiceRemoveResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34881,6 +35643,9 @@ func (p *DomainGroupServiceGetRequest) Send() (*DomainGroupServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -34988,6 +35753,9 @@ func (p *SshPublicKeyServiceGetRequest) Send() (*SshPublicKeyServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35076,6 +35844,9 @@ func (p *SshPublicKeyServiceRemoveRequest) Send() (*SshPublicKeyServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35167,6 +35938,9 @@ func (p *SshPublicKeyServiceUpdateRequest) Send() (*SshPublicKeyServiceUpdateRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35274,6 +36048,9 @@ func (p *FenceAgentServiceGetRequest) Send() (*FenceAgentServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35362,6 +36139,9 @@ func (p *FenceAgentServiceRemoveRequest) Send() (*FenceAgentServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35453,6 +36233,9 @@ func (p *FenceAgentServiceUpdateRequest) Send() (*FenceAgentServiceUpdateRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35560,6 +36343,9 @@ func (p *MacPoolServiceGetRequest) Send() (*MacPoolServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35648,6 +36434,9 @@ func (p *MacPoolServiceRemoveRequest) Send() (*MacPoolServiceRemoveResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35739,6 +36528,9 @@ func (p *MacPoolServiceUpdateRequest) Send() (*MacPoolServiceUpdateResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35857,6 +36649,9 @@ func (p *AssignedCpuProfilesServiceAddRequest) Send() (*AssignedCpuProfilesServi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -35945,6 +36740,9 @@ func (p *AssignedCpuProfilesServiceListRequest) Send() (*AssignedCpuProfilesServ
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36073,6 +36871,9 @@ func (p *StorageServerConnectionExtensionsServiceAddRequest) Send() (*StorageSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36161,6 +36962,9 @@ func (p *StorageServerConnectionExtensionsServiceListRequest) Send() (*StorageSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36278,6 +37082,9 @@ func (p *PermissionServiceGetRequest) Send() (*PermissionServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36366,6 +37173,9 @@ func (p *PermissionServiceRemoveRequest) Send() (*PermissionServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36465,6 +37275,9 @@ func (p *DiskProfileServiceGetRequest) Send() (*DiskProfileServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36553,6 +37366,9 @@ func (p *DiskProfileServiceRemoveRequest) Send() (*DiskProfileServiceRemoveRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36644,6 +37460,9 @@ func (p *DiskProfileServiceUpdateRequest) Send() (*DiskProfileServiceUpdateRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36764,6 +37583,9 @@ func (p *AffinityGroupServiceGetRequest) Send() (*AffinityGroupServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36852,6 +37674,9 @@ func (p *AffinityGroupServiceRemoveRequest) Send() (*AffinityGroupServiceRemoveR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -36943,6 +37768,9 @@ func (p *AffinityGroupServiceUpdateRequest) Send() (*AffinityGroupServiceUpdateR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37073,6 +37901,9 @@ func (p *UnmanagedNetworksServiceListRequest) Send() (*UnmanagedNetworksServiceL
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37217,6 +38048,9 @@ func (p *VmsServiceAddRequest) Send() (*VmsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37337,6 +38171,9 @@ func (p *VmsServiceListRequest) Send() (*VmsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37454,6 +38291,9 @@ func (p *StorageDomainTemplateServiceGetRequest) Send() (*StorageDomainTemplateS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37786,6 +38626,9 @@ func (p *StorageDomainTemplateServiceRemoveRequest) Send() (*StorageDomainTempla
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -37909,6 +38752,9 @@ func (p *VmPoolsServiceAddRequest) Send() (*VmPoolsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38021,6 +38867,9 @@ func (p *VmPoolsServiceListRequest) Send() (*VmPoolsServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38150,6 +38999,9 @@ func (p *AssignedDiskProfilesServiceAddRequest) Send() (*AssignedDiskProfilesSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38238,6 +39090,9 @@ func (p *AssignedDiskProfilesServiceListRequest) Send() (*AssignedDiskProfilesSe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38457,6 +39312,9 @@ func (p *StepServiceGetRequest) Send() (*StepServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38596,6 +39454,9 @@ func (p *AttachedStorageDomainDisksServiceAddRequest) Send() (*AttachedStorageDo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38684,6 +39545,9 @@ func (p *AttachedStorageDomainDisksServiceListRequest) Send() (*AttachedStorageD
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38816,6 +39680,9 @@ func (p *NetworkFilterServiceGetRequest) Send() (*NetworkFilterServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -38934,6 +39801,9 @@ func (p *VmDisksServiceAddRequest) Send() (*VmDisksServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39022,6 +39892,9 @@ func (p *VmDisksServiceListRequest) Send() (*VmDisksServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39153,6 +40026,9 @@ func (p *DiskAttachmentsServiceAddRequest) Send() (*DiskAttachmentsServiceAddRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39233,6 +40109,9 @@ func (p *DiskAttachmentsServiceListRequest) Send() (*DiskAttachmentsServiceListR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39540,6 +40419,9 @@ func (p *StorageDomainDiskServiceGetRequest) Send() (*StorageDomainDiskServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39721,6 +40603,9 @@ func (p *StorageDomainDiskServiceRemoveRequest) Send() (*StorageDomainDiskServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -39887,6 +40772,9 @@ func (p *StorageDomainDiskServiceUpdateRequest) Send() (*StorageDomainDiskServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40027,6 +40915,9 @@ func (p *HostHooksServiceListRequest) Send() (*HostHooksServiceListResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40155,6 +41046,9 @@ func (p *StorageDomainsServiceAddRequest) Send() (*StorageDomainsServiceAddRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40267,6 +41161,9 @@ func (p *StorageDomainsServiceListRequest) Send() (*StorageDomainsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40384,6 +41281,9 @@ func (p *NetworkLabelServiceGetRequest) Send() (*NetworkLabelServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40472,6 +41372,9 @@ func (p *NetworkLabelServiceRemoveRequest) Send() (*NetworkLabelServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40582,6 +41485,9 @@ func (p *InstanceTypesServiceAddRequest) Send() (*InstanceTypesServiceAddRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40686,6 +41592,9 @@ func (p *InstanceTypesServiceListRequest) Send() (*InstanceTypesServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40814,6 +41723,9 @@ func (p *StorageDomainServerConnectionsServiceAddRequest) Send() (*StorageDomain
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -40902,6 +41814,9 @@ func (p *StorageDomainServerConnectionsServiceListRequest) Send() (*StorageDomai
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41019,6 +41934,9 @@ func (p *InstanceTypeGraphicsConsoleServiceGetRequest) Send() (*InstanceTypeGrap
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41107,6 +42025,9 @@ func (p *InstanceTypeGraphicsConsoleServiceRemoveRequest) Send() (*InstanceTypeG
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41206,6 +42127,9 @@ func (p *IscsiBondServiceGetRequest) Send() (*IscsiBondServiceGetResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41294,6 +42218,9 @@ func (p *IscsiBondServiceRemoveRequest) Send() (*IscsiBondServiceRemoveResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41385,6 +42312,9 @@ func (p *IscsiBondServiceUpdateRequest) Send() (*IscsiBondServiceUpdateResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41517,6 +42447,9 @@ func (p *TemplateDiskAttachmentServiceGetRequest) Send() (*TemplateDiskAttachmen
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41613,6 +42546,9 @@ func (p *TemplateDiskAttachmentServiceRemoveRequest) Send() (*TemplateDiskAttach
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41721,6 +42657,9 @@ func (p *HostStorageServiceListRequest) Send() (*HostStorageServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41847,6 +42786,9 @@ func (p *WeightServiceGetRequest) Send() (*WeightServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -41935,6 +42877,9 @@ func (p *WeightServiceRemoveRequest) Send() (*WeightServiceRemoveResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42045,6 +42990,9 @@ func (p *VmNumaNodesServiceAddRequest) Send() (*VmNumaNodesServiceAddResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42133,6 +43081,9 @@ func (p *VmNumaNodesServiceListRequest) Send() (*VmNumaNodesServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42261,6 +43212,9 @@ func (p *TemplateWatchdogsServiceAddRequest) Send() (*TemplateWatchdogsServiceAd
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42349,6 +43303,9 @@ func (p *TemplateWatchdogsServiceListRequest) Send() (*TemplateWatchdogsServiceL
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42655,6 +43612,9 @@ func (p *AttachedStorageDomainDiskServiceGetRequest) Send() (*AttachedStorageDom
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -42919,6 +43879,9 @@ func (p *AttachedStorageDomainDiskServiceRemoveRequest) Send() (*AttachedStorage
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43085,6 +44048,9 @@ func (p *AttachedStorageDomainDiskServiceUpdateRequest) Send() (*AttachedStorage
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43218,6 +44184,9 @@ func (p *VnicProfileServiceGetRequest) Send() (*VnicProfileServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43306,6 +44275,9 @@ func (p *VnicProfileServiceRemoveRequest) Send() (*VnicProfileServiceRemoveRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43397,6 +44369,9 @@ func (p *VnicProfileServiceUpdateRequest) Send() (*VnicProfileServiceUpdateRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43527,6 +44502,9 @@ func (p *VmGraphicsConsolesServiceAddRequest) Send() (*VmGraphicsConsolesService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43623,6 +44601,9 @@ func (p *VmGraphicsConsolesServiceListRequest) Send() (*VmGraphicsConsolesServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43742,6 +44723,9 @@ func (p *PermitServiceGetRequest) Send() (*PermitServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43830,6 +44814,9 @@ func (p *PermitServiceRemoveRequest) Send() (*PermitServiceRemoveResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -43938,6 +44925,9 @@ func (p *DataCenterServiceGetRequest) Send() (*DataCenterServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44034,6 +45024,9 @@ func (p *DataCenterServiceRemoveRequest) Send() (*DataCenterServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44125,6 +45118,9 @@ func (p *DataCenterServiceUpdateRequest) Send() (*DataCenterServiceUpdateRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44347,6 +45343,9 @@ func (p *StatisticsServiceListRequest) Send() (*StatisticsServiceListResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44480,6 +45479,9 @@ func (p *SchedulingPolicyUnitsServiceListRequest) Send() (*SchedulingPolicyUnits
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44787,6 +45789,9 @@ func (p *TemplateDiskServiceGetRequest) Send() (*TemplateDiskServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44875,6 +45880,9 @@ func (p *TemplateDiskServiceRemoveRequest) Send() (*TemplateDiskServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -44988,6 +45996,9 @@ func (p *AffinityLabelVmsServiceAddRequest) Send() (*AffinityLabelVmsServiceAddR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45068,6 +46079,9 @@ func (p *AffinityLabelVmsServiceListRequest) Send() (*AffinityLabelVmsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45315,6 +46329,9 @@ func (p *AffinityLabelsServiceAddRequest) Send() (*AffinityLabelsServiceAddRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45403,6 +46420,9 @@ func (p *AffinityLabelsServiceListRequest) Send() (*AffinityLabelsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45529,6 +46549,9 @@ func (p *VmGraphicsConsoleServiceGetRequest) Send() (*VmGraphicsConsoleServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45797,6 +46820,9 @@ func (p *VmGraphicsConsoleServiceRemoveRequest) Send() (*VmGraphicsConsoleServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -45992,6 +47018,9 @@ func (p *AffinityLabelHostServiceGetRequest) Send() (*AffinityLabelHostServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46072,6 +47101,9 @@ func (p *AffinityLabelHostServiceRemoveRequest) Send() (*AffinityLabelHostServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46172,6 +47204,9 @@ func (p *AssignedTagServiceGetRequest) Send() (*AssignedTagServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46260,6 +47295,9 @@ func (p *AssignedTagServiceRemoveRequest) Send() (*AssignedTagServiceRemoveRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46568,6 +47606,9 @@ func (p *DiskServiceGetRequest) Send() (*DiskServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46757,6 +47798,9 @@ func (p *DiskServiceRemoveRequest) Send() (*DiskServiceRemoveResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -46923,6 +47967,9 @@ func (p *DiskServiceUpdateRequest) Send() (*DiskServiceUpdateResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47057,6 +48104,9 @@ func (p *TemplateDiskAttachmentsServiceListRequest) Send() (*TemplateDiskAttachm
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47199,6 +48249,9 @@ func (p *StorageDomainContentDisksServiceListRequest) Send() (*StorageDomainCont
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47325,6 +48378,9 @@ func (p *HostDevicesServiceListRequest) Send() (*HostDevicesServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47454,6 +48510,9 @@ func (p *AssignedNetworksServiceAddRequest) Send() (*AssignedNetworksServiceAddR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47542,6 +48601,9 @@ func (p *AssignedNetworksServiceListRequest) Send() (*AssignedNetworksServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47667,6 +48729,9 @@ func (p *StorageServiceGetRequest) Send() (*StorageServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47774,6 +48839,9 @@ func (p *UnmanagedNetworkServiceGetRequest) Send() (*UnmanagedNetworkServiceGetR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47862,6 +48930,9 @@ func (p *UnmanagedNetworkServiceRemoveRequest) Send() (*UnmanagedNetworkServiceR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -47961,6 +49032,9 @@ func (p *QuotaServiceGetRequest) Send() (*QuotaServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48049,6 +49123,9 @@ func (p *QuotaServiceRemoveRequest) Send() (*QuotaServiceRemoveResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48140,6 +49217,9 @@ func (p *QuotaServiceUpdateRequest) Send() (*QuotaServiceUpdateResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48283,6 +49363,9 @@ func (p *SnapshotDiskServiceGetRequest) Send() (*SnapshotDiskServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48401,6 +49484,9 @@ func (p *QossServiceAddRequest) Send() (*QossServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48489,6 +49575,9 @@ func (p *QossServiceListRequest) Send() (*QossServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48607,6 +49696,9 @@ func (p *NetworkServiceGetRequest) Send() (*NetworkServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48695,6 +49787,9 @@ func (p *NetworkServiceRemoveRequest) Send() (*NetworkServiceRemoveResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48786,6 +49881,9 @@ func (p *NetworkServiceUpdateRequest) Send() (*NetworkServiceUpdateResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -48932,6 +50030,9 @@ func (p *InstanceTypeServiceGetRequest) Send() (*InstanceTypeServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49020,6 +50121,9 @@ func (p *InstanceTypeServiceRemoveRequest) Send() (*InstanceTypeServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49111,6 +50215,9 @@ func (p *InstanceTypeServiceUpdateRequest) Send() (*InstanceTypeServiceUpdateRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49269,6 +50376,9 @@ func (p *VirtualFunctionAllowedNetworksServiceAddRequest) Send() (*VirtualFuncti
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49357,6 +50467,9 @@ func (p *VirtualFunctionAllowedNetworksServiceListRequest) Send() (*VirtualFunct
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49474,6 +50587,9 @@ func (p *HostHookServiceGetRequest) Send() (*HostHookServiceGetResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49589,6 +50705,9 @@ func (p *ImagesServiceListRequest) Send() (*ImagesServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49714,6 +50833,9 @@ func (p *SnapshotCdromsServiceListRequest) Send() (*SnapshotCdromsServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49842,6 +50964,9 @@ func (p *BalancesServiceAddRequest) Send() (*BalancesServiceAddResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -49938,6 +51063,9 @@ func (p *BalancesServiceListRequest) Send() (*BalancesServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50056,6 +51184,9 @@ func (p *TemplateCdromServiceGetRequest) Send() (*TemplateCdromServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50279,6 +51410,9 @@ func (p *CpuProfileServiceGetRequest) Send() (*CpuProfileServiceGetResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50367,6 +51501,9 @@ func (p *CpuProfileServiceRemoveRequest) Send() (*CpuProfileServiceRemoveRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50458,6 +51595,9 @@ func (p *CpuProfileServiceUpdateRequest) Send() (*CpuProfileServiceUpdateRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50616,6 +51756,9 @@ func (p *StorageServerConnectionExtensionServiceGetRequest) Send() (*StorageServ
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50704,6 +51847,9 @@ func (p *StorageServerConnectionExtensionServiceRemoveRequest) Send() (*StorageS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50795,6 +51941,9 @@ func (p *StorageServerConnectionExtensionServiceUpdateRequest) Send() (*StorageS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -50905,6 +52054,9 @@ func (p *ClusterLevelsServiceListRequest) Send() (*ClusterLevelsServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51035,6 +52187,9 @@ func (p *NetworkFilterParametersServiceAddRequest) Send() (*NetworkFilterParamet
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51115,6 +52270,9 @@ func (p *NetworkFilterParametersServiceListRequest) Send() (*NetworkFilterParame
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51244,6 +52402,9 @@ func (p *VmNicsServiceAddRequest) Send() (*VmNicsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51332,6 +52493,9 @@ func (p *VmNicsServiceListRequest) Send() (*VmNicsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51457,6 +52621,9 @@ func (p *VmReportedDevicesServiceListRequest) Send() (*VmReportedDevicesServiceL
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51582,6 +52749,9 @@ func (p *BalanceServiceGetRequest) Send() (*BalanceServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51670,6 +52840,9 @@ func (p *BalanceServiceRemoveRequest) Send() (*BalanceServiceRemoveResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51781,6 +52954,9 @@ func (p *PermitsServiceAddRequest) Send() (*PermitsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51869,6 +53045,9 @@ func (p *PermitsServiceListRequest) Send() (*PermitsServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -51995,6 +53174,9 @@ func (p *StorageDomainTemplatesServiceListRequest) Send() (*StorageDomainTemplat
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -52112,6 +53294,9 @@ func (p *SystemServiceGetRequest) Send() (*SystemServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -52772,6 +53957,9 @@ func (p *ExternalHostServiceGetRequest) Send() (*ExternalHostServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -52879,6 +54067,9 @@ func (p *ExternalHostGroupServiceGetRequest) Send() (*ExternalHostGroupServiceGe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -52987,6 +54178,9 @@ func (p *KatelloErratumServiceGetRequest) Send() (*KatelloErratumServiceGetRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53094,6 +54288,9 @@ func (p *ExternalDiscoveredHostServiceGetRequest) Send() (*ExternalDiscoveredHos
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53211,6 +54408,9 @@ func (p *EngineKatelloErrataServiceListRequest) Send() (*EngineKatelloErrataServ
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53330,6 +54530,9 @@ func (p *ExternalComputeResourceServiceGetRequest) Send() (*ExternalComputeResou
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53445,6 +54648,9 @@ func (p *ExternalHostGroupsServiceListRequest) Send() (*ExternalHostGroupsServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53562,6 +54768,9 @@ func (p *ExternalHostProviderServiceGetRequest) Send() (*ExternalHostProviderSer
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53739,6 +54948,9 @@ func (p *ExternalHostProviderServiceRemoveRequest) Send() (*ExternalHostProvider
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -53919,6 +55131,9 @@ func (p *ExternalHostProviderServiceUpdateRequest) Send() (*ExternalHostProvider
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54096,6 +55311,9 @@ func (p *KatelloErrataServiceListRequest) Send() (*KatelloErrataServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54223,6 +55441,9 @@ func (p *ExternalDiscoveredHostsServiceListRequest) Send() (*ExternalDiscoveredH
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54348,6 +55569,9 @@ func (p *ExternalHostsServiceListRequest) Send() (*ExternalHostsServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54473,6 +55697,9 @@ func (p *ExternalComputeResourcesServiceListRequest) Send() (*ExternalComputeRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54601,6 +55828,9 @@ func (p *ExternalHostProvidersServiceAddRequest) Send() (*ExternalHostProvidersS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54689,6 +55919,9 @@ func (p *ExternalHostProvidersServiceListRequest) Send() (*ExternalHostProviders
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54807,6 +56040,9 @@ func (p *GlusterBrickServiceGetRequest) Send() (*GlusterBrickServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -54895,6 +56131,9 @@ func (p *GlusterBrickServiceRemoveRequest) Send() (*GlusterBrickServiceRemoveRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -55113,6 +56352,9 @@ func (p *GlusterVolumesServiceAddRequest) Send() (*GlusterVolumesServiceAddRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -55217,6 +56459,9 @@ func (p *GlusterVolumesServiceListRequest) Send() (*GlusterVolumesServiceListRes
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -55336,6 +56581,9 @@ func (p *GlusterVolumeServiceGetRequest) Send() (*GlusterVolumeServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -55612,6 +56860,9 @@ func (p *GlusterVolumeServiceRemoveRequest) Send() (*GlusterVolumeServiceRemoveR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -56656,6 +57907,9 @@ func (p *GlusterHookServiceGetRequest) Send() (*GlusterHookServiceGetResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -56744,6 +57998,9 @@ func (p *GlusterHookServiceRemoveRequest) Send() (*GlusterHookServiceRemoveRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57067,6 +58324,9 @@ func (p *GlusterBricksServiceAddRequest) Send() (*GlusterBricksServiceAddRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57155,6 +58415,9 @@ func (p *GlusterBricksServiceListRequest) Send() (*GlusterBricksServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57351,6 +58614,9 @@ func (p *GlusterBricksServiceRemoveRequest) Send() (*GlusterBricksServiceRemoveR
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57564,6 +58830,9 @@ func (p *GlusterHooksServiceListRequest) Send() (*GlusterHooksServiceListRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57693,6 +58962,9 @@ func (p *DisksServiceAddRequest) Send() (*DisksServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57797,6 +59069,9 @@ func (p *DisksServiceListRequest) Send() (*DisksServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -57926,6 +59201,9 @@ func (p *InstanceTypeWatchdogsServiceAddRequest) Send() (*InstanceTypeWatchdogsS
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58022,6 +59300,9 @@ func (p *InstanceTypeWatchdogsServiceListRequest) Send() (*InstanceTypeWatchdogs
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58151,6 +59432,9 @@ func (p *JobsServiceAddRequest) Send() (*JobsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58239,6 +59523,9 @@ func (p *JobsServiceListRequest) Send() (*JobsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58366,6 +59653,9 @@ func (p *IconsServiceListRequest) Send() (*IconsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58504,6 +59794,9 @@ func (p *TemplatesServiceAddRequest) Send() (*TemplatesServiceAddResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58616,6 +59909,9 @@ func (p *TemplatesServiceListRequest) Send() (*TemplatesServiceListResponse, err
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58742,6 +60038,9 @@ func (p *FilterServiceGetRequest) Send() (*FilterServiceGetResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58830,6 +60129,9 @@ func (p *FilterServiceRemoveRequest) Send() (*FilterServiceRemoveResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -58942,6 +60244,9 @@ func (p *AssignedAffinityLabelsServiceAddRequest) Send() (*AssignedAffinityLabel
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59022,6 +60327,9 @@ func (p *AssignedAffinityLabelsServiceListRequest) Send() (*AssignedAffinityLabe
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59141,6 +60449,9 @@ func (p *SnapshotCdromServiceGetRequest) Send() (*SnapshotCdromServiceGetRespons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59248,6 +60559,9 @@ func (p *HostNumaNodeServiceGetRequest) Send() (*HostNumaNodeServiceGetResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59367,6 +60681,9 @@ func (p *TemplateGraphicsConsoleServiceGetRequest) Send() (*TemplateGraphicsCons
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59455,6 +60772,9 @@ func (p *TemplateGraphicsConsoleServiceRemoveRequest) Send() (*TemplateGraphicsC
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	_, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59568,6 +60888,9 @@ func (p *AffinityLabelHostsServiceAddRequest) Send() (*AffinityLabelHostsService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59648,6 +60971,9 @@ func (p *AffinityLabelHostsServiceListRequest) Send() (*AffinityLabelHostsServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59775,6 +61101,9 @@ func (p *DiskSnapshotsServiceListRequest) Send() (*DiskSnapshotsServiceListRespo
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -59925,6 +61254,9 @@ func (p *StorageDomainVmsServiceListRequest) Send() (*StorageDomainVmsServiceLis
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60070,6 +61402,9 @@ func (p *HostsServiceAddRequest) Send() (*HostsServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60182,6 +61517,9 @@ func (p *HostsServiceListRequest) Send() (*HostsServiceListResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60320,6 +61658,9 @@ func (p *StorageDomainDisksServiceAddRequest) Send() (*StorageDomainDisksService
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60408,6 +61749,9 @@ func (p *StorageDomainDisksServiceListRequest) Send() (*StorageDomainDisksServic
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60537,6 +61881,9 @@ func (p *FiltersServiceAddRequest) Send() (*FiltersServiceAddResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60633,6 +61980,9 @@ func (p *FiltersServiceListRequest) Send() (*FiltersServiceListResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60761,6 +62111,9 @@ func (p *StorageServerConnectionsServiceAddRequest) Send() (*StorageServerConnec
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60849,6 +62202,9 @@ func (p *StorageServerConnectionsServiceListRequest) Send() (*StorageServerConne
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -60977,6 +62333,9 @@ func (p *FenceAgentsServiceAddRequest) Send() (*FenceAgentsServiceAddResponse, e
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -61065,6 +62424,9 @@ func (p *FenceAgentsServiceListRequest) Send() (*FenceAgentsServiceListResponse,
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -61194,6 +62556,9 @@ func (p *ClustersServiceAddRequest) Send() (*ClustersServiceAddResponse, error) 
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -61306,6 +62671,9 @@ func (p *ClustersServiceListRequest) Send() (*ClustersServiceListResponse, error
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -61436,6 +62804,9 @@ func (p *AssignedPermissionsServiceAddRequest) Send() (*AssignedPermissionsServi
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200, 201, 202}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
@@ -61516,6 +62887,9 @@ func (p *AssignedPermissionsServiceListRequest) Send() (*AssignedPermissionsServ
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if !Contains(resp.StatusCode, []int{200}) {
+		return nil, CheckFault(resp)
+	}
 	respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)
 	if errReadBody != nil {
 		return nil, errReadBody
