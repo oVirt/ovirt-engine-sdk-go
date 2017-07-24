@@ -22,7 +22,6 @@ package ovirtsdk4
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -57,59 +56,6 @@ func (c *Connection) URL() string {
 // SystemService returns a reference to the root of the services tree.
 func (c *Connection) SystemService() *SystemService {
 	return NewSystemService(c, "")
-}
-
-// Send sends an HTTP request and waits for the response.
-func (c *Connection) Send(r *OvRequest) (*OvResponse, error) {
-	var result OvResponse
-
-	// Build the URL:
-	useRawURL := c.buildRawURL(r.Path, r.Query)
-
-	// Validate the method selected:
-	if Contains(r.Method, []string{"DELETE", "GET", "PUT", "HEAD", "POST"}) == false {
-		return &result, fmt.Errorf("The HTTP method '%s' is invalid, we expected one of DELETE/GET/PUT/HEAD/POST", r.Method)
-	}
-
-	// Build the net/http request:
-	req, err := http.NewRequest(r.Method, useRawURL, nil)
-	if err != nil {
-		return &result, err
-	}
-
-	// Add request headers:
-	for reqHK, reqHV := range r.Headers {
-		req.Header.Add(reqHK, reqHV)
-	}
-	req.Header.Add("User-Agent", fmt.Sprintf("GoSDK/%s", SDK_VERSION))
-	req.Header.Add("Version", "4")
-	req.Header.Add("Content-Type", "application/xml")
-	req.Header.Add("Accept", "application/xml")
-	// 		Generate base64(username:password)
-	rawAuthStr := fmt.Sprintf("%s:%s", c.username, c.password)
-	req.Header.Add("Authorization",
-		fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(rawAuthStr))))
-
-	// Send the request and wait for the response:
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return &result, err
-	}
-
-	// Return the response:
-	defer resp.Body.Close()
-	respBodyBytes, err := ioutil.ReadAll(resp.Body)
-	result.Body = string(respBodyBytes)
-	if err != nil {
-		return &result, err
-	}
-	result.Code = resp.StatusCode
-	result.Headers = make(map[string]string)
-	for respHK, respHV := range resp.Header {
-		result.Headers[respHK] = respHV[0]
-	}
-
-	return &result, nil
 }
 
 // NewConnectionBuilder creates the `ConnectionBuilder struct instance
@@ -287,17 +233,4 @@ func (c *Connection) FollowLink(object string) error {
 
 // Close releases the resources used by this connection.
 func (c *Connection) Close() {
-}
-
-// Builds a request URL from a path, and the set of query parameters.
-func (c *Connection) buildRawURL(path string, query map[string]string) string {
-	rawURL := fmt.Sprintf("%s%s", c.url.String(), path)
-	if len(query) > 0 {
-		values := make(url.Values)
-		for k, v := range query {
-			values[k] = []string{v}
-		}
-		rawURL = fmt.Sprintf("%s?%s", rawURL, values.Encode())
-	}
-	return rawURL
 }
