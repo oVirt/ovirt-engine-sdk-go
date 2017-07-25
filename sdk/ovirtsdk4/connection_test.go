@@ -20,7 +20,6 @@ func TestSend(t *testing.T) {
 		t.Fatalf("Make connection failed, reason: %s", err.Error())
 	}
 	defer conn.Close()
-
 	clustersListResponse, err2 := conn.SystemService().ClustersService().
 		List().
 		CaseSensitive(false).
