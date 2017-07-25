@@ -29,3 +29,6 @@ target/
 .vscode/
 .project
 
+# Auto-generated files
+sdk/ovirtsdk4/services.go
+sdk/ovirtsdk4/types.go

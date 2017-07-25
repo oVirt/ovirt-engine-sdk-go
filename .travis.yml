@@ -3,3 +3,10 @@ language: java
 install: true
 
 script: mvn package -DskipTests
+
+after_success:
+  - ./.travis/deploy-codes.sh
+
+env:
+  global:
+    secure: SNjA7QGcgwE4oEFJO5nghPrOe2SSXtudR031lB4vFGJdSMg5aBKzTYc5/ejFKcW5SkDC5+3N1M5JScAdL9UEO+A2mY5494p3X4ORqjbCpUTfnGJEwUeX4SXHL5t8yLJ2pPDlBnNx9H0PjHjduZIZywha4FSeCzvf71kB2QtqkwCGyH8lmi3aFziwFu5oO9OgyPg+jjMmmWHQ3az/v0Ini+hPXw1ZHsFy66VHHpUpUMD/sN7/S526D8lX0FUoYtHfBmMlg8x6J5gAqSLTX6whR+r3xT4QmHZyJZWzatlQ2GxlDbld2hhDmf8bpq8V6heAv1wHePRSuf1k2X6Tx6zOro3VPS00kZYuUsPr1w2vrgamjd8SwhD6lEpPjZXb2d4gN1VA/maBR70UTiA8+Gok/ioNs6C1jUkTrXXohWw/CxcEfmHURMVXYbEkyXZljOyxgj2lmflFUnH22hGRi79mkSq1GHUrIAyAQTYcQ4cVUW2Y/2MUxW1NP9kFqHfi31oGwxoZYvTyTYTiNs9Ulz+xz7FlpgOJia2P8/xg7qZA4fsG1HC5K3E0HJJK7hd6Fe9V4SsWYvcRk65h8fUitvaqWZo+klRLF6nWSa1wEv0XqbxbXj02mZGMNCAHZCd+zm912RzEoXkwym6LKfO/f6i6URGZTpQ7rSKO1L/gRo6/mJg=
