@@ -53,6 +53,11 @@ public class TypesGenerator implements GoGenerator {
     // The buffer used to generate the code:
     private GoBuffer buffer;
 
+    // Reference to the object used to calculate Go types:
+    @Inject
+    private GoTypes goTypes;
+
+
     public void setOut(File newOut) {
         out = newOut;
     }
@@ -142,7 +147,7 @@ public class TypesGenerator implements GoGenerator {
         allMembers.addAll(declaredMembers);
 
         // Begin class:
-        buffer.addLine("type %1$sBuilder struct {", typePrivateClassName);
+        buffer.addLine("type %1$s struct {", goTypes.getBuilderName(type));
         //      Add properties of TypeBuilder
         buffer.addLine(  "%1$s *%2$s", typePrivateMemberName, typeName.getClassName());
         buffer.addLine(  "err error");
@@ -151,10 +156,10 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine();
 
         // Define NewStructBuilder function
-        buffer.addLine("func New%1$sBuilder() *%2$sBuilder {",
-            typeClassName, typePrivateClassName);
-        buffer.addLine("return &%1$sBuilder{%2$s: &%3$s{}, err: nil}",
-            typePrivateClassName,
+        buffer.addLine("func %1$s() *%2$s {",
+            goTypes.getNewBuilderFuncName(type), goTypes.getBuilderName(type));
+        buffer.addLine("return &%1$s{%2$s: &%3$s{}, err: nil}",
+            goTypes.getBuilderName(type),
             typePrivateMemberName,
             typeClassName
             );
@@ -168,7 +173,7 @@ public class TypesGenerator implements GoGenerator {
         }
 
         // Generate Build method
-        buffer.addLine("func (builder *%1$sBuilder) Build() (*%2$s, error) {", typePrivateClassName, typeClassName);
+        buffer.addLine("func (builder *%1$s) Build() (*%2$s, error) {", goTypes.getBuilderName(type), typeClassName);
         buffer.addLine(  "if builder.err != nil {");
         buffer.addLine(    "return nil, builder.err");
         buffer.addLine(  "}");
@@ -217,16 +222,13 @@ public class TypesGenerator implements GoGenerator {
 
     private void generateBuilderMemberMethods(StructType type, StructMember member) {
         // Get Type names
-        GoClassName typeName = goNames.getTypeName(type);
-        String typeClassName = typeName.getClassName();
-        String typePrivateClassName = typeName.getPrivateClassName();
         String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
 
         // Get member names
         GoTypeReference memberTypeReference = goNames.getTypeReference(member.getType());
         // Define method for TypeBuilder
-        buffer.addLine("func (builder *%1$sBuilder) %2$s(%3$s %4$s) *%1$sBuilder {",
-            typePrivateClassName, goNames.getPublicMethodStyleName(member.getName()),
+        buffer.addLine("func (builder *%1$s) %2$s(%3$s %4$s) *%1$s {",
+            goTypes.getBuilderName(type), goNames.getPublicMethodStyleName(member.getName()),
             goNames.getParameterStyleName(member.getName()), memberTypeReference.getText());
         //      Check if has errors
         buffer.addLine(  "if builder.err != nil {");
@@ -235,7 +237,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine();
         //      Method Body
         String settedValue = goNames.getParameterStyleName(member.getName());
-        if (GoTypes.isGoPrimitiveType(member.getType())) {
+        if (goTypes.isGoPrimitiveType(member.getType())) {
             settedValue = "&" + settedValue;
         }
         
