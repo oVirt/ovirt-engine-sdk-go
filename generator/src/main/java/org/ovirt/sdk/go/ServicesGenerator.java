@@ -62,6 +62,10 @@ public class ServicesGenerator implements GoGenerator {
     // The buffer used to generate the code:
     private GoBuffer buffer;
 
+    // Reference to the object used to calculate Go types:
+    @Inject
+    private GoTypes goTypes;
+
     /**
      * Set the directory were the output will be generated.
      */
@@ -268,7 +272,7 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
-        if (GoTypes.isGoPrimitiveType(paraType)) {
+        if (goTypes.isGoPrimitiveType(paraType)) {
             buffer.addLine("p.%1$s = &%1$s", paraName);
         } else {
             buffer.addLine("p.%1$s = %1$s", paraName);
@@ -410,7 +414,7 @@ public class ServicesGenerator implements GoGenerator {
             .forEach(parameter -> {
                 String paraArgName = goNames.getParameterStyleName(parameter.getName());
                 String paraMethodName = goNames.getPublicMemberStyleName(parameter.getName());
-                if (GoTypes.isGoPrimitiveType(parameter.getType())) {
+                if (goTypes.isGoPrimitiveType(parameter.getType())) {
                     buffer.addLine("actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
                 } else {
                     buffer.addLine("actionBuilder.%1$s(p.%2$s);", paraMethodName, paraArgName);
@@ -464,7 +468,7 @@ public class ServicesGenerator implements GoGenerator {
         } else {
             Parameter paraFirst = parameters.get(0);
             String isPointer = "";
-            if (GoTypes.isGoPrimitiveType(paraFirst.getType())) {
+            if (goTypes.isGoPrimitiveType(paraFirst.getType())) {
                 isPointer = "*";
             }
             buffer.addLine("return &%1$s{%2$s: %3$saction.%4$s}, nil",

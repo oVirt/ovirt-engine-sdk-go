@@ -224,6 +224,7 @@ public class GoNames {
         }
         return reference;
     }
+
     /**
      * Calculates the Go name of the base class of the services.
      */
@@ -286,12 +287,12 @@ public class GoNames {
      * Returns a representation of the given name using the capitalization style typically used for Go members.
      */
     public String getPublicMemberStyleName(Name name) {
-        String result = getClassStyleName(name);
+        String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result);
     }
 
     public String getPrivateMemberStyleName(Name name) {
-        String result = getClassStyleName(name);
+        String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
     }
 
@@ -303,7 +304,7 @@ public class GoNames {
      * Returns a representation of the given name using the capitalization style typically used for Go method name.
      */
     public String getPublicMethodStyleName(Name name) {
-        String result = getClassStyleName(name);
+        String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result);
     }
 
@@ -312,7 +313,7 @@ public class GoNames {
     }
 
     public String getPrivateMethodStyleName(Name name) {
-        String result = getClassStyleName(name);
+        String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
 
     }
@@ -340,7 +341,7 @@ public class GoNames {
      * Returns a representation of the given name using the non-capitalization style typically used for Go method parameters.
      */
     public String getParameterStyleName(Name name) {
-        String result = getClassStyleName(name);
+        String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
     }
 
@@ -348,8 +349,8 @@ public class GoNames {
      * In case of the same with the parameter name, so add _ as suffix
      */
     public String getVariableStyleName(Name name) {
-        String paramStyleName = this.getParameterStyleName(name);
-        return paramStyleName + "Var";
+        String result = name.words().map(words::capitalize).collect(joining());
+        return renameReserved(String.join("", result, "Var"));
     }
 
     /**
