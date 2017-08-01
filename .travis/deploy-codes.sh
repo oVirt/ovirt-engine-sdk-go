@@ -10,6 +10,9 @@ cd ./sdk/ovirtsdk4/
 
 git init
 
+# Copy examples/ and push into go-ovirt repository
+cp -r ./sdk/examples ./
+
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 
