@@ -41,6 +41,7 @@ import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.Service;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
+import org.ovirt.api.metamodel.tool.Names;
 
 /**
  * This class is responsible for generating the classes that represent the services of the model.
@@ -65,6 +66,10 @@ public class ServicesGenerator implements GoGenerator {
     // Reference to the object used to calculate Go types:
     @Inject
     private GoTypes goTypes;
+    
+    // Reference to the objects used to generate the code:
+    @Inject
+    private Names names;
 
     /**
      * Set the directory were the output will be generated.
@@ -574,7 +579,6 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateResponseParameterParseImplementation(Parameter outParameter, Service service) {
-        GoTypeReference outParamTypeReference = goNames.getTypeReference(outParameter.getType());
         Name outParaName = outParameter.getName();
         String outParamNameAsVar = goNames.getVariableStyleName(outParaName);
         Model model = outParameter.getType().getModel();
@@ -611,17 +615,15 @@ public class ServicesGenerator implements GoGenerator {
                 outParamNameAsVar);
         } else if (outParameterType instanceof ListType) {
             ListType outParamListType = (ListType) outParameterType;
+            Type elementType = outParamListType.getElementType();
             if (outParamListType.getElementType() instanceof StructType) {
-                String outParamListTypeStr = outParamTypeReference.getText().replace("[]", "");
-                String outParamListAttriTypeStr = String.format("%ss", outParamListTypeStr);
-                outParamListTypeStr = String.format("%ss", outParamListTypeStr);
-
-                buffer.addLine("var %1$s %2$s", outParamNameAsVar, outParamListTypeStr);
+                elementType = (StructType) elementType;
+                buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getClassStyleName(names.getPlural(elementType.getName())));
                 generateResponseParameterXmlUnmarshal(outParameter);
                 buffer.addLine("%1$s.%2$s = %3$s",
                     goNames.getPrivateMemberStyleName(response),
                     goNames.getPrivateMemberStyleName(outParaName),
-                    String.format("%s.%s", outParamNameAsVar, outParamListAttriTypeStr));
+                    String.format("%s.%s", outParamNameAsVar, goNames.getPublicMemberStyleName(names.getPlural(elementType.getName()))));
             } else if (outParamListType.getElementType() == model.getStringType()) {
                 buffer.addLine("return []string{string(respBodyBytes)}, nil");
             } else {
