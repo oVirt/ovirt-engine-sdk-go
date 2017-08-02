@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
+import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.EnumValue;
 import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.concepts.Name;
@@ -210,13 +211,22 @@ public class TypesGenerator implements GoGenerator {
     }
 
     private void generateMemberFormalParameter(StructMember member) {
-        GoTypeReference memberTypeReference = goNames.getRefTypeReference(member.getType());
+        Type memberType = member.getType();
+        GoTypeReference memberTypeReference = goNames.getRefTypeReference(memberType);
         buffer.addImports(memberTypeReference.getImports());
+        // Default tag name
+        String tagName = goNames.getTagStyleName(member.getName());
+        if (memberType instanceof ListType) {
+            ListType listmemberType = (ListType) memberType;
+            Type elementType = listmemberType.getElementType();
+            tagName = String.join(">", tagName, goNames.getTagStyleName(elementType.getName()));
+        }
+
         buffer.addLine(
             "%1$s %2$s `xml:\"%3$s,omitempty\"` ",
             goNames.getPublicMemberStyleName(member.getName()),
             memberTypeReference.getText(),
-            goNames.getTagStyleName(member.getName())
+            tagName
         );
     }
 

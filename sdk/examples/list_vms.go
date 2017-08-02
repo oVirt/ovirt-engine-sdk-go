@@ -37,5 +37,6 @@ func main() {
 	// Print the virtual machine names and identifiers:
 	for _, vm := range vmsResponse.Vms() {
 		fmt.Printf("VM - (name: %v, id: %v)\n", *vm.Name, *vm.Id)
+		fmt.Printf("VM devices: %+v\n", vm.Sso.Methods)
 	}
 }
