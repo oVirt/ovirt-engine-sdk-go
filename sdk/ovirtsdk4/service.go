@@ -18,7 +18,6 @@ package ovirtsdk4
 
 import (
 	"bytes"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -39,13 +38,15 @@ func CheckFault(response *http.Response) error {
 		return fmt.Errorf("Failed to read response, reason: %s", err.Error())
 	}
 
-	var fault Fault
-	err = xml.Unmarshal(resBytes, &fault)
+	reader := NewXMLReader(resBytes)
+	fault, err := XMLFaultReadOne(reader, nil)
 	if err != nil {
-		return fmt.Errorf("Failed to read response, reason: %s", err.Error())
+		return err
 	}
-
-	return BuildError(response, fault)
+	if fault != nil || response.StatusCode >= 400 {
+		return BuildError(response, fault)
+	}
+	return nil
 }
 
 // CheckAction checks if response contains an Action instance
@@ -54,43 +55,46 @@ func CheckAction(response *http.Response) (*Action, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to read response, reason: %s", err.Error())
 	}
-	// Check if is Fault instance
-	var faultZero Fault
-	var fault Fault
-	err = xml.Unmarshal(resBytes, &fault)
+
+	faultreader := NewXMLReader(resBytes)
+	fault, err := XMLFaultReadOne(faultreader, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read response, reason: %s", err.Error())
+		return nil, err
 	}
-	if fault != faultZero {
+	if fault != nil {
 		return nil, BuildError(response, fault)
 	}
 
-	var action Action
-	err = xml.Unmarshal(resBytes, &action)
+	actionreader := NewXMLReader(resBytes)
+	action, err := XMLActionReadOne(actionreader, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to read response, reason: %s", err.Error())
+		return nil, err
 	}
-	if action.Fault != nil {
-		return nil, BuildError(response, *action.Fault)
+	if action != nil {
+		if action.Fault != nil {
+			return nil, BuildError(response, action.Fault)
+		}
+		return action, nil
 	}
-	return &action, nil
+	return nil, nil
 }
 
 // BuildError constructs error
-func BuildError(response *http.Response, fault Fault) error {
+func BuildError(response *http.Response, fault *Fault) error {
 	var buffer bytes.Buffer
-
-	if fault.Reason != nil {
-		if buffer.Len() > 0 {
-			buffer.WriteString(" ")
+	if fault != nil {
+		if fault.Reason != nil {
+			if buffer.Len() > 0 {
+				buffer.WriteString(" ")
+			}
+			buffer.WriteString(fmt.Sprintf("Fault reason is \"%s\".", *fault.Reason))
 		}
-		buffer.WriteString(fmt.Sprintf("Fault reason is \"%s\".", *fault.Reason))
-	}
-	if fault.Detail != nil {
-		if buffer.Len() > 0 {
-			buffer.WriteString(" ")
+		if fault.Detail != nil {
+			if buffer.Len() > 0 {
+				buffer.WriteString(" ")
+			}
+			buffer.WriteString(fmt.Sprintf("Fault detail is \"%s\".", *fault.Detail))
 		}
-		buffer.WriteString(fmt.Sprintf("Fault detail is \"%s\".", *fault.Detail))
 	}
 	if response != nil {
 		if buffer.Len() > 0 {
@@ -100,5 +104,6 @@ func BuildError(response *http.Response, fault Fault) error {
 		buffer.WriteString(" ")
 		buffer.WriteString(fmt.Sprintf("HTTP response message is \"%s\".", response.Status))
 	}
+
 	return errors.New(buffer.String())
 }

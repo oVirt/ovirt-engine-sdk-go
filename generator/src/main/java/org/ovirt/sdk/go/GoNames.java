@@ -34,6 +34,7 @@ import org.ovirt.api.metamodel.concepts.Service;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.ReservedWords;
+import org.ovirt.api.metamodel.tool.SchemaNames;
 import org.ovirt.api.metamodel.tool.Words;
 
 /**
@@ -73,6 +74,9 @@ public class GoNames {
 
     // the tag name belongs to Attribute ("Buenos Aires", "Córdoba", "La Plata");
     private List<String> tagAttributes = Arrays.asList("id", "href", "rel");
+
+    // Reference to the object used to calculate XML schema names:
+    @Inject private SchemaNames schemaNames;
 
     public void setRootPackageUrlPrefix(String newRootPackageUrlPrefix) {
         rootPackageUrlPrefix = newRootPackageUrlPrefix;
@@ -198,7 +202,7 @@ public class GoNames {
             }
             else if (type == model.getDateType()) {
                 reference.addImport("time");
-                reference.setText("time.Time");
+                reference.setText(pointerSuffix + "time.Time");
             }
             else {
                 throw new IllegalArgumentException(
@@ -210,7 +214,7 @@ public class GoNames {
             reference.setText("*" + getTypeName(type).getClassName());
         }
         else if (type instanceof EnumType) {
-            reference.setText(getTypeName(type).getClassName());
+            reference.setText(pointerSuffix + getTypeName(type).getClassName());
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
@@ -323,11 +327,9 @@ public class GoNames {
      * if name is `id` `href` `rel`, the tag is the **attribute**
      */
     public String getTagStyleName(Name name) {
-        String result = name.words().map(String::toLowerCase).collect(joining("_"));
-        if (tagAttributes.contains(result)) {
-            return result + ",attr";
-        }
-        return result;
+        return schemaNames.getSchemaTagName(name);
+        // String result = name.words().map(String::toLowerCase).collect(joining("_"));
+        // return result;
     }
 
     public String renameReserved(String result) {
