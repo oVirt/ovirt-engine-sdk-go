@@ -105,15 +105,7 @@ public class TypesGenerator implements GoGenerator {
     private void generateStruct(StructType type) {
         // Begin class:
         GoClassName typeName = goNames.getTypeName(type);
-        Type base = type.getBase();
-        // Define []Struct
-        buffer.addLine("type %1$s struct {", goNames.getClassStyleName(names.getPlural(type.getName())));
-        //  Add xml.Name
-        buffer.addImport("encoding/xml");
-        buffer.addLine(  "XMLName xml.Name `xml:\"%1$s\"`", goNames.getTagStyleName(names.getPlural(type.getName())));
-        buffer.addLine(  "%1$s []%2$s `xml:\"%3$s,omitempty\"`", goNames.getPublicMemberStyleName(names.getPlural(type.getName())), goNames.getClassStyleName(type.getName()), goNames.getTagStyleName(type.getName()));
-        buffer.addLine("}");
-        buffer.addLine();
+
         // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getClassName());
         // Ignore Base-class mixin, fill in all
@@ -172,7 +164,16 @@ public class TypesGenerator implements GoGenerator {
         for (StructMember member : members) {
             this.generateBuilderMemberMethods(type, member);
         }
-
+        // Generate Href setting method
+        buffer.addLine("func (builder *%1$s) Href(href string) *%1$s {", goTypes.getBuilderName(type));
+        //      Check if has errors
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "return builder");
+        buffer.addLine(  "}");
+        buffer.addLine();
+        buffer.addLine(  "builder.%1$s.Href = &href", typePrivateMemberName);
+        buffer.addLine(  "return builder");
+        buffer.addLine("}");
         // Generate Build method
         buffer.addLine("func (builder *%1$s) Build() (*%2$s, error) {", goTypes.getBuilderName(type), typeClassName);
         buffer.addLine(  "if builder.err != nil {");
@@ -214,19 +215,11 @@ public class TypesGenerator implements GoGenerator {
         Type memberType = member.getType();
         GoTypeReference memberTypeReference = goNames.getRefTypeReference(memberType);
         buffer.addImports(memberTypeReference.getImports());
-        // Default tag name
-        String tagName = goNames.getTagStyleName(member.getName());
-        if (memberType instanceof ListType) {
-            ListType listmemberType = (ListType) memberType;
-            Type elementType = listmemberType.getElementType();
-            tagName = String.join(">", tagName, goNames.getTagStyleName(elementType.getName()));
-        }
 
         buffer.addLine(
-            "%1$s %2$s `xml:\"%3$s,omitempty\"` ",
+            "%1$s %2$s",
             goNames.getPublicMemberStyleName(member.getName()),
-            memberTypeReference.getText(),
-            tagName
+            memberTypeReference.getText()
         );
     }
 
@@ -247,7 +240,8 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine();
         //      Method Body
         String settedValue = goNames.getParameterStyleName(member.getName());
-        if (goTypes.isGoPrimitiveType(member.getType())) {
+        if (goTypes.isGoPrimitiveType(member.getType()) || 
+                member.getType() instanceof EnumType) {
             settedValue = "&" + settedValue;
         }
         

@@ -305,12 +305,12 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate the net/http request.Body (via bytes.Buffer)
         buffer.addImport("bytes");
-        buffer.addLine("var body *bytes.Buffer");
+        buffer.addLine("var body bytes.Buffer");
         generateWriteRequestBody(getFirstParameter(method));
 
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, body)");
+        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, &body)");
         buffer.addLine("if err != nil {");
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");
@@ -393,12 +393,12 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate the net/http request.Body (via bytes.Buffer)
         buffer.addImport("bytes");
-        buffer.addLine("var body *bytes.Buffer");
+        buffer.addLine("var body bytes.Buffer");
         generateWriteRequestBody(getFirstParameter(method));
 
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
+        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, &body)");
         buffer.addLine("if err != nil {");
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");
@@ -425,9 +425,9 @@ public class ServicesGenerator implements GoGenerator {
                     buffer.addLine("actionBuilder.%1$s(p.%2$s);", paraMethodName, paraArgName);
                 }
             });
-        buffer.addLine("action, errBuilder := actionBuilder.Build()");
-        buffer.addLine("if errBuilder != nil {");
-        buffer.addLine(  "return nil, errBuilder");
+        buffer.addLine("action, err := actionBuilder.Build()");
+        buffer.addLine("if err != nil {");
+        buffer.addLine(  "return nil, err");
         buffer.addLine("}");
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -441,17 +441,14 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate the net/http request.Body (via bytes.Buffer)
         buffer.addImport("bytes");
-        buffer.addLine("var body *bytes.Buffer");
-        buffer.addImport("encoding/xml");
-        buffer.addLine("xmlBytes, err := xml.Marshal(action)");
-        buffer.addLine("if err != nil {");
-        buffer.addLine("return nil, err");
-        buffer.addLine("}");
-        buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
-
+        buffer.addLine("var body bytes.Buffer");
+        buffer.addLine("writer := NewXMLWriter(&body)");
+        buffer.addLine("err = XMLActionWriteOne(writer, action, \"\")");
+        buffer.addLine("writer.Flush()");
+        
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, body)");
+        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, &body)");
         buffer.addLine("if err != nil {");
         buffer.addLine(  "return nil, err");
         buffer.addLine("}");
@@ -501,18 +498,28 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateWriteRequestBody(Parameter parameter) {
-        // var body *bytes.Buffer
+        // var body bytes.Buffer
         if (parameter != null) {
             Type type = parameter.getType();
-            GoTypeReference paraTypeReference = goNames.getTypeReference(type);
-            buffer.addImports(paraTypeReference.getImports());
-            String paraName = goNames.getParameterStyleName(parameter.getName());
-            buffer.addImport("encoding/xml");
-            buffer.addLine("xmlBytes, err := xml.Marshal(p.%1$s)", paraName);
+            buffer.addLine("writer := NewXMLWriter(&body)");
+            if (type instanceof StructType) {
+                buffer.addLine("err := %1$s(writer, p.%2$s, \"\")",
+                    goTypes.getXmlWriteOneFuncName(type),
+                    goNames.getParameterStyleName(parameter.getName())
+                );
+            }
+            else if (type instanceof ListType) {
+                ListType listType = (ListType) type;
+                Type elementType = listType.getElementType();
+                buffer.addLine("err := %1$s(writer, p.%2$s, \"\", \"\")",
+                    goTypes.getXmlWriteManyFuncName(elementType),
+                    goNames.getParameterStyleName(parameter.getName())
+                );
+            }
             buffer.addLine("if err != nil {");
-            buffer.addLine(  "return nil, err");
+            buffer.addLine(" return nil, err");
             buffer.addLine("}");
-            buffer.addLine("body = bytes.NewBuffer(xmlBytes)");
+            buffer.addLine("writer.Flush()");
         }
     }
 
@@ -571,74 +578,52 @@ public class ServicesGenerator implements GoGenerator {
         if (parameters.isEmpty()) {
             buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
-            buffer.addImport("encoding/xml");
             for (Parameter para : parameters) {
                 generateResponseParameterParseImplementation(para, service);
             }
         }
     }
 
-    private void generateResponseParameterParseImplementation(Parameter outParameter, Service service) {
-        Name outParaName = outParameter.getName();
-        String outParamNameAsVar = goNames.getVariableStyleName(outParaName);
-        Model model = outParameter.getType().getModel();
-        Method method = outParameter.getDeclaringMethod();
-        Type outParameterType = outParameter.getType();
-        String response = getResponseClassName(method, service);
-        buffer.addLine("var %1$s %2$s", goNames.getPrivateMemberStyleName(response), response);
-        if (outParameterType instanceof PrimitiveType) {
-            if (outParameterType == model.getBooleanType()) {
-                buffer.addImport("strconv");
-                buffer.addLine("result := strconv.ParseBool(string(respBodyBytes))");
-            } else if (outParameterType == model.getIntegerType()) {
-                buffer.addImport("strconv");
-                buffer.addLine("result := strconv.ParseInt(string(respBodyBytes), 10, 64)");
-            } else if (outParameterType == model.getDecimalType()) {
-                buffer.addImport("strconv");
-                buffer.addLine("result := srconv.ParseFloat(string(respBodyBytes), 10, 64");
-            } else if (outParameterType == model.getStringType()) {
-                buffer.addLine("result := string(respBodyBytes)");
-            } else {
-                throw new IllegalArgumentException(
-                    "XMLParsing: Don't know how to build reference for primitive type \"" + outParameterType + "\""
-                );
+    private void generateResponseParameterParseImplementation(Parameter parameter, Service service) {
+        Type type = parameter.getType();
+        String response = getResponseClassName(parameter.getDeclaringMethod(), service);
+
+        buffer.addLine("reader := NewXMLReader(respBodyBytes)");
+        if (type instanceof PrimitiveType) {
+            Model model = type.getModel();
+            if (type == model.getBooleanType()) {
+                buffer.addLine("result, err := reader.ReadBool(nil)");
             }
-            buffer.addLine("%1$s.%2$s = result",
-                goNames.getPrivateMemberStyleName(response),
-                goNames.getPrivateMemberStyleName(outParaName));
-        } else if (outParameterType instanceof StructType) {
-            buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getTypeName(outParameterType).getClassName());
-            this.generateResponseParameterXmlUnmarshal(outParameter);
-            buffer.addLine("%1$s.%2$s = &%3$s",
-                goNames.getPrivateMemberStyleName(response),
-                goNames.getPrivateMemberStyleName(outParaName),
-                outParamNameAsVar);
-        } else if (outParameterType instanceof ListType) {
-            ListType outParamListType = (ListType) outParameterType;
-            Type elementType = outParamListType.getElementType();
-            if (outParamListType.getElementType() instanceof StructType) {
-                elementType = (StructType) elementType;
-                buffer.addLine("var %1$s %2$s", outParamNameAsVar, goNames.getClassStyleName(names.getPlural(elementType.getName())));
-                generateResponseParameterXmlUnmarshal(outParameter);
-                buffer.addLine("%1$s.%2$s = %3$s",
-                    goNames.getPrivateMemberStyleName(response),
-                    goNames.getPrivateMemberStyleName(outParaName),
-                    String.format("%s.%s", outParamNameAsVar, goNames.getPublicMemberStyleName(names.getPlural(elementType.getName()))));
-            } else if (outParamListType.getElementType() == model.getStringType()) {
-                buffer.addLine("return []string{string(respBodyBytes)}, nil");
-            } else {
+            else if (type == model.getIntegerType()) {
+                buffer.addLine("result, err := reader.ReadInt64(nil)");
+            }
+            else if (type == model.getDecimalType()) {
+                buffer.addLine("result, err := reader.ReadFloat64(nil)");
+            }
+            else if (type == model.getStringType()) {
+                buffer.addLine("result, err := reader.ReadString(nil)");
+            }
+            else if (type == model.getDateType()) {
+                buffer.addLine("result, err := reader.ReadTime(nil)");
+            }
+            else {
                 throw new IllegalArgumentException(
-                    "XMLParsing: Don't know how to build reference for type: List-Of- \"" + outParameterType + "\""
+                    "XMLParsing: Don't know how to build reference for primitive type \"" + type + "\""
                 );
             }
         }
-        buffer.addLine("return &%1$s, nil", goNames.getPrivateMemberStyleName(response));
-    }
-
-    private void generateResponseParameterXmlUnmarshal(Parameter outParameter) {
-        buffer.addImport("encoding/xml");
-        buffer.addLine("xml.Unmarshal(respBodyBytes, &%1$s)",
-            goNames.getVariableStyleName(outParameter.getName()));
+        else if (type instanceof StructType) {
+            buffer.addLine("result, err := %1$s(reader, nil)", goTypes.getXmlReadOneFuncName(type));
+        } else if (type instanceof ListType) {
+            ListType listype = (ListType) type;
+            Type elementType = listype.getElementType();
+            buffer.addLine("result, err := %1$s(reader, nil)", goTypes.getXmlReadManyFuncName(elementType));
+        }
+        buffer.addLine("if err != nil {");
+        buffer.addLine("  return nil, err");
+        buffer.addLine("}");
+        buffer.addLine("return &%1$s{%2$s: result}, nil",
+            response, goNames.getPrivateMemberStyleName(parameter.getName()));
     }
 
     private void generateAdditionalHeadersParameters() {
@@ -846,12 +831,6 @@ public class ServicesGenerator implements GoGenerator {
             .orElse(null);
     }
 
-    private void generateXmlUnmarshal(Parameter outParameter) {
-        buffer.addImport("encoding/xml");
-        buffer.addLine("xml.Unmarshal([]byte(ovResp.Body), &%1$s)",
-            goNames.getVariableStyleName(outParameter.getName()));
-    }
-
     private List<Parameter> getSecondaryParameters(Method method) {
         return method.parameters()
             .filter(x -> x.isIn() && !x.isOut())
@@ -865,7 +844,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private String getResponseClassName(Method method, Service service) {
-        return goNames.getServiceName(service).getClassName() + 
+        return goNames.getServiceName(service).getPrivateClassName() + 
             goNames.getClassStyleName(method.getName()) + "Response";
     }
 

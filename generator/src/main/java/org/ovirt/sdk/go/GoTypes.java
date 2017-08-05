@@ -19,8 +19,11 @@ package org.ovirt.sdk.go;
 import static java.util.stream.Collectors.joining;
 
 import javax.inject.Inject;
+
+import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.Name;
 import org.ovirt.api.metamodel.concepts.PrimitiveType;
+import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Words;
 
@@ -41,50 +44,40 @@ public class GoTypes {
      * {@code V4VmBuilder} as the simple class name.
      */
     public String getBuilderName(Type type) {
-        Name name = type.getName();
-        return getBuilderName(name);
-    }
-
-    public String getBuilderName(Name name) {
-        String typeNameStr = name.words().map(words::capitalize).collect(joining());
-        typeNameStr = typeNameStr.substring(0, 1).toLowerCase() + typeNameStr.substring(1);
-        String result = String.join("", typeNameStr, "Builder");
+        String typeName = goNames.getTypeName(type).getClassName();
+        typeName = typeName.substring(0, 1).toLowerCase() + typeName.substring(1);
+        String result = String.join("", typeName, "Builder");
         return goNames.renameReserved(result);
     }
 
-    public String getNewBuilderFuncName(Type type) {
-        Name name = type.getName();
-        return getNewBuilderFuncName(name);
-    }
 
-    public String getNewBuilderFuncName(Name name) {
-        String typeNameStr = name.words().map(words::capitalize).collect(joining());
-        String result = String.join("", "New", typeNameStr, "Builder");
+    public String getNewBuilderFuncName(Type type) {
+        GoClassName typeName = goNames.getTypeName(type);
+        String result = String.join("", "New", typeName.getClassName(), "Builder");
         return result;
     }
 
-    /**
-     * Calculates the name of the XML reader that should be generated for the given type.
-     */
     public String getXmlReadOneFuncName(Type type) {
-        Name name = type.getName();
-        return getXmlReadOneFuncName(name);
-    }
-
-    public String getXmlReadOneFuncName(Name name) {
-        String typeNameStr = name.words().map(words::capitalize).collect(joining());
-        String result = String.join("", "XML", typeNameStr, "ReadOne");
+        GoClassName typeName = goNames.getTypeName(type);
+        String result = String.join("", "XML", typeName.getClassName(), "ReadOne");
         return goNames.renameReserved(result);
     }
 
     public String getXmlReadManyFuncName(Type type) {
-        Name name = type.getName();
-        return getXmlReadManyFuncName(name);
+        GoClassName typeName = goNames.getTypeName(type);
+        String result = String.join("", "XML", typeName.getClassName(), "ReadMany");
+        return goNames.renameReserved(result);
     }
 
-    public String getXmlReadManyFuncName(Name name) {
-        String typeNameStr = name.words().map(words::capitalize).collect(joining());
-        String result = String.join("", "XML", typeNameStr, "ReadMany");
+    public String getXmlWriteOneFuncName(Type type) {
+        GoClassName typeName = goNames.getTypeName(type);
+        String result = String.join("", "XML", typeName.getClassName(), "WriteOne");
+        return goNames.renameReserved(result);
+    }
+
+    public String getXmlWriteManyFuncName(Type type) {
+        GoClassName typeName = goNames.getTypeName(type);
+        String result = String.join("", "XML", typeName.getClassName(), "WriteMany");
         return goNames.renameReserved(result);
     }
 
@@ -93,7 +86,8 @@ public class GoTypes {
             if (type == type.getModel().getBooleanType() ||
                 type == type.getModel().getIntegerType() ||
                 type == type.getModel().getDecimalType() ||
-                type == type.getModel().getStringType()) {
+                type == type.getModel().getStringType()  ||
+                type == type.getModel().getDateType()) {
                     return true;
                 }
         }
