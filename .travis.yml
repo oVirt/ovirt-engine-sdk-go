@@ -1,8 +1,11 @@
 language: java
 
+before_install:
+  - go get github.com/stretchr/testify/assert
+
 install: true
 
-script: mvn package -DskipTests
+script: mvn package
 
 after_success:
   - ./.travis/deploy-codes.sh
