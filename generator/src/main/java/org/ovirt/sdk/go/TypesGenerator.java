@@ -118,11 +118,61 @@ public class TypesGenerator implements GoGenerator {
             .collect(toSet());
         allMembers.addAll(declaredMembers);
         allMembers.stream().sorted().forEach(this::generateMemberFormalParameter);
-
         buffer.addLine();
-
         // End class:
         buffer.addLine("}");
+        buffer.addLine();
+
+        // Generate the member methods of type
+        List<StructMember> members = allMembers.stream().sorted().collect(toCollection(ArrayList::new));
+        for (StructMember m : members) {
+            this.generateMemberMethods(type, m);
+        }
+
+        buffer.addLine();
+    }
+
+    private void generateMemberMethods(StructType structType, StructMember member) {
+        // Begin class:
+        GoClassName structTypeName = goNames.getTypeName(structType);
+        GoTypeReference memberTypeRef = goNames.getTypeReference(member.getType());
+        Type type = member.getType();
+        // Generate the setter method
+        buffer.addLine("func (p *%1$s) %2$s(attr %3$s) {",
+            structTypeName.getClassName(),
+            goTypes.getMemberSetterMethodName(member.getName()),
+            memberTypeRef.getText()
+            );
+        //      Generate the setter method body
+        if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
+            buffer.addLine(" p.%1$s = &attr", goNames.getPrivateMemberStyleName(member.getName()));
+        }
+        else {
+            buffer.addLine(" p.%1$s = attr", goNames.getPrivateMemberStyleName(member.getName()));
+        }
+        buffer.addLine("}");    // End of setter method
+        buffer.addLine();
+
+        // Generate the getter method
+        buffer.addLine("func (p *%1$s) %2$s() (%3$s, bool) {",
+            structTypeName.getClassName(),
+            goTypes.getMemberGetterMethodName(member.getName()),
+            memberTypeRef.getText()
+        );
+        //      Generate the getter method body
+        buffer.addLine(" if p.%1$s != nil {", goNames.getPrivateMemberStyleName(member.getName()));
+        if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
+            buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(member.getName()));
+            buffer.addLine(" }");
+            buffer.addLine(" var zero %1$s", memberTypeRef.getText());;
+            buffer.addLine(" return zero, false");
+        }
+        else {
+            buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(member.getName()));
+            buffer.addLine(" }");
+            buffer.addLine(" return nil, false");
+        }
+        buffer.addLine("}");    // End of getter method
         buffer.addLine();
     }
 
@@ -171,7 +221,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine(    "return builder");
         buffer.addLine(  "}");
         buffer.addLine();
-        buffer.addLine(  "builder.%1$s.Href = &href", typePrivateMemberName);
+        buffer.addLine(  "builder.%1$s.SetHref(href)", typePrivateMemberName);
         buffer.addLine(  "return builder");
         buffer.addLine("}");
         // Generate Build method
@@ -218,7 +268,7 @@ public class TypesGenerator implements GoGenerator {
 
         buffer.addLine(
             "%1$s %2$s",
-            goNames.getPublicMemberStyleName(member.getName()),
+            goNames.getPrivateMemberStyleName(member.getName()),
             memberTypeReference.getText()
         );
     }
@@ -230,9 +280,9 @@ public class TypesGenerator implements GoGenerator {
         // Get member names
         GoTypeReference memberTypeReference = goNames.getTypeReference(member.getType());
         // Define method for TypeBuilder
-        buffer.addLine("func (builder *%1$s) %2$s(%3$s %4$s) *%1$s {",
+        buffer.addLine("func (builder *%1$s) %2$s(attr %3$s) *%1$s {",
             goTypes.getBuilderName(type), goNames.getPublicMethodStyleName(member.getName()),
-            goNames.getParameterStyleName(member.getName()), memberTypeReference.getText());
+            memberTypeReference.getText());
         //      Check if has errors
         buffer.addLine(  "if builder.err != nil {");
         buffer.addLine(    "return builder");
@@ -245,10 +295,9 @@ public class TypesGenerator implements GoGenerator {
             settedValue = "&" + settedValue;
         }
         
-        buffer.addLine(  "builder.%1$s.%2$s = %3$s",
+        buffer.addLine(  "builder.%1$s.%2$s(attr)",
             typePrivateMemberName,
-            goNames.getPublicMemberStyleName(member.getName()),
-            settedValue
+            goTypes.getMemberSetterMethodName(member.getName())
             );
         buffer.addLine(  "return builder");
         buffer.addLine("}");

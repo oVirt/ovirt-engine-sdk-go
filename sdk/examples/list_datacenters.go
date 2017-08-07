@@ -34,13 +34,27 @@ func main() {
 	}
 
 	// Print the datacenter names and identifiers:
-	for _, dc := range datacentersResponse.DataCenters() {
-		fmt.Printf("Datacenter - (name: %v, id: %v)\n", *dc.Name, *dc.Id)
-		fmt.Printf("  Supported versions are: ")
-		for _, sv := range dc.SupportedVersions {
-			fmt.Printf("(Major: %v, Minor: %v)  ", *sv.Major, *sv.Minor)
+	if datacenters, ok := datacentersResponse.DataCenters(); ok {
+		for _, dc := range datacenters {
+			fmt.Printf("Datacenter: ")
+			if dcName, ok := dc.Name(); ok {
+				fmt.Printf(" name: %v", dcName)
+			}
+			if dcId, ok := dc.Id(); ok {
+				fmt.Printf(" id: %v", dcId)
+			}
+			fmt.Printf("  Supported versions are: ")
+			if svs, ok := dc.SupportedVersions(); ok {
+				for _, sv := range svs {
+					if major, ok := sv.Major(); ok {
+						fmt.Printf(" Major: %v", major)
+					}
+					if minor, ok := sv.Minor(); ok {
+						fmt.Printf(" Minor: %v", minor)
+					}
+				}
+			}
+			fmt.Println("")
 		}
-		fmt.Println("")
 	}
-
 }

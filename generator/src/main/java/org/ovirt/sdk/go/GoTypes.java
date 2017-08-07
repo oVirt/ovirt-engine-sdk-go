@@ -81,6 +81,21 @@ public class GoTypes {
         return goNames.renameReserved(result);
     }
 
+    public String getMemberSetterMethodName(Name name) {
+        String result = name.words().map(words::capitalize).collect(joining());
+        return goNames.renameReserved("Set" + result);
+    }
+
+    public String getMemberGetterMethodName(Name name) {
+        String result = name.words().map(words::capitalize).collect(joining());
+        return goNames.renameReserved(result);
+    }
+
+    public String getMemberPresentMethodName(Name name) {
+        String result = name.words().map(words::capitalize).collect(joining());
+        return goNames.renameReserved(result + "Present");
+    }
+
     public Boolean isGoPrimitiveType(Type type) {
         if (type instanceof PrimitiveType) {
             if (type == type.getModel().getBooleanType() ||

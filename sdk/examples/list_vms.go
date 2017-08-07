@@ -33,9 +33,17 @@ func main() {
 		fmt.Printf("Failed to get vm list, reason: %v\n", err)
 		return
 	}
-
-	// Print the virtual machine names and identifiers:
-	for _, vm := range vmsResponse.Vms() {
-		fmt.Printf("VM - (name: %v, id: %v)\n", *vm.Name, *vm.Id)
+	if vms, ok := vmsResponse.Vms(); ok {
+		// Print the virtual machine names and identifiers:
+		for _, vm := range vms {
+			fmt.Print("VM: (")
+			if vmName, ok := vm.Name(); ok {
+				fmt.Printf(" name: %v", vmName)
+			}
+			if vmID, ok := vm.Id(); ok {
+				fmt.Printf(" id: %v", vmID)
+			}
+			fmt.Println(")")
+		}
 	}
 }

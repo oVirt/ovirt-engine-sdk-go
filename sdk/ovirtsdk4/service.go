@@ -71,8 +71,8 @@ func CheckAction(response *http.Response) (*Action, error) {
 		return nil, err
 	}
 	if action != nil {
-		if action.Fault != nil {
-			return nil, BuildError(response, action.Fault)
+		if afault, ok := action.Fault(); ok {
+			return nil, BuildError(response, afault)
 		}
 		return action, nil
 	}
@@ -83,17 +83,17 @@ func CheckAction(response *http.Response) (*Action, error) {
 func BuildError(response *http.Response, fault *Fault) error {
 	var buffer bytes.Buffer
 	if fault != nil {
-		if fault.Reason != nil {
+		if reason, ok := fault.Reason(); ok {
 			if buffer.Len() > 0 {
 				buffer.WriteString(" ")
 			}
-			buffer.WriteString(fmt.Sprintf("Fault reason is \"%s\".", *fault.Reason))
+			buffer.WriteString(fmt.Sprintf("Fault reason is \"%s\".", reason))
 		}
-		if fault.Detail != nil {
+		if detail, ok := fault.Detail(); ok {
 			if buffer.Len() > 0 {
 				buffer.WriteString(" ")
 			}
-			buffer.WriteString(fmt.Sprintf("Fault detail is \"%s\".", *fault.Detail))
+			buffer.WriteString(fmt.Sprintf("Fault detail is \"%s\".", detail))
 		}
 	}
 	if response != nil {
