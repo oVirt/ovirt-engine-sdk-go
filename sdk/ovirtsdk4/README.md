@@ -43,18 +43,28 @@ if err != nil {
 
 defer conn.Close()
 
-clustersListResponse, err2 := conn.SystemService().ClustersService().
-	List().
-	CaseSensitive(false).
-	Max(100).
-	Send()
+// Get the reference to the "clusters" service:
+clustersService := conn.SystemService().ClustersService()
 
-if err2 != nil {
-	t.Fatalf("Get clusters failed, reason: %s", err2.Error())
+// Use the "list" method of the "clusters" service to list all the clusters of the system:
+clustersResponse, err := clustersService.List().Send()
+if err != nil {
+	fmt.Printf("Failed to get cluster list, reason: %v\n", err)
+	return
 }
 
-for _, cluster := range clustersListResponse.Clusters() {
-	t.Logf("cluster(%v): CPU architecture is %v and type is %v", *cluster.Id,cluster.Cpu.Architecture, *cluster.Cpu.Type)
+if clusters, ok := clustersResponse.Clusters(); ok {
+	// Print the datacenter names and identifiers:
+	fmt.Printf("Cluster: (")
+	for _, cluster := range clusters {
+		if clusterName, ok := cluster.Name(); ok {
+			fmt.Printf(" name: %v", clusterName)
+		}
+		if clusterId, ok := cluster.Id(); ok {
+			fmt.Printf(" id: %v", clusterId)
+		}
+	}
+	fmt.Println(")")
 }
 
 ```
