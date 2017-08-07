@@ -86,32 +86,66 @@ func TestXMLClusterReadOne(t *testing.T) {
 
 	cluster, err := XMLClusterReadOne(reader, nil)
 	assert.Nil(err)
+
 	// Cluster>Id
 	// assert.Equal("00000002-0002-0002-0002-000000000310", *cluster.Id)
 	// Cluster>Name
-	assert.Equal("Default", *cluster.Name, "Name should be `Default`")
+	name, ok := cluster.Name()
+	assert.True(ok)
+	assert.Equal("Default", name, "Name should be `Default`")
+
 	// Cluster>CPU>Architecture
-	assert.NotNil(cluster.Cpu.Architecture)
-	assert.Equal(Architecture("x86_64"), *cluster.Cpu.Architecture, "CPU Arch should be `x86_64`")
+	cpu, ok := cluster.Cpu()
+	assert.True(ok)
+	arch, ok := cpu.Architecture()
+	assert.True(ok)
+	assert.Equal(Architecture("x86_64"), arch, "CPU Arch should be `x86_64`")
+
 	// Cluster>BallooningEnabled
-	assert.False(*cluster.BallooningEnabled, "Cluster>BallooningEnabled should be false")
+	ballooningEnabled, ok := cluster.BallooningEnabled()
+	assert.True(ok)
+	assert.False(ballooningEnabled, "Cluster>BallooningEnabled should be false")
+
 	// Cluster>Description
-	assert.Equal("The default server cluster", *cluster.Description)
+	desc, ok := cluster.Description()
+	assert.True(ok)
+	assert.Equal("The default server cluster", desc)
+
 	// Cluster>ErrorHandling>OnError>MigrateOnError
-	assert.NotNil(cluster.ErrorHandling, "Cluster>ErrorHandling should not be nil")
-	assert.NotNil(cluster.ErrorHandling.OnError)
-	assert.Equal(MigrateOnError("migrate"), *cluster.ErrorHandling.OnError)
+	errorHandling, ok := cluster.ErrorHandling()
+	assert.True(ok)
+	errorHandlingOnError, ok := errorHandling.OnError()
+	assert.Equal(MigrateOnError("migrate"), errorHandlingOnError)
+
 	// Cluster>FencingPolicy
-	assert.NotNil(*cluster.FencingPolicy)
+	fencingPolicy, ok := cluster.FencingPolicy()
+	assert.True(ok)
 	// 		>Enable
-	assert.True(*cluster.FencingPolicy.Enabled, "Cluster>FencingPolicy>Enable should be true")
+	fencingPolicyEnabled, ok := fencingPolicy.Enabled()
+	assert.True(ok)
+	assert.True(fencingPolicyEnabled, "Cluster>FencingPolicy>Enable should be true")
 	// 		>SkipIfConnectivityBroken>Threshold
-	assert.Equal(int64(50), *cluster.FencingPolicy.SkipIfConnectivityBroken.Threshold,
+	skipIfConnectiveBroken, ok := fencingPolicy.SkipIfConnectivityBroken()
+	assert.True(ok)
+	threshold, ok := skipIfConnectiveBroken.Threshold()
+	assert.True(ok)
+	assert.Equal(int64(50), threshold,
 		"Cluster>FencingPolicy>SkipIfConnectivityBroken>Threshold should be 50")
-	assert.False(*cluster.FencingPolicy.SkipIfSdActive.Enabled, "Cluster>FencingPolicy>SkipIfSdActive>Enabled should be false")
+	skipIfSdActive, ok := fencingPolicy.SkipIfSdActive()
+	assert.True(ok)
+	sdActiveEnable, ok := skipIfSdActive.Enabled()
+	assert.True(ok)
+	assert.False(sdActiveEnable, "Cluster>FencingPolicy>SkipIfSdActive>Enabled should be false")
+
 	// Cluster>SchedulingPolicy
-	assert.Equal("b4ed2332-a7ac-4d5f-9596-99a439cb2812", *cluster.SchedulingPolicy.Id)
-	assert.Equal("/ovirt-engine/api/schedulingpolicies/b4ed2332-a7ac-4d5f-9596-99a439cb2812", *cluster.SchedulingPolicy.Href)
+	schedulingPolicy, ok := cluster.SchedulingPolicy()
+	assert.True(ok)
+	schedulingPolicyID, ok := schedulingPolicy.Id()
+	assert.True(ok)
+	assert.Equal("b4ed2332-a7ac-4d5f-9596-99a439cb2812", schedulingPolicyID)
+	schedulingPolicyHref, ok := schedulingPolicy.Href()
+	assert.True(ok)
+	assert.Equal("/ovirt-engine/api/schedulingpolicies/b4ed2332-a7ac-4d5f-9596-99a439cb2812", schedulingPolicyHref)
 }
 
 func TestXMLErrorHandlingReadOne(t *testing.T) {
@@ -124,8 +158,9 @@ func TestXMLErrorHandlingReadOne(t *testing.T) {
 	eh, err := XMLErrorHandlingReadOne(reader, nil)
 	assert.Nil(err)
 	assert.NotNil(eh)
-	assert.NotNil(eh.OnError)
-	assert.Equal(MigrateOnError("migrate"), *eh.OnError)
+	onError, ok := eh.OnError()
+	assert.True(ok)
+	assert.Equal(MigrateOnError("migrate"), onError)
 }
 
 func TestXMLCPUReadOne(t *testing.T) {
@@ -141,9 +176,12 @@ func TestXMLCPUReadOne(t *testing.T) {
 
 	cpu, err := XMLCpuReadOne(reader, nil)
 	assert.Nil(err)
-	assert.NotNil(cpu.Architecture)
-	assert.Equal(Architecture("x86_64"), *cpu.Architecture)
-	assert.Equal("Intel SandyBridge Family", *cpu.Type)
+	cpuArch, ok := cpu.Architecture()
+	assert.True(ok)
+	assert.Equal(Architecture("x86_64"), cpuArch)
+	cpuType, ok := cpu.Type()
+	assert.True(ok)
+	assert.Equal("Intel SandyBridge Family", cpuType)
 }
 
 func TestArchitectureReadMany(t *testing.T) {

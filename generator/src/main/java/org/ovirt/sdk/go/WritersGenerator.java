@@ -186,29 +186,28 @@ public class WritersGenerator implements GoGenerator {
     private void generateStructWriteMemberAsAttribute(StructType structType, StructMember member) {
         Name memberName = member.getName();
         Type memberType = member.getType();
-        String publicMemberName = goNames.getPublicMemberStyleName(memberName);
         String tag = goNames.getTagStyleName(memberName);
-        buffer.addLine("  if object.%1$s != nil {", publicMemberName);
+        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName));
         if (memberType instanceof PrimitiveType) {
             Model model = memberType.getModel();
             if (memberType == model.getBooleanType()) {
-                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatBool(*object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatBool(r)", tag);
             }
             else if (memberType == model.getIntegerType()) {
-                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatInt64(*object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatInt64(r)", tag);
             }
             else if (memberType == model.getDecimalType()) {
-                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatFloat64(*object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatFloat64(r)", tag);
             }
             else if (memberType == model.getStringType()) {
-                buffer.addLine("    attrs[\"%1$s\"] = *object.%2$s", tag, publicMemberName);
+                buffer.addLine("    attrs[\"%1$s\"] = r", tag);
             }
             else if (memberType == model.getDateType()) {
-                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatDate(*object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    attrs[\"%1$s\"] = writer.FormatDate(r)", tag);
             }
         }
         else if (memberType instanceof EnumType) {
-            buffer.addLine("    attrs[\"%1$s\"] = string(*object.%2$s)", tag, publicMemberName);
+            buffer.addLine("    attrs[\"%1$s\"] = string(r)", tag);
         }
         buffer.addLine("  }");    // End of if
 
@@ -217,63 +216,60 @@ public class WritersGenerator implements GoGenerator {
     public void generateStructReadMemberAsElement(StructType structType, StructMember member) {
         Name memberName = member.getName();
         Type memberType = member.getType();
-        String publicMemberName = goNames.getPublicMemberStyleName(memberName);
         String tag = goNames.getTagStyleName(memberName);
         
-        buffer.addLine("  if object.%1$s != nil {", publicMemberName);
+        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName));
         if (memberType instanceof PrimitiveType) {
             Model model = memberType.getModel();
             if (memberType == model.getBooleanType()) {
-                buffer.addLine("    writer.WriteBool(\"%1$s\", *object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    writer.WriteBool(\"%1$s\", r)", tag);
             }
             else if (memberType == model.getIntegerType()) {
-                buffer.addLine("    writer.WriteInt64(\"%1$s\", *object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    writer.WriteInt64(\"%1$s\", r)", tag);
             }
             else if (memberType == model.getDecimalType()) {
-                buffer.addLine("    writer.WriteFloat64(\"%1$s\", *object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    writer.WriteFloat64(\"%1$s\", r)", tag);
             }
             else if (memberType == model.getStringType()) {
-                buffer.addLine("    writer.WriteCharacter(\"%1$s\", *object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    writer.WriteCharacter(\"%1$s\", r)", tag);
             }
             else if (memberType == model.getDateType()) {
-                buffer.addLine("    writer.WriteDate(\"%1$s\", *object.%2$s)", tag, publicMemberName);
+                buffer.addLine("    writer.WriteDate(\"%1$s\", r)", tag);
             }
         }
         else if (memberType instanceof StructType || memberType instanceof EnumType) {
-            buffer.addLine("%1$s(writer, object.%2$s, \"%3$s\")",
+            buffer.addLine("%1$s(writer, r, \"%2$s\")",
                 goTypes.getXmlWriteOneFuncName(memberType),
-                publicMemberName,
                 tag
-                );
+            );
         }
         else if (memberType instanceof ListType) {
             ListType listType = (ListType) memberType;
             Type elementType = listType.getElementType();
             String elementSingularTag = goNames.getTagStyleName(elementType.getName());
             if (elementType instanceof StructType || elementType instanceof EnumType) {
-                buffer.addLine("%1$s(writer, object.%2$s, \"%3$s\", \"%4$s\")",
+                buffer.addLine("%1$s(writer, r, \"%2$s\", \"%3$s\")",
                     goTypes.getXmlWriteManyFuncName(elementType),
-                    publicMemberName,
                     tag,
                     elementSingularTag
-                    );
+                );
             }
             else if (elementType instanceof PrimitiveType) {
                 Model model = memberType.getModel();
                 if (elementType == model.getBooleanType()) {
-                    buffer.addLine("writer.WriteBools(\"%1$s\", object.%2$s);", tag, publicMemberName);
+                    buffer.addLine("writer.WriteBools(\"%1$s\", r);", tag);
                 }
                 else if (elementType == model.getIntegerType()) {
-                    buffer.addLine("writer.WriteInt64s(\"%1$s\", object.%2$s);", tag, publicMemberName);
+                    buffer.addLine("writer.WriteInt64s(\"%1$s\", r);", tag);
                 }
                 else if (elementType == model.getDecimalType()) {
-                    buffer.addLine("writer.WriteFloat64s(\"%1$s\", object.%2$s);", tag, publicMemberName);
+                    buffer.addLine("writer.WriteFloat64s(\"%1$s\", r);", tag);
                 }
                 else if (elementType == model.getStringType()) {
-                    buffer.addLine("writer.WriteCharacters(\"%1$s\", object.%2$s);", tag, publicMemberName);
+                    buffer.addLine("writer.WriteCharacters(\"%1$s\", r);", tag);
                 }
                 else if (elementType == model.getDateType()) {
-                    buffer.addLine("writer.writeDates(\"%1$s\", object.%2$s);", tag, publicMemberName);
+                    buffer.addLine("writer.writeDates(\"%1$s\", r);", tag);
                 }
             }
         }
@@ -285,14 +281,14 @@ public class WritersGenerator implements GoGenerator {
     private void generateEnumWriteOne(EnumType type) {
         GoClassName typeName = goNames.getTypeName(type);
         String tag = goNames.getTagStyleName(type.getName());
-        buffer.addLine("func %1$s(writer *XMLWriter, enum *%2$s, tag string) {",
+        buffer.addLine("func %1$s(writer *XMLWriter, enum %2$s, tag string) {",
             goTypes.getXmlWriteOneFuncName(type), typeName.getClassName());
         // Generate the function body
         //      Generate the `tag` value
         buffer.addLine("  if tag == \"\" {");
         buffer.addLine("    tag = \"%1$s\"", tag);
         buffer.addLine("  }");
-        buffer.addLine("  writer.WriteCharacter(\"%1$s\", string(*enum))", tag);
+        buffer.addLine("  writer.WriteCharacter(\"%1$s\", string(enum))", tag);
         buffer.addLine("}");    // End of function
         buffer.addLine();
     }

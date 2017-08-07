@@ -33,10 +33,17 @@ func main() {
 		return
 	}
 
-	// Print the datacenter names and identifiers:
-	for _, clu := range clustersResponse.Clusters() {
-		fmt.Printf("Cluster - (name: %v, id: %v)\n", *clu.Name, *clu.Id)
-		// fmt.Printf("Cluster is %+v\n", clu)
+	if clusters, ok := clustersResponse.Clusters(); ok {
+		// Print the datacenter names and identifiers:
+		fmt.Printf("Cluster: (")
+		for _, cluster := range clusters {
+			if clusterName, ok := cluster.Name(); ok {
+				fmt.Printf(" name: %v", clusterName)
+			}
+			if clusterId, ok := cluster.Id(); ok {
+				fmt.Printf(" id: %v", clusterId)
+			}
+		}
+		fmt.Println(")")
 	}
-
 }

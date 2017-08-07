@@ -18,11 +18,22 @@ package ovirtsdk4
 
 // Link represents struct of href and rel attributes
 type Link struct {
-	Href *string `xml:"href, attr"`
-	Rel  *string `xml:"rel, attr"`
+	href *string
+	rel  *string
 }
 
 // OvStruct represents the base for all struts defined in types.go
 type OvStruct struct {
-	Href *string `xml:"href, attr"`
+	href *string
+}
+
+func (p *OvStruct) Href() (string, bool) {
+	if p.href != nil {
+		return *p.href, true
+	}
+	return "", false
+}
+
+func (p *OvStruct) SetHref(attr string) {
+	p.href = &attr
 }

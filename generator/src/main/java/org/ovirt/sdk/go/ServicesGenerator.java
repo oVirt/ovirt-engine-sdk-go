@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
+import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Locator;
 import org.ovirt.api.metamodel.concepts.Method;
@@ -469,16 +470,19 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
             Parameter paraFirst = parameters.get(0);
-            String isPointer = "";
-            if (goTypes.isGoPrimitiveType(paraFirst.getType())) {
-                isPointer = "*";
+            buffer.addLine("result, _ := action.%1$s()",
+                goTypes.getMemberGetterMethodName(paraFirst.getName()));
+            Type paraType = paraFirst.getType();
+            if (goTypes.isGoPrimitiveType(paraType) || paraType instanceof EnumType) {
+                buffer.addLine("return &%1$s{%2$s: &result}, nil",
+                    getResponseClassName(method, service),
+                    goNames.getPrivateMemberStyleName(paraFirst.getName()));
             }
-            buffer.addLine("return &%1$s{%2$s: %3$saction.%4$s}, nil",
-                getResponseClassName(method, service),
-                goNames.getPrivateMemberStyleName(paraFirst.getName()),
-                isPointer,
-                goNames.getPublicMemberStyleName(paraFirst.getName())
-                );
+            else {
+                buffer.addLine("return &%1$s{%2$s: result}, nil",
+                    getResponseClassName(method, service),
+                    goNames.getPrivateMemberStyleName(paraFirst.getName()));
+            }
         }
     }
 
@@ -659,7 +663,7 @@ public class ServicesGenerator implements GoGenerator {
         Type type = parameter.getType();
         Name name = parameter.getName();
         String memberName = goNames.getPrivateMemberStyleName(name);
-        GoTypeReference reference = goNames.getTypeReference(type);
+        GoTypeReference reference = goNames.getRefTypeReference(type);
         buffer.addLine("%1$s %2$s", memberName, reference.getText());
     }
 
@@ -669,13 +673,26 @@ public class ServicesGenerator implements GoGenerator {
         String memberName = goNames.getPrivateMemberStyleName(name);
         GoTypeReference reference = goNames.getTypeReference(type);
         String response = getResponseClassName(parameter.getDeclaringMethod(), service);
-        buffer.addLine("func (p *%1$s) %2$s() %3$s {",
+        buffer.addLine("func (p *%1$s) %2$s() (%3$s, bool) {",
             response,
             goNames.getPublicMethodStyleName(memberName),
             reference.getText()
             );
-        buffer.addLine(  "return p.%1$s", memberName);
+        buffer.addLine(" if p.%1$s != nil {", goNames.getPrivateMemberStyleName(memberName));
+        if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
+            buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(memberName));
+            buffer.addLine(" }");
+            buffer.addLine(" var zero %1$s", reference.getText());
+            buffer.addLine(" return zero, false");
+        }
+        else {
+            buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(memberName));
+            buffer.addLine(" }");
+            buffer.addLine(" return nil, false");
+        }
+
         buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateStr(Service service) {
