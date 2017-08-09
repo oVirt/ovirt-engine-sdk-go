@@ -174,6 +174,19 @@ public class TypesGenerator implements GoGenerator {
         }
         buffer.addLine("}");    // End of getter method
         buffer.addLine();
+        // Generate the MUST getter method
+        buffer.addLine("func (p *%1$s) %2$s() %3$s {",
+            structTypeName.getClassName(),
+            goTypes.getMemberMustGetterMethodName(member.getName()),
+            memberTypeRef.getText()
+        );
+        if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
+            buffer.addLine(" return *p.%1$s", goNames.getPrivateMemberStyleName(member.getName()));
+        } else {
+            buffer.addLine(" return p.%1$s", goNames.getPrivateMemberStyleName(member.getName()));
+        }
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateStructBuilder(StructType type) {

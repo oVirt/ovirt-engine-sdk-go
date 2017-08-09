@@ -470,8 +470,8 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
             Parameter paraFirst = parameters.get(0);
-            buffer.addLine("result, _ := action.%1$s()",
-                goTypes.getMemberGetterMethodName(paraFirst.getName()));
+            buffer.addLine("result := action.%1$s()",
+                goTypes.getMemberMustGetterMethodName(paraFirst.getName()));
             Type paraType = paraFirst.getType();
             if (goTypes.isGoPrimitiveType(paraType) || paraType instanceof EnumType) {
                 buffer.addLine("return &%1$s{%2$s: &result}, nil",
@@ -656,6 +656,7 @@ public class ServicesGenerator implements GoGenerator {
             .collect(Collectors.toList());
         for (Parameter para : parameters) {
             generateResponseParameterGetterMethod(para, service);
+            generateResponseParameterMustGetterMethod(para, service);
         }
     }
 
@@ -670,25 +671,45 @@ public class ServicesGenerator implements GoGenerator {
     private void generateResponseParameterGetterMethod(Parameter parameter, Service service) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        String memberName = goNames.getPrivateMemberStyleName(name);
         GoTypeReference reference = goNames.getTypeReference(type);
         String response = getResponseClassName(parameter.getDeclaringMethod(), service);
         buffer.addLine("func (p *%1$s) %2$s() (%3$s, bool) {",
             response,
-            goNames.getPublicMethodStyleName(memberName),
+            goTypes.getMemberGetterMethodName(name),
             reference.getText()
             );
-        buffer.addLine(" if p.%1$s != nil {", goNames.getPrivateMemberStyleName(memberName));
+        buffer.addLine(" if p.%1$s != nil {", goNames.getPrivateMemberStyleName(name));
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
-            buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(memberName));
+            buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
             buffer.addLine(" var zero %1$s", reference.getText());
             buffer.addLine(" return zero, false");
         }
         else {
-            buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(memberName));
+            buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
             buffer.addLine(" return nil, false");
+        }
+
+        buffer.addLine("}");
+        buffer.addLine();
+    }
+
+    private void generateResponseParameterMustGetterMethod(Parameter parameter, Service service) {
+        Type type = parameter.getType();
+        Name name = parameter.getName();
+        GoTypeReference reference = goNames.getTypeReference(type);
+        String response = getResponseClassName(parameter.getDeclaringMethod(), service);
+        buffer.addLine("func (p *%1$s) %2$s() %3$s {",
+            response,
+            goTypes.getMemberMustGetterMethodName(name),
+            reference.getText()
+            );
+        if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
+            buffer.addLine(" return *p.%1$s", goNames.getPrivateMemberStyleName(name));
+        }
+        else {
+            buffer.addLine(" return p.%1$s", goNames.getPrivateMemberStyleName(name));
         }
 
         buffer.addLine("}");
