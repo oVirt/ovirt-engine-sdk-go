@@ -91,6 +91,10 @@ public class GoTypes {
         return goNames.renameReserved(result);
     }
 
+    public String getMemberMustGetterMethodName(Name name) {
+        return "Must" + getMemberGetterMethodName(name);
+    }
+
     public String getMemberPresentMethodName(Name name) {
         String result = name.words().map(words::capitalize).collect(joining());
         return goNames.renameReserved(result + "Present");

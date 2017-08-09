@@ -34,6 +34,10 @@ func (p *OvStruct) Href() (string, bool) {
 	return "", false
 }
 
+func (p *OvStruct) MustHref() string {
+	return *p.href
+}
+
 func (p *OvStruct) SetHref(attr string) {
 	p.href = &attr
 }
