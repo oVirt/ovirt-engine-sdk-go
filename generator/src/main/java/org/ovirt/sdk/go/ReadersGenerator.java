@@ -145,6 +145,7 @@ public class ReadersGenerator implements GoGenerator {
             }
             buffer.addLine("    case \"href\":");
             buffer.addLine("      builder.Href(value)");
+            buffer.addLine("      isParsed = true");
 	        buffer.addLine("  	}");
 	        buffer.addLine("  }");
         }
