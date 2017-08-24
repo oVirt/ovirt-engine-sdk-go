@@ -54,7 +54,7 @@ func (c *Connection) URL() string {
 }
 
 // SystemService returns a reference to the root of the services tree.
-func (c *Connection) SystemService() *SystemService {
+func (c *Connection) SystemService() *systemService {
 	return NewSystemService(c, "")
 }
 

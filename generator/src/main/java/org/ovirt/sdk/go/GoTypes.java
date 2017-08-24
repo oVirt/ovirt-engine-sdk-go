@@ -26,6 +26,7 @@ import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Words;
+import org.ovirt.api.metamodel.concepts.Service;
 
 /**
  * For in type in Go
@@ -54,6 +55,13 @@ public class GoTypes {
     public String getNewBuilderFuncName(Type type) {
         GoClassName typeName = goNames.getTypeName(type);
         String result = String.join("", "New", typeName.getClassName(), "Builder");
+        return result;
+    }
+
+    public String getServiceConstructorFuncName(GoClassName serviceName) {
+        String serviceClassName = serviceName.getClassName();
+        serviceClassName = serviceClassName.substring(0, 1).toUpperCase() + serviceClassName.substring(1);
+        String result = String.join("", "New", serviceClassName);
         return result;
     }
 

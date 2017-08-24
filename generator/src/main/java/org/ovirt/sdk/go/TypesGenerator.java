@@ -193,7 +193,6 @@ public class TypesGenerator implements GoGenerator {
         // Get Type names
         GoClassName typeName = goNames.getTypeName(type);
         String typeClassName = typeName.getClassName();
-        String typePrivateClassName = typeName.getPrivateClassName();
         String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
         // Get struct members
         Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())

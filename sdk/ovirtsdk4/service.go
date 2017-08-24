@@ -24,9 +24,9 @@ import (
 	"net/http"
 )
 
-// BaseService represents the base for all the services of the SDK. It contains the
+// baseService represents the base for all the services of the SDK. It contains the
 // utility methods used by all of them.
-type BaseService struct {
+type baseService struct {
 	Connection *Connection
 	Path       string
 }
