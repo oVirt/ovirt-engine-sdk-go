@@ -110,14 +110,14 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate struct members definition
         //      with Service struct mixin
-        buffer.addLine("BaseService");
+        buffer.addLine("baseService");
 
         // Generate struct ending
         buffer.addLine("}");
         buffer.addLine();
 
         // Generate the service struct constructor by Newer function
-        this.generateConstructor(serviceName.getClassName());
+        this.generateConstructor(serviceName);
 
         // Generate the methods
         List<Method>methods = service.methods().sorted().collect(toCollection(ArrayList::new));
@@ -140,13 +140,14 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateConstructor(String serviceClassName) {
+    private void generateConstructor(GoClassName serviceName) {
         buffer.addLine(
-            "func New%1$s(connection *Connection, path string) *%2$s {",
-            serviceClassName, serviceClassName);
+            "func %1$s(connection *Connection, path string) *%2$s {",
+            goTypes.getServiceConstructorFuncName(serviceName),
+            serviceName.getClassName());
 
         // Inititalize struct
-        buffer.addLine("var result %1$s", serviceClassName);
+        buffer.addLine("var result %1$s", serviceName.getClassName());
         buffer.addLine("result.Connection = connection");
         buffer.addLine("result.Path = path");
         buffer.addLine("return &result");
@@ -755,8 +756,8 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addImport("fmt");
         buffer.addLine(
-            "return New%1$s(op.Connection, fmt.Sprintf(\"%%s/%%s\", op.Path, %2$s))",
-            locatorServiceName.getClassName(),
+            "return %1$s(op.Connection, fmt.Sprintf(\"%%s/%%s\", op.Path, %2$s))",
+            goTypes.getServiceConstructorFuncName(locatorServiceName),
             argName);
         buffer.addLine("}");
         buffer.addLine();
@@ -776,8 +777,8 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addImport("fmt");
         buffer.addLine(
-            "return New%1$s(op.Connection, fmt.Sprintf(\"%%s/%2$s\", op.Path))",
-            locatorServiceName.getClassName(),
+            "return %1$s(op.Connection, fmt.Sprintf(\"%%s/%2$s\", op.Path))",
+            goTypes.getServiceConstructorFuncName(locatorServiceName),
             urlSegment);
         buffer.addLine("}");
         buffer.addLine();
@@ -882,7 +883,7 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private String getResponseClassName(Method method, Service service) {
-        return goNames.getServiceName(service).getPrivateClassName() + 
+        return goNames.getServiceName(service).getClassName() + 
             goNames.getClassStyleName(method.getName()) + "Response";
     }
 

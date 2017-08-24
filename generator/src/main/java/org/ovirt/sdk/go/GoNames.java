@@ -240,7 +240,7 @@ public class GoNames {
      * Calculates the Go name that corresponds to the given service.
      */
     public GoClassName getServiceName(Service service) {
-        return buildClassName(service.getName(), SERVICE_NAME, SERVICES_PACKAGE);
+        return buildPrivateClassName(service.getName(), SERVICE_NAME, SERVICES_PACKAGE);
     }
 
     /**
@@ -279,12 +279,29 @@ public class GoNames {
         return result;
     }
 
+    private GoClassName buildPrivateClassName(Name base, Name suffix, String pkg) {
+        List<String> words = base.getWords();
+        if (suffix != null) {
+            words.addAll(suffix.getWords());
+        }
+        Name name = new Name(words);
+        GoClassName result = new GoClassName();
+        result.setClassName(getPrivateClassStyleName(name));
+        result.setPackageName(getPackageName(pkg));
+        return result;
+    }
+
     /**
      * Returns a representation of the given name using the capitalization style typically used for Go classes.
      */
     public String getClassStyleName(Name name) {
         String result = name.words().map(words::capitalize).collect(joining());
         return renameReserved(result);
+    }
+
+    public String getPrivateClassStyleName(Name name) {
+        String result = name.words().map(words::capitalize).collect(joining());
+        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
     }
 
     /**
