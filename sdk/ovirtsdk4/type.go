@@ -22,22 +22,22 @@ type Link struct {
 	rel  *string
 }
 
-// OvStruct represents the base for all struts defined in types.go
-type OvStruct struct {
+// Struct represents the base for all struts defined in types.go
+type Struct struct {
 	href *string
 }
 
-func (p *OvStruct) Href() (string, bool) {
+func (p *Struct) Href() (string, bool) {
 	if p.href != nil {
 		return *p.href, true
 	}
 	return "", false
 }
 
-func (p *OvStruct) MustHref() string {
+func (p *Struct) MustHref() string {
 	return *p.href
 }
 
-func (p *OvStruct) SetHref(attr string) {
+func (p *Struct) SetHref(attr string) {
 	p.href = &attr
 }

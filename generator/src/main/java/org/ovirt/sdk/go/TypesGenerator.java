@@ -109,7 +109,7 @@ public class TypesGenerator implements GoGenerator {
         // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getClassName());
         // Ignore Base-class mixin, fill in all
-        buffer.addLine("OvStruct");
+        buffer.addLine("Struct");
 
         // Constructor with a named parameter for each attribute and link:
         Set<StructMember> allMembers = Stream.concat(type.attributes(), type.links())
