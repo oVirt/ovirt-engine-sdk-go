@@ -46,7 +46,6 @@ public class GoTypes {
      */
     public String getBuilderName(Type type) {
         String typeName = goNames.getTypeName(type).getClassName();
-        typeName = typeName.substring(0, 1).toLowerCase() + typeName.substring(1);
         String result = String.join("", typeName, "Builder");
         return goNames.renameReserved(result);
     }
