@@ -180,6 +180,11 @@ public class TypesGenerator implements GoGenerator {
             goTypes.getMemberMustGetterMethodName(member.getName()),
             memberTypeRef.getText()
         );
+        buffer.addLine(" if p.%1$s == nil {", goNames.getPrivateMemberStyleName(member.getName()));
+        buffer.addLine("  panic(\"the %1$s must not be nil, please use %2$s() function instead\")",
+            goNames.getPrivateMemberStyleName(member.getName()),
+            goTypes.getMemberGetterMethodName(member.getName()));
+        buffer.addLine(" }");
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
             buffer.addLine(" return *p.%1$s", goNames.getPrivateMemberStyleName(member.getName()));
         } else {
