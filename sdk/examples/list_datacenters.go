@@ -35,7 +35,7 @@ func main() {
 
 	// Print the datacenter names and identifiers:
 	if datacenters, ok := datacentersResponse.DataCenters(); ok {
-		for _, dc := range datacenters {
+		for _, dc := range datacenters.Slice() {
 			fmt.Printf("Datacenter: ")
 			if dcName, ok := dc.Name(); ok {
 				fmt.Printf(" name: %v", dcName)
@@ -45,7 +45,7 @@ func main() {
 			}
 			fmt.Printf("  Supported versions are: ")
 			if svs, ok := dc.SupportedVersions(); ok {
-				for _, sv := range svs {
+				for _, sv := range svs.Slice() {
 					if major, ok := sv.Major(); ok {
 						fmt.Printf(" Major: %v", major)
 					}

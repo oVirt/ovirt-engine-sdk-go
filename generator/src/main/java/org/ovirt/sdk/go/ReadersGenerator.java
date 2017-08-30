@@ -208,9 +208,9 @@ public class ReadersGenerator implements GoGenerator {
             .filter(x -> !schemaNames.isRepresentedAsAttribute(x.getName()))
             .sorted()
             .collect(toList());
-        buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) ([]%2$s, error) {",
-            goTypes.getXmlReadManyFuncName(type), typeName.getClassName());
-        
+        buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) (*%2$s, error) {",
+            goTypes.getXmlReadManyFuncName(type), goTypes.getStructSliceTypeName(type));
+
         // Generate the function body
         //      Generate `find start element`
         buffer.addLine("  if start == nil {");
@@ -223,11 +223,9 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    }");
         buffer.addLine("    start = st");
         buffer.addLine("  }");
-
         //      Generate slice of type definition
-        buffer.addLine("  var results []%1$s", typeName.getClassName());
-        
-        // Process the inner elements:
+        buffer.addLine("  var result %1$s", goTypes.getStructSliceTypeName(type));
+        //      Process the inner elements:
         buffer.addLine("  depth := 1");
         buffer.addLine("  for depth >0 {");
         buffer.addLine("    t, err := reader.Next()");
@@ -245,7 +243,7 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("        if err != nil {");
         buffer.addLine("          return nil, err");
         buffer.addLine("        }");
-        buffer.addLine("        results = append(results, *one)");
+        buffer.addLine("        result.slice = append(result.slice, *one)");
         buffer.addLine("      }");
         buffer.addLine("	case xml.EndElement:");
         buffer.addLine("      depth--");
@@ -253,7 +251,7 @@ public class ReadersGenerator implements GoGenerator {
         // End of for
         buffer.addLine("  }");
 
-        buffer.addLine("  return results, nil");
+        buffer.addLine("  return &result, nil");
         // End of function
         buffer.addLine("}");
         buffer.addLine();

@@ -91,6 +91,9 @@ public class TypesGenerator implements GoGenerator {
         // Generate the type:
         structs.forEach(this::generateStruct);
 
+        // Generate the slices of the type
+        structs.forEach(this::generateStructSlice);
+
         // Generate the builder:
         structs.forEach(this::generateStructBuilder);
 
@@ -130,6 +133,44 @@ public class TypesGenerator implements GoGenerator {
         }
 
         buffer.addLine();
+    }
+
+    private void generateStructSlice(StructType type) {
+        GoClassName typeName = goNames.getTypeName(type);
+        String structSliceTypeName = goTypes.getStructSliceTypeName(type);
+        // Define Struct Slice
+        buffer.addLine("type %1$s struct {", structSliceTypeName);
+        buffer.addLine("  href *string");
+        buffer.addLine("  slice []%1$s", typeName.getClassName());
+        buffer.addLine("}");
+        buffer.addLine();
+
+        // Define the methods of Struct Slice
+        buffer.addLine("func (op *%1$s) Href() (string, bool) {", structSliceTypeName);
+        buffer.addLine(" if op.href == nil {");
+        buffer.addLine("   return \"\", false");
+        buffer.addLine(" }");
+        buffer.addLine(" return *op.href, true");
+        buffer.addLine("}");
+        buffer.addLine();
+
+        buffer.addLine("func (op *%1$s) SetHref(href string) {", structSliceTypeName);
+        buffer.addLine("  op.href = &href");
+        buffer.addLine("}");
+        buffer.addLine();
+
+        buffer.addLine("func (op *%1$s) Slice() []%2$s {",
+            structSliceTypeName, typeName.getClassName());
+        buffer.addLine("  return op.slice");
+        buffer.addLine("}");
+        buffer.addLine();
+
+        buffer.addLine("func (op *%1$s) SetSlice(slice []%2$s) {",
+            structSliceTypeName, typeName.getClassName());
+        buffer.addLine("  op.slice = slice");
+        buffer.addLine("}");
+        buffer.addLine();
+
     }
 
     private void generateMemberMethods(StructType structType, StructMember member) {

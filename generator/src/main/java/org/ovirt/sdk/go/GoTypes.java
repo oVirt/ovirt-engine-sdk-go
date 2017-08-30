@@ -50,6 +50,11 @@ public class GoTypes {
         return goNames.renameReserved(result);
     }
 
+    public String getStructSliceTypeName(Type type) {
+        String typename = goNames.getTypeName(type).getClassName();
+        String result = String.join("", typename, "Slice");
+        return goNames.renameReserved(result);
+    }
 
     public String getNewBuilderFuncName(Type type) {
         GoClassName typeName = goNames.getTypeName(type);

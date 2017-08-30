@@ -683,15 +683,13 @@ public class ServicesGenerator implements GoGenerator {
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
             buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
-            buffer.addLine(" var zero %1$s", reference.getText());
-            buffer.addLine(" return zero, false");
         }
         else {
             buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
-            buffer.addLine(" return nil, false");
         }
-
+        buffer.addLine(" var zero %1$s", reference.getText());
+        buffer.addLine(" return zero, false");
         buffer.addLine("}");
         buffer.addLine();
     }
