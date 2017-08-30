@@ -78,6 +78,8 @@ public class GoNames {
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
 
+    @Inject private GoTypes goTypes;
+
     public void setRootPackageUrlPrefix(String newRootPackageUrlPrefix) {
         rootPackageUrlPrefix = newRootPackageUrlPrefix;
     }
@@ -218,10 +220,15 @@ public class GoNames {
         }
         else if (type instanceof ListType) {
             ListType listtype = (ListType)type;
-            GoTypeReference elementTypeReference = this.getTypeReferenceWithRef(
-                listtype.getElementType(), withPointer);
-            // use Recursion to return []StructType / []string
-            reference.setText("[]" + elementTypeReference.getText().replace("*", ""));
+            Type elementType = listtype.getElementType();
+            if (elementType instanceof StructType) {
+                reference.setText("*" + goTypes.getStructSliceTypeName(listtype.getElementType()));
+            } else {
+                GoTypeReference elementTypeReference = this.getTypeReferenceWithRef(
+                    elementType, false);
+                // use Recursion to return []StructType / []string
+                reference.setText("[]" + elementTypeReference.getText());
+            }
         }
         else {
             throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");

@@ -35,7 +35,7 @@ func main() {
 	}
 	if vms, ok := vmsResponse.Vms(); ok {
 		// Print the virtual machine names and identifiers:
-		for _, vm := range vms {
+		for _, vm := range vms.Slice() {
 			fmt.Print("VM: (")
 			if vmName, ok := vm.Name(); ok {
 				fmt.Printf(" name: %v", vmName)

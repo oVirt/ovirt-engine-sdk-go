@@ -161,8 +161,8 @@ public class WritersGenerator implements GoGenerator {
         String singularTag = goNames.getTagStyleName(singularName);
         String pluralTag = goNames.getTagStyleName(pluralName);
 
-        buffer.addLine("func %1$s(writer *XMLWriter, objects []%2$s, plural, singular string) error {",
-            goTypes.getXmlWriteManyFuncName(type), typeName.getClassName());
+        buffer.addLine("func %1$s(writer *XMLWriter, structSlice *%2$s, plural, singular string) error {",
+            goTypes.getXmlWriteManyFuncName(type), goTypes.getStructSliceTypeName(type));
 
         // Generate the plural and singular name
         buffer.addLine("  if plural == \"\" {");
@@ -172,7 +172,7 @@ public class WritersGenerator implements GoGenerator {
         buffer.addLine("    singular = \"%1$s\"", singularTag);
         buffer.addLine("  }");
         buffer.addLine("  writer.WriteStart(\"\", \"%1$s\", nil)", pluralTag);
-        buffer.addLine("  for _, o := range objects {");
+        buffer.addLine("  for _, o := range structSlice.Slice() {");
         buffer.addLine("    %1$s(writer, &o, \"%2$s\")",
             goTypes.getXmlWriteOneFuncName(type), singularTag);
         buffer.addLine("  }");
