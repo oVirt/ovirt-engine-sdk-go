@@ -35,6 +35,9 @@ func (p *Struct) Href() (string, bool) {
 }
 
 func (p *Struct) MustHref() string {
+	if p.href == nil {
+		panic("href attribute must exist")
+	}
 	return *p.href
 }
 
