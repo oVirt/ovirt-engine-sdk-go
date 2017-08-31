@@ -84,9 +84,9 @@ func TestXMLClusterReadOne(t *testing.T) {
 
 	reader := NewXMLReader([]byte(xmlstring))
 
-	cluster, err := XMLClusterReadOne(reader, nil)
+	cluster, err := XMLClusterReadOne(reader, nil, "")
 	assert.Nil(err)
-
+	assert.NotNil(cluster)
 	// Cluster>Id
 	// assert.Equal("00000002-0002-0002-0002-000000000310", *cluster.Id)
 	// Cluster>Name
@@ -155,7 +155,7 @@ func TestXMLErrorHandlingReadOne(t *testing.T) {
         <on_error>migrate</on_error>
 	</error_handling>`
 	reader := NewXMLReader([]byte(xmlstring))
-	eh, err := XMLErrorHandlingReadOne(reader, nil)
+	eh, err := XMLErrorHandlingReadOne(reader, nil, "")
 	assert.Nil(err)
 	assert.NotNil(eh)
 	onError, ok := eh.OnError()
@@ -174,7 +174,7 @@ func TestXMLCPUReadOne(t *testing.T) {
 
 	reader := NewXMLReader([]byte(xmlstring))
 
-	cpu, err := XMLCpuReadOne(reader, nil)
+	cpu, err := XMLCpuReadOne(reader, nil, "")
 	assert.Nil(err)
 	cpuArch, ok := cpu.Architecture()
 	assert.True(ok)
@@ -214,7 +214,10 @@ func TestFaultReadOne(t *testing.T) {
 	<architecture>powerpc</architecture>
 </architectures>`
 	reader := NewXMLReader([]byte(xmlstring))
-	fault, err := XMLFaultReadOne(reader, nil)
-	assert.Nil(err)
+	fault, err := XMLFaultReadOne(reader, nil, "")
 	assert.Nil(fault)
+	err2, ok := err.(XMLTagNotMatchError)
+	assert.True(ok)
+	assert.Equal("architectures", err2.ActualTag)
+	assert.Equal("fault", err2.ExpectedTag)
 }
