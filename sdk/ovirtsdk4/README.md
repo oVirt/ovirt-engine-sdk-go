@@ -24,6 +24,7 @@ and gives you access to the root of the tree of services of the API:
 ```go
 // Create a connection to the server:
 import (
+    "fmt"
     "time"
     "github.com/imjoey/go-ovirt"
 )
