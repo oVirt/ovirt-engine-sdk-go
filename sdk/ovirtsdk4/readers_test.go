@@ -146,6 +146,13 @@ func TestXMLClusterReadOne(t *testing.T) {
 	schedulingPolicyHref, ok := schedulingPolicy.Href()
 	assert.True(ok)
 	assert.Equal("/ovirt-engine/api/schedulingpolicies/b4ed2332-a7ac-4d5f-9596-99a439cb2812", schedulingPolicyHref)
+
+	// Cluster Links
+	glusterhooks, ok := cluster.GlusterHooks()
+	assert.True(ok)
+	href, ok := glusterhooks.Href()
+	assert.True(ok)
+	assert.Equal("/ovirt-engine/api/clusters/00000002-0002-0002-0002-000000000310/glusterhooks", href)
 }
 
 func TestXMLErrorHandlingReadOne(t *testing.T) {

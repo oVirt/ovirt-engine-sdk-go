@@ -160,6 +160,8 @@ public class ReadersGenerator implements GoGenerator {
 	        buffer.addLine("  }");
         }
 
+        // Define links slice
+        buffer.addLine("  var links []Link");
         //      Process the inner elements:
         if (!asElements.isEmpty()) {
             buffer.addLine("  depth := 1");
@@ -179,6 +181,25 @@ public class ReadersGenerator implements GoGenerator {
             for (StructMember member : asElements) {
                 this.generateStructReadMemberFromElement(type, member);
             }
+            //      It's <link>
+            buffer.addLine("      case \"link\":");
+            buffer.addLine("        var rel, href string");
+	        buffer.addLine("        for _, attr := range t.Attr {");
+	        buffer.addLine("  	      name := attr.Name.Local");
+	        buffer.addLine("  	      value := attr.Value");
+            buffer.addLine("  	      switch name {");
+            buffer.addLine("            case \"href\":");
+            buffer.addLine("              href = value");
+            buffer.addLine("            case \"rel\":");
+            buffer.addLine("              rel = value");
+	        buffer.addLine("  	      }");
+            buffer.addLine("        }");
+            buffer.addLine("        if rel != \"\" && href != \"\" {");
+            buffer.addLine("          links = append(links, Link{&href, &rel})");
+            buffer.addLine("        }");
+            buffer.addLine("        // <link> just has attributes, so must skip manually");
+            buffer.addLine("        reader.Skip()");
+            
             buffer.addLine("      default:");
             buffer.addLine("        reader.Skip()");
             buffer.addLine("      }");
@@ -194,6 +215,28 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("  if err != nil {");
         buffer.addLine("    return nil, err");
         buffer.addLine("  }");
+        // Generate processing the links
+        buffer.addLine("  for _, link := range links {");
+        buffer.addLine("    switch *link.rel {");
+        List<Link> links = type.links()
+            .sorted()
+            .filter(link -> link.getType() instanceof ListType)
+            .collect(toList());
+        links.forEach(
+            link -> {
+                String field = goNames.getPrivateMemberStyleName(link.getName());
+                Type elementType = ((ListType) link.getType()).getElementType();
+                String rel = link.getName().words().map(String::toLowerCase).collect(joining());
+                buffer.addLine("      case \"%1$s\":", rel);
+                buffer.addLine("        if one.%1$s == nil {", field);
+                buffer.addLine("          one.%1$s = new(%2$s)", field, goTypes.getStructSliceTypeName(elementType));
+                buffer.addLine("        }");
+                buffer.addLine("        one.%1$s.href = link.href", field);
+            }
+        );
+        buffer.addLine("    }  // end of switch");
+        buffer.addLine("  }  // end of for-links");
+
         buffer.addLine("  return one, nil");
         buffer.addLine("}");
         buffer.addLine();
