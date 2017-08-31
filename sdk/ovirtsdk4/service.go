@@ -39,8 +39,12 @@ func CheckFault(response *http.Response) error {
 	}
 
 	reader := NewXMLReader(resBytes)
-	fault, err := XMLFaultReadOne(reader, nil)
+	fault, err := XMLFaultReadOne(reader, nil, "")
 	if err != nil {
+		// If the XML is not a <fault>, just return nil
+		if _, ok := err.(XMLTagNotMatchError); ok {
+			return nil
+		}
 		return err
 	}
 	if fault != nil || response.StatusCode >= 400 {
@@ -57,18 +61,24 @@ func CheckAction(response *http.Response) (*Action, error) {
 	}
 
 	faultreader := NewXMLReader(resBytes)
-	fault, err := XMLFaultReadOne(faultreader, nil)
+	fault, err := XMLFaultReadOne(faultreader, nil, "")
 	if err != nil {
-		return nil, err
+		// If the tag mismatches, return the err
+		if _, ok := err.(XMLTagNotMatchError); !ok {
+			return nil, err
+		}
 	}
 	if fault != nil {
 		return nil, BuildError(response, fault)
 	}
 
 	actionreader := NewXMLReader(resBytes)
-	action, err := XMLActionReadOne(actionreader, nil)
+	action, err := XMLActionReadOne(actionreader, nil, "")
 	if err != nil {
-		return nil, err
+		// If the tag mismatches, return the err
+		if _, ok := err.(XMLTagNotMatchError); !ok {
+			return nil, err
+		}
 	}
 	if action != nil {
 		if afault, ok := action.Fault(); ok {

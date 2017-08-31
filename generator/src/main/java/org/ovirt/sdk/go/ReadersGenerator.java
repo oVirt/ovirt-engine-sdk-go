@@ -102,6 +102,10 @@ public class ReadersGenerator implements GoGenerator {
     private void generateStructReadOne(StructType type) {
         GoClassName typeName = goNames.getTypeName(type);
 
+        // Generate the tag name
+        Name singularName = type.getName();
+        String singularTag = goNames.getTagStyleName(singularName);
+
         // Generate the method:
         List<StructMember> allMembers = new ArrayList<>();
         allMembers.addAll(type.getAttributes());
@@ -115,10 +119,11 @@ public class ReadersGenerator implements GoGenerator {
             .sorted()
             .collect(toList());
 
-        buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) (*%2$s, error) {",
+        buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement, expectedTag string) (*%2$s, error) {",
             goTypes.getXmlReadOneFuncName(type), typeName.getClassName());
         // Generate the function body
         buffer.addLine(" builder := %1$s()", goTypes.getNewBuilderFuncName(type));
+
         //      Generate `find start element`
         buffer.addLine("  if start == nil {");
         buffer.addLine("    st, err := reader.FindStartElement()");
@@ -130,8 +135,14 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    }");
         buffer.addLine("    start = st");
         buffer.addLine("  }");
-        //      The flag to indicates if parsed
-        buffer.addLine("  isParsed := false");
+
+        buffer.addLine(" if expectedTag == \"\" {");
+        buffer.addLine("   expectedTag = \"%1$s\"", singularTag);
+        buffer.addLine(" }");
+
+        buffer.addLine("  if start.Name.Local != expectedTag {");
+        buffer.addLine("    return nil, XMLTagNotMatchError{start.Name.Local, expectedTag}");
+        buffer.addLine("  }");
 
         //      Process the attributes
         if (!asAttributes.isEmpty()) {
@@ -145,7 +156,6 @@ public class ReadersGenerator implements GoGenerator {
             }
             buffer.addLine("    case \"href\":");
             buffer.addLine("      builder.Href(value)");
-            buffer.addLine("      isParsed = true");
 	        buffer.addLine("  	}");
 	        buffer.addLine("  }");
         }
@@ -179,16 +189,12 @@ public class ReadersGenerator implements GoGenerator {
         } else {
             buffer.addLine("  reader.Skip()");
         }
-        // Check if parsed
-        buffer.addLine("  if isParsed {");
-        buffer.addLine("    one, err := builder.Build()");
-        buffer.addLine("    if err != nil {");
-        buffer.addLine("      return nil, err");
-        buffer.addLine("    }");
-        buffer.addLine("    return one, nil");
+
+        buffer.addLine("  one, err := builder.Build()");
+        buffer.addLine("  if err != nil {");
+        buffer.addLine("    return nil, err");
         buffer.addLine("  }");
-        buffer.addLine("  // If not parsed with no error, return (nil, nil)");
-        buffer.addLine("  return nil, nil");
+        buffer.addLine("  return one, nil");
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -223,6 +229,7 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    }");
         buffer.addLine("    start = st");
         buffer.addLine("  }");
+
         //      Generate slice of type definition
         buffer.addLine("  var result %1$s", goTypes.getStructSliceTypeName(type));
         //      Process the inner elements:
@@ -238,12 +245,15 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    t = xml.CopyToken(t)");
         buffer.addLine("    switch t := t.(type) {");
         buffer.addLine("    case xml.StartElement:");
-        buffer.addLine("      if t.Name.Local == \"%1$s\" {", goNames.getTagStyleName(type.getName()));
-        buffer.addLine("        one, err := %1$s(reader, &t)", goTypes.getXmlReadOneFuncName(type));
+        String singularTag = goNames.getTagStyleName(type.getName());
+        buffer.addLine("      if t.Name.Local == \"%1$s\" {", singularTag);
+        buffer.addLine("        one, err := %1$s(reader, &t, \"%2$s\")", goTypes.getXmlReadOneFuncName(type), singularTag);
         buffer.addLine("        if err != nil {");
         buffer.addLine("          return nil, err");
         buffer.addLine("        }");
-        buffer.addLine("        result.slice = append(result.slice, *one)");
+        buffer.addLine("        if one != nil {");
+        buffer.addLine("          result.slice = append(result.slice, *one)");
+        buffer.addLine("        }");
         buffer.addLine("      }");
         buffer.addLine("	case xml.EndElement:");
         buffer.addLine("      depth--");
@@ -304,8 +314,6 @@ public class ReadersGenerator implements GoGenerator {
         else if (memberType instanceof EnumType) {
             buffer.addLine("        builder.%1$s(%2$s(value))", publicMethodName, goNames.getTypeName(memberType).getClassName());
         }
-
-	    buffer.addLine("  		isParsed = true");
     }
 
     private void generateStructReadMemberFromElement(StructType structType, StructMember member) {
@@ -333,7 +341,7 @@ public class ReadersGenerator implements GoGenerator {
         }
         else if (memberType instanceof StructType) {
             String readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
-            buffer.addLine("        v, err := %1$s(reader, &t)", readOneFuncName);
+            buffer.addLine("        v, err := %1$s(reader, &t, \"%2$s\")", readOneFuncName, tag);
         }
         else if (memberType instanceof EnumType) {
             String readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
@@ -376,7 +384,6 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("          return nil, err");
         buffer.addLine("        }");
         buffer.addLine("        builder.%1$s(v)", publicMethodName);
-        buffer.addLine("        isParsed = true");
     }
 
     private void generateProcessLink(StructType type) {

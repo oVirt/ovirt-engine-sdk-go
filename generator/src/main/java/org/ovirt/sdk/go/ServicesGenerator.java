@@ -618,7 +618,7 @@ public class ServicesGenerator implements GoGenerator {
             }
         }
         else if (type instanceof StructType) {
-            buffer.addLine("result, err := %1$s(reader, nil)", goTypes.getXmlReadOneFuncName(type));
+            buffer.addLine("result, err := %1$s(reader, nil, \"\")", goTypes.getXmlReadOneFuncName(type));
         } else if (type instanceof ListType) {
             ListType listype = (ListType) type;
             Type elementType = listype.getElementType();

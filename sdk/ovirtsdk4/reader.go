@@ -10,6 +10,17 @@ import (
 	"time"
 )
 
+// XMLTagNotMatchError indicates the error of XML tag
+// not matched when unmarshaling XML
+type XMLTagNotMatchError struct {
+	ActualTag   string
+	ExpectedTag string
+}
+
+func (err XMLTagNotMatchError) Error() string {
+	return fmt.Sprintf("Tag not matched: expect <%v> but got <%v>", err.ExpectedTag, err.ActualTag)
+}
+
 // CanForward indicates if Decoder has been finished
 func CanForward(tok xml.Token) (bool, error) {
 	switch tok.(type) {
