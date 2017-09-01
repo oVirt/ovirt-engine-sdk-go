@@ -35,19 +35,14 @@ func CanForward(tok xml.Token) (bool, error) {
 
 // XMLReader unmarshalizes the xml to struct
 type XMLReader struct {
-	dec *xml.Decoder
+	*xml.Decoder
 }
 
 // NewXMLReader creates a XMLReader instance
 func NewXMLReader(b []byte) *XMLReader {
 	return &XMLReader{
-		dec: xml.NewDecoder(bytes.NewReader(b)),
+		Decoder: xml.NewDecoder(bytes.NewReader(b)),
 	}
-}
-
-// Skip calls xml.Decoder.Skip to skip current XML element
-func (reader *XMLReader) Skip() error {
-	return reader.dec.Skip()
 }
 
 // FindStartElement finds the right next StartElement
@@ -69,7 +64,7 @@ func (reader *XMLReader) FindStartElement() (*xml.StartElement, error) {
 
 // Next calls xml.Decoder.Token() to get the next xml.Token
 func (reader *XMLReader) Next() (xml.Token, error) {
-	return reader.dec.Token()
+	return reader.Token()
 }
 
 // ReadString reads the xml.CharData as a string after xml.StartElement
