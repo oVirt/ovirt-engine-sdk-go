@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Red Hat, Inc.
+Copyright (c) 2017 Joey <majunjiev@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
@@ -36,7 +34,6 @@ import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.StructMember;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
-import org.ovirt.api.metamodel.tool.Names;
 import org.ovirt.api.metamodel.tool.SchemaNames;
 
 /**
@@ -45,10 +42,6 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
 public class ReadersGenerator implements GoGenerator {
     // The directory were the output will be generated:
     protected File out;
-    
-    // Reference to object used to calculate names:
-    @Inject
-    private Names names;
 
     // Reference to the objects used to generate the code:
     @Inject private GoNames goNames;
@@ -243,8 +236,6 @@ public class ReadersGenerator implements GoGenerator {
     }
 
     private void generateStructReadMany(StructType type) {
-        GoClassName typeName = goNames.getTypeName(type);
-
         // Generate the method:
         List<StructMember> allMembers = new ArrayList<>();
         allMembers.addAll(type.getAttributes());
