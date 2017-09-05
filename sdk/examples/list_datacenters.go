@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"../ovirtsdk4"
+	"github.com/imjoey/go-ovirt"
 )
 
 func main() {
