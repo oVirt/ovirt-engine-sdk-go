@@ -43,6 +43,7 @@ import org.ovirt.api.metamodel.concepts.Service;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Names;
+import org.ovirt.api.metamodel.tool.SchemaNames;
 
 /**
  * This class is responsible for generating the classes that represent the services of the model.
@@ -71,6 +72,8 @@ public class ServicesGenerator implements GoGenerator {
     // Reference to the objects used to generate the code:
     @Inject
     private Names names;
+
+    @Inject private SchemaNames schemaNames;
 
     /**
      * Set the directory were the output will be generated.
@@ -287,6 +290,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("return p");
         
         buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateAddRequestImplementation(Method method, Service service) {
@@ -488,10 +492,12 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
+        String tag = schemaNames.getSchemaTagName(parameter.getName());
         String value = goNames.getPrivateMemberStyleName(parameter.getName());
         buffer.addLine("if p.%1$s != nil {", value);
-        buffer.addLine(  "values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%1$s)}", value);
+        buffer.addLine(  "values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%2$s)}", tag, value);
         buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateAdditionalQueryParameters() {
