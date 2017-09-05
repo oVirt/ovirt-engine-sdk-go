@@ -27,7 +27,7 @@ func main() {
 	vmsService := conn.SystemService().VmsService()
 
 	// Use the "list" method of the "vms" service to list all the virtual machines of the system:
-	vmsResponse, err := vmsService.List().Send()
+	vmsResponse, err := vmsService.List().Search("name=RHEL7.3").CaseSensitive(false).Send()
 
 	if err != nil {
 		fmt.Printf("Failed to get vm list, reason: %v\n", err)

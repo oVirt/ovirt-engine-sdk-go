@@ -35,15 +35,15 @@ func main() {
 
 	if clusters, ok := clustersResponse.Clusters(); ok {
 		// Print the datacenter names and identifiers:
-		fmt.Printf("Cluster: (")
 		for _, cluster := range clusters.Slice() {
+			fmt.Printf("Cluster: (")
 			if clusterName, ok := cluster.Name(); ok {
 				fmt.Printf(" name: %v", clusterName)
 			}
-			if clusterId, ok := cluster.Id(); ok {
-				fmt.Printf(" id: %v", clusterId)
+			if clusterID, ok := cluster.Id(); ok {
+				fmt.Printf(" id: %v", clusterID)
 			}
+			fmt.Println(")")
 		}
-		fmt.Println(")")
 	}
 }
