@@ -1,4 +1,4 @@
 include LICENSE.txt
-include README.adoc
+include README.md
 recursive-include ext *.c *.h
-recursive-include examples *.py
+recursive-include examples *.go

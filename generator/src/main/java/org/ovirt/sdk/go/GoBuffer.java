@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Red Hat, Inc.
+Copyright (c) 2017 Joey <majunjiev@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 
@@ -37,8 +36,6 @@ import org.apache.commons.io.FileUtils;
  * rest of the source.
  */
 public class GoBuffer {
-    // Reference to the object used to generate names:
-    @Inject private GoNames goNames;
 
     // The name of the file:
     private String fileName;
@@ -77,6 +74,7 @@ public class GoBuffer {
 
         // Add the line to the set:
         imports.add(buffer.toString());
+        formatter.close();
     }
 
     /**
@@ -105,6 +103,7 @@ public class GoBuffer {
 
         // Add the line to the list:
         lines.add(buffer.toString());
+        formatter.close();
     }
 
     /**
@@ -146,7 +145,7 @@ public class GoBuffer {
 
         // License:
         buffer.append("//\n");
-        buffer.append("// Copyright (c) 2017 Red Hat, Inc.\n");
+        buffer.append("// Copyright (c) 2017 Joey <majunjiev@gmail.com>.\n");
         buffer.append("//\n");
         buffer.append("// Licensed under the Apache License, Version 2.0 (the \"License\");\n");
         buffer.append("// you may not use this file except in compliance with the License.\n");

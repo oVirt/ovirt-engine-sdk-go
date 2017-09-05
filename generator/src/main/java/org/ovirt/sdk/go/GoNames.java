@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Red Hat, Inc.
+Copyright (c) 2017 Joey <majunjiev@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.joining;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
@@ -71,9 +70,6 @@ public class GoNames {
 
     // root package url prefix
     private String rootPackageUrlPrefix = "github.com/imjoey/sdk";
-
-    // the tag name belongs to Attribute ("Buenos Aires", "Córdoba", "La Plata");
-    private List<String> tagAttributes = Arrays.asList("id", "href", "rel");
 
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
@@ -150,7 +146,7 @@ public class GoNames {
     public String getPackageName(String... relativeNames) {
         StringBuilder buffer = new StringBuilder();
         buffer.append(rootPackageName);
-        if (relativeNames != null || relativeNames.length > 0) {
+        if (relativeNames != null && relativeNames.length > 0) {
             for (String relativeName : relativeNames) {
                 buffer.append('/');
                 buffer.append(relativeName);
