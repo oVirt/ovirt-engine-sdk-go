@@ -188,6 +188,9 @@ public class WritersGenerator implements GoGenerator {
         Type memberType = member.getType();
         String tag = goNames.getTagStyleName(memberName);
         buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName));
+        buffer.addLine("    if attrs == nil {");
+        buffer.addLine("      attrs = make(map[string]string)");
+        buffer.addLine("    }");
         if (memberType instanceof PrimitiveType) {
             Model model = memberType.getModel();
             if (memberType == model.getBooleanType()) {
