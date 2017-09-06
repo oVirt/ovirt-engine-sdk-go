@@ -282,6 +282,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine(  "builder.%1$s.SetHref(href)", typePrivateMemberName);
         buffer.addLine(  "return builder");
         buffer.addLine("}");
+        buffer.addLine();
         // Generate Build method
         buffer.addLine("func (builder *%1$s) Build() (*%2$s, error) {", goTypes.getBuilderName(type), typeClassName);
         buffer.addLine(  "if builder.err != nil {");
@@ -289,6 +290,16 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine(  "}");
         buffer.addLine(  "return builder.%1$s, nil", typePrivateMemberName);
         buffer.addLine("}");
+        buffer.addLine();
+        // Generate MustBuild method
+        buffer.addImport("fmt");
+        buffer.addLine("func (builder *%1$s) MustBuild() *%2$s {", goTypes.getBuilderName(type), typeClassName);
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "panic(fmt.Sprintf(\"Failed to build %1$s instance, reason: %%v\", builder.err))", typeClassName);
+        buffer.addLine(  "}");
+        buffer.addLine(  "return builder.%1$s", typePrivateMemberName);
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateEnum(EnumType type) {
