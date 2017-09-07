@@ -663,7 +663,7 @@ public class ServicesGenerator implements GoGenerator {
             .collect(Collectors.toList());
         for (Parameter para : parameters) {
             generateResponseParameterGetterMethod(para, service);
-            generateResponseParameterMustGetterMethod(para, service);
+            // generateResponseParameterMustGetterMethod(para, service);
         }
     }
 
