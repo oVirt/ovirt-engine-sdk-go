@@ -151,8 +151,8 @@ public class ServicesGenerator implements GoGenerator {
 
         // Inititalize struct
         buffer.addLine("var result %1$s", serviceName.getClassName());
-        buffer.addLine("result.Connection = connection");
-        buffer.addLine("result.Path = path");
+        buffer.addLine("result.connection = connection");
+        buffer.addLine("result.path = path");
         buffer.addLine("return &result");
 
         // Generate constructor ending
@@ -295,7 +295,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateAddRequestImplementation(Method method, Service service) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -327,7 +327,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateListRequestImplementation(Method method, Service service) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -355,7 +355,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateRemoveRequestImplementation(Method method, Service service) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -383,7 +383,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateUpdateRequestImplementation(Method method, Service service) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.Connection.URL(), p.%1$s.Path)",
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -415,7 +415,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateActionRequestImplementation(Method method, Service service) {
         String serviceClassName = goNames.getServiceName(service).getClassName();
-        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s/%1$s\", p.%2$s.Connection.URL(), p.%2$s.Path)",
+        buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s/%1$s\", p.%2$s.connection.URL(), p.%2$s.path)",
             getPath(method.getName()),
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addLine("actionBuilder := NewActionBuilder()");
@@ -543,7 +543,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("req.Header.Add(\"Version\", \"4\")");
         buffer.addLine("req.Header.Add(\"Content-Type\", \"application/xml\")");
         buffer.addLine("req.Header.Add(\"Accept\", \"application/xml\")");
-        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.Connection.username, p.%1$s.Connection.password)",
+        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.connection.username, p.%1$s.connection.password)",
             serviceAsPrivateMemberName);
         buffer.addCommentLine("Generate base64(username:password)");
         buffer.addImport("encoding/base64");
@@ -551,7 +551,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("req.Header.Add(\"Authorization\", auth)");
         // Send the request and wait for the response
         buffer.addCommentLine("Send the request and wait for the response");
-        buffer.addLine("resp, err := p.%1$s.Connection.client.Do(req)",
+        buffer.addLine("resp, err := p.%1$s.connection.client.Do(req)",
             serviceAsPrivateMemberName);
         buffer.addLine("if err != nil {");
         buffer.addLine(  "return nil, err");
@@ -689,14 +689,16 @@ public class ServicesGenerator implements GoGenerator {
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
             buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
+            buffer.addLine(" var zero %1$s", reference.getText());
+            buffer.addLine(" return zero, false");
+            buffer.addLine("}");
         }
         else {
             buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(name));
             buffer.addLine(" }");
+            buffer.addLine(" return nil, false");
+            buffer.addLine("}");
         }
-        buffer.addLine(" var zero %1$s", reference.getText());
-        buffer.addLine(" return zero, false");
-        buffer.addLine("}");
         buffer.addLine();
     }
 
@@ -760,7 +762,7 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addImport("fmt");
         buffer.addLine(
-            "return %1$s(op.Connection, fmt.Sprintf(\"%%s/%%s\", op.Path, %2$s))",
+            "return %1$s(op.connection, fmt.Sprintf(\"%%s/%%s\", op.path, %2$s))",
             goTypes.getServiceConstructorFuncName(locatorServiceName),
             argName);
         buffer.addLine("}");
@@ -781,7 +783,7 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addImport("fmt");
         buffer.addLine(
-            "return %1$s(op.Connection, fmt.Sprintf(\"%%s/%2$s\", op.Path))",
+            "return %1$s(op.connection, fmt.Sprintf(\"%%s/%2$s\", op.path))",
             goTypes.getServiceConstructorFuncName(locatorServiceName),
             urlSegment);
         buffer.addLine("}");
@@ -796,7 +798,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.endComment();
 
         // Begin method:
-        buffer.addLine("func (op *%1$s) Service(path string) (interface{}, error) {", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) Service(path string) (Service, error) {", serviceName.getClassName());
         buffer.addLine(  "if path == \"\" {");
         buffer.addLine(    "return op, nil");
         buffer.addLine(  "}");
@@ -827,7 +829,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addImport("strings");
             buffer.addLine("index := strings.Index(path, \"/\")");
             buffer.addLine("if index == -1 {");
-            buffer.addLine(  "return *(op.%1$sService(path)), nil", goNames.getPublicMemberStyleName(name));
+            buffer.addLine(  "return op.%1$sService(path), nil", goNames.getPublicMemberStyleName(name));
             buffer.addLine("}");
             buffer.addLine(
                 "return op.%1$sService(path[:index]).Service(path[index + 1:])",
