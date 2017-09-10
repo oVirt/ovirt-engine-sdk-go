@@ -371,6 +371,51 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine(  "return builder");
         buffer.addLine("}");
         buffer.addLine();
+        // If is TypeSlice (ListType), add the varargs pattern of method
+        if (member.getType() instanceof ListType) {
+            this.generateBuilderListMemberVarargMethods(type, member);
+        }
+    }
+
+    private void generateBuilderListMemberVarargMethods(StructType type, StructMember member) {
+        // Get Type names
+        String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
+        
+        ListType memberType = (ListType) member.getType();
+        Type elementType = memberType.getElementType();
+
+        buffer.addLine("func (builder *%1$s) %2$sOfAny(anys ...%3$s) *%1$s {",
+            goTypes.getBuilderName(type),
+            goNames.getPublicMethodStyleName(member.getName()),
+            goNames.getTypeReference(elementType).getText().replace("*", ""));
+
+        //      Check if has errors
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "return builder");
+        buffer.addLine(  "}");
+        buffer.addLine();
+
+        // Do appending after TypeSlice initialized
+        if (goTypes.isGoPrimitiveType(elementType) || elementType instanceof EnumType) {
+            buffer.addLine("  builder.%1$s.%2$s = append(builder.%1$s.%2$s, anys...)",
+                typePrivateMemberName,
+                goNames.getPrivateMemberStyleName(member.getName()));
+        } else {
+            buffer.addLine("  if builder.%1$s.%2$s == nil {",
+                typePrivateMemberName,
+                goNames.getPrivateMemberStyleName(member.getName()));
+            buffer.addLine("    builder.%1$s.%2$s = new(%3$s)",
+                typePrivateMemberName,
+                goNames.getPrivateMemberStyleName(member.getName()),
+                goTypes.getStructSliceTypeName(elementType));
+            buffer.addLine("  }");
+            buffer.addLine("  builder.%1$s.%2$s.slice = append(builder.%1$s.%2$s.slice, anys...)",
+                typePrivateMemberName,
+                goNames.getPrivateMemberStyleName(member.getName()));
+        }
+        buffer.addLine("return builder");
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
 }
