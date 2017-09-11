@@ -543,12 +543,20 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("req.Header.Add(\"Version\", \"4\")");
         buffer.addLine("req.Header.Add(\"Content-Type\", \"application/xml\")");
         buffer.addLine("req.Header.Add(\"Accept\", \"application/xml\")");
-        buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.connection.username, p.%1$s.connection.password)",
-            serviceAsPrivateMemberName);
-        buffer.addCommentLine("Generate base64(username:password)");
-        buffer.addImport("encoding/base64");
-        buffer.addLine("auth := fmt.Sprintf(\"Basic %%s\", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))");
-        buffer.addLine("req.Header.Add(\"Authorization\", auth)");
+
+        buffer.addLine("// get OAuth access token");
+        buffer.addLine("token, err := p.%1$s.connection.authenticate()", serviceAsPrivateMemberName);
+        buffer.addLine("if err != nil {");
+        buffer.addLine("  return nil, err");
+        buffer.addLine("}");
+        buffer.addLine("req.Header.Add(\"Authorization\", fmt.Sprintf(\"Bearer %%s\", token))");
+        // buffer.addLine("rawAuthStr := fmt.Sprintf(\"%%s:%%s\", p.%1$s.connection.username, p.%1$s.connection.password)",
+        //     serviceAsPrivateMemberName);
+        // buffer.addCommentLine("Generate base64(username:password)");
+        // buffer.addImport("encoding/base64");
+        // buffer.addLine("auth := fmt.Sprintf(\"Basic %%s\", base64.StdEncoding.EncodeToString([]byte(rawAuthStr)))");
+        // buffer.addLine("req.Header.Add(\"Authorization\", auth)");
+
         // Send the request and wait for the response
         buffer.addCommentLine("Send the request and wait for the response");
         buffer.addLine("resp, err := p.%1$s.connection.client.Do(req)",
