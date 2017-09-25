@@ -209,7 +209,7 @@ public class ServicesGenerator implements GoGenerator {
             .filter(Parameter::isIn)
             .sorted().collect(toCollection(ArrayList::new));
         for (Parameter para : parameterList) {
-            generateRequestParameterMethod(para, request);
+            generateRequestParameterMethods(para, request);
         }
 
         // Generate send method:
@@ -273,13 +273,14 @@ public class ServicesGenerator implements GoGenerator {
             "%1$s %2$s", arg, goTypeReference.getText());
     }
 
-    private void generateRequestParameterMethod(Parameter parameter, String requestClassName) {
+    private void generateRequestParameterMethods(Parameter parameter, String requestClassName) {
         Type paraType = parameter.getType();
         GoTypeReference paraTypeReference = goNames.getTypeReference(paraType);
         buffer.addImports(paraTypeReference.getImports());
         String paraName = goNames.getParameterStyleName(parameter.getName());
         String paraMethodName = goNames.getPublicMethodStyleName(parameter.getName());
 
+        // Generate the parameter setter method
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
         if (goTypes.isGoPrimitiveType(paraType)) {
@@ -288,9 +289,29 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("p.%1$s = %1$s", paraName);
         }
         buffer.addLine("return p");
-        
         buffer.addLine("}");
         buffer.addLine();
+
+        // If parameter is ListType, also generate the method supporting var args
+        if (paraType instanceof ListType) {
+            Type elementType = ((ListType) paraType).getElementType();
+            buffer.addLine("func (p *%1$s) %2$sOfAny(anys ...%3$s) *%1$s{",
+                requestClassName, paraMethodName,
+                goNames.getTypeReference(elementType).getText().replace("*", ""));
+
+            // Do appending after TypeSlice initialized
+            if (goTypes.isGoPrimitiveType(elementType) || elementType instanceof EnumType) {
+                buffer.addLine("  p.%1$s = append(p.%1$s, anys...)", paraName);
+            } else {
+                buffer.addLine("  if p.%1$s == nil {", paraName);
+                buffer.addLine("    p.%1$s = new(%2$s)", paraName, goTypes.getStructSliceTypeName(elementType));
+                buffer.addLine("  }");
+                buffer.addLine("  p.%1$s.slice = append(p.%1$s.slice, anys...)", paraName);
+            }
+            buffer.addLine(" return p");
+            buffer.addLine("}");
+            buffer.addLine();
+        }
     }
 
     private void generateAddRequestImplementation(Method method, Service service) {
