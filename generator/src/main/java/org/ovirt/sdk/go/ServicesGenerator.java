@@ -370,12 +370,14 @@ public class ServicesGenerator implements GoGenerator {
             goNames.getPrivateMemberStyleName(serviceClassName));
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
+        
         method.parameters()
             .filter(Parameter::isIn)
             .filter(p -> p.getType() instanceof PrimitiveType)
             .sorted()
             .forEach(this::generateRequestParameterQueryBuilder);
         generateAdditionalQueryParameters();
+
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
         buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
