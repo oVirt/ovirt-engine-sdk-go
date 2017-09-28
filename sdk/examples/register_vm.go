@@ -40,6 +40,13 @@ func main() {
 	}
 	defer conn.Close()
 
+	// To use `Must` methods, you should recover it if panics
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Panics occurs, try the non-Must methods to find the reason")
+		}
+	}()
+
 	// Get the reference to the "StorageDomains" service
 	sdsService := conn.SystemService().StorageDomainsService()
 
@@ -53,6 +60,38 @@ func main() {
 	sdVmsService := sdService.VmsService()
 
 	// Find the unregistered VM we want to register
-	unregVMSlice := sdVmsService.List().Unre
+	unregVMSlice := sdVmsService.List().Unregistered(true).MustSend().MustVm()
+	var vm *ovirtsdk4.Vm
+	for _, v := range unregVMSlice.Slice() {
+		if v.MustName() == "myvm" {
+			vm = &v
+			break
+		}
+	}
 
+	// Locate the service that manages virtual machine in the storage domain, as that is where the action methods
+	// are defined
+	sdVMService := sdVmsService.VmService(vm.MustId())
+
+	// Register the VM into the system
+	sdVMService.Register().
+		Vm(
+			ovirtsdk4.NewVmBuilder().
+				Name("exported_myvm").
+				MustBuild()).
+		Cluster(
+			ovirtsdk4.NewClusterBuilder().
+				Name("mycluster").
+				MustBuild()).
+		VnicProfileMappingsOfAny(
+			*ovirtsdk4.NewVnicProfileMappingBuilder().
+				SourceNetworkName("mynetwork").
+				SourceNetworkProfileName("mynetwork").
+				TargetVnicProfile(
+					ovirtsdk4.NewVnicProfileBuilder().
+						Name("mynetwork").
+						MustBuild()).
+				MustBuild()).
+		ReassignBadMacs(true).
+		MustSend()
 }

@@ -40,6 +40,13 @@ func main() {
 	}
 	defer conn.Close()
 
+	// To use `Must` methods, you should recover it if panics
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Panics occurs, try the non-Must methods to find the reason")
+		}
+	}()
+
 	// Find the Glance storage domain that is available for default in any oVirt installation
 	sdsService := conn.SystemService().StorageDomainsService()
 	resp, err := sdsService.List().

@@ -40,6 +40,13 @@ func main() {
 	}
 	defer conn.Close()
 
+	// To use `Must` methods, you should recover it if panics
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Panics occurs, try the non-Must methods to find the reason")
+		}
+	}()
+
 	// Find all the virtual machines and store the id and name in a
 	// map, so that looking them up later will be faster
 	vmsService := conn.SystemService().VmsService()

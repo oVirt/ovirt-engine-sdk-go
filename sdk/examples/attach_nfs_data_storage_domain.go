@@ -40,6 +40,13 @@ func main() {
 	}
 	defer conn.Close()
 
+	// To use `Must` methods, you should recover it if panics
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("Panics occurs, try the non-Must methods to find the reason")
+		}
+	}()
+
 	// Locate the service that manages the storage domains, and use it to search for the storage domain
 	sdsService := conn.SystemService().StorageDomainsService()
 	sd := sdsService.List().
