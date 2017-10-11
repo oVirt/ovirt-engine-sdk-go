@@ -113,7 +113,7 @@ limitations under the License.
               <arguments>
                 <argument>build</argument>
                 <argument>-v</argument>
-                <argument>./ovirtsdk4</argument>
+                <argument>./ovirtsdk</argument>
               </arguments>
             </configuration>
           </execution>
@@ -131,7 +131,7 @@ limitations under the License.
               <arguments>
                 <argument>test</argument>
                 <argument>-v</argument>
-                <argument>./ovirtsdk4</argument>
+                <argument>./ovirtsdk</argument>
               </arguments>
             </configuration>
           </execution>

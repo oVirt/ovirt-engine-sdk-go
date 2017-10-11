@@ -162,7 +162,7 @@ public class GoBuffer {
         buffer.append("");
 
         // Package:
-        buffer.append("package ovirtsdk4");
+        buffer.append("package ovirtsdk");
         buffer.append("\n");
 
         // Add the imports:

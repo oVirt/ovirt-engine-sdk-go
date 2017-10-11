@@ -14,25 +14,27 @@
 // limitations under the License.
 //
 
-package ovirtsdk4
+package ovirtsdk
 
 import (
-	"bytes"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"reflect"
 )
 
-func TestCpuWriteOne(t *testing.T) {
-	assert := assert.New(t)
-	var b bytes.Buffer
-	writer := NewXMLWriter(&b)
-	cpu, err := NewCpuBuilder().Type("Intel SandyBridge Family").Architecture(ARCHITECTURE_X86_64).Build()
-	assert.Nil(err)
-	err = XMLCpuWriteOne(writer, cpu, "")
-	assert.Nil(err)
-	writer.Flush()
-	assert.Equal("<cpu><architecture>x86_64</architecture><type>Intel SandyBridge Family</type></cpu>",
-		string(b.Bytes()))
+// Contains returns if target contains the obj parameter
+func Contains(obj interface{}, target interface{}) bool {
+	targetValue := reflect.ValueOf(target)
+	switch reflect.TypeOf(target).Kind() {
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < targetValue.Len(); i++ {
+			if targetValue.Index(i).Interface() == obj {
+				return true
+			}
+		}
+	case reflect.Map:
+		if targetValue.MapIndex(reflect.ValueOf(obj)).IsValid() {
+			return true
+		}
+	}
 
+	return false
 }

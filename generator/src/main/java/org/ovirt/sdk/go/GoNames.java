@@ -63,7 +63,7 @@ public class GoNames {
     private Set<String> reservedWords;
 
     // The name of the root package:
-    private String rootPackageName = "ovirtsdk4";
+    private String rootPackageName = "ovirtsdk";
 
     // The version number:
     private String version;
