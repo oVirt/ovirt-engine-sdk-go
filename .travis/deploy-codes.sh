@@ -7,8 +7,8 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "master" ]; then
 fi
 
 # Pull current codes
-mkdir -p ./sdk/ovirtsdk4-git/
-cd ./sdk/ovirtsdk4-git/
+mkdir -p ./sdk/ovirtsdk-git/
+cd ./sdk/ovirtsdk-git/
 git init
 
 git config --global user.email "travis@travis-ci.org"
@@ -20,7 +20,7 @@ git pull origin master
 
 # Use newly generated codes to override the pulled ones
 rm -fr *.go README.md
-cp -r ../ovirtsdk4/* ./
+cp -r ../ovirtsdk/* ./
 
 # Copy examples/ and push into go-ovirt repository
 rm -fr ./examples

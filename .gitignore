@@ -30,7 +30,7 @@ target/
 .project
 
 # Auto-generated files
-sdk/ovirtsdk4/services.go
-sdk/ovirtsdk4/types.go
-sdk/ovirtsdk4/readers.go
-sdk/ovirtsdk4/writers.go
+sdk/ovirtsdk/services.go
+sdk/ovirtsdk/types.go
+sdk/ovirtsdk/readers.go
+sdk/ovirtsdk/writers.go

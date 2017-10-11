@@ -13,7 +13,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-package ovirtsdk4
 
-// The version of the SDK:
-var SDK_VERSION = "4.2.0.a2"
+package ovirtsdk

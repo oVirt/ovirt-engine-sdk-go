@@ -14,26 +14,37 @@
 // limitations under the License.
 //
 
-package ovirtsdk4
+package ovirtsdk
 
-import (
-	"testing"
+type Href interface {
+	Href() (string, bool)
+}
 
-	"github.com/stretchr/testify/assert"
-)
+// Link represents struct of href and rel attributes
+type Link struct {
+	href *string
+	rel  *string
+}
 
-func TestReadStrings(t *testing.T) {
-	assert := assert.New(t)
-	xmlstring := `
-    <cpu>
-        <type>x86_64</type>
-        <type>Intel SandyBridge Family</type>
-    </cpu>
-	`
-	reader := NewXMLReader([]byte(xmlstring))
+// Struct represents the base for all struts defined in types.go
+type Struct struct {
+	href *string
+}
 
-	strs, err := reader.ReadStrings(nil)
-	assert.Nil(err)
+func (p *Struct) Href() (string, bool) {
+	if p.href != nil {
+		return *p.href, true
+	}
+	return "", false
+}
 
-	assert.Equal([]string{"x86_64", "Intel SandyBridge Family"}, strs)
+func (p *Struct) MustHref() string {
+	if p.href == nil {
+		panic("href attribute must exist")
+	}
+	return *p.href
+}
+
+func (p *Struct) SetHref(attr string) {
+	p.href = &attr
 }
