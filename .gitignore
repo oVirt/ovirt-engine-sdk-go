@@ -34,3 +34,4 @@ sdk/ovirtsdk/services.go
 sdk/ovirtsdk/types.go
 sdk/ovirtsdk/readers.go
 sdk/ovirtsdk/writers.go
+sdk/ovirtsdk/version.go
