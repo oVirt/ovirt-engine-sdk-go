@@ -511,7 +511,7 @@ public class ServicesGenerator implements GoGenerator {
         
         // Construct the net/http request
         buffer.addImport("net/http");
-        buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, &body)");
+        buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, &body)");
         buffer.addLine("if err != nil {");
         if (isMust) {
             buffer.addLine("  panic(err)");
