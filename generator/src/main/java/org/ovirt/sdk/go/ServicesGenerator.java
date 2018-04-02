@@ -165,8 +165,11 @@ public class ServicesGenerator implements GoGenerator {
         generateRequest(method, service);
         generateResponse(method, service);
 
+        // Add method documentation
+        generateDoc(method);
+
         // Generate the method using Request/Response
-        Name methodName = method.getName();
+        Name methodName = getFullName(method);
         String request = getRequestClassName(method, service);
         String methodNameString = goNames.getPublicMethodStyleName(methodName);
         GoClassName serviceClassName = goNames.getServiceName(service);
@@ -179,10 +182,13 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateRequest(Method method, Service service) {
+        // Add method documentation
+        generateDoc(method);
+
         // Begin class
         Name methodName = method.getName();
         String request = getRequestClassName(method, service);
-
+        
         buffer.addLine("type %1$s struct {", request);
 
         // Service itself
@@ -766,6 +772,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateResponse(Method method, Service service) {
+        // Add method documentation
+        generateDoc(method);
+        
         String response = getResponseClassName(method, service);
         buffer.addLine("type %1$s struct {", response);
         method.parameters()
@@ -1006,12 +1015,26 @@ public class ServicesGenerator implements GoGenerator {
 
     private String getRequestClassName(Method method, Service service) {
         return goNames.getServiceName(service).getClassName() + 
-            goNames.getClassStyleName(method.getName()) + "Request";
+            goNames.getClassStyleName(getFullName(method)) + "Request";
     }
 
     private String getResponseClassName(Method method, Service service) {
         return goNames.getServiceName(service).getClassName() + 
-            goNames.getClassStyleName(method.getName()) + "Response";
+            goNames.getClassStyleName(getFullName(method)) + "Response";
+    }
+
+    /**
+     * Calculates the full name of a method, taking into account that the method may extend other method. For this kind
+     * of methods the full name wil be the name of the base, followed by the name of the method. For example, if the
+     * name of the base is {@code Add} and the name of the method is {@code FromSnapsot} then the full method name will
+     * be {@code AddFromSnapshot}.
+     */
+    private Name getFullName(Method method) {
+        Method base = method.getBase();
+        if (base == null) {
+            return method.getName();
+        }
+        return names.concatenate(getFullName(base), method.getName());
     }
 
 }

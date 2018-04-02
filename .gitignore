@@ -28,6 +28,12 @@ target/
 .settings/
 .vscode/
 .project
+.idea/
+
+# generator related files
+generator/.classpath
+generator/bin
+
 
 # Auto-generated files
 sdk/ovirtsdk/services.go
