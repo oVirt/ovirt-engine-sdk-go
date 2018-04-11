@@ -857,7 +857,7 @@ public class ServicesGenerator implements GoGenerator {
         GoClassName serviceName = goNames.getServiceName(service);
         buffer.addImport("fmt");
         buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
-        buffer.addLine(  "return fmt.Sprintf(\"%1$s:%%s\", op.Path)", serviceName.getClassName());
+        buffer.addLine(  "return fmt.Sprintf(\"%1$s:%%s\", op.path)", serviceName.getClassName());
         buffer.addLine("}");
         buffer.addLine();
     }
