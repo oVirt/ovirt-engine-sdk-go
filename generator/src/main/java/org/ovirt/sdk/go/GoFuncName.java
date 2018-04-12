@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 Joey <majunjiev@gmail.com>.
+Copyright (c) 2018 Joey <majunjiev@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ limitations under the License.
 package org.ovirt.sdk.go;
 
 /**
- * This class represents the fully qualified name of a Go class, composed by the package name and the struct.
+ * This class represents the fully qualified name of a Go function and its package
  */
-public class GoClassName {
+public class GoFuncName {
     private String packageName;
     private String simpleName;
 

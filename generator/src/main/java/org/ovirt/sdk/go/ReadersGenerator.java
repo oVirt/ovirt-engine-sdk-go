@@ -53,6 +53,8 @@ public class ReadersGenerator implements GoGenerator {
     
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
+    
+    @Inject private GoPackages goPackages;
 
     public void setOut(File newOut) {
         out = newOut;
@@ -61,7 +63,7 @@ public class ReadersGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setPackageName(goNames.getReadersPackageName());
+        buffer.setPackageName(goPackages.getReadersPackageName());
 
         // Generate classes for each struct type:
         model.types()
@@ -93,7 +95,7 @@ public class ReadersGenerator implements GoGenerator {
     }
 
     private void generateStructReadOne(StructType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         // Generate the tag name
         Name singularName = type.getName();
@@ -112,10 +114,12 @@ public class ReadersGenerator implements GoGenerator {
             .sorted()
             .collect(toList());
 
+        GoClassName typeSliceName = goTypes.getTypeSliceName(type);
+
         buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement, expectedTag string) (*%2$s, error) {",
-            goTypes.getXmlReadOneFuncName(type), typeName.getClassName());
+            goTypes.getXmlReadOneFuncName(type).getSimpleName(), typeName.getSimpleName());
         // Generate the function body
-        buffer.addLine(" builder := %1$s()", goTypes.getNewBuilderFuncName(type));
+        buffer.addLine(" builder := %1$s()", goTypes.getNewBuilderFuncName(type).getSimpleName());
 
         //      Generate `find start element`
         buffer.addLine("  if start == nil {");
@@ -217,12 +221,12 @@ public class ReadersGenerator implements GoGenerator {
             .collect(toList());
         links.forEach(
             link -> {
-                String field = goNames.getPrivateMemberStyleName(link.getName());
+                String field = goNames.getUnexportableMemberStyleName(link.getName());
                 Type elementType = ((ListType) link.getType()).getElementType();
                 String rel = link.getName().words().map(String::toLowerCase).collect(joining());
                 buffer.addLine("      case \"%1$s\":", rel);
                 buffer.addLine("        if one.%1$s == nil {", field);
-                buffer.addLine("          one.%1$s = new(%2$s)", field, goTypes.getStructSliceTypeName(elementType));
+                buffer.addLine("          one.%1$s = new(%2$s)", field, goTypes.getTypeSliceName(elementType));
                 buffer.addLine("        }");
                 buffer.addLine("        one.%1$s.href = link.href", field);
             }
@@ -248,8 +252,9 @@ public class ReadersGenerator implements GoGenerator {
             .filter(x -> !schemaNames.isRepresentedAsAttribute(x.getName()))
             .sorted()
             .collect(toList());
+        GoClassName typeSliceName = goTypes.getTypeSliceName(type);
         buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) (*%2$s, error) {",
-            goTypes.getXmlReadManyFuncName(type), goTypes.getStructSliceTypeName(type));
+            goTypes.getXmlReadManyFuncName(type).getSimpleName(), typeSliceName.getSimpleName());
 
         // Generate the function body
         //      Generate `find start element`
@@ -265,7 +270,7 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("  }");
 
         //      Generate slice of type definition
-        buffer.addLine("  var result %1$s", goTypes.getStructSliceTypeName(type));
+        buffer.addLine("  var result %1$s", typeSliceName.getSimpleName());
         //      Process the inner elements:
         buffer.addLine("  depth := 1");
         buffer.addLine("  for depth >0 {");
@@ -281,12 +286,12 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    case xml.StartElement:");
         String singularTag = goNames.getTagStyleName(type.getName());
         buffer.addLine("      if t.Name.Local == \"%1$s\" {", singularTag);
-        buffer.addLine("        one, err := %1$s(reader, &t, \"%2$s\")", goTypes.getXmlReadOneFuncName(type), singularTag);
+        buffer.addLine("        one, err := %1$s(reader, &t, \"%2$s\")", goTypes.getXmlReadOneFuncName(type).getSimpleName(), singularTag);
         buffer.addLine("        if err != nil {");
         buffer.addLine("          return nil, err");
         buffer.addLine("        }");
         buffer.addLine("        if one != nil {");
-        buffer.addLine("          result.slice = append(result.slice, *one)");
+        buffer.addLine("          result.slice = append(result.slice, one)");
         buffer.addLine("        }");
         buffer.addLine("      }");
         buffer.addLine("	case xml.EndElement:");
@@ -304,7 +309,7 @@ public class ReadersGenerator implements GoGenerator {
     private void generateStructReadMemberFromAttribute(StructType structType, StructMember member) {
         Name memberName = member.getName();
         Type memberType = member.getType();
-        String publicMethodName = goNames.getPublicMethodStyleName(memberName);
+        String publicMethodName = goNames.getExportableMethodStyleName(memberName);
         String tag = goNames.getTagStyleName(memberName);
         buffer.addLine("      case \"%1$s\":", tag);
         if (memberType instanceof PrimitiveType) {
@@ -346,14 +351,14 @@ public class ReadersGenerator implements GoGenerator {
             }
         }
         else if (memberType instanceof EnumType) {
-            buffer.addLine("        builder.%1$s(%2$s(value))", publicMethodName, goNames.getTypeName(memberType).getClassName());
+            buffer.addLine("        builder.%1$s(%2$s(value))", publicMethodName, goTypes.getTypeName(memberType).getSimpleName());
         }
     }
 
     private void generateStructReadMemberFromElement(StructType structType, StructMember member) {
         Name memberName = member.getName();
         Type memberType = member.getType();
-        String publicMethodName = goNames.getPublicMethodStyleName(memberName);
+        String publicMethodName = goNames.getExportableMethodStyleName(memberName);
         String tag = goNames.getTagStyleName(memberName);
 
         buffer.addLine("      case \"%1$s\":", tag);
@@ -374,20 +379,20 @@ public class ReadersGenerator implements GoGenerator {
             }
         }
         else if (memberType instanceof StructType) {
-            String readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
-            buffer.addLine("        v, err := %1$s(reader, &t, \"%2$s\")", readOneFuncName, tag);
+            GoFuncName readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
+            buffer.addLine("        v, err := %1$s(reader, &t, \"%2$s\")", readOneFuncName.getSimpleName(), tag);
         }
         else if (memberType instanceof EnumType) {
-            String readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
-            buffer.addLine("        vp, err := %1$s(reader, &t)", readOneFuncName);
+            GoFuncName readOneFuncName = goTypes.getXmlReadOneFuncName(memberType);
+            buffer.addLine("        vp, err := %1$s(reader, &t)", readOneFuncName.getSimpleName());
             buffer.addLine("        v := *vp");
         }
         else if (memberType instanceof ListType) {
             ListType listType = (ListType) memberType;
             Type elementType = listType.getElementType();
-            String readManyFuncName = goTypes.getXmlReadManyFuncName(elementType);
+            GoFuncName readManyFuncName = goTypes.getXmlReadManyFuncName(elementType);
             if (elementType instanceof StructType || elementType instanceof EnumType) {
-                buffer.addLine("        v, err := %1$s(reader, &t)", readManyFuncName);
+                buffer.addLine("        v, err := %1$s(reader, &t)", readManyFuncName.getSimpleName());
             }
             else if (elementType instanceof PrimitiveType) {
                 Model model = memberType.getModel();
@@ -431,10 +436,10 @@ public class ReadersGenerator implements GoGenerator {
     }
 
     private void generateEnumReadOne(EnumType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) (*%2$s, error) {",
-            goTypes.getXmlReadOneFuncName(type), typeName.getClassName());
+            goTypes.getXmlReadOneFuncName(type).getSimpleName(), typeName.getSimpleName());
         // Generate the function body
         //      Generate `find start element`
         buffer.addLine("  if start == nil {");
@@ -452,9 +457,9 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("  if err != nil {");
         buffer.addLine("    return nil, err");
         buffer.addLine("  }");
-        buffer.addLine("  result := new(%1$s)", typeName.getClassName());
-        buffer.addLine("  *result = %1$s(s)", typeName.getClassName());
-        buffer.addLine("  return result, nil", typeName.getClassName());
+        buffer.addLine("  result := new(%1$s)", typeName.getSimpleName());
+        buffer.addLine("  *result = %1$s(s)", typeName.getSimpleName());
+        buffer.addLine("  return result, nil", typeName.getSimpleName());
 
         // End of function
         buffer.addLine("}");;
@@ -462,10 +467,10 @@ public class ReadersGenerator implements GoGenerator {
     }
 
     private void generateEnumReadMany(EnumType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         buffer.addLine("func %1$s(reader *XMLReader, start *xml.StartElement) ([]%2$s, error) {",
-            goTypes.getXmlReadManyFuncName(type), typeName.getClassName());
+            goTypes.getXmlReadManyFuncName(type), typeName.getSimpleName());
         // Generate the function body
         //      Generate `find start element`
         buffer.addLine("  if start == nil {");
@@ -480,7 +485,7 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("  }");
         
         //      Generate slice of type definition
-        buffer.addLine("  var results []%1$s", typeName.getClassName());
+        buffer.addLine("  var results []%1$s", typeName.getSimpleName());
         
         //      Process the inner elements:
         buffer.addLine("  depth := 1");
@@ -499,7 +504,7 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("      if err != nil {");
         buffer.addLine("        return nil, err");
         buffer.addLine("      }");
-        buffer.addLine("      results = append(results, %1$s(one))", typeName.getClassName());
+        buffer.addLine("      results = append(results, %1$s(one))", typeName.getSimpleName());
         buffer.addLine("	case xml.EndElement:");
         buffer.addLine("      depth--");
         buffer.addLine("    }");

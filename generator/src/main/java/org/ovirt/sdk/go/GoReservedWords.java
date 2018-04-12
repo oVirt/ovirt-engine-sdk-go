@@ -26,7 +26,7 @@ import javax.inject.Singleton;
 import org.ovirt.api.metamodel.tool.ReservedWords;
 
 /**
- * This class is a producer of the set of Python reserved words.
+ * This class is a producer of the set of Go reserved words.
  */
 @Singleton
 public class GoReservedWords {
@@ -37,9 +37,6 @@ public class GoReservedWords {
         // Create the set:
         words = new HashSet<>();
 
-        // type用于声明自定义类型
-        // map用于声明map类型数据
-        // range用于读取slice、map、channel数据
         // definition
         words.add("var");
         words.add("const");

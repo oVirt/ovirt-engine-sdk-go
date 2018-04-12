@@ -44,6 +44,7 @@ import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Names;
 import org.ovirt.api.metamodel.tool.SchemaNames;
+import org.ovirt.api.metamodel.tool.Words;
 
 /**
  * This class is responsible for generating the classes that represent the services of the model.
@@ -66,14 +67,16 @@ public class ServicesGenerator implements GoGenerator {
     private GoBuffer buffer;
 
     // Reference to the object used to calculate Go types:
-    @Inject
-    private GoTypes goTypes;
+    @Inject private GoTypes goTypes;
     
     // Reference to the objects used to generate the code:
-    @Inject
-    private Names names;
+    @Inject private Names names;
+
+    @Inject private GoPackages goPackages;
 
     @Inject private SchemaNames schemaNames;
+
+    @Inject private Words words;
 
     /**
      * Set the directory were the output will be generated.
@@ -85,7 +88,7 @@ public class ServicesGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setPackageName(goNames.getServicesPackageName());
+        buffer.setPackageName(goPackages.getServicesPackageName());
 
         // Generate the code:
         generateServices(model);
@@ -105,11 +108,11 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateService(Service service) {
         // Begin class:
-        GoClassName serviceName = goNames.getServiceName(service);
+        GoClassName serviceName = getServiceName(service);
         
         // Generate struct definition
         generateDoc(service);
-        buffer.addLine("type %1$s struct {", serviceName.getClassName());
+        buffer.addLine("type %1$s struct {", serviceName.getSimpleName());
 
         // Generate struct members definition
         //      with Service struct mixin
@@ -120,7 +123,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
 
         // Generate the service struct constructor by Newer function
-        this.generateConstructor(serviceName);
+        this.generateConstructor(service);
 
         // Generate the methods
         List<Method>methods = service.methods().sorted().collect(toCollection(ArrayList::new));
@@ -143,14 +146,24 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine();
     }
 
-    private void generateConstructor(GoClassName serviceName) {
+    /**
+     * Calculates the Go name that corresponds to the given service.
+     */
+    private GoClassName getServiceName(Service service) {
+        GoClassName serviceName = new GoClassName();
+        serviceName.setSimpleName(goNames.getUnexportableClassStyleName(service.getName()) + "Service");
+        return serviceName;
+    }
+
+    private void generateConstructor(Service service) {
+        GoClassName serviceName = getServiceName(service);
         buffer.addLine(
             "func %1$s(connection *Connection, path string) *%2$s {",
-            goTypes.getServiceConstructorFuncName(serviceName),
-            serviceName.getClassName());
+            goTypes.getNewServiceFuncName(service),
+            serviceName.getSimpleName());
 
         // Inititalize struct
-        buffer.addLine("var result %1$s", serviceName.getClassName());
+        buffer.addLine("var result %1$s", serviceName.getSimpleName());
         buffer.addLine("result.connection = connection");
         buffer.addLine("result.path = path");
         buffer.addLine("return &result");
@@ -171,13 +184,13 @@ public class ServicesGenerator implements GoGenerator {
         // Generate the method using Request/Response
         Name methodName = getFullName(method);
         String request = getRequestClassName(method, service);
-        String methodNameString = goNames.getPublicMethodStyleName(methodName);
-        GoClassName serviceClassName = goNames.getServiceName(service);
+        String methodNameString = goNames.getExportableMethodStyleName(methodName);
+        GoClassName serviceClassName = getServiceName(service);
         buffer.addLine("func (p *%1$s) %2$s() *%3$s {",
-            serviceClassName.getClassName(), methodNameString, request);
+            serviceClassName.getSimpleName(), methodNameString, request);
         buffer.addLine("return &%1$s{%2$s: p}",
             request,
-            goNames.getPrivateMemberStyleName(serviceClassName.getClassName()));
+            serviceClassName.getSimpleName());
         buffer.addLine("}");
     }
 
@@ -192,9 +205,8 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("type %1$s struct {", request);
 
         // Service itself
-        buffer.addLine("%1$s *%2$s", 
-            goNames.getPrivateMemberStyleName(goNames.getServiceName(service).getClassName()),
-            goNames.getServiceName(service).getClassName());
+        buffer.addLine("%1$s *%1$s", 
+            getServiceName(service).getSimpleName());
 
         //      Generate common parameters
         generateRequestCommonParameter();
@@ -270,7 +282,7 @@ public class ServicesGenerator implements GoGenerator {
 
         for (String para : commonParameters) {
             buffer.addLine("func (p *%1$s) %2$s(key, value string) *%1$s {",
-                requestClassName, GoNames.capitalize(para));
+                requestClassName, words.capitalize(para));
             buffer.addLine(  "if p.%1$s == nil {", para);
             buffer.addLine(    "p.%1$s = make(map[string]string)", para);
             buffer.addLine(  "}");
@@ -284,21 +296,21 @@ public class ServicesGenerator implements GoGenerator {
     private void generateRequestParameter(Parameter parameter) {
         // Get parameter name
         Name parameterName = parameter.getName();
-        GoTypeReference goTypeReference = goNames.getRefTypeReference(parameter.getType());
-        buffer.addImports(goTypeReference.getImports());
+        GoTypeReference attrTypeReference = goTypes.getTypeReferenceAsAttribute(parameter.getType());
+        buffer.addImports(attrTypeReference.getImports());
 
         String arg = goNames.getParameterStyleName(parameterName);
         // Get parameter type name
         buffer.addLine(
-            "%1$s %2$s", arg, goTypeReference.getText());
+            "%1$s %2$s", arg, attrTypeReference.getText());
     }
 
     private void generateRequestParameterMethods(Parameter parameter, String requestClassName) {
         Type paraType = parameter.getType();
-        GoTypeReference paraTypeReference = goNames.getTypeReference(paraType);
+        GoTypeReference paraTypeReference = goTypes.getTypeReferenceAsParameter(paraType);
         buffer.addImports(paraTypeReference.getImports());
         String paraName = goNames.getParameterStyleName(parameter.getName());
-        String paraMethodName = goNames.getPublicMethodStyleName(parameter.getName());
+        String paraMethodName = goNames.getExportableMethodStyleName(parameter.getName());
 
         // Generate the parameter setter method
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
@@ -317,14 +329,14 @@ public class ServicesGenerator implements GoGenerator {
             Type elementType = ((ListType) paraType).getElementType();
             buffer.addLine("func (p *%1$s) %2$sOfAny(anys ...%3$s) *%1$s{",
                 requestClassName, paraMethodName,
-                goNames.getTypeReference(elementType).getText().replace("*", ""));
+                goTypes.getTypeReferenceAsParameter(elementType).getText());
 
             // Do appending after TypeSlice initialized
             if (goTypes.isGoPrimitiveType(elementType) || elementType instanceof EnumType) {
                 buffer.addLine("  p.%1$s = append(p.%1$s, anys...)", paraName);
             } else {
                 buffer.addLine("  if p.%1$s == nil {", paraName);
-                buffer.addLine("    p.%1$s = new(%2$s)", paraName, goTypes.getStructSliceTypeName(elementType));
+                buffer.addLine("    p.%1$s = new(%2$s)", paraName, goTypes.getTypeSliceName(elementType));
                 buffer.addLine("  }");
                 buffer.addLine("  p.%1$s.slice = append(p.%1$s.slice, anys...)", paraName);
             }
@@ -335,9 +347,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateAddRequestImplementation(Method method, Service service, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
+        String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
-            goNames.getPrivateMemberStyleName(serviceClassName));
+            serviceClassName);
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
 
@@ -371,9 +383,9 @@ public class ServicesGenerator implements GoGenerator {
 	}
 
     private void generateListRequestImplementation(Method method, Service service, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
+        String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
-            goNames.getPrivateMemberStyleName(serviceClassName));
+            serviceClassName);
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
         
@@ -405,9 +417,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateRemoveRequestImplementation(Method method, Service service, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
+        String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
-            goNames.getPrivateMemberStyleName(serviceClassName));
+            serviceClassName);
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
         method.parameters()
@@ -437,9 +449,9 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateUpdateRequestImplementation(Method method, Service service, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
+        String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
-            goNames.getPrivateMemberStyleName(serviceClassName));
+            serviceClassName);
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
 
@@ -473,17 +485,17 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateActionRequestImplementation(Method method, Service service, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
+        String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s/%1$s\", p.%2$s.connection.URL(), p.%2$s.path)",
             getPath(method.getName()),
-            goNames.getPrivateMemberStyleName(serviceClassName));
+            serviceClassName);
         buffer.addLine("actionBuilder := NewActionBuilder()");
         method.parameters()
             .filter(Parameter::isIn)
             .sorted()
             .forEach(parameter -> {
                 String paraArgName = goNames.getParameterStyleName(parameter.getName());
-                String paraMethodName = goNames.getPublicMemberStyleName(parameter.getName());
+                String paraMethodName = goNames.getExportableMemberStyleName(parameter.getName());
                 if (goTypes.isGoPrimitiveType(parameter.getType())) {
                     buffer.addLine("actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
                 } else {
@@ -558,22 +570,22 @@ public class ServicesGenerator implements GoGenerator {
                 if (isMust) {
                     buffer.addLine("return &%1$s{%2$s: &result}",
                         getResponseClassName(method, service),
-                        goNames.getPrivateMemberStyleName(paraFirst.getName()));
+                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
                 } else {
                     buffer.addLine("return &%1$s{%2$s: &result}, nil",
                         getResponseClassName(method, service),
-                        goNames.getPrivateMemberStyleName(paraFirst.getName()));
+                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
                 }
             }
             else {
                 if (isMust) {
                     buffer.addLine("return &%1$s{%2$s: result}",
                         getResponseClassName(method, service),
-                        goNames.getPrivateMemberStyleName(paraFirst.getName()));
+                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
                 } else {
                     buffer.addLine("return &%1$s{%2$s: result}, nil",
                         getResponseClassName(method, service),
-                        goNames.getPrivateMemberStyleName(paraFirst.getName()));
+                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
                 }
             }
         }
@@ -581,7 +593,7 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateRequestParameterQueryBuilder(Parameter parameter) {
         String tag = schemaNames.getSchemaTagName(parameter.getName());
-        String value = goNames.getPrivateMemberStyleName(parameter.getName());
+        String value = goNames.getUnexportableMemberStyleName(parameter.getName());
         buffer.addLine("if p.%1$s != nil {", value);
         buffer.addLine(  "values[\"%1$s\"] = []string{fmt.Sprintf(\"%%v\", *p.%2$s)}", tag, value);
         buffer.addLine("}");
@@ -627,8 +639,8 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateCommonRequestImplementation(Method method, Service service, String[] codes, boolean isMust) {
-        String serviceClassName = goNames.getServiceName(service).getClassName();
-        String serviceAsPrivateMemberName = goNames.getPrivateMemberStyleName(serviceClassName);
+        String serviceClassName = getServiceName(service).getSimpleName();
+        String serviceAsPrivateMemberName = serviceClassName;
         
         generateAdditionalHeadersParameters();
         buffer.addLine("req.Header.Add(\"User-Agent\", fmt.Sprintf(\"GoSDK/%%s\", SDK_VERSION))");
@@ -754,10 +766,10 @@ public class ServicesGenerator implements GoGenerator {
 
         if (isMust) {
             buffer.addLine("return &%1$s{%2$s: result}",
-                response, goNames.getPrivateMemberStyleName(parameter.getName()));
+                response, goNames.getUnexportableMemberStyleName(parameter.getName()));
         } else {
             buffer.addLine("return &%1$s{%2$s: result}, nil",
-                response, goNames.getPrivateMemberStyleName(parameter.getName()));
+                response, goNames.getUnexportableMemberStyleName(parameter.getName()));
         }
     }
 
@@ -797,31 +809,31 @@ public class ServicesGenerator implements GoGenerator {
     private void generateResponseParameter(Parameter parameter) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        String memberName = goNames.getPrivateMemberStyleName(name);
-        GoTypeReference reference = goNames.getRefTypeReference(type);
+        String memberName = goNames.getUnexportableMemberStyleName(name);
+        GoTypeReference reference = goTypes.getTypeReferenceAsAttribute(type);
         buffer.addLine("%1$s %2$s", memberName, reference.getText());
     }
 
     private void generateResponseParameterGetterMethod(Parameter parameter, Service service) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        GoTypeReference reference = goNames.getTypeReference(type);
         String response = getResponseClassName(parameter.getDeclaringMethod(), service);
         buffer.addLine("func (p *%1$s) %2$s() (%3$s, bool) {",
             response,
             goTypes.getMemberGetterMethodName(name),
-            reference.getText()
+            goTypes.getTypeReferenceAsReturnvalue(type).getText()
             );
-        buffer.addLine(" if p.%1$s != nil {", goNames.getPrivateMemberStyleName(name));
+        buffer.addLine(" if p.%1$s != nil {", goNames.getUnexportableMemberStyleName(name));
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
-            buffer.addLine("  return *p.%1$s, true", goNames.getPrivateMemberStyleName(name));
+            buffer.addLine("  return *p.%1$s, true", goNames.getUnexportableMemberStyleName(name));
             buffer.addLine(" }");
-            buffer.addLine(" var zero %1$s", reference.getText());
+            buffer.addLine(" var zero %1$s",
+                goTypes.getTypeReferenceAsVaraible(type).getText());
             buffer.addLine(" return zero, false");
             buffer.addLine("}");
         }
         else {
-            buffer.addLine("  return p.%1$s, true", goNames.getPrivateMemberStyleName(name));
+            buffer.addLine("  return p.%1$s, true", goNames.getUnexportableMemberStyleName(name));
             buffer.addLine(" }");
             buffer.addLine(" return nil, false");
             buffer.addLine("}");
@@ -832,21 +844,20 @@ public class ServicesGenerator implements GoGenerator {
     private void generateResponseParameterMustGetterMethod(Parameter parameter, Service service) {
         Type type = parameter.getType();
         Name name = parameter.getName();
-        GoTypeReference reference = goNames.getTypeReference(type);
         String response = getResponseClassName(parameter.getDeclaringMethod(), service);
         buffer.addLine("func (p *%1$s) %2$s() %3$s {",
             response,
             goTypes.getMemberMustGetterMethodName(name),
-            reference.getText()
+            goTypes.getTypeReferenceAsReturnvalue(type).getText()
             );
-        buffer.addLine(" if p.%1$s == nil {", goNames.getPrivateMemberStyleName(name));
-        buffer.addLine("  panic(\"%1$s in response does not exist\")", goNames.getPrivateMemberStyleName(name));
+        buffer.addLine(" if p.%1$s == nil {", goNames.getUnexportableMemberStyleName(name));
+        buffer.addLine("  panic(\"%1$s in response does not exist\")", goNames.getUnexportableMemberStyleName(name));
         buffer.addLine(" }");
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
-            buffer.addLine(" return *p.%1$s", goNames.getPrivateMemberStyleName(name));
+            buffer.addLine(" return *p.%1$s", goNames.getUnexportableMemberStyleName(name));
         }
         else {
-            buffer.addLine(" return p.%1$s", goNames.getPrivateMemberStyleName(name));
+            buffer.addLine(" return p.%1$s", goNames.getUnexportableMemberStyleName(name));
         }
 
         buffer.addLine("}");
@@ -854,10 +865,10 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private void generateStr(Service service) {
-        GoClassName serviceName = goNames.getServiceName(service);
+        GoClassName serviceName = getServiceName(service);
         buffer.addImport("fmt");
-        buffer.addLine("func (op *%1$s) String() string {", serviceName.getClassName());
-        buffer.addLine(  "return fmt.Sprintf(\"%1$s:%%s\", op.path)", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) String() string {", serviceName.getSimpleName());
+        buffer.addLine(  "return fmt.Sprintf(\"%1$s:%%s\", op.path)", serviceName.getSimpleName());
         buffer.addLine("}");
         buffer.addLine();
     }
@@ -874,61 +885,61 @@ public class ServicesGenerator implements GoGenerator {
 
     private void generateLocatorWithParameters(Locator locator, Service service) {
         Parameter parameter = locator.parameters().findFirst().get();
-        String methodName = goNames.getPublicMemberStyleName(locator.getName());
+        String methodName = goNames.getExportableMemberStyleName(locator.getName());
         String argName = goNames.getParameterStyleName(parameter.getName());
-        GoTypeReference parameterTypeReference = goNames.getTypeReference(parameter.getType());
+        GoTypeReference parameterTypeReference = goTypes.getTypeReferenceAsParameter(parameter.getType());
         buffer.addImports(parameterTypeReference.getImports());
-        GoClassName locatorServiceName = goNames.getServiceName(locator.getService());
+        GoClassName locatorServiceName = getServiceName(locator.getService());
         generateDoc(locator);
 
         // Get receiver class
-        GoClassName receiverClassName = goNames.getServiceName(service);
+        GoClassName receiverClassName = getServiceName(service);
 
         buffer.addLine(
             "func (op *%1$s) %2$sService(%3$s %4$s) *%5$s {",
-            receiverClassName.getClassName(),
+            receiverClassName.getSimpleName(),
             methodName, argName, parameterTypeReference.getText(),
-            locatorServiceName.getClassName());
+            locatorServiceName.getSimpleName());
 
         buffer.addImport("fmt");
         buffer.addLine(
             "return %1$s(op.connection, fmt.Sprintf(\"%%s/%%s\", op.path, %2$s))",
-            goTypes.getServiceConstructorFuncName(locatorServiceName),
+            goTypes.getNewServiceFuncName(locator.getService()),
             argName);
         buffer.addLine("}");
         buffer.addLine();
     }
 
     private void generateLocatorWithoutParameters(Locator locator, Service service) {
-        String methodName = goNames.getPublicMethodStyleName(locator.getName());
+        String methodName = goNames.getExportableMethodStyleName(locator.getName());
         String urlSegment = getPath(locator.getName());
-        GoClassName locatorServiceName = goNames.getServiceName(locator.getService());
+        GoClassName locatorServiceName = getServiceName(locator.getService());
         generateDoc(locator);
 
         // Get receiver class
-        GoClassName receiverClassName = goNames.getServiceName(service);
+        GoClassName receiverClassName = getServiceName(service);
         // Generate *Service function
         buffer.addLine("func (op *%1$s) %2$sService() *%3$s {",
-            receiverClassName.getClassName(), methodName, locatorServiceName.getClassName());
+            receiverClassName.getSimpleName(), methodName, locatorServiceName.getSimpleName());
 
         buffer.addImport("fmt");
         buffer.addLine(
             "return %1$s(op.connection, fmt.Sprintf(\"%%s/%2$s\", op.path))",
-            goTypes.getServiceConstructorFuncName(locatorServiceName),
+            goTypes.getNewServiceFuncName(locator.getService()),
             urlSegment);
         buffer.addLine("}");
         buffer.addLine();
     }
 
     private void generatePathLocator(Service service) {
-        GoClassName serviceName = goNames.getServiceName(service);
+        GoClassName serviceName = getServiceName(service);
         // Generate comment
         buffer.startComment();
         buffer.addLine("// Service locator method, returns individual service on which the URI is dispatched.");
         buffer.endComment();
 
         // Begin method:
-        buffer.addLine("func (op *%1$s) Service(path string) (Service, error) {", serviceName.getClassName());
+        buffer.addLine("func (op *%1$s) Service(path string) (Service, error) {", serviceName.getSimpleName());
         buffer.addLine(  "if path == \"\" {");
         buffer.addLine(    "return op, nil");
         buffer.addLine(  "}");
@@ -939,12 +950,12 @@ public class ServicesGenerator implements GoGenerator {
             String segment = getPath(name);
             buffer.addImport("strings");
             buffer.addLine("if path == \"%1$s\" {", segment);
-            buffer.addLine(  "return op.%1$sService(), nil", goNames.getPublicMethodStyleName(name));
+            buffer.addLine(  "return op.%1$sService(), nil", goNames.getExportableMethodStyleName(name));
             buffer.addLine("}");
             buffer.addLine("if strings.HasPrefix(path, \"%1$s/\") {", segment);
             buffer.addLine(
                 "return op.%1$sService().Service(path[%2$d:])",
-                goNames.getPublicMemberStyleName(name),
+                goNames.getExportableMemberStyleName(name),
                 segment.length() + 1
             );
             buffer.addLine("}");
@@ -959,11 +970,11 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addImport("strings");
             buffer.addLine("index := strings.Index(path, \"/\")");
             buffer.addLine("if index == -1 {");
-            buffer.addLine(  "return op.%1$sService(path), nil", goNames.getPublicMemberStyleName(name));
+            buffer.addLine(  "return op.%1$sService(path), nil", goNames.getExportableMemberStyleName(name));
             buffer.addLine("}");
             buffer.addLine(
                 "return op.%1$sService(path[:index]).Service(path[index + 1:])",
-                goNames.getPublicMemberStyleName(name)
+                goNames.getExportableMemberStyleName(name)
             );
         }
         else {
@@ -1014,13 +1025,13 @@ public class ServicesGenerator implements GoGenerator {
     }
 
     private String getRequestClassName(Method method, Service service) {
-        return goNames.getServiceName(service).getClassName() + 
-            goNames.getClassStyleName(getFullName(method)) + "Request";
+        return getServiceName(service).getSimpleName() + 
+            goNames.getExportableClassStyleName(getFullName(method)) + "Request";
     }
 
     private String getResponseClassName(Method method, Service service) {
-        return goNames.getServiceName(service).getClassName() + 
-            goNames.getClassStyleName(getFullName(method)) + "Response";
+        return getServiceName(service).getSimpleName() + 
+            goNames.getExportableClassStyleName(getFullName(method)) + "Response";
     }
 
     /**

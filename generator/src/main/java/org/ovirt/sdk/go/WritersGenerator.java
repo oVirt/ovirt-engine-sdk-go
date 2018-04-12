@@ -60,6 +60,8 @@ public class WritersGenerator implements GoGenerator {
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
 
+    @Inject private GoPackages goPackages;
+
     public void setOut(File newOut) {
         out = newOut;
     }
@@ -67,7 +69,7 @@ public class WritersGenerator implements GoGenerator {
     public void generate(Model model) {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setPackageName(goNames.getWritersPackageName());
+        buffer.setPackageName(goPackages.getWritersPackageName());
         buffer.addImport("fmt");
         // Generate classes for each struct type:
         model.types()
@@ -101,7 +103,7 @@ public class WritersGenerator implements GoGenerator {
     }
 
     private void generateStructWriteOne(StructType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         // Generate the method:
         List<StructMember> allMembers = new ArrayList<>();
@@ -117,7 +119,7 @@ public class WritersGenerator implements GoGenerator {
             .collect(toList());
 
         buffer.addLine("func %1$s(writer *XMLWriter, object *%2$s, tag string) error {",
-            goTypes.getXmlWriteOneFuncName(type), typeName.getClassName());
+            goTypes.getXmlWriteOneFuncName(type).getSimpleName(), typeName.getSimpleName());
         // Check the object if is nil
         buffer.addLine("  if object == nil {");
         buffer.addLine("    return fmt.Errorf(\"input object pointer is nil\")");
@@ -154,15 +156,16 @@ public class WritersGenerator implements GoGenerator {
 
     private void generateStructWriteMany(StructType type) {
         // Calculate the tag names:
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         Name singularName = type.getName();
         Name pluralName = names.getPlural(singularName);
         String singularTag = goNames.getTagStyleName(singularName);
         String pluralTag = goNames.getTagStyleName(pluralName);
 
+        GoClassName typeSliceName = goTypes.getTypeSliceName(type);
         buffer.addLine("func %1$s(writer *XMLWriter, structSlice *%2$s, plural, singular string) error {",
-            goTypes.getXmlWriteManyFuncName(type), goTypes.getStructSliceTypeName(type));
+            goTypes.getXmlWriteManyFuncName(type).getSimpleName(), typeSliceName.getSimpleName());
 
         // Generate the plural and singular name
         buffer.addLine("  if plural == \"\" {");
@@ -173,8 +176,8 @@ public class WritersGenerator implements GoGenerator {
         buffer.addLine("  }");
         buffer.addLine("  writer.WriteStart(\"\", \"%1$s\", nil)", pluralTag);
         buffer.addLine("  for _, o := range structSlice.Slice() {");
-        buffer.addLine("    %1$s(writer, &o, \"%2$s\")",
-            goTypes.getXmlWriteOneFuncName(type), singularTag);
+        buffer.addLine("    %1$s(writer, o, \"%2$s\")",
+            goTypes.getXmlWriteOneFuncName(type).getSimpleName(), singularTag);
         buffer.addLine("  }");
         buffer.addLine("  writer.WriteEnd(\"%1$s\")", pluralTag);
 
@@ -187,7 +190,7 @@ public class WritersGenerator implements GoGenerator {
         Name memberName = member.getName();
         Type memberType = member.getType();
         String tag = goNames.getTagStyleName(memberName);
-        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName));
+        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName).getSimpleName());
         buffer.addLine("    if attrs == nil {");
         buffer.addLine("      attrs = make(map[string]string)");
         buffer.addLine("    }");
@@ -221,7 +224,7 @@ public class WritersGenerator implements GoGenerator {
         Type memberType = member.getType();
         String tag = goNames.getTagStyleName(memberName);
         
-        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName));
+        buffer.addLine("  if r, ok := object.%1$s(); ok {", goTypes.getMemberGetterMethodName(memberName).getSimpleName());
         if (memberType instanceof PrimitiveType) {
             Model model = memberType.getModel();
             if (memberType == model.getBooleanType()) {
@@ -242,7 +245,7 @@ public class WritersGenerator implements GoGenerator {
         }
         else if (memberType instanceof StructType || memberType instanceof EnumType) {
             buffer.addLine("%1$s(writer, r, \"%2$s\")",
-                goTypes.getXmlWriteOneFuncName(memberType),
+                goTypes.getXmlWriteOneFuncName(memberType).getSimpleName(),
                 tag
             );
         }
@@ -252,7 +255,7 @@ public class WritersGenerator implements GoGenerator {
             String elementSingularTag = goNames.getTagStyleName(elementType.getName());
             if (elementType instanceof StructType || elementType instanceof EnumType) {
                 buffer.addLine("%1$s(writer, r, \"%2$s\", \"%3$s\")",
-                    goTypes.getXmlWriteManyFuncName(elementType),
+                    goTypes.getXmlWriteManyFuncName(elementType).getSimpleName(),
                     tag,
                     elementSingularTag
                 );
@@ -282,10 +285,10 @@ public class WritersGenerator implements GoGenerator {
     }
 
     private void generateEnumWriteOne(EnumType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
         String tag = goNames.getTagStyleName(type.getName());
         buffer.addLine("func %1$s(writer *XMLWriter, enum %2$s, tag string) {",
-            goTypes.getXmlWriteOneFuncName(type), typeName.getClassName());
+            goTypes.getXmlWriteOneFuncName(type).getSimpleName(), typeName.getSimpleName());
         // Generate the function body
         //      Generate the `tag` value
         buffer.addLine("  if tag == \"\" {");
@@ -297,7 +300,7 @@ public class WritersGenerator implements GoGenerator {
     }
 
     private void generateEnumWriteMany(EnumType type) {
-        GoClassName typeName = goNames.getTypeName(type);
+        GoClassName typeName = goTypes.getTypeName(type);
 
         Name singularName = type.getName();
         Name pluralName = names.getPlural(singularName);
@@ -305,7 +308,7 @@ public class WritersGenerator implements GoGenerator {
         String pluralTag = goNames.getTagStyleName(pluralName);
 
         buffer.addLine("func %1$s(writer *XMLWriter, enums []%2$s, plural, singular string) error {",
-            goTypes.getXmlWriteManyFuncName(type), typeName.getClassName());
+            goTypes.getXmlWriteManyFuncName(type).getSimpleName(), typeName.getSimpleName());
 
         // Generate the plural and singular name
         buffer.addLine("  if plural == \"\" {");
