@@ -270,7 +270,7 @@ public class TypesGenerator implements GoGenerator {
         // Construct TypeBuilder methods for member-settings
         List<StructMember> members = allMembers.stream().sorted().collect(toCollection(ArrayList::new));
         for (StructMember member : members) {
-            this.generateBuilderMemberMethods(type, member);
+            this.generateBuilderMethods(type, member);
         }
         // Generate Href setting method
         buffer.addLine("func (builder *%1$s) Href(href string) *%1$s {", goTypes.getBuilderName(type));
@@ -342,7 +342,7 @@ public class TypesGenerator implements GoGenerator {
         );
     }
 
-    private void generateBuilderMemberMethods(StructType type, StructMember member) {
+    private void generateBuilderMethods(StructType type, StructMember member) {
         // Get Type names
         String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
 
@@ -373,11 +373,13 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine();
         // If is TypeSlice (ListType), add the varargs pattern of method
         if (member.getType() instanceof ListType) {
-            this.generateBuilderListMemberVarargMethods(type, member);
+            this.generateBuilderMethodsTakingVararg(type, member);
+        } else if (member.getType() instanceof StructType) {
+            this.generateBuilderMethodsTakingBuilderArg(type, member);
         }
     }
 
-    private void generateBuilderListMemberVarargMethods(StructType type, StructMember member) {
+    private void generateBuilderMethodsTakingVararg(StructType type, StructMember member) {
         // Get Type names
         String typePrivateMemberName = goNames.getPrivateMemberStyleName(type.getName());
         
@@ -414,6 +416,74 @@ public class TypesGenerator implements GoGenerator {
                 goNames.getPrivateMemberStyleName(member.getName()));
         }
         buffer.addLine("return builder");
+        buffer.addLine("}");
+        buffer.addLine();
+        
+        if (elementType instanceof StructType) {
+            generateBuilderMethodsTakingBuilderVararg(type, member);
+        }
+    }
+
+    private void generateBuilderMethodsTakingBuilderArg(StructType type, StructMember member) {
+        // Define method for TypeBuilder
+        GoTypeReference memberTypeReference = goNames.getTypeReference(member.getType());
+
+        buffer.addLine("func (builder *%1$s) %2$sBuilder(attrBuilder *%3$sBuilder) *%1$s {",
+            goTypes.getBuilderName(type), goNames.getPublicMethodStyleName(member.getName()),
+            memberTypeReference.getText().replace("*", ""));
+        //      Check if has errors
+        buffer.addLine(  "if builder.err != nil {");
+        buffer.addLine(    "return builder");
+        buffer.addLine(  "}");
+        buffer.addLine();
+
+        buffer.addLine(  "if attrBuilder.err != nil {");
+        buffer.addLine(  "  builder.err = attrBuilder.err");
+        buffer.addLine(  "  return builder");
+        buffer.addLine(  "}");
+        
+        //      Build out the attr struct
+        buffer.addLine(" attr, err := attrBuilder.Build()");
+        buffer.addLine(" if err != nil {");
+        buffer.addLine("   builder.err = err");
+        buffer.addLine("   return builder");
+        buffer.addLine(  "}");
+
+        buffer.addLine(" return builder.%1$s(attr)", 
+            goNames.getPublicMethodStyleName(member.getName()));
+        buffer.addLine("}");
+        buffer.addLine();
+    }
+
+    private void generateBuilderMethodsTakingBuilderVararg(StructType type, StructMember member) {
+        // Get Type names
+        ListType memberType = (ListType) member.getType();
+        Type elementType = memberType.getElementType();
+
+        buffer.addLine("func (builder *%1$s) %2$sBuilderOfAny(anyBuilders ...%3$sBuilder) *%1$s {",
+            goTypes.getBuilderName(type),
+            goNames.getPublicMethodStyleName(member.getName()),
+            goNames.getTypeReference(elementType).getText().replace("*", ""));
+
+        //      Check if has errors
+        buffer.addLine(  "if builder.err != nil || len(anyBuilders) == 0 {");
+        buffer.addLine(    "return builder");
+        buffer.addLine(  "}");
+        buffer.addLine();
+
+        buffer.addLine("  for _, b := range anyBuilders {");
+        buffer.addLine("      if b.err != nil {");
+        buffer.addLine("          builder.err = b.err");
+        buffer.addLine("          return builder");
+        buffer.addLine("      }");
+        buffer.addLine("      attr, err := b.Build()");
+        buffer.addLine("      if err != nil {");
+        buffer.addLine("          builder.err = b.err");
+        buffer.addLine("          return builder");
+        buffer.addLine("      }");
+        buffer.addLine("      builder.%1$sOfAny(*attr)", goNames.getPublicMethodStyleName(member.getName()));
+        buffer.addLine("  }");
+        buffer.addLine("  return builder");
         buffer.addLine("}");
         buffer.addLine();
     }
