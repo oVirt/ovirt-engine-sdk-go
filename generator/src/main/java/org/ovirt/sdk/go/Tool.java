@@ -42,7 +42,7 @@ public class Tool {
     private static final String VERSION_OPTION = "version";
 
     // Reference to the objects used to calculate Python names:
-    @Inject private GoNames goNames;
+    @Inject private GoPackages goPackages;
 
     // References to the generators:
     @Inject @Any
@@ -122,7 +122,7 @@ public class Tool {
         builtinTypes.addBuiltinTypes(model);
 
         // Configure the object used to generate names:
-        goNames.setVersion(version);
+        goPackages.setVersion(version);
 
         // Run the generators:
         if (outDir != null) {

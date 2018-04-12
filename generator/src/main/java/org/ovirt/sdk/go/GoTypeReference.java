@@ -48,7 +48,9 @@ public class GoTypeReference {
     }
 
     public void addImport(String newImport) {
-        imports.add(newImport);
+        if (newImport != null && newImport.length() >0 ) {
+            imports.add(newImport);
+        }
     }
 
     @Override

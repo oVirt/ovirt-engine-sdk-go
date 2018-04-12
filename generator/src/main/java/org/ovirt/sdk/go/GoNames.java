@@ -18,20 +18,12 @@ package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.joining;
 
-import java.util.List;
 import java.util.Set;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.ovirt.api.metamodel.concepts.EnumType;
-import org.ovirt.api.metamodel.concepts.ListType;
-import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.concepts.Name;
-import org.ovirt.api.metamodel.concepts.NameParser;
-import org.ovirt.api.metamodel.concepts.PrimitiveType;
-import org.ovirt.api.metamodel.concepts.Service;
-import org.ovirt.api.metamodel.concepts.StructType;
-import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.ReservedWords;
 import org.ovirt.api.metamodel.tool.SchemaNames;
 import org.ovirt.api.metamodel.tool.Words;
@@ -41,17 +33,6 @@ import org.ovirt.api.metamodel.tool.Words;
  */
 @ApplicationScoped
 public class GoNames {
-    // The names of the base classes:
-    public static final Name READER_NAME = NameParser.parseUsingCase("Reader");
-    public static final Name SERVICE_NAME = NameParser.parseUsingCase("Service");
-    public static final Name WRITER_NAME = NameParser.parseUsingCase("Writer");
-
-    // The relative names of the packages:
-    public static final String READERS_PACKAGE = "readers";
-    public static final String SERVICES_PACKAGE = "services";
-    public static final String TYPES_PACKAGE = "types";
-    public static final String WRITERS_PACKAGE = "writers";
-    public static final String VERSION_PACKAGE = "version";
 
     // Reference to the object used to do computations with words.
     @Inject
@@ -62,284 +43,77 @@ public class GoNames {
     @ReservedWords(language = "go")
     private Set<String> reservedWords;
 
-    // The name of the root package:
-    private String rootPackageName = "ovirtsdk";
-
-    // The version number:
-    private String version;
-
-    // root package url prefix
-    private String rootPackageUrlPrefix = "github.com/imjoey/sdk";
-
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
 
-    @Inject private GoTypes goTypes;
-
-    public void setRootPackageUrlPrefix(String newRootPackageUrlPrefix) {
-        rootPackageUrlPrefix = newRootPackageUrlPrefix;
-    }
-
-    public String getRootPackageUrlPrefix() {
-        return rootPackageUrlPrefix;
+    /**
+     * pointer represention of Name
+     */
+    public String withPointer(String name) {
+        return "*" + name;
     }
 
     /**
-     * Sets the version.
+     * slice represention of Name
      */
-    public void setVersion(String newVersion) {
-        version = newVersion;
+    public String withSlice(String name) {
+        return "[]" + name;
     }
 
     /**
-     * Get the version.
+     * Returns a representation of the given name typically used for Go Exportable classes.
      */
-    public String getVersion() {
-        return version;
+    public String getExportableClassStyleName(Name name) {
+        return renameReserved(exportableStyle(name));
     }
 
     /**
-     * Get the name of the root package.
+     * Returns a representation of the given name typically used for Go Un-Exportable classes.
      */
-    public String getRootPackageName() {
-        return rootPackageName;
+    public String getUnexportableClassStyleName(Name name) {
+        return renameReserved(unexportableStyle(name));
     }
 
     /**
-     * Get the name of the types package.
+     * Returns a representation of the given name typically used for Go Exportable members.
      */
-    public String getTypesPackageName() {
-        return getPackageName(TYPES_PACKAGE);
+    public String getExportableMemberStyleName(Name name) {
+        return renameReserved(exportableStyle(name));
     }
 
     /**
-     * Get the name of the readers package.
+     * Returns a representation of the given name typically used for Go Un-Exportable members.
      */
-    public String getReadersPackageName() {
-        return getPackageName(READERS_PACKAGE);
+    public String getUnexportableMemberStyleName(Name name) {
+        return renameReserved(unexportableStyle(name));
     }
 
     /**
-     * Get the name of the writers package.
+     * Returns a representation of the given name typically used for the name of Go Exported method received by struct.
      */
-    public String getWritersPackageName() {
-        return getPackageName(WRITERS_PACKAGE);
+    public String getExportableMethodStyleName(Name name) {
+        return renameReserved(exportableStyle(name));
     }
 
     /**
-     * Get the name of the services package.
+     * Returns a representation of the given name typically used for the name of Go Un-Exported method received by struct.
      */
-    public String getServicesPackageName() {
-        return getPackageName(SERVICES_PACKAGE);
+    public String getUnexportableMethodStyleName(Name name) {
+        return renameReserved(unexportableStyle(name));
     }
 
     /**
-     * Get the name of the version package
+     * Returns a representation of the given name typically used for the name of Go Exportable functions.
      */
-    public String getVersionPackageName() {
-        return getPackageName(VERSION_PACKAGE);
+    public String getExportableFuncStyleName(Name name) {
+        return renameReserved(exportableStyle(name));
     }
 
     /**
-     * Get the complete name of the given package.
+     * Returns a representation of the given name typically used for the name of Go Un-Exportable functions.
      */
-    public String getPackageName(String... relativeNames) {
-        StringBuilder buffer = new StringBuilder();
-        buffer.append(rootPackageName);
-        if (relativeNames != null && relativeNames.length > 0) {
-            for (String relativeName : relativeNames) {
-                buffer.append('/');
-                buffer.append(relativeName);
-            }
-        }
-        return buffer.toString();
-    }
-
-    /**
-     * Calculates the Go name that corresponds to the given type.
-     */
-    public GoClassName getTypeName(Type type) {
-        return buildClassName(type.getName(), null, TYPES_PACKAGE);
-    }
-
-    public GoTypeReference getTypeReference(Type type) {
-        return this.getTypeReferenceWithRef(type, false);
-    }
-
-    /**
-     * Calculates that should be used in Go as struct member to reference the 
-     * given type. For exmpale, if it's primitive type, it should be a pointer.
-     */
-    public GoTypeReference getRefTypeReference(Type type) {
-        return this.getTypeReferenceWithRef(type, true);
-    }
-
-    /**
-     * Calculates that should be used in Go to reference the given type. For example, for the boolean type it will
-     * return the {@code bool} string.
-     */
-    private GoTypeReference getTypeReferenceWithRef(Type type, Boolean withPointer) {
-        String pointerSuffix = "";
-        if (withPointer) {
-            pointerSuffix = "*";
-        }
-        GoTypeReference reference = new GoTypeReference();
-        if (type instanceof PrimitiveType) {
-            Model model = type.getModel();
-            if (type == model.getBooleanType()) {
-                reference.setText(pointerSuffix + "bool");
-            }
-            else if (type == model.getIntegerType()) {
-                reference.setText(pointerSuffix + "int64");
-            }
-            else if (type == model.getDecimalType()) {
-                reference.setText(pointerSuffix + "float64");
-            }
-            else if (type == model.getStringType()) {
-                reference.setText(pointerSuffix + "string");
-            }
-            else if (type == model.getDateType()) {
-                reference.addImport("time");
-                reference.setText(pointerSuffix + "time.Time");
-            }
-            else {
-                throw new IllegalArgumentException(
-                    "Don't know how to build reference for primitive type \"" + type + "\""
-                );
-            }
-        }
-        else if (type instanceof StructType) {
-            reference.setText("*" + getTypeName(type).getClassName());
-        }
-        else if (type instanceof EnumType) {
-            reference.setText(pointerSuffix + getTypeName(type).getClassName());
-        }
-        else if (type instanceof ListType) {
-            ListType listtype = (ListType)type;
-            Type elementType = listtype.getElementType();
-            if (elementType instanceof StructType) {
-                reference.setText("*" + goTypes.getStructSliceTypeName(listtype.getElementType()));
-            } else {
-                GoTypeReference elementTypeReference = this.getTypeReferenceWithRef(
-                    elementType, false);
-                // use Recursion to return []StructType / []string
-                reference.setText("[]" + elementTypeReference.getText());
-            }
-        }
-        else {
-            throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");
-        }
-        return reference;
-    }
-
-    /**
-     * Calculates the Go name of the base class of the services.
-     */
-    public GoClassName getBaseServiceName() {
-        return buildClassName(SERVICE_NAME, null, SERVICES_PACKAGE);
-    }
-
-    /**
-     * Calculates the Go name that corresponds to the given service.
-     */
-    public GoClassName getServiceName(Service service) {
-        return buildPrivateClassName(service.getName(), SERVICE_NAME, SERVICES_PACKAGE);
-    }
-
-    /**
-     * Calculates the Go name of the reader for the given type.
-     */
-    public GoClassName getReaderName(Type type) {
-        return buildClassName(type.getName(), READER_NAME, READERS_PACKAGE);
-    }
-
-    /**
-     * Calculates the Go name of the writer for the given type.
-     */
-    public GoClassName getWriterName(Type type) {
-        return buildClassName(type.getName(), WRITER_NAME, WRITERS_PACKAGE);
-    }
-
-    /**
-     * Builds a Go name from the given base name, suffix, and package.
-     *
-     * The suffix can be {@code null} or empty, in that case then won't be added.
-     *
-     * @param base the base name
-     * @param suffix the suffix to add to the name
-     * @param package the package name
-     * @return the calculated Go class name
-     */
-    private GoClassName buildClassName(Name base, Name suffix, String pkg) {
-        List<String> words = base.getWords();
-        if (suffix != null) {
-            words.addAll(suffix.getWords());
-        }
-        Name name = new Name(words);
-        GoClassName result = new GoClassName();
-        result.setClassName(getClassStyleName(name));
-        result.setPackageName(getPackageName(pkg));
-        return result;
-    }
-
-    private GoClassName buildPrivateClassName(Name base, Name suffix, String pkg) {
-        List<String> words = base.getWords();
-        if (suffix != null) {
-            words.addAll(suffix.getWords());
-        }
-        Name name = new Name(words);
-        GoClassName result = new GoClassName();
-        result.setClassName(getPrivateClassStyleName(name));
-        result.setPackageName(getPackageName(pkg));
-        return result;
-    }
-
-    /**
-     * Returns a representation of the given name using the capitalization style typically used for Go classes.
-     */
-    public String getClassStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result);
-    }
-
-    public String getPrivateClassStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
-    }
-
-    /**
-     * Returns a representation of the given name using the capitalization style typically used for Go members.
-     */
-    public String getPublicMemberStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result);
-    }
-
-    public String getPrivateMemberStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
-    }
-
-    public String getPrivateMemberStyleName(String name) {
-        return renameReserved(name.substring(0, 1).toLowerCase() + name.substring(1));
-    }
-
-    /**
-     * Returns a representation of the given name using the capitalization style typically used for Go method name.
-     */
-    public String getPublicMethodStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result);
-    }
-
-    public String getPublicMethodStyleName(String nameString) {
-        return renameReserved(nameString.substring(0, 1).toUpperCase() + nameString.substring(1));
-    }
-
-    public String getPrivateMethodStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
-
+    public String getUnexportableFuncStyleName(Name name) {
+        return renameReserved(unexportableStyle(name));
     }
 
     /**
@@ -348,23 +122,13 @@ public class GoNames {
      */
     public String getTagStyleName(Name name) {
         return schemaNames.getSchemaTagName(name);
-        // String result = name.words().map(String::toLowerCase).collect(joining("_"));
-        // return result;
-    }
-
-    public String renameReserved(String result) {
-        if (reservedWords.contains(result)) {
-            result += "_";
-        }
-        return result;
     }
 
     /**
-     * Returns a representation of the given name using the non-capitalization style typically used for Go method parameters.
+     * Returns a representation of the given name typically used for Go method parameters.
      */
     public String getParameterStyleName(Name name) {
-        String result = name.words().map(words::capitalize).collect(joining());
-        return renameReserved(result.substring(0, 1).toLowerCase() + result.substring(1));
+        return renameReserved(unexportableStyle(name));
     }
 
     /**
@@ -376,25 +140,42 @@ public class GoNames {
     }
 
     /**
-     * Returns a representation of the given name using the capitalization style typically used for Go constants.
-     */
-    public String getConstantStyleName(Name name) {
-        return name.words().map(String::toUpperCase).collect(joining("_"));
-    }
-
-    /**
-     * Returns a representation of the given name using the capitalization style typically used for Go packages.
+     * Returns a representation of the given name typically used for Go packages.
      */
     public String getModuleStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
         return renameReserved(result);
     }
 
-    public static String capitalize(String s) {
-        if (s == null || s.isEmpty()) {
-            return s;
+    /**
+     * Returns a representation of the given name typically used for Go constants.
+     */
+    public String getConstantStyleName(Name name) {
+        return name.words().map(String::toUpperCase).collect(joining("_"));
+    }
+
+    /*
+     * Builds the Exportable style string from the given name
+     */
+    private String exportableStyle(Name name) {
+        return name.words().map(words::capitalize).collect(joining());
+    }
+
+    /*
+     * Builds the Un-Exportable style string from the given name
+     */
+    private String unexportableStyle(Name name) {
+        StringBuilder buffer = new StringBuilder();
+        name.words().findFirst().map(String::toLowerCase).ifPresent(buffer::append);
+        name.words().skip(1).map(words::capitalize).forEach(buffer::append);
+        return buffer.toString();
+    }
+
+    private String renameReserved(String result) {
+        if (reservedWords.contains(result)) {
+            result += "_";
         }
-        return Character.toUpperCase(s.charAt(0)) + s.substring(1).toLowerCase();
+        return result;
     }
 }
 

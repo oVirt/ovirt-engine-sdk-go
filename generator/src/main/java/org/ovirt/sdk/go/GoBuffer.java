@@ -81,7 +81,9 @@ public class GoBuffer {
      * Adds multiple imports.
      */
     public void addImports(List<String> imports) {
-        imports.forEach(this::addImport);
+        if (imports != null && imports.size() > 0) {
+            imports.forEach(this::addImport);
+        }
     }
 
     /**

@@ -30,7 +30,7 @@ public class VersionGenerator implements GoGenerator {
     private File out;
 
     // Reference to the objects used to generate the code:
-    @Inject private GoNames goNames;
+    @Inject private GoPackages goPackages;
 
     // The buffer used to generate the Ruby code:
     private GoBuffer buffer;
@@ -42,7 +42,7 @@ public class VersionGenerator implements GoGenerator {
     public void generate(Model model) throws IOException {
         // Prepare the buffer:
         buffer = new GoBuffer();
-        buffer.setPackageName(goNames.getVersionPackageName());
+        buffer.setPackageName(goPackages.getVersionPackageName());
 
         // Generate the source:
         generateVersion();
@@ -58,7 +58,7 @@ public class VersionGenerator implements GoGenerator {
 
     public void generateVersion() {
         // Generate the version constant:
-        String version = goNames.getVersion();
+        String version = goPackages.getVersion();
         buffer.addLine("// The version of the SDK:");
         buffer.addLine("var SDK_VERSION = \"%1$s\"", version.toLowerCase());
         buffer.addLine();
