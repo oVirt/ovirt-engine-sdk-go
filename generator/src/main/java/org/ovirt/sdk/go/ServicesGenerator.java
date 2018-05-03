@@ -497,7 +497,9 @@ public class ServicesGenerator implements GoGenerator {
                 String paraArgName = goNames.getParameterStyleName(parameter.getName());
                 String paraMethodName = goNames.getExportableMemberStyleName(parameter.getName());
                 if (goTypes.isGoPrimitiveType(parameter.getType())) {
-                    buffer.addLine("actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
+                    buffer.addLine("if p.%1$s != nil {", paraArgName);
+                    buffer.addLine("  actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
+                    buffer.addLine("}");
                 } else {
                     buffer.addLine("actionBuilder.%1$s(p.%2$s);", paraMethodName, paraArgName);
                 }
