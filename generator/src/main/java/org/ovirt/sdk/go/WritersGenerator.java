@@ -174,12 +174,12 @@ public class WritersGenerator implements GoGenerator {
         buffer.addLine("  if singular == \"\" {");
         buffer.addLine("    singular = \"%1$s\"", singularTag);
         buffer.addLine("  }");
-        buffer.addLine("  writer.WriteStart(\"\", \"%1$s\", nil)", pluralTag);
+        buffer.addLine("  writer.WriteStart(\"\", plural, nil)");
         buffer.addLine("  for _, o := range structSlice.Slice() {");
-        buffer.addLine("    %1$s(writer, o, \"%2$s\")",
-            goTypes.getXmlWriteOneFuncName(type).getSimpleName(), singularTag);
+        buffer.addLine("    %1$s(writer, o, singular)",
+            goTypes.getXmlWriteOneFuncName(type).getSimpleName());
         buffer.addLine("  }");
-        buffer.addLine("  writer.WriteEnd(\"%1$s\")", pluralTag);
+        buffer.addLine("  writer.WriteEnd(plural)");
 
         buffer.addLine("  return nil");
         buffer.addLine("}");    // End of function
@@ -294,7 +294,7 @@ public class WritersGenerator implements GoGenerator {
         buffer.addLine("  if tag == \"\" {");
         buffer.addLine("    tag = \"%1$s\"", tag);
         buffer.addLine("  }");
-        buffer.addLine("  writer.WriteCharacter(\"%1$s\", string(enum))", tag);
+        buffer.addLine("  writer.WriteCharacter(tag, string(enum))");
         buffer.addLine("}");    // End of function
         buffer.addLine();
     }
@@ -318,11 +318,11 @@ public class WritersGenerator implements GoGenerator {
         buffer.addLine("    singular = \"%1$s\"", singularTag);
         buffer.addLine("  }");
 
-        buffer.addLine("  writer.WriteStart(\"\", \"%1$s\", nil)", pluralTag);
+        buffer.addLine("  writer.WriteStart(\"\", plural, nil)");
         buffer.addLine("  for _, e := range enums {");
-        buffer.addLine("    writer.WriteCharacter(\"%1$s\", string(e))", singularTag);
+        buffer.addLine("    writer.WriteCharacter(singular, string(e))");
         buffer.addLine("  }");
-        buffer.addLine("  writer.WriteEnd(\"%1$s\")", pluralTag);
+        buffer.addLine("  writer.WriteEnd(plural)");
         buffer.addLine("  return nil");
         buffer.addLine("}");    // End of function
         buffer.addLine();
