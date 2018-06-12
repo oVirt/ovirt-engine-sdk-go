@@ -343,7 +343,7 @@ public class ReadersGenerator implements GoGenerator {
             }
             else if (memberType == model.getDateType()) {
                 buffer.addImport("time");
-                buffer.addLine("        builder.%1$s(time.Parse(\"2006-01-02T15:04:05.999999\", value))", publicMethodName);
+                buffer.addLine("        builder.%1$s(time.Parse(time.RFC3339Nano, value))", publicMethodName);
                 buffer.addLine("        if err != nil {");
                 buffer.addLine("          return nil, err");
                 buffer.addLine("        }");
