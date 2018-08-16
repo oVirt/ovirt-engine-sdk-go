@@ -285,7 +285,8 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("    switch t := t.(type) {");
         buffer.addLine("    case xml.StartElement:");
         String singularTag = goNames.getTagStyleName(type.getName());
-        buffer.addLine("      if t.Name.Local == \"%1$s\" {", singularTag);
+        buffer.addLine("      switch t.Name.Local {");
+        buffer.addLine("      case \"%1$s\":", singularTag);
         buffer.addLine("        one, err := %1$s(reader, &t, \"%2$s\")", goTypes.getXmlReadOneFuncName(type).getSimpleName(), singularTag);
         buffer.addLine("        if err != nil {");
         buffer.addLine("          return nil, err");
@@ -293,6 +294,8 @@ public class ReadersGenerator implements GoGenerator {
         buffer.addLine("        if one != nil {");
         buffer.addLine("          result.slice = append(result.slice, one)");
         buffer.addLine("        }");
+        buffer.addLine("      default:");
+        buffer.addLine("        reader.Skip()");
         buffer.addLine("      }");
         buffer.addLine("	case xml.EndElement:");
         buffer.addLine("      depth--");
