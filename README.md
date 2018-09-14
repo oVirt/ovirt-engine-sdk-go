@@ -5,7 +5,7 @@
 
 ## Introduction
 
-The oVirt Go SDK is a Go package that simplyfies access to the
+The oVirt Go SDK is a Go package that simplifies access to the
 oVirt Engine API.
 
 > IMPORTANT: This document describes how to generate, build and test the
