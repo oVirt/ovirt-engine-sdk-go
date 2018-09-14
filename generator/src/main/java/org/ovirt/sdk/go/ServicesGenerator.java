@@ -231,44 +231,55 @@ public class ServicesGenerator implements GoGenerator {
         }
 
         // Generate Send method
-        generateRequestSendMethod(method, service, false);
+        generateRequestSendMethod(method, service);
 
         // Generate MustSend method
-        generateRequestSendMethod(method, service, true);
+        generateRequestMustSendMethod(method, service);
 
     }
 
-    private void generateRequestSendMethod(Method method, Service service, boolean isMust){
+    private void generateRequestSendMethod(Method method, Service service){
         Name methodName = method.getName();
         String request = getRequestClassName(method, service);
 
-        if (isMust) {
-            buffer.addLine("func (p *%1$s) MustSend() *%2$s {",
-                request, getResponseClassName(method, service));
-        } else {
-            buffer.addLine("func (p *%1$s) Send() (*%2$s, error) {",
-                request, getResponseClassName(method, service));
-        }
+        // Generate Send method
+        buffer.addLine("func (p *%1$s) Send() (*%2$s, error) {",
+            request, getResponseClassName(method, service));
 
         // Generate method code based on response type:
         if (ADD.equals(methodName)) {
-            generateAddRequestImplementation(method, service, isMust);
+            generateAddRequestImplementation(method, service);
         }
         else if (GET.equals(methodName) || LIST.equals(methodName)) {
-            generateListRequestImplementation(method, service, isMust);
+            generateListRequestImplementation(method, service);
         }
         else if (REMOVE.equals(methodName)) {
-            generateRemoveRequestImplementation(method, service, isMust);
+            generateRemoveRequestImplementation(method, service);
         }
         else if (UPDATE.equals(methodName)) {
-            generateUpdateRequestImplementation(method, service, isMust);
+            generateUpdateRequestImplementation(method, service);
         }
         else {
-            generateActionRequestImplementation(method, service, isMust);
+            generateActionRequestImplementation(method, service);
         }
         // End send method:
         buffer.addLine("}");
         buffer.addLine();
+    }
+
+    private void generateRequestMustSendMethod(Method method, Service service){
+        Name methodName = method.getName();
+        String request = getRequestClassName(method, service);
+
+        // Generate Send method
+        buffer.addLine("func (p *%1$s) MustSend() *%2$s {",
+            request, getResponseClassName(method, service));
+        buffer.addLine("  if v, err := p.Send(); err != nil {");
+        buffer.addLine("    panic(err)");
+        buffer.addLine("  } else {");
+        buffer.addLine("    return v");
+        buffer.addLine("  }");
+        buffer.addLine("}");
     }
 
     private void generateRequestCommonParameter() {
@@ -346,7 +357,7 @@ public class ServicesGenerator implements GoGenerator {
         }
     }
 
-    private void generateAddRequestImplementation(Method method, Service service, boolean isMust) {
+    private void generateAddRequestImplementation(Method method, Service service) {
         String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             serviceClassName);
@@ -359,30 +370,26 @@ public class ServicesGenerator implements GoGenerator {
         
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.addLine("  rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Generate the net/http request.Body (via bytes.Buffer)
         buffer.addImport("bytes");
         buffer.addLine("var body bytes.Buffer");
-        generateWriteRequestBody(getFirstParameter(method), isMust);
+        generateWriteRequestBody(getFirstParameter(method));
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, &body)");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine(" panic(err)");
-        } else {
-            buffer.addLine(  "return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200", "201", "202"}, isMust);
-        generateResponseParseImplementation(method, service, isMust);
+        generateCommonRequestImplementation(method, service, new String[]{"200", "201", "202"});
+        generateResponseParseImplementation(method, service);
 	}
 
-    private void generateListRequestImplementation(Method method, Service service, boolean isMust) {
+    private void generateListRequestImplementation(Method method, Service service) {
         String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             serviceClassName);
@@ -398,25 +405,21 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.addLine("  rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"GET\", rawURL, nil)");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine(  "return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200"}, isMust);
-        generateResponseParseImplementation(method, service, isMust);
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
     }
 
-    private void generateRemoveRequestImplementation(Method method, Service service, boolean isMust) {
+    private void generateRemoveRequestImplementation(Method method, Service service) {
         String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             serviceClassName);
@@ -430,25 +433,21 @@ public class ServicesGenerator implements GoGenerator {
         generateAdditionalQueryParameters();
         // Generate the final URL
         buffer.addLine("if len(values) > 0 {");
-        buffer.addLine(  "rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
+        buffer.addLine("  rawURL = fmt.Sprintf(\"%%s?%%s\", rawURL, values.Encode())");
         buffer.addLine("}");
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"DELETE\", rawURL, nil)");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200"}, isMust);
-        generateResponseParseImplementation(method, service, isMust);
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
     }
 
-    private void generateUpdateRequestImplementation(Method method, Service service, boolean isMust) {
+    private void generateUpdateRequestImplementation(Method method, Service service) {
         String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s\", p.%1$s.connection.URL(), p.%1$s.path)",
             serviceClassName);
@@ -467,24 +466,20 @@ public class ServicesGenerator implements GoGenerator {
         // Generate the net/http request.Body (via bytes.Buffer)
         buffer.addImport("bytes");
         buffer.addLine("var body bytes.Buffer");
-        generateWriteRequestBody(getFirstParameter(method), isMust);
+        generateWriteRequestBody(getFirstParameter(method));
 
         // Construct the net/http request
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"PUT\", rawURL, &body)");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, new String[]{"200"}, isMust);
-        generateResponseParseImplementation(method, service, isMust);
+        generateCommonRequestImplementation(method, service, new String[]{"200"});
+        generateResponseParseImplementation(method, service);
     }
 
-    private void generateActionRequestImplementation(Method method, Service service, boolean isMust) {
+    private void generateActionRequestImplementation(Method method, Service service) {
         String serviceClassName = getServiceName(service).getSimpleName();
         buffer.addLine("rawURL := fmt.Sprintf(\"%%s%%s/%1$s\", p.%2$s.connection.URL(), p.%2$s.path)",
             getPath(method.getName()),
@@ -506,11 +501,7 @@ public class ServicesGenerator implements GoGenerator {
             });
         buffer.addLine("action, err := actionBuilder.Build()");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
         buffer.addImport("net/url");
         buffer.addLine("values := make(url.Values)");
@@ -533,14 +524,10 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addImport("net/http");
         buffer.addLine("req, err := http.NewRequest(\"POST\", rawURL, &body)");
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        generateCommonRequestImplementation(method, service, null, isMust);
+        generateCommonRequestImplementation(method, service, null);
         // Check action
         List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
         if (parameters.isEmpty()) {
@@ -549,46 +536,25 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("action, errCheckAction := CheckAction(resp)");
         }
         buffer.addLine("if errCheckAction != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(errCheckAction)");
-        } else {
-            buffer.addLine("  return nil, errCheckAction");
-        }
+        buffer.addLine("  return nil, errCheckAction");
         buffer.addLine("}");
         
         if (parameters.isEmpty()) {
-            if (isMust) {
-                buffer.addLine("return new(%1$s)", getResponseClassName(method, service));
-            } else {
-                buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
-            }
-            
+            buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
             Parameter paraFirst = parameters.get(0);
             buffer.addLine("result := action.%1$s()",
                 goTypes.getMemberMustGetterMethodName(paraFirst.getName()));
             Type paraType = paraFirst.getType();
             if (goTypes.isGoPrimitiveType(paraType) || paraType instanceof EnumType) {
-                if (isMust) {
-                    buffer.addLine("return &%1$s{%2$s: &result}",
-                        getResponseClassName(method, service),
-                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
-                } else {
-                    buffer.addLine("return &%1$s{%2$s: &result}, nil",
-                        getResponseClassName(method, service),
-                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
-                }
+                buffer.addLine("return &%1$s{%2$s: &result}, nil",
+                    getResponseClassName(method, service),
+                    goNames.getUnexportableMemberStyleName(paraFirst.getName()));
             }
             else {
-                if (isMust) {
-                    buffer.addLine("return &%1$s{%2$s: result}",
-                        getResponseClassName(method, service),
-                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
-                } else {
-                    buffer.addLine("return &%1$s{%2$s: result}, nil",
-                        getResponseClassName(method, service),
-                        goNames.getUnexportableMemberStyleName(paraFirst.getName()));
-                }
+                buffer.addLine("return &%1$s{%2$s: result}, nil",
+                    getResponseClassName(method, service),
+                    goNames.getUnexportableMemberStyleName(paraFirst.getName()));
             }
         }
     }
@@ -610,7 +576,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("}");
     }
 
-    private void generateWriteRequestBody(Parameter parameter, boolean isMust) {
+    private void generateWriteRequestBody(Parameter parameter) {
         // var body bytes.Buffer
         if (parameter != null) {
             Type type = parameter.getType();
@@ -630,17 +596,13 @@ public class ServicesGenerator implements GoGenerator {
                 );
             }
             buffer.addLine("if err != nil {");
-            if (isMust) {
-                buffer.addLine(" panic(err)");
-            } else {
-                buffer.addLine(" return nil, err");
-            }
+            buffer.addLine(" return nil, err");
             buffer.addLine("}");
             buffer.addLine("writer.Flush()");
         }
     }
 
-    private void generateCommonRequestImplementation(Method method, Service service, String[] codes, boolean isMust) {
+    private void generateCommonRequestImplementation(Method method, Service service, String[] codes) {
         String serviceClassName = getServiceName(service).getSimpleName();
         String serviceAsPrivateMemberName = serviceClassName;
         
@@ -653,11 +615,7 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("// get OAuth access token");
         buffer.addLine("token, err := p.%1$s.connection.authenticate()", serviceAsPrivateMemberName);
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
         buffer.addLine("req.Header.Add(\"Authorization\", fmt.Sprintf(\"Bearer %%s\", token))");
 
@@ -666,22 +624,14 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("resp, err := p.%1$s.connection.client.Do(req)",
             serviceAsPrivateMemberName);
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");;
         buffer.addLine("defer resp.Body.Close()");
 
         // Check the response status code
         if (codes != null && codes.length > 0) {
             buffer.addLine("if !Contains(resp.StatusCode, []int{%1$s}) {", String.join(",", codes));
-            if (isMust) {
-                buffer.addLine("  panic(CheckFault(resp))");
-            } else {
-                buffer.addLine("  return nil, CheckFault(resp)");
-            }
+            buffer.addLine("  return nil, CheckFault(resp)");
             buffer.addLine("}");
         }
 
@@ -698,32 +648,24 @@ public class ServicesGenerator implements GoGenerator {
                     buffer.addLine("respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)");
                 }
                 buffer.addLine("if errReadBody != nil {");
-                if (isMust) {
-                    buffer.addLine("  panic(errReadBody)");
-                } else {
-                    buffer.addLine("  return nil, errReadBody");
-                }
+                buffer.addLine("  return nil, errReadBody");
                 buffer.addLine("}");
         }
     }
 
 
-    private void generateResponseParseImplementation(Method method, Service service, boolean isMust) {
+    private void generateResponseParseImplementation(Method method, Service service) {
         List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
         if (parameters.isEmpty()) {
-            if (isMust) {
-                buffer.addLine("return new(%1$s)", getResponseClassName(method, service));
-            } else {
-                buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
-            }
+            buffer.addLine("return new(%1$s), nil", getResponseClassName(method, service));
         } else {
             for (Parameter para : parameters) {
-                generateResponseParameterParseImplementation(para, service, isMust);
+                generateResponseParameterParseImplementation(para, service);
             }
         }
     }
 
-    private void generateResponseParameterParseImplementation(Parameter parameter, Service service, boolean isMust) {
+    private void generateResponseParameterParseImplementation(Parameter parameter, Service service) {
         Type type = parameter.getType();
         String response = getResponseClassName(parameter.getDeclaringMethod(), service);
 
@@ -759,20 +701,11 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("result, err := %1$s(reader, nil)", goTypes.getXmlReadManyFuncName(elementType));
         }
         buffer.addLine("if err != nil {");
-        if (isMust) {
-            buffer.addLine("  panic(err)");
-        } else {
-            buffer.addLine("  return nil, err");
-        }
+        buffer.addLine("  return nil, err");
         buffer.addLine("}");
 
-        if (isMust) {
-            buffer.addLine("return &%1$s{%2$s: result}",
-                response, goNames.getUnexportableMemberStyleName(parameter.getName()));
-        } else {
-            buffer.addLine("return &%1$s{%2$s: result}, nil",
-                response, goNames.getUnexportableMemberStyleName(parameter.getName()));
-        }
+        buffer.addLine("return &%1$s{%2$s: result}, nil",
+            response, goNames.getUnexportableMemberStyleName(parameter.getName()));
     }
 
     private void generateAdditionalHeadersParameters() {
