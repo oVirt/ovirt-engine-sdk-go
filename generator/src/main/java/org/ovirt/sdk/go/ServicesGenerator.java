@@ -606,6 +606,7 @@ public class ServicesGenerator implements GoGenerator {
         String serviceClassName = getServiceName(service).getSimpleName();
         String serviceAsPrivateMemberName = serviceClassName;
         
+        injectConnectionHeaders(serviceAsPrivateMemberName);
         generateAdditionalHeadersParameters();
         buffer.addLine("req.Header.Add(\"User-Agent\", fmt.Sprintf(\"GoSDK/%%s\", SDK_VERSION))");
         buffer.addLine("req.Header.Add(\"Version\", \"4\")");
@@ -706,6 +707,14 @@ public class ServicesGenerator implements GoGenerator {
 
         buffer.addLine("return &%1$s{%2$s: result}, nil",
             response, goNames.getUnexportableMemberStyleName(parameter.getName()));
+    }
+
+    private void injectConnectionHeaders(String service) {
+        buffer.addLine();
+        buffer.addLine("for hk, hv := range p.%1$s.connection.headers {", service);
+        buffer.addLine(  "req.Header.Add(hk, hv)");
+        buffer.addLine("}");
+        buffer.addLine();
     }
 
     private void generateAdditionalHeadersParameters() {
