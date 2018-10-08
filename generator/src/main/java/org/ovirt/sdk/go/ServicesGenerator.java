@@ -629,6 +629,20 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("}");;
         buffer.addLine("defer resp.Body.Close()");
 
+        // Dump the request/response for debuging
+        buffer.addImport("net/http/httputil");
+        buffer.addLine("if p.%1$s.connection.logFunc != nil {", serviceAsPrivateMemberName);
+        buffer.addLine("  dumpReq, err := httputil.DumpRequestOut(req, true)");
+        buffer.addLine("  if err != nil {");
+        buffer.addLine("    return nil, err");
+        buffer.addLine("  }");
+        buffer.addLine("  dumpResp, err := httputil.DumpResponse(resp, true)");
+        buffer.addLine("  if err != nil {");
+        buffer.addLine("    return nil, err");
+        buffer.addLine("  }");
+        buffer.addLine("  p.%1$s.connection.logFunc(\"<<<<<<Request:\\n%%sResponse:\\n%%s>>>>>>\\n\", string(dumpReq), string(dumpResp))", serviceAsPrivateMemberName);
+        buffer.addLine("}");
+
         // Check the response status code
         if (codes != null && codes.length > 0) {
             buffer.addLine("if !Contains(resp.StatusCode, []int{%1$s}) {", String.join(",", codes));
