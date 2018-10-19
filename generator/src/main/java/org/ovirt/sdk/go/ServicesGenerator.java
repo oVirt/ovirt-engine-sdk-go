@@ -116,7 +116,7 @@ public class ServicesGenerator implements GoGenerator {
 
         // Generate struct members definition
         //      with Service struct mixin
-        buffer.addLine("baseService");
+        buffer.addLine("BaseService");
 
         // Generate struct ending
         buffer.addLine("}");
@@ -151,7 +151,7 @@ public class ServicesGenerator implements GoGenerator {
      */
     private GoClassName getServiceName(Service service) {
         GoClassName serviceName = new GoClassName();
-        serviceName.setSimpleName(goNames.getUnexportableClassStyleName(service.getName()) + "Service");
+        serviceName.setSimpleName(goNames.getExportableClassStyleName(service.getName()) + "Service");
         return serviceName;
     }
 
