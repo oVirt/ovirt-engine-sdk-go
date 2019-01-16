@@ -10,6 +10,7 @@ fi
 if [ "$TRAVIS_BRANCH" != "master" ]; then
     if [ -z "$TRAVIS_TAG" ];then
         echo "Skipping deploy code for non master branch commits"
+        exit 0
     fi
 fi
 
