@@ -1,9 +1,16 @@
 #!/bin/bash
 
-# Pull requests and commits to other branches shouldn't try to deploy
-if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "master" ]; then
-    echo "Skipping deploy codes"
+# Pull requests shouldn't try to deploy
+if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    echo "Skipping deploy codes for pull request"
     exit 0
+fi
+
+# Commits to other branches except master shouldn't try to deploy
+if [ "$TRAVIS_BRANCH" != "master" ]; then
+    if [ -z "$TRAVIS_TAG" ];then
+        echo "Skipping deploy code for non master branch commits"
+    fi
 fi
 
 # Pull current codes
@@ -31,4 +38,10 @@ git add -A
 
 git commit --message "Generator commit ID: ${TRAVIS_COMMIT:0:7} with message: $TRAVIS_COMMIT_MESSAGE. Travis build: $TRAVIS_BUILD_NUMBER."
 
-git push origin master
+# For builds triggered by a tag, TRAVIS_BRANCH is the same as 
+# the name of the tag (TRAVIS_TAG).
+if [ "$TRAVIS_BRANCH" != "master" ];then
+    git tag -a ${TRAVIS_TAG} -m "New version release: ${TRAVIS_TAG}"
+fi
+
+git push origin ${TRAVIS_BRANCH}
