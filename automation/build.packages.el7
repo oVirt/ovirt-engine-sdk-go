@@ -1,0 +1,7 @@
+git
+java-1.8.0-openjdk-devel
+maven
+golang
+golang-github-stretchr-testify-devel
+rpm-build
+rpmdevtools
