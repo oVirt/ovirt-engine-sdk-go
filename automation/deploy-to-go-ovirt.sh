@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xe
+
 # Pull requests shouldn't try to deploy
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     echo "Skipping deploy codes for pull request"
@@ -14,6 +16,16 @@ if [ "$TRAVIS_BRANCH" != "master" ]; then
     fi
 fi
 
+set +x  # hide keys
+openssl aes-256-cbc -K $encrypted_04c5d849a700_key \
+    -iv $encrypted_04c5d849a700_iv \
+    -in automation/travis_rsa.go_ovirt.enc \
+    -out automation/travis_rsa.go_ovirt -d
+set -x
+eval "$(ssh-agent)"
+chmod 0600 automation/travis_rsa.go_ovirt
+ssh-add automation/travis_rsa.go_ovirt
+
 # Pull current codes
 mkdir -p ./sdk/ovirtsdk-git/
 cd ./sdk/ovirtsdk-git/
@@ -22,8 +34,7 @@ git init
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "GooVirtRobot@TravisCI"
 
-git remote add origin https://${GH_TOKEN}@github.com/imjoey/go-ovirt.git
-
+git remote add origin git@github.com:oVirt/go-ovirt.git
 git pull origin master
 
 # Use newly generated codes to override the pulled ones
