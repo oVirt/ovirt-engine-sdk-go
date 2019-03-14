@@ -2,6 +2,18 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.0 / Mar 14 2019
+
+This is the first stable release after being migrated to oVirt organization.
+
+The notable changes includes:
+
+* Update metamodel to 4.3.20
+
+* Change import path to `github.com/ovirt/go-ovirt`
+
+* Use https://developer.github.com/v3/guides/managing-deploy-keys/[Github deploy keys] as the credentials to deploy the auto-generated codes
+
 == 4.2.2 / Jan 24 2019
 
 Add support for semantic versioning, which is also considered to be the 
