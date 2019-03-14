@@ -1,3 +1,13 @@
 = Changes
 
 This document describes the relevant changes between releases of the SDK.
+
+== 4.2.2 / Jan 24 2019
+
+Add support for semantic versioning, which is also considered to be the 
+recommended way for dependencies management.
+
+== 4.2.1 / Jan 16 2019
+
+This is considered to be the first stable release version in 4.2.x.
+In this release the model version is 4.2.37 and metamodel is 1.2.16.
