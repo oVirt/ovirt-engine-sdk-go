@@ -1,6 +1,6 @@
 # oVirt Go SDK 
-[![Build Status](https://travis-ci.org/imjoey/ovirt-engine-sdk-go.svg?branch=master)](https://travis-ci.org/imjoey/ovirt-engine-sdk-go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/imjoey/ovirt-engine-sdk-go)](https://goreportcard.com/report/github.com/imjoey/ovirt-engine-sdk-go)
+[![Build Status](https://travis-ci.org/oVirt/ovirt-engine-sdk-go.svg?branch=master)](https://travis-ci.org/oVirt/ovirt-engine-sdk-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/oVirt/ovirt-engine-sdk-go)](https://goreportcard.com/report/github.com/oVirt/ovirt-engine-sdk-go)
 
 
 ## Introduction
@@ -10,7 +10,7 @@ oVirt Engine API.
 
 > IMPORTANT: This document describes how to generate, build and test the
 SDK. If you are interested in how to use it read the `README.md` file
-in the [imjoey/go-ovirt](https://github.com/imjoey/go-ovirt) repository instead.
+in the [oVirt/go-ovirt](https://github.com/oVirt/go-ovirt) repository instead.
 
 ## Building
 
@@ -26,7 +26,7 @@ artifacts (offered by oVirt team) from the available Maven repositories.
 To build and run it use the following commands:
 
 ```bash
-$ git clone git@github.com:imjoey/ovirt-engine-sdk-go.git
+$ git clone git@github.com:oVirt/ovirt-engine-sdk-go.git
 $ cd ovirt-engine-sdk-go
 $ mvn package
 ```
