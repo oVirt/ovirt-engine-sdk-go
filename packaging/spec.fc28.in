@@ -14,7 +14,6 @@ Name: go-ovirt-engine-sdk4
 Summary: Go SDK for version 4 of the oVirt Engine API
 Version: %{tar_version}
 Release: 1%{?dist}
-Group: Development/Languages
 License: ASL 2.0
 URL: http://godoc.org/%{import_path}
 Source: ovirt-engine-sdk-go-%{tar_version}.tar.gz
@@ -60,12 +59,7 @@ rm -fr %{build_gopath}/src/github.com/stretchr
 rm -fr %{build_gopath}/pkg/*
 
 
-%clean
-rm -rf %{buildroot}
-
-
 %files devel
-%defattr(-,root,root,-)
 %doc README.md examples
 %license LICENSE.txt
 %dir %{gopath}/src/%{import_path}
