@@ -52,10 +52,10 @@ limitations under the License.
   </developers>
 
   <scm>
-    <connection>scm:git:git://gerrit.ovirt.org/ovirt-engine-sdk.git</connection>
-    <developerConnection>scm:git:git://gerrit.ovirt.org/ovirt-engine-sdk.git</developerConnection>
-    <url>git://gerrit.ovirt.org/ovirt-engine-sdk.git</url>
-    <tag>HEAD</tag>
+    <connection>scm:git:git://github.com/oVirt/ovirt-engine-sdk-go.git</connection>
+    <developerConnection>scm:git:git://github.com/oVirt/ovirt-engine-sdk-go.git</developerConnection>
+    <url>git://github.com/oVirt/ovirt-engine-sdk-go.git</url>
+    <tag>4.3.1</tag>
   </scm>
 
   <properties>
