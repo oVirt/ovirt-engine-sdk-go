@@ -326,7 +326,7 @@ public class ServicesGenerator implements GoGenerator {
         // Generate the parameter setter method
         buffer.addLine("func (p *%1$s) %2$s(%3$s %4$s) *%1$s{",
             requestClassName, paraMethodName, paraName, paraTypeReference.getText());
-        if (goTypes.isGoPrimitiveType(paraType)) {
+        if (goTypes.isGoPrimitiveType(paraType) || paraType instanceof EnumType) {
             buffer.addLine("p.%1$s = &%1$s", paraName);
         } else {
             buffer.addLine("p.%1$s = %1$s", paraName);
@@ -491,7 +491,7 @@ public class ServicesGenerator implements GoGenerator {
             .forEach(parameter -> {
                 String paraArgName = goNames.getParameterStyleName(parameter.getName());
                 String paraMethodName = goNames.getExportableMemberStyleName(parameter.getName());
-                if (goTypes.isGoPrimitiveType(parameter.getType())) {
+                if (goTypes.isGoPrimitiveType(parameter.getType()) || parameter.getType() instanceof EnumType) {
                     buffer.addLine("if p.%1$s != nil {", paraArgName);
                     buffer.addLine("  actionBuilder.%1$s(*p.%2$s);", paraMethodName, paraArgName);
                     buffer.addLine("}");
