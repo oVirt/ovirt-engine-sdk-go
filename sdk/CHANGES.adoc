@@ -2,6 +2,23 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.2 / Apr 10 2019
+Update to model 4.3.22.
+
+  New features:
+
+ * Add Upgrade action to cluster to set upgrade_action flag of cluster via API
+  Bug-Url: https://bugzilla.redhat.com/1663626[1663626].
+
+ * Add Hosted Engine disk types to content type
+  Bug-Url: https://bugzilla.redhat.com/1600788[1600788].
+
+Bug fixes:
+
+* Fix sdk compiling errors when updating to model 4.3.22
+ Bug-Url: https://github.com/oVirt/ovirt-engine-sdk-go/issues/151[#151]
+
+
 == 4.3.1 / Apr 8 2019
 Update to model 4.3.21.
 
