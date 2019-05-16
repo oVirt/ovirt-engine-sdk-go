@@ -26,7 +26,7 @@ limitations under the License.
   <groupId>org.ovirt.engine.api</groupId>
   <artifactId>go-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>4.3.3</version>
+  <version>4.3.4-SNAPSHOT</version>
 
   <name>oVirt Go SDK Parent</name>
 
@@ -55,7 +55,7 @@ limitations under the License.
     <connection>scm:git:git://github.com/oVirt/ovirt-engine-sdk-go.git</connection>
     <developerConnection>scm:git:git://github.com/oVirt/ovirt-engine-sdk-go.git</developerConnection>
     <url>git://github.com/oVirt/ovirt-engine-sdk-go.git</url>
-    <tag>4.3.3</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
