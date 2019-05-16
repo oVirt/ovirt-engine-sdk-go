@@ -2,6 +2,15 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.3 / May 16 2019
+Update to model 4.4.0.
+
+  New features:
+
+ * Add new parameters to HostsService.List and VmService.Migrate
+  https://bugzilla.redhat.com/1651406[1651406].
+
+
 == 4.3.2 / Apr 10 2019
 Update to model 4.3.22.
 
