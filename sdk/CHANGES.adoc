@@ -2,6 +2,10 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.4 / May 23 2019
+Add v before tag names.
+
+
 == 4.3.3 / May 16 2019
 Update to model 4.4.0.
 
