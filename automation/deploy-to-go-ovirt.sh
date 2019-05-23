@@ -70,8 +70,8 @@ function _deploy_to_master() {
 
 function _deploy_to_tag() {
     pushd go-ovirt
-    git tag -a $TRAVIS_TAG -m "New version release: $TRAVIS_TAG"
-    git push origin $TRAVIS_TAG
+    git tag -a v$TRAVIS_TAG -m "New version release: v$TRAVIS_TAG"
+    git push origin v$TRAVIS_TAG
     popd
 }
 
