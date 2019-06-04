@@ -50,13 +50,15 @@ function _clone_remote_master() {
 
 function _deploy_to_master() {
     # Remove the original files
-    rm -fr go-ovirt/*.go go-ovirt/README.md go-ovirt/examples
+    rm -fr go-ovirt/*.go go-ovirt/README.md go-ovirt/examples go-ovirt/vendor
 
     # Copy newly generated codes to override the original
     cp -r sdk/ovirtsdk/* go-ovirt/
     cp -r sdk/examples go-ovirt/
 
     pushd go-ovirt
+    # Vendor the package dependencies
+    go mod vendor
     # Push only if there are changes
     if git status --porcelain 2>/dev/null | grep -E "^??|^M"
     then
