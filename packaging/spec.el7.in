@@ -13,7 +13,6 @@ URL: http://godoc.org/%{import_path}
 Source: ovirt-engine-sdk-go-%{tar_version}.tar.gz
 
 BuildRequires: golang
-BuildRequires: golang-github-stretchr-testify-devel
 
 %description
 This package contains the Go SDK for version 4 of the oVirt Engine API.
@@ -31,9 +30,6 @@ This package contains the Go SDK for version 4 of the oVirt Engine API.
 
 %prep
 %setup -q -n ovirt-engine-sdk-go-%{tar_version}
-# many golang binaries are "vendoring" (bundling) sources, so remove them.
-# Those dependencies need to be packaged independently.
-rm -rf vendor
 
 
 %build
@@ -41,14 +37,12 @@ rm -rf vendor
 
 %install
 install -d %{build_gopath}/src/%{import_path}
-cp -av *.go %{build_gopath}/src/%{import_path}
+cp -av ./* %{build_gopath}/src/%{import_path}
 
 
 %check
 export GOPATH=%{build_gopath}
-go get -u github.com/stretchr/testify/assert
-go test -v ./
-rm -fr %{build_gopath}/src/github.com/stretchr
+go test -v -mod=vendor ./
 rm -fr %{build_gopath}/pkg/*
 
 
@@ -61,7 +55,7 @@ rm -rf %{buildroot}
 %doc README.md examples
 %license LICENSE.txt
 %dir %{gopath}/src/%{import_path}
-%{gopath}/src/%{import_path}/*.go
+%{gopath}/src/%{import_path}/*
 
 
 %changelog

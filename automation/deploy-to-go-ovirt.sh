@@ -50,11 +50,12 @@ function _clone_remote_master() {
 
 function _deploy_to_master() {
     # Remove the original files
-    rm -fr go-ovirt/*.go go-ovirt/README.md go-ovirt/examples
+    rm -fr go-ovirt/*
 
     # Copy newly generated codes to override the original
     cp -r sdk/ovirtsdk/* go-ovirt/
     cp -r sdk/examples go-ovirt/
+    cp -r sdk/CHANGES.adoc sdk/LICENSE.txt go-ovirt/
 
     pushd go-ovirt
     # Push only if there are changes
