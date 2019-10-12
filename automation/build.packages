@@ -2,7 +2,6 @@ git
 java-1.8.0-openjdk-devel
 maven
 golang
-golang-github-stretchr-testify-devel
 libxslt
 python
 python-lxml
