@@ -1,0 +1,11 @@
+git
+java-1.8.0-openjdk-devel
+maven
+golang
+rpm-build
+rpmdevtools
+libxml2
+libxml2-devel
+python3
+python3-devel
+python3-lxml
