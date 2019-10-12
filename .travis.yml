@@ -1,7 +1,7 @@
 language: java
 
 before_install:
-  - go get github.com/stretchr/testify/assert
+  - eval "$(GIMME_GO_VERSION=1.12.x gimme)"
 
 install: true
 

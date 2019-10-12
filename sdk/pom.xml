@@ -109,11 +109,14 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
+              <workingDirectory>./ovirtsdk</workingDirectory>
               <executable>${go.command}</executable>
+              <environmentVariables>
+                <GOFLAGS>-mod=vendor</GOFLAGS>
+              </environmentVariables>
               <arguments>
                 <argument>build</argument>
                 <argument>-v</argument>
-                <argument>./ovirtsdk</argument>
               </arguments>
             </configuration>
           </execution>
@@ -127,11 +130,14 @@ limitations under the License.
             </goals>
             <configuration>
               <skip>${skipTests}</skip>
+              <workingDirectory>./ovirtsdk</workingDirectory>
+              <environmentVariables>
+                <GOFLAGS>-mod=vendor</GOFLAGS>
+              </environmentVariables>
               <executable>${go.command}</executable>
               <arguments>
                 <argument>test</argument>
                 <argument>-v</argument>
-                <argument>./ovirtsdk</argument>
               </arguments>
             </configuration>
           </execution>
