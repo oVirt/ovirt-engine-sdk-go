@@ -18,6 +18,7 @@ package org.ovirt.sdk.go;
 
 import static java.util.stream.Collectors.joining;
 
+import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -42,6 +43,10 @@ public class GoNames {
     @Inject
     @ReservedWords(language = "go")
     private Set<String> reservedWords;
+
+    @Inject
+    @TagNames
+    private Map<String, String> tagNameReplacements;
 
     // Reference to the object used to calculate XML schema names:
     @Inject private SchemaNames schemaNames;
@@ -121,7 +126,7 @@ public class GoNames {
      * if name is `id` `href` `rel`, the tag is the **attribute**
      */
     public String getTagStyleName(Name name) {
-        return schemaNames.getSchemaTagName(name);
+        return renameTag(schemaNames.getSchemaTagName(name));
     }
 
     /**
@@ -176,6 +181,14 @@ public class GoNames {
             result += "_";
         }
         return result;
+    }
+
+    private String renameTag(String tagName) {
+        if (tagNameReplacements.containsKey(tagName)) {
+            return tagNameReplacements.get(tagName);
+        }
+
+        return tagName;
     }
 }
 
