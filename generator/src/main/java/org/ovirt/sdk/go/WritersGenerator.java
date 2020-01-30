@@ -257,7 +257,7 @@ public class WritersGenerator implements GoGenerator {
                 if(elementType instanceof StructType) {
                     elementSingularTag = goNames.getTagStyleName(elementType.getName());
                 } else {
-                    elementSingularTag = schemaNames.getSchemaTagName(names.getSingular(member.getName()));
+                    elementSingularTag = goNames.getTagStyleName(names.getSingular(member.getName()));
                 }
 
                 buffer.addLine("%1$s(writer, r, \"%2$s\", \"%3$s\")",
