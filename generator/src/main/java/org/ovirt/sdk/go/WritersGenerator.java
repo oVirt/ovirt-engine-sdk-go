@@ -252,8 +252,14 @@ public class WritersGenerator implements GoGenerator {
         else if (memberType instanceof ListType) {
             ListType listType = (ListType) memberType;
             Type elementType = listType.getElementType();
-            String elementSingularTag = goNames.getTagStyleName(elementType.getName());
             if (elementType instanceof StructType || elementType instanceof EnumType) {
+                String elementSingularTag;
+                if(elementType instanceof StructType) {
+                    elementSingularTag = goNames.getTagStyleName(elementType.getName());
+                } else {
+                    elementSingularTag = schemaNames.getSchemaTagName(names.getSingular(member.getName()));
+                }
+
                 buffer.addLine("%1$s(writer, r, \"%2$s\", \"%3$s\")",
                     goTypes.getXmlWriteManyFuncName(elementType).getSimpleName(),
                     tag,
