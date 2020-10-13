@@ -26,7 +26,7 @@ limitations under the License.
   <parent>
     <groupId>org.ovirt.engine.api</groupId>
     <artifactId>go-sdk-parent</artifactId>
-    <version>4.4.2-SNAPSHOT</version>
+    <version>4.4.2</version>
   </parent>
 
   <artifactId>go-sdk</artifactId>
@@ -78,7 +78,7 @@ limitations under the License.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>3.0.0</version>
         <executions>
 
           <!-- Run the code generator: -->
