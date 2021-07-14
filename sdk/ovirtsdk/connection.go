@@ -298,6 +298,16 @@ func (c *Connection) getSsoResponse(inputURL *url.URL, parameters map[string]str
 	if err != nil {
 		return nil, err
 	}
+
+	if resp.StatusCode == 401 {
+		// Don't bother decoding, this will be a HTML message
+		return nil, &AuthError{
+			baseError: baseError{
+				Msg: fmt.Sprintf("authentication failed (response was: %v)", string(body)),
+			},
+		}
+	}
+
 	var jsonObj ssoResponseJSON
 	err = json.Unmarshal(body, &jsonObj)
 	if err != nil {
