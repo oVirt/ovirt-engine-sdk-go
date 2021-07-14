@@ -1,7 +1,7 @@
 language: java
 
 before_install:
-  - eval "$(GIMME_GO_VERSION=1.12.x gimme)"
+  - eval "$(GIMME_GO_VERSION=1.15.x gimme)"
 
 install: true
 
