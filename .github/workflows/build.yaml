@@ -1,0 +1,89 @@
+name: Build, Test, Release
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+jobs:
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Set up go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '^1.16.0'
+    - name: Build
+      run: |
+        mvn package
+        mkdir -p go-ovirt
+        cp -r sdk/ovirtsdk/* go-ovirt/
+        cp -r sdk/examples go-ovirt/
+        cp -r sdk/CHANGES.adoc sdk/LICENSE.txt go-ovirt/
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdk
+        if-no-files-found: error
+        path: |
+          go-ovirt/*
+  publish:
+    name: Publish
+    needs: package
+    if:
+      github.event_name == 'push' && contains('
+        refs/heads/master
+        refs/tags/
+      ', github.ref)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check secrets
+      run: |
+        if [ -z "${{ secrets.TARGET_REPO }}" -o -z "${{ secrets.DEPLOY_KEY }}" ]; then
+          echo "The TARGET_REPO and DEPLOY_KEY secrets must be set."
+          exit 1
+        fi
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: sdk
+        path: go-ovirt-new/
+    - name: Check out target repository
+      uses: actions/checkout@v2
+      with:
+        repository: '${{ secrets.TARGET_REPO }}'
+        ssh-key: '${{ secrets.DEPLOY_KEY }}'
+        path: go-ovirt
+    - name: Sync files
+      run: |
+        rm -fr go-ovirt/*
+        rsync -avz go-ovirt-new/ go-ovirt/
+        git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git config --global user.name "github-actions[bot]"
+        pushd go-ovirt
+        if git status --porcelain 2>/dev/null | grep -E "^??|^M"; then
+          git add -A
+          SHA=${{ github.sha }}
+          git commit --message "Generator commit ID: ${SHA:0:7} with message: ${{ github.event.head_commit.message }}. GitHub build: ${{ github.run_number }}."
+          BRANCH=$(echo "${{ github.ref }}" | sed -e 's/refs\/heads\///')
+          git push origin HEAD:${BRANCH}
+        fi
+        if [ "${{ github.ref }}" == refs/tags/* ]; then
+          VER=$(echo "${{ github.ref }}" | sed -e 's/refs\/tags\///' -e 's/v//')
+          git tag v${VER}
+          git push origin v${VER}
+        fi
+        popd
+
+
