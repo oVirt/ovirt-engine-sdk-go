@@ -786,7 +786,7 @@ public class ServicesGenerator implements GoGenerator {
             buffer.addLine("  return *p.%1$s, true", goNames.getUnexportableMemberStyleName(name));
             buffer.addLine(" }");
             buffer.addLine(" var zero %1$s",
-                goTypes.getTypeReferenceAsVaraible(type).getText());
+                goTypes.getTypeReferenceAsVariable(type).getText());
             buffer.addLine(" return zero, false");
             buffer.addLine("}");
         }
