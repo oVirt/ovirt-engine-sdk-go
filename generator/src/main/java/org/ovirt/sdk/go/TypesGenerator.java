@@ -102,10 +102,22 @@ public class TypesGenerator implements GoGenerator {
             .forEach(this::generateEnum);
     }
 
+    private void addDocTag(String name, Type type) {
+        final String doc = type.getDoc();
+        if (doc != null && !doc.isEmpty()) {
+            buffer.addLine(
+                "// %1$s %2$s",
+                name,
+                doc.replace("\n", "\n// ")
+            );
+        }
+    }
+
     private void generateStruct(StructType type) {
         // Begin class:
         GoClassName typeName = goTypes.getTypeName(type);
 
+        addDocTag(typeName.getSimpleName(), type);
         // Define Struct
         buffer.addLine("type %1$s struct {", typeName.getSimpleName());
         // Ignore Base-class mixin, fill in all
@@ -177,6 +189,7 @@ public class TypesGenerator implements GoGenerator {
         GoClassName structTypeName = goTypes.getTypeName(structType);
         Type type = member.getType();
         // Generate the setter method
+        addDocTag(goTypes.getMemberSetterMethodName(member.getName()).getSimpleName(), type);
         buffer.addLine("func (p *%1$s) %2$s(attr %3$s) {",
             structTypeName.getSimpleName(),
             goTypes.getMemberSetterMethodName(member.getName()),
@@ -191,6 +204,7 @@ public class TypesGenerator implements GoGenerator {
         buffer.addLine("}");    // End of setter method
         buffer.addLine();
 
+        addDocTag(goTypes.getMemberGetterMethodName(member.getName()).getSimpleName(), type);
         // Generate the getter method
         buffer.addLine("func (p *%1$s) %2$s() (%3$s, bool) {",
             structTypeName.getSimpleName(),
@@ -202,7 +216,7 @@ public class TypesGenerator implements GoGenerator {
         if (goTypes.isGoPrimitiveType(type) || type instanceof EnumType) {
             buffer.addLine("  return *p.%1$s, true", goNames.getUnexportableMemberStyleName(member.getName()));
             buffer.addLine(" }");
-            buffer.addLine(" var zero %1$s", goTypes.getTypeReferenceAsVaraible(member.getType()));;
+            buffer.addLine(" var zero %1$s", goTypes.getTypeReferenceAsVariable(member.getType()));;
             buffer.addLine(" return zero, false");
         }
         else {
@@ -212,7 +226,9 @@ public class TypesGenerator implements GoGenerator {
         }
         buffer.addLine("}");    // End of getter method
         buffer.addLine();
+
         // Generate the MUST getter method
+        addDocTag(goTypes.getMemberMustGetterMethodName(member.getName()).getSimpleName(), type);
         buffer.addLine("func (p *%1$s) %2$s() %3$s {",
             structTypeName.getSimpleName(),
             goTypes.getMemberMustGetterMethodName(member.getName()),

@@ -240,7 +240,7 @@ public class GoTypes {
         return getTypeReference(type, true);
     }
 
-    public GoTypeReference getTypeReferenceAsVaraible(Type type) {
+    public GoTypeReference getTypeReferenceAsVariable(Type type) {
         if (type instanceof StructType) {
             return getTypeReference(type, true);
         }
