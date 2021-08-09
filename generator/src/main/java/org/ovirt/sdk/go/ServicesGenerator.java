@@ -531,9 +531,9 @@ public class ServicesGenerator implements GoGenerator {
         // Check action
         List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
         if (parameters.isEmpty()) {
-            buffer.addLine("_, errCheckAction := CheckAction(resp)");
+            buffer.addLine("_, errCheckAction := CheckAction(respBodyBytes, resp)");
         } else {
-            buffer.addLine("action, errCheckAction := CheckAction(resp)");
+            buffer.addLine("action, errCheckAction := CheckAction(respBodyBytes, resp)");
         }
         buffer.addLine("if errCheckAction != nil {");
         buffer.addLine("  return nil, errCheckAction");
@@ -643,28 +643,17 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("  p.%1$s.connection.logFunc(\"<<<<<<Request:\\n%%sResponse:\\n%%s>>>>>>\\n\", string(dumpReq), string(dumpResp))", serviceAsPrivateMemberName);
         buffer.addLine("}");
 
+        buffer.addImport("io/ioutil");
+        buffer.addLine("respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)");
+        buffer.addLine("if errReadBody != nil {");
+        buffer.addLine("  return nil, errReadBody");
+        buffer.addLine("}");
+
         // Check the response status code
         if (codes != null && codes.length > 0) {
             buffer.addLine("if !Contains(resp.StatusCode, []int{%1$s}) {", String.join(",", codes));
-            buffer.addLine("  return nil, CheckFault(resp)");
+            buffer.addLine("  return nil, CheckFault(respBodyBytes, resp)");
             buffer.addLine("}");
-        }
-
-        // Read resp.Body (if method is ActionMethod, no need the resp reading)
-        Name methodName = method.getName();
-        if (methodName.equals(ADD) || methodName.equals(GET) || 
-            methodName.equals(LIST) || methodName.equals(REMOVE) ||
-            methodName.equals(UPDATE)) {
-                buffer.addImport("io/ioutil");
-                List<Parameter> parameters = method.parameters().filter(Parameter::isOut).collect(Collectors.toList());
-                if (parameters.isEmpty()) {
-                    buffer.addLine("_, errReadBody := ioutil.ReadAll(resp.Body)");
-                } else {
-                    buffer.addLine("respBodyBytes, errReadBody := ioutil.ReadAll(resp.Body)");
-                }
-                buffer.addLine("if errReadBody != nil {");
-                buffer.addLine("  return nil, errReadBody");
-                buffer.addLine("}");
         }
     }
 
