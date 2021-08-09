@@ -544,23 +544,22 @@ func (connBuilder *ConnectionBuilder) Build() (*Connection, error) {
 						certPool = x509.NewCertPool()
 					}
 				}
+				var caCerts []byte
 				if len(connBuilder.conn.caFile) > 0 {
 					// Check if the CA File specified exists.
 					if _, err := os.Stat(connBuilder.conn.caFile); os.IsNotExist(err) {
 						return nil, fmt.Errorf("failed to check the CA file '%s' (%w)", connBuilder.conn.caFile, err)
 					}
-					caCerts, err := ioutil.ReadFile(connBuilder.conn.caFile)
+					caCerts, err = ioutil.ReadFile(connBuilder.conn.caFile)
 					if err != nil {
 						return nil, err
 					}
-					if !certPool.AppendCertsFromPEM(caCerts) {
-						return nil, fmt.Errorf("failed to parse CA certificate(s)")
-					}
 
-				} else if len(connBuilder.conn.caCert) > 0 {
-					if !certPool.AppendCertsFromPEM(connBuilder.conn.caCert) {
-						return nil, fmt.Errorf("failed to parse CA certificate(s)")
-					}
+				} else {
+					caCerts = connBuilder.conn.caCert
+				}
+				if len(caCerts) > 0 && !certPool.AppendCertsFromPEM(caCerts) {
+					return nil, fmt.Errorf("failed to parse CA certificate(s)")
 				}
 				connBuilder.conn.tlsConfig.RootCAs = certPool
 			}
