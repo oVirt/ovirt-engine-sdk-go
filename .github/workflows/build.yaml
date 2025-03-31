@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '11'
         distribution: 'adopt'
     - name: Set up go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v5
       with:
-        go-version: '^1.16.0'
+        go-version: '^1.24.1'
     - name: Build
       run: |
         mvn package
@@ -32,7 +32,7 @@ jobs:
         cp -r sdk/examples go-ovirt/
         cp -r sdk/CHANGES.adoc sdk/LICENSE.txt go-ovirt/
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: sdk
         if-no-files-found: error
@@ -55,12 +55,12 @@ jobs:
           exit 1
         fi
     - name: Download artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4
       with:
         name: sdk
         path: go-ovirt-new/
     - name: Check out target repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: '${{ secrets.TARGET_REPO }}'
         ssh-key: '${{ secrets.DEPLOY_KEY }}'
