@@ -1,5 +1,7 @@
 /*
-Copyright (c) 2017 Joey <majunjiev@gmail.com>.
+The oVirt Project - oVirt Engine Go SDK
+
+Copyright (c) oVirt Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -147,7 +149,9 @@ public class GoBuffer {
 
         // License:
         buffer.append("//\n");
-        buffer.append("// Copyright (c) 2017 Joey <majunjiev@gmail.com>.\n");
+        buffer.append("// The oVirt Project - oVirt Engine Go SDK");
+        buffer.append("//\n");
+        buffer.append("//Copyright (c) oVirt Authors\n");
         buffer.append("//\n");
         buffer.append("// Licensed under the Apache License, Version 2.0 (the \"License\");\n");
         buffer.append("// you may not use this file except in compliance with the License.\n");
