@@ -1,5 +1,6 @@
 # oVirt Go SDK 
-[![Build Status](https://travis-ci.org/oVirt/ovirt-engine-sdk-go.svg?branch=master)](https://travis-ci.org/oVirt/ovirt-engine-sdk-go)
+[![Build, Test, Release](https://github.com/oVirt/ovirt-engine-sdk-go/actions/workflows/build.yaml/badge.svg)](https://github.com/oVirt/ovirt-engine-sdk-go/actions/workflows/build.yaml)
+[![CodeQL](https://github.com/oVirt/ovirt-engine-sdk-go/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/oVirt/ovirt-engine-sdk-go/actions/workflows/github-code-scanning/codeql)
 [![Go Report Card](https://goreportcard.com/badge/github.com/oVirt/ovirt-engine-sdk-go)](https://goreportcard.com/report/github.com/oVirt/ovirt-engine-sdk-go)
 
 
