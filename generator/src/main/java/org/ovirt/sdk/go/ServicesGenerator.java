@@ -520,6 +520,9 @@ public class ServicesGenerator implements GoGenerator {
         buffer.addLine("var body bytes.Buffer");
         buffer.addLine("writer := NewXMLWriter(&body)");
         buffer.addLine("err = XMLActionWriteOne(writer, action, \"\")");
+        buffer.addLine("if err != nil {");
+        buffer.addLine("  return nil, err");
+        buffer.addLine("}");
         buffer.addLine("writer.Flush()");
         
         // Construct the net/http request
