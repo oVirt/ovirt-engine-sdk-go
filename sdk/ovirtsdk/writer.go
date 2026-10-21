@@ -56,7 +56,7 @@ func (writer *XMLWriter) WriteElement(uri, name, value string, attrs map[string]
 		return fmt.Errorf("xml: start tag with no name")
 	}
 	writer.WriteStart(uri, name, attrs)
-	writer.WriteString(value)
+	writer.EscapeString(value)
 	writer.WriteEnd(name)
 	return nil
 }
